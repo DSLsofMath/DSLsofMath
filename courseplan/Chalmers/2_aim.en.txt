@@ -1,0 +1,1 @@
+The course will present classical mathematical topics from a computing science perspective: giving specifications of the concepts introduced, paying attention to syntax and types, and ultimately constructing DSLs of some mathematical areas mentioned below.
