@@ -2,7 +2,7 @@
 about how to use the words "validation" and "verification" when
 talking about numerical software.)
 
-#Background:
+##Background:
 
 In the ideal case implementation of software starts from an
 unambiguous (formal) specification of the problem to be solved. Then
@@ -11,7 +11,7 @@ step by step into something efficiently executable. In practice the
 specification is often 1) vague, 2) discovered during implementation
 and 3) changing over time as requirements change.
 
-Definitions:
+##Definitions:
 * Verification = evaluate whether or not an implementation satisfies a specification
 * Validation = make sure that the specification matches the intended requirements
 
