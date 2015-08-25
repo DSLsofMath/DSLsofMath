@@ -7,4 +7,5 @@ Domain Specific Languages of Mathematics
 
 [A paper has been submitted to TFPIE](https://github.com/DSLsofMath/tfpie2015).
 
-The project was also presented at [DSLDI 2015](https://github.com/DSLsofMath/dsldi2015).
+The project was also presented at [DSLDI 2015](https://github.com/DSLsofMath/dsldi2015) and
+at [IFIP WG 2.1 meeting #73](http://www.cse.chalmers.se/~patrikj/talks/WG2.1_Goteborg_Jansson_Ionescu_DSLsofMath.pdf).
