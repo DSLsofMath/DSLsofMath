@@ -1,0 +1,91 @@
+#+TITLE: Related courses
+
+* Discrete mathematics
+  - https://www.student.chalmers.se/sp/course?course_id=23195
+
+** Learning outcomes
+   - have insights in fundamental mathematics important when studying
+     Technology, especially within computing science and information
+     Systems.
+   - have insights, skills and understanding in using, the
+     mathematical language.
+   - communicate mathematics
+
+** Concepts
+   - Relations
+   - Proof techniques
+   - Elementary number theory
+   - Combinatorics
+   - Logic
+   - Graphs
+
+* Linear algebra
+  - https://www.student.chalmers.se/sp/course?course_id=23149
+  - http://www.math.chalmers.se/Math/Grundutb/CTH/tmv216/1415/
+
+** Learning outcomes
+   - apply geometrical vectors in geometry and science
+   - apply scalar and vector products
+   - describe the concept of matrix and matrix algebra
+   - interpret determinants as volumes or areas
+   - describe the eigenvalue problem for matrices
+   - (use Matlab for solving problems within Linear Algebra)
+
+** Concepts
+   - Matrices and vectors,
+   - linear transformations,
+   - linear equations,
+   - eigenvectors and eigenvalues,
+     - vector v, scalar λ such that Av = λv, for some square matrix A
+     - an eigenvector of a square matrix is a vector that does
+       not change its direction under the associated linear
+       transformation
+     - https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors
+
+   - linear (in)dependence,
+   - basis
+     - set of linearly independent vectors in vector space such that
+       every vector in the VS is a linear combination of this set
+     - https://en.wikipedia.org/wiki/Basis_%28linear_algebra%29
+
+   - dimensions,
+   - relation matrices.
+   - Applications of matrix algebra to graph theory.
+
+* Calculus (Matematisk analys)
+  - https://www.student.chalmers.se/sp/course?course_id=22831
+  - http://www.math.chalmers.se/Math/Grundutb/CTH/tmv170/1415/
+
+** Learning outcomes
+
+   - understand the concepts of derivative and integral and the
+     relation between them
+   - manipulate elementary functions and algebraic expressions
+   - understand the concepts of liearization, derivative, and integral
+     in higher dimension
+   - compute integrals both analytically and numerically
+   - know about criteria for optimality
+   - be familiar with the approximation of functions by polynomials
+     and their representation by power series
+   - use and combine different concepts in problem solving
+   - (use MATLAB in problem solving)
+
+** Concepts
+
+   - derivatives
+   - integral
+   - linearisation
+   - computing integrals
+   - optimality
+   - power series
+   - function approximation
+   - limits
+   - continuity
+   - parametric curves
+   - differential equations
+
+* TSS (Transformer, signaler & system)
+  - https://www.student.chalmers.se/sp/course?course_id=23192
+
+* Control theory (Reglerteknik)
+  - https://www.student.chalmers.se/sp/course?course_id=24149
