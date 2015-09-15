@@ -11,6 +11,7 @@ The project was also presented at [DSLDI 2015](https://github.com/DSLsofMath/dsl
 at the [IFIP WG 2.1 meeting #73](http://www.cse.chalmers.se/~patrikj/talks/WG2.1_Goteborg_Jansson_Ionescu_DSLsofMath.pdf).
 
 * 2015-09-01: [Adam](http://adam.sandbergericsson.se/) starts working in the project as "amanuens" (student research assistant, 20%).
+    * See [related courses](related_courses.org) for some of his work.
 
 # Curriculum placement
 
