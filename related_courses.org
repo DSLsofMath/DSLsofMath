@@ -87,5 +87,70 @@
 * TSS (Transformer, signaler & system)
   - https://www.student.chalmers.se/sp/course?course_id=23192
 
+** Learning outcomes
+
+   - identify and give examples of different signal types and
+     summarize important system properties.
+   - use mathematical tools as Fourier series, Fourier-, Laplace and
+     z-transforms to analyze linear systems.
+   - derive the output signal from linear systems (continuous and
+     discrete) excited by simple input signals.
+   - describe the frequency content of a signal using Fourier
+     representations.
+   - describe the process of sampling, both in time and frequency
+     domain.
+   - use the frequency response of a linear system to calculate the
+     output signal for a sinusoidal input signal.
+   - perform a basic interpretation of the Discrete Fourier transform
+     of a sampled signal.
+
+** Concepts
+
+   - Continuous and discrete time signals. Signal models.
+   - LTI-systems and their properties. Convolution.
+   - Fourier representation of different kinds of signals and their
+     properties.
+   - Parseval's theorem.
+   - Sampling and reconstruction of sampled signals.
+   - The Discrete Fourier transform (DFT)
+   - The Laplace- and z-transform.
+   - Impulse and step response.
+   - The system descriptions: Transfer function and Frequency
+     response.
+
 * Control theory (Reglerteknik)
   - https://www.student.chalmers.se/sp/course?course_id=24149
+
+** Learning outcomes
+
+   - explain the function of a control system, and describe its
+     potentials and limitations;define the concepts of feedback and
+     feed-forward;
+   - formulate dynamic models for basic technical systems, on state
+     space as well as transfer function form;
+   - linearize nonlinear models;
+   - analyze the properties of linear systems in the time and
+     frequency domain and transform between their different model
+     representations;
+   - sketch the frequency response in a Bode diagram and interpret
+     frequency curves in a Bode or Nyquist diagram;
+   - design common filters depending on the desired frequency
+     response;
+   - apply the Nyquist criterion to decide the stability of a feedback
+     system;
+   - analyze a control system using sensitivity functions, and to
+     understand the possibilities, limitations and conflicts in a
+     feedback system, and how this is connected to the system's loop
+     transfer function;
+   - design P, PI, and PID controllers satisfying given
+     specifications;
+   - understand and explain alternative design structures like
+     feed-forward, cascade and state feedback control;
+   - implement simple controllers by computer, and understand the
+     concepts of sampling and aliasing;
+   - use modern computer tools to support the analysis, design and
+     evaluation of dynamic systems.
+
+** Concepts
+
+   --
