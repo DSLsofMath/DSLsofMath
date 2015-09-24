@@ -1,14 +1,23 @@
 {-# LANGUAGE FlexibleInstances #-}
--- |
+
+-- | Exploring optimisation as presented in "An introduciton to the
+-- conjugate gradient method without the agonizing pain"
 
 module CG1 where
 
-type M2 = (Double,Double
-          ,Double,Double)
-type V2 = (Double,Double)
+import Prelude hiding (id)
+
+-- | S for Scalar
 type S = Double
 
-instance Num a => Num ((,) a a) where
+-- | for simplicity only 2 by 2 matrices for now
+type M2 = (S,S
+          ,S,S)
+
+-- | vectors of dimension 2
+type V2 = (S,S)
+
+instance Num a => Num (a,a) where
   fromInteger x = (fromInteger x,fromInteger x)
   (a,b) + (x,y) = (a + x,b + y)
   (a,b) * (x,y) = (a * x,b * y)
@@ -16,37 +25,73 @@ instance Num a => Num ((,) a a) where
   signum = undefined
   negate (a,b) = (-a,-b)
 
+instance Fractional a => Fractional (a,a,a,a) where
+  fromRational a = (fromRational a,fromRational a,fromRational a,fromRational a)
+  recip (a,b,c,d) = (recip a,recip b,recip c,recip d)
+
+instance Num a => Num (a,a,a,a)  where
+  fromInteger x = (fromInteger x,fromInteger x
+                  ,fromInteger x,fromInteger x)
+  (a,b,c,d) + (x,y,z,w) = (a+x,b+y
+                          ,c+z,d+w)
+  (a,b,c,d) * (x,y,z,w) = (a*b+b*z,a*y+b*w
+                          ,c*x+d*z,c*y+d*w) -- matrix multiplication
+  abs (a,b,c,d) = (abs a,abs b,abs c,abs d)
+  signum = undefined
+  negate (a,b,c,d) = (negate a,negate b,negate c,negate d)
+
 instance Fractional a => Fractional (a,a) where
   fromRational a = (fromRational a,fromRational a)
   recip (a,b) = (recip a,recip b)
 
--- | Inner product
-innerProd :: V2 -> V2 -> S
-innerProd (a,b) (c,d) = a*c + b*d
+id :: M2
+id = (1,0
+     ,0,1)
 
-preProd :: V2 -> M2 -> V2
-preProd (a,b) (x,y
-              ,z,w) = (a * x + b * z
-                      ,a * y + b * w)
+innerMul :: V2 -> V2 -> S
+innerMul (a,b) (c,d) = a*c + b*d
 
-postProd :: M2 -> V2 -> V2
-postProd (x,y
-         ,z,w) (a,b) = (x * a + y * b
-                       ,z * a + w * b)
+preMul :: V2 -> M2 -> V2
+preMul (a,b) (x,y
+             ,z,w) = (a * x + b * z
+                     ,a * y + b * w)
+
+postMul :: M2 -> V2 -> V2
+postMul (x,y
+        ,z,w) (a,b) = (x * a + y * b
+                      ,z * a + w * b)
 
 -- | v^T A v = ppm v A
 --
-prePostProd :: V2 -> M2 -> S
-prePostProd v a = innerProd (preProd v a) v
+prePostMul :: V2 -> M2 -> S
+prePostMul v a = innerMul (preMul v a) v
+
+-- matMul :: M2 -> M2 -> M2
+-- matMul (a,b
+--        ,c,d) (x,y
+--              ,z,w) = (a*b+b*z,a*y+b*w
+--                      ,c*x+d*z,c*y+d*w)
 
 transpose :: M2 -> M2
 transpose (x,y
           ,z,w) = (x,z
                   ,y,w)
 
+scaleM :: S -> M2 -> M2
+scaleM x (a,b
+         ,c,d) = (x * a,x * b
+                 ,x * c,x * d)
+
+scaleV :: S -> V2 -> V2
+scaleV x (a,b) = (x*a,x*b)
+
+det :: M2 -> S
+det (a,b
+    ,c,d) = a*d - b*c
+
 -- a matrix m is postive definite if for all x . x^Tmx > 0
 prop_positive_definite :: M2 -> V2 -> Bool
-prop_positive_definite m = \v -> prePostProd v m > 0
+prop_positive_definite m = \v -> prePostMul v m > 0
 
 -- | Example vect and matrix
 a :: M2
@@ -60,10 +105,10 @@ c :: S
 c = 0
 
 -- quadratic form
-f x = 0.5 * prePostProd x a - innerProd b x + c
+f x = 0.5 * prePostMul x a - innerMul b x + c
 
 -- gradient of quadradic form
-f' x = 0.5 * postProd (transpose a) x + 0.5 * postProd a x - b
+f' x = 0.5 * postMul (transpose a) x + 0.5 * postMul a x - b
 
 -- error, how far from goal are we
 -- e_i = x_i - x
@@ -74,8 +119,38 @@ f' x = 0.5 * postProd (transpose a) x + 0.5 * postProd a x - b
 
 -- steepest descent takes a step
 -- x_1 = x_0 + alpha*r_0
--- how big should alpha be?
-sdStep x = let r = b - postProd a x
-               alpha = innerProd r r / prePostProd r a
-               x' = x + (alpha,alpha) * r
+-- how big should alpha be? p. 6
+sdStep x = let r = b - postMul a x -- r = b - Ax
+               alpha = innerMul r r / prePostMul r a -- a = (r^T r)/(r^T A r)
+               x' = x + scaleV alpha r -- x' = x + a r
            in x'
+
+
+-- Jacobi iterations, p 11
+
+-- a matrix is diagonal if all but the diagonal is 0
+prop_diagonal :: M2 -> Bool
+prop_diagonal (_,b
+              ,c,_) = b == 0 && c == 0 -- possibly with some epsilon
+
+-- invert a diagonal matrix
+invertDiag :: M2 -> M2
+invertDiag (a,_
+           ,_,d) = (recip a,0
+                   ,0      ,recip d)
+
+-- split matrix into two parts: D whose diagonal elemts are equal to
+-- A's and off diagonal elements are 0 and E whose diagonal
+-- elements are 0 and off diagonal elements equal to A's
+jacobiSplit (a,b
+            ,c,d) = ((a,0
+                     ,0,d)
+                    ,(0,b
+                     ,c,0))
+
+jacobiStep x =
+  let (d,e) = jacobiSplit a
+      f = (negate (invertDiag d)) * e -- can precompute this
+      z = postMul (invertDiag d) b
+      x' = postMul f x + z
+  in x'
