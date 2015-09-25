@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 -- | Exploring optimisation as presented in "An introduciton to the
 -- conjugate gradient method without the agonizing pain"
@@ -6,6 +7,7 @@
 module CG1 where
 
 import Prelude hiding (id)
+-- import Test.QuickCheck
 
 -- | S for Scalar
 type S = Double
@@ -89,9 +91,13 @@ det :: M2 -> S
 det ( a, b
     , c, d) = a*d - b*c
 
--- a matrix m is postive definite if for all x . x^Tmx > 0
-prop_positive_definite :: M2 -> V2 -> Bool
-prop_positive_definite m = \v -> prePostMul v m > 0
+-- Wrapper type to enable a QuickCheck generator for non-zero values
+newtype NonZero a = NonZero {unNonZero :: a}
+  deriving (Eq, Show, Num)
+
+-- a matrix m is postive definite if for all nonzero x . x^Tmx > 0
+prop_positive_definite :: M2 -> NonZero V2 -> Bool
+prop_positive_definite m = \(NonZero v) -> prePostMul v m > 0
 
 -- | Example vect and matrix
 a :: M2
