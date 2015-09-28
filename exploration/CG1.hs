@@ -112,3 +112,8 @@ gsConjugation us
         d i = u i + sum (flip map [0 .. i-1] (\k -> scaleV (beta i k) (d k)))
         beta i j = - (inner (preMul (u i) a) (d j) / (prePostMul (d j) a))
     in map d [0 .. (length us - 1)]
+
+
+-- prop_gsConjugation_ok us@(u1,u2) =
+--   prop_linearly_independent_R2 us ==>
+--   prop_linearly_independent_R2 (gsConjugation us)
