@@ -104,22 +104,29 @@ newtype NonZero a = NonZero {unNonZero :: a}
 prop_positive_definite :: M2 -> NonZero V2 -> Bool
 prop_positive_definite m = \(NonZero v) -> prePostMul v m > 0
 
--- | Example vector and matrix
+-- * Example vector, matrix and corresponding quadratic form from paper.
+
+-- |
+-- > ( 3, 2
+-- > , 2, 6)
 a :: M2
 a = ( 3, 2
     , 2, 6)
 
+-- |
+-- > (2, 8)
 b :: V2
 b = (2, 8)
 
+-- | > 0
 c :: S
 c = 0
 
--- quadratic form
+-- | quadratic form
 f :: V2 -> S
 f x = 0.5 * prePostMul x a - inner b x + c
 
--- gradient of quadradic form
+-- | gradient of quadradic form
 f' :: V2 -> V2
 f' x = 0.5 * postMul (transpose a) x + 0.5 * postMul a x - b
 
@@ -186,7 +193,7 @@ cdStep d x =
   in x'
 
 
--- ** GramSchmidt conjugation
+-- ** Gram-Schmidt conjugation
 -- Find A orthogonal search directions
 
 -- | start with n linearly independent vectors us = [u_0, ..., u_{n-1}], here the coordinate axes
@@ -196,11 +203,13 @@ us = [(1,0), (0,1)]
 -- prop_linearly_independent :: [V2] -> [NonZero S] -> Bool -- also want same length
 -- prop_linearly_independent vs = \as -> sum (zipWith scaleV as vs) /= 0
 
+-- | Vectors are linearly independent if
+-- a_1 v_1 + ... + a_n v_n = 0 only when a_i = 0, for all i
 prop_linearly_independent_R2 :: (V2, V2) -> (NonZero S, NonZero S) -> Bool
 prop_linearly_independent_R2 (v1, v2)
   = \(NonZero s1, NonZero s2) -> (scaleV s1 v1 + scaleV s2 v2) /= 0
 
--- | Gram-Schmidt conjugation
+-- | Gram-Schmidt conjugation, p. 25
 gsConjugation us
   = let u i = us !! i
         d i = u i + sum (flip map [0 .. i-1] (\k -> scaleV (beta i k) (d k)))
