@@ -89,6 +89,13 @@ det :: M2 -> S
 det ( a, b
     , c, d) = a*d - b*c
 
+
+-- | invert a diagonal matrix
+invertDiag :: M2 -> M2
+invertDiag ( a, _
+           , _, d) = ( recip a, 0
+                     , 0      , recip d)
+
 -- Wrapper type to enable a QuickCheck generator for non-zero values
 newtype NonZero a = NonZero {unNonZero :: a}
   deriving (Eq, Show, Num)
@@ -123,6 +130,8 @@ f' x = 0.5 * postMul (transpose a) x + 0.5 * postMul a x - b
 -- "the error transformed by A into the same space as b"
 
 
+-- * Steepest descent
+
 -- steepest descent takes a step
 -- x_1 = x_0 + alpha*r_0
 -- how big should alpha be? p. 6
@@ -133,20 +142,15 @@ sdStep x = let r     = b - postMul a x            -- r  = b - Ax
            in x'
 
 
--- Jacobi iterations, p 11
-
 -- a matrix is diagonal if all but the diagonal is 0
 prop_diagonal :: M2 -> Bool
 prop_diagonal ( _, b
               , c, _) = b == 0 && c == 0 -- possibly with some epsilon
 
--- invert a diagonal matrix
-invertDiag :: M2 -> M2
-invertDiag ( a, _
-           , _, d) = ( recip a, 0
-                     , 0      , recip d)
 
--- split matrix into two parts: D whose diagonal elemts are equal to
+-- * Jacobi iterations, p. 11
+
+-- | split matrix into two parts: D whose diagonal elemts are equal to
 -- A's and off diagonal elements are 0 and E whose diagonal
 -- elements are 0 and off diagonal elements equal to A's
 jacobiSplit :: M2 -> (M2, M2)
@@ -156,6 +160,7 @@ jacobiSplit ( a, b
                       , ( 0, b
                         , c, 0))
 
+-- | Jacobi steps, Jacobi method doesn't always terminate
 jacobiStep :: V2 -> V2
 jacobiStep x =
   let (d, e) = jacobiSplit a
@@ -165,8 +170,39 @@ jacobiStep x =
   in x'
 
 
------
+-- * Conjugate directions
 
 -- | v1^T A v2 = 0 <=> v1, v2 are A orthogonal
 prop_A_orthogonal :: M2 -> V2 -> V2 -> Bool
 prop_A_orthogonal a v1 v2 = inner (preMul v1 a) v2 == 0
+
+cdStep :: V2 -- ^ d_n, search direction
+       -> V2 -- ^ x_n
+       -> V2 -- ^ x_{n+1}
+cdStep d x =
+  let r     = b - postMul a x            -- r  = b - Ax
+      alpha = inner d r / prePostMul d a -- a  = (d^T r)/(d^T A d)
+      x'    = x + scaleV alpha r         -- x' = x + a r
+  in x'
+
+
+-- ** GramSchmidt conjugation
+-- Find A orthogonal search directions
+
+-- | start with n linearly independent vectors us = [u_0, ..., u_{n-1}], here the coordinate axes
+us :: [V2]
+us = [(1,0), (0,1)]
+
+-- prop_linearly_independent :: [V2] -> [NonZero S] -> Bool -- also want same length
+-- prop_linearly_independent vs = \as -> sum (zipWith scaleV as vs) /= 0
+
+prop_linearly_independent_R2 :: (V2, V2) -> (NonZero S, NonZero S) -> Bool
+prop_linearly_independent_R2 (v1, v2)
+  = \(NonZero s1, NonZero s2) -> (scaleV s1 v1 + scaleV s2 v2) /= 0
+
+-- | Gram-Schmidt conjugation
+gsConjugation us
+  = let u i = us !! i
+        d i = u i + sum (flip map [0 .. i-1] (\k -> scaleV (beta i k) (d k)))
+        beta i j = - (inner (preMul (u i) a) (d j) / (prePostMul (d j) a))
+    in map d [0 .. (length us - 1)]
