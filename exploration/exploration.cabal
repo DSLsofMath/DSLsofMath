@@ -17,7 +17,7 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     CG1, Test
+  exposed-modules:     MatrixAlgebra1, CG1, Test
   -- other-modules:
   other-extensions:    FlexibleInstances
   build-depends:       QuickCheck >= 2.6
