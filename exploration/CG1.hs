@@ -46,18 +46,22 @@ instance Fractional a => Fractional (a, a) where
   fromRational a = (fromRational a, fromRational a)
   recip (a, b) = (recip a, recip b)
 
+
+-- | The identity matrix
 id :: M2
 id = ( 1, 0
      , 0, 1)
 
-innerMul :: V2 -> V2 -> S
-innerMul (a, b) (c, d) = a*c + b*d
+inner :: V2 -> V2 -> S
+inner (a, b) (c, d) = a*c + b*d
 
+-- | Pre-multiply with vector
 preMul :: V2 -> M2 -> V2
 preMul (a, b) ( x, y
               , z, w) = ( a * x + b * z
                         , a * y + b * w)
 
+-- | Post-multiply with vector
 postMul :: M2 -> V2 -> V2
 postMul ( x, y
         , z, w) (a, b) = ( x * a + y * b
@@ -66,13 +70,7 @@ postMul ( x, y
 -- | v^T A v = ppm v A
 --
 prePostMul :: V2 -> M2 -> S
-prePostMul v a = innerMul (preMul v a) v
-
--- matMul :: M2 -> M2 -> M2
--- matMul ( a, b
---        , c, d) ( x, y
---                , z, w) = ( a*b+b*z, a*y+b*w
---                          , c*x+d*z, c*y+d*w)
+prePostMul v a = inner (preMul v a) v
 
 transpose :: M2 -> M2
 transpose ( x, y
@@ -99,7 +97,7 @@ newtype NonZero a = NonZero {unNonZero :: a}
 prop_positive_definite :: M2 -> NonZero V2 -> Bool
 prop_positive_definite m = \(NonZero v) -> prePostMul v m > 0
 
--- | Example vect and matrix
+-- | Example vector and matrix
 a :: M2
 a = ( 3, 2
     , 2, 6)
@@ -112,7 +110,7 @@ c = 0
 
 -- quadratic form
 f :: V2 -> S
-f x = 0.5 * prePostMul x a - innerMul b x + c
+f x = 0.5 * prePostMul x a - inner b x + c
 
 -- gradient of quadradic form
 f' :: V2 -> V2
@@ -129,9 +127,9 @@ f' x = 0.5 * postMul (transpose a) x + 0.5 * postMul a x - b
 -- x_1 = x_0 + alpha*r_0
 -- how big should alpha be? p. 6
 sdStep :: V2 -> V2
-sdStep x = let r     = b - postMul a x                 -- r  = b - Ax
-               alpha = innerMul r r / prePostMul r a   -- a  = (r^T r)/(r^T A r)
-               x'    = x + scaleV alpha r              -- x' = x + a r
+sdStep x = let r     = b - postMul a x            -- r  = b - Ax
+               alpha = inner r r / prePostMul r a -- a  = (r^T r)/(r^T A r)
+               x'    = x + scaleV alpha r         -- x' = x + a r
            in x'
 
 
@@ -171,4 +169,4 @@ jacobiStep x =
 
 -- | v1^T A v2 = 0 <=> v1, v2 are A orthogonal
 prop_A_orthogonal :: M2 -> V2 -> V2 -> Bool
-prop_A_orthogonal a v1 v2 = innerMul (preMul v1 a) v2 == 0
+prop_A_orthogonal a v1 v2 = inner (preMul v1 a) v2 == 0
