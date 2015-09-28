@@ -1,5 +1,9 @@
 module Test where
-import CG1
+
+import MatrixAlgebra1
+import CG1 hiding (us)
+
+
 import Test.QuickCheck hiding (NonZero)
 
 -- I think this instance should be pushed into QuickCheck instead of
@@ -14,3 +18,14 @@ test x = quickCheck (prop_positive_definite x)
 q :: M2
 q = ( 1, 1
     , 2, 1)
+
+-- coordinate axes
+us :: [V2]
+us@[u1, u2] = [(1,0),(0,1)]
+
+-- compute some A orthogonal vectors
+[d1,d2] = gsConjugation us
+
+tests = do --quickCheck (prop_positive_definite _)
+           quickCheck (prop_linearly_independent_R2 (u1,u2))
+           quickCheck (prop_linearly_independent_R2 (d1,d2))

@@ -52,13 +52,6 @@ sdStep x = let r     = b - postMul a x            -- r  = b - Ax
                x'    = x + scaleV alpha r         -- x' = x + a r
            in x'
 
-
--- a matrix is diagonal if all but the diagonal is 0
-prop_diagonal :: M2 -> Bool
-prop_diagonal ( _, b
-              , c, _) = b == 0 && c == 0 -- possibly with some epsilon
-
-
 -- * Jacobi iterations, p. 11
 
 -- | split matrix into two parts: D whose diagonal elemts are equal to

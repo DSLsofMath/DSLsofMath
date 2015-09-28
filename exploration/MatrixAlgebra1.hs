@@ -94,10 +94,18 @@ invertDiag ( a, _
            , _, d) = ( recip a, 0
                      , 0      , recip d)
 
--- Wrapper type to enable a QuickCheck generator for non-zero values
+-- * Properties of matrix operations
+
+-- | Wrapper type to enable a QuickCheck generator for non-zero values
 newtype NonZero a = NonZero {unNonZero :: a}
   deriving (Eq, Show, Num)
 
--- a matrix m is postive definite if for all nonzero x . x^Tmx > 0
+-- | a matrix m is postive definite if for all nonzero x . x^Tmx > 0
 prop_positive_definite :: M2 -> NonZero V2 -> Bool
 prop_positive_definite m = \(NonZero v) -> prePostMul v m > 0
+
+
+-- | a matrix is diagonal if all but the diagonal is 0
+prop_diagonal :: M2 -> Bool
+prop_diagonal ( _, b
+              , c, _) = b == 0 && c == 0 -- possibly with some epsilon
