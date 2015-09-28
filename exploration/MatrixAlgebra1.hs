@@ -30,12 +30,14 @@ instance Fractional a => Fractional (a, a, a, a) where
   recip (a, b, c, d) = (recip a, recip b, recip c, recip d)
 
 instance Num a => Num (a, a, a, a)  where
-  fromInteger x = ( fromInteger x, fromInteger x
-                  , fromInteger x, fromInteger x)
+  fromInteger x = ( fromInteger x, 0
+                  , 0            , fromInteger x)
   (a, b, c, d) + (x, y, z, w) = ( a+x, b+y
                                 , c+z, d+w)
-  (a, b, c, d) * (x, y, z, w) = ( a*b+b*z, a*y+b*w
-                                , c*x+d*z, c*y+d*w) -- matrix multiplication
+  (a, b,
+   c, d) * (x, y,
+            z, w) = ( a*x+b*z, a*y+b*w
+                    , c*x+d*z, c*y+d*w) -- matrix multiplication
   abs (a, b, c, d) = (abs a, abs b, abs c, abs d)
   signum = undefined
   negate (a, b, c, d) = (negate a, negate b, negate c, negate d)

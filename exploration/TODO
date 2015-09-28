@@ -1,0 +1,7 @@
+* Add a few more tests:
+** associativity + unit laws for matrix mult
+** associativity + commutativity for matrix add
+** some connections between matrix and vector
+* Experiment with larger matrices
+* From 4-tuples to data or newtype
+* More from the paper?

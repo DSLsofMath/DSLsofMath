@@ -29,3 +29,12 @@ us@[u1, u2] = [(1,0),(0,1)]
 tests = do --quickCheck (prop_positive_definite _)
            quickCheck (prop_linearly_independent_R2 (u1,u2))
            quickCheck (prop_linearly_independent_R2 (d1,d2))
+
+type M4 = (M2,M2,M2,M2)
+
+m4 :: M4
+m4 = (q,q,
+      q,q)
+
+n4 :: M4
+n4 = 1
