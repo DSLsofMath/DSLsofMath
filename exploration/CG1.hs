@@ -154,3 +154,10 @@ jacobiStep x =
       z = postMul (invertDiag d) b
       x' = postMul f x + z
   in x'
+
+
+-----
+
+-- | v1^T A v2 = 0 <=> v1, v2 are A orthogonal
+prop_A_orthogonal :: M2 -> V2 -> V2 -> Bool
+prop_A_orthogonal a v1 v2 = innerMul (preMul v1 a) v2 == 0
