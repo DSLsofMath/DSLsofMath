@@ -9,6 +9,7 @@ data Mat a
   = M (Mat a) (Mat a)
       (Mat a) (Mat a) -- ^ 2x2 matrix
   | Id a -- ^ a * I (identity matrix scaled by a)
+  | Z -- ^ zero matrix
   deriving (Functor,Show)
 
 type S = Double
@@ -19,19 +20,24 @@ type M = Mat S
 a ..* m = fmap (a *) m
 
 instance Num a => Num (Mat a) where
+  fromInteger 0 = Z
   fromInteger n
     = Id (fromInteger n)
 
+  Z + m = m
+  m + Z = m
   (Id a) + (Id x) = Id (a + x)
   m@(Id{}) + (M x y
                 z w) = M (m + x) y
-                          z       (m + w)
+                          z      (m + w)
   m@(M{}) + n@(Id{}) = n + m
   (M a b
      c d) + (M x y
                z w) = M (a+x) (b+y)
                         (c+z) (d+w)
 
+  Z * _ = Z
+  _ * Z = Z
   (Id a) * m = a ..* m
   m * (Id x) = x ..* m
   (M a b
