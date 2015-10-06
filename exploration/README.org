@@ -1,0 +1,16 @@
+* Matrix algebra
+  Exploring different encodings of matrix algebra in order to
+  implement algorithms for solving systems of linear equationsfrom [[http://www.cs.cmu.edu/~quake-papers/painless-conjugate-gradient.pdf]["An
+  introduciton to the conjugate gradient method without the agonizing
+  pain"]].
+
+** Files
+   - ~MatrixAlgebra1.hs~: 2-by-2 matrices and vectors using tuples
+   - ~CG1.hs~: Optimisation techniques from
+   - ~MatrixAlgebra2.hs~: 2^n-by-2^n matrices using a recursive
+     representation
+
+* Other interesting things
+** Automatic differentiation
+   - http://conal.net/papers/beautiful-differentiation/
+   - http://hackage.haskell.org/package/ad
