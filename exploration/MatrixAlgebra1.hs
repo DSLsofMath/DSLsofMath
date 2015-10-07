@@ -18,16 +18,16 @@ type M2 = ( S, S
 type V2 = (S, S)
 
 instance Num a => Num (a, a) where
-  fromInteger x = (fromInteger x, fromInteger x)
+  fromInteger x   = (fromInteger x, fromInteger x)
   (a, b) + (x, y) = (a + x, b + y)
   (a, b) * (x, y) = (a * x, b * y)
-  abs (a, b) = (abs a, abs b)
-  signum = undefined
-  negate (a, b) = (-a, -b)
+  abs (a, b)      = (abs a, abs b)
+  signum          = error "signum: undefined for pairs"
+  negate (a, b)   = (negate a, negate b)
 
-instance Fractional a => Fractional (a, a, a, a) where
-  fromRational a = (fromRational a, fromRational a, fromRational a, fromRational a)
-  recip (a, b, c, d) = (recip a, recip b, recip c, recip d)
+instance Fractional a => Fractional (a, a) where
+  fromRational a = (fromRational a, fromRational a)
+  recip (a, b) = (recip a, recip b)
 
 instance Num a => Num (a, a, a, a)  where
   fromInteger x = ( fromInteger x, 0
@@ -38,13 +38,16 @@ instance Num a => Num (a, a, a, a)  where
    c, d) * (x, y,
             z, w) = ( a*x+b*z, a*y+b*w
                     , c*x+d*z, c*y+d*w) -- matrix multiplication
-  abs (a, b, c, d) = (abs a, abs b, abs c, abs d)
-  signum = undefined
-  negate (a, b, c, d) = (negate a, negate b, negate c, negate d)
+  abs (a, b, c, d) = (abs a, abs b, abs c, abs d) -- TODO: matrix norm?
+  signum = error "signum: undefined for 2x2 matrices"
+  negate (a, b, c, d) = ( negate a, negate b
+                        , negate c, negate d)
 
-instance Fractional a => Fractional (a, a) where
-  fromRational a = (fromRational a, fromRational a)
-  recip (a, b) = (recip a, recip b)
+instance Fractional a => Fractional (a, a, a, a) where
+  fromRational a = ( fromRational a, 0
+                   , 0             , fromRational a)
+  recip (a, b, c, d) = (recip a, recip b,  -- TODO: matrix inverse?
+                        recip c, recip d)
 
 
 -- | The identity matrix
