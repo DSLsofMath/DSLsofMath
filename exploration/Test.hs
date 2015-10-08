@@ -15,6 +15,7 @@ instance (Eq a, Num a, Arbitrary a) => Arbitrary (NonZero a) where
 
   shrink (NonZero x) = [ NonZero x' | x' <- shrink x, x' /= 0 ]
 
+-- TODO: port instances to MatrixAlgebra2
 instance Arbitrary a => Arbitrary (M2 a) where
   arbitrary = Q <$> arbitrary <*> arbitrary <*> arbitrary <*> arbitrary
   shrink (Q a b c d) = Q <$> shrink a <*> shrink b <*> shrink c <*> shrink d

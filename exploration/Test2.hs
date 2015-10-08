@@ -13,6 +13,9 @@ q2 = Q q q q q
 
 a :: Num a => Mat a
 a = Q 0 1 1 0
+-- a*a==1
+-- ? a' = Q 0 a' a' 0
+
 
 rotate :: Num a => Mat a -> Mat a
 rotate q = a*q*a

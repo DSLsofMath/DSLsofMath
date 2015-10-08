@@ -119,3 +119,9 @@ v *. m = undefined
 -- | inner vector product
 (.*.) :: Num a => Vec a -> Vec a -> a
 a .*. b = undefined
+
+
+multVM :: Num a => Vec a -> Mat a -> Vec a
+-- multVM  TODO resten av fallen
+multVM (V a0 a1) (Q a00 a01 a10 a11) = V (multVM a0 a00 + multVM a1 a10)
+                                         (multVM a0 a01 + multVM a1 a11)
