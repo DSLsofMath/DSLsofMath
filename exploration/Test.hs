@@ -44,6 +44,8 @@ tests = do --quickCheck (prop_positive_definite _)
            quickCheck prop_mmult_assoc
            quickCheck prop_madd_assoc
            quickCheck prop_madd_comm
+           quickCheck prop_identity_preMul
+           quickCheck prop_identity_postMul
 
 type M4 = M2 (M2 S)
 

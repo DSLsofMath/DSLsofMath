@@ -61,11 +61,17 @@ preMul (V a b) (Q x y
                   z w) = V (a * x + b * z)
                            (a * y + b * w)
 
+prop_identity_preMul :: V2 Integer -> Bool
+prop_identity_preMul = \v -> v `preMul` 1 == v
+
 -- | Post-multiply with vector
 postMul :: Num a => M2 a -> V2 a -> V2 a
 postMul (Q x y
            z w) (V a b) = V (x * a + y * b)
                             (z * a + w * b)
+
+prop_identity_postMul :: V2 Integer -> Bool
+prop_identity_postMul = \v -> 1 `postMul` v == v
 
 -- | v^T A v = ppm v A
 --
