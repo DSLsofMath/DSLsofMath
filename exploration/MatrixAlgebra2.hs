@@ -4,11 +4,12 @@
 module MatrixAlgebra2 where
 
 
--- | Square matrices, quadtree like sparse representation
+-- | 2^n-by-2^n matrices, "quadtree like sparse representation"
 data Mat a
   = Q (Mat a) (Mat a)
-      (Mat a) (Mat a) -- ^ 2x2 matrix
-  | Id a -- ^ a * I (identity matrix scaled by a)
+      (Mat a) (Mat a) -- ^ 2^2n-by-2^2n matrix, composed by four
+                      -- 2^n-by-2^n matrices
+  | Id a -- ^ a * I (2^n-by-2^n identity matrix scaled by a)
   | Z -- ^ zero matrix
   deriving (Functor,Show)
 
@@ -18,6 +19,7 @@ type M = Mat S
 -- | scale matrix
 (..*) :: Num a => a -> Mat a -> Mat a
 a ..* m = fmap (a *) m
+
 
 instance Num a => Num (Mat a) where
   fromInteger 0 = Z
@@ -49,21 +51,6 @@ instance Num a => Num (Mat a) where
   signum = fmap signum    -- TODO: should this be undefined?
   negate = fmap negate
 
--- data Vec a
---   = V a a
---   deriving (Functor,Show)
-
--- instance Num a => Num (Vec a) where
---   fromInteger n = V (fromInteger n) (fromInteger n)
-
---   (V a b) + (V x y) = V (a+x) (b+y)
-
---   (V a b) * (V x y) = V (a*x) (b*y)
-
---   abs = fmap abs
---   signum = fmap signum
---   negate = fmap negate
-
 {-
 instance Eq a => Eq (Mat a) where
   (==) = eqMat (==)
@@ -92,3 +79,43 @@ isZ (Q a b c d)  = isZ a && isZ b && isZ c && isZ d
 
 instance (Eq a, Num a) => Eq (Mat a) where
   x == y = isZ (x-y)
+
+-- * Vectors
+
+data Vec a
+  = VOne a -- ^ a 2^n sized vector containing a's
+  | V (Vec a) (Vec a) -- ^ a 2^2n vector composed by two 2^n vectors
+  deriving (Functor,Show)
+
+instance Num a => Num (Vec a) where
+  fromInteger n = VOne (fromInteger n)
+
+  (VOne a) + (VOne x) = VOne (a+x)
+  v@(VOne{}) + (V x y) = V (v + x) (v + y)
+  v + w@(VOne{}) = w + v
+  (V a b) + (V x y) = V (a+x) (b+y)
+
+  -- pointwise multiplication
+  (VOne a) * w = fmap (a *) w
+  v * (VOne x) = fmap (* x) v
+  (V a b) * (V x y) = V (a * x) (b * y)
+
+  abs = fmap abs
+  signum = fmap signum
+  negate = fmap negate
+
+-- * Vector and matrix operations
+
+-- Not unfinished
+
+-- | multiply matrix on left by vector
+(.*) :: Num a => Vec a -> Mat a -> Vec a
+a .* b = undefined
+
+-- | multiply matrix on right by vector
+(*.) :: Num a => Mat a -> Vec a -> Vec a
+v *. m = undefined
+
+-- | inner vector product
+(.*.) :: Num a => Vec a -> Vec a -> a
+a .*. b = undefined
