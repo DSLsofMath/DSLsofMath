@@ -10,7 +10,8 @@ module MatrixAlgebra1 where
 type S = Double
 
 -- | for simplicity only 2 by 2 matrices for now
-data M2 s = Q s s s s
+data M2 s = Q s s
+              s s
   deriving (Functor,Eq,Ord,Show)
 
 -- | vectors of dimension 2
@@ -18,16 +19,16 @@ data V2 s = V s s
   deriving (Functor,Eq,Ord,Show)
 
 instance Num a => Num (V2 a) where
-  fromInteger x   = V (fromInteger x) (fromInteger x)
+  fromInteger x     = V (fromInteger x) (fromInteger x)
   (V a b) + (V x y) = V (a + x) (b + y)
   (V a b) * (V x y) = V (a * x) (b * y)
-  abs (V a b)      = V (abs a) (abs b)
-  signum          = error "signum: undefined for pairs"
-  negate (V a b)   = V (negate a) (negate b)
+  abs (V a b)       = V (abs a) (abs b)
+  signum            = error "signum: undefined for pairs"
+  negate (V a b)    = V (negate a) (negate b)
 
 instance Fractional a => Fractional (V2 a) where
   fromRational a = V (fromRational a) (fromRational a)
-  recip (V a b) = V (recip a) (recip b)
+  recip (V a b)  = V (recip a) (recip b)
 
 instance Num a => Num (M2 a)  where
   fromInteger x = Q (fromInteger x) 0 0 (fromInteger x)
@@ -51,6 +52,7 @@ instance Fractional a => Fractional (M2 a) where
   -- TODO: matrix inverse?
   recip = fmap recip
 
+-- TODO: implement 2x2 (block) matrix inverse
 
 inner :: Num a => V2 a -> V2 a -> a
 inner (V a b) (V c d) = a*c + b*d

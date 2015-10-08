@@ -18,7 +18,7 @@ derivator.)
 Det här kandidatprojektet går ut på att ta fram DSLsofMath-inspirerat
 kompletterande material för andra närliggande kurser som exempelvis
 * "Transformer, signaler och system" samt "Reglerteknik" (som ges av S2-institutionen), eller
-* "Matematisk modelleing och problemlösning" samt "Ändliga automater och formella språk", eller
+* "Matematisk modellering och problemlösning" samt "Ändliga automater och formella språk", eller
 * andra kurser som ni känner skulle må bra av mer fokus på syntax, typer och funktioner.
 
 Implementationsspråk är Haskell (och kanske Agda) och målet är dels
@@ -26,6 +26,13 @@ att förbättra förståelsen hos projektmedlemmarna av de kurser och
 ämnen som väljs och dels att ge framtida studenter mer material att
 arbeta med. Materialet som utvecklas skall finnas öppet tillgängligt
 på github.
+
+Att göra:
+* Designa och implementera (ett par) DSL för det valda området
+* Specificera lagar som bör gälla
+* Testa de lagar som kan testas med QuickCheck
+* (Ev. bevisa någon eller några lagar.)
+* Rapportskrivning: i form av en "tutorial" eller föreläsningsanteckningar
 
 ## Litteraturförslag:
 
@@ -39,7 +46,7 @@ DV, D, IT, TM
 
 ## Särskilda förkunskaper:
 
-Funktionell programmering (Haskell)
+Funktionell programmering (Haskell) eller gott om matematik (TM-programmet eller liknande).
 
 ## Förslagslämnare:
 
