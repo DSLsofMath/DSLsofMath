@@ -53,6 +53,17 @@ instance Num a => Num (Mat a) where
   signum = fmap signum    -- TODO: should this be undefined?
   negate = fmap negate
 
+
+prop_mmult_assoc :: Mat Integer -> Mat Integer -> Mat Integer -> Bool
+prop_mmult_assoc = \m1 m2 m3 -> m1 * (m2 * m3) == (m1 * m2) * m3
+
+prop_madd_assoc :: Mat Integer -> Mat Integer -> Mat Integer -> Bool
+prop_madd_assoc = \m1 m2 m3 -> m1 + (m2 + m3) == (m1 + m2) + m3
+
+prop_madd_comm :: Mat Integer -> Mat Integer -> Bool
+prop_madd_comm = \m1 m2 -> m1 + m2 == m2 + m1
+
+
 {-
 instance Eq a => Eq (Mat a) where
   (==) = eqMat (==)
@@ -82,11 +93,18 @@ isZ (Q a b c d)  = isZ a && isZ b && isZ c && isZ d
 instance (Eq a, Num a) => Eq (Mat a) where
   x == y = isZ (x-y)
 
+arbitrary_mat :: Arbitrary a => Int -> Gen (Mat a)
+arbitrary_mat 0 = frequency [(1, pure Z), (2, Id <$> arbitrary)]
+arbitrary_mat size =
+  let size' = quot size 2
+  in frequency ([(1,pure Z),(1,Id <$> arbitrary)] ++
+                [(2
+                 ,Q <$> arbitrary_mat size' <*> arbitrary_mat size' <*>
+                        arbitrary_mat size' <*> arbitrary_mat size')])
+
 instance Arbitrary a => Arbitrary (Mat a) where
-  arbitrary = oneof [pure Z
-                    ,Id <$> arbitrary
-                    ,Q <$> arbitrary <*> arbitrary <*> arbitrary <*> arbitrary
-                    ]
+  arbitrary = sized arbitrary_mat
+
   shrink Z = []
   shrink (Id a) = Z : (Id <$> shrink a)
   shrink (Q a b c d) = [Z, a, b, c, d] ++
@@ -130,8 +148,17 @@ isZV (V a b)  = isZV a && isZV b
 instance (Eq a, Num a) => Eq (Vec a) where
   x == y = isZV (x - y)
 
+arbitrary_vec :: Arbitrary a => Int -> Gen (Vec a)
+arbitrary_vec 0 = frequency [(1, pure ZV), (2, VOne <$> arbitrary)]
+arbitrary_vec size =
+  let size' = quot size 2
+  in frequency ([(1,pure ZV),(1,VOne <$> arbitrary)] ++
+                [(2
+                 ,V <$> arbitrary_vec size' <*> arbitrary_vec size')])
+
+
 instance Arbitrary a => Arbitrary (Vec a) where
-  arbitrary = oneof [pure ZV, VOne <$> arbitrary, V <$> arbitrary <*> arbitrary]
+  arbitrary = sized arbitrary_vec
 
   shrink (V v1 v2) = [ZV, v1, v2] ++ [V v1' v2' | (v1',v2') <- shrink (v1,v2)]
   shrink (VOne v) = ZV : (VOne <$> shrink v)
@@ -188,3 +215,9 @@ _ .*. ZV                 = 0
 v@(VOne{}) .*. (V b1 b2) = v .*. b1 + v .*. b2
 (V a1 a2) .*. (V b1 b2)  = a1 .*. b1 + a2 .*. b2
 (VOne a) .*. (VOne b)    = a * b
+
+all_props = do quickCheck prop_vm_id_right
+               quickCheck prop_mv_id_left
+               quickCheck prop_mmult_assoc
+               quickCheck prop_madd_assoc
+               quickCheck prop_madd_comm
