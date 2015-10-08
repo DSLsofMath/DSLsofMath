@@ -110,11 +110,11 @@ prop_diagonal :: (Num a, Eq a) => M2 a -> Bool
 prop_diagonal ( _, b
               , c, _) = b == 0 && c == 0 -- possibly with some epsilon
 
--- | Identity mIntegertrix is left unit of mIntegertrix multiplicIntegertion
+-- | Identity matrix is left unit of matrix multiplication
 prop_id_left_unit :: M2 Integer -> Bool
 prop_id_left_unit = \m -> 1 * m == m
 
--- | Identity mIntegertrix is right unit of mIntegertrix multiplicIntegertion
+-- | Identity matrix is right unit of matrix multiplication
 prop_id_right_unit :: M2 Integer -> Bool
 prop_id_right_unit = \m -> m * 1 == m
 
