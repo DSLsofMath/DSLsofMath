@@ -15,12 +15,12 @@ instance (Eq a, Num a, Arbitrary a) => Arbitrary (NonZero a) where
 
 test x = quickCheck (prop_positive_definite x)
 
-q :: M2
+q :: M2 S
 q = ( 1, 1
     , 2, 1)
 
 -- coordinate axes
-us :: [V2]
+us :: [V2 S]
 us@[u1, u2] = [(1,0),(0,1)]
 
 -- compute some A orthogonal vectors
@@ -29,8 +29,11 @@ us@[u1, u2] = [(1,0),(0,1)]
 tests = do --quickCheck (prop_positive_definite _)
            quickCheck (prop_linearly_independent_R2 (u1,u2))
            quickCheck (prop_linearly_independent_R2 (d1,d2))
+           quickCheck prop_id_left_unit
+           quickCheck prop_id_right_unit
+           quickCheck prop_mmult_assoc
 
-type M4 = (M2,M2,M2,M2)
+type M4 = (M2 S ,M2 S ,M2 S ,M2 S)
 
 m4 :: M4
 m4 = (q,q,

@@ -13,13 +13,13 @@ import MatrixAlgebra1
 -- |
 -- > ( 3, 2
 -- > , 2, 6)
-a :: M2
+a :: M2 S
 a = ( 3, 2
     , 2, 6)
 
 -- |
 -- > (2, 8)
-b :: V2
+b :: V2 S
 b = (2, 8)
 
 -- | > 0
@@ -27,11 +27,11 @@ c :: S
 c = 0
 
 -- | quadratic form
-f :: V2 -> S
+f :: V2 S -> S
 f x = 0.5 * prePostMul x a - inner b x + c
 
 -- | gradient of quadradic form
-f' :: V2 -> V2
+f' :: V2 S -> V2 S
 f' x = 0.5 * postMul (transpose a) x + 0.5 * postMul a x - b
 
 -- error, how far from goal are we
@@ -46,7 +46,7 @@ f' x = 0.5 * postMul (transpose a) x + 0.5 * postMul a x - b
 -- steepest descent takes a step
 -- x_1 = x_0 + alpha*r_0
 -- how big should alpha be? p. 6
-sdStep :: V2 -> V2
+sdStep :: V2 S -> V2 S
 sdStep x = let r     = b - postMul a x            -- r  = b - Ax
                alpha = inner r r / prePostMul r a -- a  = (r^T r)/(r^T A r)
                x'    = x + scaleV alpha r         -- x' = x + a r
@@ -57,7 +57,7 @@ sdStep x = let r     = b - postMul a x            -- r  = b - Ax
 -- | split matrix into two parts: D whose diagonal elemts are equal to
 -- A's and off diagonal elements are 0 and E whose diagonal
 -- elements are 0 and off diagonal elements equal to A's
-jacobiSplit :: M2 -> (M2, M2)
+jacobiSplit :: M2 S -> (M2 S, M2 S)
 jacobiSplit ( a, b
             , c, d) = ( ( a, 0
                         , 0, d)
@@ -65,7 +65,7 @@ jacobiSplit ( a, b
                         , c, 0))
 
 -- | Jacobi steps, Jacobi method doesn't always terminate
-jacobiStep :: V2 -> V2
+jacobiStep :: V2 S -> V2 S
 jacobiStep x =
   let (d, e) = jacobiSplit a
       f  = (negate (invertDiag d)) * e -- can precompute this
@@ -77,12 +77,12 @@ jacobiStep x =
 -- * Conjugate directions
 
 -- | v1^T A v2 = 0 <=> v1, v2 are A orthogonal
-prop_A_orthogonal :: M2 -> V2 -> V2 -> Bool
+prop_A_orthogonal :: M2 S -> V2 S -> V2 S -> Bool
 prop_A_orthogonal a v1 v2 = inner (preMul v1 a) v2 == 0
 
-cdStep :: V2 -- ^ d_n, search direction
-       -> V2 -- ^ x_n
-       -> V2 -- ^ x_{n+1}
+cdStep :: V2 S -- ^ d_n, search direction
+       -> V2 S -- ^ x_n
+       -> V2 S -- ^ x_{n+1}
 cdStep d x =
   let r     = b - postMul a x            -- r  = b - Ax
       alpha = inner d r / prePostMul d a -- a  = (d^T r)/(d^T A d)
@@ -94,7 +94,7 @@ cdStep d x =
 -- Find A orthogonal search directions
 
 -- | start with n linearly independent vectors us = [u_0, ..., u_{n-1}], here the coordinate axes
-us :: [V2]
+us :: [V2 S]
 us = [(1,0), (0,1)]
 
 -- prop_linearly_independent :: [V2] -> [NonZero S] -> Bool -- also want same length
@@ -102,7 +102,7 @@ us = [(1,0), (0,1)]
 
 -- | Vectors are linearly independent if
 -- a_1 v_1 + ... + a_n v_n = 0 only when a_i = 0, for all i
-prop_linearly_independent_R2 :: (V2, V2) -> (NonZero S, NonZero S) -> Bool
+prop_linearly_independent_R2 :: (V2 S, V2 S) -> (NonZero S, NonZero S) -> Bool
 prop_linearly_independent_R2 (v1, v2)
   = \(NonZero s1, NonZero s2) -> (scaleV s1 v1 + scaleV s2 v2) /= 0
 

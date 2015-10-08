@@ -11,11 +11,11 @@ import Prelude hiding (id)
 type S = Double
 
 -- | for simplicity only 2 by 2 matrices for now
-type M2 = ( S, S
-          , S, S)
+type M2 s = ( s, s
+            , s, s)
 
 -- | vectors of dimension 2
-type V2 = (S, S)
+type V2 s = (s, s)
 
 instance Num a => Num (a, a) where
   fromInteger x   = (fromInteger x, fromInteger x)
@@ -50,51 +50,46 @@ instance Fractional a => Fractional (a, a, a, a) where
                         recip c, recip d)
 
 
--- | The identity matrix
-id :: M2
-id = ( 1, 0
-     , 0, 1)
-
-inner :: V2 -> V2 -> S
+inner :: Num a => V2 a -> V2 a -> a
 inner (a, b) (c, d) = a*c + b*d
 
 -- | Pre-multiply with vector
-preMul :: V2 -> M2 -> V2
+preMul :: Num a => V2 a -> M2 a -> V2 a
 preMul (a, b) ( x, y
               , z, w) = ( a * x + b * z
                         , a * y + b * w)
 
 -- | Post-multiply with vector
-postMul :: M2 -> V2 -> V2
+postMul :: Num a => M2 a -> V2 a -> V2 a
 postMul ( x, y
         , z, w) (a, b) = ( x * a + y * b
                          , z * a + w * b)
 
 -- | v^T A v = ppm v A
 --
-prePostMul :: V2 -> M2 -> S
+prePostMul :: Num a => V2 a -> M2 a -> a
 prePostMul v a = inner (preMul v a) v
 
-transpose :: M2 -> M2
+transpose :: M2 a -> M2 a
 transpose ( x, y
           , z, w) = ( x, z
                     , y, w)
 
-scaleM :: S -> M2 -> M2
+scaleM :: Num a => a -> M2 a -> M2 a
 scaleM x ( a, b
          , c, d) = ( x * a, x * b
                    , x * c, x * d)
 
-scaleV :: S -> V2 -> V2
+scaleV :: Num a => a -> V2 a -> V2 a
 scaleV x (a, b) = (x*a, x*b)
 
-det :: M2 -> S
+det :: Num a => M2 a -> a
 det ( a, b
     , c, d) = a*d - b*c
 
 
 -- | invert a diagonal matrix
-invertDiag :: M2 -> M2
+invertDiag :: Fractional a => M2 a -> M2 a
 invertDiag ( a, _
            , _, d) = ( recip a, 0
                      , 0      , recip d)
@@ -106,11 +101,22 @@ newtype NonZero a = NonZero {unNonZero :: a}
   deriving (Eq, Show, Num)
 
 -- | a matrix m is postive definite if for all nonzero x . x^Tmx > 0
-prop_positive_definite :: M2 -> NonZero V2 -> Bool
+prop_positive_definite :: (Num a, Ord a) => M2 a -> NonZero (V2 a) -> Bool
 prop_positive_definite m = \(NonZero v) -> prePostMul v m > 0
 
 
 -- | a matrix is diagonal if all but the diagonal is 0
-prop_diagonal :: M2 -> Bool
+prop_diagonal :: (Num a, Eq a) => M2 a -> Bool
 prop_diagonal ( _, b
               , c, _) = b == 0 && c == 0 -- possibly with some epsilon
+
+-- | Identity mIntegertrix is left unit of mIntegertrix multiplicIntegertion
+prop_id_left_unit :: M2 Integer -> Bool
+prop_id_left_unit = \m -> 1 * m == m
+
+-- | Identity mIntegertrix is right unit of mIntegertrix multiplicIntegertion
+prop_id_right_unit :: M2 Integer -> Bool
+prop_id_right_unit = \m -> m * 1 == m
+
+prop_mmult_assoc :: M2 Integer -> M2 Integer -> M2 Integer -> Bool
+prop_mmult_assoc = \m1 m2 m3 -> m1 * (m2 * m3) == (m1 * m2) * m3
