@@ -3,6 +3,8 @@
 
 module MatrixAlgebra2 where
 
+import Test.QuickCheck
+
 
 -- | 2^n-by-2^n matrices, "quadtree like sparse representation"
 data Mat a
@@ -80,6 +82,17 @@ isZ (Q a b c d)  = isZ a && isZ b && isZ c && isZ d
 instance (Eq a, Num a) => Eq (Mat a) where
   x == y = isZ (x-y)
 
+instance Arbitrary a => Arbitrary (Mat a) where
+  arbitrary = oneof [pure Z
+                    ,Id <$> arbitrary
+                    ,Q <$> arbitrary <*> arbitrary <*> arbitrary <*> arbitrary
+                    ]
+  shrink Z = []
+  shrink (Id a) = Z : (Id <$> shrink a)
+  shrink (Q a b c d) = [Z, a, b, c, d] ++
+                       [Q a' b' c' d' | (a',b',c',d') <- shrink (a,b,c,d)]
+
+
 -- * Vectors
 
 data Vec a
@@ -116,6 +129,13 @@ isZV (V a b)  = isZV a && isZV b
 
 instance (Eq a, Num a) => Eq (Vec a) where
   x == y = isZV (x - y)
+
+instance Arbitrary a => Arbitrary (Vec a) where
+  arbitrary = oneof [pure ZV, VOne <$> arbitrary, V <$> arbitrary <*> arbitrary]
+
+  shrink (V v1 v2) = [ZV, v1, v2] ++ [V v1' v2' | (v1',v2') <- shrink (v1,v2)]
+  shrink (VOne v) = ZV : (VOne <$> shrink v)
+  shrink ZV = []
 
 -- * Vector and matrix operations
 
