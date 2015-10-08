@@ -1,5 +1,4 @@
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+--{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 -- | Exploring optimisation as presented in "An introduciton to the
 -- conjugate gradient method without the agonizing pain"
@@ -14,13 +13,12 @@ import MatrixAlgebra1
 -- > ( 3, 2
 -- > , 2, 6)
 a :: M2 S
-a = ( 3, 2
-    , 2, 6)
+a = Q 3 2 2 6
 
 -- |
 -- > (2, 8)
 b :: V2 S
-b = (2, 8)
+b = V 2 8
 
 -- | > 0
 c :: S
@@ -58,11 +56,11 @@ sdStep x = let r     = b - postMul a x            -- r  = b - Ax
 -- A's and off diagonal elements are 0 and E whose diagonal
 -- elements are 0 and off diagonal elements equal to A's
 jacobiSplit :: M2 S -> (M2 S, M2 S)
-jacobiSplit ( a, b
-            , c, d) = ( ( a, 0
-                        , 0, d)
-                      , ( 0, b
-                        , c, 0))
+jacobiSplit (Q a b
+               c d) = ( (Q a 0
+                           0 d)
+                      , (Q 0 b
+                           c 0))
 
 -- | Jacobi steps, Jacobi method doesn't always terminate
 jacobiStep :: V2 S -> V2 S
@@ -95,7 +93,7 @@ cdStep d x =
 
 -- | start with n linearly independent vectors us = [u_0, ..., u_{n-1}], here the coordinate axes
 us :: [V2 S]
-us = [(1,0), (0,1)]
+us = [(V 1 0), (V 0 1)]
 
 -- prop_linearly_independent :: [V2] -> [NonZero S] -> Bool -- also want same length
 -- prop_linearly_independent vs = \as -> sum (zipWith scaleV as vs) /= 0
