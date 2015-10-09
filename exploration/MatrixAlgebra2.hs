@@ -9,7 +9,7 @@ import Test.QuickCheck
 -- | 2^n-by-2^n matrices, "quadtree like sparse representation"
 data Mat a
   = Q (Mat a) (Mat a)
-      (Mat a) (Mat a) -- ^ 2^2n-by-2^2n matrix, composed by four
+      (Mat a) (Mat a) -- ^ 2^(n+1)-by-2^(n+1) matrix, composed by four
                       -- 2^n-by-2^n matrices
   | Id a -- ^ a * I (2^n-by-2^n identity matrix scaled by a)
   | Z -- ^ zero matrix
