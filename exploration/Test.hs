@@ -15,14 +15,13 @@ instance (Eq a, Num a, Arbitrary a) => Arbitrary (NonZero a) where
 
   shrink (NonZero x) = [ NonZero x' | x' <- shrink x, x' /= 0 ]
 
--- TODO: port instances to MatrixAlgebra2
 instance Arbitrary a => Arbitrary (M2 a) where
   arbitrary = Q <$> arbitrary <*> arbitrary <*> arbitrary <*> arbitrary
-  shrink (Q a b c d) = Q <$> shrink a <*> shrink b <*> shrink c <*> shrink d
+  shrink (Q a b c d) = [Q a' b' c' d' | (a',b',c',d') <- shrink (a,b,c,d)]
 
 instance Arbitrary a => Arbitrary (V2 a) where
   arbitrary = V <$> arbitrary <*> arbitrary
-  shrink (V a b) = V <$> shrink a <*> shrink b
+  shrink (V v1 v2) = [V v1' v2' | (v1',v2') <- shrink (v1,v2)]
 
 test x = quickCheck (prop_positive_definite x)
 

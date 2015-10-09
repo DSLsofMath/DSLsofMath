@@ -5,9 +5,9 @@
   pain"]].
 
 ** Files
-   - ~[[MatrixAlgebra1.hs][MatrixAlgebra1.hs]]~: 2-by-2 matrices and vectors using tuples
-   - ~[[CG1.hs][CG1.hs]]~: Optimisation techniques from
-   - ~[[MatrixAlgebra2.hs][MatrixAlgebra2.hs]]~: 2^n-by-2^n matrices using a recursive
+   - [[MatrixAlgebra1.hs][MatrixAlgebra1.hs]]: 2-by-2 matrices and vectors using tuples
+   - [[CG1.hs][CG1.hs]]: Solution techniques from article
+   - [[MatrixAlgebra2.hs][MatrixAlgebra2.hs]]: 2^n-by-2^n matrices using a recursive
      representation
 
 * Other interesting things
