@@ -206,7 +206,7 @@ m@(Id{}) *. (V b0
 prop_mv_id_left :: Vec Integer -> Bool
 prop_mv_id_left = \v -> 1 *. v == v
 
--- | dot product -- might surprising since the size of the vectors is
+-- | dot product -- might be surprising since the size of the vectors is
 -- not explicitly stated anywhere
 (.*.) :: Num a => Vec a -> Vec a -> a
 ZV .*. _                 = 0
@@ -221,3 +221,5 @@ all_props = do quickCheck prop_vm_id_right
                quickCheck prop_mmult_assoc
                quickCheck prop_madd_assoc
                quickCheck prop_madd_comm
+
+main = all_props
