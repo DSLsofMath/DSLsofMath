@@ -36,7 +36,7 @@ us@[u1, u2] = [(V 1 0),(V 0 1)]
 -- compute some A orthogonal vectors
 [d1,d2] = gsConjugation us
 
-tests = do --quickCheck (prop_positive_definite _)
+main  = do --quickCheck (prop_positive_definite _)
            quickCheck (prop_linearly_independent_R2 (u1,u2))
            quickCheck (prop_linearly_independent_R2 (d1,d2))
            quickCheck prop_id_left_unit

@@ -223,3 +223,5 @@ all_props = do quickCheck prop_vm_id_right
                quickCheck prop_mmult_assoc
                quickCheck prop_madd_assoc
                quickCheck prop_madd_comm
+
+main = all_props
