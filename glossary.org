@@ -1,0 +1,15 @@
+#+TITLE: Glossary
+
+
+* DSL
+
+  - Domain specific language -- domänspecifikt språk
+
+    Ett programmeringsspråk specifikt för en domän (t.ex. linjär
+    algebra).
+
+  - Embedded DSL -- inbäddat DSL
+
+    Domänspecifikt språk inbäddat i ett annat programmeringsspråk,
+    t.ex. Haskell. Ett EDSL kan vara väldigt likt ett
+    bibliotek.
