@@ -38,7 +38,7 @@ instance Num a => Num (M2 a)  where
   (Q a b c d) * (Q x y z w) = Q (a*x+b*z) (a*y+b*w)
                                 (c*x+d*z) (c*y+d*w)
 
-  -- TODO: matrix norm? -- No, abs :: Num a => a -> a
+  -- TODO: matrix norm?
   abs = fmap abs
 
   signum = error "signum: undefined for 2x2 matrices"

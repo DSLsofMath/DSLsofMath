@@ -18,10 +18,10 @@ cabal-version:       >=1.10
 
 library
   exposed-modules:     MatrixAlgebra1
-                     , CG1
-                     , Test
+                     , MatrixAlgebra1.CG
+                     , MatrixAlgebra1.Test
                      , MatrixAlgebra2
-                     , Test2
+                     , MatrixAlgebra2.Test
   -- other-modules:
   other-extensions:    FlexibleInstances
   build-depends:       QuickCheck >= 2.6

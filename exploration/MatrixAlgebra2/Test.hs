@@ -1,4 +1,4 @@
-module Test2 where
+module MatrixAlgebra2.Test where
 
 import MatrixAlgebra2
 

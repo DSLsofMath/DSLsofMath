@@ -87,7 +87,7 @@ But perhaps it is more natural to check if (a-b == 0).
 
 isZ :: (Eq a, Num a) => Mat a -> Bool
 isZ Z            = True
-isZ (Id a)       = 0==a
+isZ (Id a)       = 0 == a
 isZ (Q a b c d)  = isZ a && isZ b && isZ c && isZ d
 
 instance (Eq a, Num a) => Eq (Mat a) where
@@ -97,10 +97,10 @@ arbitrary_mat :: Arbitrary a => Int -> Gen (Mat a)
 arbitrary_mat 0 = frequency [(1, pure Z), (2, Id <$> arbitrary)]
 arbitrary_mat size =
   let size' = quot size 2
-  in frequency ([(1,pure Z),(1,Id <$> arbitrary)] ++
-                [(2
-                 ,Q <$> arbitrary_mat size' <*> arbitrary_mat size' <*>
-                        arbitrary_mat size' <*> arbitrary_mat size')])
+  in frequency ([(1,pure Z)
+                ,(1,Id <$> arbitrary)
+                ,(2, Q <$> arbitrary_mat size' <*> arbitrary_mat size' <*>
+                           arbitrary_mat size' <*> arbitrary_mat size')])
 
 instance Arbitrary a => Arbitrary (Mat a) where
   arbitrary = sized arbitrary_mat
@@ -170,7 +170,8 @@ infix 7 .*
 infix 7 *.
 infix 7 .*.
 
--- | multiply matrix on left by vector
+-- | Multiply matrix on left by vector.
+-- Mnemonic: small thing (vector) before large thing (matrix): @v .* m@.
 (.*) :: Num a => Vec a -> Mat a -> Vec a
 _ .* Z = ZV
 ZV .* _ = ZV
@@ -187,7 +188,8 @@ v@(VOne{}) .* (Q b00 b01
 prop_vm_id_right :: Vec Integer -> Bool
 prop_vm_id_right = \v -> v .* 1 == v
 
--- | multiply matrix on right by vector
+-- | Multiply matrix on right by vector.
+-- Mnemonic: small thing (vector) after large thing (matrix): @m *. v@.
 (*.) :: Num a => Mat a -> Vec a -> Vec a
 _ *. ZV                   = ZV
 Z *. _                    = ZV
@@ -206,7 +208,7 @@ m@(Id{}) *. (V b0
 prop_mv_id_left :: Vec Integer -> Bool
 prop_mv_id_left = \v -> 1 *. v == v
 
--- | dot product -- might surprising since the size of the vectors is
+-- | Dot product -- might be surprising since the size of the vectors is
 -- not explicitly stated anywhere
 (.*.) :: Num a => Vec a -> Vec a -> a
 ZV .*. _                 = 0

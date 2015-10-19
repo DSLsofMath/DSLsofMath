@@ -3,7 +3,7 @@
 -- | Exploring optimisation as presented in "An introduciton to the
 -- conjugate gradient method without the agonizing pain"
 
-module CG1 where
+module MatrixAlgebra1.CG where
 
 import MatrixAlgebra1
 
