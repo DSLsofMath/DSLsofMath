@@ -8,8 +8,8 @@
     Ett programmeringsspråk specifikt för en domän (t.ex. linjär
     algebra).
 
-  - Embedded DSL -- inbäddat DSL
+  - Embedded DSL (EDSL) -- inbäddat DSL
 
     Domänspecifikt språk inbäddat i ett annat programmeringsspråk,
-    t.ex. Haskell. Ett EDSL kan vara väldigt likt ett
+    t.ex. i Haskell. Ett EDSL kan vara väldigt likt ett
     bibliotek.
