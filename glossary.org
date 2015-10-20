@@ -11,5 +11,4 @@
   - Embedded DSL (EDSL) -- inbäddat DSL
 
     Domänspecifikt språk inbäddat i ett annat programmeringsspråk,
-    t.ex. i Haskell. Ett EDSL kan vara väldigt likt ett
-    bibliotek.
+    t.ex. i Haskell. Ett EDSL kan vara väldigt likt ett bibliotek.

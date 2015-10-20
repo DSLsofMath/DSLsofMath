@@ -1,3 +1,15 @@
+* 2015-10-20:
+** TODO generators for specific matrix and vector dimension (untyped)
+** TODO look at the possibility of a dimension-indexed datatype versions (Mat n a or similar)
+** TODO get access to functional-feec and perhaps use some infrastructure (classes or types for Polynomials? Ring? Field? Vectorspace?)
+** TODO Look at "power series, power serious"
+http://www.cs.dartmouth.edu/~doug/powser.html
+http://dl.acm.org/citation.cfm?id=968597
+
+
+* Research oriented special course
+** TODO ReadFun with semirings: https://www.cl.cam.ac.uk/~sd601/papers/semirings.pdf
+
 * 2015-10-08:
 ** Done: Add a few more tests:
 *** Done for MatrixAlgebra1: associativity + unit laws for matrix mult
