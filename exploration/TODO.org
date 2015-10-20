@@ -3,25 +3,27 @@
 ** TODO look at the possibility of a dimension-indexed datatype versions (Mat n a or similar)
 ** TODO get access to functional-feec and perhaps use some infrastructure (classes or types for Polynomials? Ring? Field? Vectorspace?)
 ** TODO Look at "power series, power serious"
-http://www.cs.dartmouth.edu/~doug/powser.html
-http://dl.acm.org/citation.cfm?id=968597
+   http://www.cs.dartmouth.edu/~doug/powser.html
+   http://dl.acm.org/citation.cfm?id=968597
 
 
 * Research oriented special course
-** TODO ReadFun with semirings: https://www.cl.cam.ac.uk/~sd601/papers/semirings.pdf
+** TODO Read Fun with semirings: https://www.cl.cam.ac.uk/~sd601/papers/semirings.pdf
 
-* 2015-10-08:
-** Done: Add a few more tests:
-*** Done for MatrixAlgebra1: associativity + unit laws for matrix mult
-*** Done for MatrixAlgebra1: associativity + commutativity for matrix add
-*** Partly done for MatrixAlgebra1: some connections between matrix and vector
-** Done: Experiment with larger matrices
-** Done: From 4-tuples to data or newtype
 
-* New TODOs:
+* 2015-10-08
 ** DONE Port Arbitrary instances MatrixAlgebra2
 ** DONE Port Laws + tests to MatrixAlgebra2
    CLOSED: [2015-10-19 Mon 16:48]
 ** More from the Conjugate Gradients paper?
 ** Read http://wiki.portal.chalmers.se/cse/pmwiki.php/FP/ClassLaws
 ** Sketch MSc thesis project proposal
+
+
+* 2015-09-28
+** DONE Add a few more tests:
+*** DONE for MatrixAlgebra1: associativity + unit laws for matrix mult
+*** DONE for MatrixAlgebra1: associativity + commutativity for matrix add
+*** Partly DONE for MatrixAlgebra1: some connections between matrix and vector
+** DONE Experiment with larger matrices
+** DONE From 4-tuples to data or newtype
