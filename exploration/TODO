@@ -1,14 +1,15 @@
-2015-10-08:
-* Done: Add a few more tests:
-** Done for MatrixAlgebra1: associativity + unit laws for matrix mult
-** Done for MatrixAlgebra1: associativity + commutativity for matrix add
-** Partly done for MatrixAlgebra1: some connections between matrix and vector
-* Done: Experiment with larger matrices
-* Done: From 4-tuples to data or newtype
+* 2015-10-08:
+** Done: Add a few more tests:
+*** Done for MatrixAlgebra1: associativity + unit laws for matrix mult
+*** Done for MatrixAlgebra1: associativity + commutativity for matrix add
+*** Partly done for MatrixAlgebra1: some connections between matrix and vector
+** Done: Experiment with larger matrices
+** Done: From 4-tuples to data or newtype
 
-New TODOs:
-* Port Arbitrary instances MatrixAlgebra2
-* Port Laws + tests to MatrixAlgebra2
-* More from the Conjugate Gradients paper?
-* Read http://wiki.portal.chalmers.se/cse/pmwiki.php/FP/ClassLaws
-* Sketch MSc thesis project proposal
+* New TODOs:
+** DONE Port Arbitrary instances MatrixAlgebra2
+** DONE Port Laws + tests to MatrixAlgebra2
+   CLOSED: [2015-10-19 Mon 16:48]
+** More from the Conjugate Gradients paper?
+** Read http://wiki.portal.chalmers.se/cse/pmwiki.php/FP/ClassLaws
+** Sketch MSc thesis project proposal
