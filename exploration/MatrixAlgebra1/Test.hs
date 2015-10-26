@@ -2,7 +2,7 @@
 module MatrixAlgebra1.Test where
 
 import MatrixAlgebra1
-import MatrixAlgebra1.CG1 hiding (us)
+import MatrixAlgebra1.CG hiding (us)
 
 import Control.Applicative
 import Test.QuickCheck hiding (NonZero)

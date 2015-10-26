@@ -218,10 +218,10 @@ v@(VOne{}) .*. (V b1 b2) = v .*. b1 + v .*. b2
 (V a1 a2) .*. (V b1 b2)  = a1 .*. b1 + a2 .*. b2
 (VOne a) .*. (VOne b)    = a * b
 
-all_props = do quickCheck prop_vm_id_right
-               quickCheck prop_mv_id_left
-               quickCheck prop_mmult_assoc
+all_props = do quickCheck prop_mmult_assoc
                quickCheck prop_madd_assoc
                quickCheck prop_madd_comm
+               quickCheck prop_vm_id_right
+               quickCheck prop_mv_id_left
 
 main = all_props

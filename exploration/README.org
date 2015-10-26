@@ -14,3 +14,7 @@
 ** Automatic differentiation
    - http://conal.net/papers/beautiful-differentiation/
    - http://hackage.haskell.org/package/ad
+
+** Numbers in Haskell
+   - Real numbers: http://hackage.haskell.org/package/numbers
+   - Intervals: http://hackage.haskell.org/package/intervals

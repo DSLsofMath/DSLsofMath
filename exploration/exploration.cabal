@@ -22,6 +22,7 @@ library
                      , MatrixAlgebra1.Test
                      , MatrixAlgebra2
                      , MatrixAlgebra2.Test
+                     , PowerSeries
   -- other-modules:
   other-extensions:    FlexibleInstances
   build-depends:       QuickCheck >= 2.6
