@@ -14,11 +14,16 @@ import GHC.Exts
 
 default (Integer, Rational, Double)
 
-
+-- | where an empty power series is the series 0, 0, ...
 newtype PS a = PS {unPS :: [a]}
   deriving (Functor)
 
--- data PS a = Cons a (PS a)
+instance (Num a, Show a) => Show (PS a) where
+  show as = "[" ++ go as ++ "]"
+    where
+      go (PS (a:as)) = show a ++ ", " ++ go (PS as)
+      go (PS _)      = "0, 0, ..."
+
 
 uncons :: Num a => PS a -> (a, PS a)
 uncons (PS (a:as)) = (a, PS as)
@@ -26,31 +31,32 @@ uncons (PS _) = (0, PS [])
 
 cons a (PS as) = PS (a:as)
 
+
+
 pattern (:.) f fs <- (uncons -> (f, fs))
   where (:.) f fs = cons f fs
 
 infixr 5 :.
 
+-- | Only works with finite power series
+instance (Num a, Eq a) => Eq (PS a) where
+  (PS []) == (PS []) = True
+  (uncons -> (f, fs)) == (uncons -> (g, gs)) =
+    f == g && fs == gs
+
 x = PS [0,1]
 ps0 = PS []
 
--- showPS :: Show a => PS a -> String
--- showPS fs = go 20 fs
---   where go 0 _ = "..."
---         go n (Cons f fs) = show f ++ ", " ++ go (pred n) fs
-
-zipWithPS :: (a -> b -> c) -> PS a -> PS b -> PS c
-zipWithPS f (PS as) (PS bs) = PS (zipWith f as bs)
 
 -- to use list syntax for power series
-instance Num a => IsList (PS a) where
+instance IsList (PS a) where
   type Item (PS a) = a
   fromList = PS
   toList (PS l) = l
 
 instance Applicative PS where
   pure a = let p = a:p in PS p
-  fs <*> as = zipWithPS ($) fs as
+  fs <*> as = PS (zipWith ($) (unPS fs) (unPS as))
 
 instance Num a => Num (PS a) where
   fromInteger n = cons (fromInteger n) ps0
@@ -60,8 +66,6 @@ instance Num a => Num (PS a) where
   (+) = liftA2 (+)
   (uncons -> (f, fs)) * (uncons -> (g, gs)) =
     cons (f * g) (f .* gs + fs * (cons g gs))
-
---  (Cons f fs) * (Cons g gs) = Cons (f * g) (f .* gs + fs * (Cons g gs))
 
 infixl 7 .*
 -- | multiply with scalar
@@ -107,6 +111,9 @@ sqrtx (1 :. fs) = let qs = 1 + integral ((deriv (1 :. fs)) / (2 .* qs)) in qs
 sqrtx _ = error "sqrtx: first terms wrong"
 
 
--- enumeration of binary trees
-
+-- | enumeration of binary trees
 ts = 1 :. (ts ^ 2)
+
+-- | pascals triangle
+pascal :: PS (PS Rational)
+pascal = 1 / [1, -[1,1]]
