@@ -93,8 +93,11 @@ isZ (Q a b c d)  = isZ a && isZ b && isZ c && isZ d
 instance (Eq a, Num a) => Eq (Mat a) where
   x == y = isZ (x-y)
 
-arbitrary_mat :: Arbitrary a => Int -> Gen (Mat a)
-arbitrary_mat 0 = frequency [(1, pure Z), (2, Id <$> arbitrary)]
+-- | arbitrary matrix of at most size n x n
+arbitrary_mat :: Arbitrary a
+              => Int -- ^ n
+              -> Gen (Mat a)
+arbitrary_mat size | size <= 1 = frequency [(1, pure Z), (2, Id <$> arbitrary)]
 arbitrary_mat size =
   let size' = quot size 2
   in frequency ([(1,pure Z)
@@ -148,8 +151,9 @@ isZV (V a b)  = isZV a && isZV b
 instance (Eq a, Num a) => Eq (Vec a) where
   x == y = isZV (x - y)
 
+-- | arbitrary vector of size at most n
 arbitrary_vec :: Arbitrary a => Int -> Gen (Vec a)
-arbitrary_vec 0 = frequency [(1, pure ZV), (2, VOne <$> arbitrary)]
+arbitrary_vec size | size <= 1 = frequency [(1, pure ZV), (2, VOne <$> arbitrary)]
 arbitrary_vec size =
   let size' = quot size 2
   in frequency ([(1,pure ZV),(1,VOne <$> arbitrary)] ++
