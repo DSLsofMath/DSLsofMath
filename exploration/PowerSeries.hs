@@ -18,25 +18,27 @@ default (Integer, Rational, Double)
 newtype PS a = PS {unPS :: [a]}
   deriving (Functor)
 
-instance (Num a, Show a) => Show (PS a) where
-  show as = "[" ++ go as ++ "]"
-    where
-      go (PS (a:as)) = show a ++ ", " ++ go (PS as)
-      go (PS _)      = "0, 0, ..."
-
-
 uncons :: Num a => PS a -> (a, PS a)
 uncons (PS (a:as)) = (a, PS as)
 uncons (PS _) = (0, PS [])
 
 cons a (PS as) = PS (a:as)
 
-
-
 pattern (:.) f fs <- (uncons -> (f, fs))
   where (:.) f fs = cons f fs
 
 infixr 5 :.
+
+x :: Num a => PS a
+x = PS [0,1]
+ps0 :: Num a => PS a
+ps0 = PS []
+
+instance (Num a, Show a) => Show (PS a) where
+  show as = "[" ++ go as ++ "]"
+    where
+      go (PS (a:as)) = show a ++ ", " ++ go (PS as)
+      go (PS _)      = "0, 0, ..."
 
 -- | Only works with finite power series
 instance (Num a, Eq a) => Eq (PS a) where
@@ -44,18 +46,15 @@ instance (Num a, Eq a) => Eq (PS a) where
   (uncons -> (f, fs)) == (uncons -> (g, gs)) =
     f == g && fs == gs
 
-x = PS [0,1]
-ps0 = PS []
-
-
 -- to use list syntax for power series
 instance IsList (PS a) where
   type Item (PS a) = a
   fromList = PS
   toList (PS l) = l
 
+-- | A "zippy" applicative
 instance Applicative PS where
-  pure a = let p = a:p in PS p
+  pure a = PS (repeat a)
   fs <*> as = PS (zipWith ($) (unPS fs) (unPS as))
 
 instance Num a => Num (PS a) where
@@ -83,32 +82,38 @@ instance (Eq a, Fractional a) => Fractional (PS a) where
 
 
 -- | Composition
+compose :: (Eq a, Num a) => PS a -> PS a -> PS a
 compose (uncons -> (f, fs)) (uncons -> (g, gs))
   | g == 0 = cons f (gs * (compose fs (cons g gs)))
   | otherwise = error "compose: first term not 0"
 
 -- | Reversion,
 -- Given F find R such that F(R(x)) = x
+revert :: (Eq a, Fractional a) => PS a -> PS a
 revert (uncons -> (f, fs))
   | f == 0    = let rs = 0 :. (1 / (compose fs rs)) in rs
   | otherwise = error "revert: first term not 0"
 
 
+deriv :: (Enum t, Num t) => PS t -> PS t
 deriv (uncons -> (_, fs)) = (*) <$> [1..] <*> fs
 
+integral :: (Enum t, Fractional t) => PS t -> PS t
 integral fs = cons 0 ((/) <$> fs <*> [1..])
 
--- prop_int_deriv_id = \fs -> deriv (integral fs) == fs -- no equality on streams, bisimilarity
+-- prop_int_deriv_id = \fs -> deriv (integral fs) == fs -- no equality on streams
 
+expx :: PS Rational
 expx = 1 + integral expx
 
+sinx, cosx :: PS Rational
 sinx = integral cosx
 cosx = 1 - integral sinx
 
-
-sqrtx (0 :. 0 :. fs) = 0 :. sqrtx fs
-sqrtx (1 :. fs) = let qs = 1 + integral ((deriv (1 :. fs)) / (2 .* qs)) in qs
-sqrtx _ = error "sqrtx: first terms wrong"
+sqrt' :: (Enum a, Eq a, Fractional a) => PS a -> PS a
+sqrt' (0 :. 0 :. fs) = 0 :. sqrt' fs
+sqrt' (1 :. fs) = let qs = 1 + integral ((deriv (1 :. fs)) / (2 .* qs)) in qs
+sqrt' _ = error "sqrt': first terms wrong"
 
 
 -- | enumeration of binary trees
