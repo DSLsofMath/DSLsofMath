@@ -1,8 +1,10 @@
 * 2015-10-20:
-** TODO generators for specific matrix and vector dimension (untyped)
+** DONE generators for specific matrix and vector dimension (untyped)
+   CLOSED: [2015-10-30 Fri 15:06]
 ** TODO look at the possibility of a dimension-indexed datatype versions (Mat n a or similar)
 ** TODO get access to functional-feec and perhaps use some infrastructure (classes or types for Polynomials? Ring? Field? Vectorspace?)
-** TODO Look at "power series, power serious"
+** DONE Look at "power series, power serious"
+   CLOSED: [2015-10-30 Fri 14:58]
    http://www.cs.dartmouth.edu/~doug/powser.html
    http://dl.acm.org/citation.cfm?id=968597
 
