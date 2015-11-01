@@ -12,6 +12,8 @@ import Control.Applicative (liftA2)
 
 import GHC.Exts
 
+import Data.Ratio
+
 default (Integer, Rational, Double)
 
 -- | where an empty power series is the series 0, 0, ...
@@ -35,7 +37,10 @@ ps0 :: Num a => PS a
 ps0 = PS []
 
 instance (Num a, Show a) => Show (PS a) where
-  show as = "[" ++ go as ++ "]"
+  show = showPS show
+
+showPS :: (t -> String) -> PS t -> String
+showPS show as = "[" ++ go as ++ "]"
     where
       go (PS (a:as)) = show a ++ ", " ++ go (PS as)
       go (PS _)      = "0, 0, ..."
@@ -122,3 +127,18 @@ ts = 1 :. (ts ^ 2)
 -- | pascals triangle
 pascal :: PS (PS Rational)
 pascal = 1 / [1, -[1,1]]
+
+-- TODO: this does not look like Pascals triangle. Bug? (in division I guess)
+testPascal = showPS (showPS (showRat)) $ takePS 5 (fmap (takePS 5) pascal)
+
+-- let q = 1; fs=0; g=1; gs= cons (-1) 0 in cons q ((fs - q .* gs) / (cons g gs))
+
+takePS :: Int -> PS t -> PS t
+takePS n (PS xs) = PS (take n xs)
+
+showRat :: Rational -> String
+showRat r | denominator r == 1   = show (numerator r)
+          | otherwise            = show (numerator r) ++"%"++ show (denominator r)
+
+showPSR :: PS Rational -> String
+showPSR = showPS showRat
