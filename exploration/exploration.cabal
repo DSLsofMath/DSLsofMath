@@ -25,6 +25,13 @@ library
                      , PowerSeries
   -- other-modules:
   other-extensions:    FlexibleInstances
+                     , TypeFamilies
+                     , OverloadedLists
+                     , GeneralizedNewtypeDeriving
+                     , ViewPatterns
+                     , PatternSynonyms
+                     , DeriveFunctor
+
   build-depends:       QuickCheck >= 2.6
                      , base >=4.8 && <4.9
   -- hs-source-dirs:
