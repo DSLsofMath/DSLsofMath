@@ -1,3 +1,13 @@
+* 2015-11-02:
+** TODO Find out where the "pascal bug" was lurking
+** TODO Look through An Agda proof of the correctness of Valiant's algorithm for ... http://publications.lib.chalmers.se/records/fulltext/185016/185016.pdf
+
+That approach uses "traditional" Nat-indexed matrices but the idea of this project is to do it with S-indexed matrices instead where
+
+data S = Bin S S | Leaf
+
+is a more detailed type of natural numbers indicating the "shape" of the splitting into blocks.
+
 * 2015-10-20:
 ** DONE generators for specific matrix and vector dimension (untyped)
    CLOSED: [2015-10-30 Fri 15:06]
