@@ -10,6 +10,10 @@
    - [[MatrixAlgebra2.hs][MatrixAlgebra2]]: 2^n-by-2^n matrices using a recursive
      representation
 
+* Power series
+
+  - [[PowerSeries.hs][PowerSeries]]: Code from [[http://citeseerx.ist.psu.edu/viewdoc/download?doi%3D10.1.1.333.3156&rep%3Drep1&type%3Dpdf]["Power series, power serious"]]
+
 * Other interesting things
 ** Automatic differentiation
    - http://conal.net/papers/beautiful-differentiation/

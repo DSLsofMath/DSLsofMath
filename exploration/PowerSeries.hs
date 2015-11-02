@@ -20,21 +20,11 @@ default (Integer, Rational, Double)
 newtype PS a = PS {unPS :: [a]}
   deriving (Functor)
 
-uncons :: Num a => PS a -> (a, PS a)
-uncons (PS (a:as)) = (a, PS as)
-uncons (PS _) = (0, PS [])
-
-cons a (PS as) = PS (a:as)
-
-pattern (:.) f fs <- (uncons -> (f, fs))
-  where (:.) f fs = cons f fs
-
-infixr 5 :.
-
-x :: Num a => PS a
-x = PS [0,1]
-ps0 :: Num a => PS a
-ps0 = PS []
+-- to use list syntax for power series
+instance IsList (PS a) where
+  type Item (PS a) = a
+  fromList = PS
+  toList (PS l) = l
 
 instance (Num a, Show a) => Show (PS a) where
   show = showPS show
@@ -45,17 +35,32 @@ showPS show as = "[" ++ go as ++ "]"
       go (PS (a:as)) = show a ++ ", " ++ go (PS as)
       go (PS _)      = "0, 0, ..."
 
+
+-- | Head and tail of power series
+uncons :: Num a => PS a -> (a, PS a)
+uncons (PS (a:as)) = (a, PS as)
+uncons (PS _) = (0, PS [])
+
+cons a (PS as) = PS (a:as)
+
+-- | the zero power series
+pattern Nil <- PS []
+  where Nil = PS []
+
+-- | Construct/Destruct power series from head and tail
+pattern (:.) f fs <- (uncons -> (f, fs))
+  where (:.) f fs = cons f fs
+
+infixr 5 :.
+
+x :: Num a => PS a
+x = [0,1]
+ps0 :: Num a => PS a
+ps0 = Nil
 -- | Only works with finite power series
 instance (Num a, Eq a) => Eq (PS a) where
-  (PS []) == (PS []) = True
-  (uncons -> (f, fs)) == (uncons -> (g, gs)) =
-    f == g && fs == gs
-
--- to use list syntax for power series
-instance IsList (PS a) where
-  type Item (PS a) = a
-  fromList = PS
-  toList (PS l) = l
+  Nil       == Nil       = True
+  (f :. fs) == (g :. gs) = f == g && fs == gs
 
 -- | A "zippy" applicative
 instance Applicative PS where
@@ -63,13 +68,17 @@ instance Applicative PS where
   fs <*> as = PS (zipWith ($) (unPS fs) (unPS as))
 
 instance Num a => Num (PS a) where
-  fromInteger n = cons (fromInteger n) ps0
+  fromInteger n = PS [fromInteger n]
   negate = fmap negate
   abs = fmap abs
   signum = fmap signum
-  (+) = liftA2 (+)
-  (uncons -> (f, fs)) * (uncons -> (g, gs)) =
-    cons (f * g) (f .* gs + fs * (cons g gs))
+
+  Nil + Nil             = Nil
+  (f :. fs) + (g :. gs) = (f + g) :. (fs + gs)
+
+  Nil * Nil             = Nil
+  (f :. fs) * (g :. gs) =
+     (f * g) :. (f .* gs + fs * (g :. gs))
 
 infixl 7 .*
 -- | multiply with scalar
@@ -89,7 +98,7 @@ instance (Eq a, Fractional a) => Fractional (PS a) where
 -- | Composition
 compose :: (Eq a, Num a) => PS a -> PS a -> PS a
 compose (uncons -> (f, fs)) (uncons -> (g, gs))
-  | g == 0 = cons f (gs * (compose fs (cons g gs)))
+  | g == 0    = cons f (gs * (compose fs (cons g gs)))
   | otherwise = error "compose: first term not 0"
 
 -- | Reversion,
