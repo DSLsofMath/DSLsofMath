@@ -9,10 +9,9 @@
 module PowerSeries where
 
 import Control.Applicative (liftA2)
-
 import GHC.Exts -- IsList
-
 import Data.Ratio
+import Data.List (intercalate)
 
 default (Integer, Rational, Double)
 
@@ -30,10 +29,7 @@ instance (Num a, Show a) => Show (PS a) where
   show = showPS show
 
 showPS :: (t -> String) -> PS t -> String
-showPS show as = "[" ++ go as ++ "]"
-    where
-      go (PS (a:as)) = show a ++ ", " ++ go (PS as)
-      go (PS _)      = "0, 0, ..."
+showPS show (PS as) = "[" ++ intercalate ", " (map show as) ++ "]"
 
 
 -- | Head and tail of power series
@@ -72,10 +68,12 @@ instance Num a => Num (PS a) where
   abs = fmap abs
   signum = fmap signum
 
-  Zero + Zero           = Zero
+  Zero + gs = gs
+  fs + Zero = fs
   (f :. fs) + (g :. gs) = (f + g) :. (fs + gs)
 
-  Zero * Zero           = Zero
+  Zero * gs = Zero
+  fs * Zero = Zero
   (f :. fs) * (g :. gs) =
      (f * g) :. (f .* gs + fs * (g :. gs))
 
@@ -86,9 +84,10 @@ a .* ps = (*) <$> pure a <*> ps
 
 instance (Eq a, Fractional a) => Fractional (PS a) where
   fromRational r = [fromRational r]
+  Zero / gs = Zero
   (f :. fs) / (g :. gs)
-    | g == 0 -- if g == 0 then division can only succeed if f == 0 as
-    , f == 0 -- well
+    | g == 0 -- if g == 0 then division can only succeed if f == 0
+    , f == 0
     = fs / gs
     | otherwise
     = let q = f / g in q :. ((fs - q .* gs) / (g :. gs))
@@ -136,7 +135,7 @@ ts = 1 :. (ts ^ 2)
 pascal :: PS (PS Rational)
 pascal = 1 / [1, -[1,1]]
 
-testPascal = showPS (showPS (showRat)) $ takePS 5 (fmap (takePS 5) pascal)
+testPascal = showPS (showPS (showRat)) $ takePS 10 (fmap (takePS 10) pascal)
 
 -- let q = 1; fs=0; g=1; gs= cons (-1) 0 in cons q ((fs - q .* gs) / (cons g gs))
 
