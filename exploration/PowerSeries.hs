@@ -137,7 +137,6 @@ ts = 1 :. (ts ^ 2)
 pascal :: PS (PS Rational)
 pascal = 1 / [1, -[1,1]]
 
--- TODO: this does not look like Pascals triangle. Bug? (in division I guess)
 testPascal = showPS (showPS (showRat)) $ takePS 5 (fmap (takePS 5) pascal)
 
 -- let q = 1; fs=0; g=1; gs= cons (-1) 0 in cons q ((fs - q .* gs) / (cons g gs))
