@@ -1,5 +1,8 @@
 * 2015-11-02:
-** TODO Find out where the "pascal bug" was lurking
+** DONE Find out where the "pascal bug" was lurking
+   CLOSED: [2015-11-02 Mon 15:17]
+   ~(+) = liftA2 (+)~ was not a good definition for ~(+)~
+
 ** TODO Look through An Agda proof of the correctness of Valiant's algorithm for ... http://publications.lib.chalmers.se/records/fulltext/185016/185016.pdf
 
 That approach uses "traditional" Nat-indexed matrices but the idea of this project is to do it with S-indexed matrices instead where
