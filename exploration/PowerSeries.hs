@@ -44,8 +44,8 @@ uncons (PS _) = (0, PS [])
 cons a (PS as) = PS (a:as)
 
 -- | the zero power series
-pattern Nil <- PS []
-  where Nil = PS []
+pattern Zero <- PS []
+  where Zero = PS []
 
 -- | Construct/Destruct power series from head and tail
 pattern (:.) f fs <- (uncons -> (f, fs))
@@ -55,11 +55,10 @@ infixr 5 :.
 
 x :: Num a => PS a
 x = [0,1]
-ps0 :: Num a => PS a
-ps0 = Nil
+
 -- | Only works with finite power series
 instance (Num a, Eq a) => Eq (PS a) where
-  Nil       == Nil       = True
+  Zero       == Zero       = True
   (f :. fs) == (g :. gs) = f == g && fs == gs
 
 -- | A "zippy" applicative
@@ -73,10 +72,10 @@ instance Num a => Num (PS a) where
   abs = fmap abs
   signum = fmap signum
 
-  Nil + Nil             = Nil
+  Zero + Zero           = Zero
   (f :. fs) + (g :. gs) = (f + g) :. (fs + gs)
 
-  Nil * Nil             = Nil
+  Zero * Zero           = Zero
   (f :. fs) * (g :. gs) =
      (f * g) :. (f .* gs + fs * (g :. gs))
 
@@ -86,7 +85,7 @@ infixl 7 .*
 a .* ps = (*) <$> pure a <*> ps
 
 instance (Eq a, Fractional a) => Fractional (PS a) where
-  fromRational r = cons (fromRational r) ps0
+  fromRational r = cons (fromRational r) Zero
   (uncons -> (f, fs)) / (uncons -> (g, gs))
     | f == 0
     , g == 0
