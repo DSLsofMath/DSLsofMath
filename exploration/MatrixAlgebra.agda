@@ -1,12 +1,24 @@
 -- Matrices indexed by shape
 module MatrixAlgebra (T : Set) (t : T) (_*T_ : T → T → T) (_+T_ : T → T → T) where
 
--- shape of matrix
-data S : Set where
-  -- 1
-  L : S
-  -- s₁ + s₂
-  B : (s₁ s₂ : S) → S
+module Shape where
+  -- shape of matrix
+  data S : Set where
+    -- 1
+    L : S
+    -- s₁ + s₂
+    B : (s₁ s₂ : S) → S
+
+  open import Data.Nat
+
+  toNat : S → ℕ
+  toNat L = 1
+  toNat (B s s₁) = toNat s + toNat s₁
+
+  -- fromNat : ℕ → S
+  -- fromNat n = ?
+
+open Shape
 
 -- Matrix representation (and also vectors)
 data M (a : Set) : (rows cols : S) → Set where
@@ -65,5 +77,11 @@ _*_ : ∀ {r₁ c₂ x} → M T r₁ x → M T x c₂ → M T r₁ c₂
 
 -- 3x3 matrix
 mat : M T (B L (B L L)) (B (B L L) L)
-mat = < < < t > , < t > >                 , < t > ,
-        < < t > , < t > , < t > , < t > > , < < t > , < t > >′ >
+mat = < < < t > , < t > > , < t > ,
+        < < t > , < t > ,
+          < t > , < t > > , < < t > ,
+                              < t > >′ >
+
+-- 3x2 matrix
+mat₁ : M T (B L (B L L)) (B L L)
+mat₁ = < < t > , < t > , < < t > , < t > >′ , < < t > , < t > >′ >
