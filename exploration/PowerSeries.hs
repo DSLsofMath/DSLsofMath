@@ -9,10 +9,9 @@
 module PowerSeries where
 
 import Control.Applicative (liftA2)
-
-import GHC.Exts
-
+import GHC.Exts -- IsList
 import Data.Ratio
+import Data.List (intercalate)
 
 default (Integer, Rational, Double)
 
@@ -30,10 +29,7 @@ instance (Num a, Show a) => Show (PS a) where
   show = showPS show
 
 showPS :: (t -> String) -> PS t -> String
-showPS show as = "[" ++ go as ++ "]"
-    where
-      go (PS (a:as)) = show a ++ ", " ++ go (PS as)
-      go (PS _)      = "0, 0, ..."
+showPS show (PS as) = "[" ++ intercalate ", " (map show as) ++ "]"
 
 
 -- | Head and tail of power series
@@ -44,12 +40,12 @@ uncons (PS _) = (0, PS [])
 cons a (PS as) = PS (a:as)
 
 -- | the zero power series
-pattern Zero <- PS []
-  where Zero = PS []
+pattern Zero <- PS [] -- destruction
+  where Zero = PS []  -- construction
 
 -- | Construct/Destruct power series from head and tail
-pattern (:.) f fs <- (uncons -> (f, fs))
-  where (:.) f fs = cons f fs
+pattern (:.) f fs <- (uncons -> (f, fs)) -- destruction
+  where (:.) f fs = cons f fs            -- construction
 
 infixr 5 :.
 
@@ -58,7 +54,7 @@ x = [0,1]
 
 -- | Only works with finite power series
 instance (Num a, Eq a) => Eq (PS a) where
-  Zero       == Zero       = True
+  Zero      == Zero      = True
   (f :. fs) == (g :. gs) = f == g && fs == gs
 
 -- | A "zippy" applicative
@@ -67,15 +63,17 @@ instance Applicative PS where
   fs <*> as = PS (zipWith ($) (unPS fs) (unPS as))
 
 instance Num a => Num (PS a) where
-  fromInteger n = PS [fromInteger n]
+  fromInteger n = [fromInteger n]
   negate = fmap negate
   abs = fmap abs
   signum = fmap signum
 
-  Zero + Zero           = Zero
+  Zero + gs = gs
+  fs + Zero = fs
   (f :. fs) + (g :. gs) = (f + g) :. (fs + gs)
 
-  Zero * Zero           = Zero
+  Zero * gs = Zero
+  fs * Zero = Zero
   (f :. fs) * (g :. gs) =
      (f * g) :. (f .* gs + fs * (g :. gs))
 
@@ -85,34 +83,35 @@ infixl 7 .*
 a .* ps = (*) <$> pure a <*> ps
 
 instance (Eq a, Fractional a) => Fractional (PS a) where
-  fromRational r = cons (fromRational r) Zero
-  (uncons -> (f, fs)) / (uncons -> (g, gs))
-    | f == 0
-    , g == 0
+  fromRational r = [fromRational r]
+  Zero / gs = Zero
+  (f :. fs) / (g :. gs)
+    | g == 0 -- if g == 0 then division can only succeed if f == 0
+    , f == 0
     = fs / gs
     | otherwise
-    = let q = f / g in cons q ((fs - q .* gs) / (cons g gs))
+    = let q = f / g in q :. ((fs - q .* gs) / (g :. gs))
 
 
 -- | Composition
 compose :: (Eq a, Num a) => PS a -> PS a -> PS a
-compose (uncons -> (f, fs)) (uncons -> (g, gs))
-  | g == 0    = cons f (gs * (compose fs (cons g gs)))
+compose (f :. fs) (g :. gs)
+  | g == 0    = f :. (gs * (compose fs (g :. gs)))
   | otherwise = error "compose: first term not 0"
 
 -- | Reversion,
 -- Given F find R such that F(R(x)) = x
 revert :: (Eq a, Fractional a) => PS a -> PS a
-revert (uncons -> (f, fs))
+revert (f :. fs)
   | f == 0    = let rs = 0 :. (1 / (compose fs rs)) in rs
   | otherwise = error "revert: first term not 0"
 
 
 deriv :: (Enum t, Num t) => PS t -> PS t
-deriv (uncons -> (_, fs)) = (*) <$> [1..] <*> fs
+deriv (_ :. fs) = (*) <$> [1..] <*> fs
 
 integral :: (Enum t, Fractional t) => PS t -> PS t
-integral fs = cons 0 ((/) <$> fs <*> [1..])
+integral fs = 0 :. ((/) <$> fs <*> [1..])
 
 -- prop_int_deriv_id = \fs -> deriv (integral fs) == fs -- no equality on streams
 
@@ -136,7 +135,7 @@ ts = 1 :. (ts ^ 2)
 pascal :: PS (PS Rational)
 pascal = 1 / [1, -[1,1]]
 
-testPascal = showPS (showPS (showRat)) $ takePS 5 (fmap (takePS 5) pascal)
+testPascal = showPS (showPS (showRat)) $ takePS 10 (fmap (takePS 10) pascal)
 
 -- let q = 1; fs=0; g=1; gs= cons (-1) 0 in cons q ((fs - q .* gs) / (cons g gs))
 
