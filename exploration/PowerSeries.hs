@@ -54,7 +54,7 @@ x = [0,1]
 
 -- | Only works with finite power series
 instance (Num a, Eq a) => Eq (PS a) where
-  Zero       == Zero       = True
+  Zero      == Zero      = True
   (f :. fs) == (g :. gs) = f == g && fs == gs
 
 -- | A "zippy" applicative
