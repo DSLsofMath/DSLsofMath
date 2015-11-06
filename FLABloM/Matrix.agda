@@ -25,7 +25,7 @@ data M (a : Set) : (rows cols : S) → Set where
       M a (B r₁ r₂) (B c₁ c₂)
 
 
--- For matrix addition and multiplication wee need the corresponding
+-- Matrix addition and multiplication need the corresponding
 -- operations on the underlying type
 module Operations (T : Set) (_*T_ : T → T → T) (_+T_ : T → T → T) where
 
