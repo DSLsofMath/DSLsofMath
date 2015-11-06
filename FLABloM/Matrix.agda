@@ -4,7 +4,7 @@ module Matrix where
 open import Shape
 
 -- Matrix representation
-data M (a : Set) : (rows cols : S) → Set where
+data M (a : Set) : (rows cols : Shape) → Set where
   -- 1x1 matrices
   One
     : a → M a L L

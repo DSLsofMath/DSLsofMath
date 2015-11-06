@@ -1,15 +1,15 @@
 module Shape where
 
 -- shape of matrix
-data S : Set where
+data Shape : Set where
   -- 1
-  L : S
+  L : Shape
   -- s₁ + s₂
-  B : (s₁ s₂ : S) → S
+  B : (s₁ s₂ : Shape) → Shape
 
 open import Data.Nat
 
-toNat : S → ℕ
+toNat : Shape → ℕ
 toNat L = 1
 toNat (B s s₁) = toNat s + toNat s₁
 
