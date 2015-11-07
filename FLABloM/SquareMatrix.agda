@@ -9,6 +9,7 @@ Sq : Set → Shape → Set
 Sq a shape = M a shape shape
 
 open import SemiNearRingRecord
+-- TODO: imported module missing?
 
 -- Lifting a SNR to a to a Square matrix of some shape
 -- TODO: need to look at shape to make this one work?
