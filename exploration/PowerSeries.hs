@@ -60,7 +60,7 @@ instance (Num a, Eq a) => Eq (PS a) where
 -- | A "zippy" applicative
 instance Applicative PS where
   pure a = PS (repeat a)
-  fs <*> as = PS (zipWith ($) (unPS fs) (unPS as))
+  fs <*> as = PS (zipWith ($) (unPS fs) (unPS as))  -- be careful with finite lists and zip!
 
 instance Num a => Num (PS a) where
   fromInteger n = [fromInteger n]

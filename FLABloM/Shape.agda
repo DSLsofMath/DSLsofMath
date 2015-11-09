@@ -26,8 +26,9 @@ split (suc (suc n)) with split n
 {-# NO_TERMINATION_CHECK #-}
 -- Compute a balanced shape
 fromNat : ℕ → Maybe Shape
-fromNat zero     = nothing
-fromNat (suc n)  with split n
+fromNat zero       = nothing
+fromNat (suc zero) = just L
+fromNat n with split n
 ... | (n1 , n2) with fromNat n1 | fromNat n2
 ...   | nothing  | nothing  = nothing
 ...   | just s1  | nothing  = just s1
@@ -37,5 +38,3 @@ fromNat (suc n)  with split n
 -- TODO: perhaps add an empty shape (but probably in a separate
 -- experiment file because many things change in the matrix
 -- representation).
-
--- TODO: `∀ n → fromNat n ≡ nothing` seems like its true
