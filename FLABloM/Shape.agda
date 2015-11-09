@@ -37,3 +37,5 @@ fromNat (suc n)  with split n
 -- TODO: perhaps add an empty shape (but probably in a separate
 -- experiment file because many things change in the matrix
 -- representation).
+
+-- TODO: `∀ n → fromNat n ≡ nothing` seems like its true
