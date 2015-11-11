@@ -3,3 +3,8 @@
 ** lifting commutative monoid works for non square shapes?
 * TODO Try to implement closure (either pentrate the ValiantAgda version or roll your own)
 * TODO Implement matrix determinant (with block matrices)
+  there is a block matrix decomposition of the determinant:
+
+  det(A B ; C D) = det(A)det(D - CA^{-1}B) (requires A to be invertible)
+
+  A is invertible when: https://en.wikipedia.org/wiki/Invertible_matrix#Blockwise_inversion
