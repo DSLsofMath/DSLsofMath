@@ -1,4 +1,5 @@
 * TODO Complete "Square snr (B shape shape₁)"
 * TODO Do some of the proofs (isCommMon; zeroˡ; zeroʳ; _<∙>_)
+** lifting commutative monoid works for non square shapes?
 * TODO Try to implement closure (either pentrate the ValiantAgda version or roll your own)
 * TODO Implement matrix determinant (with block matrices)
