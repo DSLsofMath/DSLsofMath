@@ -13,6 +13,9 @@ open import Algebra.Structures
 open import Relation.Binary
 open import Data.Product
 
+open import Relation.Binary.PropositionalEquality hiding (trans; sym) renaming (refl to refl-≡)
+import Relation.Binary.EqReasoning as EqReasoning
+
 -- Lifting a SNR to a to a Square matrix of some shape
 Square : SemiNearRing → Shape → SemiNearRing
 Square snr shape = SNR
@@ -92,33 +95,33 @@ Square snr shape = SNR
     (liftAssoc r c x y z) , (liftAssoc r c₁ x₁ y₁ z₁) ,
     (liftAssoc r₁ c x₂ y₂ z₂) , (liftAssoc r₁ c₁ x₃ y₃ z₃)
 
-  lift<+> : (r c : Shape) {x y u v : M s r c} →
+  <+S> : (r c : Shape) {x y u v : M s r c} →
     x ≃S' y → u ≃S' v → (x +S u) ≃S' (y +S v)
-  lift<+> L L {One x} {One x₁} {One x₂} {One x₃} p q = p <+> q
-  lift<+> L (B c c₁) {Row x x₁} {Row y y₁} {Row u u₁} {Row v v₁} (p , p₁) (q , q₁) =
-    lift<+> L c p q , lift<+> L c₁ p₁ q₁
-  lift<+> (B r r₁) L {Col x x₁} {Col y y₁} {Col u u₁} {Col v v₁} (p , p₁) (q , q₁) =
-    lift<+> r L p q , lift<+> r₁ L p₁ q₁
-  lift<+> (B r r₁) (B c c₁) {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃}
+  <+S> L L {One x} {One x₁} {One x₂} {One x₃} p q = p <+> q
+  <+S> L (B c c₁) {Row x x₁} {Row y y₁} {Row u u₁} {Row v v₁} (p , p₁) (q , q₁) =
+    <+S> L c p q , <+S> L c₁ p₁ q₁
+  <+S> (B r r₁) L {Col x x₁} {Col y y₁} {Col u u₁} {Col v v₁} (p , p₁) (q , q₁) =
+    <+S> r L p q , <+S> r₁ L p₁ q₁
+  <+S> (B r r₁) (B c c₁) {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃}
     (p , p₁ , p₂ , p₃) (q , q₁ , q₂ , q₃) =
-    lift<+> r c p q , lift<+> r c₁ p₁ q₁ ,
-    lift<+> r₁ c p₂ q₂ , lift<+> r₁ c₁ p₃ q₃
+    <+S> r c p q , <+S> r c₁ p₁ q₁ ,
+    <+S> r₁ c p₂ q₂ , <+S> r₁ c₁ p₃ q₃
 
   isSemgroupS =
     record
       { isEquivalence = isEquivS
       ; assoc = liftAssoc shape shape
-      ; ∙-cong = lift<+> shape shape }
+      ; ∙-cong = <+S> shape shape }
 
 
-  liftIdentˡ : (r c : Shape) (x : M s r c) →
+  identSˡ : (r c : Shape) (x : M s r c) →
      0S r c +S x ≃S' x
-  liftIdentˡ L L (One x) = identityˡₛ x
-  liftIdentˡ L (B c c₁) (Row x x₁) = liftIdentˡ L c x , liftIdentˡ L c₁ x₁
-  liftIdentˡ (B r r₁) L (Col x x₁) = liftIdentˡ r L x , liftIdentˡ r₁ L x₁
-  liftIdentˡ (B r r₁) (B c c₁) (Q x x₁ x₂ x₃) =
-    liftIdentˡ r c x , liftIdentˡ r c₁ x₁ ,
-    liftIdentˡ r₁ c x₂ , liftIdentˡ r₁ c₁ x₃
+  identSˡ L L (One x) = identityˡₛ x
+  identSˡ L (B c c₁) (Row x x₁) = identSˡ L c x , identSˡ L c₁ x₁
+  identSˡ (B r r₁) L (Col x x₁) = identSˡ r L x , identSˡ r₁ L x₁
+  identSˡ (B r r₁) (B c c₁) (Q x x₁ x₂ x₃) =
+    identSˡ r c x , identSˡ r c₁ x₁ ,
+    identSˡ r₁ c x₂ , identSˡ r₁ c₁ x₃
 
   liftComm : (r c : Shape) → (x y : M s r c) →
     (x +S y) ≃S' (y +S x)
@@ -132,26 +135,133 @@ Square snr shape = SNR
   isCommMonS =
     record
       { isSemigroup = isSemgroupS
-      ; identityˡ = liftIdentˡ shape shape
+      ; identityˡ = identSˡ shape shape
       ; comm = liftComm shape shape }
 
 
-  -- TODO: can I use ≃S to 'rewrite' types?
-  liftZeroˡ : (a b c : Shape) (x : M s b c) →
-    let 0ˡ = 0S a b
-        0ʳ = 0S a c
-    in (0ˡ ∙S x) ≃S' 0ʳ
-  liftZeroˡ L L L (One x) = zeroˡ x
-  liftZeroˡ L L (B c c₁) (Row x x₁) = (liftZeroˡ L L c x) , (liftZeroˡ L L c₁ x₁)
-  liftZeroˡ L (B b b₁) L (Col x x₁) = {!!}
-  liftZeroˡ L (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) = {!!} , {!!}
-  liftZeroˡ (B a a₁) L L (One x) = liftZeroˡ a L L (One x) , liftZeroˡ a₁ L L (One x)
-  liftZeroˡ (B a a₁) L (B c c₁) (Row x x₁) =
-    liftZeroˡ a L c x , liftZeroˡ a L c₁ x₁ ,
-    liftZeroˡ a₁ L c x , liftZeroˡ a₁ L c₁ x₁
-  liftZeroˡ (B a a₁) (B b b₁) L (Col x x₁) = {!!} , {!!}
-  liftZeroˡ (B a a₁) (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) =
-    {!liftZeroˡ a b c x!} , ({!!} , ({!!} , {!!}))
+  setoidS : (r c : Shape) → Setoid _ _
+  setoidS r c =
+    record
+      { Carrier = M s r c
+      ; _≈_ = ≃S r c
+      ; isEquivalence =
+        record
+          { refl = reflS r c ; sym = symS r c ; trans = transS r c } }
+
+
+  zeroSˡ : (a b c : Shape) (x : M s b c) →
+    (0S a b ∙S x) ≃S' 0S a c
+  zeroSˡ L L L (One x) = zeroˡ x
+  zeroSˡ L L (B c c₁) (Row x x₁) = (zeroSˡ L L c x) , (zeroSˡ L L c₁ x₁)
+  zeroSˡ L (B b b₁) L (Col x x₁) =
+    let
+      open EqReasoning (setoidS L L)
+      ih = zeroSˡ L b L x
+      ih₁ = zeroSˡ L b₁ L x₁
+    in begin
+      (Row (0S L b) (0S L b₁) ∙S (Col x x₁))
+    ≡⟨ refl-≡ ⟩
+      (0S L b) ∙S x +S (0S L b₁) ∙S x₁
+    ≈⟨ <+S> L L {0S L b ∙S x} {0S L L} {0S L b₁ ∙S x₁} {0S L L} ih ih₁ ⟩ -- TODO: make nicer?
+      0S L L +S 0S L L
+    ≈⟨ identSˡ L L (0S L L) ⟩
+      0S L L
+    ∎
+  zeroSˡ L (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) =
+    (let
+      open EqReasoning (setoidS L c)
+      ih = zeroSˡ L b c x
+      ih₁ = zeroSˡ L b₁ c x₂
+     in begin
+       0S L b ∙S x +S 0S L b₁ ∙S x₂
+     ≈⟨ <+S> L c ih ih₁ ⟩
+       0S L c +S 0S L c
+     ≈⟨ identSˡ L c (0S L c) ⟩
+       0S L c
+     ∎) ,
+    (let
+      open EqReasoning (setoidS L c₁)
+      ih = zeroSˡ L b c₁ x₁
+      ih₁ = zeroSˡ L b₁ c₁ x₃
+    in begin
+      0S L b ∙S x₁ +S 0S L b₁ ∙S x₃
+    ≈⟨ <+S> L c₁ ih ih₁ ⟩
+      0S L c₁ +S 0S L c₁
+    ≈⟨ identSˡ L c₁ _ ⟩
+      0S L c₁
+    ∎)
+  zeroSˡ (B a a₁) L L (One x) = zeroSˡ a L L (One x) , zeroSˡ a₁ L L (One x)
+  zeroSˡ (B a a₁) L (B c c₁) (Row x x₁) =
+    zeroSˡ a L c x , zeroSˡ a L c₁ x₁ ,
+    zeroSˡ a₁ L c x , zeroSˡ a₁ L c₁ x₁
+  zeroSˡ (B a a₁) (B b b₁) L (Col x x₁) =
+    (let
+      open EqReasoning (setoidS a L)
+      ih = zeroSˡ a b L x
+      ih₁ = zeroSˡ a b₁ L x₁
+    in begin
+      0S a b ∙S x +S 0S a b₁ ∙S x₁
+    ≈⟨ <+S> a L ih ih₁ ⟩
+      0S a L +S 0S a L
+    ≈⟨ identSˡ a L _ ⟩
+      0S a L
+    ∎) ,
+    (let
+      open EqReasoning (setoidS a₁ L)
+      ih = zeroSˡ a₁ b L x
+      ih₁ = zeroSˡ a₁ b₁ L x₁
+    in begin
+      0S a₁ b ∙S x +S 0S a₁ b₁ ∙S x₁
+    ≈⟨ <+S> a₁ L ih ih₁ ⟩
+      0S a₁ L +S 0S a₁ L
+    ≈⟨ identSˡ a₁ L _ ⟩
+      0S a₁ L
+    ∎)
+  zeroSˡ (B a a₁) (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) =
+    (let
+      open EqReasoning (setoidS a c)
+      ih = zeroSˡ a b c x
+      ih₁ = zeroSˡ a b₁ c x₂
+    in begin
+      0S a b ∙S x +S 0S a b₁ ∙S x₂
+    ≈⟨ <+S> a c ih ih₁ ⟩
+      0S a c +S 0S a c
+    ≈⟨ identSˡ a c _ ⟩
+      0S a c
+    ∎) ,
+    (let
+      open EqReasoning (setoidS a c₁)
+      ih = zeroSˡ a b c₁ x₁
+      ih₁ = zeroSˡ a b₁ c₁ x₃
+    in begin
+      0S a b ∙S x₁ +S 0S a b₁ ∙S x₃
+    ≈⟨ <+S> a c₁ ih ih₁ ⟩
+      0S a c₁ +S 0S a c₁
+    ≈⟨ identSˡ a c₁ _ ⟩
+      0S a c₁
+    ∎) ,
+    (let
+      open EqReasoning (setoidS a₁ c)
+      ih = zeroSˡ a₁ b c x
+      ih₁ = zeroSˡ a₁ b₁ c x₂
+    in begin
+      0S a₁ b ∙S x +S 0S a₁ b₁ ∙S x₂
+    ≈⟨ <+S> a₁ c ih ih₁ ⟩
+      0S a₁ c +S 0S a₁ c
+    ≈⟨ identSˡ a₁ c _ ⟩
+      0S a₁ c
+    ∎) ,
+    (let
+      open EqReasoning (setoidS a₁ c₁)
+      ih = zeroSˡ a₁ b c₁ x₁
+      ih₁ = zeroSˡ a₁ b₁ c₁ x₃
+    in begin
+      0S a₁ b ∙S x₁ +S 0S a₁ b₁ ∙S x₃
+    ≈⟨ <+S> a₁ c₁ ih ih₁ ⟩
+      0S a₁ c₁ +S 0S a₁ c₁
+    ≈⟨ identSˡ a₁ c₁ _ ⟩
+      0S a₁ c₁
+    ∎)
 
 
   SNR : SemiNearRing
@@ -163,7 +273,7 @@ Square snr shape = SNR
       ; _+ₛ_ = _+S_
       ; _∙ₛ_ = _∙S_
       ; isCommMon = isCommMonS
-      ; zeroˡ = liftZeroˡ shape shape shape
+      ; zeroˡ = zeroSˡ shape shape shape
       ; zeroʳ = {!!}
       ; _<∙>_ = {!!}
       }
