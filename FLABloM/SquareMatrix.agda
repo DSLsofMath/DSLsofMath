@@ -162,7 +162,7 @@ Square snr shape = SNR
       (Row (0S L b) (0S L b₁) ∙S (Col x x₁))
     ≡⟨ refl-≡ ⟩
       (0S L b) ∙S x +S (0S L b₁) ∙S x₁
-    ≈⟨ <+S> L L {0S L b ∙S x} {0S L L} {0S L b₁ ∙S x₁} {0S L L} ih ih₁ ⟩ -- TODO: make nicer?
+    ≈⟨ <+S> L L {0S L b ∙S x} {0S L L} {0S L b₁ ∙S x₁} {0S L L} ih ih₁ ⟩
       0S L L +S 0S L L
     ≈⟨ identSˡ L L (0S L L) ⟩
       0S L L
@@ -263,6 +263,123 @@ Square snr shape = SNR
       0S a₁ c₁
     ∎)
 
+  zeroSʳ : (a b c : Shape) (x : M s a b) →
+    (x ∙S 0S b c) ≃S' 0S a c
+  zeroSʳ L L L (One x) = zeroʳ x
+  zeroSʳ L L (B c c₁) (One x) =
+    (zeroSʳ L L c (One x)) , (zeroSʳ L L c₁ (One x))
+  zeroSʳ L (B b b₁) L (Row x x₁) =
+    let
+      open EqReasoning (setoidS L L)
+      ih = zeroSʳ L b L x
+      ih₁ = zeroSʳ L b₁ L x₁
+    in begin
+      Row x x₁ ∙S Col (0S b L) (0S b₁ L)
+    ≡⟨ refl-≡ ⟩
+      (x ∙S 0S b L) +S (x₁ ∙S 0S b₁ L)
+    ≈⟨ <+S> L L {x ∙S 0S b L} {0S L L} {x₁ ∙S 0S b₁ L} {0S L L} ih ih₁ ⟩
+      0S L L +S 0S L L
+    ≈⟨ identSˡ L L (0S L L) ⟩
+      0S L L
+    ∎
+  zeroSʳ L (B b b₁) (B c c₁) (Row x x₁) =
+    (let
+      open EqReasoning (setoidS L c)
+      ih = zeroSʳ L b c x
+      ih₁ = zeroSʳ L b₁ c x₁
+    in begin
+      x ∙S 0S b c +S x₁ ∙S 0S b₁ c
+    ≈⟨ <+S> L c ih ih₁ ⟩
+      0S L c +S 0S L c
+    ≈⟨ identSˡ L c (0S L c) ⟩
+      0S L c
+    ∎) ,
+    (let
+      open EqReasoning (setoidS L c₁)
+      ih = zeroSʳ L b c₁ x
+      ih₁ = zeroSʳ L b₁ c₁ x₁
+    in begin
+      x ∙S 0S b c₁ +S x₁ ∙S 0S b₁ c₁
+    ≈⟨ <+S> L c₁ ih ih₁ ⟩
+      0S L c₁ +S 0S L c₁
+    ≈⟨ identSˡ L c₁ (0S L c₁) ⟩
+      0S L c₁
+    ∎)
+  zeroSʳ (B a a₁) L L (Col x x₁) = zeroSʳ a L L x , zeroSʳ a₁ L L x₁
+  zeroSʳ (B a a₁) L (B c c₁) (Col x x₁) =
+    zeroSʳ a L c x ,
+    zeroSʳ a L c₁ x ,
+    zeroSʳ a₁ L c x₁ ,
+    zeroSʳ a₁ L c₁ x₁
+  zeroSʳ (B a a₁) (B b b₁) L (Q x x₁ x₂ x₃) =
+    (let
+      open EqReasoning (setoidS _ _)
+      ih = zeroSʳ a b L x
+      ih₁ = zeroSʳ a b₁ L x₁
+    in begin
+      x ∙S 0S b L +S x₁ ∙S 0S b₁ L
+    ≈⟨ <+S> a L ih ih₁ ⟩
+      0S a L +S 0S a L
+    ≈⟨ identSˡ a L (0S _ _) ⟩
+      0S a L
+    ∎) ,
+    (let
+      open EqReasoning (setoidS _ _)
+      ih = zeroSʳ a₁ b L x₂
+      ih₁ = zeroSʳ a₁ b₁ L x₃
+    in begin
+      x₂ ∙S 0S b L +S x₃ ∙S 0S b₁ L
+    ≈⟨ <+S> a₁ L ih ih₁ ⟩
+      0S _ _ +S 0S _ _
+    ≈⟨ identSˡ a₁ L (0S _ _) ⟩
+      0S a₁ L
+    ∎)
+  zeroSʳ (B a a₁) (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) =
+    (let
+      open EqReasoning (setoidS _ _)
+      ih = zeroSʳ a b c x
+      ih₁ = zeroSʳ a b₁ c x₁
+    in begin
+      x ∙S 0S b c +S x₁ ∙S 0S b₁ c
+    ≈⟨ <+S> a c ih ih₁ ⟩
+      0S _ _ +S 0S _ _
+    ≈⟨ identSˡ a c (0S _ _) ⟩
+      0S _ _
+    ∎) ,
+    (let
+      open EqReasoning (setoidS _ _)
+      ih = zeroSʳ a b c₁ x
+      ih₁ = zeroSʳ a b₁ c₁ x₁
+    in begin
+      x ∙S 0S b c₁ +S x₁ ∙S 0S b₁ c₁
+    ≈⟨ <+S> a c₁ ih ih₁ ⟩
+      0S _ _ +S 0S _ _
+    ≈⟨ identSˡ a c₁ (0S _ _) ⟩
+      0S a c₁
+    ∎) ,
+    (let
+      open EqReasoning (setoidS _ _)
+      ih = zeroSʳ a₁ b c x₂
+      ih₁ = zeroSʳ a₁ b₁ c x₃
+    in begin
+      x₂ ∙S 0S b c +S x₃ ∙S 0S b₁ c
+    ≈⟨ <+S> a₁ c ih ih₁ ⟩
+      0S _ _ +S 0S _ _
+    ≈⟨ identSˡ a₁ c (0S _ _) ⟩
+      0S a₁ c
+    ∎) ,
+    (let
+      open EqReasoning (setoidS _ _)
+      ih = zeroSʳ a₁ b c₁ x₂
+      ih₁ = zeroSʳ a₁ b₁ c₁ x₃
+    in begin
+      x₂ ∙S 0S b c₁ +S x₃ ∙S 0S b₁ c₁
+    ≈⟨ <+S> a₁ c₁ ih ih₁ ⟩
+      0S _ _ +S 0S _ _
+    ≈⟨ identSˡ a₁ c₁ (0S _ _) ⟩
+      0S a₁ c₁
+    ∎)
+
 
   SNR : SemiNearRing
   SNR =
@@ -274,6 +391,6 @@ Square snr shape = SNR
       ; _∙ₛ_ = _∙S_
       ; isCommMon = isCommMonS
       ; zeroˡ = zeroSˡ shape shape shape
-      ; zeroʳ = {!!}
+      ; zeroʳ = zeroSʳ shape shape shape
       ; _<∙>_ = {!!}
       }
