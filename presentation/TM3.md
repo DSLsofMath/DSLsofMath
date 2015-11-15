@@ -18,6 +18,7 @@ ett datavetenskapligt perspektiv:
 * att tydligt beskriva de begrepp som introduceras,
 * vara uppmärksam på syntax och typer,
 * att bygga domänspecifika språk for vissa matematiska områden: linjär algebra, lite kategoriteori, polynom och potensserier, komplexa tal
+* att implementera (Haskell-)program för dessa områden (och därigenom nå en djupare förståelse)
 
 Kursen är tänkt att ge en fördjupad matematisk förståelse för
 datastudenter och en fördjupad datavetenskaplig förståelse för
@@ -72,10 +73,19 @@ list = [(1+), (2*), sq, quad]
 ```
 
 
+## Förkunskaper
 
+Studenten ska ha klarat (+TM-exempel):
+* en kurs i diskret matematik
+    * TM1: en kombination av Mat.prog., Lin.alg&geometri, Mat.orientering, Sannolikhet, ...
+* två andra kurser i matematik
+    * TM1: exempelvis Linjär algebra, Analys I och II
+* två kurser i datateknik
+    * TM1: Programmeringsteknik + TM2: Datastrukturer
+* ytterligare tre kurser (22.5hp) inom matematik, data eller IT
+    * TM1: LinAlg&NumAn, Flervariabel + TM2: Komplex, ...
 
-
-
+Rekommenderat (men ej krav): Funktionell programmering
 
 ----------------
 
