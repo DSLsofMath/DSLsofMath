@@ -1,13 +1,13 @@
 # Matematikens domänspecifika språk
 [DAT325](https://student.portal.chalmers.se/sv/chalmersstudier/programinformation/Sidor/SokProgramutbudet.aspx?course_id=24179&parsergrp=2) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
-En presentation (7 minuter!) for TM3 (måndag 2015-11-16 ca 11:45 av
+En presentation (<10 minuter!) for TM3 (måndag 2015-11-16 kl 12:00 av
 Patrik Jansson) av den valfria kursen "Matematikens domänspecifika
 språk".
 
 Jag heter Patrik Jansson och jag är forskare och lärare i funktionell
 programmering-gruppen på avdelningen för programvaruteknik. Jag är här
-som examinatro för DSLsofMath men kursansvarig lärare är min kollega
+som examinator för DSLsofMath men kursansvarig lärare är min kollega
 Cezar Ionescu, docent i "Data Science" i Oxford. Jag har själv en
 bakgrund (1994) på TM-inriktningen som var en föregångare till dagens
 TM-program.
@@ -79,10 +79,26 @@ list = [(1+), (2*), sq, quad]
 
 ----------------
 
-Kurser att välja mellan:
 
-DAT325 Matematikens domänspecifika språk  (Patrik Jansson)
-MVE150 Algebra                            (Per Salberger)
-TDA357 Databaser                          (Niklas Broberg, Aarne Ranta)
-TMA372 Partiella differentialekvationer   (Mohammad Asadzadeh)
-SSY305 Kommunikationssystem               (Erik Ström)
+## Inbjudan från TM
+
+Välkommen till valinformation för studenterna i Teknisk matematik åk 3 inför kursvalet till läsperiod 3 vårterminen 2016.
+
+Måndag den 16/11 klockan 11:45-12:40 i HC4
+
+Kurserna som presenteras är:
+
+| Tid   | Kurskod | Kurs                               | Presentatör |
+| ----- | ------- | ---------------------------------- | ----------- |
+| 11.50 | SSY305  | Kommunikationssystem               | Erik Ström  |
+| 12.00 | DAT325  | Matematikens domänspecifika språk  | Patrik Jansson |
+| 12.10 | TMA372  | Partiella differentialekvationer   | Mohammad Asadzadeh |
+| 12.20 | MVE150  | Algebra                            | Per Salberger |
+| 12.30 | TDA357  | Databaser                          | Niklas Broberg, Aarne Ranta |
+
+Valmodulen i Studentportalen kommer att öppna den 17 november och stängs den 8 december.
+
+Med vänlig hälsning,
+
+Bengt-Erik Mellander
+Utbildningssekreterare TM&F
