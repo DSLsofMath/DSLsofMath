@@ -80,7 +80,8 @@ instance Num a => Num (PS a) where
 infixl 7 .*
 -- | multiply with scalar
 (.*) :: Num a => a -> PS a -> PS a
-a .* ps = (*) <$> pure a <*> ps
+a .* Zero = Zero
+a .* (f :. fs) = a * f :. a .* fs
 
 instance (Eq a, Fractional a) => Fractional (PS a) where
   fromRational r = [fromRational r]
