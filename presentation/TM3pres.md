@@ -2,14 +2,14 @@
 (Pres. for TM3, Må 2015-11-16 av Patrik Jansson.)
 
 * Patrik Jansson, forskare & lärare i funktionell prog.-gruppen
-    * avd. för programvaruteknik, inst. för Data- och informationsteknik.
+    * avd. för programvaruteknik, inst. för D&IT
 * Kursansvarig: Cezar Ionescu, docent i "Data Science" i Oxford.
 
 Presentera klassiska matematiska ämnen från ett datavetenskapligt perspektiv:
 
 * att tydligt beskriva de begrepp som introduceras,
 * vara uppmärksam på syntax och typer,
-* att bygga domänspecifika språk for vissa matematiska områden: linjär algebra, lite kategoriteori, polynom och potensserier, komplexa tal
+* att bygga domänspecifika språk för: linjär algebra, lite kategoriteori, polynom och potensserier, transformer
 * att implementera (Haskell-)program för dessa områden (och därigenom nå en djupare förståelse)
 
 Kursen är tänkt att ge en fördjupad matematisk förståelse för
@@ -25,31 +25,68 @@ matematikstudenter.
 * datorn (kompilatorn) ger direkt återkoppling när något inte stämmer.
 
 
-# Funktionell programmering (FP) och typer
+# Funktionell programmering (FP)
+
+* Rena funktioner som bas: från indata till utdata
+* Typer (Int, String, [Int], Int -> Int, [Int -> Int], ...)
+* Historik: matematiska bevisverktyg och algoritmer
+* Nutid: Konkurrensfördel, FP-experter eftertraktade!
+* Vackert möte mellan matematik och maskin.
+
+```haskell
+
+kvadrat x = x^2
+
+twice f = \x -> f(f(x))
+
+upphöjtFyra = twice kvadrat
+
+test = upphöjtFyra 3
+
+list = [(1+), (2*), kvadrat, upphöjtFyra]
+```
+
+# Funktionell programmering (FP) och *typer*
 
 * Typer (Int, String, [Int], Int -> Int, [Int -> Int], ...)
 * Rena funktioner som bas: från indata till utdata
 * Historik: matematiska bevisverktyg och algoritmer
-* Nutid: Konkurrensfördel, FP-experter eftertraktas i näringsliv och forskning
+* Nutid: Konkurrensfördel, FP-experter eftertraktade!
 * Vackert möte mellan matematik och maskin.
 
 ```haskell
-sq :: Double -> Double
-sq(x) = x^2
-
-twice :: (Double -> Double) -> (Double -> Double)
-twice f = \x -> f(f(x))
-
-quad :: Double -> Double
-quad = twice sq
-
-test :: Double
-test = quad 3
-
-list :: [Double -> Double]
-list = [(1+), (2*), sq, quad]
+kvadrat      :: Num a =>  a -> a
+kvadrat x    =  x^2
+twice        :: (a -> a) -> (a -> a)
+twice f      =  \x -> f(f(x))
+upphöjtFyra  :: Num a =>  a -> a
+upphöjtFyra  =  twice kvadrat
+test         :: Double
+test         =  upphöjtFyra 3
+list         :: Num a =>  [a -> a]
+list         =  [(1+), (2*), kvadrat, upphöjtFyra]
 ```
 
+# Domänspecifika språk (DSL)
+
+Exempel:
+
+* datum: "2015-11-18", "tredje onsdagen i oktober", "nästa lördag"
+* excel-formler: "SUM(A1:A9)", "RIGHT(LEFT(C7,4),2)", "365 * 24 * 60 * 60"
+* integraler: [Behöver ritas!]
+
+
+# Andra kurser
+
+Relation till de övriga kurserna som presenteras + kandidatarbete:
+
+| Kurs                               | Relation    |
+| ---------------------------------- | ----------- |
+| Kommunikationssystem               | DSL: [Feldspar](http://feldspar.github.io/) |
+| Partiella differentialekvationer   | DSL: [FEniCS](http://fenicsproject.org/) (Anders Logg) |
+| Algebra                            | [Algebra of Programming](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.AOPA) |
+| Databaser                          | SQL, relationsalgebra |
+| Kandidatarbete om DSLsofMath       | [Jag handleder!](https://github.com/DSLsofMath/DSLsofMath/blob/master/BScProj/DSLsofMath_andra_kurser.md) |
 
 # Förkunskaper
 
@@ -66,22 +103,9 @@ Studenten ska ha klarat (+TM-exempel):
 
 Rekommenderat (men ej krav): Funktionell programmering
 
-# Andra kurser
-
-Relation till de övriga kurserna som presenteras + kandidatarbete:
-
-| Kurs                               | Relation    |
-| ---------------------------------- | ----------- |
-| Kommunikationssystem               | DSL: [Feldspar](http://feldspar.github.io/) |
-| Partiella differentialekvationer   | DSL: [FEniCS](http://fenicsproject.org/), samarbete med Anders Logg |
-| Algebra                            | [Algebra of Programming](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.AOPA) |
-| Databaser                          | SQL, relationsalgebra |
-| Kandidatarbete om DSLsofMath       | [Jag handleder!](https://github.com/DSLsofMath/DSLsofMath/blob/master/BScProj/DSLsofMath_andra_kurser.md) |
-
 # Matematikens domänspecifika språk
 
-
-* Matematik möter maskin
+* finslipad förmåga att formalisera
 * Funktionell programmering ger nya verktyg
 * Mötet mellan matematiken och datavetenskapen
     * det är där det händer riktigt spännande saker ...

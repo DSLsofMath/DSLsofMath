@@ -76,6 +76,7 @@ list = [(1+), (2*), sq, quad]
 ## Förkunskaper
 
 Studenten ska ha klarat (+TM-exempel):
+
 * en kurs i diskret matematik
     * TM1: en kombination av Mat.prog., Lin.alg&geometri, Mat.orientering, Sannolikhet, ...
 * två andra kurser i matematik

@@ -1,4 +1,7 @@
 default: TM3pres.html
 
-TM3pres.html: TM3pres.md
+%.html: %.md
 	pandoc --self-contained -S --latexmathml -t slidy $< -o $@
+
+%.pdf: %.md
+	pandoc -t beamer $< -o $@
