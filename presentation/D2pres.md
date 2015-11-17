@@ -46,9 +46,7 @@ Undervisningsspråket är engelska och implementationsspråket är Haskell.
 
 # Exempel på aktiv läsning
 
-Slides 4-10 från
-
-http://www.cse.chalmers.se/~patrikj/talks/WG2.1_Goteborg_Jansson_Ionescu_DSLsofMath.pdf
+[Slides 4-10 från en längre presentation](http://www.cse.chalmers.se/~patrikj/talks/WG2.1_Goteborg_Jansson_Ionescu_DSLsofMath.pdf)
 
 # Domänspecifika språk (DSL)
 
