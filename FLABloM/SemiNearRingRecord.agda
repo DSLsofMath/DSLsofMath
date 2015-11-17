@@ -12,7 +12,11 @@ open import Relation.Binary
   using (module IsEquivalence; IsEquivalence; _Preserves₂_⟶_⟶_ ; Setoid)
 open import Data.Product renaming (_,_ to _,,_) -- just to avoid clash with other commas
 
+open import Preliminaries
+
 -- SemiNearRing, from ValiantAgda
+--
+-- Ring without negation and multiplicative identity, "Rg"?
 record SemiNearRing : Set₁ where
   field
     s : Set
@@ -31,6 +35,20 @@ record SemiNearRing : Set₁ where
     _<∙>_ : ∀ {x y u v} → (x ≃ₛ y) → (u ≃ₛ v) → (x ∙ₛ u ≃ₛ y ∙ₛ v)
 
   infix 4 _≃ₛ_; infixl 6 _+ₛ_; infixl 7 _∙ₛ_
+
+  -- open Algebra.FunctionProperties _≃ₛ_
+  --   using (Idempotent; _DistributesOverˡ_; _DistributesOverʳ_)
+
+  -- field
+  --    idem   : Idempotent _+ₛ_
+
+  --    distl  : _∙ₛ_ DistributesOverˡ _+ₛ_
+  --    distr  : _∙ₛ_ DistributesOverʳ _+ₛ_
+  --      -- expands to |∀ a b c →  (a +s b) *s c   ≃s   (a *s c) +s (b *s c)|
+
+  -- infix  4 _≤ₛ_
+  -- _≤ₛ_ : s -> s -> Set
+  -- x ≤ₛ y =  x +ₛ y ≃ₛ y
 
   open Algebra.Structures.IsCommutativeMonoid isCommMon public
     hiding (refl)
@@ -51,15 +69,4 @@ record SemiNearRing : Set₁ where
   open IsEquivalence isEquivₛ public
     hiding (reflexive) renaming (refl to reflₛ ; sym to symₛ ; trans to transₛ)
 
-
--- SemiNearRing with closure (*)
--- record ClosedSemiNearRing : Set₁ where
---   field
---     snr : SemiNearRing
-
---   open SemiNearRing snr
-
---   field
---     _* : s → s
-
---   -- ValiantAgda does something cooler
+  -- LowerBounds  = LowerBound _≤ₛ_
