@@ -1,7 +1,14 @@
+* TODO Read Fun with semirings: https://www.cl.cam.ac.uk/~sd601/papers/semirings.pdf
+
 * TODO Complete "Square snr (B shape shape₁)"
 * TODO Do some of the proofs (isCommMon; zeroˡ; zeroʳ; _<∙>_)
 ** lifting commutative monoid works for non square shapes?
 * TODO Try to implement closure (either pentrate the ValiantAgda version or roll your own)
+  What is a closed seminearring? for a semiring closure satisfies
+  $a^* = 1 + a ∙ a^*$, but in seminearring there is no 1...
+
+  is it $w^* = w + w^* ∙ w^*$ ?
+
 * TODO Implement matrix determinant (with block matrices)
   there is a block matrix decomposition of the determinant:
 

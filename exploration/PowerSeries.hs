@@ -90,6 +90,8 @@ instance (Eq a, Fractional a) => Fractional (PS a) where
     | g == 0 -- if g == 0 then division can only succeed if f == 0
     , f == 0
     = fs / gs
+    | g == 0
+    = error "(/): division by 0"
     | otherwise
     = let q = f / g in q :. ((fs - q .* gs) / (g :. gs))
 

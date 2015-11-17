@@ -22,10 +22,6 @@ is a more detailed type of natural numbers indicating the "shape" of the splitti
    http://dl.acm.org/citation.cfm?id=968597
 
 
-* Research oriented special course
-** TODO Read Fun with semirings: https://www.cl.cam.ac.uk/~sd601/papers/semirings.pdf
-
-
 * 2015-10-08
 ** DONE Port Arbitrary instances MatrixAlgebra2
 ** DONE Port Laws + tests to MatrixAlgebra2

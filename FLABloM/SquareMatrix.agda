@@ -16,6 +16,7 @@ open import Data.Product
 open import Relation.Binary.PropositionalEquality hiding (trans; sym) renaming (refl to refl-≡)
 import Relation.Binary.EqReasoning as EqReasoning
 
+
 -- Lifting a SNR to a to a Square matrix of some shape
 Square : SemiNearRing → Shape → SemiNearRing
 Square snr shape = SNR
@@ -347,16 +348,18 @@ Square snr shape = SNR
       0S _ _
     ∎) ,
     (let
-      open EqReasoning (setoidS _ _)
+      -- open EqReasoning (setoidS _ _)
       ih = zeroSʳ a b c₁ x
       ih₁ = zeroSʳ a b₁ c₁ x₁
-    in begin
-      x ∙S 0S b c₁ +S x₁ ∙S 0S b₁ c₁
-    ≈⟨ <+S> a c₁ ih ih₁ ⟩
-      0S _ _ +S 0S _ _
-    ≈⟨ identSˡ a c₁ (0S _ _) ⟩
-      0S a c₁
-    ∎) ,
+    in transS a c₁ (<+S> a c₁ ih ih₁) (identSˡ a c₁ (0S _ _))
+    -- begin
+    --   x ∙S 0S b c₁ +S x₁ ∙S 0S b₁ c₁
+    -- ≈⟨ <+S> a c₁ ih ih₁ ⟩
+    --   0S _ _ +S 0S _ _
+    -- ≈⟨ identSˡ a c₁ (0S _ _) ⟩
+    --   0S a c₁
+    -- ∎
+    ) ,
     (let
       open EqReasoning (setoidS _ _)
       ih = zeroSʳ a₁ b c x₂
@@ -380,6 +383,41 @@ Square snr shape = SNR
       0S a₁ c₁
     ∎)
 
+  <∙S> : (a b c : Shape) {x y : M s a b} {u v : M s b c} →
+    x ≃S' y → u ≃S' v → (x ∙S u) ≃S' (y ∙S v)
+  <∙S> L L L {One x} {One x₁} {One x₂} {One x₃} p q = p <∙> q
+  <∙S> L L (B c c₁) {One x} {One x₁} {Row u u₁} {Row v v₁} p (q , q₁) =
+    (<∙S> L L c {One x} {One x₁} {u} {v} p q) ,
+    <∙S> L L c₁ {One x} {One x₁} {u₁} {v₁} p q₁
+  <∙S> L (B b b₁) L {Row x x₁} {Row y y₁} {Col u u₁} {Col v v₁} (p , p₁) (q , q₁) =
+    -- Row x x₁ ∙S Col u u₁ ≃S' Row y y₁ ∙S Col v v₁
+    let
+      open EqReasoning (setoidS _ _)
+      ih = <∙S> _ _ _ {x} {y} {u} {v} p q
+      ih₁ = <∙S> _ _ _ {x₁} {y₁} {u₁} {v₁} p₁ q₁
+    in begin
+      Row x x₁ ∙S Col u u₁
+    ≡⟨ refl-≡ ⟩
+      x ∙S u +S x₁ ∙S u₁
+    ≈⟨ <+S> L L {x ∙S u} {y ∙S v} {x₁ ∙S u₁} {y₁ ∙S v₁} ih ih₁ ⟩
+      y ∙S v +S y₁ ∙S v₁
+    ∎
+  <∙S> L (B b b₁) (B c c₁) {Row x x₁} {Row y y₁} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃} (p , p₁) (q , q₁ , q₂ , q₃) =
+    {!!} ,
+    {!!}
+  <∙S> (B a a₁) L L {Col x x₁} {Col y y₁} {One x₂} {One x₃} (p , p₁) q =
+    {!!} ,
+    {!!}
+  <∙S> (B a a₁) L (B c c₁) {Col x x₁} {Col y y₁} {Row u u₁} {Row v v₁} (p , p₁) (q , q₁) =
+    {!!} ,
+    {!!} ,
+    {!!} ,
+    {!!}
+  <∙S> (B a a₁) (B b b₁) L {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Col u u₁} {Col v v₁} (p , p₁ , p₂ , p₃) (q , q₁) =
+    {!!} ,
+    {!!}
+  <∙S> (B a a₁) (B b b₁) (B c c₁) {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃} (p , p₁ , p₂ , p₃) (q , q₁ , q₂ , q₃) =
+    {!!}
 
   SNR : SemiNearRing
   SNR =
@@ -392,5 +430,5 @@ Square snr shape = SNR
       ; isCommMon = isCommMonS
       ; zeroˡ = zeroSˡ shape shape shape
       ; zeroʳ = zeroSʳ shape shape shape
-      ; _<∙>_ = {!!}
+      ; _<∙>_ = <∙S> shape shape shape
       }
