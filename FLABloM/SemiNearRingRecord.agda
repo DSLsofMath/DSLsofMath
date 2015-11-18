@@ -36,19 +36,19 @@ record SemiNearRing : Set₁ where
 
   infix 4 _≃ₛ_; infixl 6 _+ₛ_; infixl 7 _∙ₛ_
 
-  -- open Algebra.FunctionProperties _≃ₛ_
-  --   using (Idempotent; _DistributesOverˡ_; _DistributesOverʳ_)
+  open Algebra.FunctionProperties _≃ₛ_
+    using (Idempotent; _DistributesOverˡ_; _DistributesOverʳ_)
 
-  -- field
-  --    idem   : Idempotent _+ₛ_
+  field
+     idem   : Idempotent _+ₛ_
 
-  --    distl  : _∙ₛ_ DistributesOverˡ _+ₛ_
-  --    distr  : _∙ₛ_ DistributesOverʳ _+ₛ_
-  --      -- expands to |∀ a b c →  (a +s b) *s c   ≃s   (a *s c) +s (b *s c)|
+     distl  : _∙ₛ_ DistributesOverˡ _+ₛ_
+     distr  : _∙ₛ_ DistributesOverʳ _+ₛ_
+       -- expands to |∀ a b c →  (a +s b) *s c   ≃s   (a *s c) +s (b *s c)|
 
-  -- infix  4 _≤ₛ_
-  -- _≤ₛ_ : s -> s -> Set
-  -- x ≤ₛ y =  x +ₛ y ≃ₛ y
+  infix  4 _≤ₛ_
+  _≤ₛ_ : s -> s -> Set
+  x ≤ₛ y =  x +ₛ y ≃ₛ y
 
   open Algebra.Structures.IsCommutativeMonoid isCommMon public
     hiding (refl)
@@ -69,4 +69,4 @@ record SemiNearRing : Set₁ where
   open IsEquivalence isEquivₛ public
     hiding (reflexive) renaming (refl to reflₛ ; sym to symₛ ; trans to transₛ)
 
-  -- LowerBounds  = LowerBound _≤ₛ_
+  LowerBounds  = LowerBound _≤ₛ_

@@ -419,6 +419,13 @@ Square snr shape = SNR
   <∙S> (B a a₁) (B b b₁) (B c c₁) {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃} (p , p₁ , p₂ , p₃) (q , q₁ , q₂ , q₃) =
     {!!}
 
+  idemS : (r c : Shape) (x : M s r c) → x +S x ≃S' x
+  idemS L L (One x) = idem x
+  idemS L (B c c₁) (Row x x₁) = (idemS _ _ x) , (idemS _ _ x₁)
+  idemS (B r r₁) L (Col x x₁) = (idemS _ _ x) , (idemS _ _ x₁)
+  idemS (B r r₁) (B c c₁) (Q x x₁ x₂ x₃) =
+    (idemS _ _ x) , (idemS _ _ x₁ , (idemS _ _ x₂  , idemS _ _ x₃))
+
   SNR : SemiNearRing
   SNR =
     record
@@ -431,4 +438,7 @@ Square snr shape = SNR
       ; zeroˡ = zeroSˡ shape shape shape
       ; zeroʳ = zeroSʳ shape shape shape
       ; _<∙>_ = <∙S> shape shape shape
+      ; idem = idemS shape shape
+      ; distl = {!!}
+      ; distr = {!!}
       }
