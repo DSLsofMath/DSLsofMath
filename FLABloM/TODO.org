@@ -7,7 +7,7 @@
   What is a closed seminearring? for a semiring closure satisfies
   $a^* = 1 + a ∙ a^*$, but in seminearring there is no 1...
 
-  is it $w^* = w + w^* ∙ w^*$ ?
+  $a^+ = a + a^+ ∙ a^+$ <--- ("quadratic equation" in ValiantAgda)
 
 * TODO Implement matrix determinant (with block matrices)
   there is a block matrix decomposition of the determinant:
@@ -15,3 +15,7 @@
   det(A B ; C D) = det(A)det(D - CA^{-1}B) (requires A to be invertible)
 
   A is invertible when: https://en.wikipedia.org/wiki/Invertible_matrix#Blockwise_inversion
+
+  Generalised determinants:
+  - https://en.wikipedia.org/wiki/Exterior_algebra
+  - https://en.wikipedia.org/wiki/Exterior_algebra#Alternating_multilinear_forms
