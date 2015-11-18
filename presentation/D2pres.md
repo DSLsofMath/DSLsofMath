@@ -67,6 +67,10 @@ Exempel:
     * Semantik: [ [ Cell ] ] -> Value
 * integraler: [Behöver ritas!]
 
+# Linjär algebra: vektorer, matriser, egenvärden, ...
+
+![Upper triangular](https://pbs.twimg.com/media/Baz4Lj5IAAAfUNp.jpg:large)
+
 # Matematikens domänspecifika språk (DSLsofMath)
 
 * linjär algebra:
