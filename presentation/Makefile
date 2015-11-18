@@ -1,4 +1,4 @@
-default: TM3pres.html
+default: D2pres.pdf
 
 %.html: %.md
 	pandoc --self-contained -S --latexmathml -t slidy $< -o $@
