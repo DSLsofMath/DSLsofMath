@@ -403,21 +403,27 @@ Square snr shape = SNR
       y ∙S v +S y₁ ∙S v₁
     ∎
   <∙S> L (B b b₁) (B c c₁) {Row x x₁} {Row y y₁} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃} (p , p₁) (q , q₁ , q₂ , q₃) =
-    {!!} ,
-    {!!}
+    (let
+      ih = <∙S> L b c p q
+      ih₁ = <∙S> L b₁ c p₁ q₂
+    in <+S> L c ih ih₁) ,
+    <+S> L c₁ (<∙S> L b c₁ p q₁) (<∙S> L b₁ c₁ p₁ q₃)
   <∙S> (B a a₁) L L {Col x x₁} {Col y y₁} {One x₂} {One x₃} (p , p₁) q =
-    {!!} ,
-    {!!}
+    <∙S> a L L p q ,
+    <∙S> a₁ L L p₁ q
   <∙S> (B a a₁) L (B c c₁) {Col x x₁} {Col y y₁} {Row u u₁} {Row v v₁} (p , p₁) (q , q₁) =
-    {!!} ,
-    {!!} ,
-    {!!} ,
-    {!!}
+    <∙S> a L c p q ,
+    <∙S> a L c₁ p q₁  ,
+    <∙S> a₁ L c p₁ q ,
+    <∙S> a₁ L c₁ p₁ q₁
   <∙S> (B a a₁) (B b b₁) L {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Col u u₁} {Col v v₁} (p , p₁ , p₂ , p₃) (q , q₁) =
-    {!!} ,
-    {!!}
+    <+S> a L (<∙S> a b L p q) (<∙S> a b₁ L p₁ q₁) ,
+    <+S> a₁ L (<∙S> a₁ b L p₂ q) (<∙S> a₁ b₁ L p₃ q₁ )
   <∙S> (B a a₁) (B b b₁) (B c c₁) {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃} (p , p₁ , p₂ , p₃) (q , q₁ , q₂ , q₃) =
-    {!!}
+    <+S> a c (<∙S> a b c p q) (<∙S> a b₁ c p₁ q₂) ,
+    <+S> a c₁ (<∙S> a b c₁ p q₁) (<∙S> a b₁ c₁ p₁ q₃) ,
+    <+S> a₁ c (<∙S> a₁ b c p₂ q) (<∙S> a₁ b₁ c p₃ q₂) ,
+    <+S> a₁ c₁ (<∙S> a₁ b c₁ p₂ q₁) (<∙S> a₁ b₁ c₁ p₃ q₃)
 
   idemS : (r c : Shape) (x : M s r c) → x +S x ≃S' x
   idemS L L (One x) = idem x
@@ -425,6 +431,22 @@ Square snr shape = SNR
   idemS (B r r₁) L (Col x x₁) = (idemS _ _ x) , (idemS _ _ x₁)
   idemS (B r r₁) (B c c₁) (Q x x₁ x₂ x₃) =
     (idemS _ _ x) , (idemS _ _ x₁ , (idemS _ _ x₂  , idemS _ _ x₃))
+
+  distlS : (a b c : Shape) (x : M s a b) (y z : M s b c) →
+    (x ∙S (y +S z)) ≃S' ((x ∙S y) +S (x ∙S z))
+  distlS L L L (One x) (One y) (One z) = distl x y z
+  distlS L L (B c c₁) (One x) (Row y y₁) (Row z z₁) =
+    distlS L L c (One x) y z ,
+    distlS L L c₁ (One x) y₁ z₁
+  distlS L (B b b₁) L (Row x x₁) (Col y y₁) (Col z z₁) =
+    {!!}
+  distlS L (B b b₁) (B c c₁) (Row x x₁) (Q y y₁ y₂ y₃) (Q z z₁ z₂ z₃) =
+    {!!} ,
+    {!!}
+  distlS (B a a₁) L L (Col x x₁) (One x₂) (One x₃) = {!!}
+  distlS (B a a₁) L (B c c₁) (Col x x₁) (Row y y₁) (Row z z₁) = {!!}
+  distlS (B a a₁) (B b b₁) L (Q x x₁ x₂ x₃) (Col y y₁) (Col z z₁) = {!!}
+  distlS (B a a₁) (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) (Q y y₁ y₂ y₃) (Q z z₁ z₂ z₃) = {!!}
 
   SNR : SemiNearRing
   SNR =
