@@ -166,6 +166,7 @@ Square snr shape = SNR
       ; comm = commS shape shape }
 
 
+  -- used to make proofs nicer later on
   setoidS : {r c : Shape} → Setoid _ _
   setoidS {r} {c} =
     record
@@ -175,231 +176,93 @@ Square snr shape = SNR
         record
           { refl = reflS r c ; sym = symS r c ; trans = transS r c } }
 
+  zerolHelp : ∀ (r : Shape) {m m' c : Shape}
+    (x : M s m c)
+    (y : M s m' c) →
+    0S r m ∙S x ≃S 0S r c →
+    0S r m' ∙S y ≃S 0S r c →
+    0S r m ∙S x +S 0S r m' ∙S y
+    ≃S 0S r c
+  zerolHelp r {m} {m'} {c} x y p q =
+    let open EqReasoning setoidS
+    in begin
+      0S r m ∙S x +S 0S r m' ∙S y
+    ≈⟨ <+S> _ _ {0S r m ∙S x} {0S r c} {0S r m' ∙S y} {0S r c} p q ⟩
+      0S r c +S 0S r c
+    ≈⟨ identSˡ _ _ (0S r c) ⟩
+     0S r c
+    ∎
 
   zeroSˡ : (a b c : Shape) (x : M s b c) →
     (0S a b ∙S x) ≃S 0S a c
   zeroSˡ L L L (One x) = zeroˡ x
   zeroSˡ L L (B c c₁) (Row x x₁) = (zeroSˡ L L c x) , (zeroSˡ L L c₁ x₁)
   zeroSˡ L (B b b₁) L (Col x x₁) =
-    let
-      open EqReasoning setoidS
-      ih = zeroSˡ L b L x
-      ih₁ = zeroSˡ L b₁ L x₁
-    in begin
-      (Row (0S L b) (0S L b₁) ∙S (Col x x₁))
-    ≡⟨ refl-≡ ⟩
-      (0S L b) ∙S x +S (0S L b₁) ∙S x₁
-    ≈⟨ <+S> L L {0S L b ∙S x} {0S L L} {0S L b₁ ∙S x₁} {0S L L} ih ih₁ ⟩
-      0S L L +S 0S L L
-    ≈⟨ identSˡ L L (0S L L) ⟩
-      0S L L
-    ∎
+    zerolHelp L x x₁ (zeroSˡ L b L x) (zeroSˡ L b₁ L x₁)
   zeroSˡ L (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) =
-    (let
-      open EqReasoning setoidS
-      ih = zeroSˡ L b c x
-      ih₁ = zeroSˡ L b₁ c x₂
-     in begin
-       0S L b ∙S x +S 0S L b₁ ∙S x₂
-     ≈⟨ <+S> L c ih ih₁ ⟩
-       0S L c +S 0S L c
-     ≈⟨ identSˡ L c (0S L c) ⟩
-       0S L c
-     ∎) ,
-    (let
-      open EqReasoning setoidS
-      ih = zeroSˡ L b c₁ x₁
-      ih₁ = zeroSˡ L b₁ c₁ x₃
-    in begin
-      0S L b ∙S x₁ +S 0S L b₁ ∙S x₃
-    ≈⟨ <+S> L c₁ ih ih₁ ⟩
-      0S L c₁ +S 0S L c₁
-    ≈⟨ identSˡ L c₁ _ ⟩
-      0S L c₁
-    ∎)
-  zeroSˡ (B a a₁) L L (One x) = zeroSˡ a L L (One x) , zeroSˡ a₁ L L (One x)
+    zerolHelp L x x₂ (zeroSˡ L b c x) (zeroSˡ L b₁ c x₂) ,
+    zerolHelp L x₁ x₃ (zeroSˡ L b c₁ x₁) (zeroSˡ L b₁ c₁ x₃)
+  zeroSˡ (B a a₁) L L (One x) =
+    zeroSˡ a L L (One x) ,
+    zeroSˡ a₁ L L (One x)
   zeroSˡ (B a a₁) L (B c c₁) (Row x x₁) =
-    zeroSˡ a L c x , zeroSˡ a L c₁ x₁ ,
-    zeroSˡ a₁ L c x , zeroSˡ a₁ L c₁ x₁
+    zeroSˡ a L c x ,
+    zeroSˡ a L c₁ x₁ ,
+    zeroSˡ a₁ L c x ,
+    zeroSˡ a₁ L c₁ x₁
   zeroSˡ (B a a₁) (B b b₁) L (Col x x₁) =
-    (let
-      open EqReasoning setoidS
-      ih = zeroSˡ a b L x
-      ih₁ = zeroSˡ a b₁ L x₁
-    in begin
-      0S a b ∙S x +S 0S a b₁ ∙S x₁
-    ≈⟨ <+S> a L ih ih₁ ⟩
-      0S a L +S 0S a L
-    ≈⟨ identSˡ a L _ ⟩
-      0S a L
-    ∎) ,
-    (let
-      open EqReasoning setoidS
-      ih = zeroSˡ a₁ b L x
-      ih₁ = zeroSˡ a₁ b₁ L x₁
-    in begin
-      0S a₁ b ∙S x +S 0S a₁ b₁ ∙S x₁
-    ≈⟨ <+S> a₁ L ih ih₁ ⟩
-      0S a₁ L +S 0S a₁ L
-    ≈⟨ identSˡ a₁ L _ ⟩
-      0S a₁ L
-    ∎)
+    zerolHelp a x x₁ (zeroSˡ a b L x) (zeroSˡ a b₁ L x₁) ,
+    zerolHelp a₁ x x₁ (zeroSˡ a₁ b L x) (zeroSˡ a₁ b₁ L x₁)
   zeroSˡ (B a a₁) (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) =
-    (let
-      open EqReasoning setoidS
-      ih = zeroSˡ a b c x
-      ih₁ = zeroSˡ a b₁ c x₂
+    zerolHelp a x x₂ (zeroSˡ a b c x) (zeroSˡ a b₁ c x₂) ,
+    zerolHelp a x₁ x₃ (zeroSˡ a b c₁ x₁) (zeroSˡ a b₁ c₁ x₃) ,
+    zerolHelp a₁ x x₂ (zeroSˡ a₁ b c x) (zeroSˡ a₁ b₁ c x₂) ,
+    zerolHelp a₁ x₁ x₃ (zeroSˡ a₁ b c₁ x₁) (zeroSˡ a₁ b₁ c₁ x₃)
+
+  zerorHelp : ∀ r {m m' c}
+    (x : M s r m)
+    (x₁ : M s r m') →
+    x ∙S 0S m c ≃S 0S r c →
+    x₁ ∙S 0S m' c ≃S 0S r c →
+    x ∙S 0S m c +S x₁ ∙S 0S m' c
+    ≃S 0S r c
+  zerorHelp r {m} {m'} {c} x x₁ p q =
+    let open EqReasoning setoidS
     in begin
-      0S a b ∙S x +S 0S a b₁ ∙S x₂
-    ≈⟨ <+S> a c ih ih₁ ⟩
-      0S a c +S 0S a c
-    ≈⟨ identSˡ a c _ ⟩
-      0S a c
-    ∎) ,
-    (let
-      open EqReasoning setoidS
-      ih = zeroSˡ a b c₁ x₁
-      ih₁ = zeroSˡ a b₁ c₁ x₃
-    in begin
-      0S a b ∙S x₁ +S 0S a b₁ ∙S x₃
-    ≈⟨ <+S> a c₁ ih ih₁ ⟩
-      0S a c₁ +S 0S a c₁
-    ≈⟨ identSˡ a c₁ _ ⟩
-      0S a c₁
-    ∎) ,
-    (let
-      open EqReasoning setoidS
-      ih = zeroSˡ a₁ b c x
-      ih₁ = zeroSˡ a₁ b₁ c x₂
-    in begin
-      0S a₁ b ∙S x +S 0S a₁ b₁ ∙S x₂
-    ≈⟨ <+S> a₁ c ih ih₁ ⟩
-      0S a₁ c +S 0S a₁ c
-    ≈⟨ identSˡ a₁ c _ ⟩
-      0S a₁ c
-    ∎) ,
-    (let
-      open EqReasoning setoidS
-      ih = zeroSˡ a₁ b c₁ x₁
-      ih₁ = zeroSˡ a₁ b₁ c₁ x₃
-    in begin
-      0S a₁ b ∙S x₁ +S 0S a₁ b₁ ∙S x₃
-    ≈⟨ <+S> a₁ c₁ ih ih₁ ⟩
-      0S a₁ c₁ +S 0S a₁ c₁
-    ≈⟨ identSˡ a₁ c₁ _ ⟩
-      0S a₁ c₁
-    ∎)
+      x ∙S 0S m c +S x₁ ∙S 0S m' c
+    ≈⟨ <+S> _ _ {x ∙S 0S m c} {0S r c} {x₁ ∙S 0S m' c} {0S r c} p q ⟩
+      0S r c +S 0S r c
+    ≈⟨ identSˡ r c (0S r c) ⟩
+      0S r c
+    ∎
 
   zeroSʳ : (a b c : Shape) (x : M s a b) →
     (x ∙S 0S b c) ≃S 0S a c
   zeroSʳ L L L (One x) = zeroʳ x
   zeroSʳ L L (B c c₁) (One x) =
-    (zeroSʳ L L c (One x)) , (zeroSʳ L L c₁ (One x))
+    (zeroSʳ L L c (One x)) ,
+    (zeroSʳ L L c₁ (One x))
   zeroSʳ L (B b b₁) L (Row x x₁) =
-    let
-      open EqReasoning setoidS
-      ih = zeroSʳ L b L x
-      ih₁ = zeroSʳ L b₁ L x₁
-    in begin
-      Row x x₁ ∙S Col (0S b L) (0S b₁ L)
-    ≡⟨ refl-≡ ⟩
-      (x ∙S 0S b L) +S (x₁ ∙S 0S b₁ L)
-    ≈⟨ <+S> L L {x ∙S 0S b L} {0S L L} {x₁ ∙S 0S b₁ L} {0S L L} ih ih₁ ⟩
-      0S L L +S 0S L L
-    ≈⟨ identSˡ L L (0S L L) ⟩
-      0S L L
-    ∎
+    zerorHelp L {c = L} x x₁ (zeroSʳ L b L x) (zeroSʳ L b₁ L x₁)
   zeroSʳ L (B b b₁) (B c c₁) (Row x x₁) =
-    (let
-      open EqReasoning setoidS
-      ih = zeroSʳ L b c x
-      ih₁ = zeroSʳ L b₁ c x₁
-    in begin
-      x ∙S 0S b c +S x₁ ∙S 0S b₁ c
-    ≈⟨ <+S> L c ih ih₁ ⟩
-      0S L c +S 0S L c
-    ≈⟨ identSˡ L c (0S L c) ⟩
-      0S L c
-    ∎) ,
-    (let
-      open EqReasoning setoidS
-      ih = zeroSʳ L b c₁ x
-      ih₁ = zeroSʳ L b₁ c₁ x₁
-    in begin
-      x ∙S 0S b c₁ +S x₁ ∙S 0S b₁ c₁
-    ≈⟨ <+S> L c₁ ih ih₁ ⟩
-      0S L c₁ +S 0S L c₁
-    ≈⟨ identSˡ L c₁ (0S L c₁) ⟩
-      0S L c₁
-    ∎)
-  zeroSʳ (B a a₁) L L (Col x x₁) = zeroSʳ a L L x , zeroSʳ a₁ L L x₁
+    zerorHelp L {c = c} x x₁ (zeroSʳ L b c x) (zeroSʳ L b₁ c x₁) ,
+    zerorHelp L {c = c₁} x x₁ (zeroSʳ L b c₁ x) (zeroSʳ L b₁ c₁ x₁)
+  zeroSʳ (B a a₁) L L (Col x x₁) =
+    zeroSʳ a L L x ,
+    zeroSʳ a₁ L L x₁
   zeroSʳ (B a a₁) L (B c c₁) (Col x x₁) =
     zeroSʳ a L c x ,
     zeroSʳ a L c₁ x ,
     zeroSʳ a₁ L c x₁ ,
     zeroSʳ a₁ L c₁ x₁
   zeroSʳ (B a a₁) (B b b₁) L (Q x x₁ x₂ x₃) =
-    (let
-      open EqReasoning setoidS
-      ih = zeroSʳ a b L x
-      ih₁ = zeroSʳ a b₁ L x₁
-    in begin
-      x ∙S 0S b L +S x₁ ∙S 0S b₁ L
-    ≈⟨ <+S> a L ih ih₁ ⟩
-      0S a L +S 0S a L
-    ≈⟨ identSˡ a L (0S _ _) ⟩
-      0S a L
-    ∎) ,
-    (let
-      open EqReasoning setoidS
-      ih = zeroSʳ a₁ b L x₂
-      ih₁ = zeroSʳ a₁ b₁ L x₃
-    in begin
-      x₂ ∙S 0S b L +S x₃ ∙S 0S b₁ L
-    ≈⟨ <+S> a₁ L ih ih₁ ⟩
-      0S _ _ +S 0S _ _
-    ≈⟨ identSˡ a₁ L (0S _ _) ⟩
-      0S a₁ L
-    ∎)
+    zerorHelp a x x₁ (zeroSʳ a b L x) (zeroSʳ a b₁ L x₁) ,
+    zerorHelp a₁ x₂ x₃ (zeroSʳ a₁ b L x₂) (zeroSʳ a₁ b₁ L x₃)
   zeroSʳ (B a a₁) (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) =
-    (let
-      open EqReasoning setoidS
-      ih = zeroSʳ a b c x
-      ih₁ = zeroSʳ a b₁ c x₁
-    in begin
-      x ∙S 0S b c +S x₁ ∙S 0S b₁ c
-    ≈⟨ <+S> a c ih ih₁ ⟩
-      0S _ _ +S 0S _ _
-    ≈⟨ identSˡ a c (0S _ _) ⟩
-      0S _ _
-    ∎) ,
-    (let
-      ih = zeroSʳ a b c₁ x
-      ih₁ = zeroSʳ a b₁ c₁ x₁
-    in transS a c₁ (<+S> a c₁ ih ih₁) (identSˡ a c₁ (0S _ _))
-    ) ,
-    (let
-      open EqReasoning setoidS
-      ih = zeroSʳ a₁ b c x₂
-      ih₁ = zeroSʳ a₁ b₁ c x₃
-    in begin
-      x₂ ∙S 0S b c +S x₃ ∙S 0S b₁ c
-    ≈⟨ <+S> a₁ c ih ih₁ ⟩
-      0S _ _ +S 0S _ _
-    ≈⟨ identSˡ a₁ c (0S _ _) ⟩
-      0S a₁ c
-    ∎) ,
-    (let
-      open EqReasoning setoidS
-      ih = zeroSʳ a₁ b c₁ x₂
-      ih₁ = zeroSʳ a₁ b₁ c₁ x₃
-    in begin
-      x₂ ∙S 0S b c₁ +S x₃ ∙S 0S b₁ c₁
-    ≈⟨ <+S> a₁ c₁ ih ih₁ ⟩
-      0S _ _ +S 0S _ _
-    ≈⟨ identSˡ a₁ c₁ (0S _ _) ⟩
-      0S a₁ c₁
-    ∎)
+    zerorHelp a x x₁ (zeroSʳ a b c x) (zeroSʳ a b₁ c x₁) ,
+    zerorHelp a x x₁ (zeroSʳ a b c₁ x) (zeroSʳ a b₁ c₁ x₁) ,
+    zerorHelp a₁ x₂ x₃ (zeroSʳ a₁ b c x₂) (zeroSʳ a₁ b₁ c x₃) ,
+    zerorHelp a₁ x₂ x₃ (zeroSʳ a₁ b c₁ x₂) (zeroSʳ a₁ b₁ c₁ x₃)
 
   <∙S> : (a b c : Shape) {x y : M s a b} {u v : M s b c} →
     x ≃S y → u ≃S v → (x ∙S u) ≃S (y ∙S v)
