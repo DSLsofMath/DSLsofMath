@@ -1,8 +1,10 @@
 * TODO Read Fun with semirings: https://www.cl.cam.ac.uk/~sd601/papers/semirings.pdf
-
-* TODO Complete "Square snr (B shape shape₁)"
-* TODO Do some of the proofs (isCommMon; zeroˡ; zeroʳ; _<∙>_)
-** lifting commutative monoid works for non square shapes?
+  Implement n
+* DONE Complete "Square snr (B shape shape₁)"
+  CLOSED: [2015-11-26 Thu 09:04]
+** DONE Do some of the proofs (isCommMon; zeroˡ; zeroʳ; _<∙>_)
+   CLOSED: [2015-11-26 Thu 09:05]
+*** lifting commutative monoid works for non square shapes?
 * TODO Try to implement closure (either pentrate the ValiantAgda version or roll your own)
   What is a closed seminearring? for a semiring closure satisfies
   $a^* = 1 + a ∙ a^*$, but in seminearring there is no 1...
@@ -19,3 +21,7 @@
   Generalised determinants:
   - https://en.wikipedia.org/wiki/Exterior_algebra
   - https://en.wikipedia.org/wiki/Exterior_algebra#Alternating_multilinear_forms
+
+  Determinants that work with matrices over things that are noncommutative:
+  - Dieudonné determinant: matrices over division rings
+  - Quasideterminant: still needs negation and inversion

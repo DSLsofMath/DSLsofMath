@@ -20,53 +20,53 @@ open import Preliminaries
 record SemiNearRing : Set₁ where
   field
     s : Set
-    _≃ₛ_ : s → s → Set
-    0ₛ : s
-    _+ₛ_ : s → s → s
-    _∙ₛ_ : s → s → s
+    _≃s_ : s → s → Set
+    0s : s
+    _+s_ : s → s → s
+    _∙s_ : s → s → s
 
   open Algebra.Structures                using (IsCommutativeMonoid)
-  open Algebra.FunctionProperties _≃ₛ_   using (LeftZero; RightZero)
+  open Algebra.FunctionProperties _≃s_   using (LeftZero; RightZero)
 
   field
-    isCommMon : IsCommutativeMonoid _≃ₛ_ _+ₛ_ 0ₛ
-    zeroˡ : LeftZero 0ₛ _∙ₛ_
-    zeroʳ : RightZero 0ₛ _∙ₛ_
-    _<∙>_ : ∀ {x y u v} → (x ≃ₛ y) → (u ≃ₛ v) → (x ∙ₛ u ≃ₛ y ∙ₛ v)
+    isCommMon : IsCommutativeMonoid _≃s_ _+s_ 0s
+    zeroˡ : LeftZero 0s _∙s_
+    zeroʳ : RightZero 0s _∙s_
+    _<∙>_ : ∀ {x y u v} → (x ≃s y) → (u ≃s v) → (x ∙s u ≃s y ∙s v)
 
-  infix 4 _≃ₛ_; infixl 6 _+ₛ_; infixl 7 _∙ₛ_
+  infix 4 _≃s_; infixl 6 _+s_; infixl 7 _∙s_
 
-  open Algebra.FunctionProperties _≃ₛ_
+  open Algebra.FunctionProperties _≃s_
     using (Idempotent; _DistributesOverˡ_; _DistributesOverʳ_)
 
   field
-     idem   : Idempotent _+ₛ_
+     idem   : Idempotent _+s_
 
-     distl  : _∙ₛ_ DistributesOverˡ _+ₛ_
-     distr  : _∙ₛ_ DistributesOverʳ _+ₛ_
+     distl  : _∙s_ DistributesOverˡ _+s_
+     distr  : _∙s_ DistributesOverʳ _+s_
        -- expands to |∀ a b c →  (a +s b) *s c   ≃s   (a *s c) +s (b *s c)|
 
-  infix  4 _≤ₛ_
-  _≤ₛ_ : s -> s -> Set
-  x ≤ₛ y =  x +ₛ y ≃ₛ y
+  infix  4 _≤s_
+  _≤s_ : s -> s -> Set
+  x ≤s y =  x +s y ≃s y
 
   open Algebra.Structures.IsCommutativeMonoid isCommMon public
     hiding (refl)
     renaming
-     (  isEquivalence  to isEquivₛ
-     ;  assoc          to assocₛ
-     ;  comm           to commₛ
+     (  isEquivalence  to isEquivs
+     ;  assoc          to assocs
+     ;  comm           to comms
      ;  ∙-cong         to _<+>_
-     ;  identityˡ      to identityˡₛ
+     ;  identityˡ      to identityˡs
      )
-  identityʳₛ = proj₂ identity
+  identityʳs = proj₂ identity
 
   sSetoid : Setoid _ _
   sSetoid = record {  Carrier        = s;
-                      _≈_            = _≃ₛ_;
-                      isEquivalence  = isEquivₛ }
+                      _≈_            = _≃s_;
+                      isEquivalence  = isEquivs }
 
-  open IsEquivalence isEquivₛ public
-    hiding (reflexive) renaming (refl to reflₛ ; sym to symₛ ; trans to transₛ)
+  open IsEquivalence isEquivs public
+    hiding (reflexive) renaming (refl to refls ; sym to syms ; trans to transs)
 
-  LowerBounds  = LowerBound _≤ₛ_
+  LowerBounds  = LowerBound _≤s_

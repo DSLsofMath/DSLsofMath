@@ -23,14 +23,14 @@ Square snr shape = SNR
   where
   open SemiNearRing snr
 
-  S = Sq s shape
+  S = M s shape shape
 
   infixr 60 _∙S_
   infixr 50 _+S_
 
 
   _+S_ : ∀ {r c} → M s r c → M s r c → M s r c
-  One x     +S One x₁    = One (x +ₛ x₁)
+  One x     +S One x₁    = One (x +s x₁)
   Row m m₁  +S Row n n₁  = Row (m +S n) (m₁ +S n₁)
   Col m m₁  +S Col n n₁  = Col (m +S n) (m₁ +S n₁)
   Q m00 m01
@@ -39,7 +39,7 @@ Square snr shape = SNR
                             (m10 +S n10) (m11 +S n11)
 
   _∙S_ : ∀ {r m c} → M s r m → M s m c → M s r c
-  One x     ∙S One x₁    = One (x ∙ₛ x₁)
+  One x     ∙S One x₁    = One (x ∙s x₁)
   One x     ∙S Row n n₁  = Row (One x ∙S n) (One x ∙S n₁)
   Row m m₁  ∙S Col n n₁  = m ∙S n +S m₁ ∙S n₁
   Row m m₁  ∙S Q n00 n01
@@ -55,7 +55,7 @@ Square snr shape = SNR
                             (m10 ∙S n00 +S m11 ∙S n10) (m10 ∙S n01 +S m11 ∙S n11)
 
   0S : (r c : Shape) → M s r c
-  0S L L = One 0ₛ
+  0S L L = One 0s
   0S L (B s s₁) = Row (0S L s) (0S L s₁)
   0S (B r r₁) L = Col (0S r L) (0S r₁ L)
   0S (B r r₁) (B s s₁) =
@@ -64,7 +64,7 @@ Square snr shape = SNR
 
   _≃S_ : {r c : Shape} →
         M s r c → M s r c → Set
-  _≃S_ {L} {L} (One x) (One x₁) = x ≃ₛ x₁
+  _≃S_ {L} {L} (One x) (One x₁) = x ≃s x₁
   _≃S_ {L} {(B c₁ c₂)} (Row m m₁) (Row n n₁) =
     _≃S_ m n × _≃S_ m₁ n₁
   _≃S_ {(B r₁ r₂)} {L} (Col m m₁) (Col n n₁) =
@@ -78,7 +78,7 @@ Square snr shape = SNR
 
   reflS : (r c : Shape) →
     {X : M s r c} → X ≃S X
-  reflS L L {X = One x} = reflₛ {x}
+  reflS L L {X = One x} = refls {x}
   reflS L (B c₁ c₂) {X = Row X Y} = reflS L c₁ , reflS L c₂
   reflS (B r₁ r₂) L {X = Col X Y} = reflS r₁ L , reflS r₂ L
   reflS (B r₁ r₂) (B c₁ c₂) {X = Q X Y Z W} =
@@ -87,7 +87,7 @@ Square snr shape = SNR
 
   symS : (r c : Shape) →
     {i j : M s r c} → i ≃S j → j ≃S i
-  symS L L {One x} {One x₁} p = symₛ p
+  symS L L {One x} {One x₁} p = syms p
   symS L (B c₁ c₂) {Row i₁ i₂} {Row j₁ j₂} (p , q) = symS L c₁ p , symS L c₂ q
   symS (B r₁ r₂) L {Col i₁ i} {Col j j₁} (p , q) = symS r₁ L p , symS r₂ L q
   symS (B r r₂) (B c₁ c₂) {Q i₂ i i₃ i₁} {Q j j₁ j₂ j₃} (p , q , x , y) =
@@ -113,7 +113,7 @@ Square snr shape = SNR
       ; trans = transS shape shape }
 
   assocS : (r c : Shape) (x y z : M s r c) → ((x +S y) +S z) ≃S (x +S (y +S z))
-  assocS L L (One x) (One y) (One z) = assocₛ x y z
+  assocS L L (One x) (One y) (One z) = assocs x y z
   assocS L (B c c₁) (Row x x₁) (Row y y₁) (Row z z₁) =
     assocS L c x y z  , assocS L c₁ x₁ y₁ z₁
   assocS (B r r₁) L (Col x x₁) (Col y y₁) (Col z z₁) =
@@ -143,7 +143,7 @@ Square snr shape = SNR
 
   identSˡ : (r c : Shape) (x : M s r c) →
      0S r c +S x ≃S x
-  identSˡ L L (One x) = identityˡₛ x
+  identSˡ L L (One x) = identityˡs x
   identSˡ L (B c c₁) (Row x x₁) = identSˡ L c x , identSˡ L c₁ x₁
   identSˡ (B r r₁) L (Col x x₁) = identSˡ r L x , identSˡ r₁ L x₁
   identSˡ (B r r₁) (B c c₁) (Q x x₁ x₂ x₃) =
@@ -152,7 +152,7 @@ Square snr shape = SNR
 
   commS : (r c : Shape) → (x y : M s r c) →
     (x +S y) ≃S (y +S x)
-  commS L L (One x) (One x₁) = commₛ x x₁
+  commS L L (One x) (One x₁) = comms x x₁
   commS L (B c c₁) (Row x x₁) (Row y y₁) = (commS L c x y) , (commS L c₁ x₁ y₁)
   commS (B r r₁) L (Col x x₁) (Col y y₁) = (commS r L x y) , (commS r₁ L x₁ y₁)
   commS (B r r₁) (B c c₁) (Q x x₁ x₂ x₃) (Q y y₁ y₂ y₃) =
@@ -433,10 +433,10 @@ Square snr shape = SNR
   SNR =
     record
       { s = S
-      ; _≃ₛ_ = _≃S_ {shape} {shape}
-      ; 0ₛ = 0S shape shape
-      ; _+ₛ_ = _+S_
-      ; _∙ₛ_ = _∙S_
+      ; _≃s_ = _≃S_ {shape} {shape}
+      ; 0s = 0S shape shape
+      ; _+s_ = _+S_
+      ; _∙s_ = _∙S_
       ; isCommMon = isCommMonS
       ; zeroˡ = zeroSˡ shape shape shape
       ; zeroʳ = zeroSʳ shape shape shape
