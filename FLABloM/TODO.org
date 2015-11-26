@@ -1,5 +1,8 @@
 * TODO Read Fun with semirings: https://www.cl.cam.ac.uk/~sd601/papers/semirings.pdf
   Implement n
+* TODO Redo the Seminearring for non-square matrices (and define square as a special case on th outside)
+* TODO Read http://arxiv.org/pdf/1312.4818v1.pdf
+* TODO Sätt igång med "rapport" (baserat på mall från https://github.com/patrikja/skeleton )
 * DONE Complete "Square snr (B shape shape₁)"
   CLOSED: [2015-11-26 Thu 09:04]
 ** DONE Do some of the proofs (isCommMon; zeroˡ; zeroʳ; _<∙>_)
