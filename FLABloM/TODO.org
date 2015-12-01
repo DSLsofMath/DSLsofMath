@@ -1,20 +1,46 @@
-* TODO Read Fun with semirings: https://www.cl.cam.ac.uk/~sd601/papers/semirings.pdf
-  Implement n
+* TODO Read "Fun with semirings"
+
+  https://www.cl.cam.ac.uk/~sd601/papers/semirings.pdf
+
+  Block matrices and algorithms using them. Closed semirings (closed
+  rigs).
+
+  Graph algorithms, is the 1 essential for them to work?
+
 * TODO Redo the Seminearring for non-square matrices (and define square as a special case on th outside)
-* TODO Read http://arxiv.org/pdf/1312.4818v1.pdf
-* TODO Sätt igång med "rapport" (baserat på mall från https://github.com/patrikja/skeleton )
-* DONE Complete "Square snr (B shape shape₁)"
-  CLOSED: [2015-11-26 Thu 09:04]
-** DONE Do some of the proofs (isCommMon; zeroˡ; zeroʳ; _<∙>_)
-   CLOSED: [2015-11-26 Thu 09:05]
-*** lifting commutative monoid works for non square shapes?
+
+* TODO Read "Typing linear algebra: a biproduct-oriented approad"
+
+  http://arxiv.org/pdf/1312.4818v1.pdf
+
+  The category Mat_K over some structure K (a Rg in this setting, ring
+  w/o multiplicative identity and negation).
+
+  "Abelian category" / "Category R-Mod of modules over some ring R"
+
+  (intuition: modules: generalised vector spaces, linear maps (arrows between
+  vector spaces) are matrices?)
+
+  objects: shapes
+  arrows: $r <- c$: matrices ~M K r c~
+  composition: matrix multiplication
+  identities: square (identity) matrices $a <- a$
+  - m : r <- c, id : c <- c. m . id : r <- c
+  - m : r <- c, id : r <- r. id . m : r <- c
+
+  What kind of category does adding the closure make?
+
+* TODO Sätt igång med "rapport" (baserat på mall från https://github.com/patrikja/skeleton)
+
 * TODO Try to implement closure (either pentrate the ValiantAgda version or roll your own)
   What is a closed seminearring? for a semiring closure satisfies
   $a^* = 1 + a ∙ a^*$, but in seminearring there is no 1...
 
   $a^+ = a + a^+ ∙ a^+$ <--- ("quadratic equation" in ValiantAgda)
 
+
 * TODO Implement matrix determinant (with block matrices)
+
   there is a block matrix decomposition of the determinant:
 
   det(A B ; C D) = det(A)det(D - CA^{-1}B) (requires A to be invertible)
@@ -28,3 +54,9 @@
   Determinants that work with matrices over things that are noncommutative:
   - Dieudonné determinant: matrices over division rings
   - Quasideterminant: still needs negation and inversion
+
+* DONE Complete "Square snr (B shape shape₁)"
+  CLOSED: [2015-11-26 Thu 09:04]
+** DONE Do some of the proofs (isCommMon; zeroˡ; zeroʳ; _<∙>_)
+   CLOSED: [2015-11-26 Thu 09:05]
+*** lifting commutative monoid works for non square shapes?
