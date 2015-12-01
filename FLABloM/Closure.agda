@@ -11,6 +11,7 @@ open import ClosedSemiNearRingRecord
 
 open import Data.Product
 
+import LiftSNR
 
 Closure : ClosedSemiNearRing → Shape → ClosedSemiNearRing
 Closure csnr shape = CSNR
@@ -18,6 +19,7 @@ Closure csnr shape = CSNR
   open ClosedSemiNearRing csnr using (snr)
 
   SNR = Square snr shape
+
 
   open SemiNearRing snr using (s)
   open SemiNearRing SNR renaming (s to S; _+s_ to _+S_; _∙s_ to _∙S_; _≃s_ to _≃S_)

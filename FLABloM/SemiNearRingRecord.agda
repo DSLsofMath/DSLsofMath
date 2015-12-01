@@ -1,6 +1,5 @@
 module SemiNearRingRecord where
 
-
 import Algebra.FunctionProperties
   using (LeftZero; RightZero; _DistributesOverˡ_;_DistributesOverʳ_; Idempotent)
 import Function using (_on_)
@@ -41,6 +40,7 @@ record SemiNearRing : Set₁ where
 
   field
      idem   : Idempotent _+s_
+       -- ∀ x → x +s x ≃s x
 
      distl  : _∙s_ DistributesOverˡ _+s_
      distr  : _∙s_ DistributesOverʳ _+s_
@@ -59,6 +59,7 @@ record SemiNearRing : Set₁ where
      ;  ∙-cong         to _<+>_
      ;  identityˡ      to identityˡs
      )
+
   identityʳs = proj₂ identity
 
   sSetoid : Setoid _ _
