@@ -38,6 +38,12 @@ open import LiftSNR snr
   ≈⟨ identSˡ r L x ⟩
     x
   ∎) ,
-  {!!}
-  -- 0S r₁ r ∙S x +S 1S ∙S x₁ ≃S x₁
+  (let open EqReasoning setoidS
+  in begin
+    0S r₁ r ∙S x +S 1S ∙S x₁
+  ≈⟨ <+S> r₁ L (zeroSˡ r₁ r L x) (∙-identitylS x₁) ⟩
+    0S r₁ L +S x₁
+  ≈⟨ identSˡ r₁ L x₁ ⟩
+    x₁
+  ∎)
 ∙-identitylS {B r r₁} {B c c₁} (Q x x₁ x₂ x₃) = {!!}
