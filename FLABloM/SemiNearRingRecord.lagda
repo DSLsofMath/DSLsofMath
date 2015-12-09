@@ -1,3 +1,4 @@
+\begin{code}
 module SemiNearRingRecord where
 
 import Algebra.FunctionProperties
@@ -71,3 +72,4 @@ record SemiNearRing : Set₁ where
     hiding (reflexive) renaming (refl to refls ; sym to syms ; trans to transs)
 
   LowerBounds  = LowerBound _≤s_
+\end{code}

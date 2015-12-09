@@ -1,21 +1,32 @@
+%if False
+\begin{code}
 module Shape where
 open import Data.Product
 open import Data.Maybe
 
--- shape of matrix
-data Shape : Set where
-  -- 1
-  L : Shape
-  -- s₁ + s₂
-  B : (s₁ s₂ : Shape) → Shape
+\end{code}
+%endif
 
+In this development matrix dimensions are represented not using
+natural numbers but using a datatype that follows the
+structure of the block matrices more closely: a non-empty binary tree |Shape|.
+\begin{code}
+data Shape : Set where
+  L : Shape
+  B : (s₁ s₂ : Shape) → Shape
+\end{code}
+The leafs of the tree, |L|, represent 1's
+and nodes, |B s₁ s₂|, represent the sum of the two subtrees: |s₁ + s₂|
+
+%if False
+\begin{code}
 open import Data.Nat
 
 toNat : Shape → ℕ
 toNat L         = 1
 toNat (B s s₁)  = toNat s + toNat s₁
 
--- | Divide in two (almost) equal parts
+-- Divide in two (almost) equal parts
 split : ℕ  ->  ℕ × ℕ
 split zero       = (zero , zero)
 split (suc zero) = (suc zero , zero)
@@ -38,3 +49,5 @@ fromNat n with split n
 -- TODO: perhaps add an empty shape (but probably in a separate
 -- experiment file because many things change in the matrix
 -- representation).
+\end{code}
+%endif

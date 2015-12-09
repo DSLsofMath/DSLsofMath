@@ -1,30 +1,50 @@
+%if False
+\begin{code}
 -- Matrices indexed by shape
 module Matrix where
 
 open import Shape
+\end{code}
+%endif
 
--- Matrix representation
+Matrices are parametriced by the type of objects they contain and
+indexed by the shape in both dimensions
+\savecolumns[Matrix]
+\begin{code}
 data M (a : Set) : (rows cols : Shape) → Set where
-  -- 1x1 matrices
-  One
-    : a → M a L L
+  One : a → M a L L
+\end{code}
+Row and column matrices are built from smaller matrices which are
+either 1-by-1 matrices or further row respectively column matrices
+\restorecolumns[Matrix]
+\begin{code}
+  Row : ∀ {col₁ col₂ : Shape} →
+    M a L col₁ → M a L col₂ →
+    M a L (B col₁ col₂)
 
-  -- 1xn matrices
-  Row
-    : ∀ {c₁ c₂} → M a L c₁ → M a L c₂ → M a L (B c₁ c₂)
+  Col : ∀ {row₁ row₂ : Shape} →
+    M a row₁ L →
+    M a row₂ L →
+    M a (B row₁ row₂) L
+\end{code}
+block matrices of other shapes are built using 4 smaller matrices
+\[\left[
+  \begin{array}{cc}
+    X_{11} & X_{12} \\
+    X_{21} & X_{22}
+  \end{array}
+\right]\]
+\restorecolumns[Matrix]
+\begin{code}
+  Q : ∀ {row₁ row₂ col₁ col₂ : Shape} →
+    M a row₁ col₁ → M a row₁ col₂ →
+    M a row₂ col₁ → M a row₂ col₂ →
+    M a (B row₁ row₂) (B col₁ col₂)
 
-  -- nx1 matrices
-  Col
-    : ∀ {r₁ r₂} → M a r₁ L → M a r₂ L → M a (B r₁ r₂) L
+\end{code}
 
-  -- nxm matrices
-  Q
-    : ∀ {r₁ r₂ c₁ c₂} →
-      M a r₁ c₁ → M a r₁ c₂ →
-      M a r₂ c₁ → M a r₂ c₂ →
-      M a (B r₁ r₂) (B c₁ c₂)
-
-
+%if False
+\being{code}
 -- Matrix addition and multiplication need the corresponding
 -- operations on the underlying type
 module Operations (T : Set) (_*T_ : T → T → T) (_+T_ : T → T → T) where
@@ -73,3 +93,5 @@ module Operations (T : Set) (_*T_ : T → T → T) (_+T_ : T → T → T) where
     mat₁ : MT tre' två
     mat₁ = Q  (One t)                (One t)
               (Col (One t) (One t))  (Col (One t) (One t))
+\end{code}
+%endif

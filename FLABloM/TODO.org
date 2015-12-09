@@ -5,7 +5,7 @@
   Block matrices and algorithms using them. Closed semirings (closed
   rigs).
 
-2015-12-01: Prioritet 2!
+  2015-12-01: Prioritet 2!
 
 
   Graph algorithms, is the 1 essential for them to work?
@@ -33,9 +33,11 @@
 
   What kind of category does adding the closure make?
 
-* TODO Sätt igång med "rapport" (baserat på mall från https://github.com/patrikja/skeleton)
+* TODO Sätt igång med "rapport"
 
-2015-12-01: Prioritet 1!
+  (baserat på mall från https://github.com/patrikja/skeleton)
+
+  2015-12-01: Prioritet 1!
 
 * TODO Try to implement closure (either pentrate the ValiantAgda version or roll your own)
   What is a closed seminearring? for a semiring closure satisfies

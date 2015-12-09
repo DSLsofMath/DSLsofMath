@@ -1,0 +1,7 @@
+%format SomeNameInTheCode    = the name or LaTex code to show
+%format undefined = un
+%format bottom    = "\ensuremath{\Varid{\perp}}"
+%format +++ = "\mathbin{+\hspace{-1.75ex}+\hspace{-1.75ex}+}"
+%format x1
+%format x2
+%format x3

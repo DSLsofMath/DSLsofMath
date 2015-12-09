@@ -1,3 +1,4 @@
+\begin{code}
 open import SemiNearRingRecord
 
 -- Lift a seminearring to a matrix
@@ -36,17 +37,17 @@ _∙S_ : ∀ {r m c} → M s r m → M s m c → M s r c
 One x     ∙S One x₁    = One (x ∙s x₁)
 One x     ∙S Row n n₁  = Row (One x ∙S n) (One x ∙S n₁)
 Row m m₁  ∙S Col n n₁  = m ∙S n +S m₁ ∙S n₁
-Row m m₁  ∙S Q n00 n01
-              n10 n11 = Row (m ∙S n00 +S m₁ ∙S n10) (m ∙S n01 +S m₁ ∙S n11)
+Row m m₁  ∙S Q n11 n12
+               n21 n22 = Row (m ∙S n11 +S m₁ ∙S n21) (m ∙S n12 +S m₁ ∙S n22)
 Col m m₁  ∙S One x     = Col (m ∙S One x) (m₁ ∙S One x)
 Col m m₁  ∙S Row n n₁  = Q (m ∙S n)   (m ∙S n₁)
                           (m₁ ∙S n)  (m₁ ∙S n₁)
-Q m00 m01
-  m10 m11 ∙S Col n n₁  = Col (m00 ∙S n +S m01 ∙S n₁) (m10 ∙S n +S m11 ∙S n₁)
-Q m00 m01
-  m10 m11 ∙S Q n00 n01
-              n10 n11 = Q (m00 ∙S n00 +S m01 ∙S n10) (m00 ∙S n01 +S m01 ∙S n11)
-                          (m10 ∙S n00 +S m11 ∙S n10) (m10 ∙S n01 +S m11 ∙S n11)
+Q m11 m12
+  m21 m22 ∙S Col n n₁  = Col (m11 ∙S n +S m12 ∙S n₁) (m21 ∙S n +S m22 ∙S n₁)
+Q m11 m12
+  m21 m22 ∙S Q n11 n12
+              n21 n22 = Q (m11 ∙S n11 +S m12 ∙S n21) (m11 ∙S n12 +S m12 ∙S n22)
+                          (m21 ∙S n11 +S m22 ∙S n21) (m21 ∙S n12 +S m22 ∙S n22)
 
 0S : (r c : Shape) → M s r c
 0S L L = One 0s
@@ -60,7 +61,7 @@ _≃S_ : {r c : Shape} →
       M s r c → M s r c → Set
 _≃S_ {L} {L} (One x) (One x₁) = x ≃s x₁
 _≃S_ {L} {(B c₁ c₂)} (Row m m₁) (Row n n₁) =
-  _≃S_ m n × _≃S_ m₁ n₁
+  m ≃S n × m₁ ≃S n₁
 _≃S_ {(B r₁ r₂)} {L} (Col m m₁) (Col n n₁) =
   _≃S_ m n × _≃S_ m₁ n₁
 _≃S_ {(B r₁ r₂)} {(B c₁ c₂)} (Q m00 m01 m10 m11) (Q n00 n01 n10 n11) =
@@ -149,6 +150,18 @@ setoidS {r} {c} =
     ; isEquivalence =
       record
         { refl = reflS r c ; sym = symS r c ; trans = transS r c } }
+
+identSʳ : (r c : Shape) (x : M s r c) →
+   x +S 0S r c ≃S x
+identSʳ r c x =
+  let open EqReasoning setoidS
+  in begin
+    x +S 0S r c
+  ≈⟨ commS r c x (0S r c) ⟩
+    0S r c +S x
+  ≈⟨ identSˡ r c x ⟩
+    x
+  ∎
 
 zerolHelp : ∀ (r : Shape) {m m' c : Shape}
   (x : M s m c)
@@ -245,7 +258,6 @@ zeroSʳ (B a a₁) (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) =
   (<∙S> L L c {One x} {One x₁} {u} {v} p q) ,
   <∙S> L L c₁ {One x} {One x₁} {u₁} {v₁} p q₁
 <∙S> L (B b b₁) L {Row x x₁} {Row y y₁} {Col u u₁} {Col v v₁} (p , p₁) (q , q₁) =
-  -- Row x x₁ ∙S Col u u₁ ≃S Row y y₁ ∙S Col v v₁
   let
     open EqReasoning setoidS
     ih = <∙S> _ _ _ {x} {y} {u} {v} p q
@@ -401,3 +413,45 @@ distrS {B r r₁} {B m m₁} {B c c₁} (Q x x₁ x₂ x₃) (Q y y₁ y₂ y₃
   distrHelp x₁ y z x₃ y₁ z₁ (distrS x₁ y z) (distrS x₃ y₁ z₁) ,
   distrHelp x y₂ z₂ x₂ y₃ z₃ (distrS x y₂ z₂) (distrS x₂ y₃ z₃) ,
   distrHelp x₁ y₂ z₂ x₃ y₃ z₃ (distrS x₁ y₂ z₂) (distrS x₃ y₃ z₃)
+
+Square : Shape → SemiNearRing
+Square shape = SNR
+  where
+
+  isEquivS =
+    record
+      { refl = reflS shape shape
+      ; sym = symS shape shape
+      ; trans = transS shape shape }
+
+  isSemgroupS =
+    record
+      { isEquivalence = isEquivS
+      ; assoc = assocS shape shape
+      ; ∙-cong = <+S> shape shape }
+
+  isCommMonS =
+    record
+      { isSemigroup = isSemgroupS
+      ; identityˡ = identSˡ shape shape
+      ; comm = commS shape shape }
+
+  SNR : SemiNearRing
+  SNR =
+    record
+      { s = S
+      ; _≃s_ = _≃S_ {shape} {shape}
+      ; 0s = 0S shape shape
+      ; _+s_ = _+S_
+      ; _∙s_ = _∙S_
+      ; isCommMon = isCommMonS
+      ; zeroˡ = zeroSˡ shape shape shape
+      ; zeroʳ = zeroSʳ shape shape shape
+      ; _<∙>_ = <∙S> shape shape shape
+      ; idem = idemS shape shape
+      ; distl = distlS {shape} {shape}
+      ; distr = distrS {shape} {shape}
+      }
+
+
+\end{code}

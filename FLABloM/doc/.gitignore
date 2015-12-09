@@ -1,0 +1,12 @@
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.pag
+*.ptb
+paper.tex
+paper.pdf

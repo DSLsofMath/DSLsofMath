@@ -1,3 +1,5 @@
+\begin{code}
+
 module ClosedSemiNearRingRecord where
 
 open import Relation.Binary.PropositionalEquality using (_≡_; refl)
@@ -34,3 +36,5 @@ record ClosedSemiNearRing : Set₁ where
   closureHasAll : {w : s} → Eq w (closure w)
   closureHasAll = correct entireQ
   -- ~ a+ = a +s a+ ‌∙s a+
+
+\end{code}

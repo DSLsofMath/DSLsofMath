@@ -1,3 +1,5 @@
+\begin{code}
+
 module SemiRingRecord where
 
 import Algebra.FunctionProperties
@@ -28,3 +30,5 @@ record SemiRing : Set₁ where
   field
     ∙-identityl : LeftIdentity 1s _∙s_
     ∙-identityr : RightIdentity 1s _∙s_
+
+\end{code}
