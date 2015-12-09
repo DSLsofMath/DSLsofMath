@@ -30,8 +30,8 @@ Row m m₁  +S Row n n₁  = Row (m +S n) (m₁ +S n₁)
 Col m m₁  +S Col n n₁  = Col (m +S n) (m₁ +S n₁)
 Q m00 m01
   m10 m11 +S Q n00 n01
-              n10 n11 = Q (m00 +S n00) (m01 +S n01)
-                          (m10 +S n10) (m11 +S n11)
+               n10 n11 = Q (m00 +S n00) (m01 +S n01)
+                           (m10 +S n10) (m11 +S n11)
 
 _∙S_ : ∀ {r m c} → M s r m → M s m c → M s r c
 One x     ∙S One x₁    = One (x ∙s x₁)
@@ -41,47 +41,37 @@ Row m m₁  ∙S Q n11 n12
                n21 n22 = Row (m ∙S n11 +S m₁ ∙S n21) (m ∙S n12 +S m₁ ∙S n22)
 Col m m₁  ∙S One x     = Col (m ∙S One x) (m₁ ∙S One x)
 Col m m₁  ∙S Row n n₁  = Q (m ∙S n)   (m ∙S n₁)
-                          (m₁ ∙S n)  (m₁ ∙S n₁)
+                           (m₁ ∙S n)  (m₁ ∙S n₁)
 Q m11 m12
   m21 m22 ∙S Col n n₁  = Col (m11 ∙S n +S m12 ∙S n₁) (m21 ∙S n +S m22 ∙S n₁)
 Q m11 m12
   m21 m22 ∙S Q n11 n12
-              n21 n22 = Q (m11 ∙S n11 +S m12 ∙S n21) (m11 ∙S n12 +S m12 ∙S n22)
-                          (m21 ∙S n11 +S m22 ∙S n21) (m21 ∙S n12 +S m22 ∙S n22)
+               n21 n22 = Q (m11 ∙S n11 +S m12 ∙S n21) (m11 ∙S n12 +S m12 ∙S n22)
+                           (m21 ∙S n11 +S m22 ∙S n21) (m21 ∙S n12 +S m22 ∙S n22)
 
 0S : (r c : Shape) → M s r c
-0S L L = One 0s
-0S L (B s s₁) = Row (0S L s) (0S L s₁)
-0S (B r r₁) L = Col (0S r L) (0S r₁ L)
-0S (B r r₁) (B s s₁) =
-    Q (0S r s) (0S r s₁)
-      (0S r₁ s) (0S r₁ s₁)
+0S L        L        = One 0s
+0S L        (B s s₁) = Row (0S L s)  (0S L s₁)
+0S (B r r₁) L        = Col (0S r L)  (0S r₁ L)
+0S (B r r₁) (B s s₁) =  Q  (0S r s)  (0S r s₁)
+                           (0S r₁ s) (0S r₁ s₁)
 
-_≃S_ : {r c : Shape} →
-      M s r c → M s r c → Set
-_≃S_ {L} {L} (One x) (One x₁) = x ≃s x₁
-_≃S_ {L} {(B c₁ c₂)} (Row m m₁) (Row n n₁) =
-  m ≃S n × m₁ ≃S n₁
-_≃S_ {(B r₁ r₂)} {L} (Col m m₁) (Col n n₁) =
-  _≃S_ m n × _≃S_ m₁ n₁
-_≃S_ {(B r₁ r₂)} {(B c₁ c₂)} (Q m00 m01 m10 m11) (Q n00 n01 n10 n11) =
-  _≃S_ m00 n00 ×
-  _≃S_ m01 n01 ×
-  _≃S_ m10 n10 ×
-  _≃S_ m11 n11
+_≃S_ : {r c : Shape} → M s r c → M s r c → Set
+_≃S_ {L}         {L}          (One x)    (One x₁)   =  x ≃s x₁
+_≃S_ {L}         {(B c₁ c₂)}  (Row m m₁) (Row n n₁) =  (m ≃S n) × (m₁ ≃S n₁)
+_≃S_ {(B r₁ r₂)} {L}          (Col m m₁) (Col n n₁) =  (m ≃S n) × (m₁ ≃S n₁)
+_≃S_ {(B r₁ r₂)} {(B c₁ c₂)}  (Q m00 m01 m10 m11)
+                              (Q n00 n01 n10 n11)   =  (m00 ≃S n00) × (m01 ≃S n01) ×
+                                                       (m10 ≃S n10) × (m11 ≃S n11)
 
+reflS : (r c : Shape) → {X : M s r c} → X ≃S X
+reflS L         L         {X = One x}     = refls {x}
+reflS L         (B c₁ c₂) {X = Row X Y}   = reflS L c₁  , reflS L c₂
+reflS (B r₁ r₂) L         {X = Col X Y}   = reflS r₁ L  , reflS r₂ L
+reflS (B r₁ r₂) (B c₁ c₂) {X = Q X Y Z W} = reflS r₁ c₁ , reflS r₁ c₂
+                                          , reflS r₂ c₁ , reflS r₂ c₂
 
-reflS : (r c : Shape) →
-  {X : M s r c} → X ≃S X
-reflS L L {X = One x} = refls {x}
-reflS L (B c₁ c₂) {X = Row X Y} = reflS L c₁ , reflS L c₂
-reflS (B r₁ r₂) L {X = Col X Y} = reflS r₁ L , reflS r₂ L
-reflS (B r₁ r₂) (B c₁ c₂) {X = Q X Y Z W} =
-  reflS r₁ c₁ , reflS r₁ c₂ ,
-  reflS r₂ c₁ , reflS r₂ c₂
-
-symS : (r c : Shape) →
-  {i j : M s r c} → i ≃S j → j ≃S i
+symS : (r c : Shape) → {i j : M s r c} → i ≃S j → j ≃S i
 symS L L {One x} {One x₁} p = syms p
 symS L (B c₁ c₂) {Row i₁ i₂} {Row j₁ j₂} (p , q) = symS L c₁ p , symS L c₂ q
 symS (B r₁ r₂) L {Col i₁ i} {Col j j₁} (p , q) = symS r₁ L p , symS r₂ L q

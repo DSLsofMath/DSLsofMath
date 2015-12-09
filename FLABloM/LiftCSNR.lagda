@@ -1,3 +1,5 @@
+\begin{code}
+
 open import SemiNearRingRecord
 open import ClosedSemiNearRingRecord
 
@@ -28,13 +30,17 @@ EqS W C = W +S (C ∙S C) ≃S C
 
 entireQS : (ss : Shape) (W : M s ss ss) → ∃ (EqS W)
 entireQS L (One x) with entireQ x
-... | c , pf = (One c) , pf
-entireQS (B ss ss₁) (Q w w₁ w₂ w₃) =
+... | (c , pf) = ((One c) , pf)
+entireQS (B ss1 ss2) (Q w w₁ w₂ w22) =
   let
-    wc , pf = entireQS ss w
-    w1c , pf1 = {!entireQS !}
+    (w11  , pf11 ) = entireQS ss1  w
+    (w11c , pf11c) = entireQS {!!} {!!}  --
     c21 = {!!}
     c22 = {!!}
+    (w22  , pf22 ) = entireQS ss2 w22
+    (w22c , pf22c) = entireQS {!!} {!!}
   in
   (Q {!!} {!!} {!!} {!!}) ,
   ({!!} , {!!} , {!!} , {!!})
+
+\end{code}
