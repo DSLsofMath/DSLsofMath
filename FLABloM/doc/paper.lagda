@@ -135,5 +135,6 @@ Somebody helped with something.
 The reviewers suggested many improvements to the paper.
 
 %------------------------------------------------------------------------------
-
+\bibliographystyle{abbrvnat}
+\bibliography{paper}
 \end{document}

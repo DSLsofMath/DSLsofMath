@@ -31,10 +31,11 @@ EqS W C = W +S (C ∙S C) ≃S C
 entireQS : (ss : Shape) (W : M s ss ss) → ∃ (EqS W)
 entireQS L (One x) with entireQ x
 ... | (c , pf) = ((One c) , pf)
-entireQS (B ss1 ss2) (Q w w₁ w₂ w22) =
+entireQS (B ss1 ss2) (Q w11 w12 w21 w22) =
   let
-    (w11  , pf11 ) = entireQS ss1  w
+    (w11  , pf11 ) = entireQS ss1  w11
     (w11c , pf11c) = entireQS {!!} {!!}  --
+    c12 = {!!}
     c21 = {!!}
     c22 = {!!}
     (w22  , pf22 ) = entireQS ss2 w22
