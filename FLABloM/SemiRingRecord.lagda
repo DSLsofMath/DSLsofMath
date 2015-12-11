@@ -28,7 +28,7 @@ record SemiRing : Set₁ where
   open Algebra.FunctionProperties _≃s_ using (LeftIdentity; RightIdentity)
 
   field
-    ∙-identityl : LeftIdentity 1s _∙s_
-    ∙-identityr : RightIdentity 1s _∙s_
+    ∙-identˡs : LeftIdentity 1s _∙s_
+    ∙-identʳs : RightIdentity 1s _∙s_
 
 \end{code}
