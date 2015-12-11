@@ -20,15 +20,14 @@ open SemiNearRing snr
 open import LiftSNR snr renaming (Square to SquareSNR) public
 
 1S : {shape : Shape} → M s shape shape
-1S {L} = One 1s
-1S {B shape shape₁} =
-  Q 1S       (0S _ _)
-    (0S _ _) 1S
+1S {L}              =  One 1s
+1S {B shape shape₁} =  Q 1S       (0S _ _)
+                         (0S _ _) 1S
 
 ∙-identitylS : {r c : Shape} (x : M s r c) → (1S ∙S x) ≃S x
-∙-identitylS {L} {L} (One x) = ∙-identˡs x
-∙-identitylS {L} {B c c₁} (Row x x₁) = ∙-identitylS x , ∙-identitylS x₁
-∙-identitylS {B r r₁} {L} (Col x x₁) =
+∙-identitylS {L}      {L}      (One x)    = ∙-identˡs x
+∙-identitylS {L}      {B c c₁} (Row x x₁) = ∙-identitylS x , ∙-identitylS x₁
+∙-identitylS {B r r₁} {L}      (Col x x₁) =
   (let open EqReasoning setoidS
   in begin
     1S ∙S x +S 0S r r₁ ∙S x₁
@@ -136,10 +135,10 @@ open import LiftSNR snr renaming (Square to SquareSNR) public
   ∎)
 
 Square : Shape → SemiRing
-Square shape =
-  record
-    { snr = SquareSNR shape
-    ; 1s = 1S ; ∙-identˡs = ∙-identitylS
-    ; ∙-identʳs = ∙-identityrS }
+Square shape = record
+  { snr = SquareSNR shape
+  ; 1s = 1S
+  ; ∙-identˡs = ∙-identitylS
+  ; ∙-identʳs = ∙-identityrS }
 
 \end{code}
