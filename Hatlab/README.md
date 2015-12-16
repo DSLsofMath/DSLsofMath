@@ -21,6 +21,9 @@ or
 `cabal repl` or `stack ghci` then
 
     > plot [Fun (\x -> x+1) "Fun!"]
+    > plot [Fun (sin.(pi*)) "sin", Fun (cos.(pi*)) "cos"]
+
+Default plot interval is [-1,1].
 
 ![example plot][3]
 

@@ -10,10 +10,13 @@ import qualified Data.Vector.Storable as V
 
 -- Low-level things to start and connect to gnuplot ----------------------------
 
+-- gnuplotPath = "/usr/local/bin/gnuplot"
+gnuplotPath = "/usr/bin/gnuplot"
+
 handle :: Handle
 handle = unsafePerformIO $
            do (inp,_out,_err,pid) <-
-                  runInteractiveProcess "/usr/local/bin/gnuplot" [] Nothing Nothing
+                  runInteractiveProcess gnuplotPath [] Nothing Nothing
               hSetBinaryMode inp False
               hSetBuffering inp LineBuffering
               hPutStrLn inp "set multiplot\nplot 1\nclear"
@@ -52,7 +55,7 @@ instance Plottable BasicPlot where
 
           p :: BasicPlot -> String
           p (Fun f _) = plotFun xs (V.map f xs)
-              where xs = linspace 1001 (-1,1)
+              where xs = linspace 1001 (-1,1)      -- Plot interval "hard-coded"
           p (Pts xs f lab) = plotFun xs (V.map f xs)
           p (Pts2 xs ys lab) = plotFun xs ys
 
