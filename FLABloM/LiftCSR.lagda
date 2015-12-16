@@ -4,6 +4,8 @@ open import ClosedSemiRingRecord
 module LiftCSR (csr : ClosedSemiRing) where
 
 open import Data.Product
+import Relation.Binary.EqReasoning as EqReasoning
+
 
 open import Shape
 open import Matrix
@@ -20,7 +22,7 @@ open SemiNearRing snr
 open LiftSR sr
 
 EqS : ∀ {sh} → M s sh sh → M s sh sh → Set
-EqS w c = 1S +S w *S c ≃S c
+EqS w c = oneS +S w *S c ≃S c
 
 entireQS : ∀ {sh} (w : M s sh sh) → Σ (M s sh sh) λ c → EqS w c
 entireQS {L} (One w) =
@@ -34,7 +36,21 @@ entireQS {B sh sh₁} (Q w11 w12 w21 w22) =
   in
   Q (w11* +S w11* *S w12 *S Δ* *S w21 *S w11*) (w11* *S w12 *S Δ*)
     (Δ* *S w21 *S w11*)                        Δ* ,
-  {!!} , {!!} , {!!} , {!!}
+  {!!} ,
+  (let open EqReasoning setoidS
+  in begin
+    zerS _ _ +S w11 *S w11* *S w12 *S Δ* +S w12 *S Δ*
+  ≈⟨ {!!} ⟩ -- 0S identl
+    w11 *S w11* *S w12 *S Δ* +S w12 *S Δ*
+  ≈⟨ {!!} ⟩ -- +S commutes
+    w12 *S Δ* +S w11 *S w11* *S w12 *S Δ*
+  ≈⟨ {!!} ⟩ -- distribr backwards
+    (oneS +S w11 *S w11*) *S w12 *S Δ*
+  ≈⟨ {!!} ⟩ -- p11 on left of *S
+    w11* *S w12 *S Δ*
+  ∎) ,
+  {!!} ,
+  {!!}
 -- ...
 
 -- 0 + w11 * w11* * w12 * Δ* + w12 * Δ* = w11* * w12 * Δ*
