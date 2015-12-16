@@ -10,7 +10,7 @@ $(NAME).tex: paper.format ../*.lagda
 	$(LHS2TEX) --agda $< > $@
 
 %.pdf: %.tex %.bib
-	$(LATEXMK) -pdf $<
+	$(LATEXMK) -xelatex $<
 
 clean:
 	latexmk -C $(NAME).tex

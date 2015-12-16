@@ -7,8 +7,8 @@ open import Shape
 \end{code}
 %endif
 
-Matrices are parametriced by the type of objects they contain and
-indexed by the shape in both dimensions
+\paragraph{Matrices} Matrices are parametriced by the type of objects
+they contain and indexed by a |Shape| for each dimension
 \savecolumns[Matrix]
 \begin{code}
 data M (a : Set) : (rows cols : Shape) → Set where
@@ -28,7 +28,7 @@ either 1-by-1 matrices or further row respectively column matrices
     M a (B row₁ row₂) L
 \end{code}
 block matrices of other shapes are built using 4 smaller matrices
-\[\left[
+\[X = \left[
   \begin{array}{cc}
     X_{11} & X_{12} \\
     X_{21} & X_{22}

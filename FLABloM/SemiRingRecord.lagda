@@ -1,5 +1,5 @@
+%if False
 \begin{code}
-
 module SemiRingRecord where
 
 import Algebra.FunctionProperties
@@ -15,7 +15,14 @@ open import Data.Product renaming (_,_ to _,,_) -- just to avoid clash with othe
 open import Preliminaries
 
 open import SemiNearRingRecord
+\end{code}
+%endif
 
+\paragraph{SemiRings}
+
+For |SemiRing| we extend the |SemiNearRing| record with a
+multiplicative identity |1s|.
+\begin{code}
 record SemiRing : Set₁ where
   field
     snr : SemiNearRing
@@ -23,12 +30,12 @@ record SemiRing : Set₁ where
   open SemiNearRing snr
 
   field
-    1s : s
+    ones : s
 
-  open Algebra.FunctionProperties _≃s_ using (LeftIdentity; RightIdentity)
+  open Algebra.FunctionProperties _≃s_
+    using (LeftIdentity; RightIdentity)
 
   field
-    ∙-identˡs : LeftIdentity 1s _∙s_
-    ∙-identʳs : RightIdentity 1s _∙s_
-
+    *-identls : LeftIdentity ones _*s_
+    *-identrs : RightIdentity ones _*s_
 \end{code}

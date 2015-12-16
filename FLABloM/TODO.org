@@ -45,6 +45,10 @@
 
   $a^+ = a + a^+ ∙ a^+$ <--- ("quadratic equation" in ValiantAgda)
 
+* TODO Look at empty shapes
+  perhaps add an empty shape (but probably in a separate
+  experiment file because many things change in the matrix
+  representation).
 
 * TODO Implement matrix determinant (with block matrices)
 

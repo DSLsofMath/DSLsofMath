@@ -2,9 +2,9 @@
 
 %let submit = False
 %if submit
-\documentclass[times,authoryear]{sigplanconf}
+\documentclass[onecolumn,times,authoryear]{sigplanconf}
 %else
-\documentclass[preprint,times]{sigplanconf}
+\documentclass[onecolumn,preprint,times]{sigplanconf}
 %endif
 
 %%% Standard definitions from the lhs2TeX installation
@@ -13,9 +13,12 @@
 %include paper.format
 
 \usepackage{url}
-\usepackage{ucs}
-\usepackage[utf8x]{inputenc}
+% \usepackage{ucs}
+% \usepackage[utf8x]{inputenc}
+\usepackage{unicode-math}
 \usepackage{autofe}
+\usepackage{stmaryrd}
+
 %if techreport
 \usepackage{TRtitlepage}
 %endif
@@ -102,7 +105,7 @@ used was restricted to matrices of size $2^n \times 2^n$.
 %
 This work extends the matrix to allow for all sizes of matrices and
 applies the techniques to other algorithms that can be described as
-semirings or seminearrings with inspiration from \cite{dolan???fun}.
+semirings or seminearrings with inspiration from \cite{dolan2013fun}.
 \section{Matrices}
 
 %include ../Shape.lagda
@@ -110,15 +113,24 @@ semirings or seminearrings with inspiration from \cite{dolan???fun}.
 %include ../Matrix.lagda
 
 \section{Structures}
+\label{sec:structs}
 
-We define a heirarchy of rings as records in Agda. Using algebraic
-structures from the Agda standard library a record for seminnearrings
-is built and then extended to a record for semirings.
+We define a hierarchy of rings as records in Agda. Using algebraic
+structures from the Agda standard library a record for semi-near-rings
+is built and then extended for semi-rings and closed semi-rings.
 
-\paragraph{Seminearrings}
+%include ../SemiNearRingRecord.lagda
 
-The weakest structure used in this work are seminnearrings.
+%include ../SemiRingRecord.lagda
 
+%include ../ClosedSemiRingRecord.lagda
+
+\section{Lifting}
+
+We lift the different structures from section~\ref{sec:structs} to
+work on matrices with the same shape in both dimensions.
+
+%include ../LiftSNR.lagda
 
 \section{Conclusions and related work}
 \label{sec:conc}

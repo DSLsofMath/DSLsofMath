@@ -21,7 +21,7 @@ record ClosedSemiNearRing : Set₁ where
   open SemiNearRing snr
 
   Eq : s → s → Set
-  Eq w c = w +s c ∙s c ≃s c
+  Eq w c = w +s c *s c ≃s c
 
   Closure : s → s → Set
   Closure w c = Least _≤s_ (Eq w) c

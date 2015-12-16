@@ -266,7 +266,7 @@
 
 \DeclareOption{numbers}{\@setflag \@authoryear = \@false}
 
-%%%\DeclareOption{onecolumn}{\@setflag \@onecolumn = \@true}
+\DeclareOption{onecolumn}{\@setflag \@onecolumn = \@true}
 
 \DeclareOption{preprint}{\@setflag \@preprint = \@true}
 
@@ -648,7 +648,7 @@
     personal or classroom use is granted without fee provided that copies are
     not made or distributed for profit or commercial advantage and that copies
     bear this notice and the full citation on the first page. Copyrights for
-    third-party components of this work must be honored. 
+    third-party components of this work must be honored.
     For all other uses, contact the owner/author(s).}%
   \toappear{%
     \noindent \@permission \par
@@ -661,7 +661,7 @@
 % The following permission notices are
 % for the traditional copyright transfer agreement option.
 
-% Exclusive license and permission-to-publish 
+% Exclusive license and permission-to-publish
 % give more complicated permission notices.
 % These are not covered here.
 
@@ -1144,7 +1144,7 @@
     \noindent
     \@authori = 4
     {\let \\ = ,%
-     \loop 
+     \loop
        \textbf{\@name{\@authorname\romannumeral\@authori}},
        \@name{\@authoraffil\romannumeral\@authori},
        email: \@name{\@authoremail\romannumeral\@authori}.%
@@ -1289,7 +1289,7 @@
 %                               environment. Also add to template so it will
 %                               happen with natbib.
 
-%  2009.09.30   PCA     2.3     Remove \softraggedright from thebibliography.  
+%  2009.09.30   PCA     2.3     Remove \softraggedright from thebibliography.
 %                               Just include in the template.
 
 %  2010.05.24   PCA     2.4     Obfuscate class author's email address.
@@ -1307,5 +1307,3 @@
 %  2013.07.02   TU      2.8     More changes to permission/copyright notes.
 %                               Replaced ambiguous \authorpermission with
 %                               \exclusivelicense and \permissiontopublish
- 
-

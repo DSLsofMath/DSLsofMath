@@ -3,13 +3,15 @@
 module Shape where
 open import Data.Product
 open import Data.Maybe
+open import Data.Nat
 
 \end{code}
 %endif
 
-In this development matrix dimensions are represented not using
-natural numbers but using a datatype that follows the
-structure of the block matrices more closely: a non-empty binary tree |Shape|.
+\paragraph{Shape} In this development matrix dimensions are
+represented not using natural numbers but using a datatype that
+follows the structure of the block matrices more closely: a non-empty
+binary tree |Shape|.
 \begin{code}
 data Shape : Set where
   L : Shape
@@ -18,23 +20,30 @@ data Shape : Set where
 The leafs of the tree, |L|, represent 1's
 and nodes, |B s₁ s₂|, represent the sum of the two subtrees: |s₁ + s₂|
 
-%if False
+Computing the natural number corresponding to the shape is done easily
+using |toNat|.
 \begin{code}
-open import Data.Nat
-
 toNat : Shape → ℕ
 toNat L         = 1
 toNat (B s s₁)  = toNat s + toNat s₁
-
--- Divide in two (almost) equal parts
+\end{code}
+However there are many representation of a non-zero natural number as
+a shape, here we split the number in almost two equal parts to find
+a corresponding shape.
+\begin{code}
 split : ℕ  ->  ℕ × ℕ
 split zero       = (zero , zero)
 split (suc zero) = (suc zero , zero)
 split (suc (suc n)) with split n
 ... | (n1 , n2)  = (suc n1 , suc n2)
 
-
+\end{code}
+%if False
+\begin{code}
 {-# NO_TERMINATION_CHECK #-}
+\end{code}
+%endif
+\begin{code}
 -- Compute a balanced shape
 fromNat : ℕ → Maybe Shape
 fromNat zero       = nothing
@@ -45,9 +54,4 @@ fromNat n with split n
 ...   | just s1  | nothing  = just s1
 ...   | nothing  | just s2  = just s2
 ...   | just s1  | just s2  = just (B s1 s2)
-
--- TODO: perhaps add an empty shape (but probably in a separate
--- experiment file because many things change in the matrix
--- representation).
 \end{code}
-%endif

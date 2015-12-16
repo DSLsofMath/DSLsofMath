@@ -1,7 +1,10 @@
+The lifting of a semi near ring is defined using a Agda module
+parametric over another semi near ring which is the elements of the
+matrix to be found in the 1-by-1 matrices, |One|.
+
+%if False
 \begin{code}
 open import SemiNearRingRecord
-
--- Lift a seminearring to a matrix
 
 module LiftSNR (snr : SemiNearRing) where
 
@@ -20,41 +23,40 @@ open SemiNearRing snr
 S : {r c : Shape} → Set
 S {r} {c} = M s r c
 
-infixr 60 _∙S_
+infixr 60 _*S_
 infixr 50 _+S_
 
-
 _+S_ : ∀ {r c} → M s r c → M s r c → M s r c
-One x     +S One x₁    = One (x +s x₁)
-Row m m₁  +S Row n n₁  = Row (m +S n) (m₁ +S n₁)
-Col m m₁  +S Col n n₁  = Col (m +S n) (m₁ +S n₁)
+One x     +S One y      = One (x +s y)
+Row m0 m1 +S Row n0 n1  = Row (m0 +S n0) (m1 +S n1)
+Col m0 m1 +S Col n0 n1  = Col (m0 +S n0) (m1 +S n1)
 Q m00 m01
   m10 m11 +S Q n00 n01
                n10 n11 = Q (m00 +S n00) (m01 +S n01)
                            (m10 +S n10) (m11 +S n11)
 
-_∙S_ : ∀ {r m c} → M s r m → M s m c → M s r c
-One x     ∙S One x₁    = One (x ∙s x₁)
-One x     ∙S Row n n₁  = Row (One x ∙S n) (One x ∙S n₁)
-Row m m₁  ∙S Col n n₁  = m ∙S n +S m₁ ∙S n₁
-Row m m₁  ∙S Q n11 n12
-               n21 n22 = Row (m ∙S n11 +S m₁ ∙S n21) (m ∙S n12 +S m₁ ∙S n22)
-Col m m₁  ∙S One x     = Col (m ∙S One x) (m₁ ∙S One x)
-Col m m₁  ∙S Row n n₁  = Q (m ∙S n)   (m ∙S n₁)
-                           (m₁ ∙S n)  (m₁ ∙S n₁)
-Q m11 m12
-  m21 m22 ∙S Col n n₁  = Col (m11 ∙S n +S m12 ∙S n₁) (m21 ∙S n +S m22 ∙S n₁)
-Q m11 m12
-  m21 m22 ∙S Q n11 n12
-               n21 n22 = Q (m11 ∙S n11 +S m12 ∙S n21) (m11 ∙S n12 +S m12 ∙S n22)
-                           (m21 ∙S n11 +S m22 ∙S n21) (m21 ∙S n12 +S m22 ∙S n22)
+_*S_ : ∀ {r m c} → M s r m → M s m c → M s r c
+One x     *S One y     = One (x *s y)
+One x     *S Row n0 n1 = Row (One x *S n0) (One x *S n1)
+Row m0 m1  *S Col n0 n1 = m0 *S n0 +S m1 *S n1
+Row m0 m1  *S Q n00 n01
+                n10 n11 = Row (m0 *S n00 +S m1 *S n10) (m0 *S n01 +S m1 *S n11)
+Col m0 m1  *S One x     = Col (m0 *S One x) (m1 *S One x)
+Col m0 m1  *S Row n0 n1 = Q (m0 *S n0)   (m0 *S n1)
+                            (m1 *S n0)  (m1 *S n1)
+Q m00 m01
+  m10 m11 *S Col n0 n1  = Col (m00 *S n0 +S m01 *S n1) (m10 *S n0 +S m11 *S n1)
+Q m00 m01
+  m10 m11 *S Q n00 n01
+               n10 n11 = Q (m00 *S n00 +S m01 *S n10) (m00 *S n01 +S m01 *S n11)
+                           (m10 *S n00 +S m11 *S n10) (m10 *S n01 +S m11 *S n11)
 
-0S : (r c : Shape) → M s r c
-0S L        L        = One 0s
-0S L        (B s s₁) = Row (0S L s)  (0S L s₁)
-0S (B r r₁) L        = Col (0S r L)  (0S r₁ L)
-0S (B r r₁) (B s s₁) =  Q  (0S r s)  (0S r s₁)
-                           (0S r₁ s) (0S r₁ s₁)
+zerS : (r c : Shape) → M s r c
+zerS L        L        = One zers
+zerS L        (B s s₁) = Row (zerS L s)  (zerS L s₁)
+zerS (B r r₁) L        = Col (zerS r L)  (zerS r₁ L)
+zerS (B r r₁) (B s s₁) =  Q  (zerS r s)  (zerS r s₁)
+                           (zerS r₁ s) (zerS r₁ s₁)
 
 _≃S_ : {r c : Shape} → M s r c → M s r c → Set
 _≃S_ {L}         {L}          (One x)    (One x₁)   =  x ≃s x₁
@@ -114,7 +116,7 @@ assocS (B r r₁) (B c c₁) (Q x x₁ x₂ x₃) (Q y y₁ y₂ y₃) (Q z z₁
   <+S> r₁ c p₂ q₂ , <+S> r₁ c₁ p₃ q₃
 
 identSˡ : (r c : Shape) (x : M s r c) →
-   0S r c +S x ≃S x
+   zerS r c +S x ≃S x
 identSˡ L L (One x) = identityˡs x
 identSˡ L (B c c₁) (Row x x₁) = identSˡ L c x , identSˡ L c₁ x₁
 identSˡ (B r r₁) L (Col x x₁) = identSˡ r L x , identSˡ r₁ L x₁
@@ -142,13 +144,13 @@ setoidS {r} {c} =
         { refl = reflS r c ; sym = symS r c ; trans = transS r c } }
 
 identSʳ : (r c : Shape) (x : M s r c) →
-   x +S 0S r c ≃S x
+   x +S zerS r c ≃S x
 identSʳ r c x =
   let open EqReasoning setoidS
   in begin
-    x +S 0S r c
-  ≈⟨ commS r c x (0S r c) ⟩
-    0S r c +S x
+    x +S zerS r c
+  ≈⟨ commS r c x (zerS r c) ⟩
+    zerS r c +S x
   ≈⟨ identSˡ r c x ⟩
     x
   ∎
@@ -156,22 +158,22 @@ identSʳ r c x =
 zerolHelp : ∀ (r : Shape) {m m' c : Shape}
   (x : M s m c)
   (y : M s m' c) →
-  0S r m ∙S x ≃S 0S r c →
-  0S r m' ∙S y ≃S 0S r c →
-  0S r m ∙S x +S 0S r m' ∙S y
-  ≃S 0S r c
+  zerS r m *S x ≃S zerS r c →
+  zerS r m' *S y ≃S zerS r c →
+  zerS r m *S x +S zerS r m' *S y
+  ≃S zerS r c
 zerolHelp r {m} {m'} {c} x y p q =
   let open EqReasoning setoidS
   in begin
-    0S r m ∙S x +S 0S r m' ∙S y
-  ≈⟨ <+S> _ _ {0S r m ∙S x} {0S r c} {0S r m' ∙S y} {0S r c} p q ⟩
-    0S r c +S 0S r c
-  ≈⟨ identSˡ _ _ (0S r c) ⟩
-   0S r c
+    zerS r m *S x +S zerS r m' *S y
+  ≈⟨ <+S> _ _ {zerS r m *S x} {zerS r c} {zerS r m' *S y} {zerS r c} p q ⟩
+    zerS r c +S zerS r c
+  ≈⟨ identSˡ _ _ (zerS r c) ⟩
+   zerS r c
   ∎
 
 zeroSˡ : (a b c : Shape) (x : M s b c) →
-  (0S a b ∙S x) ≃S 0S a c
+  (zerS a b *S x) ≃S zerS a c
 zeroSˡ L L L (One x) = zeroˡ x
 zeroSˡ L L (B c c₁) (Row x x₁) = (zeroSˡ L L c x) , (zeroSˡ L L c₁ x₁)
 zeroSˡ L (B b b₁) L (Col x x₁) =
@@ -199,22 +201,22 @@ zeroSˡ (B a a₁) (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) =
 zerorHelp : ∀ r {m m' c}
   (x : M s r m)
   (x₁ : M s r m') →
-  x ∙S 0S m c ≃S 0S r c →
-  x₁ ∙S 0S m' c ≃S 0S r c →
-  x ∙S 0S m c +S x₁ ∙S 0S m' c
-  ≃S 0S r c
+  x *S zerS m c ≃S zerS r c →
+  x₁ *S zerS m' c ≃S zerS r c →
+  x *S zerS m c +S x₁ *S zerS m' c
+  ≃S zerS r c
 zerorHelp r {m} {m'} {c} x x₁ p q =
   let open EqReasoning setoidS
   in begin
-    x ∙S 0S m c +S x₁ ∙S 0S m' c
-  ≈⟨ <+S> _ _ {x ∙S 0S m c} {0S r c} {x₁ ∙S 0S m' c} {0S r c} p q ⟩
-    0S r c +S 0S r c
-  ≈⟨ identSˡ r c (0S r c) ⟩
-    0S r c
+    x *S zerS m c +S x₁ *S zerS m' c
+  ≈⟨ <+S> _ _ {x *S zerS m c} {zerS r c} {x₁ *S zerS m' c} {zerS r c} p q ⟩
+    zerS r c +S zerS r c
+  ≈⟨ identSˡ r c (zerS r c) ⟩
+    zerS r c
   ∎
 
 zeroSʳ : (a b c : Shape) (x : M s a b) →
-  (x ∙S 0S b c) ≃S 0S a c
+  (x *S zerS b c) ≃S zerS a c
 zeroSʳ L L L (One x) = zeroʳ x
 zeroSʳ L L (B c c₁) (One x) =
   (zeroSʳ L L c (One x)) ,
@@ -241,46 +243,46 @@ zeroSʳ (B a a₁) (B b b₁) (B c c₁) (Q x x₁ x₂ x₃) =
   zerorHelp a₁ x₂ x₃ (zeroSʳ a₁ b c x₂) (zeroSʳ a₁ b₁ c x₃) ,
   zerorHelp a₁ x₂ x₃ (zeroSʳ a₁ b c₁ x₂) (zeroSʳ a₁ b₁ c₁ x₃)
 
-<∙S> : (a b c : Shape) {x y : M s a b} {u v : M s b c} →
-  x ≃S y → u ≃S v → (x ∙S u) ≃S (y ∙S v)
-<∙S> L L L {One x} {One x₁} {One x₂} {One x₃} p q = p <∙> q
-<∙S> L L (B c c₁) {One x} {One x₁} {Row u u₁} {Row v v₁} p (q , q₁) =
-  (<∙S> L L c {One x} {One x₁} {u} {v} p q) ,
-  <∙S> L L c₁ {One x} {One x₁} {u₁} {v₁} p q₁
-<∙S> L (B b b₁) L {Row x x₁} {Row y y₁} {Col u u₁} {Col v v₁} (p , p₁) (q , q₁) =
+<*S> : (a b c : Shape) {x y : M s a b} {u v : M s b c} →
+  x ≃S y → u ≃S v → (x *S u) ≃S (y *S v)
+<*S> L L L {One x} {One x₁} {One x₂} {One x₃} p q = p <*> q
+<*S> L L (B c c₁) {One x} {One x₁} {Row u u₁} {Row v v₁} p (q , q₁) =
+  (<*S> L L c {One x} {One x₁} {u} {v} p q) ,
+  <*S> L L c₁ {One x} {One x₁} {u₁} {v₁} p q₁
+<*S> L (B b b₁) L {Row x x₁} {Row y y₁} {Col u u₁} {Col v v₁} (p , p₁) (q , q₁) =
   let
     open EqReasoning setoidS
-    ih = <∙S> _ _ _ {x} {y} {u} {v} p q
-    ih₁ = <∙S> _ _ _ {x₁} {y₁} {u₁} {v₁} p₁ q₁
+    ih = <*S> _ _ _ {x} {y} {u} {v} p q
+    ih₁ = <*S> _ _ _ {x₁} {y₁} {u₁} {v₁} p₁ q₁
   in begin
-    Row x x₁ ∙S Col u u₁
+    Row x x₁ *S Col u u₁
   ≡⟨ refl-≡ ⟩
-    x ∙S u +S x₁ ∙S u₁
-  ≈⟨ <+S> L L {x ∙S u} {y ∙S v} {x₁ ∙S u₁} {y₁ ∙S v₁} ih ih₁ ⟩
-    y ∙S v +S y₁ ∙S v₁
+    x *S u +S x₁ *S u₁
+  ≈⟨ <+S> L L {x *S u} {y *S v} {x₁ *S u₁} {y₁ *S v₁} ih ih₁ ⟩
+    y *S v +S y₁ *S v₁
   ∎
-<∙S> L (B b b₁) (B c c₁) {Row x x₁} {Row y y₁} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃} (p , p₁) (q , q₁ , q₂ , q₃) =
+<*S> L (B b b₁) (B c c₁) {Row x x₁} {Row y y₁} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃} (p , p₁) (q , q₁ , q₂ , q₃) =
   (let
-    ih = <∙S> L b c p q
-    ih₁ = <∙S> L b₁ c p₁ q₂
+    ih = <*S> L b c p q
+    ih₁ = <*S> L b₁ c p₁ q₂
   in <+S> L c ih ih₁) ,
-  <+S> L c₁ (<∙S> L b c₁ p q₁) (<∙S> L b₁ c₁ p₁ q₃)
-<∙S> (B a a₁) L L {Col x x₁} {Col y y₁} {One x₂} {One x₃} (p , p₁) q =
-  <∙S> a L L p q ,
-  <∙S> a₁ L L p₁ q
-<∙S> (B a a₁) L (B c c₁) {Col x x₁} {Col y y₁} {Row u u₁} {Row v v₁} (p , p₁) (q , q₁) =
-  <∙S> a L c p q ,
-  <∙S> a L c₁ p q₁  ,
-  <∙S> a₁ L c p₁ q ,
-  <∙S> a₁ L c₁ p₁ q₁
-<∙S> (B a a₁) (B b b₁) L {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Col u u₁} {Col v v₁} (p , p₁ , p₂ , p₃) (q , q₁) =
-  <+S> a L (<∙S> a b L p q) (<∙S> a b₁ L p₁ q₁) ,
-  <+S> a₁ L (<∙S> a₁ b L p₂ q) (<∙S> a₁ b₁ L p₃ q₁ )
-<∙S> (B a a₁) (B b b₁) (B c c₁) {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃} (p , p₁ , p₂ , p₃) (q , q₁ , q₂ , q₃) =
-  <+S> a c (<∙S> a b c p q) (<∙S> a b₁ c p₁ q₂) ,
-  <+S> a c₁ (<∙S> a b c₁ p q₁) (<∙S> a b₁ c₁ p₁ q₃) ,
-  <+S> a₁ c (<∙S> a₁ b c p₂ q) (<∙S> a₁ b₁ c p₃ q₂) ,
-  <+S> a₁ c₁ (<∙S> a₁ b c₁ p₂ q₁) (<∙S> a₁ b₁ c₁ p₃ q₃)
+  <+S> L c₁ (<*S> L b c₁ p q₁) (<*S> L b₁ c₁ p₁ q₃)
+<*S> (B a a₁) L L {Col x x₁} {Col y y₁} {One x₂} {One x₃} (p , p₁) q =
+  <*S> a L L p q ,
+  <*S> a₁ L L p₁ q
+<*S> (B a a₁) L (B c c₁) {Col x x₁} {Col y y₁} {Row u u₁} {Row v v₁} (p , p₁) (q , q₁) =
+  <*S> a L c p q ,
+  <*S> a L c₁ p q₁  ,
+  <*S> a₁ L c p₁ q ,
+  <*S> a₁ L c₁ p₁ q₁
+<*S> (B a a₁) (B b b₁) L {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Col u u₁} {Col v v₁} (p , p₁ , p₂ , p₃) (q , q₁) =
+  <+S> a L (<*S> a b L p q) (<*S> a b₁ L p₁ q₁) ,
+  <+S> a₁ L (<*S> a₁ b L p₂ q) (<*S> a₁ b₁ L p₃ q₁ )
+<*S> (B a a₁) (B b b₁) (B c c₁) {Q x x₁ x₂ x₃} {Q y y₁ y₂ y₃} {Q u u₁ u₂ u₃} {Q v v₁ v₂ v₃} (p , p₁ , p₂ , p₃) (q , q₁ , q₂ , q₃) =
+  <+S> a c (<*S> a b c p q) (<*S> a b₁ c p₁ q₂) ,
+  <+S> a c₁ (<*S> a b c₁ p q₁) (<*S> a b₁ c₁ p₁ q₃) ,
+  <+S> a₁ c (<*S> a₁ b c p₂ q) (<*S> a₁ b₁ c p₃ q₂) ,
+  <+S> a₁ c₁ (<*S> a₁ b c₁ p₂ q₁) (<*S> a₁ b₁ c₁ p₃ q₃)
 
 idemS : (r c : Shape) (x : M s r c) → x +S x ≃S x
 idemS L L (One x) = idem x
@@ -312,23 +314,23 @@ distlHelp : ∀ {a b b₁ c₁}
             (y z : M s b c₁)
             (x₁ : M s a b₁)
             (y₁ z₁ : M s b₁ c₁) →
-          (x ∙S (y +S z)) ≃S (x ∙S y +S x ∙S z) →
-          (x₁ ∙S (y₁ +S z₁)) ≃S (x₁ ∙S y₁ +S x₁ ∙S z₁) →
-          (x ∙S (y +S z) +S x₁ ∙S (y₁ +S z₁))
-          ≃S ((x ∙S y +S x₁ ∙S y₁) +S x ∙S z +S x₁ ∙S z₁)
+          (x *S (y +S z)) ≃S (x *S y +S x *S z) →
+          (x₁ *S (y₁ +S z₁)) ≃S (x₁ *S y₁ +S x₁ *S z₁) →
+          (x *S (y +S z) +S x₁ *S (y₁ +S z₁))
+          ≃S ((x *S y +S x₁ *S y₁) +S x *S z +S x₁ *S z₁)
 distlHelp x y z x₁ y₁ z₁ p q =
   let open EqReasoning setoidS
   in begin
-    x ∙S (y +S z) +S x₁ ∙S (y₁ +S z₁)
-  ≈⟨ <+S> _ _ {x ∙S (y +S z)} {x ∙S y +S x ∙S z}
-              {x₁ ∙S (y₁ +S z₁)} {x₁ ∙S y₁ +S x₁ ∙S z₁} p q ⟩
-    (x ∙S y +S x ∙S z) +S x₁ ∙S y₁ +S x₁ ∙S z₁
-  ≈⟨ swapMid (x ∙S y) (x ∙S z) (x₁ ∙S y₁) (x₁ ∙S z₁) ⟩
-    (x ∙S y +S x₁ ∙S y₁) +S x ∙S z +S x₁ ∙S z₁
+    x *S (y +S z) +S x₁ *S (y₁ +S z₁)
+  ≈⟨ <+S> _ _ {x *S (y +S z)} {x *S y +S x *S z}
+              {x₁ *S (y₁ +S z₁)} {x₁ *S y₁ +S x₁ *S z₁} p q ⟩
+    (x *S y +S x *S z) +S x₁ *S y₁ +S x₁ *S z₁
+  ≈⟨ swapMid (x *S y) (x *S z) (x₁ *S y₁) (x₁ *S z₁) ⟩
+    (x *S y +S x₁ *S y₁) +S x *S z +S x₁ *S z₁
   ∎
 
 distlS : {a b c : Shape} (x : M s a b) (y z : M s b c) →
-  (x ∙S (y +S z)) ≃S ((x ∙S y) +S (x ∙S z))
+  (x *S (y +S z)) ≃S ((x *S y) +S (x *S z))
 distlS {L} {L} {L} (One x) (One y) (One z) = distl x y z
 distlS {L} {L} {B c c₁} (One x) (Row y y₁) (Row z z₁) =
   distlS (One x) y z ,
@@ -360,23 +362,23 @@ distrHelp : ∀ {r m m₁ c : Shape}
             (y z : M s r m)
             (x₁ : M s m₁ c)
             (y₁ z₁ : M s r m₁) →
-          ((y +S z) ∙S x) ≃S (y ∙S x +S z ∙S x) →
-          ((y₁ +S z₁) ∙S x₁) ≃S (y₁ ∙S x₁ +S z₁ ∙S x₁) →
-          ((y +S z) ∙S x +S (y₁ +S z₁) ∙S x₁)
-          ≃S ((y ∙S x +S y₁ ∙S x₁) +S z ∙S x +S z₁ ∙S x₁)
+          ((y +S z) *S x) ≃S (y *S x +S z *S x) →
+          ((y₁ +S z₁) *S x₁) ≃S (y₁ *S x₁ +S z₁ *S x₁) →
+          ((y +S z) *S x +S (y₁ +S z₁) *S x₁)
+          ≃S ((y *S x +S y₁ *S x₁) +S z *S x +S z₁ *S x₁)
 distrHelp x y z x₁ y₁ z₁ p q =
   let open EqReasoning setoidS
   in begin
-    (y +S z) ∙S x +S (y₁ +S z₁) ∙S x₁
-  ≈⟨ <+S> _ _ {(y +S z) ∙S x} {y ∙S x +S z ∙S x}
-              {(y₁ +S z₁) ∙S x₁} {y₁ ∙S x₁ +S z₁ ∙S x₁} p q ⟩
-    (y ∙S x +S z ∙S x) +S y₁ ∙S x₁ +S z₁ ∙S x₁
-  ≈⟨ swapMid (y ∙S x) (z ∙S x) (y₁ ∙S x₁) (z₁ ∙S x₁) ⟩
-    (y ∙S x +S y₁ ∙S x₁) +S z ∙S x +S z₁ ∙S x₁
+    (y +S z) *S x +S (y₁ +S z₁) *S x₁
+  ≈⟨ <+S> _ _ {(y +S z) *S x} {y *S x +S z *S x}
+              {(y₁ +S z₁) *S x₁} {y₁ *S x₁ +S z₁ *S x₁} p q ⟩
+    (y *S x +S z *S x) +S y₁ *S x₁ +S z₁ *S x₁
+  ≈⟨ swapMid (y *S x) (z *S x) (y₁ *S x₁) (z₁ *S x₁) ⟩
+    (y *S x +S y₁ *S x₁) +S z *S x +S z₁ *S x₁
   ∎
 
 distrS : {r m c : Shape} (x : M s m c) (y z : M s r m) →
-  ((y +S z) ∙S x) ≃S ((y ∙S x) +S (z ∙S x))
+  ((y +S z) *S x) ≃S ((y *S x) +S (z *S x))
 distrS {L} {L} {L} (One x) (One y) (One z) =
   distr x y z
 distrS {L} {L} {B c c₁} (Row x x₁) (One x₂) (One x₃) =
@@ -431,13 +433,13 @@ Square shape = SNR
     record
       { s = S
       ; _≃s_ = _≃S_ {shape} {shape}
-      ; 0s = 0S shape shape
+      ; zers = zerS shape shape
       ; _+s_ = _+S_
-      ; _∙s_ = _∙S_
+      ; _*s_ = _*S_
       ; isCommMon = isCommMonS
       ; zeroˡ = zeroSˡ shape shape shape
       ; zeroʳ = zeroSʳ shape shape shape
-      ; _<∙>_ = <∙S> shape shape shape
+      ; _<*>_ = <*S> shape shape shape
       ; idem = idemS shape shape
       ; distl = distlS {shape} {shape}
       ; distr = distrS {shape} {shape}
@@ -445,3 +447,4 @@ Square shape = SNR
 
 
 \end{code}
+%endif

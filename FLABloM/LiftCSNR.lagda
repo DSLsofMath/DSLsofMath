@@ -19,14 +19,13 @@ open import Preliminaries
 open ClosedSemiNearRing csnr --using (snr; s)
 open SemiNearRing snr
 
-
 open import LiftSNR snr
 
 open import Shape
 open import Matrix
 
 EqS : {ss : Shape} → M s ss ss → M s ss ss → Set
-EqS W C = W +S (C ∙S C) ≃S C
+EqS W C = W +S (C *S C) ≃S C
 
 entireQS : (ss : Shape) (W : M s ss ss) → ∃ (EqS W)
 entireQS L (One x) with entireQ x
