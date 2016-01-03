@@ -11,7 +11,6 @@
   Graph algorithms, is the 1 essential for them to work?
 
 * TODO Redo the Seminearring for non-square matrices (and define square as a special case on the outside)
-
 * TODO Read "Typing linear algebra: a biproduct-oriented approad"
 
   http://arxiv.org/pdf/1312.4818v1.pdf
@@ -39,7 +38,7 @@
 
   2015-12-01: Prioritet 1!
 
-* TODO Try to implement closure (either pentrate the ValiantAgda version or roll your own)
+* TODO Try to implement closure (either penetrate the ValiantAgda version or roll your own)
   What is a closed seminearring? for a semiring closure satisfies
   $a^* = 1 + a ∙ a^*$, but in seminearring there is no 1...
 
@@ -49,7 +48,6 @@
   perhaps add an empty shape (but probably in a separate
   experiment file because many things change in the matrix
   representation).
-
 * TODO Implement matrix determinant (with block matrices)
 
   there is a block matrix decomposition of the determinant:
@@ -65,7 +63,6 @@
   Determinants that work with matrices over things that are noncommutative:
   - Dieudonné determinant: matrices over division rings
   - Quasideterminant: still needs negation and inversion
-
 * DONE Complete "Square snr (B shape shape₁)"
   CLOSED: [2015-11-26 Thu 09:04]
 ** DONE Do some of the proofs (isCommMon; zeroˡ; zeroʳ; _<∙>_)
