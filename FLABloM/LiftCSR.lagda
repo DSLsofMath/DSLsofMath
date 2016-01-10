@@ -40,16 +40,22 @@ entireQS {B sh sh₁} (Q w11 w12 w21 w22) =
   (let open EqReasoning setoidS
   in begin
     zerS _ _ +S w11 *S w11* *S w12 *S Δ* +S w12 *S Δ*
-  ≈⟨ {!!} ⟩ -- 0S identl
+  ≈⟨ identSˡ sh sh₁ (w11 *S w11* *S w12 *S Δ* +S w12 *S Δ*) ⟩ -- 0S left id for +S
     w11 *S w11* *S w12 *S Δ* +S w12 *S Δ*
-  ≈⟨ {!!} ⟩ -- +S commutes
+  ≈⟨ commS sh sh₁ (w11 *S w11* *S w12 *S Δ*) (w12 *S Δ*) ⟩ -- +S commutes
     w12 *S Δ* +S w11 *S w11* *S w12 *S Δ*
-  ≈⟨ {!!} ⟩ -- distribr backwards
+  ≈⟨ <+S> {!!} {!!} {u = w11 *S w11* *S w12 *S Δ*} {v = (w11 *S w11*) *S (w12 *S Δ*)}
+     (reflS sh sh₁ {w12 *S Δ*}) (assocS' {!!} {!!} {!!} {!!} {!!}) ⟩
+    w12 *S Δ* +S (w11 *S w11*) *S (w12 *S Δ*)
+  ≈⟨ {!!} ⟩ -- 1 identl *S
+    oneS *S (w12 *S Δ*) +S (w11 *S w11*) *S (w12 *S Δ*)
+  ≈⟨ distrS' {sh} {sh} {sh₁} (w12 *S Δ*) (oneS) (w11 *S w11*) ⟩ -- distrS backwards
     (oneS +S w11 *S w11*) *S w12 *S Δ*
-  ≈⟨ {!!} ⟩ -- p11 on left of *S
+  ≈⟨ <*S> sh sh sh₁ {oneS +S w11 *S w11*} {w11*} {w12 *S Δ*} {w12 *S Δ*} p11 (reflS sh sh₁) ⟩ -- p11 on left of *S
     w11* *S w12 *S Δ*
   ∎) ,
-  {!!} ,
+  (let open EqReasoning setoidS
+  in {!!}) ,
   {!!}
 -- ...
 

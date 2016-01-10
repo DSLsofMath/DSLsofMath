@@ -406,6 +406,10 @@ distrS {B r r₁} {B m m₁} {B c c₁} (Q x x₁ x₂ x₃) (Q y y₁ y₂ y₃
   distrHelp x y₂ z₂ x₂ y₃ z₃ (distrS x y₂ z₂) (distrS x₂ y₃ z₃) ,
   distrHelp x₁ y₂ z₂ x₃ y₃ z₃ (distrS x₁ y₂ z₂) (distrS x₃ y₃ z₃)
 
+distrS' : {r m c : Shape} (x : M s m c) (y z : M s r m) →
+  ((y *S x) +S (z *S x)) ≃S ((y +S z) *S x)
+distrS' {r} {m} {c} x y z = symS r c (distrS x y z)
+
 Square : Shape → SemiNearRing
 Square shape = SNR
   where
