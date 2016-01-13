@@ -48,9 +48,9 @@
 \begin{document}
 
 %if submit
-\conferenceinfo{Haskell'12,} {September 13, 2012, Copenhagen, Denmark.}
-\CopyrightYear{2012}
-\copyrightdata{978-1-4503-1574-6/12/09}
+\conferenceinfo{}{}
+\CopyrightYear{}
+\copyrightdata{}
 %elif not techreport
 \titlebanner{Preprint}
 \preprintfooter{Preprint}
@@ -75,12 +75,12 @@
 %-------------------------------------------------------------------------------
 
 \begin{abstract}
-  The abstract should describe in a short and catch way what the paper
+  The abstract should describe in a short and catchy way what the paper
   is about etc.
   \begin{itemize}
   \item block matrices
   \item linear algebra
-  \item rings (seminearrings, semirings, \dots)
+  \item rings (semi-near-rings, semirings, \dots)
   \item closure of matrices
   \end{itemize}
 \end{abstract}
@@ -100,12 +100,14 @@ some, important, concepts, not already, mentioned, in the title
 \label{sec:intro}
 
 In \cite{bernardy2015certified} a formulation of matrices was
-used to certify the Valiant parsing algorithm. The matrix formulation
-used was restricted to matrices of size $2^n \times 2^n$.
+used to certify the Valiant parsing algorithm.
+%
+The matrix formulation used was restricted to matrices of size
+$2^n \times 2^n$.
 %
 This work extends the matrix to allow for all sizes of matrices and
 applies the techniques to other algorithms that can be described as
-semirings or seminearrings with inspiration from \cite{dolan2013fun}.
+semirings or semi-near-rings with inspiration from \cite{dolan2013fun}.
 \section{Matrices}
 
 %include ../Shape.lagda

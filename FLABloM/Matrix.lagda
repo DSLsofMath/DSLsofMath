@@ -18,14 +18,14 @@ Row and column matrices are built from smaller matrices which are
 either 1-by-1 matrices or further row respectively column matrices
 \restorecolumns[Matrix]
 \begin{code}
-  Row : ∀ {col₁ col₂ : Shape} →
-    M a L col₁ → M a L col₂ →
-    M a L (B col₁ col₂)
+  Row :  ∀ {col₁ col₂ : Shape} →
+         M a L col₁ → M a L col₂ →
+         M a L (B col₁ col₂)
 
-  Col : ∀ {row₁ row₂ : Shape} →
-    M a row₁ L →
-    M a row₂ L →
-    M a (B row₁ row₂) L
+  Col :  ∀ {row₁ row₂ : Shape} →
+         M a row₁ L →
+         M a row₂ L →
+         M a (B row₁ row₂) L
 \end{code}
 block matrices of other shapes are built using 4 smaller matrices
 \[X = \left[

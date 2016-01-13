@@ -17,8 +17,8 @@ data Shape : Set where
   L : Shape
   B : (s₁ s₂ : Shape) → Shape
 \end{code}
-The leafs of the tree, |L|, represent 1's
-and nodes, |B s₁ s₂|, represent the sum of the two subtrees: |s₁ + s₂|
+The leafs of the tree, |L|, represent 1's and nodes, |B s₁ s₂|,
+represent the sum of the two subtrees: |s₁ + s₂|
 
 Computing the natural number corresponding to the shape is done easily
 using |toNat|.
@@ -28,7 +28,7 @@ toNat L         = 1
 toNat (B s s₁)  = toNat s + toNat s₁
 \end{code}
 However there are many representation of a non-zero natural number as
-a shape, here we split the number in almost two equal parts to find
+a shape, here we split the number in two almost equal parts to find
 a corresponding shape.
 \begin{code}
 split : ℕ  ->  ℕ × ℕ
