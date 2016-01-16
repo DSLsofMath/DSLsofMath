@@ -5,7 +5,7 @@ Domain Specific Languages of Mathematics
 
 A quality project funded by Chalmers with 260kkr/y for 2014 and 2015 resulting in a new BSc level course from 2016.
 
-**2016 edition of the course: [2016](Course2016.md)**
+**[2016 edition of the course.](Course2016.md)**
 
 ## Course schedule
 
