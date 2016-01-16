@@ -1,22 +1,28 @@
+{-# LANGUAGE ScopedTypeVariables #-} -- for exception handling
 module Plot where
 
 import Control.Concurrent
 import System.Process
 import System.IO
 import System.IO.Unsafe
+import Control.Exception
 import Data.List
 
 import qualified Data.Vector.Storable as V
 
 -- Low-level things to start and connect to gnuplot ----------------------------
 
--- gnuplotPath = "/usr/local/bin/gnuplot"
-gnuplotPath = "/usr/bin/gnuplot"
+tryRunGnuplot :: IO (Handle, Handle, Handle, ProcessHandle)
+tryRunGnuplot = do
+  let run path = runInteractiveProcess path [] Nothing Nothing
+  flip handle (run "gnuplot")
+    (\(e :: SomeException) ->
+      flip handle (run "/usr/bin/gnuplot")
+        (\(e :: SomeException) -> run "/usr/local/bin/gnuplot"))
 
-handle :: Handle
-handle = unsafePerformIO $
-           do (inp,_out,_err,pid) <-
-                  runInteractiveProcess gnuplotPath [] Nothing Nothing
+gnuplotHandle :: Handle
+gnuplotHandle = unsafePerformIO $
+           do (inp,_out,_err,pid) <- tryRunGnuplot
               hSetBinaryMode inp False
               hSetBuffering inp LineBuffering
               hPutStrLn inp "set multiplot\nplot 1\nclear"
@@ -26,7 +32,7 @@ plotCmd :: [String] -> IO ()
 plotCmd strs = do
                  -- For debugging, remove comment in next line to see gnuplot cmds in terminal
                  -- mapM_ putStrLn strs
-                 mapM_ (hPutStrLn handle) strs
+                 mapM_ (hPutStrLn gnuplotHandle) strs
                  return ()
 
 -- Downscaled version of Hatlab plotting, to avoid all Chebyshev things.
