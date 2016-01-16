@@ -82,14 +82,14 @@ Some important references:
 - **Domain Specific Languages**, Martin Fowler, 2011.
   [URL](http://martinfowler.com/books/dsl.html)
 
-      The view from the object-oriented programming perspective.
+  The view from the object-oriented programming perspective.
 
 ### The computer science perspective
 
 - **Communicating Mathematics: Useful Ideas from Computer Science**,
   Charles Wells, *American Mathematical Monthly*, May 1995.  [URL](http://www.cwru.edu/artsci/math/wells/pub/pdf/commath.pdf)
 
-     This article was one of the main triggers of this course.
+  This article was one of the main triggers of this course.
 
 ### Mathematics
 
