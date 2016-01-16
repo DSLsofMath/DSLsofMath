@@ -15,9 +15,9 @@ import qualified Data.Vector.Storable as V
 tryRunGnuplot :: IO (Handle, Handle, Handle, ProcessHandle)
 tryRunGnuplot = do
   let run path = runInteractiveProcess path [] Nothing Nothing
-  flip handle (run "gnuplot")
+  catch (run "gnuplot")
     (\(e :: SomeException) ->
-      flip handle (run "/usr/bin/gnuplot")
+      catch (run "/usr/bin/gnuplot")
         (\(e :: SomeException) -> run "/usr/local/bin/gnuplot"))
 
 gnuplotHandle :: Handle
