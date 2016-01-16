@@ -62,17 +62,17 @@ Some important references:
   LNCS 8606, 2015.
   [URL](http://link.springer.com/chapter/10.1007%2F978-3-319-15940-9_1)
 
-      This is currently *the* standard reference to DSLs for the
-      functional programmer.
+  This is currently *the* standard reference to DSLs for the
+  functional programmer.
 
 - **Folding Domain-Specific Languages: Deep and Shallow Embeddings**,
   Jeremy Gibbons and Nicolas Wu,
   ICFP 2014. [URL](http://www.cs.ox.ac.uk/publications/publication7584-abstract.html)
 
-      Available at the same link: a highly recommended
-      [short version](http://www.cs.ox.ac.uk/people/jeremy.gibbons/publications/embedding-short.pdf)
-      and the two videos of Jeremy presenting the most important ideas
-      of DSLs in a very accessible way.
+  Available at the same link: a highly recommended
+  [short version](http://www.cs.ox.ac.uk/people/jeremy.gibbons/publications/embedding-short.pdf)
+  and the two videos of Jeremy presenting the most important ideas
+  of DSLs in a very accessible way.
 
 - **Programming Languages**, Mike Spivey.  Lecture notes of a course
   given at the CS Department in Oxford.  Useful material for
