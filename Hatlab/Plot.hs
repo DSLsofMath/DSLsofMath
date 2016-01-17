@@ -13,12 +13,12 @@ import qualified Data.Vector.Storable as V
 -- Low-level things to start and connect to gnuplot ----------------------------
 
 tryRunGnuplot :: IO (Handle, Handle, Handle, ProcessHandle)
-tryRunGnuplot = do
+tryRunGnuplot =
   let run path = runInteractiveProcess path [] Nothing Nothing
-  catch (run "gnuplot")
-    (\(e :: SomeException) ->
-      catch (run "/usr/bin/gnuplot")
-        (\(e :: SomeException) -> run "/usr/local/bin/gnuplot"))
+  in catch (run "not_here")
+       (\(e :: SomeException) ->
+         catch (run "/usr/bin/gnuplot")
+           (\(e :: SomeException) -> run "/usr/local/bin/gnuplot"))
 
 gnuplotHandle :: Handle
 gnuplotHandle = unsafePerformIO $
