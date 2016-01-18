@@ -32,8 +32,12 @@ Details will appear here.
 Lectures
 --------
 
-Links to lecture summaries, slides, or other materials will be placed
-here.
+- [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](slides01.pdf).
+
+Exercises
+---------
+
+- [Exercises for 2016-01-20](Exercises/Exercises-2016-01-20.lhs).
 
 Literature
 ----------
@@ -97,6 +101,10 @@ Some important references:
   Etchemendy, 1993.  Out of print, but you can get it for one penny
   from Amazon UK.  A vast improvement over its successors (as Tony
   Hoare said about Algol 60).
+
+- **Mathematics: Form and Function**, Saunders Mac Lane, Springer 1986.
+  An overview of the relationships between the many mathematical
+  domains.  Entertaining, challenging, rewarding.
 
 More references will be added in due course.
 
