@@ -21,7 +21,7 @@ then
 < interpName   ::  Name -> D -- names are associated to elements of the domain
 
 < interpFunc   ::  Func -> ([D] -> D) -- function symbols are associated to functions
-  
+
 For example, a function f of arity n will be translated to a function
 which takes lists of length n of domain elements to domain elements.
 
@@ -30,7 +30,7 @@ Fill in the definitions for the following two functions
 > interpAName      ::  AName -> Integer
 > interpAName       =  undefined
 > interpAFunc      ::  AFunc -> ([Integer] -> Integer)
-> interpAFunc S     =  succ where succ [n] = n + 1
+> interpAFunc Succ  =  succ where succ [n] = n + 1
 > interpAFunc Plus  =  undefined
 
 Then define a more general interpreter of atomic terms
@@ -73,5 +73,3 @@ the intermediate case of WFFs with free variables, but no quantifiers:
 > check  = undefined
 
 Can you generalise check in the same way as eval and interpAtomic?
-
-

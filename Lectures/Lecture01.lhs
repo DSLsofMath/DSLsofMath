@@ -81,9 +81,9 @@ First-Order Languages
         - interpretation (denotation, translation)
             + example: interpretName : Name → D
                 - Note: interpretName may be neither injective nor surjective
-            + example: interpretFunc : Func → (D → D) ∪ (D → D²) ∪ (D → D³) ...
+            + example: interpretFunc : Func → (D → D) ∪ (D² → D) ∪ (D³ → D) ...
                 - if f has arity n, interpretFunc f : D^n → D
-                
+
     - Examples
         - an FOL for arithmetic:
             - a name ("zero")
@@ -113,23 +113,22 @@ An extended example: arithmetic
 
 Names and function symbols for arithmetic
 
-> data AName  =  Zero        deriving Show
-> data AFunc  =  Succ | Plus deriving Show
+> data AName  =  Zero        deriving (Eq, Show)
+> data AFunc  =  Succ | Plus deriving (Eq, Show)
 
 >{-
 > data AtomicTerm name func =  N name | F func [AtomicTerm name func]
 >                              deriving Show
 >
 > interpAtomicTerm :: AtomicTerm AName AFunc -> Integer
-> interpAtomicTerm (N Zero) = 0
-> interpAtomicTerm (F Succ [t]) = interpAtomicTerm t + 1
+> interpAtomicTerm (N Zero)          = 0
+> interpAtomicTerm (F Succ [t])      = 1 + interpAtomicTerm t
 > interpAtomicTerm (F Plus [t0, t1]) = interpAtomicTerm t0 + interpAtomicTerm t1
 > -}
 
 > one        =  F Succ [N Zero]
 > two        =  F Succ [one]
 > testTerm0  =  F Plus [two, two]
->
 
      - For most purposes, we need *terms*
 
@@ -139,7 +138,7 @@ Names and function symbols for arithmetic
 A type for the arithmetic variables:
 
 > type AVar  =  String
-> 
+>
 > testTerm1 = F Plus [V "x", testTerm0]
 >
 
@@ -150,11 +149,11 @@ A type for the arithmetic variables:
      We *look up* the value of a variable in an environment:
 
 > lookUp x ((y, v):rest) = if x == y then v else lookUp x rest
-> 
-> evalA env (N Zero) = 0
-> evalA env (V x)    = lookUp x env
-> evalA env (F Succ [t]) = evalA env t + 1
-> evalA env (F Plus [t0, t1]) = evalA env t0 + evalA env t1
+>
+> evalA env (N Zero)          = 0
+> evalA env (V x)             = lookUp x env
+> evalA env (F Succ [t])      = 1 + evalA env t
+> evalA env (F Plus [t0, t1]) = evalA env t0  +  evalA env t1
 
      - Atomic terms are terms with no variables inside them
 
@@ -180,7 +179,6 @@ A type for the arithmetic variables:
 
      - Arithmetical predicate:
 
-> data APred = LE
+> data APred  =  LE          deriving (Eq, Show)
 
     - A *sentence* is a WFF with no free variables (cf. atomic term)
-    
