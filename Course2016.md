@@ -32,7 +32,7 @@ Details will appear here.
 Lectures
 --------
 
-- [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](slides01.pdf).
+- [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](Lectures/slides01.pdf).
 
 Exercises
 ---------
