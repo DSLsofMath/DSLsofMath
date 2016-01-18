@@ -58,7 +58,7 @@ Some important references:
 - **An Introduction to Functional Programming**, Richard Bird and Phil
   Wadler, Prentice-Hall, 1988. A previous (but *very* different)
   version of *both* of the above.
-    
+
 ### DSLs
 
 - **Functional Programming for Domain-Specific Languages**, Jeremy
@@ -82,7 +82,7 @@ Some important references:
   given at the CS Department in Oxford.  Useful material for
   understanding the design and implementation of embedded DSLs.
   [URL](http://spivey.oriel.ox.ac.uk/corner/Programming_Languages)
-  
+
 - **Domain Specific Languages**, Martin Fowler, 2011.
   [URL](http://martinfowler.com/books/dsl.html)
 
@@ -105,6 +105,6 @@ Some important references:
 - **Mathematics: Form and Function**, Saunders Mac Lane, Springer 1986.
   An overview of the relationships between the many mathematical
   domains.  Entertaining, challenging, rewarding.
+  [Fulltext from the library](http://chalmers.summon.serialssolutions.com/sv-SE/search?ho=t&q=Mathematics%3A%20Form%20and%20Function)
 
 More references will be added in due course.
-
