@@ -12,6 +12,14 @@ of some mathematical areas mentioned below.
 Learning outcomes as in the [course syllabus]
 (https://www.student.chalmers.se/sp/course?course_id=24179).
 
+Course team
+-----------
+
+- Teacher : Cezar Ionescu (cezar AT)
+- Examiner : Patrik Jansson (patrikj AT)
+- Teaching assistants: Irene Lobo Valbuena (lobo AT), Víctor López Juan (lopezv AT)
+- Intern : Adam Sandberg Ericsson (saadam AT)
+
 Schedule
 --------
 
