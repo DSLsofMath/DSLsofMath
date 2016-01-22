@@ -48,7 +48,7 @@ Lectures
 --------
 
 - [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](Lectures/slides01.pdf).
-- [Lecture 02, Introduction](Lectures/Lecture02.lhs).
+- [Lecture 02, Logic and Functional Programming](Lectures/Lecture02.lhs).
 
 Exercises
 ---------
