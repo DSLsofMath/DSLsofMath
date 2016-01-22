@@ -42,7 +42,7 @@ Assignments
 The assignments are to be solved in **teams of three**.
 
 - [Assignment01](Assignments/Assignment01.lhs), due 2016-02-02 23:59.
-  Submission via Fire, at [URL](http://)
+  Submission via Fire, at [URL](https://xdat09.ce.chalmers.se/2016/lp3/dslm/)
 
 Lectures
 --------

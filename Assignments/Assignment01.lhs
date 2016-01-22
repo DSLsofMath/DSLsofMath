@@ -29,7 +29,7 @@ Use the von Neumann encoding to translate terms and WFFs from the
 language of arithmetic into that of finite sets.  Use the check
 function for finite sets for WFFs about natural numbers.
 
-- *Submission*: Assignments are to be submitted via Fire.
+- *Submission*: Assignments are to be submitted via [Fire](https://xdat09.ce.chalmers.se/2016/lp3/dslm/).
 - *Deadline*:   Tuesday, 2016-02-02, 23:59.
 - *Grading*: Discussions with each of the teams during the exercises
   session of Thursday, 2016-02-04.
