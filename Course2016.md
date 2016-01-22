@@ -1,6 +1,11 @@
 Domain-Specific Languages of Mathematics
 ========================================
 
+News
+----
+
+2016-01-22: First assignment has been posted! 
+
 Aim
 ---
 
@@ -34,13 +39,16 @@ Schedule
 Assignments
 -----------
 
-There will be two assignments, to be handed in using the Fire system.
-Details will appear here.
+The assignments are to be solved in **teams of three**.
+
+- [Assignment01](Assignments/Assignment01.lhs), due 2016-02-02 23:59.
+  Submission via Fire, at [URL](http://)
 
 Lectures
 --------
 
 - [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](Lectures/slides01.pdf).
+- [Lecture 02, Introduction](Lectures/Lecture02.lhs).
 
 Exercises
 ---------
