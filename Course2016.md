@@ -22,7 +22,8 @@ Course team
 
 - Teacher : Cezar Ionescu (cezar AT)
 - Examiner : Patrik Jansson (patrikj AT)
-- Teaching assistants: Irene Lobo Valbuena (lobo AT), Víctor López Juan (lopezv AT)
+- Teaching assistants: Irene Lobo Valbuena (lobo AT), Víctor López
+  Juan (lopezv AT); from 2016-01-25 only Irene
 - Intern : Adam Sandberg Ericsson (saadam AT)
 
 Schedule
@@ -30,7 +31,7 @@ Schedule
 
 - Lectures Mondays 10-12 (in ED) and Fridays 13-15 (in EB)
 
-- Exercises Wednesdays 13-15 and Thursdays 10-12 (in E-studion)
+- Exercises Wednesdays 13-15 and Thursdays 10-12 (in Ft-4011)
 
 - Guest lectures in Week 4 (Monday 2016-02-08 and Friday 2016-02-12)
 
