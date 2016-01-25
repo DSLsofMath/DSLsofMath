@@ -4,6 +4,11 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-01-25: The date of the exam has been changed to 2016-03-15, 14:00.
+
+2016-01-25: Due to administrative reasons, we are down to one TA,
+Irene.  Thanks Victor for your contributions to the course!
+
 2016-01-22: First assignment has been posted! 
 
 Aim
@@ -35,8 +40,7 @@ Schedule
 
 - Guest lectures in Week 4 (Monday 2016-02-08 and Friday 2016-02-12)
 
-- Exam: used to be 2016-03-16 morning.  Date under revision due to
-  overlap with other exam.  Re-exam: 2016-08-23 afternoon.
+- Exam: 2016-03-15 afternoon.  Re-exam: 2016-08-23 afternoon.
 
 Assignments
 -----------
@@ -48,9 +52,14 @@ The assignments are to be solved in **teams of three**.
 
 Lectures
 --------
+*Note*: the summaries are written as a mixture of markdown and lhs.
+To compile them, you can use a suitably modified form of this
+[Makefile](Makefile) and the [bib](ref.bib) and
+[template.tex](template.tex) files.
 
 - [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](Lectures/slides01.pdf).
-- [Lecture 02, Logic and Functional Programming](Lectures/Lecture02.lhs).
+- [Lecture 02, Logic and Functional Programming, Part I](Lectures/Lecture02.lhs).
+- [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).  
 
 Exercises
 ---------
