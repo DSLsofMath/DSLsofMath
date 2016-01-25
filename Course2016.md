@@ -35,7 +35,8 @@ Schedule
 
 - Guest lectures in Week 4 (Monday 2016-02-08 and Friday 2016-02-12)
 
-- Exam: 2016-03-16 morning, re-exam: 2016-08-23 afternoon
+- Exam: used to be 2016-03-16 morning.  Date under revision due to
+  overlap with other exam.  Re-exam: 2016-08-23 afternoon.
 
 Assignments
 -----------
