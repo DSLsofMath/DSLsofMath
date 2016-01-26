@@ -18,7 +18,7 @@ still combine them and type check the results.  For example:
 > example0        ::  And p q -> And q p
 > example0 evApq   =  andIntro (andElimR evApq) (andElimL evApq)
 
-Notice that Haskell will not accept 
+Notice that Haskell will not accept
 
 < example0 evApq   =  andIntro (andElimL evApq) (andElimR evApq)
 
@@ -118,7 +118,7 @@ not empty: it contains the identity
 When p is not Empty (and therefore is true), there is no (total,
 defined) function of type p -> Empty, and therefore Not p is false.
 
-Moreover, mathematically, an empty set functions as a contradiction:
+Moreover, mathematically, an empty set acts as a contradiction:
 there is exactly one function from the empty set to any other set,
 namely the empty function.  Thus, if we had an element of the empty
 set, we could obtain an element of any other set.
@@ -165,10 +165,9 @@ logic, but the converse, as we have seen in the previous exercise,
 does not hold.  On the other hand, there is no sentence in classical
 logic which would be contradicted in constructive logic.  In
 particular, while we cannot prove p ∨ ¬ p, we *can* prove
-(constructively!) that there is no p for which ¬ (p ∨ ¬ q), i.e., that
+(constructively!) that there is no p for which ¬ (p ∨ ¬ p), i.e., that
 the sentence ¬ ¬ (p ∨ ¬p) is always true.
 
 Show this by implementing the following function:
 
 < noContra :: (Either p (p -> Empty) -> Empty) -> Empty
-
