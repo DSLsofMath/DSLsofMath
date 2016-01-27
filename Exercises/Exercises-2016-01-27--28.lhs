@@ -31,8 +31,8 @@ On to the exercises.
 
 1.  Prove
 
-<   Impl (And p q) -> q
-<   Or p q -> O q p
+<   Impl (And p q) q
+<   Or p q -> Or q p
 <   Or p (Not p)
 
 2.  Translate to Haskell and prove the De Morgan laws:
