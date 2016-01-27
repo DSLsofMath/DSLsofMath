@@ -145,8 +145,8 @@ F.  **Universal quantifier**
 
   2) Modelling with functions
 
-<           ∀-Elim   :  ∀ x (P x) -> (x : Term) -> P x
-<           ∀-Intro  :  ((x : Term) -> P x) -> ∀ x (P x)
+<           ∀-Elim   :  ∀ x (P x) -> (c : Term) -> P c
+<           ∀-Intro  :  ((c : Term) -> P c) -> ∀ x (P x)
 
   3) Methods of proof for universally quantified sentences
 
