@@ -65,6 +65,8 @@ Exercises
 ---------
 
 - [Exercises for 2016-01-20](Exercises/Exercises-2016-01-20.lhs).
+  [Solutions](Exercises/FOL.lhs) to selected exercises; you can use
+  these for the assignment if you wish.
 - [Exercises for 2016-01-21](Exercises/Exercises-2016-01-21.lhs).
 - [Exercises for 2016-01-27--28](Exercises/Exercises-2016-01-27--28.lhs). You will need the file [AbstractFOL.lhs](Exercises/AbstractFOL.lhs).
 
