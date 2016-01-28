@@ -7,6 +7,27 @@
 
 > import AbstractFOL
 
+== Short technical note ==
+For these exercises, you might find it useful to take a look at typed holes, a
+feature which is enabled by default in GHC and available (the same way as the
+language extension above EmptyCase) version 7.8.1 onwards:
+  https://wiki.haskell.org/GHC/Typed_holes
+
+If you are familiar with Agda, these will be familiar to use. In summary, when
+trying to code up the definition of some expression (which you have already
+typed) you can get GHC's type checker to help you out a little in seeing how far
+you might be from forming the expression you want. That is, how far you are from
+constructing something of the appropriate type.
+
+Take example0 below, and say you are writing:
+
+< example0 e = andIntro (_ e)  _
+
+When loading the module, GHC will tell you which types your holes "_" should
+have for the expression to be type correct.
+==========================
+
+
 Exercises for 2016-01-27 and 2016-01-28
 ---------------------------------------
 
