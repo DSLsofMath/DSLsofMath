@@ -1,4 +1,10 @@
+> {-# LANGUAGE CPP #-}
+#if __GLASGOW_HASKELL__ > 708
+> {-# LANGUAGE EmptyCase #-}
+#else
 > import Unsafe.Coerce
+#endif
+
 > import AbstractFOL
 
 Exercises for 2016-01-27 and 2016-01-28
@@ -132,7 +138,12 @@ Implement notIntro using the definition of Not above, i.e., find a function
 Using
 
 > contraHey    ::  Empty -> p
+#if __GLASGOW_HASKELL__ > 708
+> contraHey x   =  case x of {}
+#else
 > contraHey x   =  unsafeCoerce x
+#endif
+
 
 prove
 
