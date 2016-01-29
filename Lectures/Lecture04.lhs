@@ -14,7 +14,7 @@ introduction and elimination rules as functions.  The functions act on
 and produce *evidence* (proofs) for the sentences in their types.  For
 example:
 
-<   →-Intro  :  (p -> q) -> p → q     -- not the difference in arrows!
+<   →-Intro  :  (p -> q) -> p → q     -- note the difference in arrows!
 <   →-Elim   :  p → q -> (p -> q)
 
 →-Intro takes a function producing evidence for q from evidence for p,
@@ -73,7 +73,7 @@ it!).  This definition can be interpreted as "evidence for ∃ x (P x)
 is made up of a pair, consisting of an atomic term c and of evidence
 that P c holds".
 
-The type (c : Term) -> P c and (c : Term, P c) are *dependent types*,
+The types (c : Term) -> P c and (c : Term, P c) are *dependent types*,
 and cannot be implemented in Haskell.  Nevertheless, they are the
 types for which the Curry-Howard isomorphism works, and understanding
 ∀ and ∃ as dependently-typed functions and dependent pairs,
@@ -233,4 +233,3 @@ We obtain:
 
 References
 -----------
-
