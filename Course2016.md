@@ -54,8 +54,8 @@ Lectures
 --------
 *Note*: the summaries are written as a mixture of markdown and lhs.
 To compile them, you can use a suitably modified form of this
-[Makefile](Makefile) and the [bib](ref.bib) and
-[template.tex](template.tex) files.
+[Makefile](aux/Makefile) and the [bib](aux/ref.bib) and
+[template.tex](aux/template.tex) files.
 
 - [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](Lectures/slides01.pdf).
 - [Lecture 02, Logic and Functional Programming, Part I](Lectures/Lecture02.lhs).
