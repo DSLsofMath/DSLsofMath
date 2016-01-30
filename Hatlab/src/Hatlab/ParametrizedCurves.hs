@@ -36,5 +36,5 @@ instance Plottable Parametrized where
 lspace :: Int -> (Double, Double) -> [Double]
 lspace n (a, b) = itr n (\x -> x+h) a
     where
-        h = ((b-a))/(fromIntegral (n-1))
+        h = (b-a)/(fromIntegral (n-1))
         itr n = (take n .) . iterate
