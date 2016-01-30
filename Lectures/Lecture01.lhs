@@ -1,4 +1,5 @@
-{-# LANGUAGE OverloadedStrings #-}
+> {-# LANGUAGE OverloadedStrings #-}
+
 Lecture 01: Introduction
 ========================
 
@@ -186,4 +187,3 @@ A type for the arithmetic variables:
     - A *sentence* is a WFF with no free variables (cf. atomic term)
 
 > type AWFF = WFF AName AFunc AVar APred
-
