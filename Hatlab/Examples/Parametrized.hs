@@ -1,5 +1,5 @@
 import Hatlab.Plot
-import Hatlab.ParameterizedCurves
+import Hatlab.ParametrizedCurves
 
 circle r = Par (\t -> r*cos t) (\t -> r*sin t) (-2*pi, 2*pi) "Circle"
 

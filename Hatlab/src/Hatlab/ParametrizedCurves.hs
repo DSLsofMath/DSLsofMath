@@ -1,11 +1,11 @@
 {-# LANGUAGE FlexibleInstances #-}
-module Hatlab.ParameterizedCurves where
+module Hatlab.ParametrizedCurves where
 
 import Hatlab.Plot
 
-data Parameterized = Par {x_t :: Double -> Double, y_t :: Double -> Double, interval :: (Double, Double), label :: String}
+data Parametrized = Par {x_t :: Double -> Double, y_t :: Double -> Double, interval :: (Double, Double), label :: String}
 
-instance Plottable (Parameterized) where
+instance Plottable Parametrized where
     plot [] = return ()
     plot rs = do plotCmd ["set size ratio -1\n"] 
                  plotCmd [headers rs]
@@ -24,10 +24,10 @@ instance Plottable (Parameterized) where
 
             show_ (x, y) = show x ++ " " ++ show y ++ "\n"
 
-            min_v :: Parameterized -> Double
+            min_v :: Parametrized -> Double
             min_v r = minimum ((map fst (ps r))++(map snd (ps r)))
 
-            max_v :: Parameterized -> Double
+            max_v :: Parametrized -> Double
             max_v r = maximum ((map fst (ps r))++(map snd (ps r)))
 
 lspace :: Int -> (Double, Double) -> [Double]

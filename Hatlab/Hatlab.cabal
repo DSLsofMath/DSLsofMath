@@ -14,7 +14,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     Hatlab.Plot,
                        Hatlab.Relations,
-                       Hatlab.ParameterizedCurves
+                       Hatlab.ParametrizedCurves
   build-depends:       base >= 4.7 && < 5
                      , vector
                      , process
