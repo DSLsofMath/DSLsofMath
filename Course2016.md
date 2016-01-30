@@ -54,17 +54,21 @@ Lectures
 --------
 *Note*: the summaries are written as a mixture of markdown and lhs.
 To compile them, you can use a suitably modified form of this
-[Makefile](Makefile) and the [bib](ref.bib) and
-[template.tex](template.tex) files.
+[Makefile](aux/Makefile) and the [bib](aux/ref.bib) and
+[template.tex](aux/template.tex) files.
 
 - [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](Lectures/slides01.pdf).
 - [Lecture 02, Logic and Functional Programming, Part I](Lectures/Lecture02.lhs).
 - [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).  
+- [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).  
+- [Lecture 04, Proofs and Programs in Mathematics](Lectures/Lecture04.lhs).
 
 Exercises
 ---------
 
 - [Exercises for 2016-01-20](Exercises/Exercises-2016-01-20.lhs).
+  [Solutions](Exercises/FOL.lhs) to selected exercises; you can use
+  these for the assignment if you wish.
 - [Exercises for 2016-01-21](Exercises/Exercises-2016-01-21.lhs).
 - [Exercises for 2016-01-27--28](Exercises/Exercises-2016-01-27--28.lhs). You will need the file [AbstractFOL.lhs](Exercises/AbstractFOL.lhs).
 
