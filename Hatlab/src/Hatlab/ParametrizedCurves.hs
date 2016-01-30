@@ -5,6 +5,9 @@ import Hatlab.Plot
 
 data Parametrized = Par {x_t :: Double -> Double, y_t :: Double -> Double, interval :: (Double, Double), label :: String}
 
+polarCurve :: (Double -> Double) -> (Double, Double) -> String -> Parametrized
+polarCurve r_fun interval name = Par (\theta -> (cos theta)*(r_fun theta)) (\theta -> (sin theta)*(r_fun theta)) interval name
+
 instance Plottable Parametrized where
     plot [] = return ()
     plot rs = do plotCmd ["set size ratio -1\n"] 
