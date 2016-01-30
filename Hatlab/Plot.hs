@@ -45,7 +45,6 @@ data BasicPlot = Fun  (Double -> Double) String
                | Pts  (V.Vector Double)  (Double -> Double) String
                | Pts2 (V.Vector Double)  (V.Vector Double) String
 
-
 instance Plottable BasicPlot where
   plot [] = return ()
   plot fs = do plotCmd [headers fs]
