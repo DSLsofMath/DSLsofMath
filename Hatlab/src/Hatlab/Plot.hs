@@ -1,5 +1,5 @@
 {-# LANGUAGE ScopedTypeVariables #-} -- for exception handling
-module Plot where
+module Hatlab.Plot where
 
 import Control.Concurrent
 import System.Process

@@ -11,8 +11,10 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  hs-source-dirs:      .
-  exposed-modules:     Plot, Relations, ParameterizedCurves
+  hs-source-dirs:      src
+  exposed-modules:     Hatlab.Plot,
+                       Hatlab.Relations,
+                       Hatlab.ParameterizedCurves
   build-depends:       base >= 4.7 && < 5
                      , vector
                      , process

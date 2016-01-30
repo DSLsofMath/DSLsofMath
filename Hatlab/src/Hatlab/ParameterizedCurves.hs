@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
-module ParameterizedCurves where
+module Hatlab.ParameterizedCurves where
 
-import Plot
+import Hatlab.Plot
 
 data Parameterized = Par {x_t :: Double -> Double, y_t :: Double -> Double, interval :: (Double, Double), label :: String}
 
@@ -14,7 +14,7 @@ instance Plottable (Parameterized) where
         where
             headers (r : rs) = "clear\nplot ["++(show (min_v r))++":"++(show (max_v r))++"] "
                                ++ concat (map (\x -> x++", ") (header "'-' " r : map (header "'' ") rs))
-            header str r = str ++ " w p pt 7 t " ++ (show (label r))
+            header str r = str ++ " w l lw 2 t " ++ (show (label r))
 
             resolution = 400
 

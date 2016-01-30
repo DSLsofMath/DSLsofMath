@@ -1,7 +1,7 @@
 {-# LANGUAGE FlexibleInstances #-}
-module Relations where
+module Hatlab.Relations where
 
-import Plot
+import Hatlab.Plot
 
 data Relation a = Relation (Double -> Double -> Bool) String |
                       Intersect a a |

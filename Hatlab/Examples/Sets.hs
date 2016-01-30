@@ -1,5 +1,5 @@
-import Plot
-import Relations
+import Hatlab.Plot
+import Hatlab.Relations
 
 p :: (Double, Double) -> (Double, Double) -> (Double, Double)
 p (c, c') (a, b) = (c+a*a-b*b, c'+2*a*b)
