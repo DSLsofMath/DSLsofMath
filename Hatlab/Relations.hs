@@ -50,7 +50,7 @@ instance Plottable (Deep Relation) where
                  plotCmd (map ((++"e\n") . p) rs)
 
         where
-            headers (r : rs) = "clear\nplot [-1:1] "
+            headers (r : rs) = "clear\nplot [-2:2] "
                                ++ concat (map (\x -> x++", ") (header "'-' " r : map (header "'' ") rs))
             header str r = str ++ " w p pt 7 t " ++ show (fold label r)
 
