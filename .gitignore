@@ -16,3 +16,9 @@ cabal.sandbox.config
 *.hp
 .stack-work/
 *.agdai
+*.log
+*.out
+*.fdb_latexmk
+*.fls
+*.dvi
+Lecture*.pdf

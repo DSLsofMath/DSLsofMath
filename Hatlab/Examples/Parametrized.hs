@@ -1,3 +1,4 @@
+module Examples.Parametrized where
 import Hatlab.Plot
 import Hatlab.ParametrizedCurves
 

@@ -1,3 +1,4 @@
+module Examples.Sets where
 import Hatlab.Plot
 import Hatlab.Relations
 
