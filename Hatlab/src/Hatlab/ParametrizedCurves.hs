@@ -19,7 +19,7 @@ instance Plottable Parametrized where
                                ++ concat (map (\x -> x++", ") (header "'-' " r : map (header "'' ") rs))
             header str r = str ++ " w l lw 2 t " ++ (show (label r))
 
-            resolution = 400
+            resolution = 4000
 
             p r = concatMap show_ $ ps r
             
