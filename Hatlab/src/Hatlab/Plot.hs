@@ -1,5 +1,5 @@
 {-# LANGUAGE ScopedTypeVariables #-} -- for exception handling
-module Plot where
+module Hatlab.Plot where
 
 import Control.Concurrent
 import System.Process
@@ -44,7 +44,6 @@ class Plottable a where
 data BasicPlot = Fun  (Double -> Double) String
                | Pts  (V.Vector Double)  (Double -> Double) String
                | Pts2 (V.Vector Double)  (V.Vector Double) String
-
 
 instance Plottable BasicPlot where
   plot [] = return ()
