@@ -14,7 +14,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     Hatlab.Plot,
                        Hatlab.Relations,
-                       Hatlab.ParametrizedCurves
+                       Hatlab.ParametrizedCurves,
                        Examples.Shapes,
                        Examples.Parametrized,
                        Examples.Sets
