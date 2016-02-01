@@ -9,7 +9,7 @@ News
 2016-01-25: Due to administrative reasons, we are down to one TA,
 Irene.  Thanks Victor for your contributions to the course!
 
-2016-01-22: First assignment has been posted! 
+2016-01-22: First assignment has been posted!
 
 Aim
 ---
@@ -38,11 +38,11 @@ Schedule
 
 - Exercises Wednesdays 13-15 and Thursdays 10-12 (in Ft-4011)
 
-- Guest lectures 
+- Guest lectures
 
-    + Monday 2016-02-08: Patrik Jansson on DSLs 
-	
-	+ Friday 2016-02-12: Björn von Sydow on interpolation
+    + Monday 2016-02-08: Patrik Jansson on DSLs
+
+    + Friday 2016-02-12: Björn von Sydow on interpolation
 
 - Exam: 2016-03-15 afternoon.  Re-exam: 2016-08-23 afternoon.
 
@@ -63,8 +63,8 @@ To compile them, you can use a suitably modified form of this
 
 - [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](Lectures/slides01.pdf).
 - [Lecture 02, Logic and Functional Programming, Part I](Lectures/Lecture02.lhs).
-- [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).  
-- [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).  
+- [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).
+- [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).
 - [Lecture 04, Proofs and Programs in Mathematics](Lectures/Lecture04.lhs).
 - [Lecture 05, Types in Mathematics](Lectures/Lecture05.lhs).
 
