@@ -140,4 +140,10 @@ Some important references:
   domains.  Entertaining, challenging, rewarding.
   [Fulltext from the library](http://chalmers.summon.serialssolutions.com/sv-SE/search?ho=t&q=Mathematics%3A%20Form%20and%20Function)
 
+- **Functional Differential Geometry**, Gerald Jay Sussman and Jack
+  Wisdom, 2013, MIT.  A book about using programming as a means of
+  understanding differential geometry.  Similar in spirit to the course,
+  but more advanced and very different in form.  An earlier version
+  appeared as an [AIM report](http://web.mit.edu/wisdom/www/AIM-2005-003.pdf).
+
 More references will be added in due course.
