@@ -7,7 +7,7 @@ Lecture 5: Types in Mathematics
 Types are sometimes mentioned explicitey in mathematical texts:
 
 - x ∈ ℝ
-- $\sqrt : ℝ_{≥0} → ℝ_{≥0}$
+- $\sqrt{~} : ℝ_{≥0} → ℝ_{≥0}$
 - (_)²  : ℝ → ℝ or, alternatively but *not* equivalently
 - (_)²  : ℝ → $ℝ_{≥0}$
 
@@ -16,8 +16,8 @@ explicitely:
 
 - lim : (ℕ → ℝ) → ℝ  for lim_{n → ∞} {a_n}
 - d/dt : (ℝ → ℝ) → ℝ → ℝ
-   + sometimes, instead of df/dt one sees f° or D f
-- ∂f/∂x_i : (ℝ^n → ℝ) → ℝ^n → ℝ
+   + sometimes, instead of df/dt one sees $f'$ or f° or D f
+- ∂f/∂x_i : (ℝⁿ → ℝ) → ℝⁿ → ℝ
    + we mostly see ∂f/∂x, ∂f/∂y, ∂f/∂z etc. when, in the context, the
      function f has been given a definition of the form f (x, y, z) =
      ...
@@ -29,7 +29,7 @@ explicitely:
    + Exercise: for f : ℝ² → ℝ define D₁ and D₂ using only D.
 
 
-     
+
 2. Type inference and understanding
 -----------------------------------
 
@@ -54,7 +54,7 @@ involved:
 (1) ∂L / ∂q suggests that L is a function of at least a pair of
 arguments:
 
-        L : ℝ^n → ℝ,    n ≥ 2
+        L : ℝⁿ → ℝ,    n ≥ 2
 
 This is consistent with the description: "Lagrangian function of the
 system state (time, coordinates, and velocities)".  So we can take n =
@@ -103,11 +103,12 @@ time, let us say
         w  :  ℝ → ℝ
         w(t) is a coordinate at time t
 
-We can now guess that the use of "equations" might have something to
-do with the use of "coordinates".  In an n-dimensional space, a
-position is given by n coordinates.  A path would be a function
+We can now guess that the use of the plural form "equations" might
+have something to do with the use of "coordinates".  In an
+n-dimensional space, a position is given by n coordinates.  A path
+would be a function
 
-        w  :  ℝ → ℝ^n
+        w  :  ℝ → ℝⁿ
 
 which is equivalent to n functions of type ℝ → ℝ.  We would then have
 an equation for each of them.
@@ -135,15 +136,15 @@ where the "combinator" expand is given by
 (8) Similarly, using D₁, D₂, D₃ instead of ∂L/∂t etc., we have that,
 instead of ∂L/∂q what is meant is
 
-<      D₂L ∘ expand w  :  ℝ → ℝ
+<      D₂ L ∘ expand w  :  ℝ → ℝ
 
 and instead of ∂L/∂q°
 
-<      D₃L ∘ expand w  : ℝ → ℝ
+<      D₃ L ∘ expand w  : ℝ → ℝ
 
 The equation becomes
 
-<      D (D₃L ∘ expand w) - D₂L ∘ expand w = 0
+<      D (D₃ L ∘ expand w)  -  D₂ L ∘ expand w  =  0
 
 a relation between functions of type ℝ → ℝ.  In particular, the
 right-hand 0 is the constant function
@@ -153,3 +154,4 @@ right-hand 0 is the constant function
 
 References
 ----------
+* [@sussman2013functional]
