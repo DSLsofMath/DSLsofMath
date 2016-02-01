@@ -38,7 +38,11 @@ Schedule
 
 - Exercises Wednesdays 13-15 and Thursdays 10-12 (in Ft-4011)
 
-- Guest lectures in Week 4 (Monday 2016-02-08 and Friday 2016-02-12)
+- Guest lectures 
+
+    + Monday 2016-02-08: Patrik Jansson on DSLs 
+	
+	+ Friday 2016-02-12: Björn von Sydow on interpolation
 
 - Exam: 2016-03-15 afternoon.  Re-exam: 2016-08-23 afternoon.
 
