@@ -66,6 +66,7 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).  
 - [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).  
 - [Lecture 04, Proofs and Programs in Mathematics](Lectures/Lecture04.lhs).
+- [Lecture 05, Types in Mathematics](Lectures/Lecture05.lhs).
 
 Exercises
 ---------
