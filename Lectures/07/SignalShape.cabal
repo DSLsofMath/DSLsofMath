@@ -1,0 +1,31 @@
+name:                SignalShape
+version:             2015.0
+synopsis:            DSLsofMath lecture 7 (based on AFP course lecture 2)
+-- description:
+homepage:            http://www.cse.chalmers.se/edu/course/afp/
+license:             BSD3
+license-file:        LICENSE
+author:              Patrik Jansson
+maintainer:          patrikj@chalmers.se
+-- copyright:
+-- category:
+build-type:          Simple
+cabal-version:       >=1.8
+
+library
+  hs-source-dirs:      src
+  exposed-modules:     Matrix,
+                       Shape, Shape.Deep, Shape.Shallow,
+                       Signal, Signal.Deep, Signal.Shallow, Signal.Example,
+                       Animate, ANSI, Render,
+                       Example
+  build-depends:       base < 5, unix < 2.8
+
+
+
+-- For technical reasons, the executable has to be in a separate directory.
+executable example
+  hs-source-dirs:      exe
+  build-depends:       base >= 4 && < 5
+                     , SignalShape
+  main-is: Main.hs
