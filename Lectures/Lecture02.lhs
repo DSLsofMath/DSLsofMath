@@ -213,11 +213,11 @@ D. **Negation**
   
   > $\Longrightarrow$
   
-  > $2 \times {n'}^2 = 4 \times k$
+  > $2 \times {n'}^2 = 4 \times k^2$
   
   > $\Longrightarrow$
   
-  > ${n'}^2 = 2 \times k$
+  > ${n'}^2 = 2 \times k^2$
   
   > $\Longrightarrow$
   
