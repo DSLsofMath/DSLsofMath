@@ -19,32 +19,20 @@
   <body>
     <textarea id="source">
 
-# Lecture 2: Domain Specific Languages
+# Lecture 7: Domain Specific Languages
 
-## Learning outcomes for L2
+## Learning outcomes for L7
 
-This lecture we will focus on the following subset of the full [AFP
-course learning outcomes](http://www.cse.chalmers.se/edu/course/afp/index.html#goal):
-
-* DSL: design embedded domain specific languages
-    * DSL.Concepts: (abstract) syntax, semantics, ...
-    * DSL.Implement: implement EDSLs in Haskell (as combinator libraries)
-* Types: read, understand and extend Haskell programs which use advanced type system features
-    * Types.Class: type classes, newtypes, deriving, ...
-* Expl: explain and discuss the above topics
+This lecture we will focus on the following subset of the full
+DSLsofMath course learning outcomes:
+* design and implement a DSL for a new domain
+* organize areas of mathematics in DSL terms
+* develop adequate notation for mathematical concepts
+* discuss and compare different software implementations of mathematical concepts
 
 ---
 
-## Anatomy of an EDSL
-
-* *Types* modelling concepts in the domain: Time, Signal
-* *Constructor functions* constructing elements of these types: constS, timeS, ...
-* *Combinators* combining and modifying elements: ($$), mapS
-* *Run functions* making observations of the elements: sample
-
----
-
-## Anatomy of an EDSL: with examples
+## A tiny DSL of time-varying signals
 
 * *Types* modelling concepts in the domain
 ```Haskell
@@ -56,14 +44,25 @@ type Signal a  = Time -> a
 constS ::  a -> Signal a
 timeS  ::       Signal Time
 ```
-* *Combinators* combining and modifying elements
-```Haskell
-($$) :: Signal (a->b) -> Signal a -> Signal b
-mapS ::        (a->b) -> Signal a -> Signal b
-```
+
 * *Run functions* making observations of the elements
 ```Haskell
 sample :: Signal a -> (Time -> a)
+```
+
+* *Combinators* combining and modifying elements
+```Haskell
+mapS  :: (a->b)    -> Signal a -> Signal b
+mapS2 :: (a->b->c) -> Signal a -> Signal b -> Signal c
+```
+
+---
+
+## Signal examples
+
+```Haskell
+s1 : Signal Double
+s1 = sin
 ```
 
 ---
@@ -83,27 +82,23 @@ mapS f xs = constS f $$ xs
 ```
 
 ---
+# The anatomy of an embedded domain specific language
+
+* *Types* modelling concepts in the domain: Time, Signal
+* *Constructor functions* constructing elements of these types: constS, timeS, ...
+* *Combinators* combining and modifying elements: ($$), mapS
+* *Run functions* making observations of the elements: sample
+
+---
+
 
 ## Think about
 
 * Compositionality
     * Combining elements into more complex ones should be easy and natural
 * Abstraction
-    * The user shouldn't have to know (or be allowed to explot) the underlying implementation of your types
+    * The user shouldn't have to know (or be allowed to exploit) the underlying implementation of your types
     * Changing the implementation shouldn't break user code
-
-### Small exercise
-
-Suppose we didn't have ($$) in our Signal language. How would you define 
-
-```Haskell
-addS x y = constS (+) $$ x $$ y
-```
-Answer: awkwardly!
-
-```Haskell
-addS x y = mapS (\t -> sample x t + sample y t) timeS
-```
 
 ---
 
@@ -298,7 +293,7 @@ data Shape where -- using Gen. Alg. DataType syntax
   Intersect :: Shape ->  Shape -> Shape
   Invert    :: Shape ->  Shape
 
-empty = Empty; disc = Disc; ... 
+empty = Empty; disc = Disc; ...
 ```
 
 ---
@@ -427,7 +422,7 @@ Live demo.
     *  constructor functions, combinators, run functions
 * Implementation styles
     * Shallow: representation given by the semantics
-    * Deep: representation given by the syntax 
+    * Deep: representation given by the syntax
 * Remember
     * Compositionality
     * Abstraction
