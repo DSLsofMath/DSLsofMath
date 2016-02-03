@@ -42,7 +42,6 @@ type Signal a  = Time -> a
 * *Constructor functions* constructing elements of these types
 ```Haskell
 constS ::  a -> Signal a
-timeS  ::       Signal Time
 ```
 
 * *Run functions* making observations of the elements
@@ -51,6 +50,11 @@ sample :: Signal a -> (Time -> a)
 ```
 
 * *Combinators* combining and modifying elements
+```Haskell
+addS :: Num a => Signal a -> Signal a -> Signal a
+mulS :: Num a => Signal a -> Signal a -> Signal a
+```
+
 ```Haskell
 mapS  :: (a->b)    -> Signal a -> Signal b
 mapS2 :: (a->b->c) -> Signal a -> Signal b -> Signal c
@@ -63,6 +67,12 @@ mapS2 :: (a->b->c) -> Signal a -> Signal b -> Signal c
 ```Haskell
 s1 : Signal Double
 s1 = sin
+s2 :: Signal Bool
+s2 = (>=0) . s1
+s3, s4, s5 :: Signal Double
+s3 = addS (constS 2) s1
+s4 = mulS (constS 0.4) (speedUp 5 s1)
+s5 = addS s3 s4
 ```
 
 ---

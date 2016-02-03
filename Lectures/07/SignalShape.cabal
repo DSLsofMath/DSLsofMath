@@ -14,7 +14,8 @@ cabal-version:       >=1.8
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Matrix,
+  exposed-modules:     BareSignalExample,
+                       Matrix,
                        Shape, Shape.Deep, Shape.Shallow,
                        Signal, Signal.Deep, Signal.Shallow, Signal.Example,
                        Animate, ANSI, Render,

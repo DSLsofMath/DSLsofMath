@@ -25,17 +25,25 @@ We can sample a signal at any time just using function application.
 We can lift values to (constant) signals:
 
 > constS :: a -> Signal a
-> constS = error "TBD"
 
 We can add signals:
 
 > addS :: Num a => Signal a -> Signal a -> Signal a
-> addS = error "TBD"
+> mulS :: Num a => Signal a -> Signal a -> Signal a
+> speedUp :: Double -> Signal a -> Signal a
 
 and we can map a function over a signal:
 
 > mapS :: (a->b) -> Signal a -> Signal b
-> mapS = error "TBD"
+
+Examples uses:
+
+s3 x = 2 + sin x
+
+> s3 = addS (constS 2) s1
+> s4 = mulS (constS 0.4) (speedUp 5 s1)
+> s5 = addS s3 s4
+
 
 There is actually a general pattern of "lifting":
 
@@ -45,4 +53,17 @@ There is actually a general pattern of "lifting":
 
 > lift0 = constS
 > lift1 = mapS
-> lift2 (+-) f g = \t ->  f t  +-  g t
+> lift2 (+-) s1 s2 = \t ->  s1 t  +-  s2 t
+
+> constS x    = \t -> x
+> addS s1 s2  = \t -> s1 t + s2 t
+> mulS s1 s2  = \t -> s1 t * s2 t
+> mapS f s    = \t -> f (s t)
+> speedUp k s = \t -> s (k*t)
+
+> render :: Time -> Double -> Signal Double -> [String]
+> render step maxi s = map (bar . s) [0,step..maxi]
+>   where bar x = replicate (round (magnify*x)) '*'
+> magnify = 10
+
+> r = putStr . unlines . render 0.1 pi
