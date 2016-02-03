@@ -4,7 +4,7 @@ Lecture 5: Types in Mathematics
 1. Types in mathematics
 -----------------------
 
-Types are sometimes mentioned explicitey in mathematical texts:
+Types are sometimes mentioned explicitly in mathematical texts:
 
 - x ∈ ℝ
 - $\sqrt{~} : ℝ_{≥0} → ℝ_{≥0}$
@@ -12,7 +12,7 @@ Types are sometimes mentioned explicitey in mathematical texts:
 - (_)²  : ℝ → $ℝ_{≥0}$
 
 The types of "higher-order" operators are usually not given
-explicitely:
+explicitly:
 
 - lim : (ℕ → ℝ) → ℝ  for lim_{n → ∞} {a_n}
 - d/dt : (ℝ → ℝ) → ℝ → ℝ
