@@ -6,6 +6,9 @@ resolver: lts-3.10
 # Local packages, usually specified by relative directory name
 packages:
 - '.'
+- location:
+    git: https://github.com/DSLsofMath/Hatlab.git
+    commit: c42f6c0ed2cf3575ed286267695b1f8e6dc1ef52
 
 # Packages to be pulled from upstream that are not in the resolver (e.g., acme-missiles-0.3)
 extra-deps: []
