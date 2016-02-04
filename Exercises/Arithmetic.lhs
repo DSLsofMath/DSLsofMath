@@ -3,7 +3,7 @@
 > import FOL
 
 
-The constructs in our lanaguage can be represented symbolically via datatypes:
+The constructs in our language can be represented symbolically via datatypes:
 
 > data AName  =  Zero         deriving Show
 > data AFunc  =  Succ | Plus  deriving Show
@@ -32,7 +32,7 @@ choice, here 'Integer'.
 
 
 Now we can define evaluation for the arithmetic language *into the domain of
-'Ingeter' values*:
+'Integer' values*:
 
 > type AEnvInt = Env AVar Integer
 
@@ -88,4 +88,3 @@ We can now consider, for instance, the following environments for the formulae
 
 > e01 = [("x",1), ("y",2)]
 > e02 = [("y",1), ("x",2)]
-
