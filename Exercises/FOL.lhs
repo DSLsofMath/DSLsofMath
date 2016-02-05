@@ -21,16 +21,20 @@ Semantics
 
 > type Env var domain = [(var, domain)]
 
-> eval :: Eq var => Env var domain  ->
->                   (name -> domain) ->
->                   (func -> [domain] -> domain) ->
->                   Term name func var -> domain
+> eval :: Eq var
+>      => Env var domain
+>      -> (name -> domain)
+>      -> (func -> [domain] -> domain)
+>      -> Term name func var
+>      -> domain
 
-> check :: (Eq var, Eq domain) => Env var domain ->
->                                 (name  ->  domain)   ->
->                                 (func  ->  [domain]  ->  domain)  ->
->                                 (pred  ->  [domain]  ->  Bool)    ->
->                                 WFF name func var pred -> Bool
+> check :: (Eq var, Eq domain)
+>       => Env var domain
+>       -> (name  ->  domain)
+>       -> (func  ->  [domain]  ->  domain)
+>       -> (pred  ->  [domain]  ->  Bool)
+>       -> WFF name func var pred
+>       -> Bool
 
 --------------------------------------------------------------------------------
 Implementations
