@@ -61,7 +61,7 @@ but it appears that Eq and Show are not necessary:
 <     (/)          :: a -> a -> a
 <     recip        :: a -> a
 <     fromRational :: Rational -> a
-< 
+<
 < class  (Fractional a) => Floating a  where
 <     pi                  :: a
 <     exp, log, sqrt      :: a -> a
@@ -70,7 +70,7 @@ but it appears that Eq and Show are not necessary:
 <     asin, acos, atan    :: a -> a
 <     sinh, cosh, tanh    :: a -> a
 <     asinh, acosh, atanh :: a -> a
-< 
+<
 
 We can instantiate these type classes for functions in the same way we
 did for Num:
@@ -103,7 +103,7 @@ The "little language" of derivatives:
 
     D (f ∘ g) x  =  D f (g x) * D g x     -- the chain rule
 
-    D (const α)  =  const 0      
+    D (const α)  =  const 0
     D id         =  const 1
     D (^n) x     =  (n - 1) * (x^(n-1))
     D sin x      =  cos x
@@ -138,18 +138,18 @@ We can implement this in a datatype:
 
 The intended meaning of elements of the expression type is functions:
 
-> eval               ::  Expression -> Double -> Double
-> eval (Const alpha)  =  const alpha
-> eval Id             =  id
-> eval (e1 :+: e2)    =  eval e1 + eval e2
-> eval (e1 :*: e2)    =  eval e1 * eval e2 
-> eval (Exp e1)       =  exp (eval e1)
+> eval  ::  Expression     -> Double -> Double
+> eval      (Const alpha)  =  const alpha
+> eval      Id             =  id
+> eval      (e1 :+: e2)    =  eval e1 + eval e2
+> eval      (e1 :*: e2)    =  eval e1 * eval e2
+> eval      (Exp e1)       =  exp (eval e1)
 > -- and so on
 
 We can implement the derivative of expressions using the rules of
 derivatives.  We want to implement a function
 
-> derive               ::  Expression -> Expression
+> derive  ::  Expression -> Expression
 
 which makes the following diagram commute:
 
@@ -208,11 +208,11 @@ Therefore, the specification is fulfilled by taking
 
 Similarly, we obtain
 
-> derive (Const alpha)  =  Const 0
-> derive Id             =  Const 1
-> derive (e1 :+: e2)    =  derive e1 :+: derive e2
-> derive (e1 :*: e2)    =  (derive e1 :*: e2) :+: (e1 :*: derive e2)
-> derive (Exp e)        =  Exp e :*: derive e
+> derive     (Const alpha)  =  Const 0
+> derive     Id             =  Const 1
+> derive     (e1 :+: e2)    =  derive e1 :+: derive e2
+> derive     (e1 :*: e2)    =  (derive e1 :*: e2) :+: (e1 :*: derive e2)
+> derive     (Exp e)        =  Exp e :*: derive e
 
 Exercise: complete the Expression type and the eval and derive
 functions.
@@ -262,11 +262,11 @@ For example:
 
   =  {def eval for Exp}
 
-     (exp . eval e) * eval (derive e)
+     exp (eval e) * eval (derive e)
 
   =  {def eval'}
 
-     (exp . eval e) * eval' e
+     exp (eval e) * eval' e
 
 and the "e" doesn't go away.  The semantics of derivatives is not
 compositional.
@@ -292,16 +292,16 @@ We compute, for example:
 
   =  {def eval for Exp and reusing the computation above}
 
-     (exp . eval e, (exp . eval e) * eval' e)
+     (exp (eval e), exp (eval e) * eval' e)
 
   =  {def fst, snd, evalD}
 
-     (exp . fst (evalD e), (exp . fst (evalD e)) * snd (evalD e))
+     (exp (fst (evalD e)), (exp (fst (evalD e))) * snd (evalD e))
 
   =  {perhaps more readable}
 
      let (f, f') = evalD e
-     in   (exp . f, (exp . f) * f')
+     in (exp f, exp f * f')
 
 This semantics *is* compositional.  We can now define a shallow
 embedding for the computation of derivatives, using the numerical type
@@ -316,4 +316,3 @@ Exercise: implement the rest
 
 References
 ----------
-
