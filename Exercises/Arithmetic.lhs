@@ -31,8 +31,8 @@ choice, here 'Integer'.
 > evAPred LE    = le   where le [x, y] = x <= y
 
 
-Now we can define evaluation for the arithmetic language *into the domain of
-'Integer' values*:
+Having these, we can define evaluation for the arithmetic language *into the
+domain of 'Integer' values*:
 
 > type AEnvInt = Env AVar Integer
 
@@ -42,6 +42,8 @@ Now we can define evaluation for the arithmetic language *into the domain of
 > checkA  = \env -> check env evAName evAFunc evAPred
 
 
+--------------------------------------------------------------------------------
+
 Some basic natural number synonyms:
 
 > zero, one, two :: ATerm
@@ -50,15 +52,14 @@ Some basic natural number synonyms:
 > two         =  F Succ [one]
 
 
-A synonym for syntactic 'Plus'
+A synonym for syntactic 'Plus':
 
 > plus t0 t1   =  F Plus [t0, t1]
 
 
-Write some terms and well-formed formulae now and evaluate them/check their
-validity.
+Write some terms and well-formed formulae and evaluate them/check their validity.
 
-Here are some term examples:
+Here are some simple term examples:
 
 > t01, t02, t03, t04, t05 :: ATerm
 > t01 = F Plus [two, two]
@@ -69,7 +70,7 @@ Here are some term examples:
 > t05 = F Plus [ one, two ]
 
 
-Let us now construct some well-formed formulae:
+Let us construct some well-formed formulae:
 
 > wf01, wf021, wf022, wf02, wf03, wf04 :: AWFF
 > wf01  = And (Eq t03 t04) (Eq t04 t05)
@@ -84,7 +85,7 @@ Let us now construct some well-formed formulae:
 
 
 We can now consider, for instance, the following environments for the formulae
-(check which of them will hold and that it this is indeed correct):
+(check which of them will hold and that this is indeed correct):
 
 > e01 = [("x",1), ("y",2)]
 > e02 = [("y",1), ("x",2)]
