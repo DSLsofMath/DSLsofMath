@@ -13,7 +13,7 @@ Preliminary remarks
    - to keep things short, let us abbreviate a significant chunk of
      the definition of "{a_n} is a convergent sequence" (see lecture
      4) by
-     
+
      P a ε L = ε > 0 → ∃ N : ℤ (∀ n : ℕ (n ≥ N → |a_n - L| < ε))
 
 1.  Consider the statement:
@@ -48,12 +48,13 @@ Preliminary remarks
     The limit of a convergent sequence is unique.
 
   a) There are many ways of formalising this in FOL.  For example:
-
-       ∀ L₁ : ℝ (∀ L₂ : ℝ (∀ ε : ℝ (P a ε L₁) ∧ ∀ ε : ℝ (P a ε L₂) → L₁ = L₂))
+       let Q a L = ∀ ε : ℝ (P a ε L)
+       in
+          ∀ L₁ : ℝ (∀ L₂ : ℝ ( (Q a L₁ ∧ Q a L₂) → L₁ = L₂) )
 
      i.e., if the sequence converges to two limits, then they must be equal, or
 
-       ∀ L₁ : ℝ (∀ L₂ : ℝ (∀ ε : ℝ (P a ε L₁) ∧ L₁ ≠ L₂ → ¬ ∀ ε : ℝ (P a ε L₂)))
+       ∀ L₁ : ℝ (∀ L₂ : ℝ ( Q a L₁ ∧ L₁ ≠ L₂  →  ¬ Q a L₂) )
 
      i.e., if a sequence converges to a limit, then it doesn't
      converge to anything that isn't the limit.
@@ -61,5 +62,4 @@ Preliminary remarks
      Simplify the latter alternative to eliminate the negation and
      give functional representations of both.
 
-  b) Choose one of the functions and sketch an implementation of it.  
-
+  b) Choose one of the functions and sketch an implementation of it.

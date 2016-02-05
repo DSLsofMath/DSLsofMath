@@ -1,8 +1,8 @@
 name:                SignalShape
-version:             2015.0
+version:             2016.0
 synopsis:            DSLsofMath lecture 7 (based on AFP course lecture 2)
 -- description:
-homepage:            http://www.cse.chalmers.se/edu/course/afp/
+homepage:            https://github.com/DSLsofMath/DSLsofMath
 license:             BSD3
 license-file:        LICENSE
 author:              Patrik Jansson
@@ -20,7 +20,7 @@ library
                        Signal, Signal.Deep, Signal.Shallow, Signal.Example,
                        Animate, ANSI, Render,
                        Example
-  build-depends:       base < 5, unix < 2.8
+  build-depends:       base < 5, unix < 2.8, Hatlab
 
 
 

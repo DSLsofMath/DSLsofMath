@@ -67,6 +67,7 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).
 - [Lecture 04, Proofs and Programs in Mathematics](Lectures/Lecture04.lhs).
 - [Lecture 05, Types in Mathematics](Lectures/Lecture05.lhs).
+- [Lecture 06, Types in Mathematics, Part II](Lectures/Lecture06.lhs).
 
 Exercises
 ---------
@@ -79,6 +80,7 @@ Exercises
 - [Exercises for 2016-01-21](Exercises/Exercises-2016-01-21.lhs).
 - [Exercises for 2016-01-27--28](Exercises/Exercises-2016-01-27--28.lhs). You will need the file [AbstractFOL.lhs](Exercises/AbstractFOL.lhs).
 - [Exercises for 2016-02-04](Exercises/Exercises-2016-02-04.lhs).
+- [Exercises for 2016-02-10--11](Exercises/Exercises-2016-02-10--11.md).
 
 Literature
 ----------

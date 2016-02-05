@@ -1,4 +1,5 @@
 > module BareSignalExample where
+> import Hatlab.Plot
 
 To model time-varying signals we need to decide on a type for time and
 a type for signals. This will do to start with:
@@ -36,9 +37,9 @@ and we can map a function over a signal:
 
 > mapS :: (a->b) -> Signal a -> Signal b
 
-Examples uses:
+Examples:
 
-s3 x = 2 + sin x
+s3(t) = 2 + sin t
 
 > s3 = addS (constS 2) s1
 > s4 = mulS (constS 0.4) (speedUp 5 s1)
@@ -67,3 +68,5 @@ There is actually a general pattern of "lifting":
 > magnify = 10
 
 > r = putStr . unlines . render 0.1 pi
+
+> p s = plot [Fun (speedUp pi s) ""]
