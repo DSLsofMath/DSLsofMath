@@ -17,10 +17,4 @@ Note: completing the instance declarations left as exercise
 >   exp (f, f')       =  (exp f, (exp f) * f')
 >
 >
-> test x = sin (1 + exp x)
->
-> type FD' a = (a, a) -- instead of (f, f') we have (f x, f' x)
->
-> 
-
 
