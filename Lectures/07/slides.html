@@ -55,8 +55,8 @@ addS :: Num a => Signal a -> Signal a -> Signal a
 mulS :: Num a => Signal a -> Signal a -> Signal a
 ```
 ```Haskell
-mapS  :: (a->b)    -> Signal a -> Signal b
-mapS2 :: (a->b->c) -> Signal a -> Signal b -> Signal c
+mapS    :: (a->b) -> Signal a -> Signal b
+speedUp :: Double -> Signal a -> Signal a
 ```
 
 ---
@@ -66,13 +66,22 @@ mapS2 :: (a->b->c) -> Signal a -> Signal b -> Signal c
 ```Haskell
 s1 : Signal Double
 s1 = sin
+
 s2 :: Signal Bool
 s2 = (>=0) . s1
+
 s3, s4, s5 :: Signal Double
 s3 = addS (constS 2) s1
 s4 = mulS (constS 0.4) (speedUp 5 s1)
 s5 = addS s3 s4
 ```
+
+Additional combinators:
+```Haskell
+mapS2  :: (a->b->c) -> Signal a -> Signal b -> Signal c
+($$)   :: Signal (a -> b) -> Signal a -> Signal b
+```
+
 
 ---
 
@@ -86,15 +95,17 @@ timeS = \t -> t
 
 * A derived operation can be defined purely in terms of other operations
 ```Haskell
+addS :: Num a => Signal a -> Signal a -> Signal a
+addS = mapS2 (+)
 mapS :: (a -> b) -> Signal a -> Signal b
-mapS f xs = constS f $$ xs
+mapS f sa  =  constS f  $$  sa
 ```
 
 ---
 # The anatomy of an embedded domain specific language
 
 * *Types* modelling concepts in the domain: Time, Signal
-* *Constructor functions* constructing elements of these types: constS, timeS, ...
+* *Constructor functions* constructing elem.s of these types: constS, timeS, ...
 * *Combinators* combining and modifying elements: ($$), mapS
 * *Run functions* making observations of the elements: sample
 

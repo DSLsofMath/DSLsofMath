@@ -14,13 +14,12 @@ cabal-version:       >=1.8
 
 library
   hs-source-dirs:      src
-  exposed-modules:     BareSignalExample,
-                       Matrix,
+  exposed-modules:     Matrix,
                        Shape, Shape.Deep, Shape.Shallow,
                        Signal, Signal.Deep, Signal.Shallow, Signal.Example,
                        Animate, ANSI, Render,
                        Example
-  build-depends:       base < 5, unix < 2.8, Hatlab
+  build-depends:       base < 5, unix < 2.8
 
 
 
@@ -30,3 +29,10 @@ executable example
   build-depends:       base >= 4 && < 5
                      , SignalShape
   main-is: Main.hs
+
+executable ex1
+  hs-source-dirs:      ex1
+  build-depends:       base >= 4 && < 5, unix < 2.8
+                     , SignalShape
+                     , Hatlab
+  main-is: BareSignalExample.lhs

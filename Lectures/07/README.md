@@ -13,6 +13,8 @@ DSLsofMath course learning outcomes:
 * develop adequate notation for mathematical concepts
 * discuss and compare different software implementations of mathematical concepts
 
+[Bare Signal example](ex1/BareSignalExample.lhs)
+
 ## Summary
 
 Embedded Domain Specific Languages:

@@ -1,4 +1,5 @@
-> module BareSignalExample where
+> module Main where
+> import System.Posix (usleep)
 > import Hatlab.Plot
 
 To model time-varying signals we need to decide on a type for time and
@@ -70,3 +71,14 @@ There is actually a general pattern of "lifting":
 > r = putStr . unlines . render 0.1 pi
 
 > p s = plot [Fun (speedUp pi s) ""]
+
+> w = usleep . (1000*)
+
+> main = do p s1
+>           w 1000
+>           p s3
+>           w 1000
+>           p s4
+>           w 1000
+>           p s5
+>           w 1000
