@@ -1,6 +1,6 @@
 # Lecture 2: (Embedded) Domain Specific Languages
 
-[Lecture slides](https://rawgit.com/DSLsofMath/master/Lectures/07/slides.html)
+[Lecture slides](https://rawgit.com/DSLsofMath/DSLsofMath/master/Lectures/07/slides.html)
 
 Below is just a "table of contents" for the lecture.
 
@@ -14,6 +14,8 @@ DSLsofMath course learning outcomes:
 * discuss and compare different software implementations of mathematical concepts
 
 ## Summary
+
+Embedded Domain Specific Languages:
 
 * Different kinds of operations
     * constructor functions, combinators, run functions
