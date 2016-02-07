@@ -2,8 +2,6 @@
 
 [Lecture slides](https://rawgit.com/DSLsofMath/DSLsofMath/master/Lectures/07/slides.html)
 
-Below is just a "table of contents" for the lecture.
-
 ## Learning outcomes for lecture 7
 
 This lecture we will focus on the following subset of the full
@@ -13,7 +11,12 @@ DSLsofMath course learning outcomes:
 * develop adequate notation for mathematical concepts
 * discuss and compare different software implementations of mathematical concepts
 
+## Content links
+
 [Bare Signal example](ex1/BareSignalExample.lhs)
+
+[Derivative example](ex1/Derivative.lhs)
+
 
 ## Summary
 
