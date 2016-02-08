@@ -68,7 +68,7 @@ s1 : Signal Double
 s1 = sin
 
 s2 :: Signal Bool
-s2 = (>=0) . s1
+s2 = mapS (>=0) s1
 
 s3, s4, s5 :: Signal Double
 s3 = addS (constS 2) s1
@@ -97,6 +97,7 @@ timeS = \t -> t
 ```Haskell
 addS :: Num a => Signal a -> Signal a -> Signal a
 addS = mapS2 (+)
+
 mapS :: (a -> b) -> Signal a -> Signal b
 mapS f sa  =  constS f  $$  sa
 ```
@@ -105,8 +106,8 @@ mapS f sa  =  constS f  $$  sa
 # The anatomy of an embedded domain specific language
 
 * *Types* modelling concepts in the domain: Time, Signal
-* *Constructor functions* constructing elem.s of these types: constS, timeS, ...
-* *Combinators* combining and modifying elements: ($$), mapS
+* *Constructor functions* constructing elem's of these types: constS, timeS, ...
+* *Combinators* combining and modifying elements: addS, ($$), mapS
 * *Run functions* making observations of the elements: sample
 
 ---
@@ -424,7 +425,25 @@ Live demo.
 
 ---
 
-## Discussion
+## Summary
+
+Useful functional building blocks: "functions from" and "functions to"
+
+```Haskell
+type Signal a = Time -> a
+type Set e    = e -> Bool
+```
+
+* Different kinds of operations
+    *  constructor functions, combinators, run functions
+* Implementation styles
+    * Shallow: representation given by the semantics
+    * Deep: representation given by the syntax
+* Remember
+    * Compositionality
+    * Abstraction
+
+## Extra slide: Discussion
 
 * Adding coloured shapes
     * Go back and discuss what changes would need to be made (open-ended)
@@ -435,17 +454,6 @@ Live demo.
 * Other questions or comments?
 
 ---
-
-## Summary
-
-* Different kinds of operations
-    *  constructor functions, combinators, run functions
-* Implementation styles
-    * Shallow: representation given by the semantics
-    * Deep: representation given by the syntax
-* Remember
-    * Compositionality
-    * Abstraction
 
 
     </textarea>

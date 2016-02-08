@@ -1,7 +1,9 @@
 > module Main where
 > import Hatlab.Derivatives
 > import Hatlab.Plot
->
+
+Shallow embedding of expressions:
+
 > e1 :: Expression
 > e1 = sin X
 > d  = derivative

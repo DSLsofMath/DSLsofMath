@@ -3,11 +3,11 @@ module Example where
 
 import Control.Applicative
 
-import Signal  (Signal, constS, ($$), mapS, timeS)
+import Signal  (Signal, Time, constS, ($$), mapS, timeS, sample)
 import Shape   (Shape, disc, square, difference,
                 scale, translate, vec, rotate)
 import Animate (animate)
-import Render  (defaultWindow)
+import Render  (render, defaultWindow)
 
 -- | A rotating square
 rotatingSquare :: Signal Shape
@@ -50,6 +50,13 @@ runExample = animate defaultWindow 0 endTime example
   where endTime = 15
 
 -- main = runExample
+
+r :: Shape -> IO ()
+r = putStr . render defaultWindow
+
+test :: Time -> IO ()
+test = r . sample example
+
 
 mapS2  :: (a->b->c) -> Signal a -> Signal b -> Signal c
 mapS2 op s1 s2 = constS op <*> s1 <*> s2

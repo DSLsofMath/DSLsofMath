@@ -17,8 +17,26 @@ DSLsofMath course learning outcomes:
 
 [Derivative example](ex1/Derivative.lhs)
 
+[Shape example](src/Example.hs)
+
+```shell
+PS1='\u:\W\$ '
+stack ghci SignalShape:exe:ex1
+stack ghci SignalShape:exe:ex2
+cabal repl
+:l Example.hs
+test 0
+```
+
 
 ## Summary
+
+Useful functional building blocks: "functions from" and "functions to"
+
+```Haskell
+type Signal a = Time -> a
+type Set e    = e -> Bool
+```
 
 Embedded Domain Specific Languages:
 

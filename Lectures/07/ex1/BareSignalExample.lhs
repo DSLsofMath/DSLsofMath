@@ -1,3 +1,7 @@
+To load:
+
+stack ghci SignalShape:exe:ex1
+
 > module Main where
 > import System.Posix (usleep)
 > import Hatlab.Plot
