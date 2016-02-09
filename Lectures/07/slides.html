@@ -50,6 +50,7 @@ sample :: Signal a -> (Time -> a)
 ```
 
 * *Combinators* combining and modifying elements
+
 ```Haskell
 addS :: Num a => Signal a -> Signal a -> Signal a
 mulS :: Num a => Signal a -> Signal a -> Signal a
@@ -77,6 +78,7 @@ s5 = addS s3 s4
 ```
 
 Additional combinators:
+
 ```Haskell
 mapS2  :: (a->b->c) -> Signal a -> Signal b -> Signal c
 ($$)   :: Signal (a -> b) -> Signal a -> Signal b
@@ -94,6 +96,7 @@ timeS = \t -> t
 ```
 
 * A derived operation can be defined purely in terms of other operations
+
 ```Haskell
 addS :: Num a => Signal a -> Signal a -> Signal a
 addS = mapS2 (+)
@@ -443,6 +446,8 @@ type Set e    = e -> Bool
     * Compositionality
     * Abstraction
 
+---
+
 ## Extra slide: Discussion
 
 * Adding coloured shapes
@@ -452,9 +457,6 @@ type Set e    = e -> Bool
         newtype Shape = Shape (Window -> String)
     * Discuss the problems with this implementation
 * Other questions or comments?
-
----
-
 
     </textarea>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js">

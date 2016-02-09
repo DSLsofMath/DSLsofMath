@@ -27,8 +27,7 @@ Course team
 
 - Teacher : Cezar Ionescu (cezar AT)
 - Examiner : Patrik Jansson (patrikj AT)
-- Teaching assistants: Irene Lobo Valbuena (lobo AT), Víctor López
-  Juan (lopezv AT); from 2016-01-25 only Irene
+- Teaching assistant: Irene Lobo Valbuena (lobo AT), (until 2016-01-24 also Víctor López Juan)
 - Intern : Adam Sandberg Ericsson (saadam AT)
 
 Schedule
@@ -40,7 +39,7 @@ Schedule
 
 - Guest lectures
 
-    + Monday 2016-02-08: Patrik Jansson on DSLs
+    + Monday 2016-02-08: [Patrik Jansson](https://github.com/patrikja) on [DSLs](Lectures/07/README.md)
 
     + Friday 2016-02-12: Björn von Sydow on interpolation
 
@@ -68,6 +67,7 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 04, Proofs and Programs in Mathematics](Lectures/Lecture04.lhs).
 - [Lecture 05, Types in Mathematics](Lectures/Lecture05.lhs).
 - [Lecture 06, Types in Mathematics, Part II](Lectures/Lecture06.lhs).
+- [Lecture 07, Domain Specific Languages: Signal Shape](Lectures/07/README.md).
 
 Exercises
 ---------

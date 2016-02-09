@@ -13,4 +13,6 @@ Shallow embedding of expressions:
 > e2 :: Expression
 > e2 = cos (2*acos X)
 
+> e n = cos (n*acos X)
+
 > main = test1
