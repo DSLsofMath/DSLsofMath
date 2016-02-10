@@ -1,4 +1,4 @@
-# Lecture 2: (Embedded) Domain Specific Languages
+# Lecture 7: (Embedded) Domain Specific Languages
 
 [Lecture slides](https://rawgit.com/DSLsofMath/DSLsofMath/master/Lectures/07/slides.html)
 
