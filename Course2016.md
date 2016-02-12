@@ -41,7 +41,7 @@ Schedule
 
     + Monday 2016-02-08: [Patrik Jansson](https://github.com/patrikja) on [DSLs](Lectures/07/README.md)
 
-    + Friday 2016-02-12: Björn von Sydow on interpolation
+    + Friday 2016-02-12: Björn von Sydow on [An embedded DSL for Chebyshev interpolation](Lectures/Lecture08.pdf)
 
 - Exam: 2016-03-15 afternoon.  Re-exam: 2016-08-23 afternoon.
 
