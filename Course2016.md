@@ -68,6 +68,7 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 05, Types in Mathematics](Lectures/Lecture05.lhs).
 - [Lecture 06, Types in Mathematics, Part II](Lectures/Lecture06.lhs).
 - [Lecture 07, Domain Specific Languages: Signal Shape](Lectures/07/README.md).
+- [Lecture 08, An embedded DSL for Chebyshev interpolation](Lectures/Lecture08.pdf).
 
 Exercises
 ---------
