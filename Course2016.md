@@ -4,6 +4,11 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-02-12: Assignment 2 will be announced either Friday,  February 19 or
+Monday, February 22.  It will be due Tuesday, 1st of March, 23:59.  The
+grading wil take place Thursday, 3rd of March, during the exercises
+session, following the same protocol as for Assignment 1.
+
 2016-01-25: The date of the exam has been changed to 2016-03-15, 14:00.
 
 2016-01-25: Due to administrative reasons, we are down to one TA,
