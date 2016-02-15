@@ -57,12 +57,12 @@ but it appears that Eq and Show are not necessary:
 >   signum f     =  signum . f
 >   fromInteger  =  const . fromInteger
 
-< class  (Num a) => Fractional a  where
+< class  Num a => Fractional a  where
 <     (/)          :: a -> a -> a
 <     recip        :: a -> a
 <     fromRational :: Rational -> a
 <
-< class  (Fractional a) => Floating a  where
+< class  Fractional a => Floating a  where
 <     pi                  :: a
 <     exp, log, sqrt      :: a -> a
 <     (**), logBase       :: a -> a -> a

@@ -63,7 +63,7 @@ For example
 < h (x + x) = h x * h x
 
 
-But every n in Int is equal to 1 + 1+ ... + 1 n times.  Therefore
+But every n in Int is equal to 1 + 1 + ... + 1 n times.  Therefore
 
 < h x = h 1 ** x
 
@@ -96,7 +96,7 @@ For instance, we have
 <  eval (e1 :*: e2)  =  eval e1 * eval e2
 <  eval (Exp e)      =  exp (eval e)
 
-These properties do not hold for eval', but do hold for evalFD.
+These properties do not hold for eval', but do hold for evalD.
 
 The numerical classes do not fully do justice to the structure of
 expressions, for example, they do not contain an identity operation,
@@ -181,7 +181,7 @@ Indeed, writing h = apply x, we have
      
   =  {def apply}
   
-     h f + g f
+     h f + h g
 
 etc.
 
