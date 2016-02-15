@@ -88,6 +88,8 @@ Exercises
 - [Exercises for 2016-01-27--28](Exercises/Exercises-2016-01-27--28.lhs). You will need the file [AbstractFOL.lhs](Exercises/AbstractFOL.lhs).
 - [Exercises for 2016-02-04](Exercises/Exercises-2016-02-04.lhs).
 - [Exercises for 2016-02-10--11](Exercises/Exercises-2016-02-10--11.md).
+- [Exercises for 2016-02-17](Exercises/Exercises-2016-02-17.lhs).
+- [Exercises for 2016-02-18](Exercises/Exercises-2016-02-18.lhs).
 
 Literature
 ----------
