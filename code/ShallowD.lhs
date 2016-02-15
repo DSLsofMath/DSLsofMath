@@ -15,6 +15,4 @@ Note: completing the instance declarations left as exercise
 
 > instance Floating a => Floating (FD a) where
 >   exp (f, f')       =  (exp f, (exp f) * f')
->
->
 

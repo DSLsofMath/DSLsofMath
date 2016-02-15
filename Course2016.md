@@ -74,7 +74,7 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 06, Types in Mathematics, Part II](Lectures/Lecture06.lhs).
 - [Lecture 07, Domain Specific Languages: Signal Shape](Lectures/07/README.md).
 - [Lecture 08, An embedded DSL for Chebyshev interpolation](Lectures/Lecture08.pdf).
-- [Lecture 09, Algebraic Structures and DSLs](Lectures/Lecture09.lhs).
+- [Lecture 09, Algebraic Structures and DSLs](Lectures/Lecture09.lhs). Some associated code to lectures 09 and 08 is [available](code/).
 
 Exercises
 ---------
