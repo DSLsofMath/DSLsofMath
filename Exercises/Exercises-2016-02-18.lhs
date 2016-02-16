@@ -15,7 +15,7 @@ ii. + is associative
 
 iii. negate inverts elements with respect to addition
 
-    ∀ x ∈ A      x + (negate x) = negate x + x = 0
+    ∀ x ∈ A      x + negate x = negate x + x = 0
 
 iv. + is commutative
 
