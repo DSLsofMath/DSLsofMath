@@ -1,4 +1,5 @@
 > {-# LANGUAGE TypeSynonymInstances #-}
+> import Prelude hiding (Monoid)
 
 Lecture 9: Algebraic Structures and DSLs
 ========================================
@@ -65,7 +66,7 @@ For example
 
 But every n in Int is equal to 1 + 1 + ... + 1 n times.  Therefore
 
-< h x = h 1 ** x
+< h x = h 1 ^ x
 
 Every choice of h 1 induces a homomorphism.
 
