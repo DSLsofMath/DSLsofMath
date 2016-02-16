@@ -4,8 +4,8 @@
 #   - "make html" to generate html-files.
 # without the quotation marks.
 
-TEMPLATE=../aux/template.tex
-BIB=../aux/ref.bib
+TEMPLATE=../comp/template.tex
+BIB=../comp/ref.bib
 OUTPUT=$(basename $(wildcard *.lhs))
 
 default: pdf
