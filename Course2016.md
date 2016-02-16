@@ -6,7 +6,7 @@ News
 
 2016-02-12: Assignment 2 will be announced either Friday,  February 19 or
 Monday, February 22.  It will be due Tuesday, 1st of March, 23:59.  The
-grading wil take place Thursday, 3rd of March, during the exercises
+grading will take place Thursday, 3rd of March, during the exercises
 session, following the same protocol as for Assignment 1.
 
 2016-01-25: The date of the exam has been changed to 2016-03-15, 14:00.
@@ -74,7 +74,7 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 06, Types in Mathematics, Part II](Lectures/Lecture06.lhs).
 - [Lecture 07, Domain Specific Languages: Signal Shape](Lectures/07/README.md).
 - [Lecture 08, An embedded DSL for Chebyshev interpolation](Lectures/Lecture08.pdf).
-- [Lecture 09, Algebraic Structures and DSLs](Lectures/Lecture09.lhs). Some associated code to lectures 09 and 08 is [available](code/).
+- [Lecture 09, Algebraic Structures and DSLs](Lectures/Lecture09.lhs). Some associated code is also [available](code/).
 
 Exercises
 ---------

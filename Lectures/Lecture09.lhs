@@ -40,21 +40,23 @@ Example: Monoid homomorphism
 <   h unit        =  unit
 <   h (x `op` y)  =  h x `op` h y
 
-> instance Monoid Int where
->   unit          =  0
->   op            =  (+)
+> newtype Nat       =  A Int
 
-> newtype MInt       =  M Int
+> instance Monoid Nat where
+>   unit            =  A 0
+>   op (A m) (A n)  =  A (m + n)
 
-> instance Monoid MInt where
+> newtype MNat       =  M Nat
+
+> instance Monoid MNat where
 >   unit            =  M 1
 >   op (M m) (M n)  =  M (m * n)
 
-Exercise: characterise the homomorphisms from Int to MInt.
+Exercise: characterise the homomorphisms from Nat to MNat.
 
 Solution:
 
-Let h : Int -> MInt be a homomorphism.  Then
+Let h : Nat -> MNat be a homomorphism.  Then
 
 < h 0 = 1
 < h (x + y) = h x * h y
@@ -64,7 +66,7 @@ For example
 < h (x + x) = h x * h x
 
 
-But every n in Int is equal to 1 + 1 + ... + 1 n times.  Therefore
+But every n in Nat is equal to 1 + 1 + ... + 1 n times.  Therefore
 
 < h x = h 1 ^ x
 
@@ -153,6 +155,12 @@ The following correspondence summarises the discussion so far:
     shallow embedding        any other algebra
     semantics                homomorphism from the initial algebra
 
+The underlying theory of this table is a fascinating topic but mostly
+out of scope for the DSLsofMath course. See
+[Category Theory and Functional Programming](http://wiki.portal.chalmers.se/cse/pmwiki.php/CTFP14/CoursePlan)
+for a whole course around this.
+
+
 3.  Other homomorphisms
 -----------------------
 
@@ -171,17 +179,17 @@ As suggested by the type, the homomorphism is just function application:
 Indeed, writing h = apply x, we have
 
      h (f + g)
-     
+
   =  {def apply}
-  
+
      (f + g) x
-     
+
   =  {def + for functions}
-  
+
      f x + g x
-     
+
   =  {def apply}
-  
+
      h f + h g
 
 etc.
@@ -199,25 +207,25 @@ which now consists of pairs (a, a).  In fact, we can *compute* this
 structure from the homomorphism condition.  For example:
 
      h ((f, f') * (g, g'))
-     
+
   =  {def * for FD a}
-  
+
      h (f * g, f' * g + f * g')
-     
+
   =  {def h = apply a}
-  
+
      ((f * g) a, (f' * g + f * g') a)
-     
+
   =  {def * and + for functions}
-  
+
      (f a * g a, f' a * g a + f a * g' a)
-     
+
   =  {homomorphism condition}
-  
+
      h (f, f') * h (g, g')
-     
+
   =  {def h = apply a}
-  
+
      (f a, f' a) * (g a, g' a)
 
 The identity will hold if we take
@@ -225,4 +233,3 @@ The identity will hold if we take
      (x, x') * (y, y') = (x * y, x' * y + x * y')
 
 Exercise: complete the instance declarations for (Double, Double).
-
