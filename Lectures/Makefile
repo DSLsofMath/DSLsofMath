@@ -1,1 +1,1 @@
-/home/jassob/Skola/DAT325/CoursePage/comp/Makefile
+../comp/Makefile
