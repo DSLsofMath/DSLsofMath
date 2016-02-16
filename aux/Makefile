@@ -18,7 +18,7 @@ html: $(addsuffix .html, $(OUTPUT))
 	latexmk -pdf $<
 
 %.html: %.lhs $(BIB)
-	pandoc -s --bibliography=$(BIB) -f markdown+lhs $< -t html -o $@
+	pandoc -s --bibliography=$(BIB) --mathml -f markdown+lhs $< -t html -o $@
 
 %.tex : %.lhs $(TEMPLATE) $(BIB)
 	pandoc -s --template $(TEMPLATE) --bibliography=$(BIB) -f markdown+lhs $< -t latex -o $@
