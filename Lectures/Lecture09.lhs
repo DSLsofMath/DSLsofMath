@@ -1,4 +1,4 @@
-> {-# LANGUAGE TypeSynonymInstances #-}
+> {-# LANGUAGE TypeSynonymInstances, GeneralizedNewtypeDeriving #-}
 > import Prelude hiding (Monoid)
 
 Lecture 9: Algebraic Structures and DSLs
@@ -41,12 +41,13 @@ Example: Monoid homomorphism
 <   h (x `op` y)  =  h x `op` h y
 
 > newtype Nat       =  A Int
+>   deriving Num
 
 > instance Monoid Nat where
 >   unit            =  A 0
 >   op (A m) (A n)  =  A (m + n)
 
-> newtype MNat       =  M Nat
+> newtype MNat      =  M Nat
 
 > instance Monoid MNat where
 >   unit            =  M 1
