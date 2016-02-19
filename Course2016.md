@@ -81,6 +81,7 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 07, Domain Specific Languages: Signal Shape](Lectures/07/README.md).
 - [Lecture 08, An embedded DSL for Chebyshev interpolation](Lectures/Lecture08.pdf).
 - [Lecture 09, Algebraic Structures and DSLs](Lectures/Lecture09.lhs). Some associated code is also [available](code/).
+- [Lecture 10, Polynomials and Power Series](Lectures/Lecture10.lhs).
 
 Exercises
 ---------
