@@ -157,7 +157,8 @@ The homomorphism condition will hold for every `x` if we define
 <  (a0 : a1 : as) + (b0 : b1 : bs) = (a0 + b0) : ((a1 : as) + (b1 : bs))
 
 We leave the derivation of the other cases and operations as an
-exercise.  Here, we give the definition of multiplication:
+exercise.  Here, we just give the definitions of multiplication and
+fromInteger
 
 > instance Num a => Num [a] where
 >   [a0] * [b0]                       =  [a0 * b0]
