@@ -152,7 +152,7 @@ For the left-hand side, we have:
 
 <  evalPoly ((a0 + b0) : (a1 : as) + (b1 : bs)) x
 
-The homomorphism condition will hold for every `x` if we define
+The homomorphism condition will hold for every `x` if we can satisfy
 
 <  (a0 : a1 : as) + (b0 : b1 : bs) = (a0 + b0) : ((a1 : as) + (b1 : bs))
 
@@ -162,20 +162,20 @@ fromInteger
 
 > instance Num a => Num [a] where
 >   (*) = mul
->   (+) = plusRest
->   fromInteger n                     =  [fromInteger n]
+>   (+) = plus
+>   fromInteger n = [fromInteger n]
 
-> mul [a0]           [b0]             =  [a0 * b0]
-> mul [a0]           (b0 : b1 : bs)   =  (a0 * b0) : mul [a0] (b1 : bs)
-> mul (a0 : a1 : as) [b0]             =  (a0 * b0) : mul (a1 : as) [b0]
-> mul (a0 : a1 : as) (b0 : b1 : bs)   =  (a0 * b0) : plus
->                                           (mul (a1 : as) (b0 : b1 : bs))
->                                           (mul [a0] (b1 : bs))
+> mul (a : as) (b : bs) = (a*b) : mulRest a as b bs
+> mulRest _  []         _  []          =  []
+> mulRest a  []         _  (b1 : bs)   =  (a*b1):mulRest a [] b1 bs
+> mulRest _  (a1 : as)  b  []          =  (a1*b):mulRest a1 as b []
+> mulRest a  (a1 : as)  b  (b1 : bs)   =  plus ((a1*b):mulRest a1 as b (b1 : bs))
+>                                              ((a*b1):mulRest a [] b1 bs)
 
 > plus (a:as) (b:bs) = (a+b) : plusRest as bs
-> plusRest [] bs                =   bs
-> plusRest as []                =   as
-> plusRest (a0 : as) (b0 : bs)  =  (a0 + b0) : plusRest as bs
+> plusRest [] bs              =  bs
+> plusRest as []              =  as
+> plusRest (a : as) (b : bs)  =  (a + b) : plusRest as bs
 
 Therefore, we *can* define a ring structure (the mathematical
 counterpart of Num) on `Poly a`, and we have arrived at the canonical
@@ -347,6 +347,13 @@ We can implement this, for example, as
 
 Try evaluating test3 with "too eager" definition of plus:
 
+> mul1 [a0]           [b0]             =  [a0 * b0]
+> mul1 [a0]           (b0 : b1 : bs)   =  (a0 * b0) : mul1 [a0] (b1 : bs)
+> mul1 (a0 : a1 : as) [b0]             =  (a0 * b0) : mul1 (a1 : as) [b0]
+> mul1 (a0 : a1 : as) (b0 : b1 : bs)   =  (a0 * b0) : plus
+>                                           (mul1 (a1 : as) (b0 : b1 : bs))
+>                                           (mul1 [a0] (b1 : bs))
+
 > plus1 [a0] [b0]                       =  [a0 + b0]
 > plus1 [a0] (b0 : b1 : bs)             =  (a0 + b0) : b1 : bs
 > plus1 (a0 : a1 : as) [b0]             =  (a0 + b0) : a1 : as
@@ -355,19 +362,19 @@ Try evaluating test3 with "too eager" definition of plus:
 > test3eval =
 >   [ zeros * x
 >   , -- Def. of (+) for Poly
->     mul zeros x
->   , -- mul does two level deep pattern matching on both arguments
->     mul (0:0:zeros) (0:1:zeros)
+>     mul1 zeros x
+>   , -- mul1 does two level deep pattern matching on both arguments
+>     mul1 (0:0:zeros) (0:1:zeros)
 >   , -- 4:th case matches
 >     let a0 : a1 : as = 0:0:zeros
 >         b0 : b1 : bs = 0:1:zeros
->     in (a0 * b0) : plus1 (mul (a1 : as) (b0 : b1 : bs)) (mul [a0] (b1 : bs))
+>     in (a0 * b0) : plus1 (mul1 (a1 : as) (b0 : b1 : bs)) (mul1 [a0] (b1 : bs))
 >   , -- Substitutions: a0 = a1 = b0 = 0; b1 = 1; as = bs = zeros
->     (0 * 0) : plus1 (mul (0 : zeros) (0 : 1 : zeros)) (mul [0] (1 : zeros))
->   , -- plus1 matches two levels deep on both args => mul matches two levels deep again (twice)
->     (0 * 0) : plus1 (mul (0 : zeros) (0 : 1 : zeros)) (mul [0] (1 : zeros))
->   , -- plus1 matches two levels deep on both args => mul matches two levels deep again (twice)
->     0 : plus1 (mul (0:0:zeros) (0:1:zeros)) (mul [0] (1:0:zeros))
+>     (0 * 0) : plus1 (mul1 (0 : zeros) (0 : 1 : zeros)) (mul1 [0] (1 : zeros))
+>   , -- plus1 matches two levels deep on both args => mul1 matches two levels deep again (twice)
+>     (0 * 0) : plus1 (mul1 (0 : zeros) (0 : 1 : zeros)) (mul1 [0] (1 : zeros))
+>   , -- plus1 matches two levels deep on both args => mul1 matches two levels deep again (twice)
+>     0 : plus1 (mul1 (0:0:zeros) (0:1:zeros)) (mul1 [0] (1:0:zeros))
 >   , -- 1:st arg to plus1 is the same as what we try to evaluate (test3). (2:nd arg is zeros by separate lemma)
 >     0 : plus1 test3 zeros
 >   , -- Because plus1 matches two deep we end up with an infinite recursion
@@ -375,16 +382,16 @@ Try evaluating test3 with "too eager" definition of plus:
 >     in ys
 >   ]
 
-> lemmaMul0 x y =
->   [ mul [0] (x:y:zeros)
->   , -- def. of mul: 2:nd case
+> lemmaMul10 x y =
+>   [ mul1 [0] (x:y:zeros)
+>   , -- def. of mul1: 2:nd case
 >     let [a0]           = [0]
 >         (b0 : b1 : bs) = x:y:zeros
->     in (a0 * b0) : mul [a0] (b1 : bs)
+>     in (a0 * b0) : mul1 [a0] (b1 : bs)
 >   , -- Substitute: a0 = 0, b0 = x, b1 = y, bs = zeros, Simplify
->     0 : mul [0] (y : zeros)
+>     0 : mul1 [0] (y : zeros)
 >   , -- Same procedure
->     0 : 0 : mul [0] zeros
+>     0 : 0 : mul1 [0] zeros
 >   , -- Note the pattern (use induction for proper proof)
 >     zeros
 >   ]
