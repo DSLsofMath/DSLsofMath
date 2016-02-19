@@ -124,7 +124,7 @@ argument.  For an arbitrary `x`
 <<=> {+ on functions is point-wise}
 
 <  evalPoly as x + evalPoly bs x = evalPoly (as + bs) x
-  
+ 
 To proceed further, we need to consider the various cases in the
 definition of `evalPoly`.  We give here the computation for the last
 case:
@@ -163,15 +163,14 @@ exercise.  Here, we give the definition of multiplication:
 >   [a0] * [b0]                       =  [a0 * b0]
 >   [a0] * (b0 : b1 : bs)             =  (a0 * b0) : ([a0] * (b1 : bs))
 >   (a0 : a1 : as) * [b0]             =  (a0 * b0) : ((a1 : as) * [b0])
->   (a0 : a1 : as) * (b0 : b1 : bs)   =  (a0 * b0) : 
+>   (a0 : a1 : as) * (b0 : b1 : bs)   =  (a0 * b0) :
 >                                         ((a1 : as) * (b0 : b1 : bs) +
 >                                          [a0] * (b1 : bs))
->   [a0] + [b0]                       =  [a0 + b0]
->   [a0] + (b0 : b1 : bs)             =  (a0 + b0) : b1 : bs
->   (a0 : a1 : as) + [b0]             =  (a0 + b0) : a1 : as
->   (a0 : a1 : as) + (b0 : b1 : bs)   =  (a0 + b0) : ((a1 : as) + (b1 : bs))
+>   [] + bs                =   bs
+>   as + []                =   as
+>   (a0 : as) + (b0 : bs)  =  (a0 + b0) : as + bs
 >   fromInteger n                     =  [fromInteger n]
-                            
+ 
 Therefore, we *can* define a ring structure (the mathematical
 counterpart of Num) on `Poly a`, and we have arrived at the canonical
 definition of polynomials, as found in any algebra book (see, for
@@ -307,7 +306,7 @@ we also have division.  Assume that a0 * b0 ≠ 0.  Then
 
 <  c0 = a0 / b0 and
 <  (c1 : cs) =  ((a1 : as) - [a0/b0] * (b1 : bs)) / (b0 : b1 : bs)
-  
+ 
 > instance (Eq a, Fractional a) => Fractional (PowerSeries a) where
 >   (x : xs) / (y : ys)  =  if y == 0 && x == 0
 >                           then xs / ys
@@ -336,4 +335,3 @@ We can implement this, for example, as
 > test0 = 1 / (1 - x)
 > test1 = 1 / (1 - x)^2
 > test2 = (1 - 2 * x ^ 2) ^ 3
-
