@@ -166,9 +166,9 @@ exercise.  Here, we give the definition of multiplication:
 >   (a0 : a1 : as) * (b0 : b1 : bs)   =  (a0 * b0) :
 >                                         ((a1 : as) * (b0 : b1 : bs) +
 >                                          [a0] * (b1 : bs))
->   [] + bs                =   bs
->   as + []                =   as
->   (a0 : as) + (b0 : bs)  =  (a0 + b0) : as + bs
+>   [] + bs                           =   bs
+>   as + []                           =   as
+>   (a0 : as) + (b0 : bs)             =  (a0 + b0) : as + bs
 >   fromInteger n                     =  [fromInteger n]
  
 Therefore, we *can* define a ring structure (the mathematical
