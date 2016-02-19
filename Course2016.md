@@ -4,6 +4,8 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-02-19: Assignment 2 has been posted!
+
 2016-02-12: Assignment 2 will be announced either Friday,  February 19 or
 Monday, February 22.  It will be due Tuesday, 1st of March, 23:59.  The
 grading will take place Thursday, 3rd of March, during the exercises
@@ -58,12 +60,16 @@ The assignments are to be solved in **teams of three**.
 - [Assignment01](Assignments/Assignment01.lhs), due 2016-02-02 23:59.
   Submission via Fire, at [URL](https://xdat09.ce.chalmers.se/2016/lp3/dslm/)
 
+- [Assignment02](Assignments/Assignment02.lhs), [pdf
+  file](Assignments/Assignment02.pdf), due 2016-03-01 23:59.
+  Submission via Fire, at [URL](https://xdat09.ce.chalmers.se/2016/lp3/dslm/)
+
 Lectures
 --------
 *Note*: the summaries are written as a mixture of markdown and lhs.
 To compile them, you can use a suitably modified form of this
-[Makefile](aux/Makefile) and the [bib](aux/ref.bib) and
-[template.tex](aux/template.tex) files.
+[Makefile](comp/Makefile) and the [bib](comp/ref.bib) and
+[template.tex](comp/template.tex) files.
 
 - [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](Lectures/slides01.pdf).
 - [Lecture 02, Logic and Functional Programming, Part I](Lectures/Lecture02.lhs).
