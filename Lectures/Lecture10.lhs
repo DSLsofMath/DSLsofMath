@@ -161,17 +161,22 @@ exercise.  Here, we just give the definitions of multiplication and
 fromInteger
 
 > instance Num a => Num [a] where
->   [a0] * [b0]                       =  [a0 * b0]
->   [a0] * (b0 : b1 : bs)             =  (a0 * b0) : ([a0] * (b1 : bs))
->   (a0 : a1 : as) * [b0]             =  (a0 * b0) : ((a1 : as) * [b0])
->   (a0 : a1 : as) * (b0 : b1 : bs)   =  (a0 * b0) :
->                                         ((a1 : as) * (b0 : b1 : bs) +
->                                          [a0] * (b1 : bs))
->   [] + bs                           =   bs
->   as + []                           =   as
->   (a0 : as) + (b0 : bs)             =  (a0 + b0) : as + bs
+>   (*) = mul
+>   (+) = plusRest
 >   fromInteger n                     =  [fromInteger n]
- 
+
+> mul [a0]           [b0]             =  [a0 * b0]
+> mul [a0]           (b0 : b1 : bs)   =  (a0 * b0) : mul [a0] (b1 : bs)
+> mul (a0 : a1 : as) [b0]             =  (a0 * b0) : mul (a1 : as) [b0]
+> mul (a0 : a1 : as) (b0 : b1 : bs)   =  (a0 * b0) : plus
+>                                           (mul (a1 : as) (b0 : b1 : bs))
+>                                           (mul [a0] (b1 : bs))
+
+> plus (a:as) (b:bs) = (a+b) : plusRest as bs
+> plusRest [] bs                =   bs
+> plusRest as []                =   as
+> plusRest (a0 : as) (b0 : bs)  =  (a0 + b0) : plusRest as bs
+
 Therefore, we *can* define a ring structure (the mathematical
 counterpart of Num) on `Poly a`, and we have arrived at the canonical
 definition of polynomials, as found in any algebra book (see, for
@@ -336,3 +341,50 @@ We can implement this, for example, as
 > test0 = 1 / (1 - x)
 > test1 = 1 / (1 - x)^2
 > test2 = (1 - 2 * x ^ 2) ^ 3
+> test3 = zeros * x
+
+----------------
+
+Try evaluating test3 with "too eager" definition of plus:
+
+> plus1 [a0] [b0]                       =  [a0 + b0]
+> plus1 [a0] (b0 : b1 : bs)             =  (a0 + b0) : b1 : bs
+> plus1 (a0 : a1 : as) [b0]             =  (a0 + b0) : a1 : as
+> plus1 (a0 : a1 : as) (b0 : b1 : bs)   =  (a0 + b0) : plus1 (a1 : as) (b1 : bs)
+
+> test3eval =
+>   [ zeros * x
+>   , -- Def. of (+) for Poly
+>     mul zeros x
+>   , -- mul does two level deep pattern matching on both arguments
+>     mul (0:0:zeros) (0:1:zeros)
+>   , -- 4:th case matches
+>     let a0 : a1 : as = 0:0:zeros
+>         b0 : b1 : bs = 0:1:zeros
+>     in (a0 * b0) : plus1 (mul (a1 : as) (b0 : b1 : bs)) (mul [a0] (b1 : bs))
+>   , -- Substitutions: a0 = a1 = b0 = 0; b1 = 1; as = bs = zeros
+>     (0 * 0) : plus1 (mul (0 : zeros) (0 : 1 : zeros)) (mul [0] (1 : zeros))
+>   , -- plus1 matches two levels deep on both args => mul matches two levels deep again (twice)
+>     (0 * 0) : plus1 (mul (0 : zeros) (0 : 1 : zeros)) (mul [0] (1 : zeros))
+>   , -- plus1 matches two levels deep on both args => mul matches two levels deep again (twice)
+>     0 : plus1 (mul (0:0:zeros) (0:1:zeros)) (mul [0] (1:0:zeros))
+>   , -- 1:st arg to plus1 is the same as what we try to evaluate (test3). (2:nd arg is zeros by separate lemma)
+>     0 : plus1 test3 zeros
+>   , -- Because plus1 matches two deep we end up with an infinite recursion
+>     let ys = 0 : plus1 ys zeros
+>     in ys
+>   ]
+
+> lemmaMul0 x y =
+>   [ mul [0] (x:y:zeros)
+>   , -- def. of mul: 2:nd case
+>     let [a0]           = [0]
+>         (b0 : b1 : bs) = x:y:zeros
+>     in (a0 * b0) : mul [a0] (b1 : bs)
+>   , -- Substitute: a0 = 0, b0 = x, b1 = y, bs = zeros, Simplify
+>     0 : mul [0] (y : zeros)
+>   , -- Same procedure
+>     0 : 0 : mul [0] zeros
+>   , -- Note the pattern (use induction for proper proof)
+>     zeros
+>   ]
