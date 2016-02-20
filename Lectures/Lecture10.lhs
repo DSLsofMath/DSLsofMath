@@ -350,7 +350,7 @@ Try evaluating test3 with "too eager" definition of plus:
 > mul1 [a0]           [b0]             =  [a0 * b0]
 > mul1 [a0]           (b0 : b1 : bs)   =  (a0 * b0) : mul1 [a0] (b1 : bs)
 > mul1 (a0 : a1 : as) [b0]             =  (a0 * b0) : mul1 (a1 : as) [b0]
-> mul1 (a0 : a1 : as) (b0 : b1 : bs)   =  (a0 * b0) : plus
+> mul1 (a0 : a1 : as) (b0 : b1 : bs)   =  (a0 * b0) : plus1
 >                                           (mul1 (a1 : as) (b0 : b1 : bs))
 >                                           (mul1 [a0] (b1 : bs))
 
@@ -370,8 +370,6 @@ Try evaluating test3 with "too eager" definition of plus:
 >         b0 : b1 : bs = 0:1:zeros
 >     in (a0 * b0) : plus1 (mul1 (a1 : as) (b0 : b1 : bs)) (mul1 [a0] (b1 : bs))
 >   , -- Substitutions: a0 = a1 = b0 = 0; b1 = 1; as = bs = zeros
->     (0 * 0) : plus1 (mul1 (0 : zeros) (0 : 1 : zeros)) (mul1 [0] (1 : zeros))
->   , -- plus1 matches two levels deep on both args => mul1 matches two levels deep again (twice)
 >     (0 * 0) : plus1 (mul1 (0 : zeros) (0 : 1 : zeros)) (mul1 [0] (1 : zeros))
 >   , -- plus1 matches two levels deep on both args => mul1 matches two levels deep again (twice)
 >     0 : plus1 (mul1 (0:0:zeros) (0:1:zeros)) (mul1 [0] (1:0:zeros))
