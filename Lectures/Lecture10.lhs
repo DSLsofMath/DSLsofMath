@@ -21,7 +21,7 @@ numbers*:
 
 < (x, x') * (y, y') = (x * y - x' * y', x * y' + x' * y)
 
-Again, there is nothing in the nature of pairs that foisters this
+Again, there is nothing in the nature of pairs that foists this
 operation on us.  In particular, it is, strictly speaking, incorrect
 to say that a complex number *is* a pair of real numbers.  The correct
 interpretation is that a complex number can be *represented* by a pair
@@ -96,21 +96,36 @@ The valid lists are those *finite* lists in the set
 
 <      {[0]} ∪ {(a : as) | last (a : as) ≠ 0}
 
-We cannot express the precise type constraints in Haskell, but we can
-introduce a type synonim to remind us of them:
+We cannot express the "last (a : as) ≠ 0" in Haskell, but we can
+express the condition that the list should not be empty:
 
-> type Poly a = [a]
+> data Poly a  =  Single a  |  Cons a (Poly a)
+>                 deriving (Eq, Ord)
 
-and, since we only use the arithmetical operations, we can generalise
-our evaluator:
+The relationship between `Poly a` and `[a]` is given by the following
+functions:
 
-> evalPoly                  ::  Num a => Poly a -> a -> a
-> evalPoly [a0]           x  =  a0
-> evalPoly (a0 : a1 : as) x  =  a0 + x * evalPoly (a1 : as) x
+> toList :: Poly a -> [a]
+> toList (Single a)   =  [a]
+> toList (Cons a as)  =  a : toList as
+
+> fromList :: [a] -> Poly a
+> fromList [a] = Single a
+> fromList (a0 : a1 : as) = Cons a0 (fromList (a1 : as))
+
+> instance Show a => Show (Poly a) where
+>   show = show . toList
+
+Since we only use the arithmetical operations, we can generalise our
+evaluator:
+
+> evalPoly ::  Num a => Poly a -> a -> a
+> evalPoly (Single a)     x   =  a
+> evalPoly (Cons a as)    x   =  a + x * evalPoly as x
 
 Since we have Num a, there is a Num structure on `a -> a`, and
 `evalPoly` looks like a homomorphism.  Question: is there a Num
-structure on `Poly a`, such that `evalPoly` is a homomorphims?
+structure on `Poly a`, such that `evalPoly` is a homomorphism?
 
 For example, the homomorphism condition gives for `(+)`
 
@@ -124,58 +139,57 @@ argument.  For an arbitrary `x`
 <<=> {+ on functions is point-wise}
 
 <  evalPoly as x + evalPoly bs x = evalPoly (as + bs) x
- 
+  
 To proceed further, we need to consider the various cases in the
 definition of `evalPoly`.  We give here the computation for the last
-case:
+case, using the traditional list notation (:) for brevity.
 
-<  evalPoly (a0 : a1 : as) x  +  evalPoly (b0 : b1 : bs) x =
-<  evalPoly ((a0 : a1 : as)  +  (b0 : b1 : bs))
+<  evalPoly (a : as) x  +  evalPoly (b : bs) x =
+<  evalPoly ((a : as)  +  (b : bs))
 
 For the left-hand side, we have:
 
-<  evalPoly (a0 : a1 : as) x  +  evalPoly (b0 : b1 : bs) x
+<  evalPoly (a : as) x  +  evalPoly (b : bs) x
 
 <=  {def evalPoly}
 
-<  a0 + x * evalPoly (a1 : as) x + b0 + x * eval (b1 : bs) x
+<  a + x * evalPoly as x + b + x * eval bs x
 
 <=  {properties of +, valid in any ring}
 
-<  a0 + b0 + x * (evalPoly (a1 : as) x + evalPoly (b1 : bs) x)
+<  a + b + x * (evalPoly as x + evalPoly bs x)
 
 <=  {homomorphism condition}
 
-<  a0 + b0 + x * evalPoly ((a1 : as) + (b1 : bs))
+<  a + b + x * evalPoly (as + bs)
 
 <=  {def evalPoly}
 
-<  evalPoly ((a0 + b0) : (a1 : as) + (b1 : bs)) x
+<  evalPoly ((a + b) : as + bs) x
 
-The homomorphism condition will hold for every `x` if we can satisfy
+The homomorphism condition will hold for every `x` if we define
 
-<  (a0 : a1 : as) + (b0 : b1 : bs) = (a0 + b0) : ((a1 : as) + (b1 : bs))
+<  (a : as) + (b : bs) = (a + b) : (as + bs)
 
 We leave the derivation of the other cases and operations as an
-exercise.  Here, we just give the definitions of multiplication and
-fromInteger
+exercise.  Here, we just give the corresponding definitions.
 
-> instance Num a => Num [a] where
->   (*) = mul
->   (+) = plus
->   fromInteger n = [fromInteger n]
+> instance Num a => Num (Poly a) where
+>   Single a   +  Single b   =  Single (a + b)
+>   Single a   +  Cons b bs  =  Cons (a + b) bs
+>   Cons a as  +  Single b   =  Cons (a + b) as
+>   Cons a as  +  Cons b bs  =  Cons (a + b) (as + bs)
+>   
+>   Single a   *  Single b   =  Single (a * b)
+>   Single a   *  Cons b bs  =  Cons (a * b) (Single a * bs)
+>   Cons a as  *  Single b   =  Cons (a * b) (as * Single b)
+>   Cons a as  *  Cons b bs  =  Cons (a * b) (as * Cons b bs + Single a * bs)
+>   
+>   negate (Single a)        =  Single (negate a)
+>   negate (Cons a as)       =  Cons (negate a) (negate as)
+>   
+>   fromInteger              =  Single . fromInteger
 
-> mul (a : as) (b : bs) = (a*b) : mulRest a as b bs
-> mulRest _  []         _  []          =  []
-> mulRest a  []         _  (b1 : bs)   =  (a*b1):mulRest a [] b1 bs
-> mulRest _  (a1 : as)  b  []          =  (a1*b):mulRest a1 as b []
-> mulRest a  (a1 : as)  b  (b1 : bs)   =  plus ((a1*b):mulRest a1 as b (b1 : bs))
->                                              ((a*b1):mulRest a [] b1 bs)
-
-> plus (a:as) (b:bs) = (a+b) : plusRest as bs
-> plusRest [] bs              =  bs
-> plusRest as []              =  as
-> plusRest (a : as) (b : bs)  =  (a + b) : plusRest as bs
 
 Therefore, we *can* define a ring structure (the mathematical
 counterpart of Num) on `Poly a`, and we have arrived at the canonical
@@ -189,7 +203,7 @@ example, @rotman2006first for a very readable text):
 The functions `evalPoly as` are known as *polynomial functions*.
 
 **Caveat:** The canonical representation of polynomials in algebra
-  does not use finite list, but the equivalent
+  does not use finite lists, but the equivalent
 
   > `Poly' A` = { a : ℕ → A | a has only a finite number of non-zero values }
 
@@ -230,9 +244,10 @@ here is addition:
 
 Let
 
-<  x = [0, 1]
+> x = Cons 0 (Single 1)
 
-Then, for any polynomial `as = [a0, a1, ..., an]` we have
+Then (again, using the list notation for brevity) for any polynomial
+`as = [a0, a1, ..., an]` we have
 
 <  as = a0 + a1 * x + a2 * x^2 + ... + an * x^n
 
@@ -241,8 +256,6 @@ Exercise: check this.
 This justifies the standard notation
 
 <  as = Σ_{i = 0}^n a_i * x^i
-
-
 
 2. Power series
 ----------------------
@@ -253,7 +266,7 @@ the case of `Poly`, by going from lists to streams.
 
   PowerSeries' a = { f : ℕ → a }
 
-> type PowerSeries a = [a] -- finite or infinite lists
+> type PowerSeries a = Poly a -- finite and infinite non-empty lists
 
 The operations are still defined as before.  If we consider only
 infinite lists, then only the equations which do not contain the
@@ -282,43 +295,71 @@ equal only if a = b (as functions).  If a ≠ b, then the power series
 are different, even if eval a = eval b.
 
 Since we cannot compute limits, we can use an "approximative" `eval`,
-which in our stream notation is given by
+by evaluating the polynomial resulting from an initial segment of the
+power series.
 
-> eval n as x = evalPoly (take n as) x
+> eval n as x = evalPoly (takePoly n as) x
+
+> takePoly :: Integer -> Poly a -> Poly a
+> takePoly n (Single a)   =  Single a
+> takePoly n (Cons a as)  =  if n <= 1
+>                               then  Single a
+>                               else  Cons a (takePoly (n-1) as)
 
 3. Operations on power series
 -----------------------------
 
 Power series have a richer structure than polynomials.  For example,
-we also have division.  Assume that a0 * b0 ≠ 0.  Then
+we also have division (this is similar to the move from ℤ to ℚ).
+Assume that a * b ≠ 0.  Then (again, using list notation for brevity),
+we want to find, for any given (a : as) and (b : bs), the series (c :
+cs) satisfying
 
-<  (a0 : a1 : as) / (b0 : b1 : bs) = c0 : c1 : cs
-
-<<=>
-
-<  (a0 : a1 : as) = (c0 : c1 : cs) * (b0 : b1 : bs)
-
-<<=>
-
-<  (a0 : a1 : as) = c0 * b0 : ((c1 : cs) * (b0 : b1 : bs) +
-<                              [c0]*(b1 : bs))
+<  (a : as) / (b : bs) = c : cs
 
 <<=>
 
-<  c0 = a0 / b0 and
-<  (a1 : as) = (c1 : cs) * (b0 : b1 : bs) + [a0/b0] * (b1 : bs)
+<  (a : as) = (c : cs) * (b : bs)
 
 <<=>
 
-<  c0 = a0 / b0 and
-<  (c1 : cs) =  ((a1 : as) - [a0/b0] * (b1 : bs)) / (b0 : b1 : bs)
- 
+<  (a : as) = c * b : (cs * (b : bs) +
+<                              [c]*bs)
+
+<<=>
+
+<  c = a / b and
+<  as = cs * (b : bs) + [a/b] * bs
+
+<<=>
+
+<  c = a / b and
+<  cs =  (as - [a/b] * bs) / (b : bs)
+
+This leads to the implementation:
+
 > instance (Eq a, Fractional a) => Fractional (PowerSeries a) where
->   (x : xs) / (y : ys)  =  if y == 0 && x == 0
->                           then xs / ys
->                           else     let q = x / y
->                                    in  q : (xs - [q] * ys) / (y : ys)
+>   as / Single b           =  as * Single (1 / b)
+>   Single a / Cons b bs    =  if a == 0 then Single 0 else Cons a (Single 0) / Cons b bs
+>   Cons a as / Cons b bs   =  let  q = a / b
+>                              in   Cons q  ((as - Single q * bs) / Cons b bs)
 >   fromRational         =  undefined
+
+The first two equations allow us to also use division on polynomials,
+but the result will, in general, be a power series, not a polynomial.
+The first one should be self-explanatory.  The second one extends a
+constant polynomial, in a process similar to that of long division.
+
+For example:
+
+> test0, test1, test2 :: PowerSeries Double
+> test0 = 1 / (1 - x)
+> test1 = 1 / (1 - x)^2
+> test2 = (x^2 - 2 * x + 1) / (x - 1)
+
+Every test is the result of a division of polynomials: the first two
+return power series, the third is a polynomial (almost: it has a
+trailing 0.0).
 
 4. Formal derivation
 --------------------
@@ -331,65 +372,8 @@ according to the formula
 
 We can implement this, for example, as
 
-> deriv (a : as) = zipWith (*) [1 ..] as
+> deriv (Single a)   =  Single 0
+> deriv (Cons a as)  =  deriv' as 1
+>                       where deriv' (Single a)  n  =  Single (n * a)
+>                             deriv' (Cons a as) n  =  Cons (n * a) (deriv' as (n+1))
 
-
-> zeros = 0 : zeros
-> x = 0 : 1 : zeros
-
-> test0, test1, test2 :: PowerSeries Double
-> test0 = 1 / (1 - x)
-> test1 = 1 / (1 - x)^2
-> test2 = (1 - 2 * x ^ 2) ^ 3
-> test3 = zeros * x
-
-----------------
-
-Try evaluating test3 with "too eager" definition of plus:
-
-> mul1 [a0]           [b0]             =  [a0 * b0]
-> mul1 [a0]           (b0 : b1 : bs)   =  (a0 * b0) : mul1 [a0] (b1 : bs)
-> mul1 (a0 : a1 : as) [b0]             =  (a0 * b0) : mul1 (a1 : as) [b0]
-> mul1 (a0 : a1 : as) (b0 : b1 : bs)   =  (a0 * b0) : plus1
->                                           (mul1 (a1 : as) (b0 : b1 : bs))
->                                           (mul1 [a0] (b1 : bs))
-
-> plus1 [a0] [b0]                       =  [a0 + b0]
-> plus1 [a0] (b0 : b1 : bs)             =  (a0 + b0) : b1 : bs
-> plus1 (a0 : a1 : as) [b0]             =  (a0 + b0) : a1 : as
-> plus1 (a0 : a1 : as) (b0 : b1 : bs)   =  (a0 + b0) : plus1 (a1 : as) (b1 : bs)
-
-> test3eval =
->   [ zeros * x
->   , -- Def. of (+) for Poly
->     mul1 zeros x
->   , -- mul1 does two level deep pattern matching on both arguments
->     mul1 (0:0:zeros) (0:1:zeros)
->   , -- 4:th case matches
->     let a0 : a1 : as = 0:0:zeros
->         b0 : b1 : bs = 0:1:zeros
->     in (a0 * b0) : plus1 (mul1 (a1 : as) (b0 : b1 : bs)) (mul1 [a0] (b1 : bs))
->   , -- Substitutions: a0 = a1 = b0 = 0; b1 = 1; as = bs = zeros
->     (0 * 0) : plus1 (mul1 (0 : zeros) (0 : 1 : zeros)) (mul1 [0] (1 : zeros))
->   , -- plus1 matches two levels deep on both args => mul1 matches two levels deep again (twice)
->     0 : plus1 (mul1 (0:0:zeros) (0:1:zeros)) (mul1 [0] (1:0:zeros))
->   , -- 1:st arg to plus1 is the same as what we try to evaluate (test3). (2:nd arg is zeros by separate lemma)
->     0 : plus1 test3 zeros
->   , -- Because plus1 matches two deep we end up with an infinite recursion
->     let ys = 0 : plus1 ys zeros
->     in ys
->   ]
-
-> lemmaMul10 x y =
->   [ mul1 [0] (x:y:zeros)
->   , -- def. of mul1: 2:nd case
->     let [a0]           = [0]
->         (b0 : b1 : bs) = x:y:zeros
->     in (a0 * b0) : mul1 [a0] (b1 : bs)
->   , -- Substitute: a0 = 0, b0 = x, b1 = y, bs = zeros, Simplify
->     0 : mul1 [0] (y : zeros)
->   , -- Same procedure
->     0 : 0 : mul1 [0] zeros
->   , -- Note the pattern (use induction for proper proof)
->     zeros
->   ]
