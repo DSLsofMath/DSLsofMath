@@ -139,7 +139,7 @@ argument.  For an arbitrary `x`
 <<=> {+ on functions is point-wise}
 
 <  evalPoly as x + evalPoly bs x = evalPoly (as + bs) x
-  
+ 
 To proceed further, we need to consider the various cases in the
 definition of `evalPoly`.  We give here the computation for the last
 case, using the traditional list notation (:) for brevity.
@@ -179,15 +179,15 @@ exercise.  Here, we just give the corresponding definitions.
 >   Single a   +  Cons b bs  =  Cons (a + b) bs
 >   Cons a as  +  Single b   =  Cons (a + b) as
 >   Cons a as  +  Cons b bs  =  Cons (a + b) (as + bs)
->   
+>
 >   Single a   *  Single b   =  Single (a * b)
 >   Single a   *  Cons b bs  =  Cons (a * b) (Single a * bs)
 >   Cons a as  *  Single b   =  Cons (a * b) (as * Single b)
 >   Cons a as  *  Cons b bs  =  Cons (a * b) (as * Cons b bs + Single a * bs)
->   
+>
 >   negate (Single a)        =  Single (negate a)
 >   negate (Cons a as)       =  Cons (negate a) (negate as)
->   
+>
 >   fromInteger              =  Single . fromInteger
 
 
@@ -361,7 +361,9 @@ Every test is the result of a division of polynomials: the first two
 return power series, the third is a polynomial (almost: it has a
 trailing 0.0).
 
-4. Formal derivation
+> x :: Num a => Poly a -- defined earlier
+
+4. Formal derivative
 --------------------
 
 Considering the analogy between power series and polynomial functions
@@ -377,3 +379,7 @@ We can implement this, for example, as
 >                       where deriv' (Single a)  n  =  Single (n * a)
 >                             deriv' (Cons a as) n  =  Cons (n * a) (deriv' as (n+1))
 
+Side note: we cannot in general implement a Boolean equality test for
+PowerSeries. For example, we know that `deriv test0` equals `test1`
+but we cannot compute `True` in finite time by comparing the
+coefficients of the two power series.
