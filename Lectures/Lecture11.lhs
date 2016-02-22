@@ -117,7 +117,7 @@ equation
 <  f' x = 1, f 0 = 0
 
 > idx  ::  Fractional a => PowerSeries a
-> idx   =  integ (fromIntegral 1) 0
+> idx   =  integ 1 0     -- (1 :: PowerSeries a) == fromInteger (1::Integer)
 > ids  ::  Fractional a => a -> a
 > ids   =  eval 100 idx
 
@@ -131,7 +131,7 @@ derivative, with the value at 0 being 1:
 Therefore, we can define
 
 > expx :: Fractional a => PowerSeries a
-> expx = integ expx 1
+> expx = integ expx 1     -- note the recursive definiton
 
 > exps :: Fractional a => a -> a
 > exps = eval 100 expx
@@ -166,9 +166,10 @@ need to "shift" the function, implementing log . (+1) instead:
 > logs   ::  (Eq a, Fractional a) => a -> a
 > logs x  =  eval 100 logx (x - 1)
 
-Notice that `logs x` gives very poor results for `x > 0`.  We can
-improve the results by choosing a different starting point, for
-example:
+Notice that `logs x` gives very poor results for `x > 0`. (The series
+is converging very slowly so a 100 degree polynomial is still a poor
+approximation.) We can improve the results by choosing a different
+starting point, for example:
 
 > logx'   =  integ (1 / (x + Single (exps 1))) 1
 > logs' x  =  eval 100 logx' (x - exps 1)

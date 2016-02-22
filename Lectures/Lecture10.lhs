@@ -1,4 +1,5 @@
 > {-# LANGUAGE TypeSynonymInstances #-}
+> module Lecture10 where
 
 Lecture 10: Polynomials and Power Series
 ========================================
