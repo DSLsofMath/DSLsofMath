@@ -98,6 +98,7 @@ Exercises
 - [Exercises for 2016-02-10--11](Exercises/Exercises-2016-02-10--11.md).
 - [Exercises for 2016-02-17](Exercises/Exercises-2016-02-17.lhs).
 - [Exercises for 2016-02-18](Exercises/Exercises-2016-02-18.lhs).
+- [Exercises for 2016-02-24 and 25](Exercises/Exercises-2016-02-24--25.lhs).
 
 Literature
 ----------

@@ -343,7 +343,7 @@ This leads to the implementation:
 >   Single a / Cons b bs    =  if a == 0 then Single 0 else Cons a (Single 0) / Cons b bs
 >   Cons a as / Cons b bs   =  let  q = a / b
 >                              in   Cons q  ((as - Single q * bs) / Cons b bs)
->   fromRational         =  undefined
+>   fromRational            =  Single . fromRational
 
 The first two equations allow us to also use division on polynomials,
 but the result will, in general, be a power series, not a polynomial.
