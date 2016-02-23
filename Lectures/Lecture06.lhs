@@ -22,7 +22,7 @@ which includes the member function
 
 <       fromInteger   ::  Integer  ->  a
 
-which coverts integers to the actual type a.
+which converts integers to the actual type a.
 
 Type classes are related to mathematical structures which, in turn,
 are related to DSLs.  The structuralist point of view in mathematics
