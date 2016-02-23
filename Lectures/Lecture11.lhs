@@ -166,12 +166,18 @@ need to "shift" the function, implementing log . (+1) instead:
 > logs   ::  (Eq a, Fractional a) => a -> a
 > logs x  =  eval 100 logx (x - 1)
 
-Notice that `logs x` gives very poor results for `x > 0`.  We can
-improve the results by choosing a different starting point, for
-example:
+Notice that `logs x` gives very poor results for `x > 2`.  We can
+improve the results around `2` by choosing a different starting point,
+for example:
 
 > logx'   =  integ (1 / (x + Single (exps 1))) 1
 > logs' x  =  eval 100 logx' (x - exps 1)
+
+In general, we will need to perform such shifts in order to ensure
+accuracy, even when the series converges in ℝ.  The estimation of
+errors, the choice of the number of terms to evaluate (here fixed at
+100) and starting point, etc., are studied in the field of numerical
+analysis.
 
 === 5. Computing general exponentiation.
 
