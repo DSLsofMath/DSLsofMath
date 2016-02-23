@@ -1,4 +1,5 @@
 > {-# LANGUAGE TypeSynonymInstances #-}
+> module Lecture10 where
 
 > module Lecture10 where
 
