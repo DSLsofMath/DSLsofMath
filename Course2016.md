@@ -82,7 +82,8 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 08, An embedded DSL for Chebyshev interpolation](Lectures/Lecture08.pdf).
 - [Lecture 09, Algebraic Structures and DSLs](Lectures/Lecture09.lhs). Some associated code is also [available](code/).
 - [Lecture 10, Polynomials and Power Series](Lectures/Lecture10.lhs).
-- [Lecture 10, Power Series and Differential Equations](Lectures/Lecture11.lhs).
+- [Lecture 11, Power Series and Differential Equations](Lectures/Lecture11.lhs).
+- [Lecture 12, The Exponential Function, Taylor Series](Lectures/Lecture12.lhs).
 
 Exercises
 ---------
