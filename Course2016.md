@@ -84,6 +84,8 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 10, Polynomials and Power Series](Lectures/Lecture10.lhs).
 - [Lecture 11, Power Series and Differential Equations](Lectures/Lecture11.lhs).
 - [Lecture 12, The Exponential Function, Taylor Series](Lectures/Lecture12.lhs).
+- [Lecture 13, The Laplace Transform](Lectures/Lecture13.lhs).
+- [Lecture 14, Basic Concepts of Analysis](Lectures/BasicConcepts.lhs).
 
 Exercises
 ---------
