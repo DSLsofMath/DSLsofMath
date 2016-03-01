@@ -1,3 +1,5 @@
+> module Lecture13 where
+
 3. The Laplace transform
 ------------------------
 
