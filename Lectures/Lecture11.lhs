@@ -1,5 +1,8 @@
 > {-# LANGUAGE FlexibleInstances #-}
 > {-# LANGUAGE TypeSynonymInstances #-}
+
+> module Lecture11 where
+
 > import Lecture10
 > import FunNumInst
 
@@ -34,7 +37,7 @@ Notice that:
   separately.
 
 > integ  ::  Fractional a => PowerSeries a -> a -> PowerSeries a
-> integ  as a0  =  Cons a0 (integ' as 1)
+> integ  as b0  =  Cons b0 (integ' as 1)
 >   where integ' (Single a) n   =  Single (a / n)
 >         integ' (Cons a as) n  =  Cons (a / n) (integ' as (n+1))
 
@@ -43,8 +46,8 @@ The implementation accounts for polynomials as well.
 2. Differential equations and the elementary functions
 ------------------------------------------------------
 
-For convergent series, i.e., for series `as` for which there exist `f
-= eval as`, `eval` is a homomorphism, i.e.
+For convergent series, i.e., for series `as` for which there exist
+`f = eval as`, `eval` is a homomorphism, i.e.
 
 <      eval as  +  eval bs  =  eval (as + bs)
 <      eval as  *  eval bs  =  eval (as * bs)
@@ -216,9 +219,9 @@ For example
 4. Composition of power series
 ------------------------------
 
-Let `f :: A -> A` and `fs` its power series representation.  Let `g ::
-A -> A` extensible to power series in the sense that there exists `gPS
-:: PowerSeries A -> PowerSeries A` such that
+Let `f :: A -> A` and `fs` its power series representation.
+Let `g :: A -> A` extensible to power series in the sense that there
+exists `gPS :: PowerSeries A -> PowerSeries A` such that
 
 <    g (f x)  =  eval (gPS fs) x       ∀ x
 

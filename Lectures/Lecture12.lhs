@@ -1,6 +1,5 @@
 > {-# LANGUAGE FlexibleInstances #-}
 > {-# LANGUAGE TypeSynonymInstances #-}
-
 > module Lecture12 where
 
 > import Lecture10
@@ -107,11 +106,11 @@ We obtain
 
 We can see that the real part of this series is the same as
 
-> ex2R = takePoly 10 (coeffs cosx 1)
+> ex2R = takePoly 10 (terms cosx 1)
 
 and the imaginary part is the same as
 
-> ex2I = takePoly 10 (coeffs sinx 1)
+> ex2I = takePoly 10 (terms sinx 1)
 
 (within approx 20 decimals).  But the terms of a series evaluated at 1
 are the coefficients of the series.  Therefore, the terms of `cosx`
@@ -272,4 +271,3 @@ interpretation of an element `fs :: PowerSeries a` is now that of the
 Taylor coefficients at an implicit `a`.  More than just inducing the
 language of automatic derivatives, we can now say that the language of
 power series *is* the language of automatic derivatives.
-
