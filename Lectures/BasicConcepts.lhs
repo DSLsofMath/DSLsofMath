@@ -51,8 +51,8 @@ find an `ε > 0` such that, no matter what element of `X-{p}` `q ε` is,
 it is more than `ε` distance away from `p`.
 
 We remark that this is equivalent to defining a function, associating
-to each `p` and `q` a positive ε with the respective property: `∀ x ∈
-X -{p} (x = q ε ⇒ x ∉ D p ε)`.
+to each `p` and `q` a positive ε with the respective property:
+`∀ x ∈ X-{p} (x = q ε ⇒ x ∉ D p ε)`.
 
 To simplify this property, we introduce the *image* function:
 
@@ -62,7 +62,7 @@ To simplify this property, we introduce the *image* function:
 
 We have
 
-< f a ∉ Y   ⟸     I f A  ∩  Y  =  ∅
+< (∀ a ∈ A  f a ∉ Y)   ⟸     I f A  ∩  Y  =  ∅
 
 In our case
 
@@ -79,11 +79,11 @@ In our case
 Since `X` is finite, so is `X - {p}` and therefore the following is
 well defined:
 
-< ε = 1/2 min { | x - p|  | x ∈ X - {p} }
+< ε = 1/2 min { |x - p|  | x ∈ X - {p} }
 
 Then, for any `x ∈ X - {p}`, we have
 
-< |x - p| ≥ min { | x - p|  | x ∈ X - {p} }
+< |x - p| ≥ min { | x - p|  | x ∈ X - {p} } = 2 ε
 
 < ⇒
 
@@ -101,17 +101,17 @@ Then, for any `x ∈ X - {p}`, we have
   > **Limit of a sequence**
 
   > We say that sequence `{a_n}` converges to the limit `L`, and we
-   write `lim_{n→∞} a_n = L`, if for every positive real number `ε`
-   there exists an integer `N` (which may depend on `epsilon`) such that if `n
-   > N|`, then `|a_n - L| < epsilon`.
+    write `lim_{n→∞} a_n = L`, if for every positive real number `ε`
+    there exists an integer `N` (which may depend on `epsilon`) such that if
+    `n > N`, then `|a_n - L| < epsilon`.
 
 We have
 
-< a : ℕ → A  (A ⊆ ℝ)
+< a : ℕ → A    (A ⊆ ℝ)
 
 < lim a = L  ⟺   ∀ ε > 0 ∃ N ∀ n ≥ N  |a_n - L| < ε
 
-We overload the image function for sequences
+We overload the image function for sequences "from N onwards":
 
 < I a N = {a n | n ≥ N}
 
@@ -143,7 +143,7 @@ Therefore, for any `ε > 0`
 
 < D L₁ ε  ∩  D L₂ ε ≠ ∅
 
-< ⇒  {taking an arbitrary `x` in D L₁ ε  ∩  D L₂ ε}
+< ⇒  {taking an arbitrary `x` in `D L₁ ε  ∩  D L₂ ε`}
 
 < |x - L₁| + |x - L₂| < 2 * ε
 
@@ -151,6 +151,5 @@ Therefore, for any `ε > 0`
 
 < |L₁ - L₂| < 2 * ε
 
-Therefore, for any `ε > 0`, `0 ≤ |L₁ - L₂| < ε`, therefore `|L₁ - L₂|
-= 0`, and so `L₁ =  L₂`.
-
+Therefore, for any `ε > 0`, `0 ≤ |L₁ - L₂| < ε`, therefore
+`|L₁ - L₂| = 0`, and so `L₁ = L₂`.

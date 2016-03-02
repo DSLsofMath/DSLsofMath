@@ -1,8 +1,6 @@
 > {-# LANGUAGE TypeSynonymInstances #-}
 > module Lecture10 where
 
-> module Lecture10 where
-
 Lecture 10: Polynomials and Power Series
 ========================================
 
@@ -142,7 +140,7 @@ argument.  For an arbitrary `x`
 <<=> {+ on functions is point-wise}
 
 <  evalPoly as x + evalPoly bs x = evalPoly (as + bs) x
- 
+
 To proceed further, we need to consider the various cases in the
 definition of `evalPoly`.  We give here the computation for the last
 case, using the traditional list notation (:) for brevity.

@@ -1,3 +1,5 @@
+> module Lecture13 where
+
 3. The Laplace transform
 ------------------------
 
@@ -96,13 +98,13 @@ the definition of `ℒ` and operate a change of variables:
 
 < <=>
 
-<  ℒ f x = ∫_0^{\infty} (f t) * (exp (log x *t)) dt
+<  ℒ f x = ∫_0^{\infty} (f t) * exp (log x *t) dt
 
 Since `log x < 0` for `|x| < 1`, we make the substitution `-s = log
 x`.  The condition `|x| < 1` becomes `s > 0` (or, in ℂ, real s > 0),
 and we have
 
-<  ℒ f s = ∫_0^{\infty} (f t) * (exp (-s * t)) dt
+<  ℒ f s = ∫_0^{\infty} (f t) * exp (-s * t) dt
 
 This is the definition of the Laplace transform of the function `f`.
 Going back to the problem of computing `ℒ f'`, we now have
@@ -174,7 +176,7 @@ Applying this to the left-hand side of (1), we have for any `s`
 
 < = {re-writing ℒ f'' and ℒ f' in terms of ℒ f}
 
-< s^2 * ℒ f s - s * f 0 - f' 0 - 3 * (s ⋅ ℒ f s - f 0) + 2 * ℒ f
+< s^2 * ℒ f s - s * f 0 - f' 0 - 3 * (s * ℒ f s - f 0) + 2 * ℒ f s
 
 < = {f 0 = 1, f' 0 = 0}
 
@@ -186,7 +188,7 @@ For the right-hand side, we apply the definition:
 
 < =
 
-< ∫_0^{\infty} (exp (3 * t)) * (exp (-s * t)) dt
+< ∫_0^{\infty} exp (3 * t)  *  exp (-s * t) dt
 
 < =
 
@@ -215,14 +217,14 @@ and therefore
 
 < =  {s^2 - 3 * s + 2 = (s - 1) * (s - 2)}
 
-< (10 - 6 * s + s^2) / ((s - 1)*(s-2)*(s-3))
+< (10 - 6 * s + s^2) / ((s-1)*(s-2)*(s-3))
 
 We now have the problem of "recovering" the function `f` from its
 Laplace transform.  The standard approach is to use the linearity of
 `ℒ` to write `F` as a sum of functions with known inverse transforms.
 We know one such function:
 
-< exp (α * t)  is the inverse of  1 / (s - α)
+< exp (α * t)  is the inverse Laplace transform of  1 / (s - α)
 
 In fact, in our case, this is all we need.
 
@@ -253,19 +255,17 @@ For `s` = 2:
 
 For `s` = 3:
 
-< C * 2 * 1 = 10 - 18 + 9      =>  C = 0.5
+< C * 2 * 1 = 10 - 18 + 9       =>  C = 0.5
 
 It is now easy to check that, with these values, (2) does indeed hold,
 and therefore that we have
 
-< F s = 2.5 * (1 / (s - 1)) - 2 * (1 / (s - 2)) +
-<       0.5 * (1 / (s - 3))
+< F s = 2.5 * (1 / (s - 1)) - 2 * (1 / (s - 2)) + 0.5 * (1 / (s - 3))
 
 The inverse transform is now easy:
 
-< f t = 2.5 * exp x - 2 * exp (2 * x) + 0.5 * exp (3 * x)
+< f t = 2.5 * exp t - 2 * exp (2 * t) + 0.5 * exp (3 * t)
 
 Our mix of necessary and sufficient conditions makes it necessary to
 check that we have, indeed, a solution for the differential equation.
 The verification is in this case trivial.
-
