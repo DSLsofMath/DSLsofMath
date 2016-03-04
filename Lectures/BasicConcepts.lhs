@@ -111,7 +111,7 @@ We have
 
 < lim a = L  ⟺   ∀ ε > 0 ∃ N ∀ n ≥ N  |a_n - L| < ε
 
-We overload the image function for sequences "from N onwards":
+We overload the image function for sequences "from N onward":
 
 < I a N = {a n | n ≥ N}
 
@@ -398,4 +398,224 @@ such that
 < ∀ ε > 0    I f (D c (δ ε))  ⊆  D (f c) ε
 
 But this is exactly the `δ` we need for `lim f c = f c`.
+
+5. Differentiation
+------------------
+The standard definition of *derivative* is (from
+@rudin1964principles, p. 89):
+
+  > *Definition:* Let `f : [a, b] -> ℝ`.  For an `x ∈ [a, b]`,
+    consider the function `φ x : [a, b] -> ℝ` by
+
+<       φ x a  =  (f a - f x)/(a - x)             (1)
+
+  > and define
+
+<       f' x   =  lim (φ x) x                     (2)
+
+  > provided that this limit exists.  We thus associate with `f` a
+  > function `f'` whose domain of definition is the set of points `x`
+  > at which the limit (2) exists; `f'` is called the *derivative* of
+  > `f`.
+
+Adams and Essex [-@adams2010calculus, p. 99] give almost the same
+definition:
+
+  > The derivative of a function `f` is another function `f'` defined by
+
+<          f' x = lim_{h -> 0} (f (x + h) - f x) / h
+
+  > at all points x for which the limit exists (i.e., is a finite real
+  > number). If `f' x` exists, we say that `f` is differentiable at
+  > `x`.
+
+The definition given by Rudin is more precise (it gives a type for `f`
+and for `f'`, and it introduces the function `φ`).
+
+The proposition we want to prove is:
+
+*Proposition:*  Let `f : [a, b] -> ℝ` and `c ∈ [a, b]` such that `f'
+ c` exists.  Then `f` is continuous at `c`.
+
+*Proof:*
+
+We use the standard definition of continuity, therefore we need to
+find a function `δ : ℝ_{>0} -> ℝ_{>0}` such that
+
+<  ∀  ε > 0      I f (D c (δ ε) ∩ [a, b])  ⊆  D (f c) ε
+
+What we have is that `f' c` exists, i.e.,
+
+<  ∃ α ∈ ℝ       f' c  =  α
+
+< ⟺    {def `f'`}
+
+<                lim (φ c) c  =  α
+
+< ⟺    {def `lim`}
+
+< ∃ δ'           I (φ c) (D c (δ' ε) ∩ ([a, b] - {c}))  ⊆  D α ε
+
+The relationship between `δ` and `δ'` is not straightforward, and is
+made more complicated by the fact that `f` and `φ c` are not defined
+on the same domain: `f` is defined in `c`, whereas `φ c` is not.  We
+cannot increase the domain of `φ c` (division by 0!), but we can
+decrease the domain of `f`, so let us introduce the function
+
+< C = [a, b] - {c}  -- the domain of `g`
+< g : C  ->  ℝ,      g x  =  f x
+
+We then have
+
+< I f (D c (δ ε) ∩ [a, b]) = I g (D c (δ ε) ∩ C)  ∪  {f c}  (4)
+
+therefore
+
+< I f (D c (δ ε) ∩ [a, b]) ⊆ D (f c) ε
+
+< ⟺   {(4)}
+
+< I g (D c (δ ε) ∩ C)  ∪  {f c}  ⊆  D (f c) ε
+
+< ⟺   {since f c ∈ D (f c) ε}
+
+< I g (D c (δ ε) ∩ C)  ⊆   D (f c) ε                (5)
+
+We can now try to express `g` in terms of `φ c`:
+
+< g x  =  φ c x * (x - c) + f c
+
+< ⇒ {applying `I` to both sides}
+
+< I g (D c (δ ε) ∩ C) = I (\ x -> φ c x * (x - c) + f c) (D c (δ ε) ∩ C)
+
+For two functions `f₁, f₂ : X -> Y` we have
+
+< I (f₁ * f₂) X
+
+< =  {def I}
+
+< { f₁ x * f₂ x  |  x ∈ X }
+
+< ⊆  {set theory}
+
+< { y₁ * y₂  |  y₁ ∈ I f₁ X, y₂ ∈ I f₂ X }
+
+< =  { notation, lifting * to sets }
+
+< I f₁ X * I f₂ X
+
+and similarly for other operations.  We then have
+
+< I (\ x -> φ c x * (x - c) + f c) (D c (δ ε) ∩ C)
+
+< ⊆ { from above }
+
+< I (φ c) (D c (δ ε) ∩ C) * I (\ x -> x - c) (D c (δ ε) ∩ C) +
+< I (const (f c)) (D c (δ ε) ∩ C)
+
+< = { def I and D }
+
+< I (φ c) (D c (δ ε) ∩ C) * (D 0 (δ ε) - {0})  + {f c}
+
+< ⊆ {using δ', assuming δ ε ≤ δ' ε}
+
+< D α ε * (D 0 (δ ε) - {0}) + {f c}
+
+< { def }
+
+< { y * d + f c  |  |y - α| < ε, |d| < δ ε, d ≠ 0 }
+
+For (5) to hold, we have to set `δ ε ≤ δ' ε` so that
+
+<   |y * d + f c - f c| < ε
+
+< ⟺   {arithmetic}
+
+<   |y * d| < ε
+
+< ⟺   {modulus}
+
+<   |y| * |d| < ε
+
+< ⟸    {|d| < δ ε}
+
+<   |y| * (δ ε) < ε
+
+< ⟸   {|y| ≤ |y - α| + |α| (triangle inequality)}
+
+<   (|y - α| + |α|) * (δ ε) < ε
+
+< ⟸   {|y - α| < ε}
+
+<   (ε + |α|) * (δ ε) < ε
+
+< ⟸   {arithmetic, ε + |α| > 0}
+
+<   δ ε < ε / (ε + |α|)
+
+< ⟸   {def min}
+
+<   δ ε = min (δ' ε, 0.5 * ε / (ε + |α|))
+
+Therefore, we can define `δ` so that (4) holds, and therefore `f` is
+continuous at `c`.
+
+This proof, while relatively simple and typical of many in analysis,
+is unsatisfactory.  It would have been much better if we had developed
+a calculus of limits of functions.  For example, we have
+
+*Theorem:* [@rudin1964principles, p. 73-74)
+
+  > Let `f, g : X -> ℝ`, `p` a limit point of `X`, and `lim f p = α`, `lim g p = β`.
+  > Then
+<       lim (f + g) x = α + β
+
+<       lim (f * g) x = α * β
+
+<       lim (f / g) x = α / β, if β ≠ 0
+
+This theorem can be applied to the functions
+
+< φ c, g, ((-) c), const (f c) : C -> ℝ
+
+for the point `c` (every element of `[a, b]` is a limit point of
+`[a, b]`), obtaining
+
+<  lim g c
+
+< = {def of `g`}
+
+<  lim (φ c * ((-) c) + const (f c)) c
+
+< = {calculus of limits}
+
+<  lim (φ c) c * lim ((-) c) c + lim (const (f c)) c
+
+< = {`f' c = α`, lim (\ x -> x - c) c = 0, lim (const (f c)) c = f c}
+
+<  α * 0 + f c
+
+< = {arithmetic}
+
+<  f c
+
+But `lim f c = lim g c` (limit does not depend on value at `c`),
+therefore
+
+< lim f c = f c
+
+< ⟺  {proved above}
+
+< f continuous at c
+
+References
+----------
+
+
+
+
+
+
+
 
