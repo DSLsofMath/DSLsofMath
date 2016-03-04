@@ -41,8 +41,8 @@ quantifier, but that is incorrect.  In fact, `h` is used as a variable
 to construct the arguments of a function, whose limit is then taken
 at 0.
 
-That function, which we can denote by `φ` has the type `φ : U -> ℝ -
-{0} -> ℝ` and is defined by
+That function, which we can denote by `φ` has the type `φ : U ->
+ℝ-{0} -> ℝ` and is defined by
 
 < φ (x, y) h = (f (x + h, y) - f (x, y)) / h
 
@@ -55,12 +55,11 @@ of `ℝ`, so the type of `lim` is the one we have discussed:
 phrase "the quantity `z`" suggests this.  A possible interpretation is
 that `z` is used to abbreviate the expression `f(x, y)`; thus,
 everywhere we can replace `z` with `f(x, y)`.  In particular,
-`∂ z / ∂x`
-becomes `∂ f (x, y) / ∂ x`, which we can interpret as `∂ f / ∂ x`
-applied to `(x, y)` (remember that `(x, y)` is bound in the context by
-a universal quantifier).  There is the added difficulty that ,just
-like `_{x}`, the `x` in `∂ x` is not the `x` bound by the universal
-quantifier, but just a symbol.
+`∂ z / ∂ x` becomes `∂ f (x, y) / ∂ x`, which we can interpret as
+`∂ f / ∂ x` applied to `(x, y)` (remember that `(x, y)` is bound in
+the context by a universal quantifier).  There is the added difficulty
+that, just like `_{x}`, the `x` in `∂ x` is not the `x` bound by the
+universal quantifier, but just a symbol.
 
 References
 ----------

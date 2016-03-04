@@ -30,7 +30,7 @@ Remember to write legibly. Good luck!
 
     - `+` is invertible:
 
-        <        ∀ v ∈ V  ∃ (- v) ∈ V   v + (-v) = (-v) + v = 0
+        <        ∀ v ∈ V  ∃ (-v) ∈ V   v + (-v) = (-v) + v = 0
 
     - `+` is commutative:
 
@@ -38,8 +38,8 @@ Remember to write legibly. Good luck!
 
         *Remarks:*
 
-        - we usually denote `v₁ + (- v₂) = v₁ - v₂`
-        - the first two conditions say that `(V, +, 0)` is a *monoid*
+        - we usually denote `v₁ + (-v₂) = v₁ - v₂`
+        - the first two   conditions say that `(V, +, 0)` is a *monoid*
         - the first three conditions say that `(V, +, 0)` is a *group*
         - the four conditions say that `(V, +, 0)` is a *commutative group*
 
@@ -61,8 +61,8 @@ Remember to write legibly. Good luck!
 
         <       ∀ x₁, x₂ ∈ ℝ, v ∈ V      (x₁ + x₂) ⋅ v = x₁ ⋅ v + x₂ ⋅ v
 
-    i.  Define a type class `Vector` that corresponds to the vector
-        space over ℝ structure.
+    i.  Define a type class `Vector` that corresponds to the structure
+        "vector space over ℝ".
 
     ii. Define a datatype for the language of vector space expressions
         and define a `Vector` instance for it.
@@ -84,21 +84,21 @@ Remember to write legibly. Good luck!
 
     Consider the following differential equation:
 
-    <     f'' t - 2 ⋅ f' t + f t - 2 = 3 * e^{2 * t}, f 0 = 5, f' 0 = 6
+    <     f'' t - 2 * f' t + f t - 2 = 3 * e^{2 * t}, f 0 = 5, f' 0 = 6
 
-    i. [10pts] Solve the equation assuming that `f` can be expressed by
-   a power series `fs`, that is, use `deriv` and `integ` to compute
-   `fs`.  What are the first three coefficients of `fs`?
+    i. [10pts] Solve the equation assuming that `f` can be expressed
+       by a power series `fs`, that is, use `deriv` and `integ` to
+       compute `fs`.  What are the first three coefficients of `fs`?
 
     ii. [15pts] Solve the equation using the Laplace transform.  You
-   should need only one formula:
+        should need only one formula:
 
     <    ℒ (e^(α*t)) s  = 1 / (s - α)
 
 3. [25pts]
 
     Consider the following definition for the limit of a sequence,
-   adapted from Adams and Essex 2010:
+    adapted from Adams and Essex 2010:
 
     > We say that sequence ${a_n}$ converges to the limit $L$, and we
     write $lim_{n→∞} a_n = L$, if for every positive real number $ε$
@@ -106,12 +106,12 @@ Remember to write legibly. Good luck!
     that if $n > N$, then $|a_n - L| < ε$.
 
     i. [5pts] Write the definition formally, using logical connectives
-   and quantifiers.
+       and quantifiers.
 
     ii. [10pts] Introduce functions and types to simplify the definition.
 
-    iii.  [10pts] Prove the following proposition:  If `lim a = L₁` and `lim b
-   = L₂`, then `lim (a + b) = L₁ + L₂`.
+    iii.  [10pts] Prove the following proposition:  If `lim a = L₁` and
+          `lim b = L₂`, then `lim (a + b) = L₁ + L₂`.
 
 4. [20pts]
 
