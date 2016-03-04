@@ -102,8 +102,8 @@ Then, for any `x ∈ X - {p}`, we have
 
   > We say that sequence `{a_n}` converges to the limit `L`, and we
     write `lim_{n→∞} a_n = L`, if for every positive real number `ε`
-    there exists an integer `N` (which may depend on `epsilon`) such that if
-    `n > N`, then `|a_n - L| < epsilon`.
+    there exists an integer `N` (which may depend on `ε`) such that if
+    `n > N`, then `|a_n - L| < ε`.
 
 We have
 
@@ -167,9 +167,9 @@ Therefore, for any `ε > 0`, `0 ≤ |L₁ - L₂| < ε`, therefore `|L₁ - L₂
  > `lim_{x → a} f(x) = L`,
 
  > if the following condition is satisfied: for every number `ε > 0`
-   there exists a number `δ > 0`, possibly depending on `epsilon`,
+   there exists a number `δ > 0`, possibly depending on `ε`,
    such that if `0 < |x - a| < δ`, then `x` belongs to the domain of
-   `f` and `|f (x) - L| < epsilon`.
+   `f` and `|f (x) - L| < ε`.
 
 Here, `f : X → ℝ` for some `X ⊆ ℝ`.  We do not necessarily have `a ∈ X`.
 
@@ -325,8 +325,7 @@ we obtain
 
 < True
 
-Therefore, taking `N' = N ∘ delta` is the function we were looking
-for.
+Therefore, taking `N' = N ∘ δ` is the function we were looking for.
 
 Exercise: prove "⟸".
 
@@ -339,12 +338,12 @@ p. 74):
 *Definition:* Let `X ⊆ ℝ, X ≠ ∅`, and `c ∈ X`.  A function `f : X ->
  ℝ` is *continuous at `c`* if
 
-< ∀ ε > 0 ∃ δ > 0 ∀ x ∈ X   |x - c| < δ  ⇒  |f x - f c| < ε
+< ∀ ε > 0  ∃ δ > 0  ∀ x ∈ X   |x - c| < δ  ⇒  |f x - f c| < ε
 
 We follow the same line of thought above and introduce the `D` and `I`
 functions.  We obtain the equivalent condition
 
-< ∃ δ : ℝ_{> 0} -> ℝ_{> 0} ∀ ε > 0  I f (D c (δ ε)) ⊆ D (f c) ε
+< ∃ δ : ℝ_{> 0} -> ℝ_{> 0}  ∀ ε > 0   I f (D c (δ ε)) ⊆ D (f c) ε
 
 Adams and Essex (-@adams2010calculus, p.78) give another definition.
 First they define
@@ -387,7 +386,7 @@ Since `c` is a limit point of `X` we have
 
 such that
 
-< ∀ ε > 0   q ε ∈  D c ε
+< ∀ ε > 0   q ε ∈ D c ε
 
 If `f` is continuous at `c`, then we have
 
@@ -611,11 +610,3 @@ therefore
 
 References
 ----------
-
-
-
-
-
-
-
-
