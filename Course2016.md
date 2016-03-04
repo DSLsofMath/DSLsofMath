@@ -4,6 +4,10 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-03-04: Practice exam available! [pdf](Exam/PracticeExam.pdf)
+[lhs](Exam/PracticeExam.lhs).  Solutions will be discussed in the
+exercises session on 2016-03-09.
+
 2016-02-19: Assignment 2 has been posted!
 
 2016-02-12: Assignment 2 will be announced either Friday,  February 19 or
@@ -102,6 +106,8 @@ Exercises
 - [Exercises for 2016-02-17](Exercises/Exercises-2016-02-17.lhs).
 - [Exercises for 2016-02-18](Exercises/Exercises-2016-02-18.lhs).
 - [Exercises for 2016-02-24 and 25](Exercises/Exercises-2016-02-24--25.lhs).
+- The exercises session of 2016-03-09 will be devoted to the solutions
+  of the [practice exam](Exam/PracticeExam.pdf).
 
 Literature
 ----------
