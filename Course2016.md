@@ -4,6 +4,9 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-03-05: Make sure to work through the practice exam before the
+exercise session on Wednesday.
+
 2016-03-04: Practice exam available! [pdf](Exam/PracticeExam.pdf)
 [lhs](Exam/PracticeExam.lhs).  Solutions will be discussed in the
 exercises session on 2016-03-09.
@@ -105,6 +108,7 @@ Exercises
 - [Exercises for 2016-02-10--11](Exercises/Exercises-2016-02-10--11.md).
 - [Exercises for 2016-02-17](Exercises/Exercises-2016-02-17.lhs).
 - [Exercises for 2016-02-18](Exercises/Exercises-2016-02-18.lhs).
+  [Example solutions](Exercises/Ring.hs).
 - [Exercises for 2016-02-24 and 25](Exercises/Exercises-2016-02-24--25.lhs).
 - The exercises session of 2016-03-09 will be devoted to the solutions
   of the [practice exam](Exam/PracticeExam.pdf).
