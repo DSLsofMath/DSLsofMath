@@ -58,6 +58,7 @@ and so on, and moreover
 <      eval (integ bs f0) x  =  ∫_0^x (eval bs t) dt + f0
 
 The last of these identities follows from
+
 <      {specification of integ}
 <      bs = deriv (integ bs f0)
 < =>   {function}
@@ -65,10 +66,10 @@ The last of these identities follows from
 < =>   {eval morphism}
 <      eval bs = (eval (integ bs f0))'
 < =>   {fundamental theorem of calculus}
-<      ∫_0^x (eval bs t) dt =  eval (integ bs f0) x) -
-<                              eval (integ bs f0) 0)
+<      ∫_0^x (eval bs t) dt =  eval (integ bs f0) x -
+<                              eval (integ bs f0) 0
 < =>   {def of integ and eval}
-<      ∫_0^x (eval bs t) dt =  eval (integ bs f0) x) - f0
+<      ∫_0^x (eval bs t) dt =  eval (integ bs f0) x - f0
 
 Reminder: the fundamental theorem of calculus is
 
