@@ -145,8 +145,8 @@ Therefore, we can define
 
 We have
 
-< f = sin    <=>  f' = cos  ,  f' 0 = 0
-< g = cos    <=>  g' = -sin ,  g' 0 = 1
+< f = sin    <=>  f' = cos  ,  f 0 = 0
+< g = cos    <=>  g' = -sin ,  g 0 = 1
 
 > sinx, cosx :: Fractional a => PowerSeries a
 > sinx = integ cosx 0
