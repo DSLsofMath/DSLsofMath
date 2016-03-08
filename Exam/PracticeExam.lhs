@@ -61,21 +61,21 @@ Remember to write legibly. Good luck!
 
         <       ∀ x₁, x₂ ∈ ℝ, v ∈ V      (x₁ + x₂) ⋅ v = x₁ ⋅ v + x₂ ⋅ v
 
-    i.  Define a type class `Vector` that corresponds to the structure
-        "vector space over ℝ".
+    i.    Define a type class `Vector` that corresponds to the structure
+          "vector space over ℝ".
 
-    ii. Define a datatype for the language of vector space expressions
-        and define a `Vector` instance for it.
+    ii.   Define a datatype for the language of vector space expressions
+          and define a `Vector` instance for it.
 
-    iii. Find two other instances of the `Vector` class.
+    iii.  Find two other instances of the `Vector` class.
 
-    iv. Define a general evaluator for `Vector` expressions on the
-        basis of *two* given assignment functions.
+    iv.   Define a general evaluator for `Vector` expressions on the
+          basis of *two* given assignment functions.
 
-    v. Specialise the evaluator to the two `Vector` instances defined
-       at point iii.  Take three vector expressions, give the appropriate
-       assignments and compute the results of evaluating, in each case,
-       the three expressions.
+    v.    Specialise the evaluator to the two `Vector` instances defined
+          at point iii.  Take three vector expressions, give the appropriate
+          assignments and compute the results of evaluating, in each case,
+          the three expressions.
 
     Each question carries 6pts.
 
@@ -84,16 +84,16 @@ Remember to write legibly. Good luck!
 
     Consider the following differential equation:
 
-    <     f'' t - 2 * f' t + f t - 2 = 3 * e^{2 * t}, f 0 = 5, f' 0 = 6
+    $$ f''\, t - 2 * f'\, t + f\, t - 2 = 3 * e^{2 * t},\quad f\, 0 = 5,\quad f'\, 0 = 6 $$
 
-    i. [10pts] Solve the equation assuming that `f` can be expressed
-       by a power series `fs`, that is, use `deriv` and `integ` to
-       compute `fs`.  What are the first three coefficients of `fs`?
+    i.  [10pts] Solve the equation assuming that `f` can be expressed
+        by a power series `fs`, that is, use `deriv` and `integ` to
+        compute `fs`.  What are the first three coefficients of `fs`?
 
     ii. [15pts] Solve the equation using the Laplace transform.  You
-        should need only one formula:
+        should need only one formula (and linearity):
 
-    <    ℒ (e^(α*t)) s  = 1 / (s - α)
+    $$ ℒ\, (\lambda t.\, e^{α*t})\, s  = 1 / (s - α) $$
 
 3. [25pts]
 
@@ -105,10 +105,10 @@ Remember to write legibly. Good luck!
     there exists an integer $N$ (which may depend on $ε$) such
     that if $n > N$, then $|a_n - L| < ε$.
 
-    i. [5pts] Write the definition formally, using logical connectives
-       and quantifiers.
+    i.    [5pts] Write the definition formally, using logical connectives
+          and quantifiers.
 
-    ii. [10pts] Introduce functions and types to simplify the definition.
+    ii.   [10pts] Introduce functions and types to simplify the definition.
 
     iii.  [10pts] Prove the following proposition:  If `lim a = L₁` and
           `lim b = L₂`, then `lim (a + b) = L₁ + L₂`.
@@ -124,4 +124,4 @@ Remember to write legibly. Good luck!
      $$z' (x) = g'(y) * h'(x)$$
 
     Give the types of the elements involved (`x`, `y`, `z`, `g`, `h`,
-   `z'`, `g'`, `h'`, `*` and `'`).
+    `z'`, `g'`, `h'`, `*` and `'`).

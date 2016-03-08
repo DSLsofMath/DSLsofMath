@@ -1,5 +1,8 @@
 > module Lecture13 where
 
+> import Lecture10
+> import Lecture11
+
 3. The Laplace transform
 ------------------------
 
