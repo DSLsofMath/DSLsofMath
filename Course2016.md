@@ -4,6 +4,9 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-03-09: Update on a question posed today - a mathematics handbook
+would be acceptable as the textbook you bring to the exam.
+
 2016-03-09: Thank you all for the session today. We covered the two
 first questions of the practice exam; we will continue with the
 remaining two tomorrow during the second half of the exercise session,
