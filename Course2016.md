@@ -4,6 +4,9 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-03-09: Example solutions to the problems of the practice exam we
+went over today are up! [hs](Exam/MockE.hs)
+
 2016-03-09: Update on a question posed today - a mathematics handbook
 would be acceptable as the textbook you bring to the exam.
 
@@ -122,6 +125,7 @@ Exercises
 - [Exercises for 2016-02-24 and 25](Exercises/Exercises-2016-02-24--25.lhs).
 - The exercises session of 2016-03-09 will be devoted to the solutions
   of the [practice exam](Exam/PracticeExam.pdf).
+  Partial example [solutions](Exam/MockE.hs).
 - An example of [typing mathematical
   entities](Lectures/TypingMaths.lhs), similar to exam question 4.
 
