@@ -4,6 +4,13 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-03-09: Thank you all for the session today. We covered the two
+first questions of the practice exam; we will continue with the
+remaining two tomorrow during the second half of the exercise session,
+after resubmissions are graded.  Example solutions to the first two
+questions will be posted this evening.  OBS! : Be sure to read the
+lecture notes!!
+
 2016-03-05: Make sure to work through the practice exam before the
 exercise session on Wednesday.
 
