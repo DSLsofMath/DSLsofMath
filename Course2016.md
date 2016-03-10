@@ -4,6 +4,9 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-03-10: The example solutions to the problems of the practice exam
+have been updated! [hs](Exam/MockE.hs)
+
 2016-03-09: Example solutions to the problems of the practice exam we
 went over today are up! [hs](Exam/MockE.hs)
 

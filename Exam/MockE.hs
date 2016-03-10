@@ -2,7 +2,7 @@
 module MockE where
 
 import Lecture11
-import Lecture10
+import qualified Lecture10 as PS
 
 
 {- IMPORTANT NOTE:
@@ -336,4 +336,172 @@ So overall, the first three coefficients are:
 
   The equation holds, and we have correctly solved the problem with:
     f t = 2 + 3 * e^(2 * t)
+-}
+
+
+
+-- 3. Analysis concepts and proofs
+
+{- We say that sequence {a_n} converges to the limit L, and we write
+    lim_{n -> ∞} a_n = L, if for every positive real number ε there exists an
+    integer N (which may depend on ε) such that if n > N, then |a_n - L| < ε. -}
+
+-- * i. The formal expression of the definition
+
+-- With logical connectives and quantifiers:
+--  lim_{n -> ∞} a_n = L   <==>   ∀ε > 0. ∃N. ∀n > N. |a_n - L| < ε
+
+
+-- * ii. Introducing functions and types to simplify the definition.
+
+{- In the statement for the definition there are already some implicit types to
+  consider. We could have these explicitly in the formal definition, but for
+  clarity we give them separately:
+    a : ℕ -> ℝ        a sequence is a function
+    a n = a_n
+    ε , L : ℝ
+    N, n : ℕ
+
+  Even though we didn't specify it in class for brevity, we could also give a
+  function type to the limit operator *for sequences*:
+    lim : (ℕ -> A) -> A
+  where A is some arbitrary type, the codomain of the argument function. In this
+  case, when instantiated by applying lim to a we would have ℝ (the way we have
+  defined a's type so far).
+
+  So far, with these types, the definition can be simplified to:
+    lim a = L   <==>   ∀ε > 0. ∃N. ∀n > N. |a n - L| < ε
+
+  We could be even more precise, and say that the codomain of a is some subset
+  of the real numbers A:
+    a : ℕ -> X  ,  X ⊆ ℝ
+
+  Moreover, the type for ε could be more concrete, since we know it is positive:
+    ε : ℝ+
+  With this type in place, the condition "> 0" would not be necessary: it would
+  be encoded in the type.
+
+  There must be an N for every ε (and we are even told explicitly N could depend
+  on such an ε). We therefore introduce the following type:
+    N : ℝ+ -> ℕ
+    N ε = ...
+
+  To express points within a certain distance from a point, we introduce a
+  function for D (for "disk"):
+    D : ℝ -> ℝ+ -> 𝓟 ℝ
+    D p ε = {x | |x - p| < ε}           disk centered at p with radius ε
+
+  Let's revisit our definition so far with these functions and types:
+    lim a = L   <==>   ∀ε. ∃N. ∀n > (N ε). a n ∈ D L ε
+
+  Lastly, we can introduce the image function (see the "Basic Concepts of
+  Analysis" lecture notes):
+    I : (ℕ -> A) -> ℕ -> 𝓟 A
+    I a N = {a n | n > N}
+
+  So overall, we have simplified the definition to:
+    lim a = L   <==>   ∃N : ℝ+ -> ℕ. ∀ε : ℝ+. I a (N ε) ⊆ D L ε
+  where
+    a : ℕ -> X  ,  X ⊆ ℝ
+-}
+
+
+-- * iii. Proving a proposition
+
+-- We are given the proposition:
+--    If  lim a = L₁  and  lim b = L₂, then lim (a + b) = L₁ + L₂.
+
+{- Let's start by expressing this with logical connectives:
+    lim a = L₁  ∧  lim b = L₂   ==>   lim (a + b) = L₁ + L₂
+
+  From our simplified definition in (ii) this is equivalent to:
+    ∃N₁. ∀ε. I a (N₁ ε) ⊆ D L₁ ε  ∧  ∃N₂. ∀ε. I b (N₂ ε) ⊆ D L₂ ε
+      ==>
+    ∃N. ∀ε. I (a + b) (N ε) ⊆ D (L₁ + L₂) ε                     (3.0)
+
+  We can easily see that the image function has the following property:
+    ∀n₁. ∀n₂. n₁ ≥ n₂  ==>  I t n₁ ⊆ I t n₂                     (3.1)
+
+  Choosing
+    Ñ ε = max (N₁ ε) (N₂ ε)
+  we will have
+    ∀ε. Ñ ε ≥ N₁ ε  ∧  ∀ε. Ñ ε ≥ N₂ ε
+  ==> { by property (3.1) }
+    ∀ε. I a (Ñ ε) ⊆ I a (N₁ ε)  ∧  ∀ε. I b (Ñ ε) ⊆ I b (N₂ ε)
+  ==> { we can now move ∀ outwards }
+    ∀ε. (I a (Ñ ε) ⊆ I a (N₁ ε)  ∧  I b (Ñ ε) ⊆ I b (N₂ ε))     (3.2)
+
+  Revisiting our hypotheses
+    ∃N₁. ∀ε. I a (N₁ ε) ⊆ D L₁ ε  ∧  ∃N₂. ∀ε. I b (N₂ ε) ⊆ D L₂ ε
+  ==> { by the development for (3.2), with  Ñ ε = max (N₁ ε) (N₂ ε) }
+    ∀ε. (I a (Ñ ε) ⊆ D L₁ ε  ∧  I b (Ñ ε) ⊆ D L₂ ε)
+  ==> { definition of the limit of a sequence }
+    ∀ε. ( | a (Ñ ε) - L₁ | < ε  ∧  | b (Ñ ε) - L₂ | < ε )       (3.3)
+
+  If we re-express our final goal (3.0) given the definition of a limit to a
+  sequence, what we need to prove is:
+    ∃N. ∀ε. | (a + b) (N ε) - (L₁ + L₂) | < ε
+  <== { linearity of (+) on sequences }
+    ∃N. ∀ε. | a (N ε) - L₁ + b (N ε) - L₂ | < ε
+  <== { by the triangle inequality }
+    ∃N. ∀ε. | a (N ε) - L₁ | + | b (N ε) - L₂ | < ε
+  <== { by (3.3)  having  N ε = Ñ (ε/2) }
+
+  Q.E.D.
+
+  We have managed to find the required function N from our hypothesis:
+    N ε = max (N₁ (ε/2)) (N₂ (ε/2))
+-}
+
+
+
+-- 4. Typing a mathematical text
+
+{- If  z = g(y)  and  y = h(x)  are two functions with continuous derivatives,
+    then in the relevant range  z = g(h(x))  is a function of x and has
+    derivative  z' (x) = g'(y) * h'(x).
+-}
+
+-- Let us define the derivative operator to be
+d' :: (a -> b) -> a -> b
+d' f a = undefined
+
+-- We introduce some general types (for the purpose of type-checking alone,
+-- hence them being empty is acceptable)
+data X
+data Y
+data Z
+
+-- We could suggest
+x :: X
+y :: Y
+z :: Z
+
+g :: Y -> Z
+h :: X -> Y
+
+(·) :: Z -> Y -> Z
+
+x = undefined
+y = h x
+z = g y
+g = undefined
+h = undefined
+(·) = undefined
+
+-- However, now we will run into an issue. Namely, we cannot apply the
+-- derivative operator to 'z' - a type error arises.
+
+-- So we must backtrack and redefine the types, starting with the one causing
+-- our failure, the type for 'z' now renamed 'zz' (and so on for other symbols)
+zz :: X -> Z
+yy :: X -> Y
+
+yy = h
+zz = g . yy
+
+{- With these, the rest of the symbols and expressions have the types:
+    z'  ==>  d' zz :: X -> Z
+    g'  ==>  d' g  :: Y -> Z
+    h'  ==>  d' h  :: X -> Y
 -}
