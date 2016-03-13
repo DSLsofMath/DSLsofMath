@@ -226,10 +226,10 @@ The idea is to use conv with the δ returned by cont ε εpos:
 We obtain:
 
     todo ε εpos = (N, f)
-    where
-    (δ, (δpos, g)) = cont ε εpos
-    (N, h) = conv δ δpos
-    f n npos = g a_n (h n npos)
+      where
+        (δ, (δpos, g)) = cont ε εpos
+        (N, h) = conv δ δpos
+        f n npos = g a_n (h n npos)
 
 References
 -----------

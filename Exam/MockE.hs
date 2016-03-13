@@ -170,7 +170,7 @@ expx2 = integ (2 * expx2) 1
 
 {- Now we have defined our solution, let's compute the actual coefficients:
 
-  Let's denote the expression for second derivative's power series with
+  Let's denote the expression for the second derivative's power series with
     h = 2 * (deriv fs) - fs + Single 2 + 3 * expx2
 
   First, we have
@@ -250,30 +250,30 @@ So overall, the first three coefficients are:
 {- For convenience, let's denote the Laplace transform simply by L
   Applying the Laplace transform to both sides of the equation (to the function
   corresponding to each side):
-    L f'' s - L ((2 *) . f') s + L f s - L 2 s = L ((3*) . e . (*2)) s
+    L f'' s - L ((2 *) . f') s + L f s - L 2 s = L ((3*) . exp . (2*)) s
 
     <==> { linearity of L }
 
-    L f'' s - 2 * L f' s + L f s - 2 * L 1 s = 3 * L (e . (*2)) s
+    L f'' s - 2 * L f' s + L f s - 2 * L 1 s = 3 * L (exp . (2*)) s
 
     <==> { relations between L of derivatives of a function and L of the
            function itself, summarised by the equation:
             L f^(k) s = s^k * L f s - sum_{j=0}^{k-1} (s^(k - j -1) * f^(j) 0) }
 
     s^2 * L f s - s * f 0 - f' 0 - 2 * (s * L f s - f 0) + L f s - 2 * L 1 s
-      = 3 * L (e . (*2)) s
+      = 3 * L (exp . (2*)) s
 
     <==> { aggregate terms }
 
     (s^2 - 2 * s + 1) * L f s - s * f 0 - (f' 0 - 2 * f 0) - 2 * L 1 s
-      = 3 * L (e . (*2)) s
+      = 3 * L (exp . (2*)) s
 
     <==> { f 0 = 5 , f' 0 = 6 }
 
-    (s^2 - 2 * s + 1) * L f s - 5 * s + 4 - 2 * L 1 s = 3 * L (e . (*2)) s
+    (s^2 - 2 * s + 1) * L f s - 5 * s + 4 - 2 * L 1 s = 3 * L (exp . (2*)) s
 
-    <==> { apply the given equation: L (e . (*ß)) s = 1 / (s - ß)
-           to rhs but also to  L 1 s  since 1 = e^0 }
+    <==> { apply the given equation: L (exp . (ß*)) s = 1 / (s - ß)
+           to rhs but also to  L 1 s  since 1 = exp . (0*) }
 
     (s^2 - 2 * s + 1) * L f s - 5 * s + 4 - 2 / s = 3 / (s - 2)
 
@@ -331,7 +331,7 @@ So overall, the first three coefficients are:
     f'' t - 2 f' t + f t - 2 = 3 e^2t , f 0 = 5 , f' 0 = 6
 
   ==> { denote  h = 3 * e^(2 * t) }
-    
+
     12 * h - 2 * 6 h + 2 + 3 * h - 2 = 3 * h
 
   The equation holds, and we have correctly solved the problem with:
@@ -372,8 +372,8 @@ So overall, the first three coefficients are:
   So far, with these types, the definition can be simplified to:
     lim a = L   <==>   ∀ε > 0. ∃N. ∀n > N. |a n - L| < ε
 
-  We could be even more precise, and say that the codomain of a is some subset
-  of the real numbers A:
+  We could be even more precise, and say that the codomain of a is some subset X
+  of the real numbers:
     a : ℕ -> X  ,  X ⊆ ℝ
 
   Moreover, the type for ε could be more concrete, since we know it is positive:
@@ -385,6 +385,7 @@ So overall, the first three coefficients are:
   on such an ε). We therefore introduce the following type:
     N : ℝ+ -> ℕ
     N ε = ...
+  (This also means that we swap the order of ∀ and ∃.)
 
   To express points within a certain distance from a point, we introduce a
   function for D (for "disk"):
@@ -392,7 +393,7 @@ So overall, the first three coefficients are:
     D p ε = {x | |x - p| < ε}           disk centered at p with radius ε
 
   Let's revisit our definition so far with these functions and types:
-    lim a = L   <==>   ∀ε. ∃N. ∀n > (N ε). a n ∈ D L ε
+    lim a = L   <==>   ∃N. ∀ε. ∀n > (N ε). a n ∈ D L ε
 
   Lastly, we can introduce the image function (see the "Basic Concepts of
   Analysis" lecture notes):
@@ -446,7 +447,7 @@ So overall, the first three coefficients are:
   <== { by the triangle inequality }
     ∃N. ∀ε. | a (N ε) - L₁ | + | b (N ε) - L₂ | < ε
   <== { by (3.3)  having  N ε = Ñ (ε/2) }
-
+    True
   Q.E.D.
 
   We have managed to find the required function N from our hypothesis:
@@ -459,7 +460,7 @@ So overall, the first three coefficients are:
 
 {- If  z = g(y)  and  y = h(x)  are two functions with continuous derivatives,
     then in the relevant range  z = g(h(x))  is a function of x and has
-    derivative  z' (x) = g'(y) * h'(x).
+    derivative  z'(x) = g'(y) * h'(x).
 -}
 
 -- Let us define the derivative operator to be
