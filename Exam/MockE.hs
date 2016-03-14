@@ -30,12 +30,12 @@ data VecExpr v =
       Zero
     | Plus (VecExpr v) (VecExpr v)
     | Scale (RExpr v) (VecExpr v)
-    | Vec v
+    | VarVec v
   deriving (Eq, Show)
 
 data RExpr v =
       D Double
-    | V v
+    | VarD v
   deriving (Eq, Show)
 
 -- Note: we accidentally skipped the instantiation of the expression language as
@@ -98,9 +98,9 @@ evalV :: Vector a => (v -> Double) -> (v -> a) -> VecExpr v -> a
 evalV _ _  Zero         = zero
 evalV f g (Plus v1 v2)  = plus (evalV f g v1) (evalV f g v2)
 evalV f g (Scale t v)   = scale (look t) (evalV f g v)
-  where look (D u) = u
-        look (V ß) = f ß
-evalV f g (Vec v)       = g v
+  where look (D u)    = u
+        look (VarD ß) = f ß
+evalV f g (VarVec v)    = g v
 
 
 -- * v. Specialise evaluator and example expressions
@@ -126,18 +126,21 @@ examples :: [ VecExpr Var ]
 examples = [ Plus (Scale ß (Plus w Zero)) (Plus w (Scale (D 1) u))
            , Scale µ (Plus v (Plus v (Scale x v)))
            , Scale (D (-1.9)) (Scale ß (plusInv v)) ]
-  where ß = V "ß"
-        µ = V "µ"
-        x = V "x"
-        u = Vec "u"
-        v = Vec "v"
-        w = Vec "w"
+  where ß = VarD "ß"
+        µ = VarD "µ"
+        x = VarD "x"
+        u = VarVec "u"
+        v = VarVec "v"
+        w = VarVec "w"
 
+-- A look-up table for 'Double' variable values
 td = [ ("ß", -2), ("µ", -1.09), ("x", 8.1) ]
+-- Look-up tables for vector variable values for the different types
 t1 = [ ("u", (11, -(exp 1), 0)), ("v", (0.2, 4, -3.2)), ("w", (0, 1.1, 3.4)) ]
 t2 = [ ("u", const 3.2), ("v", (^2) . (-1)), ("w", (*2) . (+5.5)) ]
 t3 = [ ("u", RP 2.3), ("v", RP 0), ("w", RP 3.4) ]
 
+-- Necessary instance for functions with co-domain 'Double'
 instance Vector Double where
   zero = 0
   plus = (+)
@@ -233,7 +236,7 @@ So overall, the first three coefficients are:
   where
     ƒ k = f^(k)
     a k is the k-th coefficient of the power series such that
-        fs = eval . map a [0, 1, .. ]
+        f = (eval . map a) [0, 1, ... ]
 
   With this, we would immediately have:
     a 0 = 5
@@ -506,3 +509,17 @@ zz = g . yy
     g'  ==>  d' g  :: Y -> Z
     h'  ==>  d' h  :: X -> Y
 -}
+
+-- Note that we can check the type of the expressions we can extract from the
+-- text do in fact type-check (use the interpreter to check this):
+zz' = d' zz
+g'  = d' g
+h'  = d' h
+
+gy'   = g' . yy         -- :: X -> Z
+gy'x  = (g' . yy) x     -- :: Z
+gy'x2 = g' (yy x)       -- :: Z
+  -- equivalent to the above expression
+
+h'x   = h' x                -- :: Y
+zz'x  = g' (yy x) · h' x    -- :: Z
