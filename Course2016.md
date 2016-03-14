@@ -100,7 +100,6 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](Lectures/slides01.pdf).
 - [Lecture 02, Logic and Functional Programming, Part I](Lectures/Lecture02.lhs).
 - [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).
-- [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).
 - [Lecture 04, Proofs and Programs in Mathematics](Lectures/Lecture04.lhs).
 - [Lecture 05, Types in Mathematics](Lectures/Lecture05.lhs).
 - [Lecture 06, Types in Mathematics, Part II](Lectures/Lecture06.lhs).
