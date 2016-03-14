@@ -35,8 +35,9 @@ next course instance.
 In parallell with the course development Patrik Jansson is supervising
 a group of five BSc students on a related project with the title:
 ["Matematikens domänspecifika språk (DSLsofMath) för andra
-kurser"](https://github.com/DSLsofMath/DSLsofMath/BScProj).
-
+kurser"](https://github.com/DSLsofMath/BScProj). So far there is a
+short tutorial for [Complex
+Numbers](https://github.com/DSLsofMath/BScProj/blob/master/Tutorial/ComplexNumbers.lhs).
 
 
 ## 2015-11-15:
