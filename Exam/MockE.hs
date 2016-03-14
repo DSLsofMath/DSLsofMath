@@ -509,3 +509,17 @@ zz = g . yy
     g'  ==>  d' g  :: Y -> Z
     h'  ==>  d' h  :: X -> Y
 -}
+
+-- Note that we can check the type of the expressions we can extract from the
+-- text do in fact type-check (use the interpreter to check this):
+zz' = d' zz
+g'  = d' g
+h'  = d' h
+
+gy'   = g' . yy         -- :: X -> Z
+gy'x  = (g' . yy) x     -- :: Z
+gy'x2 = g' (yy x)       -- :: Z
+  -- equivalent to the above expression
+
+h'x   = h' x                -- :: Y
+zz'x  = g' (yy x) · h' x    -- :: Z
