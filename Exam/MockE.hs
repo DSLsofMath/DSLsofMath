@@ -10,6 +10,22 @@ import qualified Lecture10 as PS
   These solutions are provided to aid you in studying and as guidance. In the
   exam clear, complete answers have to be provided, with justification and
   explicit explanation wherever necessary.
+
+
+  KEEP IN MIND:
+
+  * When giving instances for an exercise such as (1) on this exam, do so for
+    types which are structurally different or define the instances operationally
+    different (cfr: the instance for 'RPlus').
+    For instance, giving an instance for vectors in a 3-dimenstional space (ie:
+    with 3 components à la ℝ^3) and another one for vectors with 5 components
+    and similarly defined vector space operations (the usual addition and
+    scaling functions) alone would not be considered as *two different*
+    instances.
+  * Don't forget to make sure the operations you define respect the given laws!
+  * In the exam, make sure you add appropriate commentary (when necessary!) and
+    that the included work towards an answer or solution is as clear as possible
+    (such as with the differential equation problem here).
 -}
 
 
