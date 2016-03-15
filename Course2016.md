@@ -4,14 +4,14 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
-2016-03-14: A few general [remarks](Exam/MockE.hs) on the exam have
+2016-03-14: A few general [remarks](Exam/2016-Practice/MockE.hs) on the exam have
 been added (along with the solutions to the practice exam).
 
 2016-03-10: The example solutions to the problems of the practice exam
-have been updated! [hs](Exam/MockE.hs)
+have been updated! [hs](Exam/2016-Practice/MockE.hs)
 
 2016-03-09: Example solutions to the problems of the practice exam we
-went over today are up! [hs](Exam/MockE.hs)
+went over today are up! [hs](Exam/2016-Practice/MockE.hs)
 
 2016-03-09: Update on a question posed today - a mathematics handbook
 would be acceptable as the textbook you bring to the exam.
@@ -26,8 +26,8 @@ lecture notes!!
 2016-03-05: Make sure to work through the practice exam before the
 exercise session on Wednesday.
 
-2016-03-04: Practice exam available! [pdf](Exam/PracticeExam.pdf)
-[lhs](Exam/PracticeExam.lhs).  Solutions will be discussed in the
+2016-03-04: Practice exam available! [pdf](Exam/2016-Practice/PracticeExam.pdf)
+[lhs](Exam/2016-Practice/PracticeExam.lhs).  Solutions will be discussed in the
 exercises session on 2016-03-09.
 
 2016-02-19: Assignment 2 has been posted!
