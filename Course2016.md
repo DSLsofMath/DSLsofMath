@@ -4,6 +4,9 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-03-15: The main written exam of the course
+[is now avaliable](Exam/2016-03/).
+
 2016-03-14: A few general [remarks](Exam/2016-Practice/MockE.hs) on the exam have
 been added (along with the solutions to the practice exam).
 
