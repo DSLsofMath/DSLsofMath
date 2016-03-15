@@ -134,8 +134,10 @@ commInf x y =  x ∧ y == y ∧ x
 abs1 x y =  x ∨ (x ∧ y) == x
 abs2 x y =  x ∧ (x ∨ y) == x
 
-testAll :: (Show a, Eq a, Arbitrary a, Lattice a) => a -> IO ()
-testAll (dummy :: a) = do
+data Dummy a = Dummy
+
+testAll :: (Show a, Eq a, Arbitrary a, Lattice a) => Dummy a -> IO ()
+testAll (Dummy :: Dummy a) = do
   quickCheck (assocSup ::  a -> a -> a -> Bool)
   quickCheck (assocInf ::  a -> a -> a -> Bool)
   quickCheck (commSup  ::  a -> a -> Bool)
@@ -143,7 +145,7 @@ testAll (dummy :: a) = do
   quickCheck (abs1     ::  a -> a -> Bool)
   quickCheck (abs2     ::  a -> a -> Bool)
 
-tests = do testAll (True :: Bool)
-           testAll (1 :: Integer)
-           testAll (Op True :: Op Bool)
-           testAll (Op 1 :: Op Integer)
+tests = do testAll (Dummy :: Dummy Bool)
+           testAll (Dummy :: Dummy Integer)
+           testAll (Dummy :: Dummy (Op Bool))
+           testAll (Dummy :: Dummy (Op Integer))
