@@ -34,8 +34,8 @@ ff :: (X -> Y) -> (X -> Y) -> X -> Y
 
 a, b :: X
 
--- ∫-d seems to bind x, thus in Haskell it makes sense to use a
--- function argument. Thus we get a 3-argument operator `int`:
+-- ∫-d seems to bind x, in Haskell it makes sense to use a function
+-- to bind a variable. Thus we get a 3-argument operator `int`:
 
 int :: X -> X -> (X -> Y) -> Y
 
