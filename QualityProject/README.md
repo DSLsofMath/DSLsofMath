@@ -1,12 +1,12 @@
-## 2016-03-14:
+## 2016-03-16:
 
 The DSLsofMath course is coming to its end with the final written exam
-tomorrow. The work during study period 3 (Jan-Mar) has been focused on
-developing course material in parallell with the actual teaching. The
-open course material is collected in [this
-repository](https://github.com/DSLsofMath/DSLsofMath) and the [2016
-course instance homepage](../Course2016.md) contains links to most of
-it. All in all we have produced
+yesterday (around 28 students). The work during study period 3
+(Jan-Mar) has been focused on developing course material in parallell
+with the actual teaching. The open course material is collected in
+[this repository](https://github.com/DSLsofMath/DSLsofMath) and the
+[2016 course instance homepage](../Course2016.md) contains links to
+most of it. All in all we (mainly Cezar Ionescu) have produced
 
 * notes from 14 lectures:
   [Intro](Lectures/Lecture01.lhs),
@@ -26,6 +26,10 @@ it. All in all we have produced
 * seven sets of [weekly exercises](Exercises/) and partial solutions (including a [practice exam](Exam/PracticeExam.pdf) with [partial example solutions](Exam/MockE.hs))
 * and two compulsory hand-in assignments [Assignment 1](Assignments/Assignment01.lhs) and [Assignment 2](Assignments/Assignment02.lhs).
 
+Upcoming activities include exam correction, course evaluation and
+data collection (of earlier course results) to enable some
+"measurement" of the results.
+
 We aim to collect and refine the material during the autumn of 2016
 with the aim of producing a book about "DSLs of Math" in time for the
 next course instance.
@@ -38,7 +42,6 @@ a group of five BSc students on a related project with the title:
 kurser"](https://github.com/DSLsofMath/BScProj). So far there is a
 short tutorial for [Complex
 Numbers](https://github.com/DSLsofMath/BScProj/blob/master/Tutorial/ComplexNumbers.lhs).
-
 
 ## 2015-11-15:
 
