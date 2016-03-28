@@ -1,5 +1,3 @@
-> {-# LANGUAGE OverloadedStrings #-}
-
 Lecture 01: Introduction
 ========================
 
