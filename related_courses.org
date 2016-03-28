@@ -154,3 +154,24 @@
 ** Concepts
 
    --
+
+
+* Topics covered
+
+  From course plan:
+
+  - functional programming
+  - proofs: lectures 2, 3, 4
+  - program calculation: yes, lots (lecture 6)
+  - linear algebra as an example
+  - category theory as an example: (lecture 9: monoids, homomorphisms...)
+  - mean value theorem
+  - Taylor formulas (lecture 11, 12
+  - DSL of power series: (lecture 10, 11)
+  - linear algebra: eigenvalues
+  - linear algebra: optimisation (lecture 11)
+
+  - Logic: lectures 1, 2, 3, 4,
+  - Laplace transform (lecture 12)
+
+  - limits, continuity: lecture 4, 5
