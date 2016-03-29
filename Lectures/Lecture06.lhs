@@ -1,7 +1,7 @@
 > {-# LANGUAGE FlexibleInstances #-}
 
-Types in Mathematics (Part II)
-==============================
+Lecture 6: Types in Mathematics (Part II)
+=========================================
 
 2. Type classes
 ---------------
