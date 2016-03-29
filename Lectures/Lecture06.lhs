@@ -170,35 +170,35 @@ For example, let us derive the derive function for Exp e:
 
      eval (derive (Exp e))
 
-=  {specification of derive above}
+  =  {specification of derive above}
 
      D (eval (Exp e))
 
-=  {def eval}
+  =  {def eval}
 
      D (exp (eval e))
 
-=  {def exp for functions}
+  =  {def exp for functions}
 
      D (exp . eval e)
 
-=  {chain rule}
+  =  {chain rule}
 
      (D exp . eval e) * D (eval e)
 
-=  {D rule for exp}
+  =  {D rule for exp}
 
      (exp . eval e) * D (eval e)
 
-=  {specification of derive}
+  =  {specification of derive}
 
      (exp . eval e) * (eval (derive e))
 
-=  {def. of eval for Exp}
+  =  {def. of eval for Exp}
 
      (eval (Exp e)) * (eval (derive e))
 
-=  {def. of eval for :*:}
+  =  {def. of eval for :*:}
 
      eval (Exp e :*: derive e)
 
