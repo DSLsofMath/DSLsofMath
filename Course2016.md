@@ -4,6 +4,9 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-03-29: Exam correction almost done. The preliminary results
+[are now avaliable](Exam/2016-03/).
+
 2016-03-15: The main written exam of the course
 [is now avaliable](Exam/2016-03/) including example solutions.
 
