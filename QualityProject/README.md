@@ -4,11 +4,11 @@
 
 | Person | Hours |
 | ------ | -----:|
-| Cezar  |       |
-| Patrik | 80h   |
-| Irene  | 98h   |
-| Victor | 18h   |
-| Total  |       |
+| Cezar  | 240h  |
+| Patrik |  80h  |
+| Irene  |  98h  |
+| Victor |  18h  |
+| Total  | 436h  |
 
 Adam Sandberg Eriksson also helped a bit but his hours are paid by the
 DSLsofMath pedagogical project.
