@@ -7,6 +7,7 @@
 | Cezar  |       |
 | Patrik | 80h   |
 | Irene  | 98h   |
+| Victor | 18h   |
 | Total  |       |
 
 Adam Sandberg Eriksson also helped a bit but his hours are paid by the
