@@ -4,6 +4,8 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-04-16: The final course evaluation meeting will by on Friday 2016-05-13 at 16.00. (Det det avslutande kursnämndsmötet.)
+
 2016-03-29: Exam correction almost done. The preliminary results
 [are now avaliable](Exam/2016-03/).
 
@@ -12,12 +14,6 @@ News
 
 2016-03-14: A few general [remarks](Exam/2016-Practice/MockE.hs) on the exam have
 been added (along with the solutions to the practice exam).
-
-2016-03-10: The example solutions to the problems of the practice exam
-have been updated! [hs](Exam/2016-Practice/MockE.hs)
-
-2016-03-09: Example solutions to the problems of the practice exam we
-went over today are up! [hs](Exam/2016-Practice/MockE.hs)
 
 2016-03-09: Update on a question posed today - a mathematics handbook
 would be acceptable as the textbook you bring to the exam.
@@ -29,24 +25,16 @@ after resubmissions are graded.  Example solutions to the first two
 questions will be posted this evening.  OBS! : Be sure to read the
 lecture notes!!
 
-2016-03-05: Make sure to work through the practice exam before the
-exercise session on Wednesday.
-
 2016-03-04: Practice exam available! [pdf](Exam/2016-Practice/PracticeExam.pdf)
 [lhs](Exam/2016-Practice/PracticeExam.lhs).  Solutions will be discussed in the
-exercises session on 2016-03-09.
+exercises session on 2016-03-09. (Make sure to work through the practice exam before the
+exercise session.)
 
 2016-02-19: Assignment 2 has been posted!
 
-2016-02-12: Assignment 2 will be announced either Friday,  February 19 or
-Monday, February 22.  It will be due Tuesday, 1st of March, 23:59.  The
+2016-02-12: Assignment 2 will be due Tuesday, 1st of March, 23:59.  The
 grading will take place Thursday, 3rd of March, during the exercises
 session, following the same protocol as for Assignment 1.
-
-2016-01-25: The date of the exam has been changed to 2016-03-15, 14:00.
-
-2016-01-25: Due to administrative reasons, we are down to one TA,
-Irene.  Thanks Victor for your contributions to the course!
 
 2016-01-22: First assignment has been posted!
 
