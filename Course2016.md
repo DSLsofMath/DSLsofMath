@@ -4,7 +4,7 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
-2016-04-16: The final course evaluation meeting will by on Friday 2016-05-13 at 16.00. (Det avslutande kursnämndsmötet är planerat till 2016-05-13 kl. 16.00.)
+2016-04-16: The final course evaluation meeting will by on Friday 2016-04-29 at 15.00. (Det avslutande kursnämndsmötet är planerat till 2016-04-29 kl. 15.00.)
 
 2016-03-29: Exam correction almost done. The preliminary results
 [are now avaliable](Exam/2016-03/).
