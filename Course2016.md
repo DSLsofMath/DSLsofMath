@@ -4,7 +4,7 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
-2016-04-16: The final course evaluation meeting will by on Friday 2016-04-29 at 15.00. (Det avslutande kursnämndsmötet är planerat till 2016-04-29 kl. 15.00.)
+2016-04-19: The final course evaluation meeting will by on Friday 2016-04-29 at 15.15. (Mötet äger rum fredag den 29 april kl 15.15-16.15 i mötesrum AoS Origo Koppen, Fysikhuset).
 
 2016-03-29: Exam correction almost done. The preliminary results
 [are now avaliable](Exam/2016-03/).
@@ -203,3 +203,24 @@ Some important references:
   appeared as an [AIM report](http://web.mit.edu/wisdom/www/AIM-2005-003.pdf).
 
 More references will be added in due course.
+
+Evaluation
+----------
+
+(Invitation from Gelena Andreasian.)
+
+The final course evaluation meeting will by on Friday 2016-04-29 at 15.15.
+
+(Mötet äger rum fredag den 29 april kl 15.15-16.15 i mötesrum AoS Origo Koppen. Fysikhuset, ingången från Kemigården. I entréhallen gå in i korridoren till höger. Mötesrummet AoS Origo Koppen ligger på korridorens vänstra sida).
+
+
+Invited participants:
+
+* Daniel Chai (student)
+* Fredrik Johansson (student)
+* Wendy Mo (student)
+* Patrik Jansson (Examiner)
+* Cezar Ionescu (Teacher)
+* Irene Lobo Valbuena (TA)
+* SND <dns@dtek.se>
+* Roger Johansson (PA)
