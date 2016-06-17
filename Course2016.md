@@ -4,6 +4,8 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-06-17: Course summary [available](overview2016.md)
+
 2016-03-15: The main written exam of the course
 [is now avaliable](Exam/2016-03/) including example solutions.
 
