@@ -5,7 +5,9 @@ News
 ----
 
 
-2016-06-17: Course summary [available](overview2016.md)
+2016-06-17: Course evalution notes [are available](2016/course_eval_notes.pdf) (in Swedish).
+
+2016-06-17: Course summary [available](overview2016.md).
 
 2016-04-19: The final course evaluation meeting will by on Friday 2016-04-29 at 15.15. (Mötet äger rum fredag den 29 april kl 15.15-16.15 i mötesrum AoS Origo Koppen, Fysikhuset).
 
