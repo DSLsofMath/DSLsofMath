@@ -1,3 +1,47 @@
+# DSLsofMath course report 2016
+
+## Resources spent
+
+| Person | Hours |
+| ------ | -----:|
+| Cezar  | 240h  |
+| Patrik |  80h  |
+| Irene  |  98h  |
+| Victor |  18h  |
+| Total  | 436h  |
+
+Adam Sandberg Eriksson also helped a bit but his hours are paid by the
+DSLsofMath pedagogical project.
+
+## Results
+
+Exam results:
+
+| Grade    | Percentage | # students |
+| --------:| ----------:| ----------:|
+|  5 (VG)  |        24% |          6 |
+|  4 (G)   |        24% |          6 |
+|  3 (G)   |        20% |          5 |
+|  U (U)   |        32% |          8 |
+| Total    |       100% |         25 |
+
+There was one 100pts thesis (impressive!), and there was one with 0pts
+(just one line of text). The median is 53pts and the average
+is 55.5pts.
+
+Assignments:
+
+| Grade    | Percentage | # students |
+| --------:| ----------:| ----------:|
+| 5  (VG)  |       36%  |         10 |
+| 4  (G)   |       50%  |         14 |
+| 3  (G)   |       11%  |          3 |
+| U  (U)   |        4%  |          1 |
+| Total    |      100%  |         28 |
+
+The assignments will be on a Pass/Fail grade scale from 2017.
+[DAT326 course plan](https://www.student.chalmers.se/sp/course?course_id=24230)
+
 ## 2016-03-16:
 
 The DSLsofMath course is coming to its end with the final written exam

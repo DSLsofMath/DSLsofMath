@@ -4,19 +4,19 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+
 2016-06-17: Course summary [available](overview2016.md)
+
+2016-04-19: The final course evaluation meeting will by on Friday 2016-04-29 at 15.15. (Mötet äger rum fredag den 29 april kl 15.15-16.15 i mötesrum AoS Origo Koppen, Fysikhuset).
+
+2016-03-29: Exam correction almost done. The preliminary results
+[are now avaliable](Exam/2016-03/).
 
 2016-03-15: The main written exam of the course
 [is now avaliable](Exam/2016-03/) including example solutions.
 
 2016-03-14: A few general [remarks](Exam/2016-Practice/MockE.hs) on the exam have
 been added (along with the solutions to the practice exam).
-
-2016-03-10: The example solutions to the problems of the practice exam
-have been updated! [hs](Exam/2016-Practice/MockE.hs)
-
-2016-03-09: Example solutions to the problems of the practice exam we
-went over today are up! [hs](Exam/2016-Practice/MockE.hs)
 
 2016-03-09: Update on a question posed today - a mathematics handbook
 would be acceptable as the textbook you bring to the exam.
@@ -28,24 +28,16 @@ after resubmissions are graded.  Example solutions to the first two
 questions will be posted this evening.  OBS! : Be sure to read the
 lecture notes!!
 
-2016-03-05: Make sure to work through the practice exam before the
-exercise session on Wednesday.
-
 2016-03-04: Practice exam available! [pdf](Exam/2016-Practice/PracticeExam.pdf)
 [lhs](Exam/2016-Practice/PracticeExam.lhs).  Solutions will be discussed in the
-exercises session on 2016-03-09.
+exercises session on 2016-03-09. (Make sure to work through the practice exam before the
+exercise session.)
 
 2016-02-19: Assignment 2 has been posted!
 
-2016-02-12: Assignment 2 will be announced either Friday,  February 19 or
-Monday, February 22.  It will be due Tuesday, 1st of March, 23:59.  The
+2016-02-12: Assignment 2 will be due Tuesday, 1st of March, 23:59.  The
 grading will take place Thursday, 3rd of March, during the exercises
 session, following the same protocol as for Assignment 1.
-
-2016-01-25: The date of the exam has been changed to 2016-03-15, 14:00.
-
-2016-01-25: Due to administrative reasons, we are down to one TA,
-Irene.  Thanks Victor for your contributions to the course!
 
 2016-01-22: First assignment has been posted!
 
@@ -214,3 +206,24 @@ Some important references:
   appeared as an [AIM report](http://web.mit.edu/wisdom/www/AIM-2005-003.pdf).
 
 More references will be added in due course.
+
+Evaluation
+----------
+
+(Invitation from Gelena Andreasian.)
+
+The final course evaluation meeting will by on Friday 2016-04-29 at 15.15.
+
+(Mötet äger rum fredag den 29 april kl 15.15-16.15 i mötesrum AoS Origo Koppen. Fysikhuset, ingången från Kemigården. I entréhallen gå in i korridoren till höger. Mötesrummet AoS Origo Koppen ligger på korridorens vänstra sida).
+
+
+Invited participants:
+
+* Daniel Chai (student)
+* Fredrik Johansson (student)
+* Wendy Mo (student)
+* Patrik Jansson (Examiner)
+* Cezar Ionescu (Teacher)
+* Irene Lobo Valbuena (TA)
+* SND <dns@dtek.se>
+* Roger Johansson (PA)
