@@ -4,6 +4,17 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+2016-08-12: Review session and exam coming up
+   As the re-exam for "DSLs of Maths" will take place on the 23rd of August (Tuesday in a week), I invite you (especially those who need to take the re-exam) to a review session.  We will focus on the subjects of the mock exam and those of the real exam, since the re-exam will be similar.
+
+   When:  2016-08-19 (Friday) 10:00--12:00
+   Where: [ES51](http://maps.chalmers.se/#abb49f72-9df3-42c4-9298-788edba3090c) (in [Linsen](http://maps.chalmers.se/#a42ded06-d12f-40bb-900a-b4388e80cbac), [EDIT-building](http://maps.chalmers.se/#3d288de3-e2dd-49e1-bbed-e62178e60a0e))
+
+   I look forward to seeing (at least some of) you there!
+
+   Best wishes,
+
+   Cezar
 
 2016-06-17: Course evalution notes [are available](2016/course_eval_notes.pdf) (in Swedish).
 

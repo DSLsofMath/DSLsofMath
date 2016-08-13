@@ -26,6 +26,7 @@ at the [IFIP WG 2.1 meeting #73](http://www.cse.chalmers.se/~patrikj/talks/WG2.1
 * 2015-10-08: A [BScProj proposal](BScProj/DSLsofMath_andra_kurser.md) is available (in Swedish)
 * 2015-09-01: [Adam](http://adam.sandbergericsson.se/) starts working in the project as "amanuens" (student research assistant, 20%).
     * See [related courses](related_courses.org) and [exploration](exploration/) for some of his work.
+* [Chalmers project database entry](https://research.chalmers.se/en/project/?id=7038)
 
 # Curriculum placement
 
