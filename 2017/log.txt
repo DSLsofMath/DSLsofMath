@@ -1,0 +1,15 @@
+2016-08-24: Planning for the 2017 instance of the DSLsofMath course
+
+L1-L4: redo:
+
+* L1: Start with small language for arithmetic expressions (known to local students from the Intro FP course) + evaluator. Still with the aim to explain syntax, semantics and Haskell.
+* L2(+3): propositional calculus + "german" quantifiers
+* L4: try to include parts of L14
+* L5: Good
+* L6+L9: Core
+* L10-13: Core applications
+* L7+8 (guest lectures) will probably move to L11-12
+
+TODO: introduce some (probability theory / statistics / discrete math)
+  connecting to the most recent math course for the CSE BSc students:
+  J. Milton, J. Arnold Introduction to Probability and Statistics McGraw-Hill
