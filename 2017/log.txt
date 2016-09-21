@@ -1,3 +1,8 @@
+2016-09-21: Staring on a lecture setup for 2017
+
+  ../L/
+
+
 2016-08-24: Planning for the 2017 instance of the DSLsofMath course
 
 L1-L4: redo:
