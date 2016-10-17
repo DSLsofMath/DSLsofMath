@@ -11,12 +11,14 @@ A quality project funded by Chalmers with 260kkr/y for 2014 and 2015 resulting i
 
 ## Course schedule
 
-Source: [TimeEdit](https://se.timeedit.net/web/chalmers/db1/public/ri157175X33Z06Q5Z36g0Y10y5016Y37Q09gQY5Q55767.html)
+* Mo 10-12: lecture in ?
+* Mo 15-17: lecture in ?
+* We 13-15: exercise class in ?
+* Fr 13-15: exercise class in ?
 
-* Mo 10-12: lecture in ED
-* We 13-15: exercise class in E-studion
-* Th 10-12: exercise class in E-studion
-* Fr 13-15: lecture in EB
+Source:
+
+([TimeEdit for the 2016 instance.](https://se.timeedit.net/web/chalmers/db1/public/ri157175X33Z06Q5Z36g0Y10y5016Y37Q09gQY5Q55767.html))
 
 ## More about the project
 [A paper has been accepted for the proceedings of TFPIE](https://github.com/DSLsofMath/tfpie2015).
