@@ -98,3 +98,84 @@ and-intro (and-elim-right pq) (and-elim-left pq) : Q /\ P
 thus
 
 \pq -> (the above) : P /\ Q -> Q /\ P
+
+================================================================
+
+  A_1 ... A_n
+  -----------
+       B
+
+<=>
+
+  Impl (A_1/\.../\A_n) B is taut
+
+<=>
+
+  Exists f : A_1 -> ... -> A_n -> B
+  built from proof rules
+
+<=>
+
+  There is a natural deduction style proof (tree-like structure)
+
+----------------------------------------------------------------
+
+Next: Implication (Impl p q   or   p => q)
+
+   P
+  ---
+   .
+   .
+   .
+  ---
+   Q
+ ------
+ P => Q
+
+in the functional model:
+
+  impl-intro : (P->Q) -> (P=>Q)
+
+----
+
+  P => Q    P
+  -----------
+       Q
+
+<=>
+
+  (P => Q /\ P) => Q  is a taut
+
+<=>
+
+  intro-elim : (P=>Q) -> P -> Q
+
+----------------
+
+Negation
+
+Elimination
+
+not (not P)
+  -----------  -- negation elimination
+      P
+
+<=>
+
+  --P => P   is a taut
+
+
+Introduction
+
+  P ... Q /\ -Q
+
+  -------------  -- negation introduction
+        -P
+
+<=>
+
+  (P => Q /\ -Q) => -P  is taut
+
+<=>
+
+  not-intro : (P -> Q /\ -Q) -> -P
