@@ -25,12 +25,12 @@ Course team (TBD)
 - Teacher & Examiner: Patrik Jansson (patrikj AT)
 - Teaching assistant: Irene Lobo Valbuena (lobo AT)
 
-Schedule (TBD)
+Schedule (prel.)
 --------
 
-- Lectures Mondays 10-12 (in ?ED?) and Fridays 13-15 (in ?EB?)
+- Lectures Mondays 10-12 (in EB) and Mondays 15-17 (in EF)
 
-- Exercises Wednesdays 13-15 and Thursdays 10-12 (in ?Ft-4011?)
+- Exercises Wednesdays 13-15 and Thursdays 10-12 (in Ft-4011)
 
 - Guest lectures (TBD)
 
@@ -59,12 +59,12 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 04, Proofs and Programs in Mathematics](Lectures/Lecture04.lhs).
 - [Lecture 05, Types in Mathematics](Lectures/Lecture05.lhs).
 - [Lecture 06, Types in Mathematics, Part II](Lectures/Lecture06.lhs).
-- [Lecture 07, Domain Specific Languages: Signal Shape](Lectures/07/README.md).
-- [Lecture 08, An embedded DSL for Chebyshev interpolation](Lectures/Lecture08.pdf).
-- [Lecture 09, Algebraic Structures and DSLs](Lectures/Lecture09.lhs). Some associated code is also [available](code/).
-- [Lecture 10, Polynomials and Power Series](Lectures/Lecture10.lhs).
-- [Lecture 11, Power Series and Differential Equations](Lectures/Lecture11.lhs).
-- [Lecture 12, The Exponential Function, Taylor Series](Lectures/Lecture12.lhs).
+- [Lecture 07, Algebraic Structures and DSLs](Lectures/Lecture09.lhs). Some associated code is also [available](code/).
+- [Lecture 08, Polynomials and Power Series](Lectures/Lecture10.lhs).
+- [Lecture 09, Power Series and Differential Equations](Lectures/Lecture11.lhs).
+- [Lecture 10, The Exponential Function, Taylor Series](Lectures/Lecture12.lhs).
+- Lecture 11, TBD: Probability theory or linear algebra (CeIo).
+- Lecture 12, TBD: Probability theory or linear algebra (CeIo).
 - [Lecture 13, The Laplace Transform](Lectures/Lecture13.lhs).
 - [Lecture 14, Basic Concepts of Analysis](Lectures/BasicConcepts.lhs).
 
