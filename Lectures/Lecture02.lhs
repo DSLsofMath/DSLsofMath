@@ -97,20 +97,19 @@ B. **Implication**
 <     k. B       (→-Elim: i, j)
 
 <     ...
-<     i.1 A      -- assume A
-<     ------
-<     i.2 ...
+<     i.   | A      -- assume A
+<          ---
+<          | ...
+<     j.   | B
 <     ...
-<     i.j B
-<     i+1. ...
-<     ...
-<     k.  A → B  (→-Intro: i)
+<     k.  A → B  (→-Intro: i-j)
 
  > Example
 
-<     1.1 P ∧ Q
-<     1.2 P          (∧-ElimL: 1.1)
-<     2. P ∧ Q → P   (→-Intro: 1)
+<     1. | P ∧ Q
+<         ------
+<     2. | P       (∧-ElimL: 1)
+<     3. P ∧ Q → P   (→-Intro: 1-2)
 
   2) Modelling →-Elim and →-Intro as functions:
 
@@ -119,7 +118,7 @@ B. **Implication**
 
    > Example:
 
-<            → Intro ∧-ElimL : P ∧ Q → Q
+<            →-Intro ∧-ElimL : P ∧ Q → P
 
   3) Methods of proof for implication
 
@@ -141,21 +140,22 @@ D. **Negation**
 <          j.  P       (¬-Elim: i)
 
 <          ...
-<          i.1 P
+<          i.   | P
+<               ----
+<               | ...
+<          j.   | Q ∧ ¬ Q
 <          ...
-<          i.m Q ∧ ¬ Q
-<          ...
-<          j. ¬ P      (¬-Intro: i)
+<          k. ¬ P      (¬-Intro: i-j)
            
    Example:
 
    1. Q ∧ ¬ Q
    ------------
-   2.1 ¬ P
-   ------------
-   2.2  Q ∧ ¬ Q     (Repeat 1)
-   3. ¬ ¬ P         (¬-Intro: 2)
-   4. P             (¬-Elim: 3)
+   2.   | ¬ P
+        -------
+   3.   | Q ∧ ¬ Q     (Repeat 1)
+   4. ¬ ¬ P           (¬-Intro: 2-3)
+   5. P               (¬-Elim: 4)
 
    2) Modelling ¬-Intro and ¬-Elim with functions:
 
