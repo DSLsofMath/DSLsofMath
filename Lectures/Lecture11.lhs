@@ -258,8 +258,6 @@ and so on.  Therefore, we can also give an instance declaration for
 >   sin fs   =  integ (cos fs * deriv fs)  (sin (val fs))
 >   cos fs   =  integ (-sin fs * deriv fs) (cos (val fs))
 
-We could
-
 Exercise: complete this instance declaration.
 
 We now have a complete language for manipulating formal power series,
