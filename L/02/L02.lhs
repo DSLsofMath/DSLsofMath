@@ -179,3 +179,21 @@ Introduction
 <=>
 
   not-intro : (P -> Q /\ -Q) -> -P
+
+----------------------------------------------------------------
+
+New notation (with bars on the left for sub-proofs)
+
+See updates in ../../Lectures/Lecture02.lhs
+
+
+
+
+Reference for DV students
+* https://courses.csail.mit.edu/6.042/spring16/mcs.pdf
+* 980 pages!
+* http://www.cse.chalmers.se/edu/course/DIT980/book.html
+
+Reference for D student
+* Johan Jonasson & Stefan Lemurell: "Algebra och diskret matematik", 2:a upplagan, Studentlitteratur, Lund, 2013.
+* very little about proofs and logic
