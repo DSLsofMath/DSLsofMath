@@ -19,9 +19,9 @@ We can write the definition more formally:
 
 < p limit point of X  ⟺   ∀ ε > 0 ∃ q ∈ X (q ≠ p ∧ |q - p| < ε)
 
-< q : ℝ+ → X - {p}
+< q : ℝ_{> 0} → X - {p}
 
-< D : ℝ → ℝ+ → 𝓟 ℝ
+< D : ℝ → ℝ_{> 0} → 𝓟 ℝ
 < D a ε = {x | |x - a| < ε}
 
 < q ε ∈ D p ε
