@@ -93,7 +93,7 @@ Then, for any `x ∈ X - {p}`, we have
 
 < x ∉ D p ε
 
-2.  The limit of a sequence
+2. The limit of a sequence
 ---------------------------
 
 *Definition* [@adams2010calculus, page 498]:
@@ -154,7 +154,7 @@ Therefore, for any `ε > 0`
 Therefore, for any `ε > 0`, `0 ≤ |L₁ - L₂| < ε`, therefore `|L₁ - L₂|
 = 0`, and so `L₁ =  L₂`.
 
-3.  The limit of a function
+3. The limit of a function
 ---------------------------
 
 *Definition* [@adams2010calculus, page 88]:
