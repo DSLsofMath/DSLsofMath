@@ -1,15 +1,14 @@
-# Matematikens domänspecifika språk [DAT325](https://student.portal.chalmers.se/sv/chalmersstudier/programinformation/Sidor/SokProgramutbudet.aspx?course_id=24179&parsergrp=2) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
-(Pres. for TM3, Må 2015-11-16 av Patrik Jansson.)
+# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=24230) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+(Pres. for TM3, Må 2016-11-14 av Patrik Jansson.)
 
 * Patrik Jansson, forskare & lärare i funktionell prog.-gruppen
     * avd. för programvaruteknik, inst. för D&IT
-* Kursansvarig: Cezar Ionescu, docent i "Data Science" i Oxford.
 
 Presentera klassiska matematiska ämnen från ett datavetenskapligt perspektiv:
 
 * att tydligt beskriva de begrepp som introduceras,
 * vara uppmärksam på syntax och typer,
-* att bygga domänspecifika språk för: linjär algebra, lite kategoriteori, polynom och potensserier, transformer
+* att bygga domänspecifika språk för: algebra, funktioner, derivator, polynom och potensserier, transformer
 * att implementera (Haskell-)program för dessa områden (och därigenom nå en djupare förståelse)
 
 Kursen är tänkt att ge en fördjupad matematisk förståelse för
@@ -74,7 +73,7 @@ Exempel:
 * datum: "2015-11-18", "tredje onsdagen i oktober", "nästa lördag"
 * excel-formler: "SUM(A1:A9)", "RIGHT(LEFT(C7,4),2)", "365 * 24 * 60 * 60"
 * integraler: [Behöver ritas!]
-
+    * (notera var variablerna binds)
 
 # Andra kurser
 
@@ -86,7 +85,7 @@ Relation till de övriga kurserna som presenteras + kandidatarbete:
 | Partiella differentialekvationer   | DSL: [FEniCS](http://fenicsproject.org/) (Anders Logg) |
 | Algebra                            | [Algebra of Programming](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.AOPA) |
 | Databaser                          | SQL, relationsalgebra |
-| Kandidatarbete om DSLsofMath       | [Jag handleder!](https://github.com/DSLsofMath/DSLsofMath/blob/master/BScProj/DSLsofMath_andra_kurser.md) |
+| Kandidatarbete om DSLsofMath       | [Jag handleder!](https://github.com/DSLsofMath/BScProj2017/blob/master/DSLsofMath_andra_kurser.md) |
 
 # Förkunskaper
 
