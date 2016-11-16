@@ -34,14 +34,14 @@ at the [IFIP WG 2.1 meeting #73](http://www.cse.chalmers.se/~patrikj/talks/WG2.1
 
 # Curriculum placement
 
-* [Chalmers student portal](https://www.student.chalmers.se/sp/course?course_id=24179)
+* [Chalmers student portal](https://www.student.chalmers.se/sp/course?course_id=24230)
     * D = Datateknik (CSE = Computer Science and Engineering):
-        * [D2: "half compulsory" in year 2, study period 3](https://www.student.chalmers.se/sp/programplan?program_id=1227&grade=2&conc_id=-1) (the DSLsofMath course will be one of the two elective courses offered to the second year of the BSc)
+        * [D2: "half compulsory" in year 2, study period 3](https://www.student.chalmers.se/sp/programplan?program_id=1380&grade=2&conc_id=-1) (the DSLsofMath course will be one of the two elective courses offered to the second year of the BSc)
         * elective in year 3, SP 3
     * IT = Informationsteknik (SE = Software Engineering):
-        * [IT3: elective in year 3, SP 3](https://www.student.chalmers.se/sp/programplan?program_id=1231&grade=3&conc_id=-1)
+        * [IT3: elective in year 3, SP 3](https://www.student.chalmers.se/sp/programplan?program_id=1312&grade=3&conc_id=-1)
     * TM = Teknisk matematik (Engineering Mathematics)
-        * [TM3: elective in year 3, SP 3](https://www.student.chalmers.se/sp/programplan?program_id=1237&grade=3&conc_id=-1)
+        * [TM3: elective in year 3, SP 3](https://www.student.chalmers.se/sp/programplan?program_id=1318&grade=3&conc_id=-1)
 * University of Gothenburg
     * The course is part of the Computer Science Bachelor's Programme
     * and is also given as a single subject course at the University of Gothenburg.
