@@ -23,7 +23,7 @@ Course team (TBD)
 -----------
 
 - Teacher & Examiner: Patrik Jansson (patrikj AT)
-- Teaching assistant: Irene Lobo Valbuena (lobo AT)
+- Teaching assistant: To Be Decided
 
 Schedule (prel.)
 --------
