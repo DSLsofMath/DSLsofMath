@@ -8,22 +8,27 @@
 
 Arithmetical expressions
 
-> data ArE   =  Const Int | Plus ArE ArE | Times ArE ArE
->               deriving (Show, Eq)
+> data Expr
+>   =  Num Int
+>   |  Add Expr Expr
+>   |  Mul Expr Expr
+>   deriving (Show, Eq)
 
-> evArE  (Const  n)       =  n
-> evArE  (Plus   e1  e2)  =  evArE e1  +  evArE e2
-> evArE  (Times  e1  e2)  =  evArE e1  *  evArE e2
+> evExpr  (Num  n)       =  n
+> evExpr  (Add  e1  e2)  =  evExpr e1  +  evExpr e2
+> evExpr  (Mul  e1  e2)  =  evExpr e1  *  evExpr e2
 
 Other evaluators are possible (to Bool, to String, etc.).
 
 Arithmetical atomic propositions
 
-> data ArAt  =  ArEq ArE ArE | ArLeq ArE ArE
+> data ArAt
+>   =  ArEq  Expr Expr
+>   |  ArLeq Expr Expr
 >               deriving (Show, Eq)
 
-> evArAt (ArEq   e1  e2)  =  evArE e1  ==  evArE e2
-> evArAt (ArLeq  e1  e2)  =  evArE e1  <=  evArE e2
+> evArAt (ArEq   e1  e2)  =  evExpr e1  ==  evExpr e2
+> evArAt (ArLeq  e1  e2)  =  evExpr e1  <=  evExpr e2
 
 Other semantics give different results.
 
@@ -61,7 +66,5 @@ Arithmetical propositional logic
 
 Example:
 
-> test0      =  evalArP (Impl (Atom (ArEq (Const 3) (Const 4))) (Atom (ArLeq (Const 5) (Const 1))))
-> test1      =  evalArP (Impl (Atom (ArEq (Const 3) (Const 3))) (Atom (ArLeq (Const 6) (Const 5))))
-
-
+> test0      =  evalArP (Impl (Atom (ArEq (Num 3) (Num 4))) (Atom (ArLeq (Num 5) (Num 1))))
+> test1      =  evalArP (Impl (Atom (ArEq (Num 3) (Num 3))) (Atom (ArLeq (Num 6) (Num 5))))
