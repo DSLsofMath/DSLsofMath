@@ -130,5 +130,5 @@ Week 1: L1+2 Haskell + DSL intro
 Week 2: L3+4 DSL + Types in Maths
 Week 3: Basic concepts
 Week 4-5: Poly, PowerSeries, ...
-Week 6(CeIo): ProbTheory or LinAlg
+Week 6(CeIo): LinAlg (or ProbTheory)
 Week 7: Laplace + review

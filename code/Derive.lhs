@@ -1,7 +1,7 @@
 > module Derive where
 > import FunNumInst
 > import Expr
->
+
 > derive  ::  Expression    ->  Expression
 > derive      (Const alpha)  =  Const 0
 > derive      Id             =  Const 1
