@@ -27,10 +27,9 @@ Course team (TBD)
 
 Schedule (prel.)
 --------
-
 - Lectures Mondays 10-12 (in EB) and Mondays 15-17 (in EF)
 
-- Exercises Wednesdays 13-15 and Thursdays 10-12 (in Ft-4011)
+- Exercises Wednesdays 13-15 and Fridays 13-15 (in EDIT2505)
 
 - Guest lectures (TBD)
 
