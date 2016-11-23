@@ -120,9 +120,24 @@ Rudin (a cleaner definition): with f : X → ℝ and p limit point of X
 
 ----
 
-Note: check ~/.emacs.d/elpa/haskell-mode-20161026.310/haskell-unicode-input-method.el
+Note: in emacs the command
+  turn-on-haskell-unicode-input-method
+will make it possible to write
+  ∀ ε ∈ X. ∃ δ ∈ Y. | f(x+ε) - f(x) | < δ
+by entering the string
+  "forall epsilon  elem X. exists delta  elem Y. | f(x+epsilon ) - f(x) | < delta "
 
-describe-char
+To check what unicode character is at point use
+  describe-char
+which also tells you how to enter it.
+
+Useful unicode-related packages (from elpa.gnu.org):
+* charmap: shows unicode character maps with "describe-char" auto-updating in a separate buffer as you move around.
+* list-unicode-display: Search for unicode characters by name (there are 20 kinds of delta!)
+* latex-unicode-math-mode
+* unicode-fonts
+* unicode-input
+* emacs-unicode-troll-stopper: locate unicode homoglyphs
 
 ----------------------------------------------------------------
 

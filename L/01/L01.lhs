@@ -4,8 +4,6 @@
 -- local students from the Intro FP course) + evaluator. Still with the
 -- aim to explain syntax, semantics and Haskell.
 
--- TODO: import the exp type from intro FP
-
 Arithmetical expressions
 
 > data Expr
