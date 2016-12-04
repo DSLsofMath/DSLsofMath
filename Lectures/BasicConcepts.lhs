@@ -121,10 +121,10 @@ The definition is equivalent to
 
 *Proposition*: The limit of a sequence is unique.
 
-*Proof*:  We have to show that `lim a = L₁ ∧ lim a = L₂ ⇒ L₁ = L`.
+*Proof*:  We have to show that `lim a = L₁ ∧ lim a = L₂ ⇒ L₁ = L₂`.
 
 From `lim a = L₁` it follows that we have `N₁ : ℝ_{> 0} → ℕ` such that
-`∀ ε > 0 I a (N₂ ε) ⊆ D L₁ ε`; similarly, from `lim a = L₂` we have
+`∀ ε > 0 I a (N₁ ε) ⊆ D L₁ ε`; similarly, from `lim a = L₂` we have
 `N₂` etc.
 
 Therefore, for any `ε > 0`
