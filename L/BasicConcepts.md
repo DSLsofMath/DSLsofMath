@@ -139,6 +139,29 @@ Useful unicode-related packages (from elpa.gnu.org):
 * unicode-input
 * emacs-unicode-troll-stopper: locate unicode homoglyphs
 
+;;; Extensions to the default haskell unicode method
+(add-to-list 'load-path "~/.elisp/emacs-haskell-unicode-input-method")
+(require 'quail)
+(require 'haskell-unicode-input-method)
+(quail-define-rules ((append . t))
+                    ("->"               ["→"])
+                    ("<-"               ["←"])
+                    ("<==>"             ["⟺"])
+                    ("<="               ["≤" "⟸"])
+                    (">="               ["≥" "⟹"])
+                    ("cplus"              ["⊕"])
+                    ("empty"            ["∅"])
+                    ("powerset"         ["𝓟"])
+                    ("Union"            ["⋃"])
+                    ("infinity"         ["∞"])
+                    ("fat0"             ["𝟬"])
+                    ("fat+"             ["⧾"])
+                    ("fat-"             ["⧿"])
+                    ("dround"           ["∂"])
+                    ("integ"            ["∫"])
+                    ("LL"               ["ℒ"]))
+
+
 ----------------------------------------------------------------
 
 Week 1: L1+2 Haskell + DSL intro
