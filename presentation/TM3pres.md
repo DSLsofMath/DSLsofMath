@@ -70,8 +70,12 @@ list         =  [(1+), (2*), kvadrat, upphöjtFyra]
 
 Exempel:
 
-* datum: "2015-11-18", "tredje onsdagen i oktober", "nästa lördag"
-* excel-formler: "SUM(A1:A9)", "RIGHT(LEFT(C7,4),2)", "365 * 24 * 60 * 60"
+* datum:
+    * Syntax: "2015-11-18", "tredje onsdagen i oktober", "nästa lördag"
+    * Semantik: Date, eller kanske Date -> Date
+* excel-formler:
+    * Syntax: "SUM(A1:A9)", "RIGHT(LEFT(C7,4),2)", ...
+    * Semantik: [ [ Cell ] ] -> Value
 * integraler: [Behöver ritas!]
     * (notera var variablerna binds)
 
