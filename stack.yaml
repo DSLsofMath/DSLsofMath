@@ -39,6 +39,10 @@ packages:
 - '.'
 - Lectures/07/
 - exploration/
+- location:
+   git: https://github.com/DSLsofMath/Hatlab.git
+   commit: 5a5166012d418fddf35dceec8f634e8d19d14b73
+
 # Dependency packages to be pulled from upstream that are not in the resolver
 # (e.g., acme-missiles-0.3)
 extra-deps: []
