@@ -19,19 +19,18 @@ of some mathematical areas mentioned below.
 Learning outcomes as in the
 [course syllabus](https://www.student.chalmers.se/sp/course?course_id=24230).
 
-Course team (TBD)
+Course team
 -----------
 
-- Teacher & Examiner: Patrik Jansson (patrikj AT)
-- Teaching assistant: To Be Decided
+- Examiner & main lecturer: Patrik Jansson (patrikj AT)
+- Lecturer: Cezar Ionescu (cezar AT)
+- Teaching assistants: Daniel Schoepe, Frederik Hanghøj Iversen
 
 Schedule (prel.)
 --------
 - Lectures Mondays 10-12 (in EB) and Mondays 15-17 (in EF)
 
 - Exercises Wednesdays 13-15 and Fridays 13-15 (in EDIT2505)
-
-- Guest lectures (TBD)
 
 - Exam: 2017-03-14 afternoon.  Re-exam: 2017-08-22 afternoon.
 
@@ -62,10 +61,10 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 08, Polynomials and Power Series](Lectures/Lecture10.lhs).
 - [Lecture 09, Power Series and Differential Equations](Lectures/Lecture11.lhs).
 - [Lecture 10, The Exponential Function, Taylor Series](Lectures/Lecture12.lhs).
-- Lecture 11, TBD: Probability theory or linear algebra (CeIo).
-- Lecture 12, TBD: Probability theory or linear algebra (CeIo).
-- [Lecture 13, The Laplace Transform](Lectures/Lecture13.lhs).
-- [Lecture 14, Basic Concepts of Analysis](Lectures/BasicConcepts.lhs).
+- Lecture 11, TBD: Linear algebra (CeIo).
+- Lecture 12, TBD: Linear algebra (CeIo).
+- [Lecture 13, The Laplace Transform](Lectures/Lecture13.lhs). (CeIo).
+- [Lecture 14, Basic Concepts of Analysis](Lectures/BasicConcepts.lhs). (CeIo).
 
 Exercises (TBD)
 ---------
@@ -168,20 +167,4 @@ More references will be added in due course.
 Evaluation
 ----------
 
-(Invitation from Gelena Andreasian.)
-
-The final course evaluation meeting will by on Friday 2016-04-29 at 15.15.
-
-(Mötet äger rum fredag den 29 april kl 15.15-16.15 i mötesrum AoS Origo Koppen. Fysikhuset, ingången från Kemigården. I entréhallen gå in i korridoren till höger. Mötesrummet AoS Origo Koppen ligger på korridorens vänstra sida).
-
-
-Invited participants:
-
-* Daniel Chai (student)
-* Fredrik Johansson (student)
-* Wendy Mo (student)
-* Patrik Jansson (Examiner)
-* Cezar Ionescu (Teacher)
-* Irene Lobo Valbuena (TA)
-* SND <dns@dtek.se>
-* Roger Johansson (PA)
+(Invitation will come from Gelena Andreasian.)
