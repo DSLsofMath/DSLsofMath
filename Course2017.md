@@ -26,7 +26,7 @@ Course team
 - Lecturer: Cezar Ionescu (cezar AT)
 - Teaching assistants: Daniel Schoepe, Frederik Hanghøj Iversen
 
-Schedule (prel.)
+Schedule ([html](https://se.timeedit.net/web/chalmers/db1/public/riqQ7615X80Z06Q0Z45g0Y6Z6Z096Y35Q01vQY5Q5yo6q072oQ.html), [ics](https://se.timeedit.net/web/chalmers/db1/public/ri6Q66654Q6035QQl8ZZ5Q5Z07yn501ZQ941q7Y6l55.ics))
 --------
 - Lectures Mondays 10-12 (in EB) and Mondays 15-17 (in EF)
 
@@ -37,12 +37,14 @@ Schedule (prel.)
 Assignments (TBD)
 -----------
 
+**Note: the information below is based on the 2016 instance and not yet final.**
+
 The assignments are to be solved in **teams of three**.
 
-- [Assignment01](Assignments/Assignment01.lhs), due ??
+- [Assignment01](Assignments/Assignment01.lhs), due 2017-01-31
 
-- [Assignment02](Assignments/Assignment02.lhs), [pdf
-  file](Assignments/Assignment02.pdf), due ??
+- [Assignment02](Assignments/Assignment02.lhs),
+  [pdf file](Assignments/Assignment02.pdf), due 2017-02-28
 
 Lectures (updates from 2016 are ongoing work)
 --------
