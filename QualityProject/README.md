@@ -115,21 +115,31 @@ I'm very happy with what we have managed so far, and I'm looking forward to the 
   Patrik
 
 http://www.chalmers.se/insidan/sites/cse/aktuellt/kalendarium/sok-kalendariet/dslsofmath-presenting
+```
 DSLsofMath: Presenting Mathematical Analysis Using Functional Programming
 2015-11-20 11:00
+```
 Abstract:
+
 In this talk (and the accompanying paper), we present the approach underlying a course on Domain-Specific Languages of Mathematics, which is currently being developed at Chalmers in response to difficulties faced by third-year students in learning and applying classical mathematics (mainly real and complex analysis). The main idea is to encourage the students to approach mathematical domains from a functional programming perspective: to identify the main functions and types involved and, when necessary, to introduce new abstractions; to give calculational proofs; to pay attention to the syntax of the mathematical expressions; and, finally, to organize the resulting functions and types in domain-specific languages.
 
 Links:
-https://github.com/DSLsofMath
-http://www.cse.chalmers.se/~patrikj/papers/Ionescu_Jansson_DSLsofMath_TFPIE_2015_paper_preprint.pdf
-http://www.cse.chalmers.se/~patrikj/talks/WG2.1_Goteborg_Jansson_Ionescu_DSLsofMath.pdf
-Kategori Föreläsning
-Föreläsare Patrik Jansson, ST-division
-Tid 2015-11-20 11:00
-Sluttid 2015-11-20 12:00
-Plats EDIT room, 3364
-Campus Johanneberg
+* https://github.com/DSLsofMath
+* http://www.cse.chalmers.se/~patrikj/papers/Ionescu_Jansson_DSLsofMath_TFPIE_2015_paper_preprint.pdf
+* http://www.cse.chalmers.se/~patrikj/talks/WG2.1_Goteborg_Jansson_Ionescu_DSLsofMath.pdf
+* Kategori Föreläsning
+* Föreläsare Patrik Jansson, ST-division
+* Tid 2015-11-20 11:00
+* Sluttid 2015-11-20 12:00
+* Plats EDIT room, 3364
+* Campus Johanneberg
+
+## 2015-10-09: some links
+
+* 2015-10-09: Meeting Eva Fülöp about how to collect material for a pedagogical paper.
+* 2015-10-08: A [BScProj proposal](BScProj/DSLsofMath_andra_kurser.md) is available (in Swedish)
+* 2015-09-01: [Adam](http://adam.sandbergericsson.se/) starts working in the project as "amanuens" (student research assistant, 20%).
+    * See [related courses](related_courses.org) and [exploration](exploration/) for some of his work.
 
 ----------------------------------------------------------------
 

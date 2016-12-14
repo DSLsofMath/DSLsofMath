@@ -1,6 +1,8 @@
 Domain-Specific Languages of Mathematics
 ========================================
 
+**Note: this is the archived 2016 instance of the course**
+
 News
 ----
 
