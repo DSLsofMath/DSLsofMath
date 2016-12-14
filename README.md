@@ -16,7 +16,7 @@ A quality project funded by Chalmers with 260kkr/y for 2014 and 2015 resulting i
 * We 13-15: exercise class in EDIT2505
 * Fr 13-15: exercise class in EDIT2505
 
-Source: TimeEdit for the 2017 instance: [html](https://se.timeedit.net/web/chalmers/db1/public/riqQ7615X80Z06Q0Z45g0Y6Z6Z096Y35Q01vQY5Q5yo6q072oQ.html), [ics](https://se.timeedit.net/web/chalmers/db1/public/ri6Q66654Q6035QQl8ZZ5Q5Z07yn501ZQ941q7Y6l55.ics)
+Source: TimeEdit for the 2017 instance: [html](https://se.timeedit.net/web/chalmers/db1/public/riqQ7615X80Z06Q0Z45g0Y6Z6Z096Y35Q01vQY5Q5yo6q072oQ.html), [ics](https://se.timeedit.net/web/chalmers/db1/public/ri6Xl0gQ2560YZQQ05Z6974Y0Qy60073l1Q54Q061v555Zq8Z85Yn156.ics)
 
 ## More about the project
 [A paper has been accepted for the proceedings of TFPIE](https://github.com/DSLsofMath/tfpie2015).
