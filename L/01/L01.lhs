@@ -1,8 +1,10 @@
 > module L01 where
 
--- Start with small language for arithmetic expressions (known to
--- local students from the Intro FP course) + evaluator. Still with the
--- aim to explain syntax, semantics and Haskell.
+<!--
+Start with small language for arithmetic expressions (known to
+local students from the Intro FP course) + evaluator. Still with the
+aim to explain syntax, semantics and Haskell.
+-->
 
 Arithmetical expressions
 
@@ -16,7 +18,7 @@ Arithmetical expressions
 > evExpr  (Add  e1  e2)  =  evExpr e1  +  evExpr e2
 > evExpr  (Mul  e1  e2)  =  evExpr e1  *  evExpr e2
 
-Other evaluators are possible (to Bool, to String, etc.).
+Other evaluators are possible (to `Bool`, to `String`, etc.).
 
 Arithmetical atomic propositions
 
@@ -49,13 +51,13 @@ Tautology:  propositions that evaluate to true for any evaluation of the atoms.
 
 Example:
 
-    evalP evAt (Or p (Not p))
-=
-    evalP evAt p || evalP evAt (Not p)
-=
-    evalP evAt p || not (evalP evAt p)
-=
-    True
+<     evalP evAt (Or p (Not p))
+< =
+<     evalP evAt p || evalP evAt (Not p)
+< =
+<     evalP evAt p || not (evalP evAt p)
+< =
+<     True
 
 Arithmetical propositional logic
 

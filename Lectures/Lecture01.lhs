@@ -142,11 +142,11 @@ A type for the arithmetic variables:
 > testTerm1 = F Plus [V "x", testTerm0]
 >
 
-     We can only interpret terms with variables  in an *environment*:
+We can only interpret terms with variables  in an *environment*:
 
 > type Env var domain = [(var, domain)]
 
-     We *look up* the value of a variable in an environment:
+We *look up* the value of a variable in an environment:
 
 > lookUp x ((y, v):rest) = if x == y then v else lookUp x rest
 >
@@ -155,7 +155,7 @@ A type for the arithmetic variables:
 > evalA env (F Succ [t])      = 1 + evalA env t
 > evalA env (F Plus [t0, t1]) = evalA env t0  +  evalA env t1
 
-     - Atomic terms are terms with no variables inside them
+    - Atomic terms are terms with no variables inside them
 
 > termVars :: Ord var => Term name func var -> Set var
 > termVars  = undefined
@@ -178,7 +178,7 @@ A type for the arithmetic variables:
 > freeVars (Eq t1 t2)      =  union (termVars t1) (termVars t2)
 > freeVars (Forall x wff)  =  difference (freeVars wff) (singleton x)
 
-     - Arithmetical predicate:
+    - Arithmetical predicate:
 
 > data APred  =  LE          deriving (Eq, Show)
 

@@ -17,9 +17,49 @@ extra-source-files:  README.md
 cabal-version:       >=1.10
 
 library
-  exposed-modules:     Haskell, Lectures.Lecture04, Lectures.FunNumInst, Lectures.Lecture11, Lectures.Lecture03, Lectures.Lecture10, Lectures.TypingMaths, Lectures.Lecture06, Lectures.Lecture01, Lectures.BasicConcepts, Lectures.Lecture02, Lectures.Lecture09, Lectures.Lecture12, Lectures.Lecture13, Lectures.Lecture05, Assignments.Assignment01, Assignments.Assignment02, Exercises.AbstractFOL, Exercises.Ring, Exercises.Arithmetic, Exercises.FOL, PowerSeries, MatrixAlgebra2, MatrixAlgebra1, MatrixAlgebra1.CG, MatrixAlgebra1.Test, MatrixAlgebra2.Test, FunNumInst, ShallowD, EvalD, Derive, Expr
+  exposed-modules:     Haskell
+                     , Lectures.Lecture04
+                     , Lectures.FunNumInst
+                     , Lectures.Lecture11
+                     , Lectures.Lecture03
+                     , Lectures.Lecture10
+                     , Lectures.TypingMaths
+                     , Lectures.Lecture06
+                     , Lectures.Lecture01
+                     , Lectures.BasicConcepts
+                     , Lectures.Lecture02
+                     , Lectures.Lecture09
+                     , Lectures.Lecture12
+                     , Lectures.Lecture13
+                     , Lectures.Lecture05
+                     , Assignments.Assignment01
+                     , Assignments.Assignment02
+                     , Exercises.AbstractFOL
+                     , Exercises.Ring
+                     , Exercises.Arithmetic
+                     , Exercises.FOL
+                     , PowerSeries
+                     , MatrixAlgebra2
+                     , MatrixAlgebra1
+                     , MatrixAlgebra1.CG
+                     , MatrixAlgebra1.Test
+                     , MatrixAlgebra2.Test
+                     , FunNumInst
+                     , ShallowD
+                     , EvalD
+                     , Derive
+                     , Expr
   -- other-modules:
-  -- other-extensions:    FlexibleInstances, TypeSynonymInstances, GeneralizedNewtypeDeriving, FlexibleContexts, Rank2Types, TypeFamilies, OverloadedLists, ViewPatterns, PatternSynonyms, DeriveFunctor
+  -- other-extensions:    FlexibleInstances
+  --                    , TypeSynonymInstances
+  --                    , GeneralizedNewtypeDeriving
+  --                    , FlexibleContexts
+  --                    , Rank2Types
+  --                    , TypeFamilies
+  --                    , OverloadedLists
+  --                    , ViewPatterns
+  --                    , PatternSynonyms
+  --                    , DeriveFunctor
   build-depends:       base >=4.8 && <4.10
   -- hs-source-dirs:
   default-language:    Haskell2010
