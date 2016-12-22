@@ -1,10 +1,44 @@
-> module L01 where
+\subsection{A case study: complex numbers}
+
+We will start by an analytic reading of the introduction of complex
+numbers in \cite{adams2010calculus}.
+%
+We choose a simple domain to allow the reader to concentrate on the
+essential elements of our approach without the distraction of
+potentially unfamiliar mathematical concepts.
+%
+For this section, we bracket our previous knowledge and approach the
+text as we would a completely new domain, even if that leads to a
+somewhat exaggerated attention to detail.
+
+Adams and Essex introduce complex numbers in Appendix 1.
+%
+The section \emph{Definition of Complex Numbers} begins with:
+
+\begin{quote}
+  We begin by defining the symbol |i|, called \textbf{the imaginary
+    unit}, to have the property
+
+<      square i = -1
+
+  Thus, we could also call |i| the square root of |-1| and denote it
+  |sqrt (-1)|.
+%
+  Of course, |i| is not a real number; no real number has a negative
+  square.
+\end{quote}
+
+
+----------------------------------------------------------------
+% TODO: texify the below
 
 -- Start with small language for arithmetic expressions (known to
 -- local students from the Intro FP course) + evaluator. Still with the
 -- aim to explain syntax, semantics and Haskell.
 
 Arithmetical expressions
+
+> module L01 where
 
 > data Expr
 >   =  Num Int
