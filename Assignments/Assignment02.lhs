@@ -31,16 +31,16 @@ iii.  What datatype is needed for the homomorphism that is analogous
    > Implement Newton's method, using the datatype of 1.iii above for
      computing the derivatives.  In other words, use the code above to
      implement
-    
+
 < newton :: (FDD Double -> FDD Double) -> Double -> Double -> Double
 
    > where `FDD a` is the datatype from 1.iii, in order to obtain the
-     appropriate value for `f' x`.  
-    
+     appropriate value for `f' x`.
+
    > Test your implementation on the following functions:
 
 <   test0  = x^2                 -- one zero, in 0
-<   test1  = x^2 - 1             -- two zeros, in -1 and 1 
+<   test1  = x^2 - 1             -- two zeros, in -1 and 1
 <   test2  = sin                 -- many, many zeros (n*pi)
 <   test3 n x y = y^n - fddId x  -- nth root of x
 <         where fddId is the embedding of Id
@@ -51,7 +51,7 @@ iii.  What datatype is needed for the homomorphism that is analogous
 <   fmap (newton test1 0.001) [-2.0, -1.5 .. 2.0]
 
    > but be aware that the method might not always converge!
-    
+
 3.  We can find the optima of a twice-differentiable function on an
     interval by finding the zeros of its derivative on that interval,
     and checking the second derivative.  If `x0` is a zero of `f'`,
@@ -81,9 +81,9 @@ iii.  What datatype is needed for the homomorphism that is analogous
    > Newton's method at point 2.
 
 - *Submission*: Assignments are to be submitted via [Fire](https://xdat09.ce.chalmers.se/2016/lp3/dslm/).
-- *Deadline*:   Tuesday, 2016-03-01, 23:59.
+- *Deadline*:   FIXME
 - *Grading*: Discussions with each of the teams during the exercises
-  session of Thursday, 2016-03-03.
+  session of FIXME
 
 
 References
