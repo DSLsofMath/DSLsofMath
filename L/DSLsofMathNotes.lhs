@@ -3,6 +3,7 @@
 %include dslmagda.fmt
 %%% Our own formatting directives
 %include dslm.format
+\usepackage{natbib}
 \usepackage{url}
 %let submit = False
 %if submit
@@ -10,6 +11,10 @@
 %else
 \newcommand{\todo}[2][?]{\marginpar{\raggedright \tiny TODO: #2}}
 %endif
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+
 \newcommand{\TODO}[1]{\todo{#1}}
 \newcommand{\refSec}[1]{Sec. \ref{#1}}
 \newcommand{\refSecs}[1]{Secs. \ref{#1}}
@@ -30,6 +35,10 @@
 
 
 \section{Lecture 01}
+
+This lecture is partly based on the paper
+\cite{TFPIE15_DSLsofMath_IonescuJansson} from the International
+Workshop on Trends in Functional Programming in Education 2015.
 
 %include 01/L01.lhs
 

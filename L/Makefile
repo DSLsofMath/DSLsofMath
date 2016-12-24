@@ -2,10 +2,10 @@ NAME=DSLsofMathNotes
 
 default: $(NAME).pdf
 
-$(NAME).pdf:  $(NAME).tex
+$(NAME).pdf: $(NAME).tex
 	latexmk -pdf $(NAME).tex
 
-$(NAME).tex: $(NAME).lhs dslm.format ../comp/ref.bib
+$(NAME).tex: $(NAME).lhs dslm.format ../comp/ref.bib 01/L01.lhs
 	lhs2TeX --agda $(NAME).lhs > $(NAME).tex
 
 clean:
