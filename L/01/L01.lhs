@@ -110,8 +110,8 @@ that |a - bi| can be understood as an abbreviation of |a + (-b)i|.
 With this provision, in our notation the examples are written as:
 
 > testC1 :: [ComplexA]
-> testC1 =  [  CPlus1 3 2 I,     CPlus1 (7/2) (-2/3) I
->           ,  CPlus2 0 I pi,    CPlus1 (-3) 0 I
+> testC1 =  [  CPlus1 3 2 I  ,    CPlus1 (7/2) (-2/3) I
+>           ,  CPlus2 0 I pi ,    CPlus1 (-3) 0 I
 >           ]
 > testS1 = map showCA testC1
 
@@ -194,7 +194,7 @@ This shows that complex numbers are, in fact, isomorphic with pairs of
 real numbers, a point which we can make explicit by re-formulating the
 definition in terms of a type synonym:
 
-> newtype ComplexD = CD (REAL, REAL) deriving Eq
+> newtype ComplexD = CD (REAL , REAL) deriving Eq
 
 The point of the somewhat confusing discussion of using ``letters'' to
 stand for complex numbers is to introduce a substitute for
@@ -217,10 +217,10 @@ stand for complex numbers is to introduce a substitute for
 This is rather similar to Haskell's \emph{as-patterns}:
 
 > re :: ComplexD      ->  REAL
-> re z @ (CD (x, y))   =   x
+> re z @ (CD (x , y))   =   x
 
 > im :: ComplexD      ->  REAL
-> im z @ (CD (x, y))   =   y
+> im z @ (CD (x , y))   =   y
 
 \noindent
 a potential source of confusion being that the symbol |z| introduced
@@ -250,7 +250,7 @@ We can describe these operations in a \emph{shallow embedding} in
 terms of the concrete datatype |ComplexD|, for example:
 
 > (+.) :: ComplexD -> ComplexD -> ComplexD
-> (CD (a, b)) +. (CD (x, y))  =  CD ((a + x), (b + y))
+> (CD (a , b)) +. (CD (x , y))  =  CD ((a + x) , (b + y))
 
 \noindent
 or we can build a datatype of ``syntactic'' complex numbers from the
@@ -258,7 +258,10 @@ algebraic operations to arrive at a \emph{deep embedding} as seen in
 the next section.
 
 Exercises:
-* implement |(*.)| for |ComplexD|
+\begin{itemize}
+\item implement |(*.)| for |ComplexD|
+\end{itemize}
+
 
 % ----------------------------------------------------------------
 
@@ -288,13 +291,13 @@ and we can collect these in one recursive datatype as follows:
 >                |  Times  ComplexE  ComplexE
 >  deriving (Eq, Show)
 
-> evalE ImagUnit         = CD (0, 1)
-> evalE (ToComplex r)    = CD (r, 0)
+> evalE ImagUnit         = CD (0 , 1)
+> evalE (ToComplex r)    = CD (r , 0)
 > evalE (Plus  c1 c2)    = evalE c1   +.  evalE c2
 > evalE (Times c1 c2)    = evalE c1   *.  evalE c2
 
 > fromCD :: ComplexD -> ComplexE
-> fromCD (CD (x, y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
+> fromCD (CD (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 
 > testE1 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
 > testE2 = Times ImagUnit ImagUnit
@@ -350,8 +353,8 @@ The first is fine, but the second fails due to rounding errors.
 %
 QuickCheck can be used to find small examples - I like this one best:
 
-> notAssocEvidence :: (Double, Double, Double, Bool)
-> notAssocEvidence = (lhs, rhs, lhs-rhs, lhs==rhs)
+> notAssocEvidence :: (Double , Double , Double , Bool)
+> notAssocEvidence = (lhs , rhs , lhs-rhs , lhs==rhs)
 >   where  lhs = (1+1)+1/3
 >          rhs =  1+(1+1/3)
 

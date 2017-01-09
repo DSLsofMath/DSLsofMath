@@ -1,16 +1,16 @@
 Overview of example proofs from the 2016 instance:
 
-* ../Lectures/BasicConcepts.lhs
+* ../2016/Lectures/BasicConcepts.lhs
     * An1= Limit point
     * An2= The limit of a sequence
     * An3= The limit of a function
     * An4= Continuity
     * An5= Differentiation
-* ../Lectures/Lecture02.lhs
+* ../2016/Lectures/Lecture02.lhs
     * Nu1= ${\sqrt 2}$ is irrational.
-* ../Lectures/Lecture03.lhs
+* ../2016/Lectures/Lecture03.lhs
     * Nu2= two irrational numbers a and b such that a^b is rational
-* ../Lectures/Lecture04.lhs
+* ../2016/Lectures/Lecture04.lhs
     * Nu3= There exists an infinity of prime numbers
     * An4.1= ${a_n} convergent ∧ f : ℝ → ℝ continuous → {f a_n}$ convergent
 	    * could be an exercise

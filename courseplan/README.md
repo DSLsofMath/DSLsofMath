@@ -1,3 +1,7 @@
+2016-12-29: GU courseplan: minor updates
+
+  http://kursplaner.gu.se/pdf/kurs/en/DIT982
+
 2016-11-16: Checking the status of the course plan
 
   Chalmers: https://www.student.chalmers.se/sp/course?course_id=24230

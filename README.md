@@ -7,7 +7,7 @@ A quality project funded by Chalmers with 260kkr/y for 2014 and 2015 resulting i
 
 **[2017 edition of the course.](Course2017.md)**
 
-**[2016 edition of the course.](Course2016.md)** See also the [Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).
+**[2016 edition of the course.](2016/Course2016.md)** See also the [Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).
 
 ## Course schedule 2017
 

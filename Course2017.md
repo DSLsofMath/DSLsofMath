@@ -53,20 +53,20 @@ To compile them, you can use a suitably modified form of this
 [Makefile](comp/Makefile) and the [bib](comp/ref.bib) and
 [template.tex](comp/template.tex) files.
 
-- [Lecture 01, Introduction](Lectures/Lecture01.lhs).  [Slides](Lectures/slides01.pdf).
-- [Lecture 02, Logic and Functional Programming, Part I](Lectures/Lecture02.lhs).
-- [Lecture 03, Logic and Functional Programming, Part II](Lectures/Lecture03.lhs).
-- [Lecture 04, Proofs and Programs in Mathematics](Lectures/Lecture04.lhs).
-- [Lecture 05, Types in Mathematics](Lectures/Lecture05.lhs).
-- [Lecture 06, Types in Mathematics, Part II](Lectures/Lecture06.lhs).
-- [Lecture 07, Algebraic Structures and DSLs](Lectures/Lecture09.lhs). Some associated code is also [available](code/).
-- [Lecture 08, Polynomials and Power Series](Lectures/Lecture10.lhs).
-- [Lecture 09, Power Series and Differential Equations](Lectures/Lecture11.lhs).
-- [Lecture 10, The Exponential Function, Taylor Series](Lectures/Lecture12.lhs).
+- [Lecture 01, Introduction](2016/Lectures/Lecture01.lhs).  [Slides](2016/Lectures/slides01.pdf).
+- [Lecture 02, Logic and Functional Programming, Part I](2016/Lectures/Lecture02.lhs).
+- [Lecture 03, Logic and Functional Programming, Part II](2016/Lectures/Lecture03.lhs).
+- [Lecture 04, Proofs and Programs in Mathematics](2016/Lectures/Lecture04.lhs).
+- [Lecture 05, Types in Mathematics](2016/Lectures/Lecture05.lhs).
+- [Lecture 06, Types in Mathematics, Part II](2016/Lectures/Lecture06.lhs).
+- [Lecture 07, Algebraic Structures and DSLs](2016/Lectures/Lecture09.lhs). Some associated code is also [available](code/).
+- [Lecture 08, Polynomials and Power Series](2016/Lectures/Lecture10.lhs).
+- [Lecture 09, Power Series and Differential Equations](2016/Lectures/Lecture11.lhs).
+- [Lecture 10, The Exponential Function, Taylor Series](2016/Lectures/Lecture12.lhs).
 - Lecture 11, TBD: Linear algebra (CeIo).
 - Lecture 12, TBD: Linear algebra (CeIo).
-- [Lecture 13, The Laplace Transform](Lectures/Lecture13.lhs). (CeIo).
-- [Lecture 14, Basic Concepts of Analysis](Lectures/BasicConcepts.lhs). (CeIo).
+- [Lecture 13, The Laplace Transform](2016/Lectures/Lecture13.lhs). (CeIo).
+- [Lecture 14, Basic Concepts of Analysis](2016/Lectures/BasicConcepts.lhs). (CeIo).
 
 Exercises (TBD)
 ---------
@@ -88,7 +88,7 @@ Exercises (TBD)
   of the [practice exam](Exam/PracticeExam.pdf).
   Partial example [solutions](Exam/MockE.hs).
 - An example of [typing mathematical
-  entities](Lectures/TypingMaths.lhs), similar to exam question 4.
+  entities](2016/Lectures/TypingMaths.lhs), similar to exam question 4.
 
 Literature
 ----------
