@@ -169,4 +169,12 @@ More references will be added in due course.
 Evaluation
 ----------
 
-(Invitation will come from Gelena Andreasian.)
+DSLsofMath course evaluation student representatives 2017:
+
+| Email            | Name                   |
+| ---------------- | ----------------------	|
+| andreahe@student |  Andreas Henriksson	|
+| heurlin@student  |  Daniel Heurlin		|
+| molzer@student   |  Simon Mölzer			|
+| vioskar@student  |  Oskar Vigren			|
+| ariv@student     |  Ari von Nordenskjöld  |
