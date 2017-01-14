@@ -2,6 +2,10 @@
 > import DSLsofMath.L01
 > import Test.QuickCheck
 
+We may also need the Haskell standard library version for some testing later:
+
+> import qualified Data.Complex as DC
+
 > instance (Num r, Arbitrary r) => Arbitrary (ComplexS r) where
 >   arbitrary = arbitraryCS arbitrary
 >   shrink = shrinkCS shrink
@@ -42,9 +46,9 @@
 
 > main = do
 >   quickCheck propFromCS
->   quickCheck propAssocPlus
->   quickCheck propAssocTimes
->   quickCheck propDistTimesPlus
+>   quickCheck $ expectFailure propAssocPlus
+>   quickCheck $ expectFailure propAssocTimes
+>   quickCheck $ expectFailure propDistTimesPlus
 
 > propAssocSmall :: Int -> Int -> Int -> Bool
 > propAssocSmall m n k = propAssocAdd (fromIntegral m) (fromIntegral n) (1/fromIntegral k)

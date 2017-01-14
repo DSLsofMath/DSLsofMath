@@ -12,14 +12,6 @@ the code for this lecture is placed in a module called
 
 > module DSLsofMath.L01 where
 
-We will develop our own representation of complex numbers but for
-reference we also import the Haskell standard library version:
-
-> import qualified Data.Complex as DC
-
-The |qualified| keyword makes the imported names available only
-prefixed by the module name.
-
 \subsection{A case study: complex numbers}
 
 We will start by an analytic reading of the introduction of complex
