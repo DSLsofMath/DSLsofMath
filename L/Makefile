@@ -5,7 +5,7 @@ default: $(NAME).pdf
 $(NAME).pdf: $(NAME).tex
 	latexmk -pdf $(NAME).tex
 
-$(NAME).tex: $(NAME).lhs dslm.format ../comp/ref.bib 01/L01.lhs
+$(NAME).tex: $(NAME).lhs dslm.format ref.bib 01/L01.lhs
 	lhs2TeX --agda $(NAME).lhs > $(NAME).tex
 
 clean:

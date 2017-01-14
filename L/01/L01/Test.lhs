@@ -2,15 +2,15 @@
 > import DSLsofMath.L01
 > import Test.QuickCheck
 
-> instance Arbitrary ComplexD where
->   arbitrary = arbitraryCD
->   shrink = shrinkCD
+> instance (Num r, Arbitrary r) => Arbitrary (ComplexS r) where
+>   arbitrary = arbitraryCS arbitrary
+>   shrink = shrinkCS shrink
 
-> arbitraryCD :: Gen ComplexD
-> arbitraryCD = CD <$> arbitrary
+> arbitraryCS :: Gen (r , r) -> Gen (ComplexS r)
+> arbitraryCS arb = CS <$> arb
 
-> shrinkCD :: ComplexD -> [ComplexD]
-> shrinkCD (CD (p@(x, y))) = [CD (0, 0), CD (x,0), CD (0, y)] ++ map CD (shrink p)
+> shrinkCS :: Num r => ((r , r) -> [(r , r)]) -> (ComplexS r -> [ComplexS r])
+> shrinkCS shr (CS (p@(x, y))) = [CS (0, 0), CS (x,0), CS (0, y)] ++ map CS (shr p)
 
 
 > instance Arbitrary ComplexE where
@@ -20,7 +20,7 @@
 > arbitraryCESized :: Int -> Gen ComplexE
 > arbitraryCESized n | n <= 0 = oneof [ return ImagUnit
 >                                     , ToComplex <$> arbitrary
->                                     , fromCD <$> arbitrary
+>                                     , fromCS <$> arbitrary
 >                                     ]
 >                    | otherwise = do
 >   op <- elements [Plus, Times]
@@ -33,15 +33,15 @@
 > shrinkCE (ToComplex r) = ToComplex <$> shrink r
 > shrinkCE (Times r ImagUnit) = r:shrink r
 > shrinkCE (Plus  l (Times r ImagUnit)) = [l, Times r ImagUnit]
-> shrinkCE (e@(Plus  l r)) = fromCD (evalE e) :
+> shrinkCE (e@(Plus  l r)) = fromCS (evalE e) :
 >   [l, r] ++ [Plus  l r' | r' <- shrink r]
 >          ++ [Plus  l' r | l' <- shrink l]
-> shrinkCE (e@(Times l r)) = fromCD (evalE e) :
+> shrinkCE (e@(Times l r)) = fromCS (evalE e) :
 >   [l, r] ++ [Times l r' | r' <- shrink r]
 >          ++ [Times l' r | l' <- shrink l]
 
 > main = do
->   quickCheck propFromCD
+>   quickCheck propFromCS
 >   quickCheck propAssocPlus
 >   quickCheck propAssocTimes
 >   quickCheck propDistTimesPlus

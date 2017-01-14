@@ -1,4 +1,5 @@
 \documentclass{article}
+\usepackage{a4wide}
 %%% Somewhat updated version of polycode.fm from the lhs2TeX dist.
 %include dslmagda.fmt
 %%% Our own formatting directives
@@ -33,15 +34,8 @@
   \TODO{Fill in abstract}
 \end{abstract}
 
-
-\section{Lecture 01}
-
-This lecture is partly based on the paper
-\cite{TFPIE15_DSLsofMath_IonescuJansson} from the International
-Workshop on Trends in Functional Programming in Education 2015.
-
 %include 01/L01.lhs
 
 \bibliographystyle{abbrvnat}
-\bibliography{../comp/ref}
+\bibliography{ref}
 \end{document}

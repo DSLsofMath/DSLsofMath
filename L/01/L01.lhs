@@ -1,3 +1,25 @@
+\section{Lecture 01}
+
+This lecture is partly based on the paper
+\citep{TFPIE15_DSLsofMath_IonescuJansson} from the International
+Workshop on Trends in Functional Programming in Education 2015.
+%
+We will implement certain concepts in the functional programming
+language Haskell and
+%
+the code for this lecture is placed in a module called
+|DSLsofMath.L01| that starts here:
+
+> module DSLsofMath.L01 where
+
+We will develop our own representation of complex numbers but for
+reference we also import the Haskell standard library version:
+
+> import qualified Data.Complex as DC
+
+The |qualified| keyword makes the imported names available only
+prefixed by the module name.
+
 \subsection{A case study: complex numbers}
 
 We will start by an analytic reading of the introduction of complex
@@ -41,8 +63,6 @@ For the moment, we introduce a type for the value |i|, and, since we
 know nothing about other values, we make |i| the only member of this
 type:
 
-> module DSLsofMath.L01 where
-
 > data ImagUnits = I
 
 > i :: ImagUnits
@@ -77,7 +97,7 @@ form of a datatype:
 >                |  CPlus2 REAL ImagUnits REAL
 
 We can give the translation from the abstract syntax to the concrete
-syntax as a function |show|:
+syntax as a function |showCA|:
 
 > showCA               ::  ComplexA -> String
 > showCA (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ "i"
@@ -125,11 +145,11 @@ which we introduce explicitly:
 Again, at this stage there are many open questions.
 %
 For example, we can assume that |i1| stands for the complex number
-|Plus2 0 i 1|, but what about |i| by itself?
+|CPlus2 0 i 1|, but what about |i| by itself?
 %
 If juxtaposition is meant to denote some sort of multiplication, then
 perhaps |1| can be considered as a unit, in which case we would have
-that |i| abbreviates |i1| and therefore |Plus2 0 i 1|.
+that |i| abbreviates |i1| and therefore |CPlus2 0 i 1|.
 %
 But what about, say, |2i|?
 %
@@ -192,9 +212,10 @@ using |deriving Eq|.
 
 This shows that complex numbers are, in fact, isomorphic with pairs of
 real numbers, a point which we can make explicit by re-formulating the
-definition in terms of a type synonym:
+definition in terms of a |newtype|:
 
-> newtype ComplexD = CD (REAL , REAL) deriving Eq
+> type ComplexD = ComplexS REAL
+> newtype ComplexS r = CS (r , r)    deriving Eq
 
 The point of the somewhat confusing discussion of using ``letters'' to
 stand for complex numbers is to introduce a substitute for
@@ -216,11 +237,11 @@ stand for complex numbers is to introduce a substitute for
 %
 This is rather similar to Haskell's \emph{as-patterns}:
 
-> re :: ComplexD      ->  REAL
-> re z @ (CD (x , y))   =   x
+> re :: ComplexS r      ->  r
+> re z @ (CS (x , y))   =   x
 
-> im :: ComplexD      ->  REAL
-> im z @ (CD (x , y))   =   y
+> im :: ComplexS r      ->  r
+> im z @ (CS (x , y))   =   y
 
 \noindent
 a potential source of confusion being that the symbol |z| introduced
@@ -247,10 +268,10 @@ With the introduction of algebraic operations, the language of complex
 numbers becomes much richer.
 %
 We can describe these operations in a \emph{shallow embedding} in
-terms of the concrete datatype |ComplexD|, for example:
+terms of the concrete datatype |ComplexS|, for example:
 
-> (+.) :: ComplexD -> ComplexD -> ComplexD
-> (CD (a , b)) +. (CD (x , y))  =  CD ((a + x) , (b + y))
+> (+.) :: Num r =>  ComplexS r -> ComplexS r -> ComplexS r
+> (CS (a , b)) +. (CS (x , y))  =  CS ((a + x) , (b + y))
 
 \noindent
 or we can build a datatype of ``syntactic'' complex numbers from the
@@ -259,7 +280,7 @@ the next section.
 
 Exercises:
 \begin{itemize}
-\item implement |(*.)| for |ComplexD|
+\item implement |(*.)| for |ComplexS|
 \end{itemize}
 
 
@@ -282,8 +303,13 @@ The syntactic expressions can later be evaluated to semantic values:
 
 > evalE :: ComplexE -> ComplexD
 
-We have seen the symbol |i|, an embedding from |REAL|, plus and times
-and we can collect these in one recursive datatype as follows:
+The datatype |ComplexE| should collect ways of building syntactic
+expression representing complex numbers and we have so far seen
+%
+the symbol |i|, an embedding from |REAL|, plus and times.
+%
+We make these four \emph{constructors} in one recursive datatype as
+follows:
 
 > data ComplexE  =  ImagUnit
 >                |  ToComplex REAL
@@ -291,13 +317,18 @@ and we can collect these in one recursive datatype as follows:
 >                |  Times  ComplexE  ComplexE
 >  deriving (Eq, Show)
 
-> evalE ImagUnit         = CD (0 , 1)
-> evalE (ToComplex r)    = CD (r , 0)
+And we can write the evaluator by induction over the syntax tree:
+
+> evalE ImagUnit         = CS (0 , 1)
+> evalE (ToComplex r)    = CS (r , 0)
 > evalE (Plus  c1 c2)    = evalE c1   +.  evalE c2
 > evalE (Times c1 c2)    = evalE c1   *.  evalE c2
 
-> fromCD :: ComplexD -> ComplexE
-> fromCD (CD (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
+We also define a function to embed a semantic complex number in the
+syntax:
+
+> fromCS :: ComplexD -> ComplexE
+> fromCS (CS (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 
 > testE1 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
 > testE2 = Times ImagUnit ImagUnit
@@ -307,13 +338,16 @@ numbers.
 %
 The simplest is perhaps |square i = -1| from the start of the lecture,
 
+> propImagUnit :: Bool
 > propImagUnit = Times ImagUnit ImagUnit === ToComplex (-1)
+>
 > (===) :: ComplexE -> ComplexE -> Bool
 > z === w  =  evalE z == evalE w
 
-and that |fromCD| is an embedding:
+and that |fromCS| is an embedding:
 
-> propFromCD c =  evalE (fromCD c) == c
+> propFromCS :: ComplexD -> Bool
+> propFromCS c =  evalE (fromCS c) == c
 
 but we also have that |Plus| and |Times| should be associative and
 commutative and |Times| should distribute over |Plus|:
@@ -360,9 +394,9 @@ QuickCheck can be used to find small examples - I like this one best:
 
 For completeness: this is the answer:
 
-<   (  2.3333333333333335
-<   ,  2.333333333333333,
-<   ,  4.440892098500626e-16
+<   (  2.3333333333333335     -- Notice the five at the end
+<   ,  2.333333333333333,     -- which is not present here.
+<   ,  4.440892098500626e-16  -- The difference
 <   ,  False)
 
 This is actually the underlying reason why some of the laws failed for
@@ -374,22 +408,23 @@ type for |REAL|.
 %
 At the same time we generalise |ToComplex| to |FromCartesian|:
 
-> data ComplexS r  =  FromCartesian r r
->                  |  ComplexS r  :+:  ComplexS r
->                  |  ComplexS r  :*:  ComplexS r
+> data ComplexP r  =  FromCartesian r r
+>                  |  ComplexP r  :+:  ComplexP r
+>                  |  ComplexP r  :*:  ComplexP r
 
-> toComplexS :: Num a => a -> ComplexS a
-> toComplexS x = FromCartesian x (fromInteger 0)
+> toComplexP :: Num a => a -> ComplexP a
+> toComplexP x = FromCartesian x (fromInteger 0)
 
-> evalCS (FromCartesian x y) = CD (x, y)
-> evalCS (l :+: r) = evalCS l +. evalCS r
-> evalCS (l :*: r) = evalCS l *. evalCS r
+> evalCP :: Num r => ComplexP r -> ComplexS r
+> evalCP (FromCartesian x y) = CS (x , y)
+> evalCP (l :+: r) = evalCP l +. evalCP r
+> evalCP (l :*: r) = evalCP l *. evalCP r
 
-> instance Num a => Num (ComplexS a) where
+> instance Num a => Num (ComplexP a) where
 >    (+) = (:+:)
 >    (*) = (:*:)
->    fromInteger = toComplexS . fromInteger
->    -- and a few more operations
+>    fromInteger = toComplexP . fromInteger
+>    -- TODO: add a few more operations
 
 
 ----------------------------------------------------------------
@@ -399,11 +434,11 @@ At the same time we generalise |ToComplex| to |FromCartesian|:
 > propAssocAdd :: (Eq a, Num a) => a -> a -> a -> Bool
 > propAssocAdd = propAssocA (+)
 
-> (*.) :: ComplexD -> ComplexD -> ComplexD
-> CD (ar, ai) *. CD (br, bi) = CD (ar*br - ai*bi, ar*bi + ai*br)
+> (*.) :: Num r =>  ComplexS r -> ComplexS r -> ComplexS r
+> CS (ar, ai) *. CS (br, bi) = CS (ar*br - ai*bi, ar*bi + ai*br)
 
-> instance Show ComplexD where
->   show = showCD
+> instance Show r => Show (ComplexS r) where
+>   show = showCS
 
-> showCD :: ComplexD -> String
-> showCD (CD (x, y)) = show x ++ " + " ++ show y ++ "i"
+> showCS :: Show r => ComplexS r -> String
+> showCS (CS (x, y)) = show x ++ " + " ++ show y ++ "i"
