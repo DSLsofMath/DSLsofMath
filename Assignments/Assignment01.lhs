@@ -1,35 +1,55 @@
-Assignment 1: Translating Peano arithmetic to (finite) set theory
------------------------------------------------------------------
+# Assignment 1
 
-In this assignment, we explore the role of set theory as a universal
-modelling language, by setting up an FOL for (finite) sets and using
-it to interpret the FOL of arithmetic.
+In this assignment the focus is on the following three learning outcomes:
 
-1.  Define an FOL for finite sets, containing
-      + one name: Empty
-      + function symbols: Union, Intersection, Singleton
+* organize areas of mathematics in DSL terms
+* develop adequate notation for mathematical concepts
+* discuss and compare different software implementations of mathematical concepts
+
+## TODO: title
+
+In this assignment you will build up a domain specific language (a
+DSL) for finite sets. Define a datatype SET v for the abstract syntax
+of set expressions with variables of type v and a datatype PRED for
+predicates over set expressions.
+
+1.  SET should have constructors for
+      + the Empty set
+      + Union, Intersection, Singleton
           - you can also try Powerset
-      + two predicates: Elem, Subset
+    PRED should have contructors for
+      + the two predicates Elem, Subset
+      + the logical connectives And, Or, Implies, Not
 
-2.  Interpret the language using the Haskell datatype Set.  Use the
-eval and check functions from yesterday's exercises session.  Hint:
-you will not be able to use, e.g., Set String as a domain (try it!).
-Think instead of Rose trees as arbitrarily deep nested lists, and come
-up with something similar for sets.
+2.  A possible semantic domain for sets is
+
+> newtype Set = S [Set]
+
+    Implement the evaluation functions
+
+> eval  :: Eq v => Env v Set ->  SET -> Set
+> check :: Eq v => Env v Set ->  PRED v -> Bool
+
+> type Env var dom = [(var , dom)]
 
 3.  The von Neumann encoding of natural numbers as sets is defined
 recursively as
 
-<   vonNeumann 0        =  empty
-<   vonNeumann (n + 1)  =  union (vonNeumann n) (singleton (vonNeumann n))
+<   vonNeumann 0        =  Empty
+<   vonNeumann (n + 1)  =  Union (vonNeumann n) (Singleton (vonNeumann n))
 
-Note that for n1 <= n2 we have isSubsetOf (vonNeumann n1) (vonNeumann n2).
+Implement vonNeumann and explore, explain and implement the following
+"pseudocode" claims as functions in Haskell:
 
-Use the von Neumann encoding to translate terms and WFFs from the
-language of arithmetic into that of finite sets.  Use the check
-function for finite sets for WFFs about natural numbers.
+    + claim1 n1 n2  =  "(n1 <= n2)  implies  (n1 ⊆ n2)"
+    + claim2 n      =  "n = {0, 1, ..., n − 1}"
 
-- *Submission*: Assignments are to be submitted via [Fire](https://xdat09.ce.chalmers.se/2016/lp3/dslm/).
-- *Deadline*:   Tuesday, 2016-02-02, 23:59.
+You need to insert some embeddings and types and you should use the
+eval and check functions. (For debugging it is useful to implement a
+show function for Set which uses numerals to show the von Neumann
+naturals.)
+
+- *Submission*: Assignments are to be submitted via [Fire](TODO).
+- *Deadline*:   Tuesday, 2017-01-31, 23:59.
 - *Grading*: Discussions with each of the teams during the exercises
-  session of Thursday, 2016-02-04.
+  session of Friday, 2017-02-03.

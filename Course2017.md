@@ -4,9 +4,10 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
-2016-09-04: Starting a new course page for the 2017 instance of the
-DSLsofMath course. The 2016 instance is available
-[as the Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).
+* 2017-01-15: [DSLsofMath course memo 2017](Course-memo/DSLsofMath.md)
+* 2016-09-04: Starting a new course page for the 2017 instance of the
+  DSLsofMath course. The 2016 instance is available
+  [as the Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).
 
 Aim
 ---
@@ -34,20 +35,23 @@ Schedule ([html](https://se.timeedit.net/web/chalmers/db1/public/riqQ7615X80Z06Q
 
 - Exam: 2017-03-14 afternoon.  Re-exam: 2017-08-22 afternoon.
 
-Assignments (TBD)
+Assignments
 -----------
-
-**Note: the information below is based on the 2016 instance and not yet final.**
 
 The assignments are to be solved in **teams of three**.
 
 - [Assignment01](Assignments/Assignment01.lhs), due 2017-01-31
 
-- [Assignment02](Assignments/Assignment02.lhs),
+- **To be released in a few days** [Assignment02](Assignments/Assignment02.lhs),
   [pdf file](Assignments/Assignment02.pdf), due 2017-02-28
 
-Lectures (updates from 2016 are ongoing work)
+Lectures
 --------
+
+* Week 1: [Course memo](Course-memo/DSLsofMath.md) + [Lecture notes](L/01/L01.lhs)
+
+Updates from 2016 are ongoing work - the 2016 lectures are linked below.
+
 *Note*: the summaries are written as a mixture of markdown and lhs.
 To compile them, you can use a suitably modified form of this
 [Makefile](comp/Makefile) and the [bib](comp/ref.bib) and

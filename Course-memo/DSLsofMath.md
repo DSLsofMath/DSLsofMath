@@ -45,17 +45,17 @@ will be provided in the lecture summaries.
 
 ## Course setup
 
-* Lectures:
+* Lectures (Mondays 10-12 in EB, and Mondays 15-17 in EF)
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
 	* Type classes, derivatives, derivation,
     * Domain Specific Languages and algebraic structures, algebras, homomorphisms
     * Polynomials, series, power series
-    * Power series and differential equations, exp, sin, cos, log, Taylor series, ...
+    * Power series and differential equations, exp, sin, log, Taylor series, ...
     * Laplace transform
     * Linear algebra
-* Weekly exercises
+* Weekly exercises (Wednesdays 13-15 and Fridays 13-15 in EDIT2505)
 * Assignments: two compulsory hand-in assignments in groups of three students
     * Grading: Pass or fail
 * Written exam
