@@ -1,4 +1,5 @@
-# Assignment 1
+Assignment 1
+============
 
 In this assignment the focus is on the following three learning outcomes:
 
@@ -6,7 +7,8 @@ In this assignment the focus is on the following three learning outcomes:
 * develop adequate notation for mathematical concepts
 * discuss and compare different software implementations of mathematical concepts
 
-## TODO: title
+DSLs, sets and von Neumann
+--------------------------
 
 In this assignment you will build up a domain specific language (a
 DSL) for finite sets. Define a datatype SET v for the abstract syntax
