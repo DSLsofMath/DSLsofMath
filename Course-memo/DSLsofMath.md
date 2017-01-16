@@ -1,8 +1,10 @@
 # Domain-Specific Languages of Mathematics
 
-The 2017 instance of a 7.5hec BSc level course at Chalmers and GU.
+Course-memo for the 2017 instance of a 7.5hec BSc course at Chalmers and GU.
 
 Homepage: https://github.com/DSLsofMath/DSLsofMath/
+
+Course codes: DAT326 / DIT982
 
 ## Course team
 
@@ -40,8 +42,8 @@ students at both Chalmers and GU.
 
 ## Course material
 
-There is no course textbook.  We will use many sources: references
-will be provided in the lecture summaries.
+There is no course textbook.  References will be provided in the
+lecture summaries.
 
 ## Course setup
 
@@ -56,7 +58,7 @@ will be provided in the lecture summaries.
     * Laplace transform
     * Linear algebra
 * Weekly exercises (Wednesdays 13-15 and Fridays 13-15 in EDIT2505)
-* Assignments: two compulsory hand-in assignments in groups of three students
+* Assignments: two compulsory hand-in assignments in groups of three
     * Grading: Pass or fail
 * Written exam
     * Grading: Chalmers: U, 3, 4, 5; GU: U, G, VG
