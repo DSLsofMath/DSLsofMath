@@ -11,19 +11,24 @@ DSLs, sets and von Neumann
 --------------------------
 
 In this assignment you will build up a domain specific language (a
-DSL) for finite sets. Define a datatype SET v for the abstract syntax
-of set expressions with variables of type v and a datatype PRED for
-predicates over set expressions.
+DSL) for finite sets. The domain you should model is pure set theory
+where all members are sets.
+
+Define a datatype SET v for the abstract syntax of set expressions
+with variables of type v and a datatype PRED for predicates over pure
+set expressions.
 
 1.  SET should have constructors for
       + the Empty set
-      + Union, Intersection, Singleton
+      + the one-element set constructor Singleton
+      + Union, and Intersection
           - you can also try Powerset
+      + set-valued variables (Var :: v -> SET v)
     PRED should have contructors for
       + the two predicates Elem, Subset
       + the logical connectives And, Or, Implies, Not
 
-2.  A possible semantic domain for sets is
+2.  A possible semantic domain for pure sets is
 
 > newtype Set = S [Set]
 
@@ -33,6 +38,10 @@ predicates over set expressions.
 > check :: Eq v => Env v Set ->  PRED v -> Bool
 
 > type Env var dom = [(var , dom)]
+
+    Note that the type parameter v to SET is for the type of variables
+    in the set expressions, not the type of elements of the sets. (You
+    can think of pure set theory as "untyped" or "unityped".)
 
 3.  The von Neumann encoding of natural numbers as sets is defined
 recursively as
