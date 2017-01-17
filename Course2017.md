@@ -4,6 +4,7 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+* 2017-01-17: Schedule change: the exercise sessions will be in ED2480 on Wednesdays and in ED3582 on Fridays.
 * 2017-01-15: [DSLsofMath course memo 2017](Course-memo/DSLsofMath.md)
 * 2016-09-04: Starting a new course page for the 2017 instance of the
   DSLsofMath course. The 2016 instance is available
@@ -31,7 +32,7 @@ Schedule ([html](https://se.timeedit.net/web/chalmers/db1/public/riqQ7615X80Z06Q
 --------
 - Lectures Mondays 10-12 (in EB) and Mondays 15-17 (in EF)
 
-- Exercises Wednesdays 13-15 and Fridays 13-15 (in EDIT2505)
+- Exercises Wednesdays 13-15 (ED2480) and Fridays 13-15 (ED3582)
 
 - Exam: 2017-03-14 afternoon.  Re-exam: 2017-08-22 afternoon.
 

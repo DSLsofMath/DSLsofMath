@@ -57,7 +57,7 @@ lecture summaries.
     * Power series and differential equations, exp, sin, log, Taylor series, ...
     * Laplace transform
     * Linear algebra
-* Weekly exercises (Wednesdays 13-15 and Fridays 13-15 in EDIT2505)
+* Weekly exercises (Wednesdays 13-15 and Fridays 13-15)
 * Assignments: two compulsory hand-in assignments in groups of three
     * Grading: Pass or fail
 * Written exam
