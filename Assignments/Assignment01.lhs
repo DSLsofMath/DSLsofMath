@@ -29,7 +29,7 @@ predicates over set expressions.
 
     Implement the evaluation functions
 
-> eval  :: Eq v => Env v Set ->  SET -> Set
+> eval  :: Eq v => Env v Set ->  SET v -> Set
 > check :: Eq v => Env v Set ->  PRED v -> Bool
 
 > type Env var dom = [(var , dom)]
