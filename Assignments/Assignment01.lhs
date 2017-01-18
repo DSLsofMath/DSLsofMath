@@ -60,7 +60,7 @@ eval and check functions. (For debugging it is useful to implement a
 show function for Set which uses numerals to show the von Neumann
 naturals.)
 
-- *Submission*: Assignments are to be submitted via [Fire](TODO).
+- *Submission*: Assignments are to be submitted via [Fire](https://dsls-lp3-17.frs.cse.chalmers.se/login).
 - *Deadline*:   Tuesday, 2017-01-31, 23:59.
 - *Grading*: Discussions with each of the teams during the exercises
   session of Friday, 2017-02-03.
