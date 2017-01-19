@@ -51,49 +51,15 @@ Lectures
 
 * Week 1: [Course memo](Course-memo/DSLsofMath.md) + [Lecture notes](L/01/L01.lhs)
 
-Updates from 2016 are ongoing work - the 2016 lectures are linked below.
+Updates from 2016 are ongoing work - the 2016 lectures are linked from
+the [2016 homepage](2016/Course2016.md).
 
-*Note*: the summaries are written as a mixture of markdown and lhs.
-To compile them, you can use a suitably modified form of this
-[Makefile](comp/Makefile) and the [bib](comp/ref.bib) and
-[template.tex](comp/template.tex) files.
-
-- [Lecture 01, Introduction](2016/Lectures/Lecture01.lhs).  [Slides](2016/Lectures/slides01.pdf).
-- [Lecture 02, Logic and Functional Programming, Part I](2016/Lectures/Lecture02.lhs).
-- [Lecture 03, Logic and Functional Programming, Part II](2016/Lectures/Lecture03.lhs).
-- [Lecture 04, Proofs and Programs in Mathematics](2016/Lectures/Lecture04.lhs).
-- [Lecture 05, Types in Mathematics](2016/Lectures/Lecture05.lhs).
-- [Lecture 06, Types in Mathematics, Part II](2016/Lectures/Lecture06.lhs).
-- [Lecture 07, Algebraic Structures and DSLs](2016/Lectures/Lecture09.lhs). Some associated code is also [available](code/).
-- [Lecture 08, Polynomials and Power Series](2016/Lectures/Lecture10.lhs).
-- [Lecture 09, Power Series and Differential Equations](2016/Lectures/Lecture11.lhs).
-- [Lecture 10, The Exponential Function, Taylor Series](2016/Lectures/Lecture12.lhs).
-- Lecture 11, TBD: Linear algebra (CeIo).
-- Lecture 12, TBD: Linear algebra (CeIo).
-- [Lecture 13, The Laplace Transform](2016/Lectures/Lecture13.lhs). (CeIo).
-- [Lecture 14, Basic Concepts of Analysis](2016/Lectures/BasicConcepts.lhs). (CeIo).
-
-Exercises (TBD)
+Exercises
 ---------
 
-- [Exercises for 2016-01-20](Exercises/Exercises-2016-01-20.lhs).
-  [Solutions](Exercises/FOL.lhs) to selected exercises; you can use
-  these for the assignment if you wish.
-  [Arithmetic language](Exercises/Arithmetic.lhs) and its intepretation
-  into the domain of type 'Integer'.
-- [Exercises for 2016-01-21](Exercises/Exercises-2016-01-21.lhs).
-- [Exercises for 2016-01-27--28](Exercises/Exercises-2016-01-27--28.lhs). You will need the file [AbstractFOL.lhs](Exercises/AbstractFOL.lhs).
-- [Exercises for 2016-02-04](Exercises/Exercises-2016-02-04.lhs).
-- [Exercises for 2016-02-10--11](Exercises/Exercises-2016-02-10--11.md).
-- [Exercises for 2016-02-17](Exercises/Exercises-2016-02-17.lhs).
-- [Exercises for 2016-02-18](Exercises/Exercises-2016-02-18.lhs).
-  [Example solutions](Exercises/Ring.hs).
-- [Exercises for 2016-02-24 and 25](Exercises/Exercises-2016-02-24--25.lhs).
-- The exercises session of 2016-03-09 will be devoted to the solutions
-  of the [practice exam](Exam/PracticeExam.pdf).
-  Partial example [solutions](Exam/MockE.hs).
-- An example of [typing mathematical
-  entities](2016/Lectures/TypingMaths.lhs), similar to exam question 4.
+See the [E/ subdirectory](E/README.md)
+
+For the impatient: look at the [2016 homepage](2016/Course2016.md).
 
 Literature
 ----------
