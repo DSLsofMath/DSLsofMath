@@ -1,3 +1,4 @@
-TODO Redo the first one (find a suitable variation fitting with the new first lectures)
+# DSLsofMath hand-in assignments
 
-Keep: Assignment2 is very nice
+* Assignment 1: [lhs](Assignment01.lhs), [pdf](Assignment01.pdf)
+* Assignment 2: TBD
