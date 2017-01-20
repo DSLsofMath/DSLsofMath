@@ -32,7 +32,7 @@ Schedule ([html](https://se.timeedit.net/web/chalmers/db1/public/riqQ7615X80Z06Q
 --------
 - Lectures Mondays 10-12 (in EB) and Mondays 15-17 (in EF)
 
-- Exercises Wednesdays 13-15 (ED2480) and Fridays 13-15 (ED3582)
+- Exercises Wednesdays 13-15 ([ED2480](http://maps.chalmers.se/#f30759ca-7f8b-4903-afe5-412a66e64320)) and Fridays 13-15 ([ED3582](http://maps.chalmers.se/#315adc60-539c-4f0a-bb4d-3088714bb881))
 
 - Exam: 2017-03-14 afternoon.  Re-exam: 2017-08-22 afternoon.
 
