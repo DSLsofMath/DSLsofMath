@@ -103,7 +103,7 @@ Some important references:
 - **Programming Languages**, Mike Spivey.  Lecture notes of a course
   given at the CS Department in Oxford.  Useful material for
   understanding the design and implementation of embedded DSLs.
-  [URL](http://spivey.oriel.ox.ac.uk/corner/Programming_Languages)
+  [URL](http://spivey.oriel.ox.ac.uk/corner/Programming_languages)
 
 - **Domain Specific Languages**, Martin Fowler, 2011.
   [URL](http://martinfowler.com/books/dsl.html)
