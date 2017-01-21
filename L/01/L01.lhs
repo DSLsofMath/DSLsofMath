@@ -10,7 +10,9 @@ language Haskell and
 the code for this lecture is placed in a module called
 |DSLsofMath.L01| that starts here:
 
-> module DSLsofMath.L01 where
+\begin{code}
+module DSLsofMath.L01 where
+\end{code}
 
 \subsection{A case study: complex numbers}
 
@@ -55,10 +57,12 @@ For the moment, we introduce a type for the value |i|, and, since we
 know nothing about other values, we make |i| the only member of this
 type:
 
-> data ImagUnits = I
+\begin{code}
+data ImagUnits = I
 
-> i :: ImagUnits
-> i = I
+i :: ImagUnits
+i = I
+\end{code}
 
 We use a capital |I| in the |data| declaration because a lowercase
 constructor name would cause a syntax error in Haskell.
@@ -85,22 +89,28 @@ A profitable way of dealing with such concrete syntax in functional
 programming is to introduce an abstract representation of it in the
 form of a datatype:
 
-> data ComplexA  =  CPlus1 REAL REAL ImagUnits
->                |  CPlus2 REAL ImagUnits REAL
+\begin{code}
+data ComplexA  =  CPlus1 REAL REAL ImagUnits
+               |  CPlus2 REAL ImagUnits REAL
+\end{code}
 
 We can give the translation from the abstract syntax to the concrete
 syntax as a function |showCA|:
 
-> showCA                ::  ComplexA -> String
-> showCA (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ "i"
-> showCA (CPlus2 x i y)  =  show x ++ " + " ++ "i" ++ show y
+\begin{code}
+showCA                ::  ComplexA -> String
+showCA (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ "i"
+showCA (CPlus2 x i y)  =  show x ++ " + " ++ "i" ++ show y
+\end{code}
 
 Notice that the type |REAL| is not implemented yet and it is not
 really even exactly implementable but we want to focus on complex
 numbers so we will approximate |REAL| by double precision floating
 point numbers for now.
 
-> type REAL = Double
+\begin{code}
+type REAL = Double
+\end{code}
 
 The text continues with examples:
 
@@ -121,18 +131,22 @@ that |a - bi| can be understood as an abbreviation of |a + (-b)i|.
 
 With this provision, in our notation the examples are written as:
 
-> testC1 :: [ComplexA]
-> testC1 =  [  CPlus1 3 2 I  ,    CPlus1 (7/2) (-2/3) I
->           ,  CPlus2 0 I pi ,    CPlus1 (-3) 0 I
->           ]
-> testS1 = map showCA testC1
+\begin{code}
+testC1 :: [ComplexA]
+testC1 =  [  CPlus1 3 2 I  ,    CPlus1 (7/2) (-2/3) I
+          ,  CPlus2 0 I pi ,    CPlus1 (-3) 0 I
+          ]
+testS1 = map showCA testC1
+\end{code}
 
 We interpret the sentence ``The last of these examples \ldots'' to
 mean that there is an embedding of the real numbers in |ComplexA|,
 which we introduce explicitly:
 
-> toComplex :: REAL -> ComplexA
-> toComplex x = CPlus1 x 0 i
+\begin{code}
+toComplex :: REAL -> ComplexA
+toComplex x = CPlus1 x 0 i
+\end{code}
 
 Again, at this stage there are many open questions.
 %
@@ -168,12 +182,16 @@ Given that |a + ib| is only ``syntactic sugar'' for |a + bi|, we can
 simplify our representation for the abstract syntax, eliminating one
 of the constructors:
 
-> data ComplexB = CPlusB REAL REAL ImagUnits
+\begin{code}
+data ComplexB = CPlusB REAL REAL ImagUnits
+\end{code}
 
 In fact, since it doesn't look as though the type |ImagUnits| will
 receive more elements, we can dispense with it altogether:
 
-> data ComplexC = CPlusC REAL REAL
+\begin{code}
+data ComplexC = CPlusC REAL REAL
+\end{code}
 
 \noindent
 (The renaming of the constructor to |CPlusC| serves as a guard against
@@ -206,8 +224,10 @@ This shows that complex numbers are, in fact, isomorphic with pairs of
 real numbers, a point which we can make explicit by re-formulating the
 definition in terms of a |newtype|:
 
-> type ComplexD = ComplexSem REAL
-> newtype ComplexSem r = CS (r , r)    deriving Eq
+\begin{code}
+type ComplexD = ComplexSem REAL
+newtype ComplexSem r = CS (r , r)    deriving Eq
+\end{code}
 
 The point of the somewhat confusing discussion of using ``letters'' to
 stand for complex numbers is to introduce a substitute for
@@ -229,11 +249,13 @@ stand for complex numbers is to introduce a substitute for
 %
 This is rather similar to Haskell's \emph{as-patterns}:
 
-> re :: ComplexSem r      ->  r
-> re z @ (CS (x , y))   =   x
+\begin{code}
+re :: ComplexSem r      ->  r
+re z @ (CS (x , y))   =   x
 
-> im :: ComplexSem r      ->  r
-> im z @ (CS (x , y))   =   y
+im :: ComplexSem r      ->  r
+im z @ (CS (x , y))   =   y
+\end{code}
 
 \noindent
 a potential source of confusion being that the symbol |z| introduced
@@ -262,8 +284,10 @@ numbers becomes much richer.
 We can describe these operations in a \emph{shallow embedding} in
 terms of the concrete datatype |ComplexSem|, for example:
 
-> (+.) :: Num r =>  ComplexSem r -> ComplexSem r -> ComplexSem r
-> (CS (a , b)) +. (CS (x , y))  =  CS ((a + x) , (b + y))
+\begin{code}
+(+.) :: Num r =>  ComplexSem r -> ComplexSem r -> ComplexSem r
+(CS (a , b)) +. (CS (x , y))  =  CS ((a + x) , (b + y))
+\end{code}
 
 \noindent
 or we can build a datatype of ``syntactic'' complex numbers from the
@@ -293,7 +317,9 @@ expressions.
 %
 The syntactic expressions can later be evaluated to semantic values:
 
-> evalE :: ComplexE -> ComplexD
+\begin{code}
+evalE :: ComplexE -> ComplexD
+\end{code}
 
 The datatype |ComplexE| should collect ways of building syntactic
 expression representing complex numbers and we have so far seen
@@ -303,50 +329,62 @@ the symbol |i|, an embedding from |REAL|, plus and times.
 We make these four \emph{constructors} in one recursive datatype as
 follows:
 
-> data ComplexE  =  ImagUnit
->                |  ToComplex REAL
->                |  Plus   ComplexE  ComplexE
->                |  Times  ComplexE  ComplexE
->  deriving (Eq, Show)
+\begin{code}
+data ComplexE  =  ImagUnit
+               |  ToComplex REAL
+               |  Plus   ComplexE  ComplexE
+               |  Times  ComplexE  ComplexE
+ deriving (Eq, Show)
+\end{code}
 
 And we can write the evaluator by induction over the syntax tree:
 
-> evalE ImagUnit         = CS (0 , 1)
-> evalE (ToComplex r)    = CS (r , 0)
-> evalE (Plus  c1 c2)    = evalE c1   +.  evalE c2
-> evalE (Times c1 c2)    = evalE c1   *.  evalE c2
+\begin{code}
+evalE ImagUnit         = CS (0 , 1)
+evalE (ToComplex r)    = CS (r , 0)
+evalE (Plus  c1 c2)    = evalE c1   +.  evalE c2
+evalE (Times c1 c2)    = evalE c1   *.  evalE c2
+\end{code}
 
 We also define a function to embed a semantic complex number in the
 syntax:
 
-> fromCS :: ComplexD -> ComplexE
-> fromCS (CS (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
+\begin{code}
+fromCS :: ComplexD -> ComplexE
+fromCS (CS (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 
-> testE1 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
-> testE2 = Times ImagUnit ImagUnit
+testE1 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
+testE2 = Times ImagUnit ImagUnit
+\end{code}
 
 There are certain laws we would like to hold for operations on complex
 numbers.
 %
 The simplest is perhaps |square i = -1| from the start of the lecture,
 
-> propImagUnit :: Bool
-> propImagUnit = Times ImagUnit ImagUnit === ToComplex (-1)
+\begin{code}
+propImagUnit :: Bool
+propImagUnit = Times ImagUnit ImagUnit === ToComplex (-1)
 
-> (===) :: ComplexE -> ComplexE -> Bool
-> z === w  =  evalE z == evalE w
+(===) :: ComplexE -> ComplexE -> Bool
+z === w  =  evalE z == evalE w
+\end{code}
 
 and that |fromCS| is an embedding:
 
-> propFromCS :: ComplexD -> Bool
-> propFromCS c =  evalE (fromCS c) == c
+\begin{code}
+propFromCS :: ComplexD -> Bool
+propFromCS c =  evalE (fromCS c) == c
+\end{code}
 
 but we also have that |Plus| and |Times| should be associative and
 commutative and |Times| should distribute over |Plus|:
 
-> propAssocPlus  x y z  =  Plus (Plus x y) z === Plus x (Plus y z)
-> propAssocTimes x y z  =  Times (Times x y) z === Times x (Times y z)
-> propDistTimesPlus x y z = Times x (Plus y z) === Plus (Times x y) (Times x z)
+\begin{code}
+propAssocPlus  x y z  =  Plus (Plus x y) z === Plus x (Plus y z)
+propAssocTimes x y z  =  Times (Times x y) z === Times x (Times y z)
+propDistTimesPlus x y z = Times x (Plus y z) === Plus (Times x y) (Times x z)
+\end{code}
 
 These three laws actually fail, but not because of the implementation
 of |evalE|.
@@ -354,8 +392,10 @@ of |evalE|.
 We will get back to that later but let us first generalise the
 properties a bit by making the operator a parameter:
 
-> propAssocA :: Eq a => (a -> a -> a) -> a -> a -> a -> Bool
-> propAssocA (+?) x y z =  (x +? y) +? z == x +? (y +? z)
+\begin{code}
+propAssocA :: Eq a => (a -> a -> a) -> a -> a -> a -> Bool
+propAssocA (+?) x y z =  (x +? y) +? z == x +? (y +? z)
+\end{code}
 
 Note that |propAssocA| is a higher order function: it takes a function
 (a binary operator) as its first parameter.
@@ -372,24 +412,30 @@ In Haskell there is a type class |Num| for different types of
 We can try out |propAssocA| for a few of them.
 %
 
-> propAssocAInt    = propAssocA (+) :: Int -> Int -> Int -> Bool
-> propAssocADouble = propAssocA (+) :: Double -> Double -> Double -> Bool
+\begin{code}
+propAssocAInt    = propAssocA (+) :: Int -> Int -> Int -> Bool
+propAssocADouble = propAssocA (+) :: Double -> Double -> Double -> Bool
+\end{code}
 
 The first is fine, but the second fails due to rounding errors.
 %
 QuickCheck can be used to find small examples - I like this one best:
 
-> notAssocEvidence :: (Double , Double , Double , Bool)
-> notAssocEvidence = (lhs , rhs , lhs-rhs , lhs==rhs)
->   where  lhs = (1+1)+1/3
->          rhs =  1+(1+1/3)
+\begin{code}
+notAssocEvidence :: (Double , Double , Double , Bool)
+notAssocEvidence = (lhs , rhs , lhs-rhs , lhs==rhs)
+  where  lhs = (1+1)+1/3
+         rhs =  1+(1+1/3)
+\end{code}
 
 For completeness: this is the answer:
 
-<   (  2.3333333333333335     -- Notice the five at the end
-<   ,  2.333333333333333,     -- which is not present here.
-<   ,  4.440892098500626e-16  -- The difference
-<   ,  False)
+\begin{spec}
+  (  2.3333333333333335     -- Notice the five at the end
+  ,  2.333333333333333,     -- which is not present here.
+  ,  4.440892098500626e-16  -- The difference
+  ,  False)
+\end{spec}
 
 This is actually the underlying reason why some of the laws failed for
 complex numbers: the approximative nature of |Double|.
@@ -400,27 +446,29 @@ type for |REAL|.
 %
 At the same time we generalise |ToComplex| to |FromCartesian|:
 
-> data ComplexSyn r  =  FromCartesian r r
->                    |  ComplexSyn r  :+:  ComplexSyn r
->                    |  ComplexSyn r  :*:  ComplexSyn r
+\begin{code}
+data ComplexSyn r  =  FromCartesian r r
+                   |  ComplexSyn r  :+:  ComplexSyn r
+                   |  ComplexSyn r  :*:  ComplexSyn r
 
-> toComplexSyn :: Num a => a -> ComplexSyn a
-> toComplexSyn x = FromCartesian x (fromInteger 0)
+toComplexSyn :: Num a => a -> ComplexSyn a
+toComplexSyn x = FromCartesian x (fromInteger 0)
 
-> evalCSyn :: Num r => ComplexSyn r -> ComplexSem r
-> evalCSyn (FromCartesian x y) = CS (x , y)
-> evalCSyn (l :+: r) = evalCSyn l +. evalCSyn r
-> evalCSyn (l :*: r) = evalCSyn l *. evalCSyn r
+evalCSyn :: Num r => ComplexSyn r -> ComplexSem r
+evalCSyn (FromCartesian x y) = CS (x , y)
+evalCSyn (l :+: r) = evalCSyn l +. evalCSyn r
+evalCSyn (l :*: r) = evalCSyn l *. evalCSyn r
 
-> instance Num a => Num (ComplexSyn a) where
->    (+) = (:+:)
->    (*) = (:*:)
->    fromInteger = fromIntegerCS
->    -- TODO: add a few more operations (hint: extend ComplexSyn as well)
->    -- TODO: also extend eval
+instance Num a => Num (ComplexSyn a) where
+   (+) = (:+:)
+   (*) = (:*:)
+   fromInteger = fromIntegerCS
+   -- TODO: add a few more operations (hint: extend ComplexSyn as well)
+   -- TODO: also extend eval
 
-> fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
-> fromIntegerCS = toComplexSyn . fromInteger
+fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
+fromIntegerCS = toComplexSyn . fromInteger
+\end{code}
 
 \subsection{TODO[PaJa]: Textify}
 
@@ -510,9 +558,11 @@ interpretations of the same type.  In the example of the Laplace
 transformation, this leads to
 
 
-< type T  =  Real
-< type S  =  CC
-< Lap : (T -> CC) -> (S -> CC)
+\begin{spec}
+type T  =  Real
+type S  =  CC
+Lap : (T -> CC) -> (S -> CC)
+\end{spec}
 
 \subsubsection{Other}
 
@@ -560,9 +610,9 @@ Table of examples of notation and abstract syntax for some complex numbers:
 The infix operator \verb+.+ in Haskell is an implementation of the
 mathematical operation of function composition.
 
-\begin{code}
+\begin{spec}
 f . g = \x -> f (g x)
-\end{code}
+\end{spec}
 
 The period is an ASCII approximation of the composition symbol $\circ{}$ typically
 used in mathematics. (The symbol $\circ{}$ is encoded as \verb"U+2218" and called RING
@@ -579,9 +629,9 @@ and functions (arrows) as directed edges:
 
 In Haskell we get the following type:
 
-\begin{code}
+\begin{spec}
 (.) :: (b->c) -> (a->b) -> (a->c)
-\end{code}
+\end{spec}
 
 which may take a while to get used to.
 
@@ -590,11 +640,11 @@ which may take a while to get used to.
 Near the end of the lecture notes there was an instance declaration
 including the following lines:
 
-\begin{code}
+\begin{spec}
 instance Num r => Num (ComplexSyn r) where
   -- ... several other methods and then
   fromInteger = toComplexSyn . fromInteger
-\end{code}
+\end{spec}
 
 This definition looks recursive, but it is not. To see why we need to
 expand the type and to do this I will introduce a name for the right
@@ -612,9 +662,9 @@ Integer -> ComplexSyn r|. The use of |fromInteger| at type |r| means
 that the full type of |fromIntC| must refer to the |Num| class. Thus
 we arrive at the full type:
 
-\begin{code}
+\begin{spec}
 fromIntC :: Num r =>   Integer -> ComplexSyn r
-\end{code}
+\end{spec}
 
 \subsubsection{type / newtype / data}
 
@@ -643,14 +693,14 @@ A simple example of the use of |newtype| in Haskell is to distinguish
 values which should be kept apart. A simple example is
 
 \begin{code}
-newtype Age   = A Int  -- Age in years
-newtype Shoe  = S Int  -- Shoe size (EU)
+newtype Age   = Ag Int  -- Age in years
+newtype Shoe  = Sh Int  -- Shoe size (EU)
 \end{code}
 
 Which introduces two new types, |Age| and |Shoe|, which both are
 internally represented by an |Int| but which are good to keep apart.
 
-The constructor functions |A :: Int -> Age| and |S :: Int -> Shoe| are
+The constructor functions |Ag :: Int -> Age| and |Sh :: Int -> Shoe| are
 used to translate from plain integers to ages and shoe sizes.
 
 In the lecture notes we used a newtype for the semantics of complex
@@ -702,19 +752,19 @@ If you want a contructor to be used as an infix operator you need to use
 symbol characters and start with a colon:
 
 \begin{code}
-data E = V String | E :+: E | E :*: E
+data E' = V' String | E' :+ E' | E' :* E'
 \end{code}
 
-Example values: |y = V "y"|, |e1 = y :+: y|, |e2 = x :*: e1|
+Example values: |y = V "y"|, |e1 = y :+ y|, |e2 = x :* e1|
 
 Finally, you can add one or more type parameters to make a whole family
 of datatypes in one go:
 
 \begin{code}
-data ComplexSyn v r  =  Var v
-                     |  FromCartesian r r
-                     |  ComplexSyn v r  :+:  ComplexSyn v r
-                     |  ComplexSyn v r  :*:  ComplexSyn v r
+data ComplexSy v r  =  Var v
+                    |  FromCart r r
+                    |  ComplexSy v r  :++  ComplexSy v r
+                    |  ComplexSy v r  :**  ComplexSy v r
 \end{code}
 
 The purpose of the first parameter |v| here is to enable a free choice
@@ -727,9 +777,9 @@ etc.).
 
 The type synonym
 
-\begin{code}
+\begin{spec}
 type Env v s = [(v,s)]
-\end{code}
+\end{spec}
 
 is one way of expressing a partial function from |v| to |s|.
 
@@ -744,8 +794,9 @@ The |Env|type is commonly used in evaluator functions for syntax trees
 containing variables:
 
 \begin{code}
-evalCP :: Env v (ComplexSem r) -> (ComplexSyn v r -> ComplexSem r)
-evalCP env (Var x) = case lookup x env of ...
+evalCP :: Eq v => Env v (ComplexSem r) -> (ComplexSy v r -> ComplexSem r)
+evalCP env (Var x) = case lookup x env of
+                       Just c -> undefined -- ...
 -- ...
 \end{code}
 
@@ -754,14 +805,16 @@ just like the evaluator does.
 
 \subsection{Some helper functions}
 
-> propAssocAdd :: (Eq a, Num a) => a -> a -> a -> Bool
-> propAssocAdd = propAssocA (+)
+\begin{code}
+propAssocAdd :: (Eq a, Num a) => a -> a -> a -> Bool
+propAssocAdd = propAssocA (+)
 
-> (*.) :: Num r =>  ComplexSem r -> ComplexSem r -> ComplexSem r
-> CS (ar, ai) *. CS (br, bi) = CS (ar*br - ai*bi, ar*bi + ai*br)
+(*.) :: Num r =>  ComplexSem r -> ComplexSem r -> ComplexSem r
+CS (ar, ai) *. CS (br, bi) = CS (ar*br - ai*bi, ar*bi + ai*br)
 
-> instance Show r => Show (ComplexSem r) where
->   show = showCS
+instance Show r => Show (ComplexSem r) where
+  show = showCS
 
-> showCS :: Show r => ComplexSem r -> String
-> showCS (CS (x, y)) = show x ++ " + " ++ show y ++ "i"
+showCS :: Show r => ComplexSem r -> String
+showCS (CS (x, y)) = show x ++ " + " ++ show y ++ "i"
+\end{code}

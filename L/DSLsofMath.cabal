@@ -2,7 +2,7 @@
 --  http://haskell.org/cabal/users-guide/
 
 name:                DSLsofMath
-version:             0.1.0.0
+version:             0.1.2.0
 -- synopsis:
 -- description:
 license:             BSD3
