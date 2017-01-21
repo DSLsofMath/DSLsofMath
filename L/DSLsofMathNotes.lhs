@@ -1,10 +1,13 @@
 \documentclass{article}
 \usepackage{a4wide}
-%%% Somewhat updated version of polycode.fm from the lhs2TeX dist.
-%include dslmagda.fmt
+\usepackage{amsmath}
+%include polycode.fmt
+%%% Somewhat updated version of polycode.fmt from the lhs2TeX dist.
+% %include dslmagda.fmt
 %%% Our own formatting directives
 %include dslm.format
 \usepackage{natbib}
+\usepackage{graphicx}
 \usepackage{url}
 %let submit = False
 %if submit

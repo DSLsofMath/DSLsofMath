@@ -6,14 +6,14 @@ We may also need the Haskell standard library version for some testing later:
 
 > import qualified Data.Complex as DC
 
-> instance (Num r, Arbitrary r) => Arbitrary (ComplexS r) where
+> instance (Num r, Arbitrary r) => Arbitrary (ComplexSem r) where
 >   arbitrary = arbitraryCS arbitrary
 >   shrink = shrinkCS shrink
 
-> arbitraryCS :: Gen (r , r) -> Gen (ComplexS r)
+> arbitraryCS :: Gen (r , r) -> Gen (ComplexSem r)
 > arbitraryCS arb = CS <$> arb
 
-> shrinkCS :: Num r => ((r , r) -> [(r , r)]) -> (ComplexS r -> [ComplexS r])
+> shrinkCS :: Num r => ((r , r) -> [(r , r)]) -> (ComplexSem r -> [ComplexSem r])
 > shrinkCS shr (CS (p@(x, y))) = [CS (0, 0), CS (x,0), CS (0, y)] ++ map CS (shr p)
 
 

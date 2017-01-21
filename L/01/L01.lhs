@@ -91,7 +91,7 @@ form of a datatype:
 We can give the translation from the abstract syntax to the concrete
 syntax as a function |showCA|:
 
-> showCA               ::  ComplexA -> String
+> showCA                ::  ComplexA -> String
 > showCA (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ "i"
 > showCA (CPlus2 x i y)  =  show x ++ " + " ++ "i" ++ show y
 
@@ -206,8 +206,8 @@ This shows that complex numbers are, in fact, isomorphic with pairs of
 real numbers, a point which we can make explicit by re-formulating the
 definition in terms of a |newtype|:
 
-> type ComplexD = ComplexS REAL
-> newtype ComplexS r = CS (r , r)    deriving Eq
+> type ComplexD = ComplexSem REAL
+> newtype ComplexSem r = CS (r , r)    deriving Eq
 
 The point of the somewhat confusing discussion of using ``letters'' to
 stand for complex numbers is to introduce a substitute for
@@ -229,10 +229,10 @@ stand for complex numbers is to introduce a substitute for
 %
 This is rather similar to Haskell's \emph{as-patterns}:
 
-> re :: ComplexS r      ->  r
+> re :: ComplexSem r      ->  r
 > re z @ (CS (x , y))   =   x
 
-> im :: ComplexS r      ->  r
+> im :: ComplexSem r      ->  r
 > im z @ (CS (x , y))   =   y
 
 \noindent
@@ -260,9 +260,9 @@ With the introduction of algebraic operations, the language of complex
 numbers becomes much richer.
 %
 We can describe these operations in a \emph{shallow embedding} in
-terms of the concrete datatype |ComplexS|, for example:
+terms of the concrete datatype |ComplexSem|, for example:
 
-> (+.) :: Num r =>  ComplexS r -> ComplexS r -> ComplexS r
+> (+.) :: Num r =>  ComplexSem r -> ComplexSem r -> ComplexSem r
 > (CS (a , b)) +. (CS (x , y))  =  CS ((a + x) , (b + y))
 
 \noindent
@@ -272,7 +272,7 @@ the next section.
 
 Exercises:
 \begin{itemize}
-\item implement |(*.)| for |ComplexS|
+\item implement |(*.)| for |ComplexSem|
 \end{itemize}
 
 
@@ -332,7 +332,7 @@ The simplest is perhaps |square i = -1| from the start of the lecture,
 
 > propImagUnit :: Bool
 > propImagUnit = Times ImagUnit ImagUnit === ToComplex (-1)
->
+
 > (===) :: ComplexE -> ComplexE -> Bool
 > z === w  =  evalE z == evalE w
 
@@ -400,37 +400,368 @@ type for |REAL|.
 %
 At the same time we generalise |ToComplex| to |FromCartesian|:
 
-> data ComplexP r  =  FromCartesian r r
->                  |  ComplexP r  :+:  ComplexP r
->                  |  ComplexP r  :*:  ComplexP r
+> data ComplexSyn r  =  FromCartesian r r
+>                    |  ComplexSyn r  :+:  ComplexSyn r
+>                    |  ComplexSyn r  :*:  ComplexSyn r
 
-> toComplexP :: Num a => a -> ComplexP a
-> toComplexP x = FromCartesian x (fromInteger 0)
+> toComplexSyn :: Num a => a -> ComplexSyn a
+> toComplexSyn x = FromCartesian x (fromInteger 0)
 
-> evalCP :: Num r => ComplexP r -> ComplexS r
-> evalCP (FromCartesian x y) = CS (x , y)
-> evalCP (l :+: r) = evalCP l +. evalCP r
-> evalCP (l :*: r) = evalCP l *. evalCP r
+> evalCSyn :: Num r => ComplexSyn r -> ComplexSem r
+> evalCSyn (FromCartesian x y) = CS (x , y)
+> evalCSyn (l :+: r) = evalCSyn l +. evalCSyn r
+> evalCSyn (l :*: r) = evalCSyn l *. evalCSyn r
 
-> instance Num a => Num (ComplexP a) where
+> instance Num a => Num (ComplexSyn a) where
 >    (+) = (:+:)
 >    (*) = (:*:)
->    fromInteger = toComplexP . fromInteger
->    -- TODO: add a few more operations
+>    fromInteger = fromIntegerCS
+>    -- TODO: add a few more operations (hint: extend ComplexSyn as well)
+>    -- TODO: also extend eval
+
+> fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
+> fromIntegerCS = toComplexSyn . fromInteger
+
+\subsection{TODO[PaJa]: Textify}
+
+Here are some notes about things scribbled on the blackboard during
+the first two lectures. At some point this should be made into text
+for the lecture notes.
+
+\subsubsection{Pitfalls with traditional mathematical notation}
+
+\paragraph{A function or the value at a point?}
+
+Mathematical texts often talk about ``the function $f(x)$'' when ``the
+function $f$'' would be more clear. Otherwise there is a clear risk of
+confusion between $f(x)$ as a function and $f(x)$ as the value you get
+from applying the function $f$ to the value bound to the name $x$.
+
+\paragraph{Scoping}
+
+Scoping rules for the integral sign:
+\begin{align*}
+   f(x) &= x^2
+\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
+\end{align*}
+The variable |x| bound on the left is independent of the variable |x|
+``bound under the integral sign''.
+
+\paragraph{From syntax to semantics and back}
+
+We have seen evaluation functions from abstract syntax to semantics
+(|eval :: Syn -> Sem|). Often a partial inverse is also available:
+|embed :: Sem -> Syn|. For our complex numbers we have TODO: fill in a
+function from |ComplexSem r -> ComplexSyn r|.
+
+The embedding should satisfy a round-trip property: |eval (embed s) ==
+s| for all |s|.
+%
+Exercise: What about the opposite direction? When is |embed (eval e)
+== e|?
+
+We can also state and check properties relating the semantic and the
+syntactic operations:
+
+|a + b = eval (Plus (embed a) (embed b))| for all |a| and |b|.
 
 
-----------------------------------------------------------------
+\paragraph{Variable names as type hints}
+
+In mathematical texts there are often conventions about the names used
+for variables of certain types. Typical examples include |i, j, k| for
+natural numbers or integers, |x, y| for real numbers and |z, w| for
+complex numbers.
+
+
+The absence of explicit types in mathematical texts can sometimes lead
+to confusing formulations.  For example, a standard text on
+differential equations by Edwards, Penney and Calvis
+\cite{edwards2008elementary} contains at page 266 the following
+remark:
+
+\newcommand{\Lap}[1]{\ensuremath{|Lap|\{#1\}}}
+\begin{quote}
+  The differentiation operator $D$ can be viewed as a transformation
+  which, when applied to the function $f(t)$, yields the new function
+  $D\{f(t)\} = f'(t)$. The Laplace transformation |Lap| involves the
+  operation of integration and yields the new function $\Lap{f(t)} =
+  F(s)$ of a new independent variable $s$.
+\end{quote}
+
+This is meant to introduce a distinction between ``operators'', such
+as differentiation, which take functions to functions of the same
+type, and ``transforms'', such as the Laplace transform, which take
+functions to functions of a new type.  To the logician or the computer
+scientist, the way of phrasing this difference in the quoted text
+sounds strange: surely the \emph{name} of the independent variable
+does not matter: the Laplace transformation could very well return a
+function of the ``old'' variable |t|.  We can understand that the name
+of the variable is used to carry semantic meaning about its type (this
+is also common in functional programming, for example with the
+conventional use of |as| to denote a list of |a|s).  Moreover, by
+using this (implicit!) convention, it is easier to deal with cases
+such as that of the Hartley transform (a close relative of the Fourier
+transform), which does not change the type of the input function, but
+rather the \emph{interpretation} of that type.  We prefer to always
+give explicit typings rather than relying on syntactical conventions,
+and to use type synonyms for the case in which we have different
+interpretations of the same type.  In the example of the Laplace
+transformation, this leads to
+
+
+< type T  =  Real
+< type S  =  CC
+< Lap : (T -> CC) -> (S -> CC)
+
+\subsubsection{Other}
+
+\paragraph{Lifting operations to a parameterised type}
+When we define addition on complex numbers (represented as pairs of
+real and imaginary components) we can do that for any underlying type
+|r| which supports addition.
+
+\begin{code}
+type CS = ComplexSem -- for shorter type expressions below
+liftPlus ::  (r     -> r     -> r     ) ->
+             (CS r  -> CS r  -> CS r  )
+liftPlus (+) (CS (x, y)) (CS (x', y')) = CS (x+x', y+y')
+\end{code}
+Note that |liftPlus| takes |(+)| as its first parameter and uses it
+twice on the RHS.
+
+\paragraph{Laws}
+
+TODO: Associative, Commutative, Distributive, ...
+
+
+
+
+\paragraph{TODO[PaJa]: move earlier}
+
+Table of examples of notation and abstract syntax for some complex numbers:
+
+\begin{tabular}{l||l}
+    Mathematics & Haskell
+\\\hline
+    3 + 2i                       & |CPlus1 3 2 i|
+\\ 7/2 - 2/3 i = 7/2 + (-2/3) i  & |CPlus1 (7/2) (-2/3) i|
+\\ i pi = 0 + i pi               & |CPlus2 0 i pi|
+\\ -3 = -3 + 0 i                 & |CPlus1 (-3) 0 i|
+\end{tabular}
+
+
+
+
+\subsection{Questions and answers from the exercise sessions week 1}
+
+\subsubsection{Function composition}
+
+The infix operator \verb+.+ in Haskell is an implementation of the
+mathematical operation of function composition.
+
+\begin{code}
+f . g = \x -> f (g x)
+\end{code}
+
+The period is an ASCII approximation of the composition symbol $\circ{}$ typically
+used in mathematics. (The symbol $\circ{}$ is encoded as \verb"U+2218" and called RING
+OPERATOR in Unicode, \verb+&#8728+ in HTML, \verb+\circ+ in \TeX, etc.)
+
+The type is perhaps best illustrated by a diagram with types as nodes
+and functions (arrows) as directed edges:
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
+\caption{Function composition diagram}
+\end{figure}
+
+In Haskell we get the following type:
+
+\begin{code}
+(.) :: (b->c) -> (a->b) -> (a->c)
+\end{code}
+
+which may take a while to get used to.
+
+\subsubsection{fromInteger (looks recursive)}
+
+Near the end of the lecture notes there was an instance declaration
+including the following lines:
+
+\begin{code}
+instance Num r => Num (ComplexSyn r) where
+  -- ... several other methods and then
+  fromInteger = toComplexSyn . fromInteger
+\end{code}
+
+This definition looks recursive, but it is not. To see why we need to
+expand the type and to do this I will introduce a name for the right
+hand side (RHS): |fromIntC|.
+
+\begin{verbatim}
+--          ComplexSyn r <---------- r <---------- Integer
+fromIntC =              toComplexSyn . fromInteger
+\end{verbatim}
+
+I have placed the types in the comment, with ``backwards-pointing''
+arrows indicating that |fromInteger :: Integer -> r| and |toComplexSyn
+:: r -> ComplexSyn r| while the resulting function is |fromIntC ::
+Integer -> ComplexSyn r|. The use of |fromInteger| at type |r| means
+that the full type of |fromIntC| must refer to the |Num| class. Thus
+we arrive at the full type:
+
+\begin{code}
+fromIntC :: Num r =>   Integer -> ComplexSyn r
+\end{code}
+
+\subsubsection{type / newtype / data}
+
+There are three keywords in Haskell involved in naming types: |type|,
+|newtype|, and |data|.
+
+\paragraph{type -- abbreviating type expressions}
+
+The |type| keyword is used to create a type synonym - just another name
+for a type expression.
+
+\begin{code}
+type Heltal = Integer
+type Foo = (Maybe [String], [[Heltal]])
+type BinOp = Heltal -> Heltal -> Heltal
+type Env v s = [(v,s)]
+\end{code}
+
+The new name for the type on the RHS does not add type safety, just
+readability (if used wisely). The |Env| example shows that a type
+synonym can have type parameters.
+
+\paragraph{newtype -- more protection}
+
+A simple example of the use of |newtype| in Haskell is to distinguish
+values which should be kept apart. A simple example is
+
+\begin{code}
+newtype Age   = A Int  -- Age in years
+newtype Shoe  = S Int  -- Shoe size (EU)
+\end{code}
+
+Which introduces two new types, |Age| and |Shoe|, which both are
+internally represented by an |Int| but which are good to keep apart.
+
+The constructor functions |A :: Int -> Age| and |S :: Int -> Shoe| are
+used to translate from plain integers to ages and shoe sizes.
+
+In the lecture notes we used a newtype for the semantics of complex
+numbers as a pair of numbers in the cartesian representation but may
+also be useful to have another newtype for complex as a pair of numbers
+in the polar representation.
+
+\paragraph{data -- for syntax trees}
+
+Some examples:
+
+\begin{code}
+data N = Z | S N
+\end{code}
+
+This declaration introduces
+
+\begin{itemize}
+\item
+  a new type |N| for unary natural numbers,
+\item
+  a constructor |Z :: N| to represent zero, and
+\item
+  a constructor |S :: N -> N| to represent the successor.
+\end{itemize}
+
+Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|
+
+\begin{code}
+data E = V String | P E E | T E E
+\end{code}
+
+This declaration introduces
+
+\begin{itemize}
+\item
+  a new type |E| for simple arithmetic expressions,
+\item
+  a constructor |V :: String -> E| to represent variables,
+\item
+  a constructor |P :: E -> E -> E| to represent plus, and
+\item
+  a constructor |T :: E -> E -> E| to represent times.
+\end{itemize}
+
+Example values: |x = V "x"|, |e1 = P x x|, |e2 = T e1 e1|
+
+If you want a contructor to be used as an infix operator you need to use
+symbol characters and start with a colon:
+
+\begin{code}
+data E = V String | E :+: E | E :*: E
+\end{code}
+
+Example values: |y = V "y"|, |e1 = y :+: y|, |e2 = x :*: e1|
+
+Finally, you can add one or more type parameters to make a whole family
+of datatypes in one go:
+
+\begin{code}
+data ComplexSyn v r  =  Var v
+                     |  FromCartesian r r
+                     |  ComplexSyn v r  :+:  ComplexSyn v r
+                     |  ComplexSyn v r  :*:  ComplexSyn v r
+\end{code}
+
+The purpose of the first parameter |v| here is to enable a free choice
+of type for the variables (be it |String| or |Int| or something else)
+and the second parameter |r| makes is possible to express ``complex
+numbers over'' different base types (like |Double|, |Float|, |Integer|,
+etc.).
+
+\subsubsection{Env, Var, and variable lookup}
+
+The type synonym
+
+\begin{code}
+type Env v s = [(v,s)]
+\end{code}
+
+is one way of expressing a partial function from |v| to |s|.
+
+Example value:
+
+\begin{code}
+env1 :: Env String Int
+env1 = [("hej", 17), ("du", 38)]
+\end{code}
+
+The |Env|type is commonly used in evaluator functions for syntax trees
+containing variables:
+
+\begin{code}
+evalCP :: Env v (ComplexSem r) -> (ComplexSyn v r -> ComplexSem r)
+evalCP env (Var x) = case lookup x env of ...
+-- ...
+\end{code}
+
+Notice that |env| maps ``syntax'' (variable names) to ``semantics'',
+just like the evaluator does.
 
 \subsection{Some helper functions}
 
 > propAssocAdd :: (Eq a, Num a) => a -> a -> a -> Bool
 > propAssocAdd = propAssocA (+)
 
-> (*.) :: Num r =>  ComplexS r -> ComplexS r -> ComplexS r
+> (*.) :: Num r =>  ComplexSem r -> ComplexSem r -> ComplexSem r
 > CS (ar, ai) *. CS (br, bi) = CS (ar*br - ai*bi, ar*bi + ai*br)
 
-> instance Show r => Show (ComplexS r) where
+> instance Show r => Show (ComplexSem r) where
 >   show = showCS
 
-> showCS :: Show r => ComplexS r -> String
+> showCS :: Show r => ComplexSem r -> String
 > showCS (CS (x, y)) = show x ++ " + " ++ show y ++ "i"
