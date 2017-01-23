@@ -38,6 +38,7 @@
 \end{abstract}
 
 %include 01/L01.lhs
+%include 02/W02.lhs
 
 \bibliographystyle{abbrvnat}
 \bibliography{ref}

@@ -184,7 +184,7 @@ Introduction
 
 New notation (with bars on the left for sub-proofs)
 
-See updates in ../2016/../Lectures/Lecture02.lhs
+See updates in ../../2016/Lectures/Lecture02.lhs
 
 
 

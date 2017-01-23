@@ -1,6 +1,6 @@
 # DSLsofMath exercises
 
-## Week 1:
+## Week 1: complex numbers and DSLs
 
 1. Read the [lecture notes](../L/01/L01.lhs) and complete the
    definition of the instance for |Num| for the datatype
@@ -23,8 +23,8 @@ References:
   edition. Pearson Canada. "Appendix I. Definition of Complex
   Numbers"
 
-## Week 2:
+## Week 2: logic and proofs
 
-TBD
+See [W2.lhs](W2.lhs).
 
 Preparation: Read the [TFPIE'15 paper](https://arxiv.org/abs/1611.09475)

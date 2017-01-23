@@ -1,4 +1,4 @@
-\section{Lecture 01}
+\section{Week 1}
 
 This lecture is partly based on the paper
 \citep{TFPIE15_DSLsofMath_IonescuJansson} from the International
