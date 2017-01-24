@@ -4,7 +4,7 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
-* 2017-01-21: [Questions and answers from the exercise sessions week 1](E/W1.md)
+* 2017-01-24: [DSLsofMath google group](https://groups.google.com/forum/#!forum/dslsofmath) for discussions created.
 * 2017-01-17: Schedule change: the exercise sessions will be in ED2480 on Wednesdays and in ED3582 on Fridays.
 * 2017-01-15: [DSLsofMath course memo 2017](Course-memo/DSLsofMath.md)
 * 2016-09-04: Starting a new course page for the 2017 instance of the
