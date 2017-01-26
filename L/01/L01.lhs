@@ -773,7 +773,7 @@ and the second parameter |r| makes is possible to express ``complex
 numbers over'' different base types (like |Double|, |Float|, |Integer|,
 etc.).
 
-\subsubsection{Env, Var, and variable lookup}
+\subsubsection{|Env|, |Var|, and variable lookup}
 
 The type synonym
 
