@@ -790,7 +790,7 @@ env1 :: Env String Int
 env1 = [("hej", 17), ("du", 38)]
 \end{code}
 
-The |Env|type is commonly used in evaluator functions for syntax trees
+The |Env| type is commonly used in evaluator functions for syntax trees
 containing variables:
 
 \begin{code}

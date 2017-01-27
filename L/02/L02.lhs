@@ -1,3 +1,6 @@
+***Raw notes below: see W02.lhs for new material***
+
+
 * L2(+3): propositional calculus + "german" quantifiers
 
 

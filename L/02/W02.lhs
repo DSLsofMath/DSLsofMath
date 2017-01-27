@@ -83,6 +83,7 @@ there is already a question + answers earlier in this text.
 But here is an additional example to help clarify the matter.
 \begin{code}
 data Rat v = RV v | FromI Integer | RPlus (Rat v) (Rat v) | RDiv (Rat v) (Rat v)
+  deriving (Eq, Show)
 
 newtype RatSem = RSem (Integer, Integer)
 \end{code}
@@ -166,6 +167,8 @@ in the exercises and it is indeed a tricky property to prove.
 They key to implementing it lies in double negation and as that is
 encoded with higher order functions it gets a bit hairy.
 
+TODO[Daniel]: more explanation
+
 \paragraph{SET and PRED}
 
 Several groups have had trouble grasping the difference between |SET|
@@ -180,3 +183,90 @@ Predicate Logic and I never actually showed how eval (for the
 expressions) and check (for the predicates) is implemented.
 
 TODO: fill in an example
+
+As an example we can we take our terms to be the rational number
+expressions defined above and define a type of predicates over those
+terms:
+\begin{code}
+type Term v = Rat v
+data RPred v = Equal     (Term v) (Term v)
+             | LessThan  (Term v) (Term v)
+             | Positive  (Term v)
+
+             | And  (RPred v) (RPred v)
+             | Not  (RPred v)
+  deriving (Eq, Show)
+\end{code}
+%
+Note that the first three constructors, |Eq|, |LessThan|, and
+|Positive|, describe predicates or relations between terms (which can contain term
+variables)
+%
+while the two last constructors, |And| and |Not|, just combine such
+relations together.
+%
+(Terminology: I often mix the words ``predicate'' and ``relation''.)
+
+We have already defined the evaluator for the |Term v| type but we
+need to add a corresponding ``evaluator'' (called |check|) for the
+|RPred v| type.
+%
+Given values for all term variables the predicate checker should just
+determine if the predicate is true or false.
+\begin{code}
+checkRP :: Env v RatSem -> RPred v -> Bool
+checkRP env (Equal     t1 t2) = eqSem        (evalRat2 env t1) (evalRat2 env t2)
+checkRP env (LessThan  t1 t2) = lessThanSem  (evalRat2 env t1) (evalRat2 env t2)
+checkRP env (Positive  t1)    = positiveSem  (evalRat2 env t1)
+
+checkRP env (And p q)  = (checkRP env p) && (checkRP env q)
+checkRP env (Not p)    = not (checkRP env p)
+\end{code}
+Given this recursive definition the semantic functions |eqSem|,
+|lessThanSem|, and |positiveSem| can be defined by just looking at the
+rational number representation:
+\begin{code}
+eqSem        :: RatSem -> RatSem -> Bool
+lessThanSem  :: RatSem -> RatSem -> Bool
+positiveSem  :: RatSem -> Bool
+eqSem       = error "TODO"
+lessThanSem = error "TODO"
+positiveSem = error "TODO"
+\end{code}
+
+
+
+
+\subsection{More general code for first order languages}
+
+TODO: add explanatory text
+
+\begin{itemize}
+\item Term = Syntactic terms
+\item n = names (of atomic terms)
+\item f = function names
+\item v = variable names
+\item WFF = Well Formed Formulas
+\item p = predicate names
+\end{itemize}
+
+
+\begin{spec}
+data Term n f v  =
+    N n | F f [Term n f v] | V v
+  deriving Show
+
+data WFF n f v p =
+    P p   [Term n f v]
+  | Equal (Term n f v)  (Term n f v)
+
+  | And   (WFF n f v p) (WFF n f v p)
+  | Or    (WFF n f v p) (WFF n f v p)
+  | Equiv (WFF n f v p) (WFF n f v p)
+  | Impl  (WFF n f v p) (WFF n f v p)
+  | Not   (WFF n f v p)
+
+  | Forall v (WFF n f v p)
+  | Exists v (WFF n f v p)
+  deriving (Show)
+\end{spec}
