@@ -28,6 +28,9 @@ This week we focus on ``develop adequate notation for mathematical
 concepts'' and ``perform calculational proofs'' (still in the context
 of ``organize areas of mathematics in DSL terms'').
 
+\begin{code}
+module DSLsofMath.W02 where
+\end{code}
 
 \subsection{A few words about pure set theory}
 
@@ -62,11 +65,17 @@ Definition:  A pair |(a,b)| is encoded as |{{a},{a,b}}|.
 
 \subsection{Propositional Calculus}
 
+Now we turn to the main topic of this week: logic and proofs.
+
+TODO: type up the notes + whiteboard photos
+
 Swedish: Satslogik
 
 False, True, And, Or, Implies
 
 \subsection{First Order Logic (predicate logic)}
+
+TODO: type up the notes + whiteboard photos
 
 Swedish: Första ordningens logik = predikatlogik
 
@@ -111,10 +120,10 @@ following implementation of eval:
 %
 \begin{code}
 evalRat1 ::  (v -> RatSem) -> (Rat v -> RatSem)
-evalRat1 ev (RV v)      = ev v
-evalRat1 ev (FromI i)   = fromISem i
-evalRat1 ev (RPlus l r) = plusSem (evalRat1 ev l) (evalRat1 ev r)
-evalRat1 ev (RDiv  l r) = divSem  (evalRat1 ev l) (evalRat1 ev r)
+evalRat1 ev (RV v)       = ev v
+evalRat1 ev (FromI i)    = fromISem i
+evalRat1 ev (RPlus l r)  = plusSem  (evalRat1 ev l) (evalRat1 ev r)
+evalRat1 ev (RDiv  l r)  = divSem   (evalRat1 ev l) (evalRat1 ev r)
 \end{code}
 Notice that we simply added a parameter |ev| for ``evaluate variable''
 to the evaluator.
@@ -182,19 +191,18 @@ The one example of terms + predicates covered in the lectures is
 Predicate Logic and I never actually showed how eval (for the
 expressions) and check (for the predicates) is implemented.
 
-TODO: fill in an example
-
 As an example we can we take our terms to be the rational number
 expressions defined above and define a type of predicates over those
 terms:
 \begin{code}
 type Term v = Rat v
-data RPred v = Equal     (Term v) (Term v)
-             | LessThan  (Term v) (Term v)
-             | Positive  (Term v)
 
-             | And  (RPred v) (RPred v)
-             | Not  (RPred v)
+data RPred v  =  Equal     (Term v) (Term v)
+              |  LessThan  (Term v) (Term v)
+              |  Positive  (Term v)
+
+              |  And  (RPred v) (RPred v)
+              |  Not  (RPred v)
   deriving (Eq, Show)
 \end{code}
 %
@@ -214,10 +222,10 @@ need to add a corresponding ``evaluator'' (called |check|) for the
 Given values for all term variables the predicate checker should just
 determine if the predicate is true or false.
 \begin{code}
-checkRP :: Env v RatSem -> RPred v -> Bool
-checkRP env (Equal     t1 t2) = eqSem        (evalRat2 env t1) (evalRat2 env t2)
-checkRP env (LessThan  t1 t2) = lessThanSem  (evalRat2 env t1) (evalRat2 env t2)
-checkRP env (Positive  t1)    = positiveSem  (evalRat2 env t1)
+checkRP :: (Eq v, Show v) => Env v RatSem -> RPred v -> Bool
+checkRP env (Equal     t1 t2)  = eqSem        (evalRat2 env t1) (evalRat2 env t2)
+checkRP env (LessThan  t1 t2)  = lessThanSem  (evalRat2 env t1) (evalRat2 env t2)
+checkRP env (Positive  t1)     = positiveSem  (evalRat2 env t1)
 
 checkRP env (And p q)  = (checkRP env p) && (checkRP env q)
 checkRP env (Not p)    = not (checkRP env p)
@@ -229,9 +237,9 @@ working with the rational number representation:
 eqSem        :: RatSem -> RatSem -> Bool
 lessThanSem  :: RatSem -> RatSem -> Bool
 positiveSem  :: RatSem -> Bool
-eqSem       = error "TODO"
-lessThanSem = error "TODO"
-positiveSem = error "TODO"
+eqSem        = error "TODO"
+lessThanSem  = error "TODO"
+positiveSem  = error "TODO"
 \end{code}
 
 \subsection{More general code for first order languages}
@@ -245,12 +253,12 @@ specialised to any first order language.
 TODO: add explanatory text
 
 \begin{itemize}
-\item Term = Syntactic terms
-\item n = names (of atomic terms)
-\item f = function names
-\item v = variable names
-\item WFF = Well Formed Formulas
-\item p = predicate names
+\item |Term| = Syntactic terms
+\item |n| = names (of atomic terms)
+\item |f| = function names
+\item |v| = variable names
+\item |WFF| = Well Formed Formulas
+\item |p| = predicate names
 \end{itemize}
 
 
@@ -260,16 +268,16 @@ data Term n f v  =
   deriving Show
 
 data WFF n f v p =
-    P p   [Term n f v]
-  | Equal (Term n f v)  (Term n f v)
+     P p    [Term n f v]
+  |  Equal  (Term n f v)   (Term n f v)
 
-  | And   (WFF n f v p) (WFF n f v p)
-  | Or    (WFF n f v p) (WFF n f v p)
-  | Equiv (WFF n f v p) (WFF n f v p)
-  | Impl  (WFF n f v p) (WFF n f v p)
-  | Not   (WFF n f v p)
+  |  And    (WFF n f v p)  (WFF n f v p)
+  |  Or     (WFF n f v p)  (WFF n f v p)
+  |  Equiv  (WFF n f v p)  (WFF n f v p)
+  |  Impl   (WFF n f v p)  (WFF n f v p)
+  |  Not    (WFF n f v p)
 
-  | Forall v (WFF n f v p)
-  | Exists v (WFF n f v p)
+  |  FORALL  v (WFF n f v p)
+  |  EXISTS  v (WFF n f v p)
   deriving (Show)
 \end{spec}

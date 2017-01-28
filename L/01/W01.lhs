@@ -8,10 +8,10 @@ We will implement certain concepts in the functional programming
 language Haskell and
 %
 the code for this lecture is placed in a module called
-|DSLsofMath.L01| that starts here:
+|DSLsofMath.W01| that starts here:
 
 \begin{code}
-module DSLsofMath.L01 where
+module DSLsofMath.W01 where
 \end{code}
 
 \subsection{A case study: complex numbers}

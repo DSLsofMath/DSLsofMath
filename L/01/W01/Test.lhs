@@ -1,5 +1,5 @@
-> module DSLsofMath.L01.Test where
-> import DSLsofMath.L01
+> module DSLsofMath.W01.Test where
+> import DSLsofMath.W01
 > import Test.QuickCheck
 
 We may also need the Haskell standard library version for some testing later:

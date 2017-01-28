@@ -1,5 +1,5 @@
-* Lecture05: Good
+\section{Week 3}
+
+(Based on ../../2016/Lectures/Lecture05 )
 
 Functional Differential Geometry p16.
-
-This could come earlier - as L2 or L4.
