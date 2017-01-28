@@ -222,9 +222,9 @@ checkRP env (Positive  t1)    = positiveSem  (evalRat2 env t1)
 checkRP env (And p q)  = (checkRP env p) && (checkRP env q)
 checkRP env (Not p)    = not (checkRP env p)
 \end{code}
-Given this recursive definition the semantic functions |eqSem|,
-|lessThanSem|, and |positiveSem| can be defined by just looking at the
-rational number representation:
+Given this recursive definition of |checkRP|, the semantic functions
+|eqSem|, |lessThanSem|, and |positiveSem| can be defined by just
+working with the rational number representation:
 \begin{code}
 eqSem        :: RatSem -> RatSem -> Bool
 lessThanSem  :: RatSem -> RatSem -> Bool
@@ -234,10 +234,13 @@ lessThanSem = error "TODO"
 positiveSem = error "TODO"
 \end{code}
 
-
-
-
 \subsection{More general code for first order languages}
+
+``överkurs''
+
+It is possible to make one generic implementation which can be
+specialised to any first order language.
+%
 
 TODO: add explanatory text
 

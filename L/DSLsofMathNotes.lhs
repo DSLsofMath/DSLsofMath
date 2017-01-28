@@ -50,11 +50,31 @@
 \maketitle
 
 \begin{abstract}
-  \TODO{Fill in abstract}
+  These notes aim to cover the lectures and exercises of the recently
+  introduced course ``Domain-Specific Languages of Mathematics'' (at
+  Chalmers and University of Gothenburg).
+%
+  The course was developed in response to difficulties faced by
+  third-year computer science students in learning and applying
+  classical mathematics (mainly real and complex analysis).
+%
+  The main idea is to encourage the students to approach mathematical
+  domains from a functional programming perspective:
+%
+  to identify the main functions and types involved and, when
+  necessary, to introduce new abstractions;
+%
+  to give calculational proofs;
+%
+  to pay attention to the syntax of the mathematical expressions;
+%
+  and, finally, to organize the resulting functions and types in
+  domain-specific languages.
 \end{abstract}
 
-%include 01/L01.lhs
+%include 01/W01.lhs
 %include 02/W02.lhs
+%include 03/W03.lhs
 
 \bibliographystyle{abbrvnat}
 \bibliography{ref}
