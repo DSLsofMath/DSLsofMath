@@ -53,7 +53,7 @@ We want to prove |Limp 0 X|
 
 < q ε = 1/n where n = ceiling (1/ε)
 
-(where the definition of n comes from a calculation showing the property with D is satiafied)
+(where the definition of n comes from a calculation showing the property with D is satisfied)
 
 Exercise: prove that 0 is the _only_ limit point of X.
 
@@ -165,8 +165,8 @@ Useful unicode-related packages (from elpa.gnu.org):
 ----------------------------------------------------------------
 
 Week 1: L1+2 Haskell + DSL intro
-Week 2: L3+4 DSL + Types in Maths
-Week 3: Basic concepts
+Week 2: L3+4 DSL + Basic concepts part 1
+Week 3: Types in Maths + Basic Concepts part 2
 Week 4-5: Poly, PowerSeries, ...
 Week 6(CeIo): LinAlg (or ProbTheory)
 Week 7: Laplace + review

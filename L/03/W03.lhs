@@ -143,6 +143,8 @@ A path would be a function
 which is equivalent to \(n\) functions of type \(ℝ → ℝ\).
 %
 We would then have an equation for each of them.
+%
+We will use |n=1| for the rest of this example.
 
 \item The Lagrangian is a ``function of the system state (time,
   coordinates, and velocities)''.
