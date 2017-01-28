@@ -2,7 +2,7 @@
 --  http://haskell.org/cabal/users-guide/
 
 name:                DSLsofMath
-version:             0.1.4.0
+version:             0.1.5.0
 -- synopsis:
 -- description:
 license:             BSD3
@@ -16,7 +16,7 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  exposed-modules: DSLsofMath.W01, DSLsofMath.W01.Test, DSLsofMath.W02
+  exposed-modules: DSLsofMath.W01, DSLsofMath.W01.Test, DSLsofMath.W02, DSLsofMath.W03
   -- other-modules:
   -- other-extensions:
   build-depends:       base >=4.9 && <4.10, QuickCheck

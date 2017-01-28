@@ -1,4 +1,10 @@
+\begin{code}
+{-# LANGUAGE FlexibleInstances #-}
+module DSLsofMath.W03 where
+\end{code}
+
 \section{Week 3}
+
 
 % (Based on ../../2016/Lectures/Lecture05 )
 % Show "Functional Differential Geometry" p16.
@@ -63,18 +69,18 @@ To start answering the question, we start typing the elements involved:
 \begin{enumerate}
 \item \(∂L / ∂q\) suggests that |L| is a function of at least a pair
   of arguments:
-\begin{code}
+\begin{spec}
   L : ℝⁿ → ℝ,    n ≥ 2
-\end{code}
+\end{spec}
 
 This is consistent with the description: ``Lagrangian function of the
 system state (time, coordinates, and velocities)''.
 %
 So we can take |n = 3|:
 
-\begin{code}
+\begin{spec}
   L : ℝ³ → ℝ
-\end{code}
+\end{spec}
 
 \item \(∂L / ∂q\) suggests that \(q\) is the name of a real variable,
   one of the three arguments to \(L\).
@@ -82,25 +88,25 @@ So we can take |n = 3|:
   In the context, which we do not have, we would expect to find
   somewhere the definition of the Lagrangian as
 
-\begin{code}
+\begin{spec}
   L (t, q, v) = ...
-\end{code}
+\end{spec}
 \item therefore, \(∂L / ∂q\) should also be a function of a triple of
   arguments:
 
-\begin{code}
+\begin{spec}
   ∂L / ∂q : ℝ³ → ℝ
-\end{code}
+\end{spec}
 
 It follows that the equation expresses a relation between
 \emph{functions}, therefore the \(0\) on the right-hand side is
 \emph{not} the real number \(0\), but rather the constant function
 \(0\):
 
-\begin{code}
+\begin{spec}
   const 0  :  ℝ³ → ℝ
   const 0 (t, q, v) = 0
-\end{code}
+\end{spec}
 
 \item We now have a problem: \(d / dt\) can only be applied to
   functions of \emph{one} real argument \(t\), and the result is a
@@ -136,9 +142,9 @@ coordinates.
 %
 A path would be a function
 
-\begin{code}
+\begin{spec}
     w  :  ℝ → ℝⁿ
-\end{code}
+\end{spec}
 
 which is equivalent to \(n\) functions of type \(ℝ → ℝ\).
 %
@@ -155,13 +161,13 @@ We will use |n=1| for the rest of this example.
   The velocity is the derivative of the path, also fixed by the path:
 
 %format dotq = "\dot{q}"
-\begin{code}
+\begin{spec}
 q  :  ℝ → ℝ
 q t  =  w t
 
 dotq : ℝ → ℝ
 dotq t = dw / dt
-\end{code}
+\end{spec}
 
 The equations do not use a function \(L : ℝ³→ ℝ\), but rather
 
@@ -262,13 +268,14 @@ class  (Eq a, Show a) => Num a  where
     fromInteger    :: Integer -> a
 \end{spec}
 
-%TODO: \cite{HaskellReportNumClass}
+TODO: \cite{HaskellReportNumClass}
+
 This is taken from the Haskell
 documentation\footnote{\url{https://www.haskell.org/onlinereport/haskell2010/haskellch6.html#x13-1350142}}
 but it appears that |Eq| and |Show| are not necessary, because there
 are meaningful instances of |Num| which don't support them:
 
-\begin{spec}
+\begin{code}
 instance Num a => Num (x -> a) where
   f + g        =  \x -> f x + g x
   f - g        =  \x -> f x - g x
@@ -277,7 +284,7 @@ instance Num a => Num (x -> a) where
   abs f        =  abs . f
   signum f     =  signum . f
   fromInteger  =  const . fromInteger
-\end{spec}
+\end{code}
 
 Next we have |Fractional| for when we also have division:
 \begin{spec}
@@ -301,15 +308,19 @@ class  Fractional a => Floating a  where
 We can instantiate these type classes for functions in the same way we
 did for |Num|:
 
-> instance Fractional a => Fractional (x -> a) where
->   recip  f         =  recip . f
->   fromRational     =  const . fromRational
+\begin{code}
+instance Fractional a => Fractional (x -> a) where
+  recip  f         =  recip . f
+  fromRational     =  const . fromRational
+\end{code}
 
-> instance Floating a => Floating (x -> a) where
->   pi       =  const pi
->   exp f    =  exp . f
->   f ** g   =  \ x -> (f x)**(g x)
->   -- and so on
+\begin{code}
+instance Floating a => Floating (x -> a) where
+  pi       =  const pi
+  exp f    =  exp . f
+  f ** g   =  \ x -> (f x)**(g x)
+  -- and so on
+\end{code}
 
 Exercise: complete the instance declarations.
 
@@ -360,6 +371,8 @@ etc.
 We can implement this in a datatype:
 
 \begin{code}
+test = 1
+
 data FunExp  =  Const Double
              |  Id
              |  FunExp :+: FunExp
@@ -375,184 +388,202 @@ The intended meaning of elements of the |FunExp| type is functions:
 eval  ::  FunExp         ->  Double -> Double
 eval      (Const alpha)  =   const alpha
 eval      Id             =   id
-eval      (e1 :+: e2)    =   eval e1 + eval e2
-eval      (e1 :*: e2)    =   eval e1 * eval e2
-eval      (Exp e1)       =   exp (eval e1)
+eval      (e1 :+: e2)    =   eval e1  +  eval e2    -- note the use of ``lifted |+|''
+eval      (e1 :*: e2)    =   eval e1  *  eval e2    -- ``lifted |*|''
+eval      (Exp e1)       =   exp (eval e1)          -- and ``lifted |exp|''
 -- and so on
 \end{code}
 
 We can implement the derivative of such expressions using the rules of
 derivatives.
 %
-We want to implement a function
+We want to implement a function |derive :: FunExp -> FunExp| which
+makes the following diagram commute:
 
-> derive  ::  FunExp -> FunExp
+\begin{tikzcd}
+  |FunExp| \arrow[r, "|eval|"] \arrow[d, "|derive|"]  & |Func| \arrow[d, "D"] \\
+  |FunExp| \arrow[r, "|eval|"]                        & |Func|
+\end{tikzcd}
 
-which makes the following diagram commute:
-
-\begin{verbatim}
-                   eval
-   FunExp       --------->       Func
-    |                              |
-    | derive                       | D
-    |                              |
-    v              eval            v
-   FunExp       --------->       Func
-\end{verbatim}
-
-TODO: Continue LaTeX-ify from here:
-
-For any expression e, we want
-
+In other words, for any expression |e|, we want
+%
+\begin{spec}
      eval (derive e) = D (eval e)
+\end{spec}
 
 For example, let us derive the derive function for Exp e:
 
+\begin{spec}
      eval (derive (Exp e))
 
-  =  {specification of derive above}
+  =  {- specification of |derive| above -}
 
      D (eval (Exp e))
 
-  =  {def eval}
+  =  {- def. |eval| -}
 
      D (exp (eval e))
 
-  =  {def exp for functions}
+  =  {- def. |exp| for functions -}
 
      D (exp . eval e)
 
-  =  {chain rule}
+  =  {- chain rule -}
 
      (D exp . eval e) * D (eval e)
 
-  =  {D rule for exp}
+  =  {- |D| rule for |exp| -}
 
      (exp . eval e) * D (eval e)
 
-  =  {specification of derive}
+  =  {- specification of |derive| -}
 
      (exp . eval e) * (eval (derive e))
 
-  =  {def. of eval for Exp}
+  =  {- def. of |eval| for |Exp| -}
 
      (eval (Exp e)) * (eval (derive e))
 
-  =  {def. of eval for :*:}
+  =  {- def. of |eval| for |:*:| -}
 
-     eval (Exp e :*: derive e)
+     eval (Exp e  :*:  derive e)
+\end{spec}
 
 Therefore, the specification is fulfilled by taking
-
-     derive (Exp e) = Exp e :*: derive e
+%
+\begin{spec}
+derive (Exp e) = Exp e :*: derive e
+\end{spec}
 
 Similarly, we obtain
+%
+\begin{code}
+derive     (Const alpha)  =  Const 0
+derive     Id             =  Const 1
+derive     (e1 :+: e2)    =  derive e1  :+:  derive e2
+derive     (e1 :*: e2)    =  (derive e1  :*:  e2)  :+:  (e1  :*:  derive e2)
+derive     (Exp e)        =  Exp e :*: derive e
+\end{code}
 
-> derive     (Const alpha)  =  Const 0
-> derive     Id             =  Const 1
-> derive     (e1 :+: e2)    =  derive e1 :+: derive e2
-> derive     (e1 :*: e2)    =  (derive e1 :*: e2) :+: (e1 :*: derive e2)
-> derive     (Exp e)        =  Exp e :*: derive e
-
-Exercise: complete the FunExp type and the eval and derive
+Exercise: complete the |FunExp| type and the |eval| and |derive|
 functions.
 
-3. Shallow embeddings
----------------------
+\subsection{Shallow embeddings}
 
-The DSL of expressions, whose syntax is given by the type FunExp,
+The DSL of expressions, whose syntax is given by the type |FunExp|,
 turns out to be almost identical to the DSL defined via type classes
-in the first part of this lecture.  The correspondence between them is
-given by the eval function.
+in the first part of this lecture.
+%
+The correspondence between them is given by the |eval| function.
 
 The difference between the two implementations is that the first one
-separates more cleanly from the semantical one.  For example, ":+:"
-*stands for* a function, while "+" *is* that function.
+separates more cleanly from the semantical one.
+%
+For example, |:+:| \emph{stands for} a function, while |+| \emph{is}
+that function.
 
-The second approach is called "shallow embedding" or "almost abstract
-syntax".  It can be more economical, since it needs no eval.  The
-question is: can we implement derive in the shallow embedding?
+The second approach is called ``shallow embedding'' or ``almost
+abstract syntax''.
+%
+It can be more economical, since it needs no |eval|.
+%
+The question is: can we implement |derive| in the shallow embedding?
 
 Note that the reason the shallow embedding is possible is that the
-eval function is a *fold*: first evaluate the sub-expressions of e,
-then put the evaluations together without reference to the
-sub-expressions.  This is sometimes referred to as "compositionality".
+|eval| function is a \emph{fold}: first evaluate the sub-expressions
+of |e|, then put the evaluations together without reference to the
+sub-expressions.
+%
+This is sometimes referred to as ``compositionality''.
 
-We check whether the semantics of derivatives is compositional.  The
-evaluation function for derivatives is
+We check whether the semantics of derivatives is compositional.
+%
+The evaluation function for derivatives is
 
-> eval'         ::  FunExp -> Double -> Double
-> eval'          =  eval . derive
+\begin{code}
+eval'  ::  FunExp -> Double -> Double
+eval'  =   eval . derive
+\end{code}
 
 For example:
 
+\begin{spec}
      eval' (Exp e)
 
-  =  {def eval', function composition}
+  =  {- def. |eval'|, function composition -}
 
      eval (derive (Exp e))
 
-  =  {def derive for Exp}
+  =  {- def. |derive| for |Exp| -}
 
      eval (Exp e :*: derive e)
 
-  =  {def eval for :*:}
+  =  {- def. |eval| for |:*:| -}
 
      eval (Exp e) :*: eval (derive e)
 
-  =  {def eval for Exp}
+  =  {- def. |eval| for |Exp| -}
 
      exp (eval e) * eval (derive e)
 
-  =  {def eval'}
+  =  {- def. |eval'| -}
 
      exp (eval e) * eval' e
+\end{spec}
+%
+and the first |e| doesn't go away.
+%
+The semantics of derivatives is not compositional.
 
-and the "e" doesn't go away.  The semantics of derivatives is not
-compositional.
+Or rather, \emph{this} semantics is not compositional.
+%
+It is quite clear that the derivatives cannot be evaluated without, at
+the same time, being able to evaluate the functions.
+%
+So we can try to do both evaluations simultaneously:
 
-Or rather, *this* semantics is not compositional.  It is quite clear
-that the derivatives cannot be evaluated without, at the same time,
-being able to evaluate the functions.  So we can try to do both
-evaluations simultaneously:
+\begin{code}
+evalD ::  FunExp  ->  (Double -> Double  ,  Double -> Double  )
+evalD     e       =   (eval e            ,  eval' e           )
+\end{code}
 
-> evalD :: FunExp -> (Double -> Double, Double -> Double)
-
-> evalD e  =  (eval e, eval' e)
-
-Is evalD compositional?
+Is |evalD| compositional?
 
 We compute, for example:
 
+\begin{spec}
      evalD (Exp e)
 
-  =  {specification of evalD}
+  =  {- specification of |evalD| -}
 
      (eval (Exp e), eval' (Exp e))
 
-  =  {def eval for Exp and reusing the computation above}
+  =  {- def. |eval| for |Exp| and reusing the computation above -}
 
      (exp (eval e), exp (eval e) * eval' e)
 
-  =  {def fst, snd, evalD}
+  =  {- introduce names for subexpressions -}
 
-     (exp (fst (evalD e)), (exp (fst (evalD e))) * snd (evalD e))
+     let  f   = eval e
+          f'  = eval' e
+     in (exp f, exp f * f')
 
-  =  {perhaps more readable}
+  =  {- def. |evalD| -}
 
      let (f, f') = evalD e
      in (exp f, exp f * f')
+\end{spec}
 
-This semantics *is* compositional.  We can now define a shallow
-embedding for the computation of derivatives, using the numerical type
-classes.
+This semantics \emph{is} compositional.
+%
+We can now define a shallow embedding for the computation of
+derivatives, using the numerical type classes.
 
-> instance Num a => Num (a -> a, a -> a) where
->   (f, f') + (g, g') = (f + g, f' + g')
->   (f, f') * (g, g') = (f * g, f' * g + f * g')
->   fromInteger n     = (fromInteger n, const 0)
+\begin{code}
+instance Num a => Num (a -> a, a -> a) where
+  (f, f') + (g, g') = (f + g, f' + g')
+  (f, f') * (g, g') = (f * g, f' * g + f * g')
+  fromInteger n     = (fromInteger n, const 0)
+\end{code}
 
 Exercise: implement the rest
-
-References
-----------

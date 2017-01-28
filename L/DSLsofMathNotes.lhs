@@ -13,6 +13,7 @@
 \RequirePackage[utf8x]{inputenc}
 \RequirePackage{ucs}
 \RequirePackage{amsfonts}
+\usepackage{tikz-cd}
 
 \providecommand\mathbbm{\mathbb}
 
