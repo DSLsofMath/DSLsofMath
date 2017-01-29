@@ -10,7 +10,9 @@ $(NAME).tex: $(NAME).lhs dslm.format ref.bib \
 #            04/W04.lhs 05/W05.lhs 06/W06.lhs \
 #            07/W07.lhs 08/W08.lhs
 	lhs2TeX --poly $(NAME).lhs > $(NAME).tex
-#	lhs2TeX --agda $(NAME).lhs > $(NAME).tex
+
+build:
+	stack build
 
 clean:
 	- rm *.ptb *.pag *.aux *.bbl *.blg *.fdb_latexmk *.log \

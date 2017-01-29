@@ -39,7 +39,94 @@ explicitly:
   Exercise: for f : ℝ² → ℝ define D₁ and D₂ using only D.
 \end{itemize}
 
-\subsection{Type inference and understanding}
+\subsection{Typing Mathematics: partial derivative}
+
+As as an example we will try to type the elements of a mathematical
+definition.
+
+For example, on page 169 of \cite{maclane1986mathematics}, we read
+
+\begin{quote}
+  [...] a function |z = f (x, y)| for all points |(x, y)| in some open
+  set |U| of the cartesian |(x, y)|-plane.
+%
+  [...] If one holds |y| fixed, the quantity |z| remains just a
+  function of |x|; its derivative, when it exists, is called the
+  \emph{partial derivative} with respect to |x|.
+%
+  Thus at a point |(x, y)| in |U| this derivative for |h ≠ 0| is
+\end{quote}
+
+\[
+∂ z / ∂ x  =  f'_{x} (x, y) =
+              lim_{h \to 0} (f (x + h, y) - f (x, y)) / h
+\]
+
+What are the types of the elements involved?  We have
+
+\begin{spec}
+U ⊆ ℝ x ℝ             -- cartesian plane
+
+f : U -> ℝ
+
+z : U -> ℝ             -- but see below
+
+{-"f'_{x}"-} : U -> ℝ
+\end{spec}
+
+The |x| in the subscript of |f'| is *not* a real number, but a symbol
+(a |Char|).
+
+The expression |(x, y)| has several occurrences.
+%
+The first two denote variables of type |U|, the third is just a name
+(|(x, y)|-plane).
+%
+The third denotes a variable of type |U|, it is bound by a universal
+quantifier
+
+\begin{spec}
+∀ (x, y) ∈ U
+\end{spec}
+
+|h| appears to be a non-zero real number, bound by a universal
+quantifier, but that is incorrect.
+%
+In fact, |h| is used as a variable to construct the arguments of a
+function, whose limit is then taken at 0.
+
+That function, which we can denote by |φ| has the type |φ : U -> ℝ-{0}
+-> ℝ| and is defined by
+
+\begin{spec}
+φ (x, y) h = (f (x + h, y) - f (x, y)) / h
+\end{spec}
+
+The limit is then |lim (φ (x, y)) 0|.
+%
+Note that |0| is a limit point of |ℝ|, so the type of |lim| is the one
+we have discussed:
+
+\begin{spec}
+lim : (X -> ℝ) -> {p | p ∈ ℝ, p limit point of X } -> ℝ
+\end{spec}
+
+|z = f (x, y)| probably does not mean that |z ∈ ℝ|, although the
+phrase ``the quantity |z|'' suggests this.
+%
+A possible interpretation is that |z| is used to abbreviate the
+expression |f(x, y)|;
+%
+thus, everywhere we can replace |z| with |f(x, y)|.
+%
+In particular, |∂ z / ∂ x| becomes |∂ f (x, y) / ∂ x|, which we can
+interpret as |∂ f / ∂ x| applied to |(x, y)| (remember that |(x, y)|
+is bound in the context by a universal quantifier).
+%
+There is the added difficulty that, just like \(_{x}\), the |x| in |∂ x|
+is not the |x| bound by the universal quantifier, but just a symbol.
+
+\subsection{Type inference and understanding: Lagrangian case study}
 \label{type-inference-and-understanding}
 
 From (Sussman and Wisdom 2013):
@@ -581,9 +668,9 @@ derivatives, using the numerical type classes.
 
 \begin{code}
 instance Num a => Num (a -> a, a -> a) where
-  (f, f') + (g, g') = (f + g, f' + g')
-  (f, f') * (g, g') = (f * g, f' * g + f * g')
-  fromInteger n     = (fromInteger n, const 0)
+  (f, f')  +  (g, g')  =  (f  +  g,  f'      +  g'      )
+  (f, f')  *  (g, g')  =  (f  *  g,  f' * g  +  f * g'  )
+  fromInteger n        =  (fromInteger n, const 0)
 \end{code}
 
 Exercise: implement the rest

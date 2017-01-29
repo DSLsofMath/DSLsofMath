@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{a4wide}
 \usepackage{amsmath}
+\usepackage{textgreek}
 %include polycode.fmt
 %include ../L/dslm.format
 %%% Somewhat updated version of polycode.fmt from the lhs2TeX dist.
@@ -43,6 +44,15 @@
 \newcommand{\refSecI}[1]{Section \ref{#1}}
 \newcommand{\refSecsI}[1]{Sections \ref{#1}}
 \newcommand{\refTab}[1]{Tab. \ref{#1}}
+\newcommand{\tyconsym}[1]{\mathrel{{\colon}{#1}{\colon}}}
+% the `doubleequals' macro is due to Jeremy Gibbons
+\def\doubleequals{\mathrel{\unitlength 0.01em
+  \begin{picture}(78,40)
+    \put(7,34){\line(1,0){25}} \put(45,34){\line(1,0){25}}
+    \put(7,14){\line(1,0){25}} \put(45,14){\line(1,0){25}}
+  \end{picture}}}
+%% If you remove the %format == command the lhs2TeX default yields ≡, which can be a problem
+
 \title{Domain Specific Languages of Mathematics: Lecture Notes}
 \author{Patrik Jansson \and Cezar Ionescu}
 %           {Chalmers Univeristy of Technology, Sweden}

@@ -1,0 +1,23 @@
+Exercises for W4
+================
+
+TODO: fix the links
+
+1. Use the lecture [summary](../Lectures/Lecture06.lhs) to complete
+   all the instance and datatype declarations and definitions in the
+   files [FunNumInst.lhs](../code/FunNumInst.lhs),
+   [Expr.lhs](../code/Expr.lhs), [Derive.lhs](../code/Derive.lhs),
+   [EvalD.lhs](../code/EvalD.lhs), and
+   [ShallowD.lhs](../code/ShallowD.lhs).
+
+2. Write a function
+
+> simplify  ::  Expression -> Expression
+
+   to simplify the expression resulted from derive.  For example
+
+> simplify (Const 0 :*: Exp Id)   =  Const 0
+
+> simplify (Const 0 :+: Exp Id)   =  Exp Id
+
+> simplify (Const 2 :*: Const 1)  =  Const 2

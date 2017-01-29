@@ -42,10 +42,10 @@
 % %format +N                      =  "+"
 
 % %format :+: = "\mathbin{\vcentcolon\kern-0.4em+\kern-0.4em\vcentcolon}"
-\newcommand{\tyconsym}[1]{\mathrel{{\colon}{#1}{\colon}}}
 %format :+:                    = "\tyconsym{+}"
 %format :*:                    = "\tyconsym{*}"
 
 %format x0
-%format ^ = "\mathop{\hat{\phantom{x}}}"
+%format ^ = "\mathbin{\hat{}}"
 %format undefined = "\Varid{undefined}"
+%format == = "\doubleequals"

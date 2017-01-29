@@ -35,8 +35,9 @@
 \DeclareUnicodeCharacter{10215}{\ensuremath{\rrbracket}}
 
 % TODO: This is in general not a good idea.
-\providecommand\textepsilon{$\epsilon$}
-\providecommand\textmu{$\mu$}
+\providecommand{\textepsilon}{\ensuremath{\epsilon}}
+\providecommand{\textphi}{\ensuremath{\phi}}
+\providecommand{\textmu}{\ensuremath{\mu}}
 
 %subst keyword a = "\Keyword{" a "}"
 

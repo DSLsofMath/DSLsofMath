@@ -115,8 +115,9 @@ What does ``evaluate'' mean for a variable?
 Well, it just means that we must be able to translate a variable name
 (of type |v|) to a semantic value (a rational number in this case).
 %
-Translate sounds like a good case for a function so we can give the
-following implementation of eval:
+To ``translate a name to a value'' we can use a function (of type |v
+-> RatSem|) so we can give the following implementation of the
+evaluator:
 %
 \begin{code}
 evalRat1 ::  (v -> RatSem) -> (Rat v -> RatSem)
