@@ -45,3 +45,7 @@
 \newcommand{\tyconsym}[1]{\mathrel{{\colon}{#1}{\colon}}}
 %format :+:                    = "\tyconsym{+}"
 %format :*:                    = "\tyconsym{*}"
+
+%format x0
+%format ^ = "\mathop{\hat{\phantom{x}}}"
+%format undefined = "\Varid{undefined}"

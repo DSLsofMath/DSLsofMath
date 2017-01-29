@@ -2,6 +2,7 @@
 \usepackage{a4wide}
 \usepackage{amsmath}
 %include polycode.fmt
+%include ../L/dslm.format
 %%% Somewhat updated version of polycode.fmt from the lhs2TeX dist.
 % %include dslmagda.fmt
 %%% Our own formatting directives

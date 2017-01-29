@@ -1,13 +1,13 @@
+\section{Week 3}
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.W03 where
 \end{code}
 
-\section{Week 3}
-
 
 % (Based on ../../2016/Lectures/Lecture05 )
-% Show "Functional Differential Geometry" p16.
+% Show "Functional Differential Geometry" p16: Lagrange_example.pdf
+
 
 \subsection{Types in mathematics}\label{types-in-mathematics}
 
