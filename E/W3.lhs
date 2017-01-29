@@ -14,7 +14,7 @@ Preliminary remarks
      the definition of "{a_n} is a convergent sequence" (see lecture
      4) by
 
-     P a ε L = ε > 0 → ∃ N : ℤ (∀ n : ℕ (n ≥ N → |a_n - L| < ε))
+     P a ε L = (ε > 0) → ∃ N : ℤ. (∀ n : ℕ. (n ≥ N) → (|a_n - L| < ε))
 
 1.  Consider the statement:
 

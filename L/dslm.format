@@ -1,7 +1,7 @@
 % %format ComplexA                =  Complex "_A"
 %format REAL                    =  "\mathbb{R}"
 %format Nat                     =  "\mathbb{N}"
-% %format Nat+                    =  "\mathbb{N}^+"
+%format Pos                     =  "\mathbb{N}_{> 0}"
 %format RPos                    =  "\mathbb{R}_{> 0}"
 %format RPosz                   =  "\mathbb{R}_{\ge 0}"
 %format PS                      =  "\mathcal{P}"
@@ -49,3 +49,8 @@
 %format ^ = "\mathbin{\hat{}}"
 %format undefined = "\Varid{undefined}"
 %format == = "\doubleequals"
+%format phi = "\varphi"
+%format cross x y = x "\times" y
+%format ε = "\epsilon"
+%%% Use ? to end the variable binding part of forall and exists to avoid clash with . for composition
+%format ? = ".~"

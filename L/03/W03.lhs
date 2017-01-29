@@ -4,10 +4,8 @@
 module DSLsofMath.W03 where
 \end{code}
 
-
 % (Based on ../../2016/Lectures/Lecture05 )
 % Show "Functional Differential Geometry" p16: Lagrange_example.pdf
-
 
 \subsection{Types in mathematics}\label{types-in-mathematics}
 
@@ -59,22 +57,25 @@ For example, on page 169 of \cite{maclane1986mathematics}, we read
 
 \[
 ∂ z / ∂ x  =  f'_{x} (x, y) =
-              lim_{h \to 0} (f (x + h, y) - f (x, y)) / h
+              \lim_{h \to 0} (f (x + h, y) - f (x, y)) / h
 \]
 
 What are the types of the elements involved?  We have
 
+%{
+%format f'x = "f'_{x}"
 \begin{spec}
-U ⊆ ℝ x ℝ             -- cartesian plane
+U    ⊆  cross ℝ ℝ          -- cartesian plane
 
-f : U -> ℝ
+f    :  U -> ℝ
 
-z : U -> ℝ             -- but see below
+z    :  U -> ℝ             -- but see below
 
-{-"f'_{x}"-} : U -> ℝ
+f'x  :  U -> ℝ
 \end{spec}
+%}
 
-The |x| in the subscript of |f'| is *not* a real number, but a symbol
+The |x| in the subscript of |f'| is \emph{not} a real number, but a symbol
 (a |Char|).
 
 The expression |(x, y)| has several occurrences.
@@ -89,23 +90,23 @@ quantifier
 ∀ (x, y) ∈ U
 \end{spec}
 
-|h| appears to be a non-zero real number, bound by a universal
-quantifier, but that is incorrect.
+The variable |h| appears to be a non-zero real number, bound by a
+universal quantifier, but that is incorrect.
 %
 In fact, |h| is used as a variable to construct the arguments of a
-function, whose limit is then taken at 0.
+function, whose limit is then taken at |0|.
 
-That function, which we can denote by |φ| has the type |φ : U -> ℝ-{0}
--> ℝ| and is defined by
+That function, which we can denote by |phi| has the type |phi : U ->
+(ℝ-{0}) -> ℝ| and is defined by
 
 \begin{spec}
-φ (x, y) h = (f (x + h, y) - f (x, y)) / h
+phi (x, y) h = (f (x + h, y) - f (x, y)) / h
 \end{spec}
 
-The limit is then |lim (φ (x, y)) 0|.
+The limit is then |lim (phi (x, y)) 0|.
 %
-Note that |0| is a limit point of |ℝ|, so the type of |lim| is the one
-we have discussed:
+Note that |0| is a limit point of |ℝ-{0}|, so the type of |lim| is the
+one we have discussed:
 
 \begin{spec}
 lim : (X -> ℝ) -> {p | p ∈ ℝ, p limit point of X } -> ℝ

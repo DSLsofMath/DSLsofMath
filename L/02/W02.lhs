@@ -81,6 +81,89 @@ Swedish: Första ordningens logik = predikatlogik
 
 Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
 
+\subsection{Basic concepts of calculus}
+
+\paragraph{Limit point} TODO: transcribe the 2016 notes + 2017 black board
+pictures into notes.
+
+\emph{Definition} (adapted from \cite{rudin1964principles}, page 28):
+Let |X| be a subset of |ℝ|.
+%
+A point |p ∈ ℝ| is a limit point of |X| if for every |ε > 0|, there
+exists |q ∈ X| such that |q ≠ p| and |abs(q - p) < ε|.
+
+\begin{spec}
+Limp : ℝ → 𝒫 ℝ → Prop
+Limp p X = ∀ ε > 0? ∃ q ∈ X - {p}? abs (q-p) < ε
+\end{spec}
+%
+Notice that |q| depends on |ε|.
+%
+Thus by introducing a function we can move the |∃| out.
+
+\begin{spec}
+type Q = ℝ_{> 0} → (X - {p})
+Limp p X = ∃ q : Q? ∀ ε > 0? |q ε - p| < ε
+\end{spec}
+
+Next: introduce the ``disk function'' |Di|.
+
+\begin{spec}
+Di : ℝ → ℝ_{> 0} → 𝒫 ℝ
+Di c r = {x | abs (x - c) < r}
+\end{spec}
+Then we get
+\begin{spec}
+Limp p X = ∃ q : Q? ∀ ε > 0? q ε ∈ Di p ε
+\end{spec}
+
+Example: limit outside the set |X|
+
+\begin{spec}
+X = {1/n | n ∈ Pos }
+\end{spec}
+
+Show that |0| is a limit point.
+%
+Note that |0 ∉ X|.
+
+We want to prove |Limp 0 X|
+
+\begin{spec}
+q ε = 1/n where n = ceiling (1/ε)
+\end{spec}
+
+(where the definition of |n| comes from a calculation showing the
+property involving |Di| is satisfied.)
+
+Exercise: prove that |0| is the \emph{only} limit point of |X|.
+
+\emph{Proposition}: If |X| is finite, then it has no limit points.
+
+\begin{spec}
+∀ p ∈ ℝ? not (Limp p X)
+\end{spec}
+
+Good excercise in quantifier negation!
+
+\begin{spec}
+f : (q : Q) → RPos   {- such that |let ε = f q in q ε ∉ Di p ε| -}
+\end{spec}
+
+Note that |q ε| is in (TODO: To be cont.)
+
+
+
+
+\paragraph{The limit of a sequence} TODO: transcribe the 2016 notes +
+2017 black board pictures into notes.
+
+
+\begin{spec}
+P a ε L = (ε > 0) → ∃ N : ℤ? (∀ n : ℕ? (n ≥ N) → (|a_n - L| < ε))
+\end{spec}
+
+
 
 \subsection{Questions and answers from the exercise sessions week 2}
 

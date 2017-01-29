@@ -1,7 +1,8 @@
 \documentclass{article}
 \usepackage{a4wide}
 \usepackage{amsmath}
-\usepackage{textgreek}
+\usepackage{mathrsfs}
+%\usepackage{textgreek}
 %include polycode.fmt
 %include ../L/dslm.format
 %%% Somewhat updated version of polycode.fmt from the lhs2TeX dist.

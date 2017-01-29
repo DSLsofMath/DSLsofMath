@@ -14,7 +14,7 @@ Overview of example proofs from the 2016 instance:
 17    * Nu3= There exists an infinity of prime numbers
     * An4.1= ${a_n} convergent ∧ f : ℝ → ℝ continuous → {f a_n}$ convergent
 	    * could be an exercise
-* ../Exercises/Exercises-2016-02-04.lhs
+* ../E/W3.lhs
     * An2.1 The sequence {a_n} = (0, 1, 0, 1, ...) does not converge.
     * An2.2 The limit of a convergent sequence is unique.
 
