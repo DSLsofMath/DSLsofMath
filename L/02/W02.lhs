@@ -159,10 +159,12 @@ Note that |q ε| is in (TODO: To be cont.)
 2017 black board pictures into notes.
 
 
+%{
+%format an = "a_n"
 \begin{spec}
-P a ε L = (ε > 0) → ∃ N : ℤ? (∀ n : ℕ? (n ≥ N) → (|a_n - L| < ε))
+P a ε L = (ε > 0) → ∃ N : ℤ? (∀ n : ℕ? (n ≥ N) → (|an - L| < ε))
 \end{spec}
-
+%}
 
 
 \subsection{Questions and answers from the exercise sessions week 2}
