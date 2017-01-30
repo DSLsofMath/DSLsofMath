@@ -1,4 +1,4 @@
-> module FunNumInst where
+> module DSLsofMath.FunNumInst where
 
 > instance Num a => Num (x -> a) where
 >   f + g        =  \x -> f x + g x
@@ -18,4 +18,3 @@
 >   exp f    =  exp . f
 >   f ** g   =  \ x -> (f x)**(g x)
 >   -- and so on
-
