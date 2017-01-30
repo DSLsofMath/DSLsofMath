@@ -1,8 +1,6 @@
 Exercises for W4
 ================
 
-TODO: fix the links
-
 1. Based on the [lecture notes](../L/03/W03.lhs), complete all the
    instance and datatype declarations and definitions in the files
    [FunNumInst.lhs](../L/DSLsofMath/FunNumInst.lhs),
