@@ -28,3 +28,11 @@ References:
 See [W2.lhs](W2.lhs).
 
 Preparation: Read the [TFPIE'15 paper](https://arxiv.org/abs/1611.09475)
+
+# Week 3: Proofs on paper
+
+See [W3.lhs](W3.lhs).
+
+# Week 4: Functions and derivatives
+
+See [W4.lhs](W4.lhs).
