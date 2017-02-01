@@ -4,6 +4,7 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+* 2017-02-01: [Assignment 2 released](Assignments/Assignment02.pdf): deadline 2017-02-28.
 * 2017-01-27: Please check https://github.com/DSLsofMath/DSLsofMath/tree/master/L/snapshots weekly.
 * 2017-01-24: [DSLsofMath google group](https://groups.google.com/forum/#!forum/dslsofmath) for discussions created.
 * 2017-01-17: Schedule change: the exercise sessions will be in ED2480 on Wednesdays and in ED3582 on Fridays.
@@ -45,16 +46,20 @@ The assignments are to be solved in **teams of three**.
 
 - [Assignment01](Assignments/Assignment01.lhs), due 2017-01-31
 
-- **To be released in a few days** [Assignment02](Assignments/Assignment02.lhs),
+- [Assignment02](Assignments/Assignment02.lhs),
   [pdf file](Assignments/Assignment02.pdf), due 2017-02-28
 
 Lectures
 --------
 
-* Week 1: [Course memo](Course-memo/DSLsofMath.md) + [Lecture notes](L/01/L01.lhs)
+The "source code" for the lecture notes are in subdirectories of
+L/: [L/01/](L/01), [L/02/](L/02/), etc.
 
-Updates from 2016 are ongoing work - the 2016 lectures are linked from
-the [2016 homepage](2016/Course2016.md).
+I post a PDF snapshot at least once a week
+in [L/snapshots/](L/snapshots/) - just pick the most recent one.
+
+Updates from 2016 are ongoing work - the full collection of 2016
+lectures are linked from the [2016 homepage](2016/Course2016.md).
 
 Exercises
 ---------

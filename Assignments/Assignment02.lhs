@@ -128,9 +128,9 @@ method at point 2.
 \item [Submission:] Assignments are to be submitted via Fire:
 
   \begin{quote}\url{https://dsls-lp3-17.frs.cse.chalmers.se/login}\end{quote}
-\item [Deadline:] Tuesday, 2016-02-28, 23:59.
+\item [Deadline:] Tuesday, 2017-02-28, 23:59.
 \item [Grading:] Discussions with each of the teams during the
-  exercises session of Friday, 2016-03-03.
+  exercises session of Friday, 2017-03-03.
 \end{description}
 \bibliographystyle{abbrvnat}
 \bibliography{../L/ref}
