@@ -356,10 +356,10 @@ class  (Eq a, Show a) => Num a  where
     fromInteger    :: Integer -> a
 \end{spec}
 
-TODO: \cite{HaskellReportNumClass}
+TODO: insert proper citation \cite{HaskellReportNumClass}
 
 This is taken from the Haskell
-documentation\footnote{\url{https://www.haskell.org/onlinereport/haskell2010/haskellch6.html#x13-1350142}}
+documentation\footnote{Fig. 6.2 in section 6.4 of the Haskell 2010 report: \url{https://www.haskell.org/onlinereport/haskell2010/haskellch6.html}.}
 but it appears that |Eq| and |Show| are not necessary, because there
 are meaningful instances of |Num| which don't support them:
 
@@ -459,8 +459,6 @@ etc.
 We can implement this in a datatype:
 
 \begin{code}
-test = 1
-
 data FunExp  =  Const Double
              |  Id
              |  FunExp :+: FunExp
@@ -499,7 +497,7 @@ In other words, for any expression |e|, we want
      eval (derive e) = D (eval e)
 \end{spec}
 
-For example, let us derive the derive function for Exp e:
+For example, let us derive the |derive| function for |Exp e|:
 
 \begin{spec}
      eval (derive (Exp e))
@@ -556,7 +554,7 @@ derive     (Exp e)        =  Exp e :*: derive e
 Exercise: complete the |FunExp| type and the |eval| and |derive|
 functions.
 
-\subsection{Shallow embeddings}
+\subsection{Shallow embeddings}\label{sec:evalD}
 
 The DSL of expressions, whose syntax is given by the type |FunExp|,
 turns out to be almost identical to the DSL defined via type classes

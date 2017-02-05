@@ -2,7 +2,6 @@
 
 # Specifies the GHC version and set of packages available (e.g., lts-3.5, nightly-2015-09-21, ghc-7.10.2)
 resolver: lts-7.9
-# resolver: lts-3.10
 
 # Local packages, usually specified by relative directory name
 packages:
@@ -10,27 +9,8 @@ packages:
 - location:
     git: https://github.com/DSLsofMath/Hatlab.git
     commit: 8a842849a7f492c430afb2d648d8ff0e95628d35
-
+  extra-dep: true
 # Packages to be pulled from upstream that are not in the resolver (e.g., acme-missiles-0.3)
 extra-deps: []
-
-# Override default flag values for local packages and extra-deps
 flags: {}
-
-# Extra package databases containing global packages
 extra-package-dbs: []
-
-# Control whether we use the GHC we find on the path
-# system-ghc: true
-
-# Require a specific version of stack, using version ranges
-# require-stack-version: -any # Default
-# require-stack-version: >= 0.1.4.0
-
-# Override the architecture used by stack, especially useful on Windows
-# arch: i386
-# arch: x86_64
-
-# Extra directories used by stack for building
-# extra-include-dirs: [/path/to/dir]
-# extra-lib-dirs: [/path/to/dir]

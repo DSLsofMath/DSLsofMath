@@ -23,8 +23,7 @@ DSLsofMath course learning outcomes:
 PS1='\u:\W\$ '
 stack ghci SignalShape:exe:ex1
 stack ghci SignalShape:exe:ex2
-cabal repl
-:l Example.hs
+stack ghci SignalShape:exe:example
 test 0
 ```
 

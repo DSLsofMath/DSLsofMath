@@ -11,7 +11,7 @@
 %include dslm.format
 \usepackage{natbib}
 \usepackage{graphicx}
-\usepackage{url}
+\usepackage{hyperref}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8x]{inputenc}
 \RequirePackage{ucs}
@@ -45,7 +45,7 @@
 \newcommand{\refSecI}[1]{Section \ref{#1}}
 \newcommand{\refSecsI}[1]{Sections \ref{#1}}
 \newcommand{\refTab}[1]{Tab. \ref{#1}}
-\newcommand{\tyconsym}[1]{\mathrel{{\colon}{#1}{\colon}}}
+\newcommand{\tyconsym}[1]{\mathrel{{:}{#1}{:}}}
 % the `doubleequals' macro is due to Jeremy Gibbons
 \def\doubleequals{\mathrel{\unitlength 0.01em
   \begin{picture}(78,40)
@@ -88,6 +88,7 @@
 %include 01/W01.lhs
 %include 02/W02.lhs
 %include 03/W03.lhs
+%include 04/W04.lhs
 
 \bibliographystyle{abbrvnat}
 \bibliography{ref}
