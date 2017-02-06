@@ -7,12 +7,6 @@ News
 * 2017-02-06: [Mid-course eval meeting notes](eval/) + change of room: to ES53 on Wed. from now on.
 * 2017-02-01: [Assignment 2 released](Assignments/Assignment02.pdf): deadline 2017-02-28.
 * 2017-01-27: Please check https://github.com/DSLsofMath/DSLsofMath/tree/master/L/snapshots weekly.
-* 2017-01-24: [DSLsofMath google group](https://groups.google.com/forum/#!forum/dslsofmath) for discussions created.
-* 2017-01-17: Schedule change: the exercise sessions will be in ED2480 on Wednesdays and in ED3582 on Fridays.
-* 2017-01-15: [DSLsofMath course memo 2017](Course-memo/DSLsofMath.md)
-* 2016-09-04: Starting a new course page for the 2017 instance of the
-  DSLsofMath course. The 2016 instance is available
-  [as the Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).
 
 Aim
 ---
@@ -157,3 +151,15 @@ DSLsofMath course evaluation student representatives 2017:
 | molzer@student   |  Simon Mölzer			|
 | vioskar@student  |  Oskar Vigren			|
 | ariv@student     |  Ari von Nordenskjöld  |
+
+History
+-------
+
+"Old news"
+
+* 2017-01-24: [DSLsofMath google group](https://groups.google.com/forum/#!forum/dslsofmath) for discussions created.
+* 2017-01-17: Schedule change: the exercise sessions will be in ED2480 on Wednesdays and in ED3582 on Fridays.
+* 2017-01-15: [DSLsofMath course memo 2017](Course-memo/DSLsofMath.md)
+* 2016-09-04: Starting a new course page for the 2017 instance of the
+  DSLsofMath course. The 2016 instance is available
+  [as the Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).

@@ -89,6 +89,7 @@
 %include 02/W02.lhs
 %include 03/W03.lhs
 %include 04/W04.lhs
+%include 05/W05.lhs
 
 \bibliographystyle{abbrvnat}
 \bibliography{ref}
