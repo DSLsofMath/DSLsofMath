@@ -4,6 +4,7 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
+* 2017-02-06: [Mid-course eval meeting notes](eval/) + change of room: to ES53 on Wed. from now on.
 * 2017-02-01: [Assignment 2 released](Assignments/Assignment02.pdf): deadline 2017-02-28.
 * 2017-01-27: Please check https://github.com/DSLsofMath/DSLsofMath/tree/master/L/snapshots weekly.
 * 2017-01-24: [DSLsofMath google group](https://groups.google.com/forum/#!forum/dslsofmath) for discussions created.
@@ -35,7 +36,7 @@ Schedule ([html](https://se.timeedit.net/web/chalmers/db1/public/riqQ7615X80Z06Q
 --------
 - Lectures Mondays 10-12 (in EB) and Mondays 15-17 (in EF)
 
-- Exercises Wednesdays 13-15 ([ED2480](http://maps.chalmers.se/#f30759ca-7f8b-4903-afe5-412a66e64320)) and Fridays 13-15 ([ED3582](http://maps.chalmers.se/#315adc60-539c-4f0a-bb4d-3088714bb881))
+- Exercises Wednesdays 13-15 ([ES53](http://maps.chalmers.se/#aeda8fb5-fb6b-499a-8824-5fadfa5b8371)) and Fridays 13-15 ([ED3582](http://maps.chalmers.se/#315adc60-539c-4f0a-bb4d-3088714bb881))
 
 - Exam: 2017-03-14 afternoon.  Re-exam: 2017-08-22 afternoon.
 

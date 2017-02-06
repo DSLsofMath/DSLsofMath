@@ -47,7 +47,7 @@ Assignment 1: more clarification of concepts wanted (definition of
 Wed. lab room is suboptimal: only Windows computers, no Haskell
 installed, cramped.
 
-TODO[PaJa]: Rebook the Wed. comp. room from Cal.Week 7 (= study week 5).
+Done[PaJa]: Rebook the Wed. comp. room from Cal.Week 7 (= study week 5). Will be ES53 on Wed. from now on.
 
 Long term (for 2018): perhaps add a third hand-in assignment to make
 sure students work more continuously.
