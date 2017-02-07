@@ -13,7 +13,7 @@ A quality project funded by Chalmers with 260kkr/y for 2014 and 2015 resulting i
 
 * Mo 10-12: lecture in EB
 * Mo 15-17: lecture in EF
-* We 13-15: exercise class in ED-2480
+* We 13-15: exercise class in ES53
 * Fr 13-15: exercise class in ED-3582
 
 Source: TimeEdit for the 2017 instance: [html](https://se.timeedit.net/web/chalmers/db1/public/riqQ7615X80Z06Q0Z45g0Y6Z6Z096Y35Q01vQY5Q5yo6q072oQ.html), [ics](https://se.timeedit.net/web/chalmers/db1/public/ri6Xl0gQ2560YZQQ05Z6974Y0Qy60073l1Q54Q061v555Zq8Z85Yn156.ics)
