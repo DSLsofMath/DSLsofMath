@@ -18,6 +18,10 @@
 \maketitle
 \section*{Optimisation using Newton's method}
 
+This assignment is based on the lectures from weeks 3 and 4 (the
+|FunExp| type, |eval|, |derive|, |D|, tupling, homomorphisms, |FD|, |apply|,
+\ldots) so it pays off to work through those notes carefully.
+
 \begin{enumerate}
 \item The evaluation of the second derivative is given by
 
@@ -28,13 +32,13 @@
 \begin{enumerate}
 \item Show that |eval''| is not a homomorphism.
 
-\item What datatype is needed to have a homomorphism from |Expr| in
+\item What datatype is needed to have a homomorphism from |FunExp| in
   this case?
 %
   Show this for the case of multiplication.
 
 \item \label{datatypes} What datatype is needed for the homomorphism
-  that is analogous to apply?
+  that is analogous to |apply|?
 %
   Give instances of the numerical classes (|Num|, |Fractional|,
   |Floating|) for this datatype, as well as an embedding of |Const|
