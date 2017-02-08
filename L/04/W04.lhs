@@ -475,7 +475,17 @@ The identity will hold if we take
 
 Exercise: complete the instance declarations for |(Double, Double)|.
 
+Note: As this computation goes through also for the other cases we can
+actually work with just pairs of values (at an implicit point |c ::
+a|) instead of pairs of functions.
+%
+Thus we can redefine |FD| to be
+%
+\begin{spec}
+type FD a = (a, a)
+\end{spec}
 
+Hint: Something very similar can be used for Assignment 2.
 
 
 % ================================================================

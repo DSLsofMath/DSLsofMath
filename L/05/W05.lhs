@@ -237,8 +237,7 @@ instance Num a => Num (Poly a) where
   (+) = polyAdd
   (*) = polyMul
 
-  negate (Single a)        =  Single (negate a)
-  negate (Cons a as)       =  Cons (negate a) (negate as)
+  negate = polyNeg
 
   fromInteger              =  Single . fromInteger
 
