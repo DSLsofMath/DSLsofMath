@@ -353,9 +353,113 @@ This justifies the standard notation
 
 \end{enumerate}
 
+\subsection{Polynomial degree as a homomorphism}
+
+TODO: textify black board notes
+
+It is often the case that a certain function is \emph{almost} a
+homomorphism and the domain or range \emph{almost} a monoid.
+%
+In the section on |eval| and |eval'| for |FunExp| we have seen
+``tupling'' as one way to fix such a problem and here we will
+introduce another way.
+
+The |degree| of a polynomial is a good candidate for being a
+homomorphism: if we multiply two polynomials we can normally add their
+degrees.
+%
+If we try to check that |degree :: Poly a -> Nat| is the function
+underlying a monoid morphism we need to decide on the monoid structure
+to use for the source and for the target, and we need to check the
+homomorphism laws.
+%
+We can use |unit = Single 1| and |op = polyMul| for the source monoid
+and we can try to use |unit = 0| and |op = (+)| for the target monoid.
+%
+Then we need to check that
+%
+\begin{spec}
+degree (Single 1) = 0
+Forall x, y? degree (x `op` y) = degree x  +  degree y
+\end{spec}
+%
+The first law is no problem and for most polynomials the second law is
+also straighforward to prove (exercise: prove it) except for one
+special case: the zero polynomial.
+
+Looking back at the definition from \cite{adams2010calculus}, page 55
+it says that the degree of the zero polynomial is not defined.
+%
+Let's see why that is the case and how we might ``fix'' it.
+%
+Assume there is a |z| such that |degree 0 = z| and that we have some
+polynomial |p| with |degree p = n|.
+%
+Then we get
+%
+\begin{spec}
+  z
+= {- assumption -}
+  degree 0
+= {- simple calculation -}
+  degree (0 * p)
+= {- homomorphism condition -}
+  degree 0 + degree p
+= {- assumption -}
+  z + n
+\end{spec}
+%
+Thus we need to find a |z| such that |z = z + n| for all natural
+numbers |n|!
+%
+At this stage we could either give up, or think out of the box.
+%
+Intuitively we could try to use |z = -Infinity|, which would seem to
+satisfy the law but which is not a natural number.
+%
+More formally what we need to do is to extend the monoid |(Nat,0,+)|
+by one more element.
+%
+In Haskell we can do that using the |Maybe| type constructor:
+
+\begin{code}
+instance Monoid a => Monoid (Maybe a) where
+  unit  = Nothing
+  op    = opMaybe
+
+opMaybe Nothing    m          = m
+opMaybe m          Nothing    = m
+opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
+\end{code}
+
+\begin{quote}
+  Lift a semigroup into |Maybe| forming a |Monoid| according to
+  \url{http://en.wikipedia.org/wiki/Monoid}: "Any semigroup |S| may be
+  turned into a monoid simply by adjoining an element |e| not in |S|
+  and defining |e*e = e| and |e*s = s = s*e| for all |s ∈ S|." Since
+  there is no |Semigroup| typeclass [..], we use |Monoid| instead.
+\end{quote}
+% https://hackage.haskell.org/package/base-4.9.1.0/docs/src/GHC.Base.html#line-314
+
+Thus, to sum up, |degree| is a monoid homomorphism from |(Poly a, 1,
+*)| to |(Maybe Nat, Nothing, opMaybe)|.
+
+TODO: check all the properties.
+
 \section{Power Series}
 
 TODO
+
+% ================================================================
+
+\section{Signals and Shapes}
+
+Shallow and deep embeddings of a DSL
+
+TODO: textify DSL/
+
+
+
 
 \section{Helpers}
 

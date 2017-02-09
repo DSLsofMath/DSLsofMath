@@ -487,16 +487,6 @@ type FD a = (a, a)
 
 Hint: Something very similar can be used for Assignment 2.
 
-
-% ================================================================
-
-\section{Signals and Shapes}
-
-Shallow and deep embeddings of a DSL
-
-TODO: textify DSL/
-
-
 \section{Some helper functions}
 
 \begin{code}
