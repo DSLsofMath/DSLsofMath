@@ -39,4 +39,8 @@ See [W4.lhs](W4.lhs).
 
 # Week 5: Homomorphisms and algebras
 
-See [W5.lhs](W5.lhs).
+See [W5.md](W5.md).
+
+# Week 6: Homomorphisms and algebras
+
+See [W6.md](W6.md).
