@@ -36,3 +36,7 @@ See [W3.lhs](W3.lhs).
 # Week 4: Functions and derivatives
 
 See [W4.lhs](W4.lhs).
+
+# Week 5: Homomorphisms and algebras
+
+See [W5.lhs](W5.lhs).
