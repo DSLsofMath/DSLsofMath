@@ -2,6 +2,7 @@
 
 \section{Week 5: Polynomials and Power Series}
 \begin{code}
+{-# LANGUAGE TypeSynonymInstances #-}
 module DSLsofMath.W05 where
 \end{code}
 
@@ -140,6 +141,10 @@ data Poly a  =  Single a  |  Cons a (Poly a)
                 deriving (Eq, Ord)
 \end{code}
 
+(TODO: show the version and motivation for using just |[a]| as well.
+Basically, one can use |[]| as the syntax for the ``zero polynomial''
+and |(c:cs)| for all other.)
+
 The relationship between |Poly a| and |[a]| is given by the following
 functions:
 
@@ -166,11 +171,13 @@ evalPoly (Cons a as)    x   =  a + x * evalPoly as x
 \end{code}
 
 Since we have |Num a|, there is a |Num| structure on |a -> a|, and
-|evalPoly| looks like a homomorphism.  Question: is there a |Num|
-structure on |Poly a|, such that |evalPoly| is a homomorphism?
+|evalPoly| looks like a homomorphism.
+%
+Question: is there a |Num| structure on |Poly a|, such that |evalPoly|
+is a homomorphism?
 
 For example, the homomorphism condition gives for |(+)|
-
+%
 \begin{spec}
 evalPoly as + evalPoly bs = evalPoly (as + bs)
 \end{spec}
@@ -183,7 +190,7 @@ For an arbitrary |x|
 \begin{spec}
   (evalPoly as + evalPoly bs) x = evalPoly (as + bs) x
 
-<=> {- + on functions is point-wise -}
+<=> {- |+| on functions is defined point-wise -}
 
   evalPoly as x + evalPoly bs x = evalPoly (as + bs) x
 \end{spec}
@@ -191,12 +198,13 @@ For an arbitrary |x|
 To proceed further, we need to consider the various cases in the
 definition of |evalPoly|.
 %
-We give here the computation for the last case, using the traditional
-list notation (:) for brevity.
+We give here the computation for the last case (where |as| has at
+least one |Cons|), using the traditional list notation |(:)| for
+brevity.
+%
 
 \begin{spec}
-evalPoly (a : as) x  +  evalPoly (b : bs) x =
-evalPoly ((a : as)  +  (b : bs)) x
+evalPoly (a : as) x  +  evalPoly (b : bs) x  =  evalPoly ((a : as)  +  (b : bs)) x
 \end{spec}
 
 For the left-hand side, we have:
@@ -206,25 +214,25 @@ For the left-hand side, we have:
 
 =  {- def. |evalPoly| -}
 
-  a + x * evalPoly as x + b + x * eval bs x
+  (a + x * evalPoly as x) + (b + x * eval bs x)
 
 =  {- properties of |+|, valid in any ring -}
 
-  a + b + x * (evalPoly as x + evalPoly bs x)
+  (a + b) + x * (evalPoly as x + evalPoly bs x)
 
 =  {- homomorphism condition -}
 
-  a + b + x * evalPoly (as + bs)
+  (a + b) + x * (evalPoly (as + bs) x)
 
 =  {- def. |evalPoly| -}
 
-  evalPoly ((a + b) : as + bs) x
+  evalPoly ((a + b) : (as + bs)) x
 \end{spec}
 
 The homomorphism condition will hold for every |x| if we define
 
 \begin{spec}
-(a : as) + (b : bs) = (a + b) : (as + bs)
+(a : as) + (b : bs)  = (a + b) : (as + bs)
 \end{spec}
 
 We leave the derivation of the other cases and operations as an
@@ -239,7 +247,7 @@ instance Num a => Num (Poly a) where
 
   negate = polyNeg
 
-  fromInteger              =  Single . fromInteger
+  fromInteger =  Single . fromInteger
 
 polyAdd :: Num a => Poly a -> Poly a -> Poly a
 polyAdd (Single a )  (Single b )  =  Single (a + b)
@@ -293,7 +301,7 @@ For example, here is addition:
 \item Polynomials are not, in general, isomorphic (in one-to-one
   correspondence) with polynomial functions.
   %
-  For any finite ring A, there is a finite number of functions |A →
+  For any finite ring |A|, there is a finite number of functions |A ->
   A|, but there is a countable number of polynomials.
   %
   That means that the same polynomial function on |A| will be the
@@ -305,13 +313,13 @@ For example, here is addition:
   In this ring, we have
 
   \begin{spec}
-    evalPoly [0, -1, 1] = const 0 = evalPoly [0]
+    evalPoly [0, 1, 1] = const 0 = evalPoly [0]  {- in |ℤ₂ -> ℤ₂| -}
   \end{spec}
 
   but
 
   \begin{spec}
-    [0, -1, 1] ≠ [0]  in Poly ℤ₂
+    [0, 1, 1] ≠ [0]  {- in |Poly ℤ₂| -}
   \end{spec}
 
   Therefore, it is not generally a good idea to confuse polynomials
@@ -422,8 +430,13 @@ by one more element.
 %
 In Haskell we can do that using the |Maybe| type constructor:
 
+%{
+%format Monoid' = Monoid
 \begin{code}
-instance Monoid a => Monoid (Maybe a) where
+class Monoid' a where
+  unit :: a
+  op :: a -> a -> a
+instance Monoid' a => Monoid' (Maybe a) where
   unit  = Nothing
   op    = opMaybe
 
@@ -431,6 +444,7 @@ opMaybe Nothing    m          = m
 opMaybe m          Nothing    = m
 opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
 \end{code}
+%}
 
 \begin{quote}
   Lift a semigroup into |Maybe| forming a |Monoid| according to
@@ -448,7 +462,165 @@ TODO: check all the properties.
 
 \section{Power Series}
 
-TODO
+Power series are obtained from polynomials by removing in |Poly'| the
+restriction that there should be a \emph{finite} number of non-zero
+coefficients; or, in, the case of |Poly|, by going from lists to
+streams.
+
+\begin{spec}
+PowerSeries' a = { f : ℕ → a }
+\end{spec}
+
+\begin{code}
+type PowerSeries a = Poly a   -- finite and infinite non-empty lists
+\end{code}
+
+The operations are still defined as before.
+%
+If we consider only infinite lists, then only the equations which do
+not contain the patterns for singleton lists will apply.
+
+Power series are usually denoted
+
+\[   \sum_{n = 0}^{\infty} a_n * x^n   \]
+
+the interpretation of |x| being the same as before.
+
+The evaluation of a power series represented by |a : ℕ → A| is defined,
+in case the necessary operations make sense on |A|, as a function
+
+\begin{spec}
+eval a : A -> A
+eval a x  =  lim s   where   s n = {- \(\sum_{i = 0}^n (a i) * x^i\) -}
+\end{spec}
+
+|eval a| is, in general a partial function (the limit might not
+exist).
+
+We will consider, as is usual, only the case in which |A = ℝ| or |A =
+ℂ|.
+
+The term \emph{formal} refers to the independence of the definition of
+power series from the ideas of convergence and evaluation.
+%
+In particular, two power series represented by |a| and |b|, respectively,
+are equal only if |a = b| (as functions).
+%
+If |a ≠ b|, then the power series are different, even if |eval a =
+eval b|.
+
+Since we cannot in general compute limits, we can use an
+``approximative'' |eval|, by evaluating the polynomial resulting from
+an initial segment of the power series.
+
+\begin{code}
+eval n as x = evalPoly (takePoly n as) x
+
+takePoly :: Integer -> Poly a -> Poly a
+takePoly n (Single a)   =  Single a
+takePoly n (Cons a as)  =  if n <= 1
+                              then  Single a
+                              else  Cons a (takePoly (n-1) as)
+\end{code}
+
+\section{Operations on power series}
+
+Power series have a richer structure than polynomials.
+%
+For example, we also have division (this is similar to the move from |ℤ|
+to |ℚ|).
+%
+Assume that |a * b ≠ 0|.
+%
+Then (again, using list notation for brevity), we want to find, for
+any given |(a : as)| and |(b : bs)|, the series |(c : cs)| satisfying
+
+\begin{spec}
+  (a : as) / (b : bs) = (c : cs)
+
+<=> {- def. of division -}
+
+  (a : as) = (c : cs) * (b : bs)
+
+<=> {- def. of |*| for |Cons| -}
+
+  (a : as) = (c * b)  :  (cs * (b : bs)  +  [c]*bs)
+
+<=> {- equality on compnents, def. of division -}
+
+  c   = a / b    {- and -}
+  as  = cs * (b : bs) + [a/b] * bs
+
+<=> {- arithmetics -}
+
+  c   = a / b    {- and -}
+  cs  =  (as - [a/b] * bs) / (b : bs)
+\end{spec}
+
+This leads to the implementation:
+
+\begin{code}
+instance (Eq a, Fractional a) => Fractional (PowerSeries a) where
+  (/) = divPS
+  fromRational =  Single . fromRational
+
+divPS :: (Eq a, Fractional a) => PowerSeries a -> PowerSeries a -> PowerSeries a
+divPS as           (Single b)    =  as * Single (1 / b)
+divPS (Single 0)   (Cons b bs)   =  Single 0
+divPS (Single a)   (Cons b bs)   =  divPS (Cons a (Single 0)) (Cons b bs)
+divPS (Cons a as)  (Cons b bs)   =  Cons c  (divPS (as - (Single c) * bs) (Cons b bs))
+                                    where  c = a / b
+
+\end{code}
+
+The first two equations allow us to also use division on polynomials,
+but the result will, in general, be a power series, not a polynomial.
+%
+The first one should be self-explanatory.
+%
+The second one extends a constant polynomial, in a process similar to
+that of long division.
+
+For example:
+
+\begin{code}
+test0, test1, test2 :: PowerSeries Double
+test0  = 1 / (1 - x)
+test1  = 1 / (1 - x)^2
+test2  = (x^2 - 2 * x + 1) / (x - 1)
+\end{code}
+%
+Every |test| is the result of a division of polynomials: the first two
+return power series, the third is a polynomial (almost: it has a
+trailing |0.0|).
+
+\section{Formal derivative}
+
+Considering the analogy between power series and polynomial functions
+(via polynomials), we can define a formal derivative for power series
+according to the formula
+
+\[(\sum_{n = 0}^{\infty} a_n * x^n)'  =
+  \sum_{n = 0}^{\infty} (a_n * x^n)'  =
+  \sum_{n = 0}^{\infty} (a_n * (n * x^{n-1}))  =
+  \sum_{n = 0}^{\infty} ((n * a_n) * x^{n-1}) \]
+
+We can implement this, for example, as
+
+\begin{code}
+deriv (Single a)   =  Single 0
+deriv (Cons a as)  =  deriv' as 1
+  where  deriv' (Single a)   n  =  Single  (n * a)
+         deriv' (Cons a as)  n  =  Cons    (n * a)  (deriv' as (n+1))
+\end{code}
+
+Side note: we cannot in general implement a Boolean equality test for
+PowerSeries.
+%
+For example, we know that |deriv test0| equals |test1| but we cannot
+compute |True| in finite time by comparing the coefficients of the two
+power series.
+
 
 % ================================================================
 
