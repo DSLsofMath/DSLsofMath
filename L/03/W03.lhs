@@ -29,12 +29,13 @@ explicitly:
 \item we mostly see \(∂f/∂x\), \(∂f/∂y\), \(∂f/∂z\) etc. when, in the
   context, the function \(f\) has been given a definition of the form
   \(f (x, y, z) = \ldots\)
+\item a better notation (by Landau) which doesn't rely on the names
+  given to the arguments was popularised in
+  \cite{landau1934einfuhrung} (English edition
+  \cite{landau2001differential}): \(D₁\) for the partial derivative with
+  respect to \(x₁\), etc.
 \item
-  a better notation which doesn't rely on the names given to the
-  arguments was popularised by Landau in Landau (1934) (English edition
-  Landau (2001)): D₁ for the partial derivative with respect to x₁, etc.
-\item
-  Exercise: for f : ℝ² → ℝ define D₁ and D₂ using only D.
+  Exercise: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
 \end{itemize}
 
 \subsection{Typing Mathematics: partial derivative}
@@ -109,7 +110,7 @@ Note that |0| is a limit point of |ℝ-{0}|, so the type of |lim| is the
 one we have discussed:
 
 \begin{spec}
-lim : (X -> ℝ) -> {p | p ∈ ℝ, p limit point of X } -> ℝ
+lim : (X -> ℝ) -> {p | p ∈ ℝ, Limp p X } -> ℝ
 \end{spec}
 
 |z = f (x, y)| probably does not mean that |z ∈ ℝ|, although the
@@ -299,9 +300,9 @@ In particular, the right-hand |0| is the constant function
 
 \end{enumerate}
 
-\section{Types in Mathematics (Part II)}
+\subsection{Types in Mathematics (Part II)}
 
-\subsection{Type classes}
+\subsubsection{Type classes}
 
 The kind of type inference we presented in the last lecture becomes
 automatic with experience in a domain, but is very useful in the
@@ -486,6 +487,7 @@ derivatives.
 We want to implement a function |derive :: FunExp -> FunExp| which
 makes the following diagram commute:
 
+\quad%
 \begin{tikzcd}
   |FunExp| \arrow[r, "|eval|"] \arrow[d, "|derive|"]  & |Func| \arrow[d, "D"] \\
   |FunExp| \arrow[r, "|eval|"]                        & |Func|

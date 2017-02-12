@@ -349,8 +349,7 @@ TODO: add explanatory text
 
 
 \begin{spec}
-data Term n f v  =
-    N n | F f [Term n f v] | V v
+data Term n f v  =  N n | F f [Term n f v] | V v
   deriving Show
 
 data WFF n f v p =
@@ -365,5 +364,5 @@ data WFF n f v p =
 
   |  FORALL  v (WFF n f v p)
   |  EXISTS  v (WFF n f v p)
-  deriving (Show)
+  deriving Show
 \end{spec}

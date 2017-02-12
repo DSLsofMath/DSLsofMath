@@ -13,7 +13,7 @@ requiring the operations to be compatible with the interpretation |(f
 a, f' a)|.  For example
 
 \begin{spec}
-(x, x') * (y, y') = (x * y, x' * y + x * y')
+(x, x') *? (y, y') = (x * y, x' * y + x * y')
 \end{spec}
 
 There is nothing in the ``nature'' of pairs of |Double| that forces
@@ -25,7 +25,7 @@ This multiplication is obviously not the one we need for \emph{complex
   numbers}:
 
 \begin{spec}
-(x, x') * (y, y') = (x * y - x' * y', x * y' + x' * y)
+(x, x') *. (y, y') = (x * y - x' * y', x * y' + x' * y)
 \end{spec}
 
 Again, there is nothing in the nature of pairs that foists this
@@ -493,11 +493,11 @@ in case the necessary operations make sense on |A|, as a function
 
 \begin{spec}
 eval a : A -> A
-eval a x  =  lim s   where   s n = {- \(\sum_{i = 0}^n (a i) * x^i\) -}
+eval a x  =  lim s   where   s n = {-" \sum_{i = 0}^n a_i * x^i "-}
 \end{spec}
 
-|eval a| is, in general a partial function (the limit might not
-exist).
+Note that |eval a| is, in general, a partial function (the limit might
+not exist).
 
 We will consider, as is usual, only the case in which |A = ℝ| or |A =
 ℂ|.

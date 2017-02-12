@@ -68,16 +68,43 @@ There are many ways to fix this, some more ``pretty'' than others, but
 the main problem is that some information is lost in the translation.
 %
 
-TODO(perhaps): Explain using two pretty printers: for a sum of terms,
-for a product of factors, ... then combine them with the tupling
-transform just as with |evalD|.
+TODO(perhaps): Explain using three pretty printers for the three
+``contexts'': at top level, inside |Add|, inside |Mul|, ... then
+combine them with the tupling transform just as with |evalD|.
+%
+The result is the following:
+%
+\begin{code}
+prTop :: E -> String
+prTop e =  let (pTop, _, _) = prVersions e
+           in pTop
+
+prVersions = foldE prVerAdd prVerMul prVerCon
+
+prVerAdd (xTop, xInA, xInM) (yTop, yInA, yInM) =
+  let s = xInA ++ "+" ++ yInA  -- use |InA| because we are ``in |Add|''
+  in (s, paren s, paren s)     -- parens needed except at top level
+
+prVerMul (xTop, xInA, xInM) (yTop, yInA, yInM) =
+  let s = xInM ++ "*" ++ yInM  -- use |InM| because we are ``in |Mul|''
+  in (s, s, paren s)           -- parens only needed inside |Mul|
+
+prVerCon i =
+  let s = show i
+  in (s, s, s)                 -- parens never needed
+
+paren :: String -> String
+paren s = "(" ++ s ++ ")"
+\end{code}
 
 Exercise: Another way to make this example go through is to refine the
 semantic domain from |String| to |Precedence -> String|.
 %
-(This can be seen as another variant of the result after the tupling
+This can be seen as another variant of the result after the tupling
 transform: if |Precedence| is an |n|-element type then |Precedence ->
-String| can be seen as an |n|-tuple.)
+String| can be seen as an |n|-tuple.
+%
+In our case a three-element |Precedence| would be enough.
 
 \subsection{Compositional semantics in general}
 
@@ -460,17 +487,17 @@ For example:
 
   =  {- homomorphism condition from step 1 -}
 
-     h (f, f') * h (g, g')
+     h (f, f') *? h (g, g')
 
   =  {- def. |h = apply c| -}
 
-     (f c, f' c) * (g c, g' c)
+     (f c, f' c) *? (g c, g' c)
 \end{spec}
 
 The identity will hold if we take
 
 \begin{spec}
-     (x, x') * (y, y') = (x * y, x' * y + x * y')
+     (x, x') *? (y, y') = (x * y, x' * y + x * y')
 \end{spec}
 
 Exercise: complete the instance declarations for |(Double, Double)|.
@@ -490,8 +517,12 @@ Hint: Something very similar can be used for Assignment 2.
 \section{Some helper functions}
 
 \begin{code}
-instance Num E where -- Some abuse of notation
+instance Num E where -- Some abuse of notation (no proper |negate|, etc.)
   (+)  = Add
   (*)  = Mul
   fromInteger = Con
+  negate = negateE
+
+negateE (Con c) = Con (negate c)
+negateE _ = error "negate: not supported"
 \end{code}

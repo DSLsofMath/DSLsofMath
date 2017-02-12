@@ -44,6 +44,10 @@
 % %format :+: = "\mathbin{\vcentcolon\kern-0.4em+\kern-0.4em\vcentcolon}"
 %format :+:                    = "\tyconsym{+}"
 %format :*:                    = "\tyconsym{*}"
+%format :+                     = "\mathbin{{:}\!" + "}"
+%format :*                     = "\mathbin{{:}" * "}"
+%format :++                    = "\mathbin{{:}\!" ++ "}"
+%format :**                    = "\mathbin{{:}" ** "}"
 
 %format x0
 %format ^ = "\mathbin{\hat{}}"
@@ -54,3 +58,6 @@
 %format ε = "\epsilon"
 %%% Use ? to end the variable binding part of forall and exists to avoid clash with . for composition
 %format ? = ".~"
+%format *? = "\circledast"
+% %format *? = "\otimes"
+%format <=> = "\Leftrightarrow"

@@ -98,9 +98,9 @@ We can give the translation from the abstract syntax to the concrete
 syntax as a function |showCA|:
 
 \begin{code}
-showCA                ::  ComplexA -> String
-showCA (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ "i"
-showCA (CPlus2 x i y)  =  show x ++ " + " ++ "i" ++ show y
+showCA ::  ComplexA       ->  String
+showCA     (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ "i"
+showCA     (CPlus2 x i y)  =  show x ++ " + " ++ "i" ++ show y
 \end{code}
 
 Notice that the type |REAL| is not implemented yet and it is not
@@ -594,10 +594,10 @@ Table of examples of notation and abstract syntax for some complex numbers:
 \begin{tabular}{l||l}
     Mathematics & Haskell
 \\\hline
-    3 + 2i                       & |CPlus1 3 2 i|
-\\ 7/2 - 2/3 i = 7/2 + (-2/3) i  & |CPlus1 (7/2) (-2/3) i|
-\\ i pi = 0 + i pi               & |CPlus2 0 i pi|
-\\ -3 = -3 + 0 i                 & |CPlus1 (-3) 0 i|
+    $3 +2i$                          & |CPlus1 3 2 i|
+\\ $\frac{7}{2} - \frac{2}{3} i$ = $\frac{7}{2} + \frac{-2}{3} i$  & |CPlus1 (7/2) (-2/3) i|
+\\ $i \pi$ = $0 + i \pi$               & |CPlus2 0 i pi|
+\\ $-3$ = $-3 + 0 i$                 & |CPlus1 (-3) 0 i|
 \end{tabular}
 
 
