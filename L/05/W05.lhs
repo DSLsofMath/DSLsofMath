@@ -388,7 +388,7 @@ Then we need to check that
 %
 \begin{spec}
 degree (Single 1) = 0
-Forall x, y? degree (x `op` y) = degree x  +  degree y
+∀ x, y? degree (x `op` y) = degree x  +  degree y
 \end{spec}
 %
 The first law is no problem and for most polynomials the second law is
@@ -434,8 +434,9 @@ In Haskell we can do that using the |Maybe| type constructor:
 %format Monoid' = Monoid
 \begin{code}
 class Monoid' a where
-  unit :: a
-  op :: a -> a -> a
+  unit  :: a
+  op    :: a -> a -> a
+
 instance Monoid' a => Monoid' (Maybe a) where
   unit  = Nothing
   op    = opMaybe
@@ -446,6 +447,8 @@ opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
 \end{code}
 %}
 
+We quote the Haskell prelude implementation:
+% https://hackage.haskell.org/package/base-4.9.1.0/docs/src/GHC.Base.html#line-314
 \begin{quote}
   Lift a semigroup into |Maybe| forming a |Monoid| according to
   \url{http://en.wikipedia.org/wiki/Monoid}: "Any semigroup |S| may be
@@ -453,7 +456,6 @@ opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
   and defining |e*e = e| and |e*s = s = s*e| for all |s ∈ S|." Since
   there is no |Semigroup| typeclass [..], we use |Monoid| instead.
 \end{quote}
-% https://hackage.haskell.org/package/base-4.9.1.0/docs/src/GHC.Base.html#line-314
 
 Thus, to sum up, |degree| is a monoid homomorphism from |(Poly a, 1,
 *)| to |(Maybe Nat, Nothing, opMaybe)|.
@@ -584,15 +586,20 @@ that of long division.
 For example:
 
 \begin{code}
-test0, test1, test2 :: PowerSeries Double
-test0  = 1 / (1 - x)
-test1  = 1 / (1 - x)^2
-test2  = (x^2 - 2 * x + 1) / (x - 1)
+ps0, ps1, ps2 :: (Eq a, Fractional a) => PowerSeries a
+ps0  = 1 / (1 - x)
+ps1  = 1 / (1 - x)^2
+ps2  = (x^2 - 2 * x + 1) / (x - 1)
 \end{code}
 %
-Every |test| is the result of a division of polynomials: the first two
+Every |ps| is the result of a division of polynomials: the first two
 return power series, the third is a polynomial (almost: it has a
 trailing |0.0|).
+
+\begin{code}
+example0   = takePoly 10 ps0
+example01  = takePoly 10 (ps0 * (1-x))
+\end{code}
 
 \section{Formal derivative}
 
@@ -617,9 +624,15 @@ deriv (Cons a as)  =  deriv' as 1
 Side note: we cannot in general implement a Boolean equality test for
 PowerSeries.
 %
-For example, we know that |deriv test0| equals |test1| but we cannot
+For example, we know that |deriv ps0| equals |ps1| but we cannot
 compute |True| in finite time by comparing the coefficients of the two
 power series.
+
+\begin{code}
+checkDeriv :: Integer -> Bool
+checkDeriv n  =  takePoly n (deriv ps0) == takePoly n ps1
+\end{code}
+
 
 
 % ================================================================
