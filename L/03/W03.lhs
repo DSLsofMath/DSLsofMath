@@ -629,10 +629,12 @@ It is quite clear that the derivatives cannot be evaluated without, at
 the same time, being able to evaluate the functions.
 %
 So we can try to do both evaluations simultaneously:
-
+%
 \begin{code}
-evalD ::  FunExp  ->  (Double -> Double  ,  Double -> Double  )
-evalD     e       =   (eval e            ,  eval' e           )
+type FD a = (a -> a, a -> a)
+
+evalD ::  FunExp  ->  FD Double
+evalD     e       =   (eval e, eval' e)
 \end{code}
 
 Is |evalD| compositional?

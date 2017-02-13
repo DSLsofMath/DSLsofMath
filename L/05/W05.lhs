@@ -518,12 +518,16 @@ an initial segment of the power series.
 \begin{code}
 eval n as x = evalPoly (takePoly n as) x
 
-takePoly :: Integer -> Poly a -> Poly a
+takePoly :: Integer -> PowerSeries a -> Poly a
 takePoly n (Single a)   =  Single a
 takePoly n (Cons a as)  =  if n <= 1
                               then  Single a
                               else  Cons a (takePoly (n-1) as)
 \end{code}
+%
+Note that |eval n| is not a homomorphism: for example |eval 2 (x*x) 1
+= 0 /= 1 = 1*1 = (eval 2 x 1) * (eval 2 x 1)|.
+
 
 \section{Operations on power series}
 
@@ -633,6 +637,9 @@ checkDeriv :: Integer -> Bool
 checkDeriv n  =  takePoly n (deriv ps0) == takePoly n ps1
 \end{code}
 
+
+Recommended reading: the Functional pearl: ``Power series, power
+serious'' \cite{mcilroy1999functional}.
 
 
 % ================================================================
