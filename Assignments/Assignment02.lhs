@@ -78,7 +78,7 @@ test0  = x^2                    -- one (double) zero, in |0|
 test1  = x^2 - 1                -- two zeros, in |-1| and |1|
 test2  = sin                    -- many, many zeros (|n*pi|)
 test3 n x y = y^n - fddConst x  -- nth root of |x|
-  -- where |fddCon| is the embedding of |Const|
+  -- where |fddConst| is the embedding of |Const|
 \end{code}
 
 For each of these functions, apply Newton's method to a number of
