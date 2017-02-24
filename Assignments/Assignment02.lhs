@@ -118,7 +118,7 @@ starting from |x|.
 %
 If |y| is the result (i.e. |f' y| is within |eps| of 0), then check
 the second derivative, returning |Maximum y| if |f'' y < 0|, |Minimum
-y| if |f'' > y|, and |Dunno y| if |f'' = 0|.
+y| if |f'' y > 0|, and |Dunno y| if |f'' = 0|.
 
 As before, use several starting points.
 
