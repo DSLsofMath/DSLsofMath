@@ -43,4 +43,4 @@ See [W5.md](W5.md).
 
 # Week 6: Homomorphisms and algebras
 
-See [W6.md](W6.md) and [W6notes.lhs](W6notes.lhs), some [W6 code](W6/).
+See [W6.md](W6.md) and [W6notes.md](W6notes.md), some [W6 code](W6/).
