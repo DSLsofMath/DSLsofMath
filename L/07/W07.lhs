@@ -1,8 +1,5 @@
 > {-# LANGUAGE FlexibleInstances #-}
-> {-# LANGUAGE FlexibleContexts #-}
-> {-# LANGUAGE TypeSynonymInstances #-}
-> {-# LANGUAGE ConstraintKinds #-}
-> {-# LANGUAGE MultiParamTypeClasses #-}
+> {-# LANGUAGE UndecidableInstances #-}
 
 Matrix algebra and linear transformations
 =========================================
@@ -102,7 +99,13 @@ The set `G` is typically `{0, 1, ..., n}`.  The basis vectors are then
 
 <    e i  :  G -> S,    e i g = i `is` g
 
+Implementation:
+
 > is a b = if a == b then 1 else 0
+
+> e g = \ (G g') -> g `is` g'
+
+> toL v = [v g | g <- [minBound .. maxBound]] -- so we can actually see them
 
 and every
 
@@ -140,6 +143,8 @@ Each of `m k` is a vector `G'`, as is the resulting `f v`.  We have
 
 <   sum [v i * m i g' | i <- [minBound .. maxBound]]
 
+Implementation:
+
 This is the almost the standard "vector-matrix" multiplication:
 
 <   M = [m 0 | ... | m n]
@@ -147,6 +152,9 @@ This is the almost the standard "vector-matrix" multiplication:
 The columns of `M` are the images of the canonical base vectors `e i` through `f`.  Every `m k` has `card G'` rows, and it has become standard to use `M i j` to mean the `i`th element of the `j`th column, i.e., `m j i`, so that
 
 <   (M * v) i = sum [M i j * v j | j <- [0 .. n]]
+
+> mul m v g' = sum [m g' g * v g | g <- [minBound .. maxBound]]
+
 
 Example
 
@@ -176,7 +184,7 @@ Exercise: work this out in detail.
 
 Exercise: show that matrix-matrix multiplication is associative.
 
-Perhaps the simplest vector space is obtained for `G = ()`, the singleton set.  In this case, the vectors `s : () -> S` are functions that can take exactly one argument, therefore have exactly one value: `s ()`, so they are often identified with `S`.  But, for any `v :
+Perhaps the simplest vector space is obtained for `G = ()`, the singleton set.  In this case, the vectors `s : () -> S` are functions that can take exactly one argument, therefore have exactly one value: `s ()`, so they are often identified with `S`.  But, for any `v : 
 G -> S`, we have a function `fv : G -> (() -> S)`, namely
 
 < fv g () = v g
@@ -236,7 +244,7 @@ Example: `n+1 = 3`:
 
 ```
           0  1  0
-   M  =
+   M  =     
           0  0  2
 ```
 
@@ -263,6 +271,8 @@ representing the polynomial `6 * X^2 + 2 * X`.
 
 Exercise: write the (infinite-dimensional) matrix representing the derivation of power series.
 
+Exercise: write the matrix  associate with integration of polynomials.
+
 **2.  Simple deterministic systems (transition systems)**
 
 Simple deterministic systems are given by endo-functions on a finite set `f : G -> G`.   They can often be conveniently represented as a graph, for example
@@ -273,8 +283,8 @@ Simple deterministic systems are given by endo-functions on a finite set `f : G 
                   +---+
                  ^      \
                 /        v
-            +---+         +---+
-            | 1 |         | 6 |
+            +---+         +---+ 
+            | 1 |         | 6 | 
             +---+         +---+
            ^             ^  |
           /             /   |
@@ -283,9 +293,9 @@ Simple deterministic systems are given by endo-functions on a finite set `f : G 
       +---+        +---+    |
                         ^   |
                          \  v
-           +---+          +---+
-           | 2 |--------->| 5 |
-           +---+          +---+
+           +---+          +---+   
+           | 2 |--------->| 5 |   
+           +---+          +---+   
 ```
 
 Here, `G = {0, ..., 6}`.  A node in the graph represents a state.  A transition `i -> j` means `f i = j`.  Since `f` is an endo-function, every node must be the source of exactly one arrow.
@@ -312,12 +322,42 @@ Therefore:
 
 Starting with a canonical base vector `e i`, we obtain `M * e i = e (f i)`, as we would expect.
 
-It is more interesting if we start with a non-base vector.  For example, `e 2 + e 4`, which represents the subset `{2, 4}`.
+It is more interesting if we start with a non-base vector.  For example, `e 2 + e 4`, which represents the subset `{2, 4}`.  
 
 
 The more interesting thing is if we start with something different from a basis vector, say `[0, 1, 1]`.   We obtain `{f 2, f 4} = {5, 6}`, the image of `{2, 4}` through `f`.  In a sense, we can say that the two computations were done in parallel.  But that is not quite accurate: if start with `{3, 4}`, we no longer get the characteristic function of `{f 3, f 4} = {6}`, instead, we get a vector that does not represent a characteristic function at all: `[0, 0, 0, 0, 0, 0, 2]`.  In general, if we start with an arbitrary vector, we can interpret this as starting with various quantities of some unspecified material in each state, simultaneously.  If `f` were injective, the respective quantities would just gets shifted around, but in our case, we get a more interesting behaviour.
 
 What if we do want to obtain the characteristic function of the image of a subset?  In that case, we need to use other operations than the standard arithmetical ones, for example `min` and `max`.  The problem is that `{0, 1}, max, min` is not a field, and neither is `Real, max, min`.  This is not a problem if all we want is to compute the evolutions of possible states, but we cannot apply most of the "deper" results of linear algebra.
+
+In the example above, we have:
+
+> newtype G = G Int deriving (Eq, Show)
+
+> instance Bounded G where
+>   minBound  =  G 0
+>   maxBound  =  G 6
+
+> instance Enum G where
+>   toEnum          =  G
+>   fromEnum (G n)  =  n
+
+The transition function:
+
+> f1 0 = 1
+> f1 1 = 3
+> f1 2 = 5
+> f1 3 = 6
+> f1 4 = 6
+> f1 5 = 4
+> f1 6 = 5
+
+The associated matrix:
+
+> m1 (G g') (G g) = g' `is` f1 g
+
+Test:
+
+> t1 = toL (mul m1 (e 3 + e 4))
 
 **3. Non-deterministic systems**
 
@@ -333,19 +373,19 @@ For example:
                   +---+
                  ^      \
                 /        v
+            +---+         +---+ 
+            | 1 |         | 6 | 
             +---+         +---+
-            | 1 |         | 6 |
-            +---+         +---+
-           ^     ^       ^
-          /       \     /
-      +---+        +---+
-      | 0 |        | 4 |
-      +---+        +---+
-           \     ^      ^
-            v   /        \
-           +---+          +---+
-           | 2 |--------->| 5 |
-           +---+          +---+
+           ^     ^       ^  
+          /       \     /   
+      +---+        +---+    
+      | 0 |        | 4 |    
+      +---+        +---+    
+           \     ^      ^   
+            v   /        \  
+           +---+          +---+   
+           | 2 |--------->| 5 |   
+           +---+          +---+   
 ```
 
 Now, starting in `0` we might and up either in `1` or `2` (but not both!).  Starting in `6`, the system breaks down: there is no successor  state.
@@ -364,6 +404,37 @@ The matrix associated to `R` is built in the same fashion: we need to determine 
 
 Exercise: start with `e 2 + e 3` and iterate a number of times, to get a feeling for the possible evolutions. What do you notice?  What is the largest number of steps you can make before the result is the origin vector? Now invert the arrow from `2` to `4` and repeat the exercise.  What changes?  Can you prove it?
 
+Implementation:
+
+The transition function has type G -> (G -> Bool):
+
+> f2 0 g      =   g == 1 || g == 2
+> f2 1 g      =   g == 3
+> f2 2 g      =   g == 4 || g == 5
+> f2 3 g      =   g == 6
+> f2 4 g      =   g == 1 || g == 6
+> f2 5 g      =   g == 4
+> f2 6 g      =   False
+
+The associated matrix:
+
+> m2 (G g') (G g) = f2 g g'
+
+We need a `Num` instance for `Bool` (not a field!):
+
+> instance Num Bool where
+>   (+)  =  (||)
+>   (*)  =  (&&)
+>   fromInteger 0  =  False
+>   fromInteger 1  =  True
+>   negate         =  not
+>   abs            =  id
+>   signum         =  id
+
+Test:
+
+> t2 = toL (mul m2 (e 3 + e 4))
+
 **4. Stochastic systems**
 
 Quite often, we have more information about the transition to possible future states.  In particular, we can have *probabilities* of these transitions.  For example
@@ -375,18 +446,18 @@ Quite often, we have more information about the transition to possible future st
                1 ^      \ 1
                 /        v
             +---+         +---+ 1
-            | 1 |         | 6 |---.
+            | 1 |         | 6 |---. 
             +---+         +---+<--´
-           ^     ^       ^
+           ^     ^       ^  
        .4 /    .5 \     / .5
-      +---+        +---+
-      | 0 |        | 4 |
-      +---+        +---+
-           \   .7^      ^ 1
-         .6 v   /        \
-           +---+   .3     +---+
-           | 2 |--------->| 5 |
-           +---+          +---+
+      +---+        +---+    
+      | 0 |        | 4 |    
+      +---+        +---+    
+           \   .7^      ^ 1 
+         .6 v   /        \  
+           +---+   .3     +---+   
+           | 2 |--------->| 5 |   
+           +---+          +---+   
 ```
 
 One could say that this case is a generalisation of the previous one, in which we can take all probabilities to be equally distributed among the various possiblities.   While this is plausible, it is not entirely correct.  For example, we have to introduce a transition from state `6` above.  The nodes must be sources of *at least* one arrow.
@@ -416,6 +487,22 @@ As usual, we write the associated matrix by looking at how the canonical base ve
 ```
 
 Exercise: starting from state 0, how many steps do you need to take before the probability is concentrated in state 6?  Reverse again te arrow from 2 to 4.  What can you say about the long-term behaviour of the system now?
+
+Exercise: Implement the example.  You will need to define
+
+The transition function
+
+> f3 :: G -> (G -> Double)  -- but we want only G -> (G -> [0, 1]), the unit interval
+> f3 g g' = undefined -- the probability of getting to g' from g
+
+The associated matrix
+
+> m3       ::  G -> (G -> Double)
+> m3 g' g   =  undefined
+
+Test
+
+> t3 = toL (mul m3 (e 2 + e 4))
 
 Monadic dynamical systems
 -------------------------
@@ -471,35 +558,41 @@ which suggests that the representation of possible future states might be monadi
 
 Since we implemented all these as matrix-vector multiplications, this raises the question: is there a monad underlying matrix-vector multiplication, such that the above are instances of it (obtained by specialising the scalar type `S`)?
 
+Exercise: write `Monad` instances for `Id, Powerset, Prob`.
+
 The monad of linear algebra
 ---------------------------
 
-The answer is yes, up to a point.  Haskell `Monad`s, just like `Functor`s, require `return` and `>>=` to be defined for every type.  This will not work, in general.  Our definition will work for *finite types* only.  We can implement these using a recent extension, `ConstraintKinds`:
+The answer is yes, up to a point.  Haskell `Monad`s, just like `Functor`s, require `return` and `>>=` to be defined for every type.  This will not work, in general.  Our definition will work for *finite types* only.
 
-
-TODO: See Vector.lhs for working code. Either erase the code below (and the corresponding header at the top of the file) or splice in the code from Vector.lhs.
 
 > type S            =  Double
-> data Vector g  =  V (g -> S)
-> toF (V v)      =  v
+> data Vector g     =  V (g -> S)
+> toF (V v)         =  v
 
-
-> class Func f p where
->   func :: (p a, p b) => (a -> b) -> f a -> f b
 
 > class (Bounded a, Enum a, Eq a) => Finite a where
+> instance (Bounded a, Enum a, Eq a) => Finite a where
 
-> instance Func Vector Finite where
+
+> class FinFunc f where
+>   func :: (Finite a, Finite b) =>  (a -> b) -> f a -> f b
+
+
+> instance FinFunc Vector where
 >   -- func :: Finite a => (g -> g') -> (g -> S) -> g' -> S
 >   func f (V v) =  V (\ g' -> sum [v g | g <- [minBound .. maxBound], g' == f g])
 
-> class Mon f p where
->   eta   ::  p a => a -> f a
->   bind  ::  (p a, p b) => f a -> (a -> f b) -> f b
+> class FinMon f where
+>   embed   ::  Finite a => a -> f a
+>   bind    ::  (Finite a, Finite b) => f a -> (a -> f b) -> f b
 
-> instance Mon Vector Finite where
->   eta a         =  V (\ a' -> if a == a' then 1 else 0)
+> instance FinMon Vector where
+>   embed a       =  V (\ a' -> if a == a' then 1 else 0)
 >   bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- [minBound .. maxBound]])
+
+A better implementation, using associated types, is in file `Vector.lhs` in the repository.
+
 
 Exercises:
 
@@ -515,3 +608,29 @@ Exercises:
 <  bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
 
 3. What properties of `S` have you used to prove these properties?  Define a new type class `GoodClass` that accounts for these (and only these) properties.
+
+
+----------------------------------------------------------------------
+
+> instance Num a => Num (x -> a) where
+>   f + g        =  \x -> f x + g x
+>   f - g        =  \x -> f x - g x
+>   f * g        =  \x -> f x * g x
+>   negate f     =  negate . f
+>   abs f        =  abs . f
+>   signum f     =  signum . f
+>   fromInteger  =  const . fromInteger
+
+> instance Fractional a => Fractional (x -> a) where
+>   recip  f         =  recip . f
+>   fromRational     =  const . fromRational
+
+> instance Floating a => Floating (x -> a) where
+>   pi       =  const pi
+>   exp f    =  exp . f
+>   sin f    =  sin . f
+>   cos f    =  cos . f
+>   f ** g   =  \ x -> (f x)**(g x)
+>   -- and so on
+
+----------------------------------------------------------------------
