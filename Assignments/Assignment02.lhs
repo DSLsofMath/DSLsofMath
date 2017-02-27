@@ -74,11 +74,11 @@ appropriate value for |f' x|.
 Test your implementation on the following functions:
 
 \begin{code}
-test0  = x^2                 -- one (double) zero, in |0|
-test1  = x^2 - 1             -- two zeros, in |-1| and |1|
-test2  = sin                 -- many, many zeros (|n*pi|)
-test3 n x y = y^n - fddId x  -- nth root of |x|
-  -- where |fddId| is the embedding of |Id|
+test0  = x^2                    -- one (double) zero, in |0|
+test1  = x^2 - 1                -- two zeros, in |-1| and |1|
+test2  = sin                    -- many, many zeros (|n*pi|)
+test3 n x y = y^n - fddConst x  -- nth root of |x|
+  -- where |fddConst| is the embedding of |Const|
 \end{code}
 
 For each of these functions, apply Newton's method to a number of
@@ -118,7 +118,7 @@ starting from |x|.
 %
 If |y| is the result (i.e. |f' y| is within |eps| of 0), then check
 the second derivative, returning |Maximum y| if |f'' y < 0|, |Minimum
-y| if |f'' > y|, and |Dunno y| if |f'' = 0|.
+y| if |f'' y > 0|, and |Dunno y| if |f'' = 0|.
 
 As before, use several starting points.
 

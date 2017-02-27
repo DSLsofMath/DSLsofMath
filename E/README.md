@@ -31,7 +31,7 @@ Preparation: Read the [TFPIE'15 paper](https://arxiv.org/abs/1611.09475)
 
 # Week 3: Proofs on paper
 
-See [W3.lhs](W3.lhs).
+See [W3.lhs](W3.lhs) and [W3notes.lhs](W3notes.lhs).
 
 # Week 4: Functions and derivatives
 
@@ -43,4 +43,4 @@ See [W5.md](W5.md).
 
 # Week 6: Homomorphisms and algebras
 
-See [W6.md](W6.md).
+See [W6.md](W6.md) and [W6notes.md](W6notes.md), some [W6 code](W6/).
