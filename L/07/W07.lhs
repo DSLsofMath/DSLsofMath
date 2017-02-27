@@ -176,7 +176,7 @@ Exercise: work this out in detail.
 
 Exercise: show that matrix-matrix multiplication is associative.
 
-Perhaps the simplest vector space is obtained for `G = ()`, the singleton set.  In this case, the vectors `s : () -> S` are functions that can take exactly one argument, therefore have exactly one value: `s ()`, so they are often identified with `S`.  But, for any `v : 
+Perhaps the simplest vector space is obtained for `G = ()`, the singleton set.  In this case, the vectors `s : () -> S` are functions that can take exactly one argument, therefore have exactly one value: `s ()`, so they are often identified with `S`.  But, for any `v :
 G -> S`, we have a function `fv : G -> (() -> S)`, namely
 
 < fv g () = v g
@@ -236,7 +236,7 @@ Example: `n+1 = 3`:
 
 ```
           0  1  0
-   M  =     
+   M  =
           0  0  2
 ```
 
@@ -273,8 +273,8 @@ Simple deterministic systems are given by endo-functions on a finite set `f : G 
                   +---+
                  ^      \
                 /        v
-            +---+         +---+ 
-            | 1 |         | 6 | 
+            +---+         +---+
+            | 1 |         | 6 |
             +---+         +---+
            ^             ^  |
           /             /   |
@@ -283,9 +283,9 @@ Simple deterministic systems are given by endo-functions on a finite set `f : G 
       +---+        +---+    |
                         ^   |
                          \  v
-           +---+          +---+   
-           | 2 |--------->| 5 |   
-           +---+          +---+   
+           +---+          +---+
+           | 2 |--------->| 5 |
+           +---+          +---+
 ```
 
 Here, `G = {0, ..., 6}`.  A node in the graph represents a state.  A transition `i -> j` means `f i = j`.  Since `f` is an endo-function, every node must be the source of exactly one arrow.
@@ -312,7 +312,7 @@ Therefore:
 
 Starting with a canonical base vector `e i`, we obtain `M * e i = e (f i)`, as we would expect.
 
-It is more interesting if we start with a non-base vector.  For example, `e 2 + e 4`, which represents the subset `{2, 4}`.  
+It is more interesting if we start with a non-base vector.  For example, `e 2 + e 4`, which represents the subset `{2, 4}`.
 
 
 The more interesting thing is if we start with something different from a basis vector, say `[0, 1, 1]`.   We obtain `{f 2, f 4} = {5, 6}`, the image of `{2, 4}` through `f`.  In a sense, we can say that the two computations were done in parallel.  But that is not quite accurate: if start with `{3, 4}`, we no longer get the characteristic function of `{f 3, f 4} = {6}`, instead, we get a vector that does not represent a characteristic function at all: `[0, 0, 0, 0, 0, 0, 2]`.  In general, if we start with an arbitrary vector, we can interpret this as starting with various quantities of some unspecified material in each state, simultaneously.  If `f` were injective, the respective quantities would just gets shifted around, but in our case, we get a more interesting behaviour.
@@ -333,19 +333,19 @@ For example:
                   +---+
                  ^      \
                 /        v
-            +---+         +---+ 
-            | 1 |         | 6 | 
             +---+         +---+
-           ^     ^       ^  
-          /       \     /   
-      +---+        +---+    
-      | 0 |        | 4 |    
-      +---+        +---+    
-           \     ^      ^   
-            v   /        \  
-           +---+          +---+   
-           | 2 |--------->| 5 |   
-           +---+          +---+   
+            | 1 |         | 6 |
+            +---+         +---+
+           ^     ^       ^
+          /       \     /
+      +---+        +---+
+      | 0 |        | 4 |
+      +---+        +---+
+           \     ^      ^
+            v   /        \
+           +---+          +---+
+           | 2 |--------->| 5 |
+           +---+          +---+
 ```
 
 Now, starting in `0` we might and up either in `1` or `2` (but not both!).  Starting in `6`, the system breaks down: there is no successor  state.
@@ -375,18 +375,18 @@ Quite often, we have more information about the transition to possible future st
                1 ^      \ 1
                 /        v
             +---+         +---+ 1
-            | 1 |         | 6 |---. 
+            | 1 |         | 6 |---.
             +---+         +---+<--´
-           ^     ^       ^  
+           ^     ^       ^
        .4 /    .5 \     / .5
-      +---+        +---+    
-      | 0 |        | 4 |    
-      +---+        +---+    
-           \   .7^      ^ 1 
-         .6 v   /        \  
-           +---+   .3     +---+   
-           | 2 |--------->| 5 |   
-           +---+          +---+   
+      +---+        +---+
+      | 0 |        | 4 |
+      +---+        +---+
+           \   .7^      ^ 1
+         .6 v   /        \
+           +---+   .3     +---+
+           | 2 |--------->| 5 |
+           +---+          +---+
 ```
 
 One could say that this case is a generalisation of the previous one, in which we can take all probabilities to be equally distributed among the various possiblities.   While this is plausible, it is not entirely correct.  For example, we have to introduce a transition from state `6` above.  The nodes must be sources of *at least* one arrow.
@@ -477,6 +477,8 @@ The monad of linear algebra
 The answer is yes, up to a point.  Haskell `Monad`s, just like `Functor`s, require `return` and `>>=` to be defined for every type.  This will not work, in general.  Our definition will work for *finite types* only.  We can implement these using a recent extension, `ConstraintKinds`:
 
 
+TODO: See Vector.lhs for working code. Either erase the code below (and the corresponding header at the top of the file) or splice in the code from Vector.lhs.
+
 > type S            =  Double
 > data Vector g  =  V (g -> S)
 > toF (V v)      =  v
@@ -513,4 +515,3 @@ Exercises:
 <  bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
 
 3. What properties of `S` have you used to prove these properties?  Define a new type class `GoodClass` that accounts for these (and only these) properties.
-

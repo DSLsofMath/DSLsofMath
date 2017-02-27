@@ -1,0 +1,94 @@
+> {-# LANGUAGE FlexibleInstances #-}
+> {-# LANGUAGE FlexibleContexts #-}
+> {-# LANGUAGE TypeSynonymInstances #-}
+> {-# LANGUAGE ConstraintKinds #-}
+> {-# LANGUAGE MultiParamTypeClasses #-}
+> {-# LANGUAGE AllowAmbiguousTypes #-}
+> {-# LANGUAGE TypeFamilies #-}
+> {-# LANGUAGE UndecidableInstances #-}
+
+> import GHC.Exts
+
+> is a b = if a == b then 1 else 0
+
+> type S         =  Double
+> data Vector g  =  V (g -> S)
+> toF (V v)      =  v
+
+
+> class Func f where
+>   type Pred f :: * -> Constraint
+>   func :: (Pred f a, Pred f b) => (a -> b) -> f a -> f b
+
+> class (Bounded a, Enum a, Eq a) => Finite a
+> instance (Bounded a, Enum a, Eq a) => Finite a
+
+> instance Func Vector where
+>   type Pred Vector = Finite
+>   -- func :: Finite a => (g -> g') -> (g -> S) -> g' -> S
+>   func f (V v) =  V (\ g' -> sum [v g | g <- [minBound .. maxBound], g' == f g])
+
+> class Func f => Mon f where
+>   eta   ::  Pred f a => a -> f a
+>   bind  ::  (Pred f a, Pred f b) => f a -> (a -> f b) -> f b
+
+> instance Mon Vector where
+>   eta a         =  V (\ a' -> if a == a' then 1 else 0)
+>   bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- [minBound .. maxBound]])
+
+---------------
+
+> instance Num (Vector g) where
+>   (+) = addV
+>   fromInteger = fromIntegerV
+>   -- ...
+
+> addV :: Vector g -> Vector g -> Vector g
+> addV (V v) (V w) = V (\g -> v g + w g)
+
+> fromIntegerV :: Integer -> Vector g
+> fromIntegerV s = V (const (fromInteger s))
+
+
+
+> newtype Id a = Id {unId :: a}
+>   deriving (Eq, Show)
+
+> instance Functor Id where
+>   fmap f (Id a) = Id (f a)
+> class All a
+> instance All a
+
+> -- instance Functor f => Func f where
+> instance Func Id where
+>   type Pred Id = All
+>   func = fmap
+
+> testId = fmap (1+) (Id 3)
+
+> type TwoDim   = Vector Bool
+> type ThreeDim = Vector Ordering
+
+> test2D1 :: TwoDim
+> test2D1 = eta False
+
+> test2D2 :: TwoDim
+> test2D2 = eta True
+
+> test3D1 :: ThreeDim
+> test3D1 = eta LT + eta EQ
+
+> test3D2 :: ThreeDim
+> test3D2 = eta EQ + eta GT
+
+> testV1 :: ThreeDim
+> testV1 = bind test2D1 (\b -> if b then test3D1 else test3D2)
+
+
+----------------
+
+> instance Finite g => Show (Vector g) where
+>   show = showVector
+
+> showVector :: Finite g => Vector g -> String
+> showVector (V v) = show (fmap v [minBound .. maxBound])
