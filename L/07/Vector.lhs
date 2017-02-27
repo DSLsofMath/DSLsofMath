@@ -1,7 +1,10 @@
+This code is not formally part of the DSLsofMath course.
+
 > {-# LANGUAGE TypeFamilies #-}
 > {-# LANGUAGE FlexibleInstances #-}
 > {-# LANGUAGE UndecidableInstances #-}
 
+> module Vector where
 > import GHC.Exts
 
 > is a b = if a == b then 1 else 0
@@ -20,8 +23,10 @@
 
 > instance Func Vector where
 >   type Pred Vector = Finite
->   -- func :: Finite a => (g -> g') -> (g -> S) -> g' -> S
->   func f (V v) =  V (\ g' -> sum [v g | g <- [minBound .. maxBound], g' == f g])
+>   func f (V v) = V (funcV f v)
+
+> funcV :: (Finite g, Eq g', Num s) => (g -> g') -> (g -> s) -> (g' -> s)
+> funcV f v g' = sum [v g | g <- [minBound .. maxBound], g' == f g]
 
 > class Func f => Mon f where
 >   eta   ::  Pred f a => a -> f a
@@ -35,7 +40,10 @@
 
 > instance Mon Vector where
 >   eta a         =  V (\ a' -> if a == a' then 1 else 0)
->   bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- [minBound .. maxBound]])
+>   bind (V v) f  =  V (bindV v (toF . f))
+
+> bindV :: (Finite g, Num s) => (g -> s) -> (g -> (g' -> s)) -> (g' -> s)
+> bindV v f g' = sum [f g g' * v g | g <- [minBound .. maxBound]]
 
 > instance Mon' Vector where
 >   type Pred' Vector = Finite
@@ -69,10 +77,11 @@
 > class All a
 > instance All a
 
-> -- instance Functor f => Func f where
 > instance Func Id where
 >   type Pred Id = All
 >   func = fmap
+
+instance Functor f => Func f where func = funcFromFunctor
 
 > funcFromFunctor :: Functor f => (Pred f a, Pred f b) => (a -> b) -> f a -> f b
 > funcFromFunctor = fmap
@@ -94,8 +103,12 @@
 > test3D2 :: ThreeDim
 > test3D2 = eta EQ + eta GT
 
+> testM :: Bool -> ThreeDim
+> testM False  =  test3D1
+> testM True   =  test3D2
+
 > testV1 :: ThreeDim
-> testV1 = bind (test2D1 + test2D2) (\b -> if b then test3D1 else test3D2)
+> testV1 = bind (test2D1 + test2D2) testM
 
 ----------------
 
