@@ -58,6 +58,9 @@
 %format ε = "\epsilon"
 %%% Use ? to end the variable binding part of forall and exists to avoid clash with . for composition
 %format ? = ".~"
+%format ?? = "?"
 %format *? = "\circledast"
 % %format *? = "\otimes"
 %format <=> = "\Leftrightarrow"
+%format <== = "\Leftarrow"
+%format ->? = "\stackrel{?}{\leftarrow}"

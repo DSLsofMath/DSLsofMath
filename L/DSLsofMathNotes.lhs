@@ -90,6 +90,7 @@
 %include 03/W03.lhs
 %include 04/W04.lhs
 %include 05/W05.lhs
+%include 06/W06.lhs
 
 \bibliographystyle{abbrvnat}
 \bibliography{ref}
