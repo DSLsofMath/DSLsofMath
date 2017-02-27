@@ -1,10 +1,5 @@
-> {-# LANGUAGE FlexibleInstances #-}
-> {-# LANGUAGE FlexibleContexts #-}
-> {-# LANGUAGE TypeSynonymInstances #-}
-> {-# LANGUAGE ConstraintKinds #-}
-> {-# LANGUAGE MultiParamTypeClasses #-}
-> {-# LANGUAGE AllowAmbiguousTypes #-}
 > {-# LANGUAGE TypeFamilies #-}
+> {-# LANGUAGE FlexibleInstances #-}
 > {-# LANGUAGE UndecidableInstances #-}
 
 > import GHC.Exts
@@ -15,13 +10,13 @@
 > data Vector g  =  V (g -> S)
 > toF (V v)      =  v
 
+> class (Bounded a, Enum a, Eq a) => Finite a
+> instance (Bounded a, Enum a, Eq a) => Finite a
+
 
 > class Func f where
 >   type Pred f :: * -> Constraint
 >   func :: (Pred f a, Pred f b) => (a -> b) -> f a -> f b
-
-> class (Bounded a, Enum a, Eq a) => Finite a
-> instance (Bounded a, Enum a, Eq a) => Finite a
 
 > instance Func Vector where
 >   type Pred Vector = Finite
@@ -32,9 +27,26 @@
 >   eta   ::  Pred f a => a -> f a
 >   bind  ::  (Pred f a, Pred f b) => f a -> (a -> f b) -> f b
 
+> class Mon' f where
+>   type Pred' f :: * -> Constraint
+>   eta'   ::  Pred' f a => a -> f a
+>   bind'  ::  (Pred' f a, Pred' f b) => f a -> (a -> f b) -> f b
+
+
 > instance Mon Vector where
 >   eta a         =  V (\ a' -> if a == a' then 1 else 0)
 >   bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- [minBound .. maxBound]])
+
+> instance Mon' Vector where
+>   type Pred' Vector = Finite
+>   eta' a         =  V (\ a' -> if a == a' then 1 else 0)
+>   bind' (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- [minBound .. maxBound]])
+
+ instance Mon' f => Func f where
+   type Pred f = Pred' f
+   func = fmapMon'
+
+ fmapMon' f m = m `bind'` (eta' . f)
 
 ---------------
 
@@ -49,8 +61,6 @@
 > fromIntegerV :: Integer -> Vector g
 > fromIntegerV s = V (const (fromInteger s))
 
-
-
 > newtype Id a = Id {unId :: a}
 >   deriving (Eq, Show)
 
@@ -63,6 +73,9 @@
 > instance Func Id where
 >   type Pred Id = All
 >   func = fmap
+
+> funcFromFunctor :: Functor f => (Pred f a, Pred f b) => (a -> b) -> f a -> f b
+> funcFromFunctor = fmap
 
 > testId = fmap (1+) (Id 3)
 
@@ -82,8 +95,7 @@
 > test3D2 = eta EQ + eta GT
 
 > testV1 :: ThreeDim
-> testV1 = bind test2D1 (\b -> if b then test3D1 else test3D2)
-
+> testV1 = bind (test2D1 + test2D2) (\b -> if b then test3D1 else test3D2)
 
 ----------------
 
