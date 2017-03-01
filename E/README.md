@@ -44,3 +44,7 @@ See [W5.md](W5.md).
 # Week 6: Homomorphisms and algebras
 
 See [W6.md](W6.md) and [W6notes.md](W6notes.md), some [W6 code](W6/).
+
+# Week 7: Linear Algebra
+
+Search the [notes from week 7](../L/W07.lhs) for tasks marked "Exercise".
