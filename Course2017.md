@@ -4,7 +4,7 @@ Domain-Specific Languages of Mathematics
 News
 ----
 
-* 2017-03-03 and 2017-03-08: Oral examinations of assignment 2
+* 2017-03-03 and 2017-03-08: [Oral examinations of assignment 2](Assignments/schedule.md)
 * 2017-02-06: [Mid-course eval meeting notes](eval/) + change of room: to ES53 on Wed. from now on.
 * 2017-02-01: [Assignment 2 released](Assignments/Assignment02.pdf): deadline 2017-02-28.
 * 2017-01-27: Please check https://github.com/DSLsofMath/DSLsofMath/tree/master/L/snapshots weekly.
