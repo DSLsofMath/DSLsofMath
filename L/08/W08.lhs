@@ -196,7 +196,7 @@ using the standard notation |a+i*b| for |C (a, b)|
   e^(a + i * b)
 \end{spec}
 
-\subsection{Associated code}
+\subsubsection{Exponential function: Associated code}
 
 TODO: Perhaps import from W01
 
@@ -233,3 +233,341 @@ divC :: Fractional a => Complex a -> Complex a -> Complex a
 divC x y = scale (1/modSq) (x * conj y)
   where  modSq  =  modulusSquaredC y
 \end{code}
+
+\subsection{The Laplace transform}
+
+This material was inspired by \cite{quinn2008discovering}, which is
+highly recommended reading.
+
+Consider the differential equation
+
+\begin{spec}
+f'' x - 3 * f' x + 2 * f x = exp (3 * x),  f 0 = 1,  f' 0 = 0
+\end{spec}
+
+We can solve such equations with the machinery of power series:
+
+\begin{code}
+fs = integ fs' 1
+  where fs' = integ (exp (3*x) + 3 * fs' - 2 * fs) 0
+\end{code}
+
+We have done this by ``zooming in'' on the function |f| and representing
+it by a power series, |f x = Sigma an * x^n|.
+%
+This allows us to reduce the problem of finding a function |f : ℝ → ℝ|
+to that of finding a function |a : ℕ → ℝ| (or finding a list of
+sufficiently many |a|-values for a good approximation).
+
+Still, recursive equations are not always easy to solve (especially
+without a computer), so it's worth looking for alternatives.
+
+We have gone from
+
+\begin{spec}
+a : ℕ → ℝ  {-"\qquad to \qquad"-}   f : ℝ → ℝ
+\end{spec}
+
+via
+
+\begin{spec}
+               Sigma an * x^n
+\end{spec}
+
+In ``zooming out'', we would like to go one step further
+
+
+\begin{spec}
+a : ℕ → ℝ  {-"\qquad to \qquad"-}  f : ℝ → ℝ   {-"\qquad to \qquad"-}     ??
+\end{spec}
+
+via
+
+\begin{spec}
+               Sigma an * x^n    {-"\qquad \qquad"-}         ??
+\end{spec}
+
+At least the second part is ``easy''.
+%
+The analogue of series for a continuous function is integral
+
+\begin{spec}
+               Sigma an * x^n     {-"\qquad \qquad"-}        Integ (f t) * x^t dt
+\end{spec}
+
+We note that, for the integral |Integ (f t) * x^t dt| to
+converge for a larger class of functions (say, bounded functions), we
+have to limit ourselves to |abs x < 1|.
+%
+Both this condition and the integral make sense for |x ∈ ℂ|, so we
+could take
+
+\begin{spec}
+a : ℕ → ℝ {-"\qquad to \qquad"-}  f : ℝ → ℝ  {-"\qquad to \qquad"-}   F : {z | |z| < 1} → ℂ
+\end{spec}
+
+but let us stick to |ℝ| for now.
+
+Writing, somewhat optimistically
+
+\begin{spec}
+ℒ f x = Integ (f t) * x^t dt
+\end{spec}
+
+we can ask ourselves what |ℒ f'| looks like.
+%
+After all, we want to solve \emph{differential} equations by ``zooming
+out''.
+%
+We have
+
+\begin{spec}
+ℒ f' x = Integ (f' t) * x^t dt
+\end{spec}
+
+Remember that |(f * g)' = f' * g + f * g'|, therefore
+
+\begin{spec}
+  ℒ f' x
+
+=  { g t = x^t; g' t = log x * x^t }
+
+  Integ (D (f t * x^t)) - f t * log x * x^t dt
+
+=
+
+  Integ (D (f t * x^t)) dt  -  Integ f t * log x * x^t dt
+
+=
+
+  {-"lim_{t -> \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt
+
+=
+
+  - f 0 - log x * Integ f t * x^t dt
+
+=
+
+  -f 0  - log x * ℒ f x
+\end{spec}
+
+The factor |log x| is somewhat awkward.
+%
+Let us therefore return to the definition of |ℒ| and operate a change
+of variables:
+
+\begin{spec}
+  ℒ f x = Integ (f t) * x^t dt
+
+<=>  { x = exp (log x) }
+
+  ℒ f x = Integ (f t) * (exp (log x))^t dt
+
+<=>  { (a^b)^c = a^(b*c) }
+
+  ℒ f x = Integ (f t) * exp (log x *t) dt
+\end{spec}
+
+Since |log x < 0| for |abs x < 1|, we make the substitution |-s = log
+x|.
+%
+The condition |abs x < 1| becomes |s > 0| (or, in |ℂ|, |real s > 0|),
+and we have
+
+\begin{spec}
+ℒ f s = Integ (f t) * exp (-s * t) dt
+\end{spec}
+
+This is the definition of the Laplace transform of the function |f|.
+%
+Going back to the problem of computing |ℒ f'|, we now have
+
+\begin{spec}
+  ℒ f' s
+
+= {- The computation above with |s = -log x|. -}
+
+  - f 0 + s * ℒ f s
+\end{spec}
+
+We have obtained
+
+\begin{spec}
+ℒ f' s  =  s * ℒ f s - f 0
+\end{spec}
+
+From this, we can deduce
+
+\begin{spec}
+  ℒ f'' s
+=
+  s * ℒ f' s - f' 0
+=
+  s * (s * ℒ f s - f 0) - f' 0
+=
+  s^2 * ℒ f s - s * f 0 - f' 0
+\end{spec}
+
+Exercise: what is the general formula for |ℒ {-"f^{(k)} "-} s|?
+
+Returning to our differential equation, we have
+
+\begin{spec}
+  f'' x - 3 * f' x + 2 * f x = exp (3 * x),  f 0 = 1,  f' 0 = 0
+
+<=>  {- point-free form -}
+
+  f'' - 3 * f' + 2 * f  = exp ∘ (3*),  f 0 = 1,  f' 0 = 0
+
+=>   {- applying |ℒ| to both sides -}
+
+  ℒ (f'' - 3 * f' + 2 * f)  =  ℒ (exp ∘ (3*)), f 0 = 1, f' 0 = 0  -- Eq. (1)
+\end{spec}
+
+\textbf{Remark:} Note that this is a necessary condition, but not a
+sufficient one.
+%
+The Laplace transform is not injective.
+%
+For one thing, it does not take into account the behaviour of |f| for
+negative arguments.
+%
+Because of this, we often assume that the domain of definition for
+functions to which we apply the Laplace transform is |ℝ_{≥ 0}|.
+%
+For another, it is known that changing the values of |f| for a
+countable number of its arguments does not change the value of the
+integral.
+
+For the definition of |ℒ| and the linearity of the integral, we have
+that, for any |f| and |g| for which the transformation is defined, and
+for any constants |alpha| and |beta|
+
+\begin{spec}
+ℒ (alpha * f + beta * g)  =  alpha * ℒ f  + beta * ℒ g
+\end{spec}
+
+Note that this is an equality between functions.
+%
+(Comparing to last week we can also see |f| and |g| as vectors a |ℒ|
+as a linear transformation.)
+
+Applying this to the left-hand side of (1), we have for any |s|
+
+\begin{spec}
+  ℒ (f'' - 3 * f' + 2 * f) s
+
+= {- |ℒ| is linear -}
+
+  ℒ f'' s - 3 * ℒ f' s + 2 * ℒ f s
+
+= {- re-writing |ℒ f''| and |ℒ f'| in terms of |ℒ f| -}
+
+  s^2 * ℒ f s - s * f 0 - f' 0 - 3 * (s * ℒ f s - f 0) + 2 * ℒ f s
+
+= {- |f 0 = 1|, |f' 0 = 0| -}
+
+  (s^2 - 3 * s + 2) * ℒ f s - s + 3
+\end{spec}
+
+For the right-hand side, we apply the definition:
+
+\begin{spec}
+  ℒ (exp ∘ (3*)) s
+
+= {- Def. of |ℒ| -}
+
+  Integ exp (3 * t)  *  exp (-s * t) dt
+
+=
+
+  Integ exp ((3 - s) * t)) dt
+
+=
+
+  {-"lim_{t -> \infty} "-}  1 / (3 - s) * exp ((3 - s) * t) -
+                            1 / (3 - s) * exp ((3 - s) * 0)
+
+= {- for |s > 3| -}
+
+  1 / (s - 3)
+\end{spec}
+
+Therefore, we have, writing |F| for |ℒ f|
+
+\begin{spec}
+(s^2 - 3 * s + 2) * F s - s + 3 = 1/(s-3)
+\end{spec}
+
+and therefore
+
+\begin{spec}
+  F s
+
+= {- Solve for |F s| -}
+
+  (1 / (s - 3) + s - 3) / (s^2 - 3 * s + 2)
+
+=  {- |s^2 - 3 * s + 2 = (s - 1) * (s - 2)| -}
+
+  (10 - 6 * s + s^2) / ((s-1)*(s-2)*(s-3))
+\end{spec}
+
+We now have the problem of ``recovering'' the function |f| from its
+Laplace transform.
+%
+The standard approach is to use the linearity of |ℒ| to write |F| as a
+sum of functions with known inverse transforms.
+%
+We know one such function:
+
+\begin{spec}
+exp (alpha * t)  {- is the inverse Laplace transform of -}  1 / (s - alpha)
+\end{spec}
+
+In fact, in our case, this is all we need.
+
+The idea is to write |F s| as a sum of three fractions with
+denominators |s - 1|, |s - 2|, and |s - 3| respectively, i.e., to find
+|A|, |B|, and |C| such that
+
+\begin{spec}
+A / (s - 1) + B / (s - 2) + C / (s - 3) =  (10 - 6 * s + s^2) / ((s - 1) * (s - 2) * (s - 3))
+
+=>
+
+A * (s - 2) * (s - 3) + B * (s - 1) * (s - 3) + C * (s - 1) * (s - 2)  = 10 - 6 * s + s^2                                                     -- (2)
+\end{spec}
+
+We need this equality (2) to hold for values |s > 3|.
+%
+A \emph{sufficient} condition for this is for (2) to hold for \emph{all} |s|.
+%
+A \emph{necessary} condition for this is for (2) to hold for the
+specific values |1|, |2|, and |3|.
+
+
+
+\begin{spec}
+{-"\text{For }"-} s = 1:    A * (-1) * (-2)  = 10 - 6 + 1   =>  A = 2.5
+{-"\text{For }"-} s = 2:    B * 1 * (-1)     = 10 - 12 + 4  =>  B = -2
+{-"\text{For }"-} s = 3:    C * 2 * 1        = 10 - 18 + 9  =>  C = 0.5
+\end{spec}
+
+It is now easy to check that, with these values, (2) does indeed hold,
+and therefore that we have
+
+\begin{spec}
+F s = 2.5 * (1 / (s - 1)) - 2 * (1 / (s - 2)) + 0.5 * (1 / (s - 3))
+\end{spec}
+
+The inverse transform is now easy:
+
+\begin{spec}
+f t = 2.5 * exp t - 2 * exp (2 * t) + 0.5 * exp (3 * t)
+\end{spec}
+
+Our mix of necessary and sufficient conditions makes it necessary to
+check that we have, indeed, a solution for the differential equation.
+%
+The verification is in this case trivial.

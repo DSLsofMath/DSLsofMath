@@ -64,6 +64,10 @@
 %format <== = "\Leftarrow"
 %format ->? = "\stackrel{?}{\leftarrow}"
 
+%format Integ = "\int_0^{\infty} "
+%format alpha = "\alpha"
+%format beta  = "\beta"
+
 %%% Indexed variable names
 %format a0
 %format a1
