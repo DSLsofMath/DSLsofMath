@@ -91,7 +91,7 @@
 %include 04/W04.lhs
 %include 05/W05.lhs
 %include 06/W06.lhs
-% %include 07/W07.lhs  TODO: LaTeX-ify
+%include 07/W07.lhs
 %include 08/W08.lhs
 
 \bibliographystyle{abbrvnat}
