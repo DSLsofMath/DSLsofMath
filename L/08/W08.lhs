@@ -325,7 +325,7 @@ We have
 ℒ f' x = Integ (f' t) * x^t dt
 \end{spec}
 
-Remember that |(f * g)' = f' * g + f * g'|, therefore
+Remember that |D (f * g) = D f * g + f * D g|, therefore
 
 \begin{spec}
   ℒ f' x
@@ -340,7 +340,7 @@ Remember that |(f * g)' = f' * g + f * g'|, therefore
 
 =
 
-  {-"lim_{t -> \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt
+  {-"lim_{t \to \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt
 
 =
 
@@ -433,7 +433,7 @@ For one thing, it does not take into account the behaviour of |f| for
 negative arguments.
 %
 Because of this, we often assume that the domain of definition for
-functions to which we apply the Laplace transform is |ℝ_{≥ 0}|.
+functions to which we apply the Laplace transform is $ℝ_{≥ 0}$.
 %
 For another, it is known that changing the values of |f| for a
 countable number of its arguments does not change the value of the
@@ -449,7 +449,7 @@ for any constants |alpha| and |beta|
 
 Note that this is an equality between functions.
 %
-(Comparing to last week we can also see |f| and |g| as vectors a |ℒ|
+(Comparing to last week we can also see |f| and |g| as vectors and |ℒ|
 as a linear transformation.)
 
 Applying this to the left-hand side of (1), we have for any |s|
@@ -485,7 +485,7 @@ For the right-hand side, we apply the definition:
 
 =
 
-  {-"lim_{t -> \infty} "-}  1 / (3 - s) * exp ((3 - s) * t) -
+  {-"lim_{t \to \infty} "-}  1 / (3 - s) * exp ((3 - s) * t) -
                             1 / (3 - s) * exp ((3 - s) * 0)
 
 = {- for |s > 3| -}

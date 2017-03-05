@@ -1,3 +1,5 @@
+\def\commentbegin{\{{-}~}
+
 % %format ComplexA                =  Complex "_A"
 %format REAL                    =  "\mathbb{R}"
 %format Nat                     =  "\mathbb{N}"
