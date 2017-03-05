@@ -150,12 +150,12 @@ toComplex x = CPlus1 x 0 i
 
 Again, at this stage there are many open questions.
 %
-For example, we can assume that |i1| stands for the complex number
+For example, we can assume that |i 1| stands for the complex number
 |CPlus2 0 i 1|, but what about |i| by itself?
 %
 If juxtaposition is meant to denote some sort of multiplication, then
 perhaps |1| can be considered as a unit, in which case we would have
-that |i| abbreviates |i1| and therefore |CPlus2 0 i 1|.
+that |i| abbreviates |i 1| and therefore |CPlus2 0 i 1|.
 %
 But what about, say, |2i|?
 %

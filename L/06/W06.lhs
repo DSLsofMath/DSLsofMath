@@ -1,6 +1,8 @@
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
+module DSLsofMath.W06 where
+import DSLsofMath.W05
 \end{code}
 
 \section{Week 6}
@@ -336,33 +338,33 @@ This is a very inefficient way of computing derivatives!
 
 \subsection{Polynomials}
 
-\begin{code}
+\begin{spec}
 data Poly a  =  Single a  |  Cons a (Poly a)
                 deriving (Eq, Ord)
 
 evalPoly ::  Num a => Poly a -> a -> a
 evalPoly (Single a)     x   =  a
 evalPoly (Cons a as)    x   =  a + x * evalPoly as x
-\end{code}
+\end{spec}
 
 \subsection{Power series}
 
 No need for a separate type in Haskell
 
-\begin{code}
+\begin{spec}
 type PowerSeries a = Poly a -- finite and infinite non-empty lists
-\end{code}
+\end{spec}
 
 Now we can divide, as well as add and multiply.
 
 We can also derive:
 
-\begin{code}
+\begin{spec}
 deriv (Single a)   =  Single 0
 deriv (Cons a as)  =  deriv' as 1
   where  deriv' (Single a)   n  =  Single  (n * a)
          deriv' (Cons a as)  n  =  Cons    (n * a)  (deriv' as (n+1))
-\end{code}
+\end{spec}
 
 and integrate:
 
@@ -384,9 +386,8 @@ eval as + eval bs = eval (as + bs)
 eval as * eval bs = eval (as * bs)
 
 eval (derive as)  =  D (eval as)
-eval (integ as c) x  =  S_0^x (eval as t) dt  +  c  -- |S| stands for ``snakey integral sign''
+eval (integ as c) x  =  {-"\int_0^x "-} (eval as t) dt  +  c
 \end{spec}
-TODO: integral sign
 
 \subsection{Simple differential equations}
 
@@ -396,40 +397,41 @@ Many first-order differential equations have the structure
 f' x = g f x, {-"\qquad"-} f 0 = f0
 \end{spec}
 
-i.e., they are defined in terms of |f|.
+i.e., they are defined in terms of |g|.
 
 The fundamental theorem of calculus gives us
 
 \begin{spec}
-f x = S_0^x (g f t) dt + f0
+f x = {-"\int_0^x "-} (g f t) dt + f0
 \end{spec}
 
 If |f = eval as|
 
 \begin{spec}
-eval as x = S_0^x (g (eval as) t) dt + f0
+eval as x = {-"\int_0^x "-} (g (eval as) t) dt + f0
 \end{spec}
 
 Assuming that |g| is a polymorphic function that commutes with |eval|
 
 \begin{spec}
-eval as x = S_0^x (eval (g as) t) dt + f0
+eval as x = {-"\int_0^x "-} (eval (g as) t) dt + f0
 
 eval as x = eval (integ (g as) f0) x
 
 as = integ (g as) f0
 \end{spec}
 
-Which functions |g| commute with |eval|?  All the ones in |Num|,
-|Fractional|, |Floating|, by construction; additionally, as above,
-|deriv| and |integ|.
+Which functions |g| commute with |eval|?
+%
+All the ones in |Num|, |Fractional|, |Floating|, by construction;
+additionally, as above, |deriv| and |integ|.
 
 Therefore, we can implement a general solver for these simple
 equations:
 
 \begin{code}
 solve :: Fractional a => (PowerSeries a -> PowerSeries a) -> a -> PowerSeries a
-solve g f0 = f              -- solves f' x = g f, f 0 = f0
+solve g f0 = f              -- solves |f' = g f|, |f 0 = f0|
   where f = integ (g f) f0
 
 idx  = solve (\ f -> 1) 0
@@ -442,6 +444,9 @@ sinx = solve (\ f -> cosx) 0
 cosx = solve (\ f -> -sinx) 1
 sinf = eval 100 sinx
 cosf = eval 100 cosx
+
+idx, expx, sinx, cosx :: Fractional a =>  PowerSeries a
+idf, expf, sinf, cosf :: Fractional a =>  a -> a
 \end{code}
 
 \subsection{The |Floating| structure of |PowerSeries|}
@@ -457,7 +462,7 @@ eval (exp as) = exp (eval as)
 Differentiating both sides, we obtain
 
 \begin{spec}
-  (eval (exp as))' = exp (eval as) * (eval as)'
+  D (eval (exp as)) = exp (eval as) * D (eval as)
 
 <=>  {- |eval| morphism -}
 
@@ -468,7 +473,7 @@ Differentiating both sides, we obtain
   deriv (exp as) = exp as * deriv as
 \end{spec}
 
-Adding the "initial condition" |eval (exp as) 0| = exp (head as), we
+Adding the ``initial condition'' |eval (exp as) 0 = exp (head as)|, we
 obtain
 
 \begin{spec}
@@ -481,13 +486,13 @@ Note: we cannot use |solve| here, because the |g| function uses both
 \begin{code}
 instance (Eq a, Floating a) => Floating (PowerSeries a) where
   pi       =  Single pi
-  exp fs   =  integ (exp fs * deriv fs)  (exp (val fs))
-  sin fs   =  integ (cos fs * deriv fs)  (sin (val fs))
-  cos fs   =  integ (-sin fs * deriv fs) (cos (val fs))
+  exp  fs  =  integ (exp fs   * deriv fs)  (exp  (val fs))
+  sin  fs  =  integ (cos fs   * deriv fs)  (sin  (val fs))
+  cos  fs  =  integ (-sin fs  * deriv fs)  (cos  (val fs))
 
-val             ::  PowerSeries a -> a
-val (Single a)   =  a
-val (Cons a as)  =  a
+val ::  PowerSeries a  ->  a
+val     (Single a)     =   a
+val     (Cons a as)    =   a
 \end{code}
 
 
@@ -525,16 +530,16 @@ If |f = eval [a0, a1, ..., an, ...]|, then
 In general:
 
 \begin{spec}
-   f^(k) 0  =  fact k * ak
+   {-"f^{(k)} "-} 0  =  fact k * ak
 \end{spec}
 
 Therefore
 
 \begin{spec}
-   f      =  eval [f 0, f' 0, f'' 0 / 2, ..., f^(n) 0 / (fact n), ...]
+   f      =  eval [f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]
 \end{spec}
 
-The series |[f 0, f' 0, f'' 0 / 2, ..., f^(n) 0 / (fact n), ...]| is
+The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
 called the Taylor series centred in |0|, or the Maclaurin series.
 
 Therefore, if we can represent |f| as a power series, we can find the
@@ -542,16 +547,17 @@ value of all derivatives of |f| at |0|!
 
 \begin{code}
 derivs :: Num a => PowerSeries a -> PowerSeries a
-derivs as = derivs1 as 0 1     -- series n n!
+derivs as = derivs1 as 0 1
   where
-  derivs1 (Cons a as) n factn  =
-          Cons (a * factn) (derivs1 as (n + 1) (factn * (n + 1)))
-  derivs1 (Single a) n factn   =  Single (a * factn)
+  derivs1 (Cons a as)  n factn  =  Cons    (a * factn)
+                                           (derivs1 as (n + 1) (factn * (n + 1)))
+  derivs1 (Single a)   n factn  =  Single  (a * factn)
 
-x = Cons 0 (Single 1)
+-- remember that |x = Cons 0 (Single 1)|
 ex3 = takePoly 10 (derivs (x^3 + 2 * x))
 ex4 = takePoly 10 (derivs sinx)
 \end{code}
+
 
 In this way, we can compute all the derivatives at |0| for all
 functions |f| constructed with the grammar of |FunExp|.  That is
@@ -560,7 +566,7 @@ series!
 
 What if we want the value of the derivatives at |a /= 0|?
 
-We then need the power series of the "shifted" function g:
+We then need the power series of the ``shifted'' function g:
 
 \begin{spec}
 g x  =  f (x + a)  <=>  g = f . (+ a)
@@ -570,13 +576,13 @@ If we can represent g as a power series, say |[b0, b1, ...]|, then we
 have
 
 \begin{spec}
-g^(k) 0  =  fact k * bk  =  f^(k) a
+{-"g^{(k)} "-} 0  =  fact k * bk  =  {-"f^{(k)} "-} a
 \end{spec}
 
 In particular, we would have
 
 \begin{spec}
-f x  =  g (x - a)  =  Sum bn * (x - a)^n
+f x  =  g (x - a)  =  {-"\sum"-} bn * (x - a){-"^n"-}
 \end{spec}
 
 which is called the Taylor expansion of |f| at |a|.
@@ -617,7 +623,7 @@ As before, we can use directly power series:
 dP f a = takePoly 10 (derivs (f (idx + Single a)))
 \end{code}
 
-----------------------------------------------------------------------
+\subsection{Associated code}
 
 \begin{code}
 instance Num a => Num (x -> a) where
@@ -641,114 +647,68 @@ instance Floating a => Floating (x -> a) where
   f ** g   =  \ x -> (f x)**(g x)
   -- and so on
 
-----------------------------------------------------------------------
+evalFunExp  ::  FunExp         ->  Double -> Double
+evalFunExp      (Const alpha)  =   const alpha
+evalFunExp      Id             =   id
+evalFunExp      (e1 :+: e2)    =   evalFunExp e1  +  evalFunExp e2    -- note the use of ``lifted |+|''
+evalFunExp      (e1 :*: e2)    =   evalFunExp e1  *  evalFunExp e2    -- ``lifted |*|''
+evalFunExp      (Exp e1)       =   exp (evalFunExp e1)                -- and ``lifted |exp|''
+evalFunExp      (Sin e1)       =   sin (evalFunExp e1)
+evalFunExp      (Cos e1)       =   cos (evalFunExp e1)
+-- and so on
 
-> evalFunExp  ::  FunExp         ->  Double -> Double
-> evalFunExp      (Const alpha)  =   const alpha
-> evalFunExp      Id             =   id
-> evalFunExp      (e1 :+: e2)    =   evalFunExp e1  +  evalFunExp e2    -- note the use of ``lifted |+|''
-> evalFunExp      (e1 :*: e2)    =   evalFunExp e1  *  evalFunExp e2    -- ``lifted |*|''
-> evalFunExp      (Exp e1)       =   exp (evalFunExp e1)          -- and ``lifted |exp|''
-> evalFunExp      (Sin e1)       =   sin (evalFunExp e1)
-> evalFunExp      (Cos e1)       =   cos (evalFunExp e1)
-> -- and so on
+derive     (Const alpha)  =  Const 0
+derive     Id             =  Const 1
+derive     (e1 :+: e2)    =  derive e1  :+:  derive e2
+derive     (e1 :*: e2)    =  (derive e1  :*:  e2)  :+:  (e1  :*:  derive e2)
+derive     (Exp e)        =  Exp e :*: derive e
+derive     (Sin e)        =  Cos e :*: derive e
+derive     (Cos e)        =  Const (-1) :*: Sin e :*: derive e
 
-> derive     (Const alpha)  =  Const 0
-> derive     Id             =  Const 1
-> derive     (e1 :+: e2)    =  derive e1  :+:  derive e2
-> derive     (e1 :*: e2)    =  (derive e1  :*:  e2)  :+:  (e1  :*:  derive e2)
-> derive     (Exp e)        =  Exp e :*: derive e
-> derive     (Sin e)        =  Cos e :*: derive e
-> derive     (Cos e)        =  Const (-1) :*: Sin e :*: derive e
+instance Num FunExp where
+  (+)  =  (:+:)
+  (*)  =  (:*:)
+  fromInteger n = Const (fromInteger n)
 
-> instance Num FunExp where
->   (+)  =  (:+:)
->   (*)  =  (:*:)
->   fromInteger n = Const (fromInteger n)
+instance Fractional FunExp where
+  (/)  =  (:/:)
 
-> instance Fractional FunExp where
->   (/)  =  (:/:)
+instance Floating FunExp where
+  exp        =  Exp
+  sin        =  Sin
+\end{code}
 
-> instance Floating FunExp where
->   exp        =  Exp
->   sin        =  Sin
+\subsubsection{Not included to avoid overlapping instances}
 
-----------------------------------------------------------------------
+\begin{spec}
+instance Num a => Num (FD a) where
+  (f, f') + (g, g') = (f + g, f' + g')
+  (f, f') * (g, g') = (f * g, f' * g + f * g')
+  fromInteger n     = (fromInteger n, const 0)
 
-< instance Num a => Num (FD a) where
-<   (f, f') + (g, g') = (f + g, f' + g')
-<   (f, f') * (g, g') = (f * g, f' * g + f * g')
-<   fromInteger n     = (fromInteger n, const 0)
+instance Fractional a => Fractional (FD a) where
+  (f, f') / (g, g') = (f / g, (f' * g - g' * f) / (g * g))
 
-< instance Fractional a => Fractional (FD a) where
-<   (f, f') / (g, g') = (f / g, (f' * g - g' * f) / (g * g))
+instance Floating a => Floating (FD a) where
+  exp (f, f')       =  (exp f, (exp f) * f')
+  sin (f, f')       =  (sin f, (cos f) * f')
+  cos (f, f')       =  (cos f, -(sin f) * f')
+\end{spec}
 
-< instance Floating a => Floating (FD a) where
-<   exp (f, f')       =  (exp f, (exp f) * f')
-<   sin (f, f')       =  (sin f, (cos f) * f')
-<   cos (f, f')       =  (cos f, -(sin f) * f')
+\subsubsection{This is included instead}
 
-----------------------------------------------------------------------
 
-> instance Num a => Num (a, a) where
->   (f, f') + (g, g') = (f + g, f' + g')
->   (f, f') * (g, g') = (f * g, f' * g + f * g')
->   fromInteger n     = (fromInteger n, fromInteger 0)
+\begin{code}
+instance Num a => Num (a, a) where
+  (f, f') + (g, g') = (f + g, f' + g')
+  (f, f') * (g, g') = (f * g, f' * g + f * g')
+  fromInteger n     = (fromInteger n, fromInteger 0)
 
-> instance Fractional a => Fractional (a, a) where
->   (f, f') / (g, g') = (f / g, (f' * g - g' * f) / (g * g))
+instance Fractional a => Fractional (a, a) where
+  (f, f') / (g, g') = (f / g, (f' * g - g' * f) / (g * g))
 
-> instance Floating a => Floating (a, a) where
->   exp (f, f')       =  (exp f, (exp f) * f')
->   sin (f, f')       =  (sin f, cos f * f')
->   cos (f, f')       =  (cos f, -(sin f) * f')
-
-----------------------------------------------------------------------
-
-> toList :: Poly a -> [a]
-> toList (Single a)   =  [a]
-> toList (Cons a as)  =  a : toList as
-
-> fromList :: [a] -> Poly a
-> fromList [a] = Single a
-> fromList (a0 : a1 : as) = Cons a0 (fromList (a1 : as))
-
-> instance Show a => Show (Poly a) where
->   show = show . toList
-
-> instance Num a => Num (Poly a) where
->   Single a   +  Single b   =  Single (a + b)
->   Single a   +  Cons b bs  =  Cons (a + b) bs
->   Cons a as  +  Single b   =  Cons (a + b) as
->   Cons a as  +  Cons b bs  =  Cons (a + b) (as + bs)
->
->   Single a   *  Single b   =  Single (a * b)
->   Single a   *  Cons b bs  =  Cons (a * b) (Single a * bs)
->   Cons a as  *  Single b   =  Cons (a * b) (as * Single b)
->   Cons a as  *  Cons b bs  =  Cons (a * b) (as * Cons b bs + Single a * bs)
->
->   negate (Single a)        =  Single (negate a)
->   negate (Cons a as)       =  Cons (negate a) (negate as)
->
->   fromInteger              =  Single . fromInteger
-
-----------------------------------------------------------------------
-
-> eval n as x = evalPoly (takePoly n as) x
-
-> takePoly :: Integer -> Poly a -> Poly a
-> takePoly n (Single a)   =  Single a
-> takePoly n (Cons a as)  =  if n <= 1
->                               then  Single a
->                               else  Cons a (takePoly (n-1) as)
-
-----------------------------------------------------------------------
-
-> instance (Eq a, Fractional a) => Fractional (PowerSeries a) where
->   as / Single b           =  as * Single (1 / b)
->   Single a / Cons b bs    =  if a == 0 then Single 0 else Cons a (Single 0) / Cons b bs
->   Cons a as / Cons b bs   =  let  q = a / b
->                              in   Cons q  ((as - Single q * bs) / Cons b bs)
->   fromRational            =  Single . fromRational
-
+instance Floating a => Floating (a, a) where
+  exp (f, f')       =  (exp f, (exp f) * f')
+  sin (f, f')       =  (sin f, cos f * f')
+  cos (f, f')       =  (cos f, -(sin f) * f')
 \end{code}

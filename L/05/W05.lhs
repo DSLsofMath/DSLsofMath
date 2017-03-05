@@ -1,5 +1,3 @@
-% Week 4-5: Poly, PowerSeries, ...
-
 \section{Week 5: Polynomials and Power Series}
 \begin{code}
 {-# LANGUAGE TypeSynonymInstances #-}
@@ -516,6 +514,7 @@ Since we cannot in general compute limits, we can use an
 an initial segment of the power series.
 
 \begin{code}
+eval :: Num a => Integer -> PowerSeries a -> (a -> a)
 eval n as x = evalPoly (takePoly n as) x
 
 takePoly :: Integer -> PowerSeries a -> Poly a
@@ -648,7 +647,7 @@ serious'' \cite{mcilroy1999functional}.
 
 Shallow and deep embeddings of a DSL
 
-TODO: textify DSL/
+TODO: perhaps textify DSL/
 
 
 

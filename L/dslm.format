@@ -8,8 +8,6 @@
 % %format PS+                     =  PS "^+"
 %format elemOf                  =  "\in"
 %format ifandonlyif             =  "\iff"
-%format an                      =  "a_n"
-%format xn                      =  "x_n"
 %format notElemOf               =  "\notin"
 %format noteq                   =  "\neq"
 %format empty                   =  "\emptyset"
@@ -44,15 +42,16 @@
 % %format :+: = "\mathbin{\vcentcolon\kern-0.4em+\kern-0.4em\vcentcolon}"
 %format :+:                    = "\tyconsym{+}"
 %format :*:                    = "\tyconsym{*}"
+%format :/:                    = "\tyconsym{/}"
 %format :+                     = "\mathbin{{:}\!" + "}"
 %format :*                     = "\mathbin{{:}" * "}"
 %format :++                    = "\mathbin{{:}\!" ++ "}"
 %format :**                    = "\mathbin{{:}" ** "}"
 
-%format x0
 %format ^ = "\mathbin{\hat{}}"
 %format undefined = "\Varid{undefined}"
 %format == = "\doubleequals"
+%format /= = "\not\doubleequals"
 %format phi = "\varphi"
 %format cross x y = x "\times" y
 %format ε = "\epsilon"
@@ -64,3 +63,54 @@
 %format <=> = "\Leftrightarrow"
 %format <== = "\Leftarrow"
 %format ->? = "\stackrel{?}{\leftarrow}"
+
+%%% Indexed variable names
+%format a0
+%format a1
+%format a2
+%format a3
+%format ak = a "_k"
+%format an = a "_n"
+%format b0
+%format b1
+%format b2
+%format b3
+%format bk = b "_k"
+%format bn = b "_n"
+%format c1
+%format c2
+%format e1
+%format e2
+%format f0
+%format f1
+%format f2
+%format f3
+%format m1
+%format m2
+%format m3
+%format p1
+%format p2
+%format r1
+%format r2
+%format s1
+%format s2
+%format s3
+%format s4
+%format s5
+%format t0
+%format t1
+%format t2
+%format t3
+%format v0
+%format vn = v "_n"
+%format w0
+%format wn = w "_n"
+%format x0
+%format x0
+%format x1
+%format x2
+%format x3
+%format xn = x "_n"
+%format y1
+%format y2
+%format y3

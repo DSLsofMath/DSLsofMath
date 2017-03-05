@@ -1,5 +1,3 @@
-% Week 4-5: Poly, PowerSeries, ...
-
 \section{Week 4}
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
