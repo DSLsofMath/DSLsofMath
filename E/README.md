@@ -48,3 +48,11 @@ See [W6.md](W6.md) and [W6notes.md](W6notes.md), some [W6 code](W6/).
 # Week 7: Linear Algebra
 
 Search the [notes from week 7](../L/W07.lhs) for tasks marked "Exercise".
+
+# Week 8: Laplace & old exams
+
+Look at the three exams from 2016:
+
+* [2016-Practice](../Exam/2016-Practice/)
+* [2016-03](../Exam/2016-03/)
+* [2016-08](../Exam/2016-08/)
