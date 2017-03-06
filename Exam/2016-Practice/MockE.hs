@@ -479,7 +479,12 @@ So overall, the first three coefficients are:
 
 {- If  z = g(y)  and  y = h(x)  are two functions with continuous derivatives,
     then in the relevant range  z = g(h(x))  is a function of x and has
-    derivative  z'(x) = g'(y) * h'(x).
+    derivative  z'(x) = g'(y) · h'(x).
+
+(We have renamed the multiplication sign from |*| to |·| (middle dot)
+because the |*| symbol causes trouble with the |Num| class in
+Haskell.)
+
 -}
 
 -- Let us define the derivative operator to be
@@ -518,7 +523,7 @@ zz :: X -> Z
 yy :: X -> Y
 
 yy = h
-zz = g . yy
+zz = g . yy   -- note that this dot is function composition, not multiplication
 
 {- With these, the rest of the symbols and expressions have the types:
     z'  ==>  d' zz :: X -> Z

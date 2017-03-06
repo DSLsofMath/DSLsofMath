@@ -56,3 +56,5 @@ Work through the three exams from 2016:
 * [2016-Practice](../Exam/2016-Practice/): Algebra: Vector space, Typing: derivative chain law, Laplace, Proof: limits
 * [2016-03](../Exam/2016-03/): Algebra: Lattice, Typing: integration of functional, Laplace, Proof: continuity of (+)
 * [2016-08](../Exam/2016-08/): Algebra: Abelian group, Typing: conditional probability, Laplace, Proof: continuity of (.)
+
+(I will add the example solutions of the 2016-08 exam after you've had som time to practice it.)
