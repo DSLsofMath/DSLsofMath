@@ -1,6 +1,6 @@
 # DSLsofMath re-exam 2016-08-23
 
-TODO: upload [Exam questions](DSLsofMath_exam.pdf)
+[Exam questions](DSLsofMath_exam_2016-08.pdf)
 
 Solution examples:
 * [Ex1](Ex1.hs)
