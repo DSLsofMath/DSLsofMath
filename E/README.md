@@ -51,8 +51,8 @@ Search the [notes from week 7](../L/W07.lhs) for tasks marked "Exercise".
 
 # Week 8: Laplace & old exams
 
-Look at the three exams from 2016:
+Work through the three exams from 2016:
 
-* [2016-Practice](../Exam/2016-Practice/)
-* [2016-03](../Exam/2016-03/)
-* [2016-08](../Exam/2016-08/)
+* [2016-Practice](../Exam/2016-Practice/): Algebra: Vector space, Typing: derivative chain law, Laplace, Proof: limits
+* [2016-03](../Exam/2016-03/): Algebra: Lattice, Typing: integration of functional, Laplace, Proof: continuity of (+)
+* [2016-08](../Exam/2016-08/): Algebra: Abelian group, Typing: conditional probability, Laplace, Proof: continuity of (.)
