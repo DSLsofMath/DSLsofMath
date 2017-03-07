@@ -1,11 +1,19 @@
-> module DSLsofMath.EvalD where
+> module DSLsofMath.EvalD (module DSLsofMath.FunExp, module DSLsofMath.EvalD) where
 > import DSLsofMath.FunExp
+> import DSLsofMath.Derive
 
-> evalD :: FunExp -> (Double -> Double, Double -> Double)
+> type FD a = (a -> a, a -> a)
 
-> evalD (Exp e)  =  let (f, f') = evalD e
->                   in  (exp . f, (exp . f) * f')
+Specification:
 
-> evalD (e1 :*: e2)  =  let (f, f') = evalD e1
->                           (g, g') = evalD e2
->                       in  (f * g, f' * g + f * g')
+> evalD ::  FunExp  ->  FD Double
+> evalD e = (eval e, eval' e)
+
+Implementation
+
+> evalD2 (Exp e)  =  let (f, f') = evalD2 e
+>                    in  (exp . f, (exp . f) * f')
+
+> evalD2 (e1 :*: e2)  =  let (f, f') = evalD2 e1
+>                            (g, g') = evalD2 e2
+>                        in  (f * g, f' * g + f * g')

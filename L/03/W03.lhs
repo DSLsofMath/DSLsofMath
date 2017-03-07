@@ -608,7 +608,7 @@ For example:
 
   =  {- def. |eval| for |:*:| -}
 
-     eval (Exp e) :*: eval (derive e)
+     eval (Exp e) * eval (derive e)
 
   =  {- def. |eval| for |Exp| -}
 
