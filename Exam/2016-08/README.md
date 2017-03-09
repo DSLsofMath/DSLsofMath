@@ -3,10 +3,8 @@
 [Exam questions](DSLsofMath_exam_2016-08.pdf)
 
 Solution examples:
-* [Ex1](Ex1.hs)
-* [Ex2](Ex2.hs)
-* [Ex3](Ex3.hs)
-* [Ex4](Ex4.hs)
+* [All solutions][Sols.hs]
+* A variant of [Ex1](Ex1.hs)
 
 The results are:
 * grade 3 (G):   83% = 5
