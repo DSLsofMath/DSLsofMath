@@ -99,22 +99,22 @@ Limp p X = ∀ ε > 0? ∃ q ∈ X - {p}? abs (q-p) < ε
 %
 Notice that |q| depends on |ε|.
 %
-Thus by introducing a function we can move the |∃| out.
+Thus by introducing a function |getq| we can move the |∃| out.
 
 \begin{spec}
-type Q = ℝ_{> 0} → (X - {p})
-Limp p X = ∃ q : Q? ∀ ε > 0? |q ε - p| < ε
+type Q = {-"ℝ_{> 0}"-} → (X - {p})
+Limp p X = ∃ getq : Q? ∀ ε > 0? |getq ε - p| < ε
 \end{spec}
 
 Next: introduce the ``disk function'' |Di|.
 
 \begin{spec}
-Di : ℝ → ℝ_{> 0} → 𝒫 ℝ
+Di : ℝ → {-"ℝ_{> 0}"-} → 𝒫 ℝ
 Di c r = {x | abs (x - c) < r}
 \end{spec}
 Then we get
 \begin{spec}
-Limp p X = ∃ q : Q? ∀ ε > 0? q ε ∈ Di p ε
+Limp p X = ∃ getq : Q? ∀ ε > 0? getq ε ∈ Di p ε
 \end{spec}
 
 Example: limit outside the set |X|
@@ -123,14 +123,14 @@ Example: limit outside the set |X|
 X = {1/n | n ∈ Pos }
 \end{spec}
 
-Show that |0| is a limit point.
+Show that |0| is a limit point of |X|.
 %
 Note that |0 ∉ X|.
 
 We want to prove |Limp 0 X|
 
 \begin{spec}
-q ε = 1/n where n = ceiling (1/ε)
+getq ε = 1/n where n = ceiling (1/ε)
 \end{spec}
 
 (where the definition of |n| comes from a calculation showing the
@@ -158,13 +158,9 @@ Note that |q ε| is in (TODO: To be cont.)
 \paragraph{The limit of a sequence} TODO: transcribe the 2016 notes +
 2017 black board pictures into notes.
 
-
-%{
-%format an = "a_n"
 \begin{spec}
 P a ε L = (ε > 0) → ∃ N : ℤ? (∀ n : ℕ? (n ≥ N) → (|an - L| < ε))
 \end{spec}
-%}
 
 
 \subsection{Questions and answers from the exercise sessions week 2}

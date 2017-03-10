@@ -523,7 +523,7 @@ The problem is that |({0, 1}, max, min)| is not a field, and neither is
 |(REAL, max, min)|.
 %
 This is not a problem if all we want is to compute the evolutions of
-possible states, but we cannot apply most of the ``deper'' results of
+possible states, but we cannot apply most of the ``deeper'' results of
 linear algebra.
 
 In the example above, we have:
