@@ -81,7 +81,7 @@ The Kolmogorov notation is much easier to type.
 
     F s * (s^2 - 5 * s + 6) = (s^2 - 2*s + 2) / (s - 1)
 
- => {  s^2 - 5 * s + 6  =  (s - 2) * (s + 3) }
+ => {  s^2 - 5 * s + 6  =  (s - 2) * (s - 3) }
 
     F s  * (s - 1) * (s - 2) * (s - 3) = s^2 - 2 * s + 2
 
