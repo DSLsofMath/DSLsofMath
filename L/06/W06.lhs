@@ -57,7 +57,7 @@ We have several choices.
 Recall (week 3):
 
 \begin{code}
-data FunExp  =  Const Double
+data FunExp  =  Const Rational
              |  Id
              |  FunExp :+: FunExp
              |  FunExp :*: FunExp
@@ -500,8 +500,8 @@ In fact, we can implement \emph{all} the operations needed for
 evaluating |FunExp| functions as power series!
 
 \begin{code}
-evalP :: FunExp -> PowerSeries Double
-evalP (Const x)    =  Single x
+evalP :: (Eq r, Floating r) => FunExp -> PowerSeries r
+evalP (Const x)    =  Single (fromRational x)
 evalP (e1 :+: e2)  =  evalP e1 + evalP e2
 evalP (e1 :*: e2)  =  evalP e1 * evalP e2
 evalP (e1 :/: e2)  =  evalP e1 / evalP e2
@@ -647,14 +647,14 @@ instance Floating a => Floating (x -> a) where
   f ** g   =  \ x -> (f x)**(g x)
   -- and so on
 
-evalFunExp  ::  FunExp         ->  Double -> Double
-evalFunExp      (Const alpha)  =   const alpha
-evalFunExp      Id             =   id
-evalFunExp      (e1 :+: e2)    =   evalFunExp e1  +  evalFunExp e2    -- note the use of ``lifted |+|''
-evalFunExp      (e1 :*: e2)    =   evalFunExp e1  *  evalFunExp e2    -- ``lifted |*|''
-evalFunExp      (Exp e1)       =   exp (evalFunExp e1)                -- and ``lifted |exp|''
-evalFunExp      (Sin e1)       =   sin (evalFunExp e1)
-evalFunExp      (Cos e1)       =   cos (evalFunExp e1)
+evalFunExp  ::  Floating a => FunExp -> a -> a
+evalFunExp  (Const alpha)  =   const (fromRational alpha)
+evalFunExp  Id             =   id
+evalFunExp  (e1 :+: e2)    =   evalFunExp e1  +  evalFunExp e2    -- note the use of ``lifted |+|''
+evalFunExp  (e1 :*: e2)    =   evalFunExp e1  *  evalFunExp e2    -- ``lifted |*|''
+evalFunExp  (Exp e1)       =   exp (evalFunExp e1)                -- and ``lifted |exp|''
+evalFunExp  (Sin e1)       =   sin (evalFunExp e1)
+evalFunExp  (Cos e1)       =   cos (evalFunExp e1)
 -- and so on
 
 derive     (Const alpha)  =  Const 0

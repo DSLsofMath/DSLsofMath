@@ -521,6 +521,7 @@ h = undefined
 -- our failure, the type for 'z' now renamed 'zz' (and so on for other symbols)
 zz :: X -> Z
 yy :: X -> Y
+-- (There are several interpretations possible - we pick one.)
 
 yy = h
 zz = g . yy   -- note that this dot is function composition, not multiplication
