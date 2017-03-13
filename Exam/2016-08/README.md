@@ -3,7 +3,7 @@
 [Exam questions](DSLsofMath_exam_2016-08.pdf)
 
 Solution examples:
-* [All solutions](Sols.hs)
+* [All solutions](Sols.lhs)
 * A variant of [Ex1](Ex1.hs)
 
 The results are:
