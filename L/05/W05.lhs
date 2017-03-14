@@ -575,7 +575,6 @@ divPS (Single 0)   (Cons b bs)   =  Single 0
 divPS (Single a)   (Cons b bs)   =  divPS (Cons a (Single 0)) (Cons b bs)
 divPS (Cons a as)  (Cons b bs)   =  Cons c  (divPS (as - (Single c) * bs) (Cons b bs))
                                     where  c = a / b
-
 \end{code}
 
 The first two equations allow us to also use division on polynomials,

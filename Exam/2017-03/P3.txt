@@ -1,0 +1,76 @@
+[20pts] One definition of *derivative* is (inspired by [Rudin, 1964], p. 89):
+
+    *Definition:* Let |f : [a, b] -> ℝ|.
+    For an |x ∈ [a, b]|, consider the function |phi f (x) : [a, b] -> ℝ| by
+
+<   phi f (x) (t)  =  (f(t) - f(x))/(t - x),    -- for |t /= x|
+
+    and define
+
+<   f'(x)  =  lim_{t->x} phi f (x)(t)
+
+    provided that this limit exists.  We thus associate with |f| a
+    function |f'| whose domain of definition is the set of points |x|
+    at which the limit exists; |f'| is called the *derivative* of |f|.
+
+
+    * [5pts] Let |r : [1, 2] -> ℝ| with |r(x) = 1/x|.
+      Compute |r'| using this definition.
+
+< phi r x t = (r(t)-r(x))/(t-x) = (1/t-1/x)/(t-x) = (x-t)/x/t/(t-x) = -1/x/t
+
+Note that |-1/x/t| is defined also for |x=t| (as long as x/=0). Thus
+the limit computation is trivial: |lim (phi r x) t = 1/x/t|
+
+Thus we have:
+
+  r' x = lim (phi r x) x = lim (\t->-1/x/t) x = -1/x^2
+
+as expected.
+
+    * [5pts] Let |h = g . f| for |f, g : [a, b] -> [a, b]|.
+      Formulate the chain rule (the derivative of |h| in terms of
+      operations on |f| and |g|).
+
+I write |D f| for the derivative of |f| for clarity.
+
+The chain rule: for |h = g . f| we have |D h = (D g . f)*D f|.
+
+    * [10pts] Prove your formulation of the chain rule using the
+      definition above.
+
+  D h x
+= -- def. of derivative
+  lim (phi h x) x
+= -- def. of h
+  lim (phi (g . f) x) x
+
+Let us do a sub-computation (prove a lemma) for arbitrary |t|:
+
+  phi (g . f) x t
+= -- def. of |phi|
+  ((g . f)(t) - (g . f)(x))/(t - x)
+= -- def. |.|
+  (g(f t) - g(f x))/(t - x)
+= -- Assume |f t - f x /= 0|
+  (g(f t) - g(f x))/(f t - f x) * (f t - f x)/(t - x)
+= -- def. of |phi|
+  phi g (f x) (f t) * phi f x t
+
+Now we can continue our equality proof:
+
+  lim (phi (g . f) x) x
+= -- Our new lemma
+  lim (\t -> phi g (f x) (f t) * phi f x t) x
+= -- limit of a product of functions is the product of the limits
+  lim (\t -> phi g (f x) (f t)) x * lim (phi f x) x
+= -- limit of a composition (using cont. of |f|) + def. of D f
+  lim (\ft -> phi g (f x) ft) (f x) * D f x
+= -- eta-reduction
+  lim (phi g (f x)) (f x) * D f x
+= -- def. of |D g| (at the point |f x|)
+  D g (f x) * D f x
+= -- Def. of |.| and |*| on functions
+  ((D g . f) * D f) x
+
+Thus we get |D h = (D g . f) * D f|.
