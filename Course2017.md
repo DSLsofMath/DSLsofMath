@@ -3,7 +3,7 @@ Domain-Specific Languages of Mathematics
 
 News
 ----
-
+* 2017-04-28: Final course evaluation meeting (room Diana, Fysikhuset, 13:15 – 14:00)
 * 2017-03-14: Added the [exam + proposed solutions](Exam/2017-03/)
 * 2017-02-06: [Mid-course eval meeting notes](eval/) + change of room: to ES53 on Wed. from now on.
 

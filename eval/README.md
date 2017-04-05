@@ -9,6 +9,14 @@
 | ariv@student     |  Ari von Nordenskjöld  | OK
 
 
+# 2017-04-28: Final course evaluation meeting
+
+Rooom: Diana, Fysikhuset
+
+Time: 13:15 – 14:00
+
+
+
 # 2017-02-06: Mid-course evaluation meeting
 
 Present:
