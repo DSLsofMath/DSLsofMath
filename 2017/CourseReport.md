@@ -1,4 +1,4 @@
-# Course report for DSLsofMath [1] course instance 2017
+# Course report for the DSLsofMath [1] course instance 2017
 
 Patrik Jansson
 
@@ -126,6 +126,6 @@ needed and I will try to get the students to work more on the
 exercises next year. And I hope having the lecture notes available
 early on will make it easier to study.
 
-[1] https://github.com/DSLsofMath/DSLsofMath
-[2] https://github.com/DSLsofMath/DSLsofMath/blob/master/L/snapshots/DSLsofMathNotes_2017-03-05.pdf
-[3] https://github.com/DSLsofMath/DSLsofMath/tree/master/eval
+* [1] [Project page](https://github.com/DSLsofMath/DSLsofMath)
+* [2] [Lecture notes: snapshot](https://github.com/DSLsofMath/DSLsofMath/blob/master/L/snapshots/DSLsofMathNotes_2017-03-05.pdf)
+* [3] [Evaluation notes](https://github.com/DSLsofMath/DSLsofMath/tree/master/eval)
