@@ -9,6 +9,7 @@
 > derive      (e1 :*: e2)    =  (derive e1 :*: e2) :+: (e1 :*: derive e2)
 > derive      (Exp e)        =  Exp e :*: derive e
 
+> expr1' :: FunExp
 > expr1' = derive expr1
 
 What should the result be?

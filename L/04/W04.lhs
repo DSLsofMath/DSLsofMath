@@ -31,7 +31,7 @@ using |String| as the semantic domain instead of the more natural
 |Integer|.
 %
 We can implement |pretty| in the usual way as a ``fold'' over the
-syntax tree using one ``semantic constructor'' for each syntact
+syntax tree using one ``semantic constructor'' for each syntactic
 constructor:
 %
 \begin{code}
