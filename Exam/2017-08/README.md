@@ -18,4 +18,6 @@ Homepage: https://github.com/DSLsofMath/DSLsofMath/
     * [P3.lhs](P3.lhs)  (using [PS.lhs](PS.lhs))
     * [P4.agda](P4.agda)
 
+[Inofficial anonymous result list](anon_results.md)
+
 Exam check (granskning): Fri. 2017-09-01 in EDIT 5468 at 12.30-12.55.
