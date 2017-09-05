@@ -71,7 +71,21 @@ TODO: type up the notes + whiteboard photos
 
 Swedish: Satslogik
 
-False, True, And, Or, Implies
+\begin{tabular}{lll}
+   |A|, |B|, |C|, \ldots  & names of propositions &
+\\ |False|, |True| & Constants &
+\\ |And|      & $\wedge$ & |&|
+\\ |Or|       & $\vee$   & ||||
+\\ |Implies|  & $\Rightarrow$ &
+\\ |Not|      & $\neg$   &
+\end{tabular}
+
+Example:
+
+> SW = ((A & B) => (B & A))
+
+
+
 
 \subsection{First Order Logic (predicate logic)}
 
