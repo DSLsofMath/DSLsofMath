@@ -29,6 +29,7 @@ concepts'' and ``perform calculational proofs'' (still in the context
 of ``organize areas of mathematics in DSL terms'').
 
 \begin{code}
+{-# LANGUAGE GADTs #-}
 module DSLsofMath.W02 where
 \end{code}
 
@@ -67,7 +68,7 @@ Definition:  A pair |(a,b)| is encoded as |{{a},{a,b}}|.
 
 Now we turn to the main topic of this week: logic and proofs.
 
-TODO: type up the notes + whiteboard photos
+TODO: tidy up the notes below
 
 Swedish: Satslogik
 
@@ -82,8 +83,68 @@ Swedish: Satslogik
 
 Example:
 
-> SW = ((A & B) => (B & A))
+\begin{spec}
+sw :: PropCalc
+sw = ((A & B) -=> (B & A))
+  where  a = N "A"
+         b = N "B"
+\end{spec}
 
+The example is based on the following embedding of propositional calculus terms:
+\begin{code}
+data PropCalc where
+  N        :: Name -> PropCalc
+  C        :: Bool -> PropCalc
+  And      :: PropCalc -> PropCalc -> PropCalc
+  Or       :: PropCalc -> PropCalc -> PropCalc
+  Implies  :: PropCalc -> PropCalc -> PropCalc
+  Not      :: PropCalc -> PropCalc
+
+(&) = And
+(-=>) = Implies
+
+type Name = String
+\end{code}
+With this datatype we can write an evaluator to |Bool| which computes
+the truth value of a term given an enviroment:
+%
+\begin{code}
+evalPC :: (Name -> Bool) -> PropCalc -> Bool
+evalPC = error "Exercise"
+\end{code}
+%
+The function |evalPC| translates from the syntactic to the semantic
+domain.
+%
+Here |PropCalc| is the (abstract) \emph{syntax} of the language of
+propositional calculus and |Bool| is the \emph{semantic
+  domain}.
+%
+Alternatively, we can view |(Name -> Bool) -> Bool| as the semantic
+domain.
+%
+A value of this type is a mapping from a truth table to |Bool|.
+%
+This mapping is often also tabulated as a truth table with one more
+``output'' column.
+
+As a first example, consider the proposition |t = Implies False a|.
+%
+The truth table semantics of |t| is usually drawn as follows: one
+column for the name |a| listing all combinations of |T = Truth| and |F
+= False|, and one column for the result of evaluating the expression.
+%
+\begin{tabular}{||l||l||}
+    \hline   a & t
+  \\\hline   F & T
+  \\         T & T
+  \\\hline
+\end{tabular}
+
+If we continue with the example |sw| from above we have two names and
+fill in the table one operation at a time.
+
+TODO: type up the notes + whiteboard photos
 
 
 
@@ -124,7 +185,7 @@ Next: introduce the ``disk function'' |Di|.
 
 \begin{spec}
 Di : ℝ → {-"ℝ_{> 0}"-} → 𝒫 ℝ
-Di c r = {x | abs (x - c) < r}
+Di c r = {x || abs (x - c) < r}
 \end{spec}
 Then we get
 \begin{spec}
@@ -134,7 +195,7 @@ Limp p X = ∃ getq : Q? ∀ ε > 0? getq ε ∈ Di p ε
 Example: limit outside the set |X|
 
 \begin{spec}
-X = {1/n | n ∈ Pos }
+X = {1/n || n ∈ Pos }
 \end{spec}
 
 Show that |0| is a limit point of |X|.
@@ -161,7 +222,7 @@ Exercise: prove that |0| is the \emph{only} limit point of |X|.
 Good excercise in quantifier negation!
 
 \begin{spec}
-f : (q : Q) → RPos   {- such that |let ε = f q in q ε ∉ Di p ε| -}
+f : (q : Q) → RPos   -- such that |let ε = f q  in  q ε ∉ Di p ε |
 \end{spec}
 
 Note that |q ε| is in (TODO: To be cont.)
@@ -297,8 +358,8 @@ data RPred v  =  Equal     (Term v) (Term v)
               |  LessThan  (Term v) (Term v)
               |  Positive  (Term v)
 
-              |  And  (RPred v) (RPred v)
-              |  Not  (RPred v)
+              |  AND  (RPred v) (RPred v)
+              |  NOT  (RPred v)
   deriving (Eq, Show)
 \end{code}
 %
@@ -306,7 +367,7 @@ Note that the first three constructors, |Eq|, |LessThan|, and
 |Positive|, describe predicates or relations between terms (which can contain term
 variables)
 %
-while the two last constructors, |And| and |Not|, just combine such
+while the two last constructors, |AND| and |NOT|, just combine such
 relations together.
 %
 (Terminology: I often mix the words ``predicate'' and ``relation''.)
@@ -323,8 +384,8 @@ checkRP env (Equal     t1 t2)  = eqSem        (evalRat2 env t1) (evalRat2 env t2
 checkRP env (LessThan  t1 t2)  = lessThanSem  (evalRat2 env t1) (evalRat2 env t2)
 checkRP env (Positive  t1)     = positiveSem  (evalRat2 env t1)
 
-checkRP env (And p q)  = (checkRP env p) && (checkRP env q)
-checkRP env (Not p)    = not (checkRP env p)
+checkRP env (AND p q)  = (checkRP env p) && (checkRP env q)
+checkRP env (NOT p)    = not (checkRP env p)
 \end{code}
 Given this recursive definition of |checkRP|, the semantic functions
 |eqSem|, |lessThanSem|, and |positiveSem| can be defined by just
