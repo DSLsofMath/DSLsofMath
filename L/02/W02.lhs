@@ -141,10 +141,34 @@ column for the name |a| listing all combinations of |T = Truth| and |F
   \\\hline
 \end{tabular}
 
-If we continue with the example |sw| from above we have two names and
-fill in the table one operation at a time.
+If we continue with the example |sw| from above we have two names |a|
+and |b| which together can have any of four combinations of true and
+false. After the name-columns are filled, we fill in the rest of the
+table one operation (column) at a time. The |&| columns become |F F F
+T| and finally the |=>| column becomes true everywhere.
 
-TODO: type up the notes + whiteboard photos
+\begin{tabular}{||lllllll||}
+    \hline   |a| & |&| & |b| & |=>| & |b| & |&| & |a|
+  \\\hline    F  &  F  &  F  &  T   &  F  &  F  &  F
+  \\          F  &  F  &  T  &  T   &  T  &  F  &  F
+  \\          T  &  F  &  F  &  T   &  F  &  F  &  T
+  \\          T  &  T  &  T  &  T   &  T  &  T  &  T
+  \\\hline
+\end{tabular}
+
+A proposition whose truth table is always true is called a
+\emph{tautology}.
+%
+Truth table verification is only viable for propositions with few
+names because of the exponential growth in the number of cases to
+check: we get $2^n$ cases for |n| names.
+%
+(There are very good heuristic algorithms to look for tautologies even
+for thousands of names --- but that is not part of this course.)
+
+What we call ``names'' are often called ``(propositional) variables''
+but we will soon add another kind of variables (and quantification
+over them) to the calculus.
 
 
 
@@ -154,7 +178,45 @@ TODO: type up the notes + whiteboard photos
 
 Swedish: Första ordningens logik = predikatlogik
 
-Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
+TODO: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
+
+We now add \emph{terms} as another datatype to the calculus.
+%
+A \emph{term} is either a (term) \emph{variable} (like |x|, |y|, |z|),
+or the application of a \emph{function symbol} (like |f|, |g|) to a
+suitable number of terms.
+%
+If we have the function symbols |f| of arity |2| and |g| of arity |3|
+we can form terms like |f(x,x)|, |g(y,z,z)|, |g(x,y,f(x,y))|, etc.
+
+The names from the propositional calculus are generalised to
+\emph{predicate symbols} of different arity.
+%
+The predicate symbols can only be applied to terms, not to other
+predicate symbols or formulas.
+%
+If we have the predicate symbols |N| of arity |0|, |P| of arity |1|
+and |Q| of arity |2| we can form \emph{formulas} like |N|, |P(x)|,
+|Q(f(x,x),y)|, etc.
+
+Note that we have two separate layers: terms cannot contain formulas,
+but formulas normally contain terms.
+
+The formulas introduced so far are all \emph{atomic formulas} but we
+will add two more concepts: first the logical conenctives from the
+propositional calculus: |And|, |Or|, |Implies|, |Not|, and then two
+quantifiers: |Forall| and |Exists|.
+%TODO: fix formatting of forall and exists
+
+An example FOL formula:
+%
+\[
+  \forall x(P(x)\rightarrow (\exists y(Q(f(x,x),y))))
+\]
+%
+Note that FOL can only quantify over \emph{term} variables, not over
+predicates.
+
 
 \subsection{Basic concepts of calculus}
 
