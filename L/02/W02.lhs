@@ -216,7 +216,71 @@ An example FOL formula:
 %
 Note that FOL can only quantify over \emph{term} variables, not over
 predicates.
+%
+(Second order logic and higher order logic allow quantification over
+predicates.)
 
+Another example: a formula stating that |+| is commutative:
+\[
+  \forall x(\forall y((x+y)==(y+x)))
+\]
+%
+Note that |==| is a binary predicate symbol while |+| is a binary
+function symbol.
+%
+Here is the same formula without infix operators:
+%
+\begin{spec}
+  Forall x (Forall y (Eq(plus(x,y),plus(y,x))))
+\end{spec}
+
+Forall quantification can be seen as a generalisation of |And|.
+%
+First we can generalise the binary operator to an |n|-ary version:
+|Andn|.
+%
+To prove |Andn A1 A2 ... An| we need a proof of each |Ai|.
+%
+Thus we could define |Andn A1 A2 ... An = A1 & A2 & ... & An| where
+|&| is the infix version of binary |And|.
+%
+The next step is to note that the formulas |Ai| can be generalised to
+|A(i)| where |i| is a term variable and |A| is a unary predicate
+symbol.
+%
+We can think of |i| ranging over an infinite collection of constant
+terms |i0|, |i1|, \ldots
+%
+Then the final step is to introduce the notation |Forall i A(i)| for
+|A(i1) & A(i2) & ... |.
+%
+
+Now to prove |Forall x P(x)| it would be difficult to provide an
+infinite collection of proofs of |P(xi)|.
+%
+Instead the standard procedure is to introduce a fresh constant term
+|a| and prove |P(a)|.
+
+\subsection{Pure set theory}
+
+As an example term language we can use pure (untyped) set theory.
+%
+We have a nullary function symbol |{}| for the empty set (sometimes
+writen $\emptyset$) and a unary function symbol |S| for the function
+that builds a singleton set from an ``element''.
+%
+In pure set theory we don't actually have any ``elements'' to start
+from: every term denotes a set.
+%
+All non-variable terms so far are |{}|, |S {}|, |S (S {})|, \ldots
+%
+The first set is empty but all the others are one-element sets.
+
+Next we add two binary function symbols for union and intersection of
+sets (denoted by terms).
+%
+Using union we can build sets of more than one element, for example
+|Union (S {}) (S (S {}))| which has two ``elements'': |{}| and |S {}|.
 
 \subsection{Basic concepts of calculus}
 

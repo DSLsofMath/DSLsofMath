@@ -120,3 +120,12 @@
 %format y1
 %format y2
 %format y3
+
+
+%format Andn = And "_{n}"
+%format A1 = A "_{1}"
+%format A2 = A "_{2}"
+%format Ai = A "_{i}"
+%format An = A "_{n}"
+%format i1 = i "_{1}"
+%format i2 = i "_{2}"
