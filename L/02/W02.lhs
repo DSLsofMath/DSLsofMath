@@ -260,6 +260,10 @@ infinite collection of proofs of |P(xi)|.
 %
 Instead the standard procedure is to introduce a fresh constant term
 |a| and prove |P(a)|.
+%
+Another way to view this is to say that a proof of |Forall x P(x)| is
+a function |f| from terms to proofs such that |f t| is a proof of
+|P(t)| for all terms |t|.
 
 \subsection{Pure set theory}
 
@@ -281,6 +285,91 @@ sets (denoted by terms).
 %
 Using union we can build sets of more than one element, for example
 |Union (S {}) (S (S {}))| which has two ``elements'': |{}| and |S {}|.
+%
+
+FOL does not have function definitions or recursion, but in a suitable
+meta-langauge (like Haskell) we can write a function that creates a
+set with |n| elements (for any natural number |n|) as a term in FOL:
+%
+\begin{spec}
+  vN 0      = {}
+  vN (n+1)  = step (vN n)
+
+  step x = Union x (S x)
+\end{spec}
+%
+If we use conventional set notation we get |vN 0 = {}|, |vN 1 = {{}}|,
+|vN 2 = {{}, {{}}}|, |vN 3 = {{}, {{}}, {{}, {{}}}}|, etc.
+%format over x = "\overline{" x "}"
+If we use the shorthand |over n| for |vN n| we see that |over 0 = {}|,
+|over 1 = {over 0}|, |over 2 = {over 0, over 1}|, |over 3 = {over 0,
+  over 1, over 2}| and, in general, that |over n| has cardinality |n|.
+%
+The function |vN| is explored in more detail in the first assignment
+of the DSLsofMath course.
+
+The constructions presented so far show that, even starting from no
+elements, we can embed all natural numbers in pure set theory.
+%
+We can also embed unordered pairs: |{a, b} =~= Union (S a) (S b)|
+and normal ordered pairs: |(a, b) =~= {S a, {a, b}}|.
+%
+% |{S a, {a, b}} = Union (S (S a)) (S (Union (S a) (S b)))|
+With a bit more machinery it is possible to step by step encode |Nat|,
+|ZZ|, |QQ|, |REAL|, |COMPLEX|.
+
+\subsection{Back to quantifiers}
+
+After this detour through untyped set land let us get back to the most
+powerful concept of FOL: the quantifiers.
+%
+We have already seen how the ``forall'' quantifier can be seen as a
+generalisation of |And| and in the same way we can see the ``exists''
+quantifier as a generalisation of |Or|.
+%
+
+First we generalise the binary |Or| to an |n|-ary |Orn|.
+%
+To prove |Orn A1 A2 ... An| is enough (and necessary) to find one |i|
+for which we can prove |Ai|.
+%
+As before we then take the step from a family of formulas |Ai| to one
+unary predicate |A| expressing the formulas |A(i)| for the term
+variable |i|.
+%
+Then the final step is to ``or'' all these formulas to obtain |Exists
+i (A i)|.
+
+At this point it is good to sum up and compare the two quantifiers and
+how to prove them:
+
+\begin{quote}
+|(t, bt)| is a proof of |Exists x (P(x))| if |bt| is a proof of |P(t)|.
+
+|f| is a proof of |Forall x (P(x))| if |f t| is a proof of |P(t)| for all |t|.
+\end{quote}
+
+If we abbreviate ``is a proof'' as |:| and use the Haskell convention
+for function application we get
+%
+\begin{spec}
+(t, bt)  :  Exists x (P x)   {-"\quad\textbf{if}\quad"-}  bt   : P t
+f        :  Forall x (P x)   {-"\quad\textbf{if}\quad"-}  f t  : P t   {-"\text{~for all~}"-}  t
+\end{spec}
+%
+This now very much looks like type rules, and that is not a coincidence.
+%
+The Curry-Howard correspondence says that we can think of propositions
+as types and proofs as ``programs''.
+%
+These typing judgments are not part of FOL, but the correspondence is
+used quite a bit in this course to keep track of proofs.
+
+TODO: Add more about Curry-Howard (the binary logical connectives, etc.)
+
+TODO: find the right place for the a note that the type of tuples is
+isomorphic to the (dependent) function type |{i : 1..n} -> Ai|.
+
 
 \subsection{Basic concepts of calculus}
 

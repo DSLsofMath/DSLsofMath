@@ -1,7 +1,11 @@
 \def\commentbegin{\{{-}~}
 
+%format =~=			= "\stackrel{\text{def}}{=}"
 % %format ComplexA                =  Complex "_A"
 %format REAL                    =  "\mathbb{R}"
+%format COMPLEX                 =  "\mathbb{C}"
+%format ZZ                      =  "\mathbb{Z}"
+%format QQ                      =  "\mathbb{Q}"
 %format Nat                     =  "\mathbb{N}"
 %format Pos                     =  "\mathbb{N}_{> 0}"
 %format RPos                    =  "\mathbb{R}_{> 0}"
@@ -129,3 +133,6 @@
 %format An = A "_{n}"
 %format i1 = i "_{1}"
 %format i2 = i "_{2}"
+%format bt = b "_{t}"
+
+%format Orn = Or "_{n}"
