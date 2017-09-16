@@ -33,37 +33,6 @@ of ``organize areas of mathematics in DSL terms'').
 module DSLsofMath.W02 where
 \end{code}
 
-\subsection{A few words about pure set theory}
-
-One way to build mathematics from the ground up is to start from pure
-set theory and define all concepts by translation to sets.
-%
-We will only work with this as a mathematical domain to study, not as
-``the right way'' of doing mathematics.
-%
-The core of the language of pure set theory has the Empty set, the
-one-element set constructor Singleton, set Union, and Intersection.
-%
-There are no ``atoms'' or ``elements'' to start from except for the
-empty set but it turns out that quite a large part of mathematics can
-still be expressed.
-
-\paragraph{Natural numbers} To talk about things like natural numbers
-in pure set theory they need to be encoded. Here is one such encoding
-(which is explored further in the first hand-in assignment).
-
-\begin{spec}
-vonNeumann 0        =  Empty
-vonNeumann (n + 1)  =  Union  (vonNeumann n)
-                              (Singleton (vonNeumann n))
-\end{spec}
-
-\paragraph{Pairs}
-
-Definition:  A pair |(a,b)| is encoded as |{{a},{a,b}}|.
-
-% (a,b) \coloneqq \big\{\,\{a\},\{a,b\}\,\big\} ;
-
 \subsection{Propositional Calculus}
 
 Now we turn to the main topic of this week: logic and proofs.
@@ -265,7 +234,38 @@ Another way to view this is to say that a proof of |Forall x P(x)| is
 a function |f| from terms to proofs such that |f t| is a proof of
 |P(t)| for all terms |t|.
 
-\subsection{Pure set theory}
+\subsection{An aside: Pure set theory}
+
+One way to build mathematics from the ground up is to start from pure
+set theory and define all concepts by translation to sets.
+%
+We will only work with this as a mathematical domain to study, not as
+``the right way'' of doing mathematics.
+%
+The core of the language of pure set theory has the Empty set, the
+one-element set constructor Singleton, set Union, and Intersection.
+%
+There are no ``atoms'' or ``elements'' to start from except for the
+empty set but it turns out that quite a large part of mathematics can
+still be expressed.
+
+\paragraph{Natural numbers} To talk about things like natural numbers
+in pure set theory they need to be encoded. Here is one such encoding
+(which is explored further in the first hand-in assignment).
+
+\begin{spec}
+vonNeumann 0        =  Empty
+vonNeumann (n + 1)  =  Union  (vonNeumann n)
+                              (Singleton (vonNeumann n))
+\end{spec}
+
+\paragraph{Pairs}
+
+Definition:  A pair |(a,b)| is encoded as |{{a},{a,b}}|.
+
+% (a,b) \coloneqq \big\{\,\{a\},\{a,b\}\,\big\} ;
+
+TODO: merge the text below and above
 
 As an example term language we can use pure (untyped) set theory.
 %
@@ -370,6 +370,24 @@ TODO: Add more about Curry-Howard (the binary logical connectives, etc.)
 TODO: find the right place for the a note that the type of tuples is
 isomorphic to the (dependent) function type |{i : 1..n} -> Ai|.
 
+\subsection{Proof example: $\sqrt{2}$ is irrational}
+
+Let's try to express and prove the irrationality of the square
+root of 2.
+%
+We have two main concepts involved: the predicate "irrational" and the
+function "square root of".
+%
+The square root function (for positive real numbers) can be specified
+by $r = \sqrt{s}$ iff $r^2 = s$ and $r>=0$.
+%
+The formula ``x is irrational'' is just |not(R x)| where |R| is the
+predicate ``is rational''.
+%
+\begin{spec}
+  R(x) = Exists a (Exists b (b*x=a))
+\end{spec}
+TODO: Make sure not both a and b can be zero, otherwise all numbers are rational!
 
 \subsection{Basic concepts of calculus}
 
