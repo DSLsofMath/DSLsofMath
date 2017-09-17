@@ -370,7 +370,11 @@ TODO: Add more about Curry-Howard (the binary logical connectives, etc.)
 TODO: find the right place for the a note that the type of tuples is
 isomorphic to the (dependent) function type |{i : 1..n} -> Ai|.
 
-\subsection{Proof example: $\sqrt{2}$ is irrational}
+TODO: Add typed quantification.
+
+(Roughly: |(Forall (x:T) (P x)) = (Forall x (T x => P x))|.)
+
+\subsection{Proof by contradition}
 
 Let's try to express and prove the irrationality of the square
 root of 2.
@@ -379,15 +383,80 @@ We have two main concepts involved: the predicate "irrational" and the
 function "square root of".
 %
 The square root function (for positive real numbers) can be specified
-by $r = \sqrt{s}$ iff $r^2 = s$ and $r>=0$.
+by $r = \sqrt{s}$ iff |r^2 == s| and |r : Nat|.
 %
 The formula ``x is irrational'' is just |not(R x)| where |R| is the
 predicate ``is rational''.
 %
 \begin{spec}
-  R(x) = Exists a (Exists b (b*x=a))
+  R x = Exists (a:Nat) (Exists (b:Pos) (b*x==a & GCD(a,b)==1))
 \end{spec}
-TODO: Make sure not both a and b can be zero, otherwise all numbers are rational!
+
+The classical way to prove a negation |not P| is to assume |P| and
+derive something absurd (some |Q| and |not Q|, for example).
+%
+Lets take |P = R r| and |Q = GCD(a,b)==1|.
+%
+Assuming |P| we immediately get |Q| so what we need is to prove |not
+Q|, that is |GCD(a,b)/=1|.
+%
+We can use the equations |b*r==a| and |r^2 == 2|.
+%
+Squaring the first equation and using the second we get |b^2*2==a^2|.
+%
+Thus |a^2| is even, which means that |a| is even, thus |a==2*c| for
+some |c|.
+%
+But then |b^2*2==a^2==4*c^2| which means that |b^2==2*c^2|.
+%
+By the same reasoning again we have that also |b| is even.
+%
+But then |GCD(a,b)>=2| which implies |not Q|.
+
+To sum up: by assuming |P| we can prove both |Q| and |not Q|.
+%
+Thus, by contradiction |not P| must hold.
+
+\subsection{Proof by cases}
+
+As another example, let's prove that there are two irrational numbers
+|a| and |b| such that |a^b| is rational.
+
+\begin{spec}
+  S = Exists p (Exists q (not (R p) & not (R q) & R (p^q)))
+\end{spec}
+
+We know from above that |r = sqrt 2| is irrational, so as a first
+attempt we could set |p=q=r|.
+%
+Then we have satisfied two of the three clauses (|not (R p)| and |not
+(R q)|).
+%
+What about the third clause: is |x=p^q==r^r| rational?
+%
+We can reason about two possible cases, one of which has to hold: |R
+x| or |not (R x)|.
+
+Case 1: |R x| holds. Then we have a proof of |S| with |p=q=r=sqrt 2|.
+
+Case 2: |not (R x)| holds. Then we have another irrational number |x|
+to play with.
+%
+Let's try |p=x| and |q=r|.
+%
+Then |p^q == x^r == (r^r)^r == r^(r*r) == r^2 == 2| which is clearly
+rational.
+%
+Thus, also in this case we have a proof of |S|, but now with |p=r^r|
+and |q=r|.
+
+To sum up: yes, there are irrational numbers such that their power is
+rational.
+%
+We can prove the existence without knowing what numbers |p| and |q|
+actually are!
+
+
 
 \subsection{Basic concepts of calculus}
 
