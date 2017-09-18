@@ -230,9 +230,9 @@ infinite collection of proofs of |P(xi)|.
 Instead the standard procedure is to introduce a fresh constant term
 |a| and prove |P(a)|.
 %
-Another way to view this is to say that a proof of |Forall x P(x)| is
+Another way to view this is to say that a proof of |Forall x (P x)| is
 a function |f| from terms to proofs such that |f t| is a proof of
-|P(t)| for all terms |t|.
+|P t| for all terms |t|.
 
 \subsection{An aside: Pure set theory}
 
@@ -370,9 +370,9 @@ TODO: Add more about Curry-Howard (the binary logical connectives, etc.)
 TODO: find the right place for the a note that the type of tuples is
 isomorphic to the (dependent) function type |{i : 1..n} -> Ai|.
 
-TODO: Add typed quantification.
+TODO: Add typed quantification for Exists.
 
-(Roughly: |(Forall (x:T) (P x)) = (Forall x (T x => P x))|.)
+(Roughly: |(Exists (x:T) (P x)) = (Exists x (T x & P x))|.)
 
 \subsection{Proof by contradition}
 
@@ -456,7 +456,70 @@ rational.
 We can prove the existence without knowing what numbers |p| and |q|
 actually are!
 
+\subsection{Functions as proofs}
 
+To prove a formula |P => Q| we assume a proof |p : P| and derive a
+proof |q : Q|.
+%
+Such a proof can be expressed as |(\p -> q) : (P => Q)|: a proof of an
+implication is a function from proofs to proofs.
+
+As we saw earlier, a similar rule holds for the ``forall'' quantifier:
+a function |f| from terms |t| to proofs of |P t| is a proof of |Forall
+x (P x)|.
+
+A very common kind of formula is ``typed quantification'': if a type
+(a set) |S| of terms can be decribed as those that satisfy the unary
+predicate |T| we can introduce the short-hand notation
+%
+\begin{spec}
+  (Forall (x:T) (P x)) = (Forall x (T x => P x))
+\end{spec}
+%
+A proof of this is a two-argument function |p| which takes a term and
+a proof to a proof.
+
+\subsection{Proofs for |And| and |Or|}
+
+TODO: textify
+
+\begin{spec}
+  andIntro  :  P  ->  Q  -> P&Q
+  andElimL  :  P&Q ->  P
+  andElimR  :  P&Q ->  Q
+\end{spec}
+
+If we see these introduction and elimination rules as an API, what
+would be a resonable implementation of the datatype |P&Q|?
+%
+A type of pairs!
+%
+Then we see that the corresponding Haskell functions would be
+%
+\begin{code}
+  pair  :: p -> q -> (p, q)  -- andIntro
+  fst   :: (p, q) -> p       -- andElimL
+  snd   :: (p, q) -> q       -- andElimR
+\end{code}
+
+TODO: more text, also reminding about (P=>Q) as functions.
+
+\begin{spec}
+  orIntroL  :  P   ->  P|Q
+  orIntroR  :  Q   ->  P|Q
+  orElim    :  (P=>R)->(Q=>R) -> ((P|Q) => R)
+\end{spec}
+
+Here the implementation type can be a labelled sum type, also called
+disjoint union and in Haskell: |Either|.
+%
+\begin{code}
+  data Either p q = Left p | Right q
+  -- |Left| is |orIntroL|, |Right| is |orIntroR|
+  either :: (p->r) -> (q->r) -> Either p q -> r
+  either l r (Left x)   =  l x
+  either l r (Right y)  =  r y
+\end{code}
 
 \subsection{Basic concepts of calculus}
 
