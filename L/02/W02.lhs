@@ -479,6 +479,36 @@ predicate |T| we can introduce the short-hand notation
 A proof of this is a two-argument function |p| which takes a term and
 a proof to a proof.
 
+In pseudo-Haskell we can express the implication laws as follows:
+%
+\begin{spec}
+  impIntro  : (A -> B) -> (A=>B)
+  impElim   : (A=>B) -> (A -> B)
+\end{spec}
+%
+It should come as no surprise that this ``API'' can be implemented by
+|(=>) = (->)|, which means that both |impIntro| and |impElim| can be
+implemented as |id|.
+
+Similarly we can express the universal quantification laws as:
+%
+\begin{spec}
+  ∀-Intro  : ((a : Term) -> P a) -> (Forall x (P x))
+  ∀-Elim   : (Forall x (P x)) -> ((a : Term) -> P a)
+\end{spec}
+%
+To actually implement this we need a \emph{dependent} function type,
+which Haskell does not provide.
+%
+But we can still use it as a tool for understanding and working with
+logic formulas and mathematical proofs.
+%
+
+Haskell supports limited forms of dependent types and more is coming
+every year but for proper dependently typed programming I recommend
+the language Agda.
+
+
 \subsection{Proofs for |And| and |Or|}
 
 TODO: textify
@@ -501,8 +531,6 @@ Then we see that the corresponding Haskell functions would be
   fst   :: (p, q) -> p       -- andElimL
   snd   :: (p, q) -> q       -- andElimR
 \end{code}
-
-TODO: more text, also reminding about (P=>Q) as functions.
 
 \begin{spec}
   orIntroL  :  P   ->  P|Q
