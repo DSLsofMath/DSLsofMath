@@ -549,6 +549,86 @@ disjoint union and in Haskell: |Either|.
   either l r (Right y)  =  r y
 \end{code}
 
+\subsection{Case study: there is always another prime}
+
+As an example of combining forall, exists and implication let us turn
+to one statement of the fact that there are infiniely many primes.
+%
+If we assume we have a unary predicate expressing that number is prime
+and a binary (infix) predicate ordering the natural numbers we can
+define a formula |IP| for ``Infinite many Primes'' as follows:
+%
+\begin{spec}
+ IP = Forall n (Prime n => Exists m (Prime m & m > n))
+\end{spec}
+%
+Combined with the fact that there is at least one prime (like |2|) we
+can repeatadly refer to this statement to produce a never-ending
+stream of primes.
+
+To prove this formula we first translate from logic to programs as
+described above.
+%
+We can translate step by step, starting from the top level.
+%
+The forall-quantifier translates to a (dependent) function type |(n :
+Term) -> | and the implication to a normal function type |Prime n ->|.
+%
+The exists-quantifier translates to a (dependent) pair type |((m :
+Term), ...)| and finally the |&| translates into a pair type.
+%
+Putting all this together we get a type signature for any |proof| of
+the theorem:
+%
+\begin{spec}
+proof : (n : Term) -> Prime n -> ((m : Term), (Prime m, m>n))
+\end{spec}
+
+Now we can start filling in the definition of |proof| as a
+two-argument function returning a nested pair:
+%
+\begin{spec}
+proof n np = (m, (pm, gt))
+  where  m' = 1 + factorial n
+         m  = {- some non-trivial prime factor of |m'| -}
+         pm = {- a proof that |m| is prime -}
+         gt = {- a proof that |m>n| -}
+\end{spec}
+%
+The proof |pm| is the core of the theorem.
+%
+First, we note that for any |2<=p<=n| we have |mod m' p == mod (1 +
+m'!)  p == mod 1 p + mod (m'!) p == 1 + 0 == 1|.
+%
+Thus |m'| is not divisible by any number from |2| to |n|.
+%
+But is it a prime?
+%
+If |m'| is prime then |m=m'| and the proof is done (because |1+n! >= 1
++ n > n|).
+%
+Otherwise, let |m| be a prime factor of |m'| (thus |m'=m*q|, |q>1|).
+%
+Then |1 == mod m' p == (mod m p)*(mod q p)| which means that neither
+|m| nor |q| are divisible by |p| (otherwise the product would be
+zero).
+%
+Thus they must both be |>n|.
+%
+QED.
+
+Note that the proof can be used to define a useful function which
+takes any prime number to some larger prime number.
+%
+We can compute a few example values:
+
+\begin{tabular}{r@@{ $\mapsto$ }rl}
+     2 &  3 &( 1+2! )
+  \\ 3 &  7 &( 1+3! )
+  \\ 5 & 11 &( 1+5! = 121 = 11*11 )
+  \\ 7 & 71 &\ldots
+\end{tabular}
+
 \subsection{Basic concepts of calculus}
 
 \paragraph{Limit point} TODO: transcribe the 2016 notes + 2017 black board

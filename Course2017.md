@@ -3,10 +3,9 @@ Domain-Specific Languages of Mathematics
 
 News
 ----
+* 2017-09-19: The lecture notes are slowly but surely being completed and converted from raw notes and blackboard pictures.
 * 2017-08-23: Added the [re-exam + proposed solutions](Exam/2017-08/)
 * 2017-04-28: Final course evaluation meeting (room Diana, Fysikhuset, 13:15 – 14:00)
-* 2017-03-14: Added the [exam + proposed solutions](Exam/2017-03/)
-* 2017-02-06: [Mid-course eval meeting notes](eval/) + change of room: to ES53 on Wed. from now on.
 
 Aim
 ---
