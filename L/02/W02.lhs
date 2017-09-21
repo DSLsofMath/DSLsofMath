@@ -617,8 +617,8 @@ Thus they must both be |>n|.
 %
 QED.
 
-Note that the proof can be used to define a useful function which
-takes any prime number to some larger prime number.
+Note that the proof can be used to define a somewhat useful function
+which takes any prime number to some larger prime number.
 %
 We can compute a few example values:
 
@@ -628,6 +628,8 @@ We can compute a few example values:
   \\ 5 & 11 &( 1+5! = 121 = 11*11 )
   \\ 7 & 71 &\ldots
 \end{tabular}
+
+
 
 \subsection{Basic concepts of calculus}
 
