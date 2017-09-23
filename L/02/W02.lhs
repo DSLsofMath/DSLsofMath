@@ -629,12 +629,55 @@ We can compute a few example values:
   \\ 7 & 71 &\ldots
 \end{tabular}
 
+\subsection{Existantial quantification as a pair type}
 
+We mentioned before that existential quantification can be seen as as
+a ``big |Or|'' of a family of formulas |P a| for all terms |a|.
+%
+This means that to prove the quantification, we only need exhibit one
+witness and one proof for that member of the family.
+%
+\begin{spec}
+  ∃-Intro  :  (a : Term) -> P a -> (Exists x (P x))
+\end{spec}
+%
+For binary |Or| the ``family'' only had two members, one labelled |L|
+for |Left| and one |R| for |Right|, and we used one introduction
+rule for each.
+%
+Here, for the generalisation of |Or|, we have unified the two rules
+into one with an added parameter |a| corresponding to the label which
+indicates the family member.
+
+In the other direction, if we look at the binary elimination rule, we
+we see the need for two arguments to be sure of how to prove the
+implication for any family member of the binary |Or|.
+\begin{spec}
+orElim    :  (P=>R)->(Q=>R) -> ((P|Q) => R)
+\end{spec}
+%
+The generalisation unifies these two to one family of arguments.
+%
+If we can prove |R| for each member of the family, we can be sure to
+prove |R| when we encounter some family member:
+%
+\begin{spec}
+  ∃-Elim   :  ((a:Term)-> P a => R) -> (Exists x (P x)) => R
+\end{spec}
+%
+The datatype corresponding to |Exists x (P x)| is a pair of a witness
+|a| and a proof of |P a|.
+%
+We sometimes write this type |(a:Term, P a)|.
 
 \subsection{Basic concepts of calculus}
 
-\paragraph{Limit point} TODO: transcribe the 2016 notes + 2017 black board
-pictures into notes.
+Now we have built up quite a bit of machinery to express logic
+formulas and proofs.
+%
+It is time time to apply it to some concepts in calculus.
+
+\paragraph{Limit point}
 
 \emph{Definition} (adapted from \cite{rudin1964principles}, page 28):
 Let |X| be a subset of |ℝ|.
