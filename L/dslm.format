@@ -136,3 +136,9 @@
 %format bt = b "_{t}"
 
 %format Orn = Or "_{n}"
+
+%format AllIntro    = ∀ "\!\text{-}" Intro
+%format	AllElim     = ∀ "\!\text{-}" Elim
+
+%format ExistsIntro = ∃ "\!\text{-}" Intro
+%format	ExistsElim  = ∃ "\!\text{-}" Elim

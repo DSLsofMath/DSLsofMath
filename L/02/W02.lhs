@@ -45,7 +45,7 @@ Swedish: Satslogik
    |A|, |B|, |C|, \ldots  & names of propositions &
 \\ |False|, |True| & Constants &
 \\ |And|      & $\wedge$ & |&|
-\\ |Or|       & $\vee$   & ||||
+  \\ |Or|       & $\vee$   & ||||
 \\ |Implies|  & $\Rightarrow$ &
 \\ |Not|      & $\neg$   &
 \end{tabular}
@@ -493,8 +493,8 @@ implemented as |id|.
 Similarly we can express the universal quantification laws as:
 %
 \begin{spec}
-  ∀-Intro  : ((a : Term) -> P a) -> (Forall x (P x))
-  ∀-Elim   : (Forall x (P x)) -> ((a : Term) -> P a)
+  AllIntro  : ((a : Term) -> P a) -> (Forall x (P x))
+  AllElim   : (Forall x (P x)) -> ((a : Term) -> P a)
 \end{spec}
 %
 To actually implement this we need a \emph{dependent} function type,
@@ -638,7 +638,7 @@ This means that to prove the quantification, we only need exhibit one
 witness and one proof for that member of the family.
 %
 \begin{spec}
-  ∃-Intro  :  (a : Term) -> P a -> (Exists x (P x))
+  ExistsIntro  :  (a : Term) -> P a -> (Exists x (P x))
 \end{spec}
 %
 For binary |Or| the ``family'' only had two members, one labelled |L|
@@ -662,7 +662,7 @@ If we can prove |R| for each member of the family, we can be sure to
 prove |R| when we encounter some family member:
 %
 \begin{spec}
-  ∃-Elim   :  ((a:Term)-> P a => R) -> (Exists x (P x)) => R
+  ExistsElim   :  ((a:Term)-> P a => R) -> (Exists x (P x)) => R
 \end{spec}
 %
 The datatype corresponding to |Exists x (P x)| is a pair of a witness
@@ -676,13 +676,24 @@ Now we have built up quite a bit of machinery to express logic
 formulas and proofs.
 %
 It is time time to apply it to some concepts in calculus.
+%
+We start we the concept of ``limit point'' which is used in the
+formulation of different properties of limits of functions.
+
+TODO: Perhaps start with the ``expression'' $lim_{x\to x_0} f(x)$ and
+explain that not all |x_0| make sense, etc. [For context and
+motivation.]
+
+TODO: Or talk a bit about open and closed sets. (Open set = every
+point is internal = there is some wiggle-room around each point in the
+set. Closed set contains all its limit points.)
 
 \paragraph{Limit point}
 
 \emph{Definition} (adapted from \cite{rudin1964principles}, page 28):
 Let |X| be a subset of |ℝ|.
 %
-A point |p ∈ ℝ| is a limit point of |X| if for every |ε > 0|, there
+A point |p ∈ ℝ| is a limit point of |X| iff for every |ε > 0|, there
 exists |q ∈ X| such that |q ≠ p| and |abs(q - p) < ε|.
 
 \begin{spec}
@@ -701,24 +712,69 @@ Limp p X = ∃ getq : Q? ∀ ε > 0? |getq ε - p| < ε
 
 Next: introduce the ``disk function'' |Di|.
 
+TODO: perhaps rename |Di| to $N$ for ``neighbourhood'' (or something based on ``open ball'').
+%
 \begin{spec}
 Di : ℝ → {-"ℝ_{> 0}"-} → 𝒫 ℝ
-Di c r = {x || abs (x - c) < r}
+Di c r = {x | abs (x - c) < r}
 \end{spec}
 Then we get
 \begin{spec}
 Limp p X = ∃ getq : Q? ∀ ε > 0? getq ε ∈ Di p ε
 \end{spec}
 
-Example: limit outside the set |X|
+Example 1: Is |p=1| a limit point of |X={1}|?
+%
+No! |X - {p} = {}| (there is no |q/=p| in |X|), thus there cannot
+exist a function |getq| because it would have to return elements in
+the empty set!
+
+
+Example 2: Is |p=1| a limit point of the open interval |X = (0,1)|?
+%
+First note that |p ∉ X|, but it is ``very close'' to |X|.
+%
+A proof needs a function |getq| which from any |ε| computes a point |q
+= getq ε| which is in both |X| and |Di 1 ε|.
+%
+We need a point |q| which is in |X| and \emph{closer} than |ε| from |1|
+%
+We can try with |q = 1-ε/2| because |abs (1-(1-ε/2)) = abs (ε/2) = ε/2
+< ε| which means |q ∈ Di 1 ε|.
+%
+We also see that |q/=1| because |ε > 0|.
+%
+The only remaining thing to check is that |q ∈ X|.
+%
+This is true for sufficiently small |ε| but the function |getq| must
+work for all positive reals.
+%
+We can use any value in |X| (for example |17/38|) for |ε| which are
+``too big'' (|ε >= 2|).
+%
+Thus our function can be
+%
+\begin{spec}
+  getq ε | ε < 2      = 1 - ε/2
+         | otherwise  = 17/38
+\end{spec}
+%
+A slight variation which is often useful would be to use |max| to
+define |getq ε = max (17/38,1-ε/2)|.
+%
+Similarly, we can show that any internal point (like |1/2|) is a limit
+point.
+
+
+Example 3: limit of an infinite discrete set |X|
 
 \begin{spec}
-X = {1/n || n ∈ Pos }
+X = {1/n | n ∈ Pos }
 \end{spec}
 
 Show that |0| is a limit point of |X|.
 %
-Note that |0 ∉ X|.
+Note (as above) that |0 ∉ X|.
 
 We want to prove |Limp 0 X|
 
