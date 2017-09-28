@@ -776,15 +776,25 @@ Show that |0| is a limit point of |X|.
 %
 Note (as above) that |0 ∉ X|.
 
-We want to prove |Limp 0 X|
-
+We want to prove |Limp 0 X| which is the same as |∃ getq : Q? ∀ ε > 0?
+getq ε ∈ Di 0 ε|.
+%
+Thus, we need a function |getq| which takes any |ε > 0| to an element
+of |X - {0} = X| which is less than |ε| away from |0|.
+%
+Or, equivalently, we need a function |getn : {-"ℝ_{> 0}"-} → Pos| such
+that |1/n < ε|.
+%
+Thus, we need to find an |n| such that |1/ε < n|.
+%
+If |1/ε| would be an integer we could use the next integer (|1 + 1/ε|),
+so the only step remaining is to round up:
+%
 \begin{spec}
-getq ε = 1/n where n = ceiling (1/ε)
+getq ε = 1/getn ε
+getn ε = 1 + ceiling (1/ε)
 \end{spec}
-
-(where the definition of |n| comes from a calculation showing the
-property involving |Di| is satisfied.)
-
+%
 Exercise: prove that |0| is the \emph{only} limit point of |X|.
 
 \emph{Proposition}: If |X| is finite, then it has no limit points.
@@ -792,24 +802,58 @@ Exercise: prove that |0| is the \emph{only} limit point of |X|.
 \begin{spec}
 ∀ p ∈ ℝ? not (Limp p X)
 \end{spec}
-
-Good excercise in quantifier negation!
-
+%
+This is a good excercise in quantifier negation!
+%
 \begin{spec}
-f : (q : Q) → RPos   -- such that |let ε = f q  in  q ε ∉ Di p ε |
+  not (Limp p X)
+= {- Def. of |Limp| -}
+  not (∃ getq : Q? ∀ ε > 0? getq ε ∈ Di p ε)
+= {- Negation of existential -}
+  ∀ getq : Q? not (∀ ε > 0? getq ε ∈ Di p ε)
+= {- Negation of universal -}
+  ∀ getq : Q? ∃ ε > 0? not (getq ε ∈ Di p ε)
+= {- Simplification -}
+  ∀ getq : Q? ∃ ε > 0? abs (getq ε - p) >= ε
+\end{spec}
+%
+Thus, using the ``functional interpretation'' of this type we see that
+a proof needs a function |noLim|
+%
+\begin{spec}
+noLim : (getq : Q) → RPos
+\end{spec}
+%
+such that |let ε = noLim getq in abs (getq ε - p) >= ε|.
+
+Note that |noLim| is a \emph{higher-order} function: it takes a
+function |getq| as an argument.
+%
+How can we analyse this function to find a suitable |ε|?
+%
+The key here is that the range of |getq| is |X - {p}| which is a
+finite set (not containing |p|).
+%
+Thus we can enumerate all the possible results, |x1|, |x2|, \ldots
+|xn|, and measure their distances to |p|: |di = abs (xi - p)|.
+%
+Now, if we let |ε = min_i di| we can be certain that |abs (getq ε - p)
+>= ε| just as required (and |ε /= 0| because |xi /= p| for all |i|).
+
+\paragraph{The limit of a sequence} TODO: transcribe the 2016 notes
+
+Now we can move from limit points to the more familiar limit of a
+sequence.
+%
+A sequence |a| is a function from |Nat| to |REAL| and we defined an
+infix binary predicate |haslim| using a helper predicate |P|:
+%
+\begin{spec}
+  a haslim L  =  ∀ ε > 0? P a L ε
+
+  P a ε L = ∃ N : ℤ? (∀ n : ℕ? (n ≥ N) → (abs (an - L) < ε))
 \end{spec}
 
-Note that |q ε| is in (TODO: To be cont.)
-
-
-
-
-\paragraph{The limit of a sequence} TODO: transcribe the 2016 notes +
-2017 black board pictures into notes.
-
-\begin{spec}
-P a ε L = (ε > 0) → ∃ N : ℤ? (∀ n : ℕ? (n ≥ N) → (|an - L| < ε))
-\end{spec}
 
 
 \subsection{Questions and answers from the exercise sessions week 2}

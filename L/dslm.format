@@ -134,6 +134,8 @@
 %format i1 = i "_{1}"
 %format i2 = i "_{2}"
 %format bt = b "_{t}"
+%format di = d "_{i}"
+%format xi = x "_{i}"
 
 %format Orn = Or "_{n}"
 
