@@ -755,8 +755,8 @@ We can use any value in |X| (for example |17/38|) for |ε| which are
 Thus our function can be
 %
 \begin{spec}
-  getq ε | ε < 2      = 1 - ε/2
-         | otherwise  = 17/38
+  getq ε  | ε < 2      = 1 - ε/2
+          | otherwise  = 17/38
 \end{spec}
 %
 A slight variation which is often useful would be to use |max| to
@@ -834,25 +834,41 @@ How can we analyse this function to find a suitable |ε|?
 The key here is that the range of |getq| is |X - {p}| which is a
 finite set (not containing |p|).
 %
-Thus we can enumerate all the possible results, |x1|, |x2|, \ldots
-|xn|, and measure their distances to |p|: |di = abs (xi - p)|.
+Thus we can enumerate all the possible results in a list |xs = [x1,
+x2, {-"\ldots"-} xn]|, and measure their distances to |p|: |ds = map
+(\x-> abs (x - p)) xs|.
 %
-Now, if we let |ε = min_i di| we can be certain that |abs (getq ε - p)
->= ε| just as required (and |ε /= 0| because |xi /= p| for all |i|).
+Now, if we let |ε = minimum ds| we can be certain that |abs (getq ε - p)
+>= ε| just as required (and |ε /= 0| because |p `notElem` xs|).
+
+Exercise: If |Limp p X| we now know that |X| is infinite.
+%
+Show how to construct an infinite sequence |a : Nat -> REAL| of points
+in |X - {p}| which gets arbitrarily close to |p|.
+%
+Note that this construction can be seen as a proof of |Limp p X =>
+Infinite X|.
 
 \paragraph{The limit of a sequence} TODO: transcribe the 2016 notes
 
 Now we can move from limit points to the more familiar limit of a
 sequence.
 %
-A sequence |a| is a function from |Nat| to |REAL| and we defined an
-infix binary predicate |haslim| using a helper predicate |P|:
+A sequence |a| is a function from |Nat| to |REAL| and we define a
+binary infix predicate |haslim| using a helper predicate |P|:
 %
 \begin{spec}
   a haslim L  =  ∀ ε > 0? P a L ε
 
-  P a ε L = ∃ N : ℤ? (∀ n : ℕ? (n ≥ N) → (abs (an - L) < ε))
+  P a ε L = ∃ N : ℤ? ∀ n ≥ N? abs (an - L) < ε
 \end{spec}
+
+
+TODO: perhaps swap the argument order in the definition of |Limp| to
+make it fit better with |haslim|.
+
+Exercise: prove that |(a1 haslim L1) & (a2 haslim L2)| implies
+|(a1+a2) haslim (L1+L2)|.
 
 
 
