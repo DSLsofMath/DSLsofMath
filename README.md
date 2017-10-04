@@ -3,7 +3,9 @@ Domain Specific Languages of Mathematics
 
 [DSLsofMath wiki page at Chalmers](http://wiki.portal.chalmers.se/cse/pmwiki.php/FP/DSLsofMath)
 
-A quality project funded by Chalmers with 260kkr/y for 2014 and 2015 resulting in a new BSc level course from 2016.
+A quality project funded by Chalmers with 260kkr/y for 2014, 2015, 2017 resulting in a new BSc level course from 2016.
+
+**[2018 edition of the course.](Course2018.md)**
 
 **[2017 edition of the course.](Course2017.md)**
 

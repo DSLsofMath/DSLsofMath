@@ -88,6 +88,28 @@ There are two compulsory course elements:
 
 To pass the course you need to pass both course elements.
 
+## Lectures
+
+The latest PDF snapshot of the full lecture notes can be found in
+[L/snapshots](L/snapshots/).
+
+The "source code" for the lecture notes are in subdirectories of
+L/: [L/01/](L/01), [L/02/](L/02/), etc.
+
+
+## Exercises
+
+See the [E/ subdirectory](E/README.md)
+
+## Evaluation
+
+DSLsofMath course evaluation student representatives 2018 (TBD):
+
+| Email            | Name                   |
+| ---------------- | ---------------------- |
+| TBD		   | 			    |
+
+
 ## References
 
 Some important references:
