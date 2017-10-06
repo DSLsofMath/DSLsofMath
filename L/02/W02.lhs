@@ -44,10 +44,10 @@ Swedish: Satslogik
 \begin{tabular}{lll}
    |A|, |B|, |C|, \ldots  & names of propositions &
 \\ |False|, |True| & Constants &
-\\ |And|      & $\wedge$ & |&|
-  \\ |Or|       & $\vee$   & ||||
-\\ |Implies|  & $\Rightarrow$ &
-\\ |Not|      & $\neg$   &
+\\ |And|      & $\wedge$       & |&|
+\\ |Or|       & $\vee$         & ||||
+\\ |Implies|  & $\Rightarrow$  &
+\\ |Not|      & $\neg$         &
 \end{tabular}
 
 Example:
@@ -561,6 +561,7 @@ define a formula |IP| for ``Infinite many Primes'' as follows:
 \begin{spec}
  IP = Forall n (Prime n => Exists m (Prime m & m > n))
 \end{spec}
+%TODO: perhaps introduce Prime and < in L01
 %
 Combined with the fact that there is at least one prime (like |2|) we
 can repeatadly refer to this statement to produce a never-ending
@@ -869,6 +870,31 @@ make it fit better with |haslim|.
 
 Exercise: prove that |(a1 haslim L1) & (a2 haslim L2)| implies
 |(a1+a2) haslim (L1+L2)|.
+
+% TODO: Perhaps include something about the relation between |haslim| and |Limp|
+
+\subsection{Exercises}
+
+\begin{enumerate}
+\item Build a proof for |((A & B) -=> (B & A))| using |andIntro|,
+  |andElimL|, and |andElimR|.
+TODO: add solution, step by step: |andIntro ?1 ?2 : B & A where ...|;
+% andIntro ?1 ?2 : B /\ A
+%   where ?1 : B
+%         ?2 : A
+%
+% andIntro (andElimR ?3) (andElimL ?3) : B /\ A
+%   where ?3 : A & B
+%
+% andIntro (andElimR pq) (andElimL pq) : B /\ A
+%
+% thus
+%
+% \pq -> (the above) : A /\ B -> B /\ A
+
+TODO: add several more exercises
+
+\end{enumerate}
 
 
 
