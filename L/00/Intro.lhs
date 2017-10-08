@@ -1,6 +1,5 @@
+\setcounter{section}{-1}
 \section{Introduction}
-
-TODO: Convert this text (from the pedagogical project application) to better fit the introduction.
 
 These lecture notes aim to cover the lectures and exercises of the
 recently introduced BSc-level course ``Domain Specific Languages of
@@ -95,7 +94,11 @@ understanding of intuitive or vague notions (see, for example, the
 work done at Chalmers in cooperation with the Potsdam Institute for
 Climate Impact Research in the context of
 \href{http://www.chalmers.se/en/departments/cse/news/Pages/Global-Systems-Science.aspx}{Global
-  Systems Science}).
+  Systems Science}, \cite{LinckeJanssonetalDSLWC2009,
+  ionescujansson2013DTPinSciComp, jaeger13:GSSshort,
+  ionescujansson:LIPIcs:2013:3899, DBLP:journals/corr/BottaJICB16,
+  Botta2017Avoidability}).
+
 
 Thus, a course on designing and implementing DSLs can be an important
 addition to an engineering curriculum.
@@ -113,7 +116,7 @@ if not expressed in these words) the driving idea of the Bourbaki
 project, which exerted an enormous influence on present day
 mathematics.
 
-A course on \emph{DSLs of Mathematics (DSLM)} allows us to present
+The course on \emph{DSLs of Mathematics (DSLM)} allows us to present
 classical mathematical topics in a way which builds on the experience
 of discrete mathematics: giving specifications of the concepts
 introduced, paying attention to syntax and types, and so on.
@@ -122,11 +125,13 @@ For the mathematics students, used to a more informal style, the
 increased formality is justified by the need to implement (fragments
 of) the language.
 %
-We will provide a wide range of applications of the DSLs introduced,
+We provide a wide range of applications of the DSLs introduced,
 so that the new concepts can be seen ``in action'' as soon as
 possible.
 
-The course will have two major learning outcomes.
+TODO: update with actual learning outcomes
+
+The course has two major learning outcomes.
 %
 First, the students should be able to design and implement a DSL in a
 new domain.
@@ -134,44 +139,47 @@ new domain.
 Second, they should be able to handle new mathematical areas using the
 computer science perspective.
 
-To achieve these objective, the course will consists of a sequence of
-case studies in which a mathematical area is first presented (for
-example, a fragment of linear algebra, probability theory, interval
-analysis, or differential equations), followed by a careful analysis
-that will reveal the domain elements needed to build a language for
-that domain.
+To achieve these objective, the course consists of a sequence of case
+studies in which a mathematical area is first presented (for example,
+a fragment of linear algebra, probability theory, interval analysis,
+or differential equations), followed by a careful analysis that
+reveals the domain elements needed to build a language for that
+domain.
 %
-The DSL will first be used informally, in order to ensure that it is
+The DSL is first used informally, in order to ensure that it is
 sufficient to account for intended applications (for example, solving
 equations, or specifying a certain kind of mathematical object).
 %
-It is in this step that the computer science perspective will prove
+It is in this step that the computer science perspective proves
 valuable for improving the students' understanding of the mathematical
 area.
 %
-The DSL will then be implemented in Haskell.
-%
-The resulting implementation will be compared with existing ones, such
+The DSL is then implemented in Haskell.
+% **TODO: adjust to real areas covered.
+% **TODO: add these comparisons
+The resulting implementation can be compared with existing ones, such
 as Matlab in the case of linear algebra, or R in the case of
 statistical computations.
 %
-Finally, limitations of the DSL will be assessed and the possibility
-for further improvements will be discussed.
+Finally, limitations of the DSL are assessed and the possibility for
+further improvements discussed.
 
-In a first instance, the course will be an elective course for the
-second year within a program such as SE, CSE, or Math.
+In the first instances, the course is an elective course for the
+second year within programmes such as CSE, SE, and Math.
 %
 The potential students will have all taken first-year mathematics
-course, and the only prerequisite which some of them will not satisfy
+courses, and the only prerequisite which some of them will not satisfy
 will be familiarity with functional programming.
 %
 However, as the current data structures course (common to the Math and
-CSE programs) shows, math students are usually able to catch up fairly
+CSE programmes) shows, math students are usually able to catch up fairly
 quickly, and in any case we aim to keep to a restricted subset of
-Haskell (no ``advanced'' features will be required).
+Haskell (no ``advanced'' features are required).
+
+TODO: rewrite when the evaluation results are available
 
 To assess the impact in terms of increased quality of education, we
-propose to measure how well the students do in ulterior courses that
+plan to measure how well the students do in ulterior courses that
 require mathematical competence (in the case of engineering students)
 or software compentence (in the case of math students).
 %
@@ -182,73 +190,55 @@ students who, having taken DSLM, pass the third-year courses
 \emph{\href{https://www.student.chalmers.se/sp/course?course_id=21303}{Control
     Theory (Reglerteknik)}}, which are current major stumbling blocks.
 %
-For math students, we will measure their performance in ulterior
-scientific computing courses.
+For math students, we would like to measure their performance in
+ulterior scientific computing courses.
 
-Since the course will, at least initially, be an elective one, we will
-also have the possibility of comparing the results with those of a
-control group (students who have not taken the course).
+Since the course is, at least initially, an elective one, we also have
+the possibility of comparing the results with those of a control group
+(students who have not taken the course).
 
-A tentative work plan is as follows:
+The work that lead up to the current course is as follows:
 
 \begin{itemize}
-   \item summer and autumn 2014: in interaction with our colleagues
-     from the various study programs, we will perform an assessment of
-     the current status of potential students for the course in terms
-     of their training (what prerequisites we can reasonably assume)
-     and future path (what mathematical fields they are likely to
-     encounter in later studies), and we will start work on a course
-     plan (which we plan to submit in February 2015, so that the first
-     instance of the course can start in autumn 2015).
-     %
-     At the same time, we will make a systematic survey of similar
-     courses being offered at other universities and contact their
-     teachers for an exchange of views.
+\item 2014: in interaction with our colleagues from the various study
+  programmes, we performed an assessment of the current status of
+  potential students for the course in terms of their training (what
+  prerequisites we can reasonably assume) and future path (what
+  mathematical fields they are likely to encounter in later studies),
+  and we worked out a course plan (which we submitted in February
+  2015, so that the first instance of the course could start in
+  January 2016).
+%
+  We also make a survey of similar courses being offered at other
+  universities, but did not find any close matches.
 
-   \item spring 2015:  we aim to organize several seminars around some
-     of the mathematical areas to be presented within DSLM, with the
-     participation of volunteer students.
-     %
-     We will use the feedback from these seminars to develop course
-     materials for use within the first instance.
-   \item autumn 2015: we will run the first instance of DSLM (partly
-     paid by the regular course budget, partly by this project)
-   \item spring 2016 and 2017: we will use the feedback from students
-     following the standard Chalmers evaluation in order to improve
-     and further develop the course material.
-     %
-     We will also involve other faculty from CSE and mathematics in
-     the development of other mathematics courses (prel. Linear
-     Algebra, Analysis) with the aim to incorporate these ideas also
-     there.
-   \item autumn 2016 and 2017: run next instance of DSLM course (now
-     completely self-funded).
-     %
-     Assist in updated versions of (prel.)  Linear Algebra and
-     Analysis.
+\item 2015: we developed course materials for use within the first
+  instance, wrote a paper \citep{TFPIE15_DSLsofMath_IonescuJansson}
+  about the course and pressented the pedagogical ideas at several
+  events (TODO: perhaps fill in TFPIE'15, DSLDI'15, IFIP WG 2.1 \#73
+  in Göteborg).
+\item 2016: we ran the first instance of DSLM (partly paid by the
+  regular course budget, partly by this project) with Cezar Ionescu as
+  main lecturer.
+\item 2017: we ran the second instance of DSLM (paid fully by the
+  regular course budget), now with Patrik Jansson as main lecturer.
+\item 2016 and 2017: we used the feedback from students following the
+  standard Chalmers course evaluation in order to improve and further
+  develop the course material.
 \end{itemize}
 
-Throughout all the periods, a major concern will be to work together
-with our colleagues in the mathematics department in order to distill
-the essential principles that can be ``back-ported'' to the other
-mathematics courses, such as Mathematical Analysis or Linear Algebra.
+Future work includes involving faculty from CSE and mathematics in the
+development of other mathematics courses (prel.\ Linear Algebra,
+Analysis) with the aim to incorporate these ideas also there.
+%
+A major concern will be to work together with our colleagues in the
+mathematics department in order to distill the essential principles
+that can be ``back-ported'' to the other mathematics courses, such as
+Mathematical Analysis or Linear Algebra.
 %
 Ideally, the mathematical areas used in DSLM will become increasingly
 challenging, the more the effective aspects of the computer science
 perspective are adopted in the first-year mathematics courses.
-
-The budget required for 2014 is 200 kSEK or approximately two
-person-months (shared between the applicants).
-%
-For 2015 until 2017 we ask for a total of 800 kSEK where the majority
-of the time will be spent on extending the work to improve the quality
-also of the current mathematics courses.
-%
-This will ensure a broad impact on improved education quality at
-Chalmers, not only for an initial 20--50 students/year on the DSLM
-course, but also for up to ten times as many in the other courses.
-
-
 
 \subsection{About this course}
 
@@ -285,11 +275,6 @@ The mathematical topic treated have been chosen either because we
 expect all students to be familiar with them (for example, limits of
 sequences, continuous functions, derivatives) or because they can be
 useful in many applications (e.g., Laplace transforms, linear algebra).
-
-
-\subsection{About this book}
-
-
 
 \subsection{Who should read this book}
 

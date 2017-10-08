@@ -53,6 +53,7 @@
     \put(7,14){\line(1,0){25}} \put(45,14){\line(1,0){25}}
   \end{picture}}}
 %% If you remove the %format == command the lhs2TeX default yields ≡, which can be a problem
+\providecommand{\cpp}{C\kern-0.05em\texttt{+\kern-0.03em+}}
 
 \title{Domain Specific Languages of Mathematics: Lecture Notes}
 \author{Patrik Jansson \and Cezar Ionescu}
