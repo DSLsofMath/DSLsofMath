@@ -85,6 +85,7 @@
   domain-specific languages.
 \end{abstract}
 
+%include 00/Intro.lhs
 %include 01/W01.lhs
 %include 02/W02.lhs
 %include 03/W03.lhs
