@@ -357,7 +357,7 @@ class  (Eq a, Show a) => Num a  where
     fromInteger    :: Integer -> a
 \end{spec}
 
-TODO: insert proper citation \cite{HaskellReportNumClass}
+TODO: insert proper citation \cite[Sect.~6.4]{haskell2010}
 
 This is taken from the Haskell
 documentation\footnote{Fig. 6.2 in section 6.4 of the Haskell 2010 report: \url{https://www.haskell.org/onlinereport/haskell2010/haskellch6.html}.}
