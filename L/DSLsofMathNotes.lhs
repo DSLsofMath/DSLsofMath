@@ -88,13 +88,22 @@
 
 %include 00/Intro.lhs
 %include 01/W01.lhs
+\newpage
 %include 02/W02.lhs
+\newpage
 %include 03/W03.lhs
+\newpage
 %include 04/W04.lhs
+\newpage
 %include 05/W05.lhs
+\newpage
 %include 06/W06.lhs
+\newpage
 %include 07/W07.lhs
+\newpage
 %include 08/W08.lhs
+\newpage
+%include End.lhs
 
 \bibliographystyle{abbrvnat}
 \bibliography{ref}

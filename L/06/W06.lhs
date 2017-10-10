@@ -5,7 +5,7 @@ module DSLsofMath.W06 where
 import DSLsofMath.W05
 \end{code}
 
-\section{Week 6}
+\section{Week 6: Higher-order Derivatives and their Applications}
 
 \subsection{Review}
 

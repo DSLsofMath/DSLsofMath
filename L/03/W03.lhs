@@ -1,4 +1,4 @@
-\section{Week 3}
+\section{Week 3: Types in Mathematics}
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.W03 where

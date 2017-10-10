@@ -460,7 +460,7 @@ Thus, to sum up, |degree| is a monoid homomorphism from |(Poly a, 1,
 
 TODO: check all the properties.
 
-\section{Power Series}
+\subsection{Power Series}
 
 Power series are obtained from polynomials by removing in |Poly'| the
 restriction that there should be a \emph{finite} number of non-zero
@@ -528,7 +528,7 @@ Note that |eval n| is not a homomorphism: for example |eval 2 (x*x) 1
 = 0 /= 1 = 1*1 = (eval 2 x 1) * (eval 2 x 1)|.
 
 
-\section{Operations on power series}
+\subsection{Operations on power series}
 
 Power series have a richer structure than polynomials.
 %
@@ -603,16 +603,23 @@ example0   = takePoly 10 ps0
 example01  = takePoly 10 (ps0 * (1-x))
 \end{code}
 
-\section{Formal derivative}
+\subsection{Formal derivative}
 
 Considering the analogy between power series and polynomial functions
-(via polynomials), we can define a formal derivative for power series
-according to the formula
+(via polynomials), we can arrive at a formal derivative for power
+series through the folowing computation:
+%
+\begin{equation}
+  \label{eq:formalderivative}
+\begin{aligned}
+  \left(\sum_{n = 0}^{\infty} a_n * x^n\right)'  &= \sum_{n = 0}^{\infty} (a_n * x^n)'  =  \sum_{n = 0}^{\infty} a_n * (x^n)' = \sum_{n = 0}^{\infty} a_n * (n * x^{n-1})  \\
+  &=  \sum_{n = 0}^{\infty} (n * a_n) * x^{n-1} =  \sum_{n = 1}^{\infty} (n * a_n) * x^{n-1}  =  \sum_{m = 0}^{\infty} ((m+1) * a_{m+1}) * x^m
+\end{aligned}
+\end{equation}
+%
+Thus the $m$th coefficient of the derivative is \((m+1) * a_{m+1}\).
 
-\[(\sum_{n = 0}^{\infty} a_n * x^n)'  =
-  \sum_{n = 0}^{\infty} (a_n * x^n)'  =
-  \sum_{n = 0}^{\infty} (a_n * (n * x^{n-1}))  =
-  \sum_{n = 0}^{\infty} ((n * a_n) * x^{n-1}) \]
+TODO: redo to arrive at the recursive formulation.
 
 We can implement this, for example, as
 
@@ -642,7 +649,7 @@ serious'' \cite{mcilroy1999functional}.
 
 % ================================================================
 
-\section{Signals and Shapes}
+\subsection{Signals and Shapes}
 
 Shallow and deep embeddings of a DSL
 
@@ -651,7 +658,7 @@ TODO: perhaps textify DSL/
 
 
 
-\section{Helpers}
+\subsection{Helpers}
 
 \begin{code}
 instance Functor Poly where

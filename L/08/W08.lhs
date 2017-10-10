@@ -1,4 +1,4 @@
-\section{Week 8: Laplace}
+\section{Week 8: Exponentials and Laplace}
 
 \subsection{The Exponential Function}
 
@@ -485,18 +485,17 @@ For the right-hand side, we apply the definition:
 
 =
 
-  {-"lim_{t \to \infty} "-}  1 / (3 - s) * exp ((3 - s) * t) -
-                            1 / (3 - s) * exp ((3 - s) * 0)
+  {-"lim_{t \to \infty} "-}  frac (exp ((3 - s) * t)) (3 - s)  -  frac (exp ((3 - s) * 0)) (3 - s)
 
 = {- for |s > 3| -}
 
-  1 / (s - 3)
+  frac 1 (s - 3)
 \end{spec}
 
 Therefore, we have, writing |F| for |ℒ f|
 
 \begin{spec}
-(s^2 - 3 * s + 2) * F s - s + 3 = 1/(s-3)
+(s^2 - 3 * s + 2) * F s - s + 3 = frac 1 (s-3)
 \end{spec}
 
 and therefore
@@ -506,11 +505,11 @@ and therefore
 
 = {- Solve for |F s| -}
 
-  (1 / (s - 3) + s - 3) / (s^2 - 3 * s + 2)
+  frac (frac 1 (s - 3) + s - 3) (s^2 - 3 * s + 2)
 
 =  {- |s^2 - 3 * s + 2 = (s - 1) * (s - 2)| -}
 
-  (10 - 6 * s + s^2) / ((s-1)*(s-2)*(s-3))
+  frac (10 - 6 * s + s^2) ((s-1)*(s-2)*(s-3))
 \end{spec}
 
 We now have the problem of ``recovering'' the function |f| from its

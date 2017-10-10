@@ -25,6 +25,7 @@
 %format infinity                =  "\infty"
 %format (pi)                    =  "\pi"
 %format (div (x) (y))           =  "\frac{" x "}{" y "}"
+%format (frac (x) (y))          =  "\frac{" x "}{" y "}"
 %format (Exists(x)(y))          =  "\exists\ " x ".\ \ " y
 %format (Forall(x)(y))          =  "\forall\ " x ".\ \ " y
 %format (modulus (x) (y))       =  "\sqrt{" x "^2 + " y "^2}"

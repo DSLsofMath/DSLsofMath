@@ -1,13 +1,14 @@
-\section{Week 4}
+\section{Week 4: Compositional Semantics and Algebraic Structures}
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 module DSLsofMath.W04 where
 import Prelude hiding (Monoid)
 \end{code}
 
+\subsection{Compositional semantics}
 % (Based on ../../2016/Lectures/Lecture06  )
 
-\subsection{A simpler example of a non-compositional function}
+\subsubsection{A simpler example of a non-compositional function}
 
 Consider a very simple datatype of integer expressions:
 %
@@ -104,7 +105,7 @@ String| can be seen as an |n|-tuple.
 %
 In our case a three-element |Precedence| would be enough.
 
-\subsection{Compositional semantics in general}
+\subsubsection{Compositional semantics in general}
 
 In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
 and an |eval| function of type |Syn -> Sem|), we call the semantics
@@ -194,7 +195,7 @@ evalE' :: E -> Integer
 evalE' = foldIE
 \end{code}
 
-\subsection{Back to derivatives and evaluation}
+\subsubsection{Back to derivatives and evaluation}
 
 Review section \ref{sec:evalD} again with the definition of |eval'|
 being non-compositional (just like |pretty|) and |evalD| a more
@@ -208,14 +209,14 @@ complex, but compositional, semantics.
 % * general pattern: tupling
 %
 
-\section{Algebraic Structures and DSLs}
+\subsection{Algebraic Structures and DSLs}
 
 % based on ../../2016/Lectures/Lecture09.lhs
 
 In this lecture, we continue exploring the relationship between type
 classes, mathematical structures, and DSLs.
 
-\subsection{Algebras, homomorphisms}
+\subsubsection{Algebras, homomorphisms}
 
 From Wikipedia:
 
@@ -300,7 +301,7 @@ Every choice of |h 1| ``induces a homomorphism''.
 This means that the value of the function |h| is fully determined by
 its value for |1|.
 
-\subsection{Homomorphism and compositional semantics}
+\subsubsection{Homomorphism and compositional semantics}
 
 Last time, we saw that |eval| is compositional, while |eval'| is not.
 %
@@ -412,7 +413,7 @@ See
 (lecture notes are available on
 \href{https://github.com/DSLsofMath/ctfp2014}{github}).
 
-\subsection{Other homomorphisms}
+\subsubsection{Other homomorphisms}
 
 Last time, we defined a |Num| instance for functions with a |Num|
 codomain.
@@ -514,7 +515,7 @@ type FD a = (a, a)
 
 Hint: Something very similar can be used for Assignment 2.
 
-\section{Some helper functions}
+\subsubsection{Some helper functions}
 
 \begin{code}
 instance Num E where -- Some abuse of notation (no proper |negate|, etc.)
