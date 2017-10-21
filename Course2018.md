@@ -58,8 +58,8 @@ The main references are listed below.
     * Domain Specific Languages and algebraic structures, algebras, homomorphisms
     * Polynomials, series, power series
     * Power series and differential equations, exp, sin, log, Taylor series, ...
-    * Laplace transform
     * Linear algebra
+    * Laplace transform
 * Weekly exercise sessions (Wednesdays 13-15 and Fridays 13-15)
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard

@@ -356,6 +356,7 @@ fromCS (CS (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 testE1 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
 testE2 = Times ImagUnit ImagUnit
 \end{code}
+%TODO: also draw them as syntax trees - see blackboard/W1/20170116_114619.jpg
 
 There are certain laws we would like to hold for operations on complex
 numbers.
@@ -446,6 +447,8 @@ type for |REAL|.
 %
 At the same time we generalise |ToComplex| to |FromCartesian|:
 
+% TODO: Add as an exercise the version with I | ToComplex | Plus | Times
+% See data blackboard/W1/20170116_114608.jpg, eval blackboard/W1/20170116_114613.jpg
 \begin{code}
 data ComplexSyn r  =  FromCartesian r r
                    |  ComplexSyn r  :+:  ComplexSyn r
@@ -540,23 +543,29 @@ remark:
 This is meant to introduce a distinction between ``operators'', such
 as differentiation, which take functions to functions of the same
 type, and ``transforms'', such as the Laplace transform, which take
-functions to functions of a new type.  To the logician or the computer
-scientist, the way of phrasing this difference in the quoted text
-sounds strange: surely the \emph{name} of the independent variable
-does not matter: the Laplace transformation could very well return a
-function of the ``old'' variable |t|.  We can understand that the name
-of the variable is used to carry semantic meaning about its type (this
-is also common in functional programming, for example with the
-conventional use of |as| to denote a list of |a|s).  Moreover, by
-using this (implicit!) convention, it is easier to deal with cases
-such as that of the Hartley transform (a close relative of the Fourier
-transform), which does not change the type of the input function, but
-rather the \emph{interpretation} of that type.  We prefer to always
-give explicit typings rather than relying on syntactical conventions,
-and to use type synonyms for the case in which we have different
-interpretations of the same type.  In the example of the Laplace
-transformation, this leads to
-
+functions to functions of a new type.
+%
+To the logician or the computer scientist, the way of phrasing this
+difference in the quoted text sounds strange: surely the \emph{name}
+of the independent variable does not matter: the Laplace
+transformation could very well return a function of the ``old''
+variable |t|.
+%
+We can understand that the name of the variable is used to carry
+semantic meaning about its type (this is also common in functional
+programming, for example with the conventional use of |as| to denote a
+list of |a|s).
+%
+Moreover, by using this (implicit!) convention, it is easier to deal
+with cases such as that of the Hartley transform (a close relative of
+the Fourier transform), which does not change the type of the input
+function, but rather the \emph{interpretation} of that type.
+%
+We prefer to always give explicit typings rather than relying on
+syntactical conventions, and to use type synonyms for the case in
+which we have different interpretations of the same type.
+%
+In the example of the Laplace transformation, this leads to
 
 \begin{spec}
 type T  =  Real
@@ -580,6 +589,8 @@ liftPlus (+) (CS (x, y)) (CS (x', y')) = CS (x+x', y+y')
 Note that |liftPlus| takes |(+)| as its first parameter and uses it
 twice on the RHS.
 
+%TODO: Perhaps also add as an exercise to use Num to make the parameter implicit. But this should perhaps be placed in a later chapter after Num has been properly introduced.
+
 \paragraph{Laws}
 
 TODO: Associative, Commutative, Distributive, ...
@@ -590,7 +601,7 @@ TODO: Associative, Commutative, Distributive, ...
 \paragraph{TODO[PaJa]: move earlier}
 
 Table of examples of notation and abstract syntax for some complex numbers:
-
+%\label{tab:CompleSyntaxExamplesMathHaskell}
 \begin{tabular}{l||l}
     Mathematics & Haskell
 \\\hline
@@ -818,3 +829,5 @@ instance Show r => Show (ComplexSem r) where
 showCS :: Show r => ComplexSem r -> String
 showCS (CS (x, y)) = show x ++ " + " ++ show y ++ "i"
 \end{code}
+
+TODO: Perhaps formulate exercise to implement more efficient show using an ackumulating parameter.
