@@ -526,11 +526,11 @@ A type of pairs!
 %
 Then we see that the corresponding Haskell functions would be
 %
-\begin{code}
+\begin{spec}
   pair  :: p -> q -> (p, q)  -- andIntro
   fst   :: (p, q) -> p       -- andElimL
   snd   :: (p, q) -> q       -- andElimR
-\end{code}
+\end{spec}
 
 \begin{spec}
   orIntroL  :  P   ->  P|Q
@@ -540,14 +540,14 @@ Then we see that the corresponding Haskell functions would be
 
 Here the implementation type can be a labelled sum type, also called
 disjoint union and in Haskell: |Either|.
-%
-\begin{code}
+%TODO: put in separate file, make sure it type checks, include back.
+\begin{spec}
   data Either p q = Left p | Right q
   -- |Left| is |orIntroL|, |Right| is |orIntroR|
   either :: (p->r) -> (q->r) -> Either p q -> r
   either l r (Left x)   =  l x
   either l r (Right y)  =  r y
-\end{code}
+\end{spec}
 
 \subsection{Case study: there is always another prime}
 
@@ -561,7 +561,7 @@ define a formula |IP| for ``Infinite many Primes'' as follows:
 \begin{spec}
  IP = Forall n (Prime n => Exists m (Prime m & m > n))
 \end{spec}
-%TODO: perhaps introduce Prime and < in L01
+%*TODO: perhaps introduce Prime and < in L01
 %
 Combined with the fact that there is at least one prime (like |2|) we
 can repeatadly refer to this statement to produce a never-ending
@@ -839,8 +839,10 @@ Thus we can enumerate all the possible results in a list |xs = [x1,
 x2, {-"\ldots"-} xn]|, and measure their distances to |p|: |ds = map
 (\x-> abs (x - p)) xs|.
 %
-Now, if we let |ε = minimum ds| we can be certain that |abs (getq ε - p)
->= ε| just as required (and |ε /= 0| because |p `notElem` xs|).
+Now, if we let |ε = minimum ds| we can be certain that
+%
+|abs (getq ε - p) >= ε| just as required (and |ε /= 0| because |p
+`notElem` xs|).
 
 Exercise: If |Limp p X| we now know that |X| is infinite.
 %
