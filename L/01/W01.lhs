@@ -300,6 +300,9 @@ Exercises:
 \end{itemize}
 
 
+TODO: Sum up the datatype ``evolution'' (refinement) so far: |ComplexA|, |ComplexB|, |ComplexC|, |ComplexD|, |ComplexSem|.
+%**TODO: (cmp. blackboard/W1/20170116_114631.jpg)
+
 % ----------------------------------------------------------------
 
 \subsection{A syntax for arithmetical expressions}
@@ -447,7 +450,7 @@ type for |REAL|.
 %
 At the same time we generalise |ToComplex| to |FromCartesian|:
 
-% TODO: Add as an exercise the version with I | ToComplex | Plus | Times
+% TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
 % See data blackboard/W1/20170116_114608.jpg, eval blackboard/W1/20170116_114613.jpg
 \begin{code}
 data ComplexSyn r  =  FromCartesian r r
@@ -484,9 +487,18 @@ for the lecture notes.
 \paragraph{A function or the value at a point?}
 
 Mathematical texts often talk about ``the function $f(x)$'' when ``the
-function $f$'' would be more clear. Otherwise there is a clear risk of
-confusion between $f(x)$ as a function and $f(x)$ as the value you get
-from applying the function $f$ to the value bound to the name $x$.
+function $f$'' would be more clear.
+%
+Otherwise there is a clear risk of confusion between $f(x)$ as a
+function and $f(x)$ as the value you get from applying the function
+$f$ to the value bound to the name $x$.
+
+Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
+%
+Then it is clear that the value of $t$ is the constant $15$.
+%
+But if we let $s = 5*f(x)$ it is not clear if $s$ should be seen as a
+constant or as a function of $x$.
 
 \paragraph{Scoping}
 
@@ -520,24 +532,28 @@ syntactic operations:
 \paragraph{Variable names as type hints}
 
 In mathematical texts there are often conventions about the names used
-for variables of certain types. Typical examples include |i, j, k| for
-natural numbers or integers, |x, y| for real numbers and |z, w| for
-complex numbers.
+for variables of certain types.
+%
+Typical examples include |i, j, k| for natural numbers or integers,
+|x, y| for real numbers and |z, w| for complex numbers.
 
 
 The absence of explicit types in mathematical texts can sometimes lead
-to confusing formulations.  For example, a standard text on
-differential equations by Edwards, Penney and Calvis
-\cite{edwards2008elementary} contains at page 266 the following
-remark:
+to confusing formulations.
+%
+For example, a standard text on differential equations by Edwards,
+Penney and Calvis \cite{edwards2008elementary} contains at page 266
+the following remark:
 
 \newcommand{\Lap}[1]{\ensuremath{|Lap|\{#1\}}}
 \begin{quote}
   The differentiation operator $D$ can be viewed as a transformation
   which, when applied to the function $f(t)$, yields the new function
-  $D\{f(t)\} = f'(t)$. The Laplace transformation |Lap| involves the
-  operation of integration and yields the new function $\Lap{f(t)} =
-  F(s)$ of a new independent variable $s$.
+  $D\{f(t)\} = f'(t)$.
+  %
+  The Laplace transformation |Lap| involves the operation of
+  integration and yields the new function $\Lap{f(t)} = F(s)$ of a new
+  independent variable $s$.
 \end{quote}
 
 This is meant to introduce a distinction between ``operators'', such
@@ -546,10 +562,12 @@ type, and ``transforms'', such as the Laplace transform, which take
 functions to functions of a new type.
 %
 To the logician or the computer scientist, the way of phrasing this
-difference in the quoted text sounds strange: surely the \emph{name}
-of the independent variable does not matter: the Laplace
-transformation could very well return a function of the ``old''
-variable |t|.
+difference in the quoted text sounds strange:
+%
+surely the \emph{name} of the independent variable does not matter:
+%
+the Laplace transformation could very well return a function of the
+``old'' variable |t|.
 %
 We can understand that the name of the variable is used to carry
 semantic meaning about its type (this is also common in functional
