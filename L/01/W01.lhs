@@ -513,16 +513,39 @@ The variable |x| bound on the left is independent of the variable |x|
 \paragraph{From syntax to semantics and back}
 
 We have seen evaluation functions from abstract syntax to semantics
-(|eval :: Syn -> Sem|). Often a partial inverse is also available:
-|embed :: Sem -> Syn|. For our complex numbers we have TODO: fill in a
-function from |ComplexSem r -> ComplexSyn r|.
-
-The embedding should satisfy a round-trip property: |eval (embed s) ==
-s| for all |s|.
+(|eval :: Syn -> Sem|).
 %
-Exercise: What about the opposite direction? When is |embed (eval e)
-== e|?
+Often a partial inverse is also available: |embed :: Sem -> Syn|.
+%
+For our complex numbers we have
+%
+TODO: fill in a function from |ComplexSem r -> ComplexSyn r|.
+%
+(Roughly |embed (CS (x, y)) = Plus (ToC x) (Times I (ToC y))|.)
+%
+TODO: draw diagram of the types and the functions |eval| and |embed|
+to give an intuition for the ``round-trip'' property
 
+The embedding should satisfy a round-trip property:
+%
+|eval (embed s) == s| for all |s|.
+%
+TODO: Add typed quantification
+%
+Exercise: What about the opposite direction?
+%
+When is |embed (eval e) == e|?
+%
+(Step 0: type the quantification.
+%
+Step 1: what equality is suitable here?
+%
+Step 2: if you use ``equality up to eval'' - how is the resulting
+property related to the first round-trip property?
+%See blackboard/W1/20170116_161148.jpg
+)
+
+%
 We can also state and check properties relating the semantic and the
 syntactic operations:
 
@@ -611,8 +634,38 @@ twice on the RHS.
 
 \paragraph{Laws}
 
-TODO: Associative, Commutative, Distributive, ...
+TODO: Associative, Commutative, Distributive, \ldots
 
+|Associative (+) = Forall (a, b, c) ((a+b)+c = a+(b+c))|
+
+|Commutative (+) = Forall (a, b) (a+b = b+a)|
+
+Non-examples: division is not commutative, average is commutative but
+not associative.
+
+TODO: Talk more about the properties tested above in
+|propDistTimesPlus|, \ldots.  (The underlying set matters: |(+)| for
+|REAL| has some properties, |(+)| for |Double| has other, \ldots.
+Approximation is often necessary, but makes many laws false. Thus,
+attempt to do it late.)
+
+TODO: Draw the syntax tree diagrams for distributivity. See \verb+blackboard/W1/20170116_161151.jpg+
+
+|Distributive (*) (+) = Forall (a, b, c) ((a+b)*c = (a*c)+(b*c))|
+
+TODO: Forward pointer to homomorphisms in a later chapter (|*c| is a |(+)|-homomorphism).
+\begin{verbatim}
+    *    |       +
+   / \   |     /   \
+  +   c  |    *     *
+ / \     |   / \   / \
+a   b    |  a   c b   c
+\end{verbatim}
+
+Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
+% Answer: |max|
+
+Exercise: Find other pairs of operators satisfying a distributive law.
 
 
 
@@ -849,3 +902,28 @@ showCS (CS (x, y)) = show x ++ " + " ++ show y ++ "i"
 \end{code}
 
 TODO: Perhaps formulate exercise to implement more efficient show using an ackumulating parameter.
+
+\subsection{Notation and abstract syntax for (infinite) sequences}
+
+As a bit of preparation for the language of sequences and limits in
+later lctures we here spend a few lines on the notation and abstract
+syntax of sequences.
+
+Common math book notation: $\left\{ a_i \right\}_{i=0}^{\infty}$ or
+just $\left\{ a_i \right\}$ and (not always) an indication of the type
+$X$ of the $a_i$.
+%
+Note that the |a| at the center of this notation actually carries all
+of the information: an infinite family of values $a_i : X$.
+%
+If we interpret ``subscript'' as function application we can see that
+|a : Nat -> X| is a useful typing of a sequence.
+
+TODO: add examples: |id|, |\i->1/(i+1)|, |(2^)|, |const c|, \ldots
+
+TODO: Operations of sequences? lifting constants, |fmap|, lifting binary operators
+
+Exercices: what does function composition do to a sequence?
+(composition on the left?, on the right?)
+
+(TODO: perhaps mention limits, sums, just a teasers for later chapters)
