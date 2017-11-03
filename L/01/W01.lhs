@@ -1,5 +1,22 @@
 \section{Week 1: a DSL for arithmetic expressions and complex numbers}
 
+%TODO: (by DaHe) Some that appear in the Q&A of this week are:
+% * newtype vs type vs data, which people might have forgotten since the Haskell course.
+% * how syntax trees are defined using data
+% * Env, Var and variable lookup.
+%
+% A way of clarifying these might be to have a breif recap at the start of this chapter, so that 
+% students' Haskell chops are up to speed before we start using it to describe maths. For instance, we could 
+% present a data type that represents basic arithmetic expressions with real numbers. This would give the opportunity
+% to explain type synonyms (type R = Double) and using data to define syntax trees (data Expr = Add Expr Expr | Mul Expr Expr ...).
+% It would also be a good opportunity to explain syntax vs semantics, deep vs shallow embedding, (which I remember
+% some of my classmates had trouble grasping when I took the course), as these words are used throughout the chapter.
+% The data type could then be expanded to include variables, making possible expressions like 5*x + 7, and how we need
+% to be able look up the value of the variable (from an env) in order to eval the expression.
+%
+% This way, the idea of a math DSL would be presented in the most basic way possible, before we make it one step more complicated
+% by trying to construct a DSL from a book's definition of complex numbers.
+
 This lecture is partly based on the paper
 \citep{TFPIE15_DSLsofMath_IonescuJansson} from the International
 Workshop on Trends in Functional Programming in Education 2015.
@@ -211,8 +228,14 @@ We read further:
   Note that |w = z| if and only if |a = x| and |b = y|.
 \end{quote}
 
+
 First, let us notice that we are given an important semantic
 information:
+%
+%TODO: (by DaHe) There's a few expressions in the sentence below that students might find confusing: 
+% syntactically/semantically injective, isomorphic. Is it possible to explain in a more basic way?
+% Perhaps if we did as I suggested in the TODO at the start of this chapter, the words 'syntax' and 'semantics'
+% could be defined and clarified with some examples, since I remember several people having trouble with these concepts.
 %
 |CPlusC| is not just syntactically injective (as all constructors
 are), but also semantically.
@@ -223,7 +246,12 @@ using |deriving Eq|.
 This shows that complex numbers are, in fact, isomorphic with pairs of
 real numbers, a point which we can make explicit by re-formulating the
 definition in terms of a |newtype|:
-
+%
+%TODO: (by DaHe) Is it really necessary to parametrize the type this early? I feel like it might
+% just add confusion at this point. (i.e. why not just newtype ComplexD = CS(REAL, REAL) ?). 
+% The type ComplexSyn r gets parametrized later on, with some motivation. Can't we wait to 
+% parametrize the semantic type until that point?
+%
 \begin{code}
 type ComplexD = ComplexSem REAL
 newtype ComplexSem r = CS (r , r)    deriving Eq
