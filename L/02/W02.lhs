@@ -51,14 +51,20 @@ Swedish: Satslogik
 \end{tabular}
 
 Example:
-
+%
+%TODO (by DaHe): Shouldn't it be 'where A = n "A", B = n "B"' below? (not lower case a and b)
+%
 \begin{spec}
 sw :: PropCalc
 sw = ((A & B) -=> (B & A))
   where  a = N "A"
          b = N "B"
 \end{spec}
-
+%
+%TODO: (by DaHe): why not define the constructors in PropCalc, like
+% data PropCalc = And PropCalc PropCalc ...?
+% Might be confusing to change the notation compared to the previous chapter.
+%
 The example is based on the following embedding of propositional calculus terms:
 \begin{code}
 data PropCalc where
@@ -223,7 +229,15 @@ terms |i0|, |i1|, \ldots
 Then the final step is to introduce the notation |Forall i A(i)| for
 |A(i1) & A(i2) & ... |.
 %
-
+%
+% TODO (by DaHe) It might be a good idea to explain the below paragraph
+% (until next subsection) in a more informal way too, since this is a
+% fairly technical explanation.  Something like "If we can show P(a)
+% for some unknown term a, we know P(t) for any t, since we have not
+% relied on any specific property of a specific t".  A simple example
+% might also be a good idea, where we end up with a function f where 
+% f t is a proof of P t for all terms t.
+%
 Now to prove |Forall x P(x)| it would be difficult to provide an
 infinite collection of proofs of |P(xi)|.
 %
@@ -418,7 +432,9 @@ To sum up: by assuming |P| we can prove both |Q| and |not Q|.
 Thus, by contradiction |not P| must hold.
 
 \subsection{Proof by cases}
-
+%
+% TODO (by DaHe): Shouldn't `a` and `b` be replaced with `p` and `q` on the line below?
+%
 As another example, let's prove that there are two irrational numbers
 |a| and |b| such that |a^b| is rational.
 
@@ -599,6 +615,7 @@ proof n np = (m, (pm, gt))
 The proof |pm| is the core of the theorem.
 %
 First, we note that for any |2<=p<=n| we have |mod m' p == mod (1 +
+% TODO (by DaHe): Shouldn't it say n instead of m' on the line below?
 m'!)  p == mod 1 p + mod (m'!) p == 1 + 0 == 1|.
 %
 Thus |m'| is not divisible by any number from |2| to |n|.
@@ -696,7 +713,9 @@ Let |X| be a subset of |ℝ|.
 %
 A point |p ∈ ℝ| is a limit point of |X| iff for every |ε > 0|, there
 exists |q ∈ X| such that |q ≠ p| and |abs(q - p) < ε|.
-
+%
+% Maybe explain the notation 𝒫 ℝ, i.e. Any subset of REAL has this type.
+%
 \begin{spec}
 Limp : ℝ → 𝒫 ℝ → Prop
 Limp p X = ∀ ε > 0? ∃ q ∈ X - {p}? abs (q-p) < ε
