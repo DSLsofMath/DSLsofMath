@@ -28,6 +28,10 @@ This week we focus on ``develop adequate notation for mathematical
 concepts'' and ``perform calculational proofs'' (still in the context
 of ``organize areas of mathematics in DSL terms'').
 
+There will be a fair bit of theory: introducing propositional and
+first order logic, but also ``applications'' to mathematics: prime
+numbers, (ir)rationals, limit points, limits, etc.
+
 \begin{code}
 module DSLsofMath.W02 where
 \end{code}
@@ -154,6 +158,8 @@ suitable number of terms.
 If we have the function symbols |f| of arity |2| and |g| of arity |3|
 we can form terms like |f(x,x)|, |g(y,z,z)|, |g(x,y,f(x,y))|, etc.
 
+TODO: Add simple datatype for terms. (Perhaps |Rat| from further down?)
+
 The names from the propositional calculus are generalised to
 \emph{predicate symbols} of different arity.
 %
@@ -198,6 +204,8 @@ Here is the same formula without infix operators:
 \begin{spec}
   Forall x (Forall y (Eq(plus(x,y),plus(y,x))))
 \end{spec}
+
+TODO: perhaps add simple |data FOL| for the formulas.
 
 Forall quantification can be seen as a generalisation of |And|.
 %
@@ -1119,3 +1127,7 @@ data WFF n f v p =
 \end{spec}
 
 TODO: Perhaps introduce GADT datatype notation in exercises
+
+\subsection{Exercices: abstract FOL}
+
+TODO: include ../../E/W2.lhs after conversion to LaTeX
