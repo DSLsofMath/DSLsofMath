@@ -14,7 +14,6 @@ the code for this lecture is placed in a module called
 module DSLsofMath.W01 where
 \end{code}
 
-
 \subsection{Intro: Pitfalls with traditional mathematical notation}
 
 \paragraph{A function or the value at a point?}
@@ -43,6 +42,67 @@ Scoping rules for the integral sign:
 The variable |x| bound on the left is independent of the variable |x|
 ``bound under the integral sign''.
 
+\paragraph{Variable names as type hints}
+
+In mathematical texts there are often conventions about the names used
+for variables of certain types.
+%
+Typical examples include |i, j, k| for natural numbers or integers,
+|x, y| for real numbers and |z, w| for complex numbers.
+
+
+The absence of explicit types in mathematical texts can sometimes lead
+to confusing formulations.
+%
+For example, a standard text on differential equations by Edwards,
+Penney and Calvis \cite{edwards2008elementary} contains at page 266
+the following remark:
+
+\newcommand{\Lap}[1]{\ensuremath{|Lap|\{#1\}}}
+\begin{quote}
+  The differentiation operator $D$ can be viewed as a transformation
+  which, when applied to the function $f(t)$, yields the new function
+  $D\{f(t)\} = f'(t)$.
+  %
+  The Laplace transformation |Lap| involves the operation of
+  integration and yields the new function $\Lap{f(t)} = F(s)$ of a new
+  independent variable $s$.
+\end{quote}
+
+This is meant to introduce a distinction between ``operators'', such
+as differentiation, which take functions to functions of the same
+type, and ``transforms'', such as the Laplace transform, which take
+functions to functions of a new type.
+%
+To the logician or the computer scientist, the way of phrasing this
+difference in the quoted text sounds strange:
+%
+surely the \emph{name} of the independent variable does not matter:
+%
+the Laplace transformation could very well return a function of the
+``old'' variable |t|.
+%
+We can understand that the name of the variable is used to carry
+semantic meaning about its type (this is also common in functional
+programming, for example with the conventional use of |as| to denote a
+list of |a|s).
+%
+Moreover, by using this (implicit!) convention, it is easier to deal
+with cases such as that of the Hartley transform (a close relative of
+the Fourier transform), which does not change the type of the input
+function, but rather the \emph{interpretation} of that type.
+%
+We prefer to always give explicit typings rather than relying on
+syntactical conventions, and to use type synonyms for the case in
+which we have different interpretations of the same type.
+%
+In the example of the Laplace transformation, this leads to
+
+\begin{spec}
+type T  =  Real
+type S  =  CC
+Lap : (T -> CC) -> (S -> CC)
+\end{spec}
 
 \subsection{Types of |data|}
 
@@ -688,12 +748,7 @@ fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
 fromIntegerCS = toComplexSyn . fromInteger
 \end{code}
 
-\subsection{TODO[PaJa]: Textify}
-
-Here are some notes about things scribbled on the blackboard during
-the first two lectures. At some point this should be made into text
-for the lecture notes.
-
+TODO: place this paragraph properly.
 \paragraph{From syntax to semantics and back}
 
 We have seen evaluation functions from abstract syntax to semantics
@@ -736,69 +791,9 @@ syntactic operations:
 |a + b = eval (Plus (embed a) (embed b))| for all |a| and |b|.
 
 
-\paragraph{Variable names as type hints}
-
-In mathematical texts there are often conventions about the names used
-for variables of certain types.
-%
-Typical examples include |i, j, k| for natural numbers or integers,
-|x, y| for real numbers and |z, w| for complex numbers.
-
-
-The absence of explicit types in mathematical texts can sometimes lead
-to confusing formulations.
-%
-For example, a standard text on differential equations by Edwards,
-Penney and Calvis \cite{edwards2008elementary} contains at page 266
-the following remark:
-
-\newcommand{\Lap}[1]{\ensuremath{|Lap|\{#1\}}}
-\begin{quote}
-  The differentiation operator $D$ can be viewed as a transformation
-  which, when applied to the function $f(t)$, yields the new function
-  $D\{f(t)\} = f'(t)$.
-  %
-  The Laplace transformation |Lap| involves the operation of
-  integration and yields the new function $\Lap{f(t)} = F(s)$ of a new
-  independent variable $s$.
-\end{quote}
-
-This is meant to introduce a distinction between ``operators'', such
-as differentiation, which take functions to functions of the same
-type, and ``transforms'', such as the Laplace transform, which take
-functions to functions of a new type.
-%
-To the logician or the computer scientist, the way of phrasing this
-difference in the quoted text sounds strange:
-%
-surely the \emph{name} of the independent variable does not matter:
-%
-the Laplace transformation could very well return a function of the
-``old'' variable |t|.
-%
-We can understand that the name of the variable is used to carry
-semantic meaning about its type (this is also common in functional
-programming, for example with the conventional use of |as| to denote a
-list of |a|s).
-%
-Moreover, by using this (implicit!) convention, it is easier to deal
-with cases such as that of the Hartley transform (a close relative of
-the Fourier transform), which does not change the type of the input
-function, but rather the \emph{interpretation} of that type.
-%
-We prefer to always give explicit typings rather than relying on
-syntactical conventions, and to use type synonyms for the case in
-which we have different interpretations of the same type.
-%
-In the example of the Laplace transformation, this leads to
-
-\begin{spec}
-type T  =  Real
-type S  =  CC
-Lap : (T -> CC) -> (S -> CC)
-\end{spec}
 
 \subsubsection{Other}
+TODO: find a good place for this part
 
 \paragraph{Lifting operations to a parameterised type}
 When we define addition on complex numbers (represented as pairs of
