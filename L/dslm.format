@@ -149,3 +149,5 @@
 %format	ExistsElim  = ∃ "\!\text{-}" Elim
 
 %format mini = min "_i"
+
+%format mod x y = x "\%" y

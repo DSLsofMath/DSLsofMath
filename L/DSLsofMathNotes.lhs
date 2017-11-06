@@ -86,6 +86,8 @@
   domain-specific languages.
 \end{abstract}
 
+\tableofcontents
+
 %include 00/Intro.lhs
 \newpage
 %include 01/W01.lhs

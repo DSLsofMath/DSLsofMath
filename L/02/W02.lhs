@@ -29,7 +29,6 @@ concepts'' and ``perform calculational proofs'' (still in the context
 of ``organize areas of mathematics in DSL terms'').
 
 \begin{code}
-{-# LANGUAGE GADTs #-}
 module DSLsofMath.W02 where
 \end{code}
 
@@ -52,28 +51,21 @@ Swedish: Satslogik
 
 Example:
 %
-%TODO (by DaHe): Shouldn't it be 'where A = n "A", B = n "B"' below? (not lower case a and b)
-%
-\begin{spec}
+\begin{code}
 sw :: PropCalc
-sw = ((A & B) -=> (B & A))
+sw = ((a & b) -=> (b & a))
   where  a = N "A"
          b = N "B"
-\end{spec}
-%
-%TODO: (by DaHe): why not define the constructors in PropCalc, like
-% data PropCalc = And PropCalc PropCalc ...?
-% Might be confusing to change the notation compared to the previous chapter.
+\end{code}
 %
 The example is based on the following embedding of propositional calculus terms:
 \begin{code}
-data PropCalc where
-  N        :: Name -> PropCalc
-  C        :: Bool -> PropCalc
-  And      :: PropCalc -> PropCalc -> PropCalc
-  Or       :: PropCalc -> PropCalc -> PropCalc
-  Implies  :: PropCalc -> PropCalc -> PropCalc
-  Not      :: PropCalc -> PropCalc
+data PropCalc  =  N  Name
+               |  C  Bool
+               |  And      PropCalc  PropCalc
+               |  Or       PropCalc  PropCalc
+               |  Implies  PropCalc  PropCalc
+               |  Not      PropCalc
 
 (&) = And
 (-=>) = Implies
@@ -149,11 +141,9 @@ over them) to the calculus.
 
 \subsection{First Order Logic (predicate logic)}
 
-TODO: type up the notes + whiteboard photos
-
 Swedish: Första ordningens logik = predikatlogik
 
-TODO: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
+% Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
 
 We now add \emph{terms} as another datatype to the calculus.
 %
@@ -235,7 +225,7 @@ Then the final step is to introduce the notation |Forall i A(i)| for
 % fairly technical explanation.  Something like "If we can show P(a)
 % for some unknown term a, we know P(t) for any t, since we have not
 % relied on any specific property of a specific t".  A simple example
-% might also be a good idea, where we end up with a function f where 
+% might also be a good idea, where we end up with a function f where
 % f t is a proof of P t for all terms t.
 %
 Now to prove |Forall x P(x)| it would be difficult to provide an
@@ -386,7 +376,7 @@ isomorphic to the (dependent) function type |{i : 1..n} -> Ai|.
 
 TODO: Add typed quantification for Exists.
 
-(Roughly: |(Exists (x:T) (P x)) = (Exists x (T x & P x))|.)
+(Roughly: |((Exists (x:T) (P x))) = ((Exists x (T x & P x)))|.)
 
 \subsection{Proof by contradition}
 
@@ -436,7 +426,7 @@ Thus, by contradiction |not P| must hold.
 % TODO (by DaHe): Shouldn't `a` and `b` be replaced with `p` and `q` on the line below?
 %
 As another example, let's prove that there are two irrational numbers
-|a| and |b| such that |a^b| is rational.
+|p| and |q| such that |p^q| is rational.
 
 \begin{spec}
   S = Exists p (Exists q (not (R p) & not (R q) & R (p^q)))
@@ -489,7 +479,7 @@ A very common kind of formula is ``typed quantification'': if a type
 predicate |T| we can introduce the short-hand notation
 %
 \begin{spec}
-  (Forall (x:T) (P x)) = (Forall x (T x => P x))
+  ((Forall (x:T) (P x))) = ((Forall x (T x => P x)))
 \end{spec}
 %
 A proof of this is a two-argument function |p| which takes a term and
@@ -565,6 +555,8 @@ disjoint union and in Haskell: |Either|.
   either l r (Right y)  =  r y
 \end{spec}
 
+TODO: include |Either| in the Haskell intro at the end of the previous chapter
+
 \subsection{Case study: there is always another prime}
 
 As an example of combining forall, exists and implication let us turn
@@ -614,9 +606,16 @@ proof n np = (m, (pm, gt))
 %
 The proof |pm| is the core of the theorem.
 %
-First, we note that for any |2<=p<=n| we have |mod m' p == mod (1 +
-% TODO (by DaHe): Shouldn't it say n instead of m' on the line below?
-m'!)  p == mod 1 p + mod (m'!) p == 1 + 0 == 1|.
+First, we note that for any |2<=p<=n| we have
+%
+\begin{spec}
+ mod m' p ==
+ mod (1 + n!) p ==
+ mod 1 p + mod (n!) p ==
+ 1 + 0 ==
+ 1
+\end{spec}
+% TODO: explain that mod x y is shown as x % y
 %
 Thus |m'| is not divisible by any number from |2| to |n|.
 %
@@ -714,7 +713,7 @@ Let |X| be a subset of |ℝ|.
 A point |p ∈ ℝ| is a limit point of |X| iff for every |ε > 0|, there
 exists |q ∈ X| such that |q ≠ p| and |abs(q - p) < ε|.
 %
-% Maybe explain the notation 𝒫 ℝ, i.e. Any subset of REAL has this type.
+% TODO: Maybe explain the notation 𝒫 ℝ, i.e. Any subset of REAL has this type.
 %
 \begin{spec}
 Limp : ℝ → 𝒫 ℝ → Prop
@@ -897,7 +896,7 @@ Exercise: prove that |(a1 haslim L1) & (a2 haslim L2)| implies
 \subsection{Exercises}
 
 \begin{enumerate}
-\item Build a proof for |((A & B) -=> (B & A))| using |andIntro|,
+\item Build a proof for |((a & b) -=> (b & a))| using |andIntro|,
   |andElimL|, and |andElimR|.
 TODO: add solution, step by step: |andIntro ?1 ?2 : B & A where ...|;
 % andIntro ?1 ?2 : B /\ A
@@ -1118,3 +1117,5 @@ data WFF n f v p =
   |  EXISTS  v (WFF n f v p)
   deriving Show
 \end{spec}
+
+TODO: Perhaps introduce GADT datatype notation in exercises
