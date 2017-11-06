@@ -1,23 +1,6 @@
 \section{Week 1: a DSL for arithmetic expressions and complex numbers}
 
-%TODO: (by DaHe) Some that appear in the Q&A of this week are:
-% * newtype vs type vs data, which people might have forgotten since the Haskell course.
-% * how syntax trees are defined using data
-% * Env, Var and variable lookup.
-%
-% A way of clarifying these might be to have a breif recap at the start of this chapter, so that 
-% students' Haskell chops are up to speed before we start using it to describe maths. For instance, we could 
-% present a data type that represents basic arithmetic expressions with real numbers. This would give the opportunity
-% to explain type synonyms (type R = Double) and using data to define syntax trees (data Expr = Add Expr Expr | Mul Expr Expr ...).
-% It would also be a good opportunity to explain syntax vs semantics, deep vs shallow embedding, (which I remember
-% some of my classmates had trouble grasping when I took the course), as these words are used throughout the chapter.
-% The data type could then be expanded to include variables, making possible expressions like 5*x + 7, and how we need
-% to be able look up the value of the variable (from an env) in order to eval the expression.
-%
-% This way, the idea of a math DSL would be presented in the most basic way possible, before we make it one step more complicated
-% by trying to construct a DSL from a book's definition of complex numbers.
-
-This lecture is partly based on the paper
+This chapter is partly based on the paper
 \citep{TFPIE15_DSLsofMath_IonescuJansson} from the International
 Workshop on Trends in Functional Programming in Education 2015.
 %
@@ -30,6 +13,207 @@ the code for this lecture is placed in a module called
 \begin{code}
 module DSLsofMath.W01 where
 \end{code}
+
+
+\subsection{Intro: Pitfalls with traditional mathematical notation}
+
+\paragraph{A function or the value at a point?}
+
+Mathematical texts often talk about ``the function $f(x)$'' when ``the
+function $f$'' would be more clear.
+%
+Otherwise there is a clear risk of confusion between $f(x)$ as a
+function and $f(x)$ as the value you get from applying the function
+$f$ to the value bound to the name $x$.
+
+Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
+%
+Then it is clear that the value of $t$ is the constant $15$.
+%
+But if we let $s = 5*f(x)$ it is not clear if $s$ should be seen as a
+constant or as a function of $x$.
+
+\paragraph{Scoping}
+
+Scoping rules for the integral sign:
+\begin{align*}
+   f(x) &= x^2
+\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
+\end{align*}
+The variable |x| bound on the left is independent of the variable |x|
+``bound under the integral sign''.
+
+
+\subsection{Types of |data|}
+
+Dividing up the world (or problem domain) into values of different
+types is one of the guiding principles of this course.
+%
+We will see that keeping track of types can guide the development of
+theories, languages, programs and proofs.
+%
+To start out we introduce some of the ways types are described in
+Haskell.
+
+TODO: make the following few paragraphs flow better
+
+TODO: Introduce: newtype, products, sums, recursion, parameters
+
+%TODO: (by DaHe) Some that appear in the Q&A of this week are:
+% * newtype vs type vs data, which people might have forgotten since the Haskell course.
+% * how syntax trees are defined using data
+% * Env, Var and variable lookup.
+%
+% A way of clarifying these might be to have a breif recap at the start of this chapter, so that
+% students' Haskell chops are up to speed before we start using it to describe maths. For instance, we could
+% present a data type that represents basic arithmetic expressions with real numbers. This would give the opportunity
+% to explain type synonyms (type R = Double) and using data to define syntax trees (data Expr = Add Expr Expr | Mul Expr Expr ...).
+% It would also be a good opportunity to explain syntax vs semantics, deep vs shallow embedding, (which I remember
+% some of my classmates had trouble grasping when I took the course), as these words are used throughout the chapter.
+% The data type could then be expanded to include variables, making possible expressions like 5*x + 7, and how we need
+% to be able look up the value of the variable (from an env) in order to eval the expression.
+%
+% This way, the idea of a math DSL would be presented in the most basic way possible, before we make it one step more complicated
+% by trying to construct a DSL from a book's definition of complex numbers.
+
+
+\subsubsection{type / newtype / data}
+
+There are three keywords in Haskell involved in naming types: |type|,
+|newtype|, and |data|.
+
+\paragraph{type -- abbreviating type expressions}
+
+The |type| keyword is used to create a type synonym - just another name
+for a type expression.
+
+\begin{code}
+type Heltal = Integer
+type Foo = (Maybe [String], [[Heltal]])
+type BinOp = Heltal -> Heltal -> Heltal
+type Env v s = [(v,s)]
+\end{code}
+
+The new name for the type on the RHS does not add type safety, just
+readability (if used wisely). The |Env| example shows that a type
+synonym can have type parameters.
+
+\paragraph{newtype -- more protection}
+
+A simple example of the use of |newtype| in Haskell is to distinguish
+values which should be kept apart. A simple example is
+
+\begin{code}
+newtype Age   = Ag Int  -- Age in years
+newtype Shoe  = Sh Int  -- Shoe size (EU)
+\end{code}
+
+Which introduces two new types, |Age| and |Shoe|, which both are
+internally represented by an |Int| but which are good to keep apart.
+
+The constructor functions |Ag :: Int -> Age| and |Sh :: Int -> Shoe| are
+used to translate from plain integers to ages and shoe sizes.
+
+In the lecture notes we used a newtype for the semantics of complex
+numbers as a pair of numbers in the cartesian representation but may
+also be useful to have another newtype for complex as a pair of numbers
+in the polar representation.
+
+\paragraph{data -- for syntax trees}
+
+Some examples:
+
+\begin{code}
+data N = Z | S N
+\end{code}
+
+This declaration introduces
+
+\begin{itemize}
+\item
+  a new type |N| for unary natural numbers,
+\item
+  a constructor |Z :: N| to represent zero, and
+\item
+  a constructor |S :: N -> N| to represent the successor.
+\end{itemize}
+
+Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|
+
+\begin{code}
+data E = V String | P E E | T E E
+\end{code}
+
+This declaration introduces
+
+\begin{itemize}
+\item
+  a new type |E| for simple arithmetic expressions,
+\item
+  a constructor |V :: String -> E| to represent variables,
+\item
+  a constructor |P :: E -> E -> E| to represent plus, and
+\item
+  a constructor |T :: E -> E -> E| to represent times.
+\end{itemize}
+
+Example values: |x = V "x"|, |e1 = P x x|, |e2 = T e1 e1|
+
+If you want a contructor to be used as an infix operator you need to use
+symbol characters and start with a colon:
+
+\begin{code}
+data E' = V' String | E' :+ E' | E' :* E'
+\end{code}
+
+Example values: |y = V "y"|, |e1 = y :+ y|, |e2 = x :* e1|
+
+Finally, you can add one or more type parameters to make a whole family
+of datatypes in one go:
+
+\begin{code}
+data ComplexSy v r  =  Var v
+                    |  FromCart r r
+                    |  ComplexSy v r  :++  ComplexSy v r
+                    |  ComplexSy v r  :**  ComplexSy v r
+\end{code}
+
+The purpose of the first parameter |v| here is to enable a free choice
+of type for the variables (be it |String| or |Int| or something else)
+and the second parameter |r| makes is possible to express ``complex
+numbers over'' different base types (like |Double|, |Float|, |Integer|,
+etc.).
+
+\subsubsection{|Env|, |Var|, and variable lookup}
+
+The type synonym
+
+\begin{spec}
+type Env v s = [(v,s)]
+\end{spec}
+
+is one way of expressing a partial function from |v| to |s|.
+
+Example value:
+
+\begin{code}
+env1 :: Env String Int
+env1 = [("hej", 17), ("du", 38)]
+\end{code}
+
+The |Env| type is commonly used in evaluator functions for syntax trees
+containing variables:
+
+\begin{code}
+evalCP :: Eq v => Env v (ComplexSem r) -> (ComplexSy v r -> ComplexSem r)
+evalCP env (Var x) = case lookup x env of
+                       Just c -> undefined -- ...
+-- ...
+\end{code}
+
+Notice that |env| maps ``syntax'' (variable names) to ``semantics'',
+just like the evaluator does.
+
 
 \subsection{A case study: complex numbers}
 
@@ -232,7 +416,7 @@ We read further:
 First, let us notice that we are given an important semantic
 information:
 %
-%TODO: (by DaHe) There's a few expressions in the sentence below that students might find confusing: 
+%TODO: (by DaHe) There's a few expressions in the sentence below that students might find confusing:
 % syntactically/semantically injective, isomorphic. Is it possible to explain in a more basic way?
 % Perhaps if we did as I suggested in the TODO at the start of this chapter, the words 'syntax' and 'semantics'
 % could be defined and clarified with some examples, since I remember several people having trouble with these concepts.
@@ -248,8 +432,8 @@ real numbers, a point which we can make explicit by re-formulating the
 definition in terms of a |newtype|:
 %
 %TODO: (by DaHe) Is it really necessary to parametrize the type this early? I feel like it might
-% just add confusion at this point. (i.e. why not just newtype ComplexD = CS(REAL, REAL) ?). 
-% The type ComplexSyn r gets parametrized later on, with some motivation. Can't we wait to 
+% just add confusion at this point. (i.e. why not just newtype ComplexD = CS(REAL, REAL) ?).
+% The type ComplexSyn r gets parametrized later on, with some motivation. Can't we wait to
 % parametrize the semantic type until that point?
 %
 \begin{code}
@@ -510,34 +694,6 @@ Here are some notes about things scribbled on the blackboard during
 the first two lectures. At some point this should be made into text
 for the lecture notes.
 
-\subsubsection{Pitfalls with traditional mathematical notation}
-
-\paragraph{A function or the value at a point?}
-
-Mathematical texts often talk about ``the function $f(x)$'' when ``the
-function $f$'' would be more clear.
-%
-Otherwise there is a clear risk of confusion between $f(x)$ as a
-function and $f(x)$ as the value you get from applying the function
-$f$ to the value bound to the name $x$.
-
-Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
-%
-Then it is clear that the value of $t$ is the constant $15$.
-%
-But if we let $s = 5*f(x)$ it is not clear if $s$ should be seen as a
-constant or as a function of $x$.
-
-\paragraph{Scoping}
-
-Scoping rules for the integral sign:
-\begin{align*}
-   f(x) &= x^2
-\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
-\end{align*}
-The variable |x| bound on the left is independent of the variable |x|
-``bound under the integral sign''.
-
 \paragraph{From syntax to semantics and back}
 
 We have seen evaluation functions from abstract syntax to semantics
@@ -713,7 +869,9 @@ Table of examples of notation and abstract syntax for some complex numbers:
 
 
 
-\subsection{Questions and answers from the exercise sessions week 1}
+
+
+\subsection{More Haskell}
 
 \subsubsection{Function composition}
 
@@ -745,193 +903,8 @@ In Haskell we get the following type:
 
 which may take a while to get used to.
 
-\subsubsection{fromInteger (looks recursive)}
 
-Near the end of the lecture notes there was an instance declaration
-including the following lines:
-
-\begin{spec}
-instance Num r => Num (ComplexSyn r) where
-  -- ... several other methods and then
-  fromInteger = toComplexSyn . fromInteger
-\end{spec}
-
-This definition looks recursive, but it is not. To see why we need to
-expand the type and to do this I will introduce a name for the right
-hand side (RHS): |fromIntC|.
-
-\begin{verbatim}
---          ComplexSyn r <---------- r <---------- Integer
-fromIntC =              toComplexSyn . fromInteger
-\end{verbatim}
-
-I have placed the types in the comment, with ``backwards-pointing''
-arrows indicating that |fromInteger :: Integer -> r| and |toComplexSyn
-:: r -> ComplexSyn r| while the resulting function is |fromIntC ::
-Integer -> ComplexSyn r|. The use of |fromInteger| at type |r| means
-that the full type of |fromIntC| must refer to the |Num| class. Thus
-we arrive at the full type:
-
-\begin{spec}
-fromIntC :: Num r =>   Integer -> ComplexSyn r
-\end{spec}
-
-\subsubsection{type / newtype / data}
-
-There are three keywords in Haskell involved in naming types: |type|,
-|newtype|, and |data|.
-
-\paragraph{type -- abbreviating type expressions}
-
-The |type| keyword is used to create a type synonym - just another name
-for a type expression.
-
-\begin{code}
-type Heltal = Integer
-type Foo = (Maybe [String], [[Heltal]])
-type BinOp = Heltal -> Heltal -> Heltal
-type Env v s = [(v,s)]
-\end{code}
-
-The new name for the type on the RHS does not add type safety, just
-readability (if used wisely). The |Env| example shows that a type
-synonym can have type parameters.
-
-\paragraph{newtype -- more protection}
-
-A simple example of the use of |newtype| in Haskell is to distinguish
-values which should be kept apart. A simple example is
-
-\begin{code}
-newtype Age   = Ag Int  -- Age in years
-newtype Shoe  = Sh Int  -- Shoe size (EU)
-\end{code}
-
-Which introduces two new types, |Age| and |Shoe|, which both are
-internally represented by an |Int| but which are good to keep apart.
-
-The constructor functions |Ag :: Int -> Age| and |Sh :: Int -> Shoe| are
-used to translate from plain integers to ages and shoe sizes.
-
-In the lecture notes we used a newtype for the semantics of complex
-numbers as a pair of numbers in the cartesian representation but may
-also be useful to have another newtype for complex as a pair of numbers
-in the polar representation.
-
-\paragraph{data -- for syntax trees}
-
-Some examples:
-
-\begin{code}
-data N = Z | S N
-\end{code}
-
-This declaration introduces
-
-\begin{itemize}
-\item
-  a new type |N| for unary natural numbers,
-\item
-  a constructor |Z :: N| to represent zero, and
-\item
-  a constructor |S :: N -> N| to represent the successor.
-\end{itemize}
-
-Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|
-
-\begin{code}
-data E = V String | P E E | T E E
-\end{code}
-
-This declaration introduces
-
-\begin{itemize}
-\item
-  a new type |E| for simple arithmetic expressions,
-\item
-  a constructor |V :: String -> E| to represent variables,
-\item
-  a constructor |P :: E -> E -> E| to represent plus, and
-\item
-  a constructor |T :: E -> E -> E| to represent times.
-\end{itemize}
-
-Example values: |x = V "x"|, |e1 = P x x|, |e2 = T e1 e1|
-
-If you want a contructor to be used as an infix operator you need to use
-symbol characters and start with a colon:
-
-\begin{code}
-data E' = V' String | E' :+ E' | E' :* E'
-\end{code}
-
-Example values: |y = V "y"|, |e1 = y :+ y|, |e2 = x :* e1|
-
-Finally, you can add one or more type parameters to make a whole family
-of datatypes in one go:
-
-\begin{code}
-data ComplexSy v r  =  Var v
-                    |  FromCart r r
-                    |  ComplexSy v r  :++  ComplexSy v r
-                    |  ComplexSy v r  :**  ComplexSy v r
-\end{code}
-
-The purpose of the first parameter |v| here is to enable a free choice
-of type for the variables (be it |String| or |Int| or something else)
-and the second parameter |r| makes is possible to express ``complex
-numbers over'' different base types (like |Double|, |Float|, |Integer|,
-etc.).
-
-\subsubsection{|Env|, |Var|, and variable lookup}
-
-The type synonym
-
-\begin{spec}
-type Env v s = [(v,s)]
-\end{spec}
-
-is one way of expressing a partial function from |v| to |s|.
-
-Example value:
-
-\begin{code}
-env1 :: Env String Int
-env1 = [("hej", 17), ("du", 38)]
-\end{code}
-
-The |Env| type is commonly used in evaluator functions for syntax trees
-containing variables:
-
-\begin{code}
-evalCP :: Eq v => Env v (ComplexSem r) -> (ComplexSy v r -> ComplexSem r)
-evalCP env (Var x) = case lookup x env of
-                       Just c -> undefined -- ...
--- ...
-\end{code}
-
-Notice that |env| maps ``syntax'' (variable names) to ``semantics'',
-just like the evaluator does.
-
-\subsection{Some helper functions}
-
-\begin{code}
-propAssocAdd :: (Eq a, Num a) => a -> a -> a -> Bool
-propAssocAdd = propAssocA (+)
-
-(*.) :: Num r =>  ComplexSem r -> ComplexSem r -> ComplexSem r
-CS (ar, ai) *. CS (br, bi) = CS (ar*br - ai*bi, ar*bi + ai*br)
-
-instance Show r => Show (ComplexSem r) where
-  show = showCS
-
-showCS :: Show r => ComplexSem r -> String
-showCS (CS (x, y)) = show x ++ " + " ++ show y ++ "i"
-\end{code}
-
-TODO: Perhaps formulate exercise to implement more efficient show using an ackumulating parameter.
-
-\subsection{Notation and abstract syntax for (infinite) sequences}
+\subsubsection{Notation and abstract syntax for (infinite) sequences}
 
 As a bit of preparation for the language of sequences and limits in
 later lctures we here spend a few lines on the notation and abstract
@@ -955,3 +928,24 @@ Exercices: what does function composition do to a sequence?
 (composition on the left?, on the right?)
 
 (TODO: perhaps mention limits, sums, just a teasers for later chapters)
+
+% ----------------------------------------------------------------
+
+\subsection{Some helper functions (can be skipped)}
+
+\begin{code}
+propAssocAdd :: (Eq a, Num a) => a -> a -> a -> Bool
+propAssocAdd = propAssocA (+)
+
+(*.) :: Num r =>  ComplexSem r -> ComplexSem r -> ComplexSem r
+CS (ar, ai) *. CS (br, bi) = CS (ar*br - ai*bi, ar*bi + ai*br)
+
+instance Show r => Show (ComplexSem r) where
+  show = showCS
+
+showCS :: Show r => ComplexSem r -> String
+showCS (CS (x, y)) = show x ++ " + " ++ show y ++ "i"
+\end{code}
+
+TODO: Perhaps formulate exercise to implement more efficient show
+using an ackumulating parameter.

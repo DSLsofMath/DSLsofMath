@@ -375,6 +375,43 @@ instance Num a => Num (x -> a) where
   fromInteger  =  const . fromInteger
 \end{code}
 
+TODO: Start of aside - make it fit in the text better
+
+\subsubsection{fromInteger (looks recursive)}
+
+The instance declaration above looks recursive, but is not.
+%
+The same pattern appeared already in chapter TODO, which near the end
+included roughly the following lines:
+
+\begin{spec}
+instance Num r => Num (ComplexSyn r) where
+  -- ... several other methods and then
+  fromInteger = toComplexSyn . fromInteger
+\end{spec}
+
+To see why this is not a recursive definition we need to expand the
+type and to do this I will introduce a name for the right hand side
+(RHS): |fromIntC|.
+
+\begin{verbatim}
+--          ComplexSyn r <---------- r <---------- Integer
+fromIntC =              toComplexSyn . fromInteger
+\end{verbatim}
+
+I have placed the types in the comment, with ``backwards-pointing''
+arrows indicating that |fromInteger :: Integer -> r| and |toComplexSyn
+:: r -> ComplexSyn r| while the resulting function is |fromIntC ::
+Integer -> ComplexSyn r|. The use of |fromInteger| at type |r| means
+that the full type of |fromIntC| must refer to the |Num| class. Thus
+we arrive at the full type:
+
+\begin{spec}
+fromIntC :: Num r =>   Integer -> ComplexSyn r
+\end{spec}
+
+TODO: End of aside - connect back to the x->a instance
+
 Next we have |Fractional| for when we also have division:
 \begin{spec}
 class  Num a => Fractional a  where
