@@ -16,7 +16,8 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  exposed-modules: DSLsofMath.W01, DSLsofMath.W01.Test, DSLsofMath.W02, DSLsofMath.W03,
+  exposed-modules: DSLsofMath.W01, DSLsofMath.W01.Test, DSLsofMath.CSem,
+                   DSLsofMath.W02, DSLsofMath.W03,
                    DSLsofMath.FunNumInst, DSLsofMath.FunExp, DSLsofMath.Derive,
                    DSLsofMath.EvalD, DSLsofMath.ShallowD,
                    DSLsofMath.W04, DSLsofMath.W05, DSLsofMath.W06,

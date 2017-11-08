@@ -12,6 +12,8 @@ the code for this lecture is placed in a module called
 
 \begin{code}
 module DSLsofMath.W01 where
+import qualified DSLsofMath.CSem as CSem
+import DSLsofMath.CSem (ComplexSem(CS))
 \end{code}
 
 \subsection{Intro: Pitfalls with traditional mathematical notation}
@@ -296,8 +298,9 @@ env1 = [("hej", 17), ("du", 38)]
 The |Env| type is commonly used in evaluator functions for syntax trees
 containing variables:
 
+TODO: use a simpler syntax type than complex numbers here
 \begin{code}
-evalCP :: Eq v => Env v (ComplexSem r) -> (ComplexSy v r -> ComplexSem r)
+evalCP :: Eq v => Env v sem -> (ComplexSy v r -> sem)
 evalCP env (Var x) = case lookup x env of
                        Just c -> undefined -- ...
 -- ...
@@ -408,8 +411,8 @@ type REAL = Double
 The text continues with examples:
 
 \begin{quote}
-  For example, |3 + 2i|, |div 7 2 - (div 2 3)i|, |i(pi) = 0 + i(pi)|,
-  and |-3 = -3 + 0i| are all complex numbers.
+  For example, $3 + 2i$, $\frac{7}{2} - \frac{2}{3}i$,
+  $i\pi = 0 + i\pi$ and $-3 = -3 + 0i$ are all complex numbers.
   %
   The last of these examples shows that every real number can be
   regarded as a complex number.
@@ -421,9 +424,27 @@ the form |a + bi|.
 Given that the last two examples seem to introduce shorthand for
 various complex numbers, let us assume that this one does as well, and
 that |a - bi| can be understood as an abbreviation of |a + (-b)i|.
+%
+With this provision, in our notation the examples are written as in
+Table~\ref{tab:CompleSyntaxExamplesMathHaskell}.
+%
+\begin{table}[tbph]
+  \centering
+\begin{tabular}{lll}
+    \multicolumn{2}{@@{}l@@{}}{Mathematics} & Haskell
+\\\hline
+    $3 +2i$                        &  & |CPlus1 3 2 I|
+\\ $\frac{7}{2} - \frac{2}{3} i$ &=
+   $\frac{7}{2} + \frac{-2}{3} i$     & |CPlus1 (7/2) (-2/3) I|
+\\ $i \pi$ &= $0 + i \pi$             & |CPlus2 0 I pi|
+\\ $-3$ &= $-3 + 0 i$                 & |CPlus1 (-3) 0 I|
+\end{tabular}
+  \caption{Examples of notation and abstract syntax for some complex numbers.}
+  \label{tab:CompleSyntaxExamplesMathHaskell}
+\end{table}
 
-With this provision, in our notation the examples are written as:
-
+%if False
+% This is just for testing.
 \begin{code}
 testC1 :: [ComplexA]
 testC1 =  [  CPlus1 3 2 I  ,    CPlus1 (7/2) (-2/3) I
@@ -431,6 +452,8 @@ testC1 =  [  CPlus1 3 2 I  ,    CPlus1 (7/2) (-2/3) I
           ]
 testS1 = map showCA testC1
 \end{code}
+%endif
+
 
 We interpret the sentence ``The last of these examples \ldots'' to
 mean that there is an embedding of the real numbers in |ComplexA|,
@@ -508,29 +531,21 @@ We read further:
 First, let us notice that we are given an important semantic
 information:
 %
-%TODO: (by DaHe) There's a few expressions in the sentence below that students might find confusing:
-% syntactically/semantically injective, isomorphic. Is it possible to explain in a more basic way?
-% Perhaps if we did as I suggested in the TODO at the start of this chapter, the words 'syntax' and 'semantics'
-% could be defined and clarified with some examples, since I remember several people having trouble with these concepts.
+to check equality for complex numbers, it is enough to check equality
+of the components (the arguments to the constructor |CPlusC|).
 %
-|CPlusC| is not just syntactically injective (as all constructors
-are), but also semantically.
+(Another way of saying this is that |CPlusC| is semantically
+injective.)
 %
 The equality on complex numbers is what we would obtain in Haskell by
 using |deriving Eq|.
 
-This shows that complex numbers are, in fact, isomorphic with pairs of
-real numbers, a point which we can make explicit by re-formulating the
-definition in terms of a |newtype|:
-%
-%TODO: (by DaHe) Is it really necessary to parametrize the type this early? I feel like it might
-% just add confusion at this point. (i.e. why not just newtype ComplexD = CS(REAL, REAL) ?).
-% The type ComplexSyn r gets parametrized later on, with some motivation. Can't we wait to
-% parametrize the semantic type until that point?
+This shows that the set of complex numbers is, in fact, isomorphic
+with the set of pairs of real numbers, a point which we can make
+explicit by re-formulating the definition in terms of a |newtype|:
 %
 \begin{code}
-type ComplexD = ComplexSem REAL
-newtype ComplexSem r = CS (r , r)    deriving Eq
+newtype ComplexD = CD (REAL, REAL)   deriving Eq
 \end{code}
 
 The point of the somewhat confusing discussion of using ``letters'' to
@@ -554,11 +569,11 @@ stand for complex numbers is to introduce a substitute for
 This is rather similar to Haskell's \emph{as-patterns}:
 
 \begin{code}
-re :: ComplexSem r      ->  r
-re z @ (CS (x , y))   =   x
+re :: ComplexD        ->  REAL
+re z @ (CD (x , y))   =   x
 
-im :: ComplexSem r      ->  r
-im z @ (CS (x , y))   =   y
+im :: ComplexD        ->  REAL
+im z @ (CD (x , y))   =   y
 \end{code}
 
 \noindent
@@ -589,8 +604,8 @@ We can describe these operations in a \emph{shallow embedding} in
 terms of the concrete datatype |ComplexSem|, for example:
 
 \begin{code}
-(+.) :: Num r =>  ComplexSem r -> ComplexSem r -> ComplexSem r
-(CS (a , b)) +. (CS (x , y))  =  CS ((a + x) , (b + y))
+(+.) :: ComplexD -> ComplexD -> ComplexD
+(CD (a , b)) +. (CD (x , y))  =  CD ((a + x) , (b + y))
 \end{code}
 
 \noindent
@@ -647,8 +662,8 @@ data ComplexE  =  ImagUnit
 And we can write the evaluator by induction over the syntax tree:
 
 \begin{code}
-evalE ImagUnit         = CS (0 , 1)
-evalE (ToComplex r)    = CS (r , 0)
+evalE ImagUnit         = CD (0 , 1)
+evalE (ToComplex r)    = CD (r , 0)
 evalE (Plus  c1 c2)    = evalE c1   +.  evalE c2
 evalE (Times c1 c2)    = evalE c1   *.  evalE c2
 \end{code}
@@ -657,8 +672,8 @@ We also define a function to embed a semantic complex number in the
 syntax:
 
 \begin{code}
-fromCS :: ComplexD -> ComplexE
-fromCS (CS (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
+fromCD :: ComplexD -> ComplexE
+fromCD (CD (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 
 testE1 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
 testE2 = Times ImagUnit ImagUnit
@@ -678,11 +693,11 @@ propImagUnit = Times ImagUnit ImagUnit === ToComplex (-1)
 z === w  =  evalE z == evalE w
 \end{code}
 
-and that |fromCS| is an embedding:
+and that |fromCD| is an embedding:
 
 \begin{code}
-propFromCS :: ComplexD -> Bool
-propFromCS c =  evalE (fromCS c) == c
+propFromCD :: ComplexD -> Bool
+propFromCD c =  evalE (fromCD c) == c
 \end{code}
 
 but we also have that |Plus| and |Times| should be associative and
@@ -754,6 +769,9 @@ type for |REAL|.
 %
 At the same time we generalise |ToComplex| to |FromCartesian|:
 
+TODO: mention the parameterised |newtype ComplexSem r = CS (r , r)    deriving Eq| as well. Currently imported
+
+
 % TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
 % See data blackboard/W1/20170116_114608.jpg, eval blackboard/W1/20170116_114613.jpg
 \begin{code}
@@ -764,10 +782,12 @@ data ComplexSyn r  =  FromCartesian r r
 toComplexSyn :: Num a => a -> ComplexSyn a
 toComplexSyn x = FromCartesian x (fromInteger 0)
 
-evalCSyn :: Num r => ComplexSyn r -> ComplexSem r
+-- From CSem: newtype ComplexSem r = CS (r , r)    deriving Eq
+
+evalCSyn :: Num r => ComplexSyn r -> CSem.ComplexSem r
 evalCSyn (FromCartesian x y) = CS (x , y)
-evalCSyn (l :+: r) = evalCSyn l +. evalCSyn r
-evalCSyn (l :*: r) = evalCSyn l *. evalCSyn r
+evalCSyn (l :+: r) = evalCSyn l CSem.+. evalCSyn r
+evalCSyn (l :*: r) = evalCSyn l CSem.*. evalCSyn r
 
 instance Num a => Num (ComplexSyn a) where
    (+) = (:+:)
@@ -790,18 +810,22 @@ Often a partial inverse is also available: |embed :: Sem -> Syn|.
 %
 For our complex numbers we have
 %
+
 TODO: fill in a function from |ComplexSem r -> ComplexSyn r|.
+
 %
 (Roughly |embed (CS (x, y)) = Plus (ToC x) (Times I (ToC y))|.)
 %
-TODO: draw diagram of the types and the functions |eval| and |embed|
-to give an intuition for the ``round-trip'' property
+
+TODO: draw diagram of the types and the functions |eval| and |embed| to give an intuition for the ``round-trip'' property
 
 The embedding should satisfy a round-trip property:
 %
 |eval (embed s) == s| for all |s|.
 %
+
 TODO: Add typed quantification
+
 %
 Exercise: What about the opposite direction?
 %
@@ -833,7 +857,7 @@ real and imaginary components) we can do that for any underlying type
 |r| which supports addition.
 
 \begin{code}
-type CS = ComplexSem -- for shorter type expressions below
+type CS = CSem.ComplexSem -- for shorter type expressions below
 liftPlus ::  (r     -> r     -> r     ) ->
              (CS r  -> CS r  -> CS r  )
 liftPlus (+) (CS (x, y)) (CS (x', y')) = CS (x+x', y+y')
@@ -877,26 +901,6 @@ Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
 % Answer: |max|
 
 Exercise: Find other pairs of operators satisfying a distributive law.
-
-
-
-\paragraph{TODO[PaJa]: move earlier}
-
-Table of examples of notation and abstract syntax for some complex numbers:
-%\label{tab:CompleSyntaxExamplesMathHaskell}
-\begin{tabular}{l||l}
-    Mathematics & Haskell
-\\\hline
-    $3 +2i$                          & |CPlus1 3 2 i|
-\\ $\frac{7}{2} - \frac{2}{3} i$ = $\frac{7}{2} + \frac{-2}{3} i$  & |CPlus1 (7/2) (-2/3) i|
-\\ $i \pi$ = $0 + i \pi$               & |CPlus2 0 i pi|
-\\ $-3$ = $-3 + 0 i$                 & |CPlus1 (-3) 0 i|
-\end{tabular}
-
-
-
-
-
 
 \subsection{More Haskell}
 
@@ -964,14 +968,14 @@ Exercices: what does function composition do to a sequence?
 propAssocAdd :: (Eq a, Num a) => a -> a -> a -> Bool
 propAssocAdd = propAssocA (+)
 
-(*.) :: Num r =>  ComplexSem r -> ComplexSem r -> ComplexSem r
-CS (ar, ai) *. CS (br, bi) = CS (ar*br - ai*bi, ar*bi + ai*br)
+(*.) :: ComplexD -> ComplexD -> ComplexD
+CD (ar, ai) *. CD (br, bi) = CD (ar*br - ai*bi, ar*bi + ai*br)
 
-instance Show r => Show (ComplexSem r) where
-  show = showCS
+instance Show ComplexD where
+  show = showCD
 
-showCS :: Show r => ComplexSem r -> String
-showCS (CS (x, y)) = show x ++ " + " ++ show y ++ "i"
+showCD :: ComplexD -> String
+showCD (CD (x, y)) = show x ++ " + " ++ show y ++ "i"
 \end{code}
 
 \subsection{Exercises for Week 1: complex numbers and DSLs}

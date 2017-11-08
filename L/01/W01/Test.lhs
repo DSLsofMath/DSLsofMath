@@ -1,10 +1,13 @@
 > module DSLsofMath.W01.Test where
 > import DSLsofMath.W01
+> import DSLsofMath.CSem
 > import Test.QuickCheck
 
 We may also need the Haskell standard library version for some testing later:
 
 > import qualified Data.Complex as DC
+
+> fromCS (CS (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 
 > instance (Num r, Arbitrary r) => Arbitrary (ComplexSem r) where
 >   arbitrary = arbitraryCS arbitrary
@@ -15,7 +18,6 @@ We may also need the Haskell standard library version for some testing later:
 
 > shrinkCS :: Num r => ((r , r) -> [(r , r)]) -> (ComplexSem r -> [ComplexSem r])
 > shrinkCS shr (CS (p@(x, y))) = [CS (0, 0), CS (x,0), CS (0, y)] ++ map CS (shr p)
-
 
 > instance Arbitrary ComplexE where
 >   arbitrary = sized arbitraryCESized
@@ -37,18 +39,21 @@ We may also need the Haskell standard library version for some testing later:
 > shrinkCE (ToComplex r) = ToComplex <$> shrink r
 > shrinkCE (Times r ImagUnit) = r:shrink r
 > shrinkCE (Plus  l (Times r ImagUnit)) = [l, Times r ImagUnit]
-> shrinkCE (e@(Plus  l r)) = fromCS (evalE e) :
+> shrinkCE (e@(Plus  l r)) = fromCD (evalE e) :
 >   [l, r] ++ [Plus  l r' | r' <- shrink r]
 >          ++ [Plus  l' r | l' <- shrink l]
-> shrinkCE (e@(Times l r)) = fromCS (evalE e) :
+> shrinkCE (e@(Times l r)) = fromCD (evalE e) :
 >   [l, r] ++ [Times l r' | r' <- shrink r]
 >          ++ [Times l' r | l' <- shrink l]
 
 > main = do
->   quickCheck propFromCS
+>   quickCheck propFromCD
 >   quickCheck $ expectFailure propAssocPlus
 >   quickCheck $ expectFailure propAssocTimes
 >   quickCheck $ expectFailure propDistTimesPlus
 
 > propAssocSmall :: Int -> Int -> Int -> Bool
 > propAssocSmall m n k = propAssocAdd (fromIntegral m) (fromIntegral n) (1/fromIntegral k)
+
+> instance Arbitrary ComplexD where
+>   arbitrary = fmap (\(CS p) -> CD p) arbitrary
