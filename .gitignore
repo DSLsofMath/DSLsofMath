@@ -21,4 +21,5 @@ cabal.sandbox.config
 *.fdb_latexmk
 *.fls
 *.dvi
+*.toc
 Lecture*.pdf

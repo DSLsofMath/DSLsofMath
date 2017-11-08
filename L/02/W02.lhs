@@ -901,31 +901,6 @@ Exercise: prove that |(a1 haslim L1) & (a2 haslim L2)| implies
 
 % TODO: Perhaps include something about the relation between |haslim| and |Limp|
 
-\subsection{Exercises}
-
-\begin{enumerate}
-\item Build a proof for |((a & b) -=> (b & a))| using |andIntro|,
-  |andElimL|, and |andElimR|.
-TODO: add solution, step by step: |andIntro ?1 ?2 : B & A where ...|;
-% andIntro ?1 ?2 : B /\ A
-%   where ?1 : B
-%         ?2 : A
-%
-% andIntro (andElimR ?3) (andElimL ?3) : B /\ A
-%   where ?3 : A & B
-%
-% andIntro (andElimR pq) (andElimL pq) : B /\ A
-%
-% thus
-%
-% \pq -> (the above) : A /\ B -> B /\ A
-
-TODO: add several more exercises
-
-\end{enumerate}
-
-
-
 \subsection{Questions and answers from the exercise sessions week 2}
 
 \paragraph{Variables, |Env| and |lookup|}
@@ -1128,6 +1103,6 @@ data WFF n f v p =
 
 TODO: Perhaps introduce GADT datatype notation in exercises
 
-\subsection{Exercices: abstract FOL}
+\subsection{Exercises: abstract FOL}
 
-TODO: include ../../E/W2.lhs after conversion to LaTeX
+%include E2.lhs

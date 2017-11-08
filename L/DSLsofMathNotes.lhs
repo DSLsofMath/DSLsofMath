@@ -39,6 +39,7 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 
+\renewcommand*{\theenumi}{\textbf{E\thesection.\arabic{enumi}}}
 \newcommand{\TODO}[1]{\todo{#1}}
 \newcommand{\refSec}[1]{Sec. \ref{#1}}
 \newcommand{\refSecs}[1]{Secs. \ref{#1}}

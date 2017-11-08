@@ -1,7 +1,7 @@
 > module AbstractFOL (And, Not, Or, Impl,
 >                     andIntro, andElimL, andElimR,
->                     notIntro, notElim,
 >                     orIntroL, orIntroR, orElim,
+>                     notIntro, notElim,
 >                     implIntro, implElim) where
 
 > data And   p  q
@@ -13,12 +13,12 @@
 > andElimL       ::  And p q -> p
 > andElimR       ::  And p q -> q
 
-> notElim        ::  Not (Not p) -> p
-> notIntro       ::  (p -> And q (Not q)) -> Not p
-
 > orIntroL       ::  p -> Or p q
 > orIntroR       ::  q -> Or p q
 > orElim         ::  Or p q -> (p -> r) -> (q -> r) -> r
+
+> notElim        ::  Not (Not p) -> p
+> notIntro       ::  (p -> And q (Not q)) -> Not p
 
 > implIntro      ::  (p -> q) -> Impl p q
 > implElim       ::  Impl p q -> p -> q
