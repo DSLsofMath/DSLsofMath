@@ -234,6 +234,8 @@ This declaration introduces
 
 Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|
 
+\subsection{A syntax for simple arithmetical expressions}
+
 \begin{code}
 data E = V String | P E E | T E E
 \end{code}
@@ -601,7 +603,7 @@ With the introduction of algebraic operations, the language of complex
 numbers becomes much richer.
 %
 We can describe these operations in a \emph{shallow embedding} in
-terms of the concrete datatype |ComplexSem|, for example:
+terms of the concrete datatype |ComplexD|, for example:
 
 \begin{code}
 (+.) :: ComplexD -> ComplexD -> ComplexD
@@ -615,16 +617,33 @@ the next section.
 
 Exercises:
 \begin{itemize}
-\item implement |(*.)| for |ComplexSem|
+\item implement |(*.)| for |ComplexD|
 \end{itemize}
 
 
-TODO: Sum up the datatype ``evolution'' (refinement) so far: |ComplexA|, |ComplexB|, |ComplexC|, |ComplexD|, |ComplexSem|.
-%**TODO: (cmp. blackboard/W1/20170116_114631.jpg)
+At this point we can sum up the ``evolution'' of the datatypes introduced so far.
+%
+Starting from |ComplexA|, the type has evolved by successive
+refinements through |ComplexB|, |ComplexC|, ending up in |ComplexD|
+(see Fig.~\ref{fig:ComplexTypeSummary}).
+%
+\begin{figure}[tbph]
+\begin{spec}
+data     ImagUnits =  I
+data     ComplexA  =  CPlus1  REAL   REAL ImagUnits
+                   |  CPlus2  REAL   ImagUnits REAL
+data     ComplexB  =  CPlusB  REAL   REAL ImagUnits
+data     ComplexC  =  CPlusC  REAL   REAL
+newtype  ComplexD  =  CD  (REAL, REAL)   deriving Eq
+\end{spec}
+
+  \caption{Complex number datatype refinement.}
+  \label{fig:ComplexTypeSummary}
+\end{figure}
 
 % ----------------------------------------------------------------
 
-\subsection{A syntax for arithmetical expressions}
+\subsection{A syntax for (complex) arithmetical expressions}
 
 So far we have tried to find a datatype to represent the intended
 \emph{semantics} of complex numbers.
@@ -769,7 +788,7 @@ type for |REAL|.
 %
 At the same time we generalise |ToComplex| to |FromCartesian|:
 
-TODO: mention the parameterised |newtype ComplexSem r = CS (r , r)    deriving Eq| as well. Currently imported
+TODO: mention the parameterised |newtype ComplexSem r = CS (r , r)    deriving Eq| as well. Currently imported. Perhaps in the figure summarizing the evolution.
 
 
 % TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
