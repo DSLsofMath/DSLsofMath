@@ -10,10 +10,10 @@ TODO: formulate simpler exercises to start with. (Working on it (They will hopef
    % TODO more/less confusing to use infix vs prefix notation here?
    %
    \begin{code}
-   data Exp = Num Integer 
-            | Exp `Plus`  Exp
-            | Exp `Minus` Exp 
-            | Exp `Times` Exp
+   data Exp  =  Num Integer
+             |  Exp  `Plus`   Exp
+             |  Exp  `Minus`  Exp
+             |  Exp  `Times`  Exp
    deriving(Eq, Show)
    \end{code}
    %
@@ -21,17 +21,17 @@ TODO: formulate simpler exercises to start with. (Working on it (They will hopef
    %
     \item Write the following expressions in Haskell, using the |Exp| data type:
     \begin{enumerate}
-        \item \(a1 = 2 + 2\) 
-        \item \(a2 = 5 + 7 * 9\) 
-        \item \(a3 = 8(2 + 11) - (3 + 7)(4 + 4)\) 
+        \item \(a1 = 2 + 2\)
+        \item \(a2 = 5 + 7 * 9\)
+        \item \(a3 = 8(2 + 11) - (3 + 7)(4 + 4)\)
     \end{enumerate}
     %
     \item Create a function |eval :: Exp -> Integer| that takes a value of the |Exp| data type
        and returns the corresponding number (for instance, |eval ((Num 3) `Plus` (Num 3)) == 6|).
        Try it on the expressions from part a), and verify that it works as expected.
     %
-    \item Consider the following expression: 
-       $$c2 = (x - 15)*(y + 12)*z$$ 
+    \item Consider the following expression:
+       $$c2 = (x - 15)*(y + 12)*z$$
        where: \\
        $x = 5$, \\
        $y = 8$, \\
@@ -58,18 +58,18 @@ TODO: formulate simpler exercises to start with. (Working on it (They will hopef
        \end{enumerate}
     %
    \end{enumerate}
- 
+
 TODO (DaHe): Exercise on type class/parametrised types, with evaluator and env,
 var lookup
- 
+
 TODO (DaHe): Exercise introducing deep vs shallow embedding using type classes
 also, maybe introduce the concept of using type classes to return a deep
-embedding by using the operators of the data type, and casting to the 
+embedding by using the operators of the data type, and casting to the
 syntactic type
- 
+
 TODO (DaHe): Exercise asking to implement a deep and a shallow embedding of some data
 type, using knowlege acquired from above
- 
+
 TODO (DaHe): Describe a thing, ask to implement DSL for that thing by introducing
 data type, type class, evaluator, (similar to Q1 from old exams)
 %
