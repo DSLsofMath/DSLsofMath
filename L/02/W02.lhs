@@ -879,6 +879,7 @@ Note that this construction can be seen as a proof of |Limp p X =>
 Infinite X|.
 
 \paragraph{The limit of a sequence} TODO: transcribe the 2016 notes
+\label{par:LimitOfSequence}
 
 Now we can move from limit points to the more familiar limit of a
 sequence.
@@ -900,6 +901,9 @@ Exercise: prove that |(a1 haslim L1) & (a2 haslim L2)| implies
 |(a1+a2) haslim (L1+L2)|.
 
 % TODO: Perhaps include something about the relation between |haslim| and |Limp|
+
+% TODO: Perhaps continue with one example: the limit of |invSeq| is |0|. See ../blackboard/W1/20170116_165408.jpg and 20170116_165412.jpg
+
 
 \subsection{Questions and answers from the exercise sessions week 2}
 

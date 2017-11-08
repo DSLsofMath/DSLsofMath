@@ -39,6 +39,7 @@ explicitly:
 \end{itemize}
 
 \subsection{Typing Mathematics: partial derivative}
+\label{sec:typePartialDerivative}
 
 As as an example we will try to type the elements of a mathematical
 definition.

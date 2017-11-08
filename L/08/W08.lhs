@@ -1,6 +1,7 @@
 \section{Week 8: Exponentials and Laplace}
 
 \subsection{The Exponential Function}
+\label{sec:exp}
 
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}

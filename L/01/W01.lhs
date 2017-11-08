@@ -1055,11 +1055,40 @@ One way to capture that is to give |lim| the type |(Nat -> X) -> Maybe
 X|.
 %
 Then \(L = \lim_{i\to\infty} x_i\) would mean |Just L = lim x|
+%
+We will return to limits and their proofs in
+\refSec{par:LimitOfSequence} after we have reviewed some logic.
+%
+Here we just define one more common operation: the sum of a sequence
+(like \(\sigma = \sum_{i=0}^{\infty} 1/i!\)).
 
-TODO: Continue with one example: the limit of |invSeq| is |0|.
+Just as not all sequences have a limit, not all have a sum either.
+%
+But for every sequence we can define a new sequence of partial sums:
+%
+\begin{code}
+sums :: Num a => Seq a -> Seq a
+sums = scan 0 (+)
+scan :: a -> (a->a->a) -> Seq a -> Seq a
+scan z (+) f = s
+  where  s 0 = z
+         s i = s (i-1)  +  f i
+\end{code}
+%
+And by combining this with limits we can state formally that the sum
+of a sequence |a| exists and is |S| iff the limit of |sums a| exists
+and is |S|.
+%
+As a formula we get |Just S = lim (sums a)|, and for our example it
+turns out that it converges and that
+\(\sigma = \sum_{i=0}^{\infty} 1/i! = e\) but we will not get to that
+until \refSec{sec:exp}.
 
-
-
+We will also return to limits in \refSec{sec:typePartialDerivative}
+about derivatives where we explore variants of the classical
+definition
+%
+\[f'(x) = \lim_{h\to0} \frac{f(x+h)-f(x)}{h}\]
 
 % ----------------------------------------------------------------
 
