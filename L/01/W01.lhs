@@ -969,15 +969,97 @@ of the information: an infinite family of values $a_i : X$.
 %
 If we interpret ``subscript'' as function application we can see that
 |a : Nat -> X| is a useful typing of a sequence.
+%
+Some examples:
+%
+\begin{code}
+type Nat = Integer
+type Seq a = Nat -> a
 
-TODO: add examples: |id|, |\i->1/(i+1)|, |(2^)|, |const c|, \ldots
+idSeq :: Seq Nat
+idSeq i = i                       -- {0, 1, 2, 3, ...}
 
-TODO: Operations of sequences? lifting constants, |fmap|, lifting binary operators
+invSeq :: Seq REAL
+invSeq i = 1/(1 + fromInteger i)  -- {1/1, 1/2, 1/3, 1/4, ...}
 
-Exercices: what does function composition do to a sequence?
+pow2 :: Num r =>  Seq r
+pow2 = (2^)                       -- {1, 2, 4, 8, ...}
+
+conSeq :: a -> Seq a
+conSeq c i = c                    -- {c, c, c, c, ...}
+\end{code}
+
+What operations can be perform on sequences?
+%
+We have seen the first one: given a value |c| we can generate a
+constant sequence with |conSeq c|.
+%
+We can also add sequences componentwise (also called ``pointwise''):
+%
+\begin{code}
+addSeq :: Num a => Seq a -> Seq a -> Seq a
+addSeq f g i = f i + g i
+\end{code}
+and in general lift any binary operation |op :: a -> b -> c| to the
+corresponding, pointwise, operation of sequences:
+\begin{code}
+liftSeq2 :: (a->b->c) -> Seq a -> Seq b -> Seq c
+liftSeq2 op f g i = op (f i) (g i)    -- {op (f 0) (g 0), op (f 1) (g 1), ...}
+\end{code}
+Similarly we can lift unary operations, and ``nullary'' operations:
+\begin{code}
+liftSeq1 :: (a->b) -> Seq a -> Seq b
+liftSeq1 h f i = h (f i)              -- {h (f 0), h (f 1), h (f 2), ...}
+
+liftSeq0 :: a -> Seq a
+liftSeq0 c i = c
+\end{code}
+
+Exercice: How is |liftSeq1| related to |fmap|? |liftSeq0| to |conSeq|?
+
+Exercice: what does function composition do to a sequence?
 (composition on the left?, on the right?)
 
 (TODO: perhaps mention limits, sums, just a teasers for later chapters)
+
+Another common mathematical operator on sequences is the limit.
+%
+We will get back to limits in a later chapter, but here we just
+analyse the notation and typing.
+%
+This definition is slightly adapted from Wikipedia (2017-11-08):
+\begin{quote}
+  We call \(L\) the limit of the sequence |{xn}| if the following
+  condition holds: For each real number |ε>0|, there exists
+  a natural number |N| such that, for every natural number
+  |n >= N|, we have |abs (xn - L) < ε|.
+
+  If so, we say that the sequence converges to |L| and write
+  \[L = \lim_{i\to\infty} x_i\]
+\end{quote}
+%
+There are (at least) two things to note here.
+%
+First, with this syntax, the $\lim_{i\to\infty} x_i$ expression form
+binds |i| in the expression |xi|.
+%
+We could just as well say that |lim| takes a function |x :: Nat -> X|
+as its only argument.
+%
+Second, an arbitrary |x|, may or may not have a limit.
+%
+Thus the customary use of |L =| is a bit of abuse of notation, because
+the right hand side may not be well defined.
+%
+One way to capture that is to give |lim| the type |(Nat -> X) -> Maybe
+X|.
+%
+Then \(L = \lim_{i\to\infty} x_i\) would mean |Just L = lim x|
+
+TODO: Continue with one example: the limit of |invSeq| is |0|.
+
+
+
 
 % ----------------------------------------------------------------
 
