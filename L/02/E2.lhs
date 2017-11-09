@@ -82,8 +82,8 @@ When loading the module, GHC will tell you which types your holes
 
 On to the exercises.
 
-\begin{enumerate}
-\item Prove these three theorems (for arbitrary |p| and |q|):
+\begin{exercise}
+Prove these three theorems (for arbitrary |p| and |q|):
 
 \begin{spec}
   Impl (And p q) q
@@ -91,7 +91,9 @@ On to the exercises.
   Or p (Not p)
 \end{spec}
 
-\item Translate to Haskell and prove the De Morgan laws:
+\end{exercise}
+\begin{exercise}
+ Translate to Haskell and prove the De Morgan laws:
 
 \begin{spec}
   ¬ (p ∨ q) ⟷  ¬p ∧ ¬q
@@ -100,7 +102,9 @@ On to the exercises.
 
 (translate equivalence to conjunction of two implications).
 
-\item So far, the implementation of the datatypes has played no
+\end{exercise}
+\begin{exercise}
+ So far, the implementation of the datatypes has played no
   role.
   %
   To make this clearer: define the types for connectives in
@@ -117,7 +121,9 @@ constructors.
 Convince yourself that the proofs given above still work and that the
 type checker can indeed be used as a poor man's proof checker.
 
-\item The introduction and elimination rules suggest that some
+\end{exercise}
+\begin{exercise}
+ The introduction and elimination rules suggest that some
   implementations of the datatypes for connectives might be more
   reasonable than others. We have seen that the type of evidence for
   |p → q| is very similar to the type of functions |p -> q|, so it
@@ -175,7 +181,9 @@ functions we write are total.
 %
 This result is known as \emph{the Curry-Howard isomorphism}.
 
-\item Can we extend the Curry-Howard isomorphism to formulas with |¬|?
+\end{exercise}
+\begin{exercise}
+ Can we extend the Curry-Howard isomorphism to formulas with |¬|?
 %
   In other words, is there a type that we could use to define Not p,
   which would work together with pairs, |->|, and |Either| to give a
@@ -247,7 +255,9 @@ Prove
 
 but you will not be able to prove the converse.
 
-\item The implementation |Not p = p -> Empty| is not adequate for
+\end{exercise}
+\begin{exercise}
+ The implementation |Not p = p -> Empty| is not adequate for
   representing the sentential fragment of FOL, but it is adequate for
   \emph{constructive logic} (also known as \emph{intuitionistic}).
 %
@@ -281,4 +291,4 @@ Show this by implementing the following function:
 \begin{spec}
 noContra :: (Either p (p -> Empty) -> Empty) -> Empty
 \end{spec}
-\end{enumerate}
+\end{exercise}

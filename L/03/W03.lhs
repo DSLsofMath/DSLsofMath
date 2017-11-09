@@ -157,23 +157,25 @@ What could this expression possibly mean?
 To start answering the question, we start typing the elements involved:
 
 \begin{enumerate}
-\item \(∂L / ∂q\) suggests that |L| is a function of at least a pair
-  of arguments:
+\item The use of notation for ``partial derivative'', \(∂L / ∂q\),
+  suggests that |L| is a function of at least a pair of arguments:
 \begin{spec}
-  L : ℝⁿ → ℝ,    n ≥ 2
+  L : ℝⁱ → ℝ,    i ≥ 2
 \end{spec}
 
 This is consistent with the description: ``Lagrangian function of the
 system state (time, coordinates, and velocities)''.
 %
-So we can take |n = 3|:
+So, if we let ``coordinates'' be just one coordinate, we can take |i =
+3|:
 
 \begin{spec}
   L : ℝ³ → ℝ
 \end{spec}
 
-\item \(∂L / ∂q\) suggests that \(q\) is the name of a real variable,
-  one of the three arguments to \(L\).
+\item Looking again at the same derivative, \(∂L / ∂q\) suggests that
+  \(q\) is the name of a real variable, one of the three arguments to
+  \(L\).
 %
   In the context, which we do not have, we would expect to find
   somewhere the definition of the Lagrangian as
@@ -185,13 +187,13 @@ So we can take |n = 3|:
   arguments:
 
 \begin{spec}
-  ∂L / ∂q : ℝ³ → ℝ
+  (∂L / ∂q) : ℝ³ → ℝ
 \end{spec}
 
 It follows that the equation expresses a relation between
 \emph{functions}, therefore the \(0\) on the right-hand side is
 \emph{not} the real number \(0\), but rather the constant function
-\(0\):
+\(const 0\):
 
 \begin{spec}
   const 0  :  ℝ³ → ℝ
@@ -203,11 +205,13 @@ It follows that the equation expresses a relation between
   function of one real argument:
 
 \[
-\frac{d}{dt} \frac{∂L}{∂\dot{q}}  :  ℝ → ℝ
+  \frac{d}{dt} \frac{∂L}{∂\dot{q}}  :  ℝ → ℝ
 \]
 
 Since we subtract from this the function \(∂L / ∂q\), it follows that
-this, too, must be of type \(ℝ → ℝ\), contradiction.
+this, too, must be of type \(ℝ → ℝ\).
+%
+But we already typed it as |ℝ³ → ℝ|, contradiction!
 
 \item The expression \(∂L / ∂\dot{q}\) appears to also be malformed.
 %
@@ -221,7 +225,7 @@ this, too, must be of type \(ℝ → ℝ\), contradiction.
   Thus, the path is a function of time, let us say
 
 \[
-w  :  ℝ → ℝ, \mbox{where \(w(t)\) is a coordinate at time \(t\)}
+w  :  ℝ → ℝ, \mbox{where \(w(t)\) is a coordinate (|q|) at time \(t\)}
 \]
 
 We can now guess that the use of the plural form ``equations'' might
@@ -268,7 +272,7 @@ The equations do not use a function \(L : ℝ³→ ℝ\), but rather
 where the ``combinator'' |expand| is given by
 
 \begin{spec}
-  expand      :  (ℝ → ℝ) → ℝ → ℝ³
+  expand      :  (ℝ → ℝ) → (ℝ → ℝ³)
   expand w t  =  (t, w t, D w t)
 \end{spec}
 
@@ -288,18 +292,26 @@ and instead of |∂L/∂dotq|
 The equation becomes
 
 \begin{spec}
-  D (D₃ L ∘ expand w)  -  D₂ L ∘ expand w  =  0
+  D (D₃ L ∘ expand w)  -  D₂ L ∘ expand w  =  const 0
 \end{spec}
 
 a relation between functions of type |ℝ → ℝ|.
-%
-In particular, the right-hand |0| is the constant function
-
-\begin{spec}
-  const 0  :  ℝ → ℝ
-\end{spec}
 
 \end{enumerate}
+
+So, we have figured out what the equation ``means'', in terms of
+operator we recognise.
+%
+If we zoom out slightly we see that the quoted text means something like:
+%
+If we can describe the mechanical system in terms of ``a Lagrangian'',
+then we can use the equation to check if a particular candidate path
+|w : ℝ → ℝ| qualifies as a ``motion of the system'' or not.
+%
+The unknown of the equation is the path |w|.
+%
+We will not dig into how to solve such a functional equation, but it
+is widely used in physics.
 
 \subsection{Types in Mathematics (Part II)}
 

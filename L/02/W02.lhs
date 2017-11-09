@@ -87,6 +87,9 @@ evalPC = error "Exercise"
 The function |evalPC| translates from the syntactic to the semantic
 domain.
 %
+(The evaluation function for a DSL describing a logic is often called
+|check| instead of |eval| but here we stick to |eval|.)
+%
 Here |PropCalc| is the (abstract) \emph{syntax} of the language of
 propositional calculus and |Bool| is the \emph{semantic
   domain}.
@@ -147,7 +150,7 @@ over them) to the calculus.
 
 Swedish: Första ordningens logik = predikatlogik
 
-% Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
+% TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
 
 We now add \emph{terms} as another datatype to the calculus.
 %
@@ -252,7 +255,7 @@ One way to build mathematics from the ground up is to start from pure
 set theory and define all concepts by translation to sets.
 %
 We will only work with this as a mathematical domain to study, not as
-``the right way'' of doing mathematics.
+``the right way'' of doing mathematics (there are other ways).
 %
 The core of the language of pure set theory has the Empty set, the
 one-element set constructor Singleton, set Union, and Intersection.
@@ -430,8 +433,6 @@ To sum up: by assuming |P| we can prove both |Q| and |not Q|.
 Thus, by contradiction |not P| must hold.
 
 \subsection{Proof by cases}
-%
-% TODO (by DaHe): Shouldn't `a` and `b` be replaced with `p` and `q` on the line below?
 %
 As another example, let's prove that there are two irrational numbers
 |p| and |q| such that |p^q| is rational.
@@ -721,7 +722,11 @@ Let |X| be a subset of |ℝ|.
 A point |p ∈ ℝ| is a limit point of |X| iff for every |ε > 0|, there
 exists |q ∈ X| such that |q ≠ p| and |abs(q - p) < ε|.
 %
-% TODO: Maybe explain the notation 𝒫 ℝ, i.e. Any subset of REAL has this type.
+
+To express ``Let |X| be a subset of |ℝ|'' we write |X : 𝒫 ℝ|.
+%
+In general, the operator |𝒫| takes a set (here |REAL|) to the set of
+all its subsets.
 %
 \begin{spec}
 Limp : ℝ → 𝒫 ℝ → Prop
@@ -737,17 +742,27 @@ type Q = {-"ℝ_{> 0}"-} → (X - {p})
 Limp p X = ∃ getq : Q? ∀ ε > 0? |getq ε - p| < ε
 \end{spec}
 
-Next: introduce the ``disk function'' |Di|.
-
-TODO: perhaps rename |Di| to $N$ for ``neighbourhood'' (or something based on ``open ball'').
+Next: introduce the ``open ball'' function |B|.
 %
 \begin{spec}
-Di : ℝ → {-"ℝ_{> 0}"-} → 𝒫 ℝ
-Di c r = {x | abs (x - c) < r}
+B : ℝ → {-"ℝ_{> 0}"-} → 𝒫 ℝ
+B c r = {x | abs (x - c) < r}
 \end{spec}
-Then we get
+%
+|B c r| is often called an ``open ball'' around |c| of radius |r|.
+%
+On the real line this ``open ball'' is just an open interval, but with
+complex |c| or in more dimensions the term feels more natural.
+%
+In every case |B c r| is an open set of values (points) of distance
+less than |r| from |c|.
+%
+The open balls around |c| are special cases of \emph{neighbourhoods of
+  |c|} which can have other shapes but must contain some open ball.
+
+Using |B| we get
 \begin{spec}
-Limp p X = ∃ getq : Q? ∀ ε > 0? getq ε ∈ Di p ε
+Limp p X = ∃ getq : Q? ∀ ε > 0? getq ε ∈ B p ε
 \end{spec}
 
 Example 1: Is |p=1| a limit point of |X={1}|?
@@ -762,12 +777,12 @@ Example 2: Is |p=1| a limit point of the open interval |X = (0,1)|?
 First note that |p ∉ X|, but it is ``very close'' to |X|.
 %
 A proof needs a function |getq| which from any |ε| computes a point |q
-= getq ε| which is in both |X| and |Di 1 ε|.
+= getq ε| which is in both |X| and |B 1 ε|.
 %
 We need a point |q| which is in |X| and \emph{closer} than |ε| from |1|
 %
 We can try with |q = 1-ε/2| because |abs (1-(1-ε/2)) = abs (ε/2) = ε/2
-< ε| which means |q ∈ Di 1 ε|.
+< ε| which means |q ∈ B 1 ε|.
 %
 We also see that |q/=1| because |ε > 0|.
 %
@@ -804,7 +819,7 @@ Show that |0| is a limit point of |X|.
 Note (as above) that |0 ∉ X|.
 
 We want to prove |Limp 0 X| which is the same as |∃ getq : Q? ∀ ε > 0?
-getq ε ∈ Di 0 ε|.
+getq ε ∈ B 0 ε|.
 %
 Thus, we need a function |getq| which takes any |ε > 0| to an element
 of |X - {0} = X| which is less than |ε| away from |0|.
@@ -835,11 +850,11 @@ This is a good excercise in quantifier negation!
 \begin{spec}
   not (Limp p X)
 = {- Def. of |Limp| -}
-  not (∃ getq : Q? ∀ ε > 0? getq ε ∈ Di p ε)
+  not (∃ getq : Q? ∀ ε > 0? getq ε ∈ B p ε)
 = {- Negation of existential -}
-  ∀ getq : Q? not (∀ ε > 0? getq ε ∈ Di p ε)
+  ∀ getq : Q? not (∀ ε > 0? getq ε ∈ B p ε)
 = {- Negation of universal -}
-  ∀ getq : Q? ∃ ε > 0? not (getq ε ∈ Di p ε)
+  ∀ getq : Q? ∃ ε > 0? not (getq ε ∈ B p ε)
 = {- Simplification -}
   ∀ getq : Q? ∃ ε > 0? abs (getq ε - p) >= ε
 \end{spec}

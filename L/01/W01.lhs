@@ -240,6 +240,8 @@ Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|
 data E = V String | P E E | T E E
 \end{code}
 
+%TODO: perhaps also introduce infix constructors
+
 This declaration introduces
 
 \begin{itemize}

@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{a4wide}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{mathrsfs}
 %\usepackage{textgreek}
 %include polycode.fmt
@@ -39,7 +40,9 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 
-\renewcommand*{\theenumi}{\textbf{E\thesection.\arabic{enumi}}}
+\theoremstyle{definition}
+\newtheorem{exercise}{Exercise}[section]
+% Old exercise style (until 2017-11-08): \renewcommand*{\theenumi}{\textbf{E\thesection.\arabic{enumi}}}
 \newcommand{\TODO}[1]{\todo{#1}}
 \newcommand{\refSec}[1]{Sec. \ref{#1}}
 \newcommand{\refSecs}[1]{Secs. \ref{#1}}

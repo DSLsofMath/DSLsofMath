@@ -2,10 +2,8 @@
 
 TODO: formulate simpler exercises to start with. (Working on it (They will hopefully be simpler //DaHe)).
 
-\begin{enumerate}
-%
-\item Consider the following data type for simple arithmetic
-   expressions:
+\begin{exercise}
+  Consider the following data type for simple arithmetic expressions:
    %
    % TODO more/less confusing to use infix vs prefix notation here?
    %
@@ -58,9 +56,10 @@ TODO: formulate simpler exercises to start with. (Working on it (They will hopef
        \end{enumerate}
     %
    \end{enumerate}
+\end{exercise}
 
 TODO (DaHe): Exercise on type class/parametrised types, with evaluator and env,
-var lookup
+var lookup. |eval :: Num a => Env String a -> Exp -> a|
 
 TODO (DaHe): Exercise introducing deep vs shallow embedding using type classes
 also, maybe introduce the concept of using type classes to return a deep
@@ -73,23 +72,26 @@ type, using knowlege acquired from above
 TODO (DaHe): Describe a thing, ask to implement DSL for that thing by introducing
 data type, type class, evaluator, (similar to Q1 from old exams)
 %
-%
-%
-\item Read the full chapter and complete the definition of the
+\begin{exercise}
+  Read the full chapter and complete the definition of the
   instance for |Num| for the datatype `ComplexSyn`.
   %
   Also add a constructor for variables to enable writing expressions
   like |(Var "z") :*: toComplex 1|.
-\item Read the next few pages of Appendix I (in
+\end{exercise}
+\begin{exercise}
+ Read the next few pages of Appendix I (in
   \citep{adams2010calculus}) defining the polar view of Complex Numbers
   and try to implement complex numbers again, this time based on
   magnitude and phase for the semantics.
-\item Implement a simplifier |simp :: ComplexSyn r -> ComplexSyn r|
+\end{exercise}
+\begin{exercise}
+ Implement a simplifier |simp :: ComplexSyn r -> ComplexSyn r|
   that handles a few cases like |0 * x = 0|, |1 * x = x|, |(a + b) * c
   = a * c + b * c|, \ldots
   %
   What class context do you need to add to the type of |simp|?
-\end{enumerate}
+\end{exercise}
 
 
 TODO: Perhaps formulate exercise to implement more efficient show
