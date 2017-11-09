@@ -955,7 +955,8 @@ which may take a while to get used to.
 
 
 \subsubsection{Notation and abstract syntax for (infinite) sequences}
-
+%TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
+%TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
 As a bit of preparation for the language of sequences and limits in
 later lctures we here spend a few lines on the notation and abstract
 syntax of sequences.
@@ -1089,6 +1090,10 @@ about derivatives where we explore variants of the classical
 definition
 %
 \[f'(x) = \lim_{h\to0} \frac{f(x+h)-f(x)}{h}\]
+
+TODO: sum up the results in terms of a DSL: a type (Seq a), some
+operations (|conSeq|, |addSeq|, |fmap|, |sums|, ...) and some "run
+functions" or predicates (like |lim|)
 
 % ----------------------------------------------------------------
 
