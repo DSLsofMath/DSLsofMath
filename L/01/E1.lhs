@@ -60,7 +60,7 @@ TODO: formulate simpler exercises to start with. (Working on it (They will hopef
 
 \begin{exercise}
     %
-    We will now look at a slightly more generaized version of the |Exp| type from the previous exercise:
+    We will now look at a slightly more generalized version of the |Exp| type from the previous exercise:
     %
     % TODO Override Exp or rename Exp2?
     %

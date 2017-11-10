@@ -533,7 +533,16 @@ TODO: textify
   andElimL  :  P&Q ->  P
   andElimR  :  P&Q ->  Q
 \end{spec}
-
+%
+% TODO (by DaHeu): I think we need some examples of proofs using andIntro,
+% orIntro and implIntro. At the start of week 2's exercises, there are two
+% examples. Why not put them here? I think we also need at least one slightly
+% longer example.
+%
+% The technique of using typed holes is also mentioned at the start of the
+% exercises. I think it would be a good idea to use one of the examples to
+% demonstrate a step-by-step solution using this technique.
+%
 If we see these introduction and elimination rules as an API, what
 would be a resonable implementation of the datatype |P&Q|?
 %
