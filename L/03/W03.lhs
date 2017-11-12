@@ -76,7 +76,10 @@ z    :  U -> ℝ             -- but see below
 f'x  :  U -> ℝ
 \end{spec}
 %}
-
+%
+% TODO (by DaHe): The phrase "bound by a universal quantifier" is used a couple
+% times here, but it is not obvious what it means. Perhaps this could be
+% clarified.
 The |x| in the subscript of |f'| is \emph{not} a real number, but a symbol
 (a |Char|).
 
@@ -179,7 +182,12 @@ So, if we let ``coordinates'' be just one coordinate, we can take |i =
 %
   In the context, which we do not have, we would expect to find
   somewhere the definition of the Lagrangian as
-
+  %
+% TODO(DaHe): Where do 't' and 'v' come from here? We have only stated that 'q'
+% should be one of the arguments, what about the others? Maybe we should refer to
+% the sentence "..function of system state(time, coordinates, and velocities)"
+% and deduce that q must be the coordinates.
+%
 \begin{spec}
   L (t, q, v) = ...
 \end{spec}
@@ -262,6 +270,12 @@ q t  =  w t
 dotq : ℝ → ℝ
 dotq t = dw / dt
 \end{spec}
+%
+% TODO (by DaHe): Things get a little messy here, I rememer this is the part
+% where I got confused during this lecture. I think we should slow down at this
+% point and take a step back, look at what we have so far, and what we have
+% gained from introducing 'w', before moving on to 'expand'.
+%
 
 The equations do not use a function \(L : ℝ³→ ℝ\), but rather
 
@@ -275,10 +289,20 @@ where the ``combinator'' |expand| is given by
   expand      :  (ℝ → ℝ) → (ℝ → ℝ³)
   expand w t  =  (t, w t, D w t)
 \end{spec}
+%
+% TODO (by DaHe): Again, I think we should take a little break here, look at
+% what we have gained by introducing 'expand', and remind the students why we
+% wanted L to be ℝ → ℝ. This business of introducing 'w' and 'expand' was a bit
+% tricky for me and others to wrap our heads around, so I think an all-around
+% slower tempo in this part would be good.
 
 \item Similarly, using |D₁|, |D₂|, |D₃| instead of |∂L/∂t| etc., we
   have that, instead of |∂L/∂q| what is meant is
 
+%
+% TODO (by DaHe): I think we should have some parentheses here to clarify: Is it
+% (D2 L) . expand w, or D2 (L . expand w) ?.
+%
 \begin{spec}
   D₂ L ∘ expand w  :  ℝ → ℝ
 \end{spec}
@@ -313,7 +337,27 @@ The unknown of the equation is the path |w|.
 We will not dig into how to solve such a functional equation, but it
 is widely used in physics.
 
-\subsection{Types in Mathematics (Part II)}
+% TODO (by DaHe) There's two more things I think should be added in this
+% chapter:
+% * Typing the conditional probability notation. The notation P(A | B) is
+%   something that I and others were confused during the statistics course. In one
+%   assignment during that course, my solution claimed somthing along the
+%   lines of that {P | A} was an event, that had a certain probability. So I
+%   think many would agree that this is indeed a very confusing notation, so it
+%   is a great idea to cover it in this book. Cezar had a very good rant about
+%   this during his guest lecture last year.
+%
+% * Using Haskell to type mathematical expressions. I leared a lot about typing
+%   maths by playing around with mathematical expressions in Haskell. A good
+%   example is Exam/2016-03/Ex2.hs, where the solution is a haskell program
+%   which compiles and type checks. This has a similar advantage to the 'typed
+%   hole' method in the previous chapter, in that it encourages students to
+%   take the trial-end-error approach that can often be used when solving
+%   programming problems, and apply it to a mathematical context. I think this
+%   chapter should include at least one example of using this method to type a
+%   mathematical expression.
+
+\subsection{Type in Mathematics (Part II)}
 
 \subsubsection{Type classes}
 
