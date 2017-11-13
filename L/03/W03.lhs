@@ -420,7 +420,10 @@ This is taken from the Haskell
 documentation\footnote{Fig. 6.2 in section 6.4 of the Haskell 2010 report: \url{https://www.haskell.org/onlinereport/haskell2010/haskellch6.html}.}
 but it appears that |Eq| and |Show| are not necessary, because there
 are meaningful instances of |Num| which don't support them:
-
+%
+% TODO (by DaHe): Can we make it say abs below instead of |f| = |.| . f? Kind of
+% confusing notation.
+%
 \begin{code}
 instance Num a => Num (x -> a) where
   f + g        =  \x -> f x + g x
@@ -462,7 +465,11 @@ arrows indicating that |fromInteger :: Integer -> r| and |toComplexSyn
 Integer -> ComplexSyn r|. The use of |fromInteger| at type |r| means
 that the full type of |fromIntC| must refer to the |Num| class. Thus
 we arrive at the full type:
-
+%
+% TODO (by DaHe): An example would help to clarify even further here:
+% fromInteger 3 :: ComplexSyn Double =
+% toComplexSyn(fromInteger 3) = toComplexSyn 3.0 = 3.0 + 0i
+%
 \begin{spec}
 fromIntC :: Num r =>   Integer -> ComplexSyn r
 \end{spec}
@@ -514,7 +521,10 @@ type class, only from that of its implementation.
 
 
 \subsection{Computing derivatives}
-
+%
+% TODO (by DaHe): the ^ in (^n) below doesn't show up very clearly in the pdf.
+% Maybe put some spaces around it? Or use another symbol?
+%
 The ``little language'' of derivatives:
 
 \begin{spec}
@@ -594,7 +604,16 @@ In other words, for any expression |e|, we want
 \end{spec}
 
 For example, let us derive the |derive| function for |Exp e|:
-
+%
+% TODO (by DaHe): (*) Would it be possible to have the annotations in the equations
+% below in a separate column, so that each step of the equation is right below
+% the previous one? Having a row between each step of the equation kind of
+% compromises the readability.
+% For example:
+%    eval (derive (Exp e))
+%  = D (eval (Exp e))     {- specification of |derive| above -}
+%  = D (exp (eval e))     {- def. |eval| -}
+%
 \begin{spec}
      eval (derive (Exp e))
 
@@ -688,7 +707,9 @@ eval'  =   eval . derive
 \end{code}
 
 For example:
-
+%
+% TODO (by DaHe): Same as (*)
+%
 \begin{spec}
      eval' (Exp e)
 
@@ -716,7 +737,11 @@ For example:
 and the first |e| doesn't go away.
 %
 The semantics of derivatives is not compositional.
-
+%
+% TODO (by DaHe): Maybe conclude with something like "Thus, it is not possible
+% to implement |derive| using shallow embedding", to answer the question that
+% was asked earlier.
+%
 Or rather, \emph{this} semantics is not compositional.
 %
 It is quite clear that the derivatives cannot be evaluated without, at
@@ -734,7 +759,9 @@ evalD     e       =   (eval e, eval' e)
 Is |evalD| compositional?
 
 We compute, for example:
-
+%
+% TODO (by DaHe): Same as (*)
+%
 \begin{spec}
      evalD (Exp e)
 
