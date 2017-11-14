@@ -254,10 +254,22 @@ for a function definition, |f x = b|, and for anonymous functions, |\x
 -> b|.
 %
 Just as in those cases we say that the variable |x| is \emph{bound} in
-|b| and that the \emph{scope} of the variable binding is extends until
+|b| and that the \emph{scope} of the variable binding extends until
 the end of |b| (but not further).
 %
-% The syntactic rule of |Exists x b| is the same
+The scoping of |x| in |Exists x b| is the same as in |Forall x b|.
+
+One common source of confusion in mathematical (and other semi-formal)
+texts is that variable binding sometimes is implicit.
+%
+A typical example is equations: |x^2 + 2*x + 1 == 0| ususally means
+roughly |Exists x (x^2 + 2*x + 1 == 0)|.
+%
+We write ``roughly'' here because the scope of |x| very often extends
+to some text after the equation where something more is said about the
+solution |x|.
+
+
 
 \subsection{An aside: Pure set theory}
 

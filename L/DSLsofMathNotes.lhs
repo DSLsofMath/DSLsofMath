@@ -18,6 +18,7 @@
 \RequirePackage{ucs}
 \RequirePackage{amsfonts}
 \usepackage{tikz-cd}
+\usepackage{lineno}
 
 \providecommand\mathbbm{\mathbb}
 

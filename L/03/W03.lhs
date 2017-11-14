@@ -46,6 +46,7 @@ definition.
 
 For example, on page 169 of \cite{maclane1986mathematics}, we read
 
+\begin{linenumbers}
 \begin{quote}
   [...] a function |z = f (x, y)| for all points |(x, y)| in some open
   set |U| of the cartesian |(x, y)|-plane.
@@ -56,16 +57,18 @@ For example, on page 169 of \cite{maclane1986mathematics}, we read
 %
   Thus at a point |(x, y)| in |U| this derivative for |h ≠ 0| is
 \end{quote}
-
+\begin{linenomath*}
 \[
 ∂ z / ∂ x  =  f'_{x} (x, y) =
               \lim_{h \to 0} (f (x + h, y) - f (x, y)) / h
 \]
+\end{linenomath*}
+\end{linenumbers}
 
 What are the types of the elements involved?  We have
 
 %{
-%format f'x = "f'_{x}"
+%format f'x = "f''_{x}"
 \begin{spec}
 U    ⊆  cross ℝ ℝ          -- cartesian plane
 
@@ -75,33 +78,31 @@ z    :  U -> ℝ             -- but see below
 
 f'x  :  U -> ℝ
 \end{spec}
-%}
 %
-% TODO (by DaHe): The phrase "bound by a universal quantifier" is used a couple
-% times here, but it is not obvious what it means. Perhaps this could be
-% clarified.
 The |x| in the subscript of |f'| is \emph{not} a real number, but a symbol
 (a |Char|).
 
-The expression |(x, y)| has several occurrences.
+The expression |(x, y)| has six occurrences.
 %
-The first two denote variables of type |U|, the third is just a name
-(|(x, y)|-plane).
+The first two (on line 1) denote variables of type |U|, the third (on
+line 2) is just a name (|(x, y)|-plane).
 %
-The third denotes a variable of type |U|, it is bound by a universal
-quantifier
-
-\begin{spec}
-∀ (x, y) ∈ U
-\end{spec}
+The fourth (at line 4) denotes a variable of type |U| bound by a
+universal quantifier: ``a point |(x, y)| in |U|'' as text which would
+translate to
+%
+|∀ (x, y) ∈ U| as a formula fragment.
 
 The variable |h| appears to be a non-zero real number, bound by a
-universal quantifier, but that is incorrect.
+universal quantifier (``for |h ≠ 0|'' on line 4), but that is incorrect.
 %
-In fact, |h| is used as a variable to construct the arguments of a
-function, whose limit is then taken at |0|.
+In fact, |h| is used as a local variable introduced in the subscript
+of $lim$.
+%
+This variable |h| is a parameter of an anonymous function, whose limit
+is then taken at |0|.
 
-That function, which we can denote by |phi| has the type |phi : U ->
+That function, which we can name |phi|, has the type |phi : U ->
 (ℝ-{0}) -> ℝ| and is defined by
 
 \begin{spec}
@@ -117,8 +118,8 @@ one we have discussed:
 lim : (X -> ℝ) -> {p | p ∈ ℝ, Limp p X } -> ℝ
 \end{spec}
 
-|z = f (x, y)| probably does not mean that |z ∈ ℝ|, although the
-phrase ``the quantity |z|'' suggests this.
+On line 1, |z = f (x, y)| probably does not mean that |z ∈ ℝ|,
+although the phrase ``the quantity |z|'' (on line 2) suggests this.
 %
 A possible interpretation is that |z| is used to abbreviate the
 expression |f(x, y)|;
@@ -127,10 +128,12 @@ thus, everywhere we can replace |z| with |f(x, y)|.
 %
 In particular, |∂ z / ∂ x| becomes |∂ f (x, y) / ∂ x|, which we can
 interpret as |∂ f / ∂ x| applied to |(x, y)| (remember that |(x, y)|
-is bound in the context by a universal quantifier).
+is bound in the context by a universal quantifier on line 4).
 %
-There is the added difficulty that, just like \(_{x}\), the |x| in |∂ x|
-is not the |x| bound by the universal quantifier, but just a symbol.
+There is the added difficulty that, just like the subscript in |f'x|,
+the |x| in |∂ x| is not the |x| bound by the universal quantifier, but
+just a symbol.
+%}
 
 \subsection{Type inference and understanding: Lagrangian case study}
 \label{type-inference-and-understanding}
@@ -171,10 +174,13 @@ system state (time, coordinates, and velocities)''.
 %
 So, if we let ``coordinates'' be just one coordinate, we can take |i =
 3|:
-
+%
 \begin{spec}
   L : ℝ³ → ℝ
 \end{spec}
+%
+and we can call the variables |t| for time, |q| for coordinate, and
+|v| for velocity.
 
 \item Looking again at the same derivative, \(∂L / ∂q\) suggests that
   \(q\) is the name of a real variable, one of the three arguments to
