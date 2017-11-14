@@ -20,7 +20,7 @@
 %format eps                     =  "\epsilon"
 %format included                =  "\subseteq"
 %format intersect               =  "\cap"
-%format (abs (x))               =  "\lvert{}" x "\rvert{}"
+%format (absBar (x))               =  "\lvert{}" x "\rvert{}"
 %format (Clopen(x))             =  "[" x ")"
 %format infinity                =  "\infty"
 %format (pi)                    =  "\pi"

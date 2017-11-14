@@ -249,6 +249,16 @@ Another way to view this is to say that a proof of |Forall x (P x)| is
 a function |f| from terms to proofs such that |f t| is a proof of
 |P t| for all terms |t|.
 
+Note that the syntactic rule for |Forall x b| is similar to the rule
+for a function definition, |f x = b|, and for anonymous functions, |\x
+-> b|.
+%
+Just as in those cases we say that the variable |x| is \emph{bound} in
+|b| and that the \emph{scope} of the variable binding is extends until
+the end of |b| (but not further).
+%
+% The syntactic rule of |Exists x b| is the same
+
 \subsection{An aside: Pure set theory}
 
 One way to build mathematics from the ground up is to start from pure
@@ -729,7 +739,7 @@ set. Closed set contains all its limit points.)
 Let |X| be a subset of |ℝ|.
 %
 A point |p ∈ ℝ| is a limit point of |X| iff for every |ε > 0|, there
-exists |q ∈ X| such that |q ≠ p| and |abs(q - p) < ε|.
+exists |q ∈ X| such that |q ≠ p| and |absBar(q - p) < ε|.
 %
 
 To express ``Let |X| be a subset of |ℝ|'' we write |X : 𝒫 ℝ|.
@@ -739,7 +749,7 @@ all its subsets.
 %
 \begin{spec}
 Limp : ℝ → 𝒫 ℝ → Prop
-Limp p X = ∀ ε > 0? ∃ q ∈ X - {p}? abs (q-p) < ε
+Limp p X = ∀ ε > 0? ∃ q ∈ X - {p}? absBar (q-p) < ε
 \end{spec}
 %
 Notice that |q| depends on |ε|.
@@ -755,7 +765,7 @@ Next: introduce the ``open ball'' function |B|.
 %
 \begin{spec}
 B : ℝ → {-"ℝ_{> 0}"-} → 𝒫 ℝ
-B c r = {x | abs (x - c) < r}
+B c r = {x | absBar (x - c) < r}
 \end{spec}
 %
 |B c r| is often called an ``open ball'' around |c| of radius |r|.
@@ -790,7 +800,7 @@ A proof needs a function |getq| which from any |ε| computes a point |q
 %
 We need a point |q| which is in |X| and \emph{closer} than |ε| from |1|
 %
-We can try with |q = 1-ε/2| because |abs (1-(1-ε/2)) = abs (ε/2) = ε/2
+We can try with |q = 1-ε/2| because |absBar (1-(1-ε/2)) = absBar (ε/2) = ε/2
 < ε| which means |q ∈ B 1 ε|.
 %
 We also see that |q/=1| because |ε > 0|.
@@ -865,7 +875,7 @@ This is a good excercise in quantifier negation!
 = {- Negation of universal -}
   ∀ getq : Q? ∃ ε > 0? not (getq ε ∈ B p ε)
 = {- Simplification -}
-  ∀ getq : Q? ∃ ε > 0? abs (getq ε - p) >= ε
+  ∀ getq : Q? ∃ ε > 0? absBar (getq ε - p) >= ε
 \end{spec}
 %
 Thus, using the ``functional interpretation'' of this type we see that
@@ -875,7 +885,7 @@ a proof needs a function |noLim|
 noLim : (getq : Q) → RPos
 \end{spec}
 %
-such that |let ε = noLim getq in abs (getq ε - p) >= ε|.
+such that |let ε = noLim getq in absBar (getq ε - p) >= ε|.
 
 Note that |noLim| is a \emph{higher-order} function: it takes a
 function |getq| as an argument.
@@ -887,11 +897,11 @@ finite set (not containing |p|).
 %
 Thus we can enumerate all the possible results in a list |xs = [x1,
 x2, {-"\ldots"-} xn]|, and measure their distances to |p|: |ds = map
-(\x-> abs (x - p)) xs|.
+(\x-> absBar (x - p)) xs|.
 %
 Now, if we let |ε = minimum ds| we can be certain that
 %
-|abs (getq ε - p) >= ε| just as required (and |ε /= 0| because |p
+|absBar (getq ε - p) >= ε| just as required (and |ε /= 0| because |p
 `notElem` xs|).
 
 Exercise: If |Limp p X| we now know that |X| is infinite.
@@ -914,7 +924,7 @@ binary infix predicate |haslim| using a helper predicate |P|:
 \begin{spec}
   a haslim L  =  ∀ ε > 0? P a L ε
 
-  P a ε L = ∃ N : ℤ? ∀ n ≥ N? abs (an - L) < ε
+  P a ε L = ∃ N : ℤ? ∀ n ≥ N? absBar (an - L) < ε
 \end{spec}
 
 

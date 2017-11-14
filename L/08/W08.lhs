@@ -298,7 +298,7 @@ The analogue of series for a continuous function is integral
 
 We note that, for the integral |Integ (f t) * x^t dt| to
 converge for a larger class of functions (say, bounded functions), we
-have to limit ourselves to |abs x < 1|.
+have to limit ourselves to |absBar x < 1|.
 %
 Both this condition and the integral make sense for |x ∈ ℂ|, so we
 could take
@@ -369,10 +369,10 @@ of variables:
   ℒ f x = Integ (f t) * exp (log x *t) dt
 \end{spec}
 
-Since |log x < 0| for |abs x < 1|, we make the substitution |-s = log
+Since |log x < 0| for |absBar x < 1|, we make the substitution |-s = log
 x|.
 %
-The condition |abs x < 1| becomes |s > 0| (or, in |ℂ|, |real s > 0|),
+The condition |absBar x < 1| becomes |s > 0| (or, in |ℂ|, |real s > 0|),
 and we have
 
 \begin{spec}

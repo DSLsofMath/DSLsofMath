@@ -1035,7 +1035,7 @@ This definition is slightly adapted from Wikipedia (2017-11-08):
   We call \(L\) the limit of the sequence |{xn}| if the following
   condition holds: For each real number |ε>0|, there exists
   a natural number |N| such that, for every natural number
-  |n >= N|, we have |abs (xn - L) < ε|.
+  |n >= N|, we have |absBar (xn - L) < ε|.
 
   If so, we say that the sequence converges to |L| and write
   \[L = \lim_{i\to\infty} x_i\]

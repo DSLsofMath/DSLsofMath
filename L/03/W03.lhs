@@ -421,9 +421,6 @@ documentation\footnote{Fig. 6.2 in section 6.4 of the Haskell 2010 report: \url{
 but it appears that |Eq| and |Show| are not necessary, because there
 are meaningful instances of |Num| which don't support them:
 %
-% TODO (by DaHe): Can we make it say abs below instead of |f| = |.| . f? Kind of
-% confusing notation.
-%
 \begin{code}
 instance Num a => Num (x -> a) where
   f + g        =  \x -> f x + g x
