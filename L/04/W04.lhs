@@ -99,6 +99,10 @@ paren s = "(" ++ s ++ ")"
 Exercise: Another way to make this example go through is to refine the
 semantic domain from |String| to |Precedence -> String|.
 %
+% TODO (by DaHe): The term "tupling transform" has not been defined! Perhaps should explain what
+% it means, when we introduce FD in the prev chapter. (If I'm correct in
+% assuming that is also a tupling transform)
+%
 This can be seen as another variant of the result after the tupling
 transform: if |Precedence| is an |n|-element type then |Precedence ->
 String| can be seen as an |n|-tuple.
@@ -195,6 +199,18 @@ evalE' :: E -> Integer
 evalE' = foldIE
 \end{code}
 
+% TODO (by DaHe): Maybe we should show how to do this with FunExp (here or in
+% 4.2.2.), and how we can build a FunExp out of the semantic constructors if we
+% have instantiated the type classes: then evaluate the expression to either the
+% syntactic or semantic type by typecasting (exp :: FunExp = F, exp :: (t ->
+% Double) = f) or applying the types to id or Id respectively.
+%
+% Alternatively, we could just show this for E, something like
+% add (con 3) (con 4) :: Integer = 7
+% add (con 3) (con 4) :: E = Add (Con 3) (Con 4)
+%
+% And leave it as an exercise to play around with the same thing using FunExp
+%
 \subsubsection{Back to derivatives and evaluation}
 
 Review section \ref{sec:evalD} again with the definition of |eval'|
@@ -238,11 +254,22 @@ algebra often take the form of identities, or \emph{equational laws}.
 
 Example: Monoid equations
 
+% TODO (by DaHe): I think these equations should also be explaied in words,
+% something like "A monoid is an algebra which has an associative operation 'op'
+% and a unit."
+%
 \begin{spec}
 ∀ x : a? (unit `op` x == x  ∧  x `op` unit == x)
 ∀ x, y, z : a? (x `op` (y `op` z) == (x `op` y) `op` z)
 \end{spec}
 
+% TODO (by DaHe): It woud be a good idea to also have a more informal
+% explanation of homomorphisms here, along with some examples of homomorphisms
+% that students are familiar with. Something like "A homomorphism is an
+% operation that preserves structure". Good examples might be:
+% log: log(a * b) = log a + log b
+% and
+% exp: exp(a + b) = exp a * exp b
 A homomorphism between two algebras |A| and |B| is a function |h: A → B|
 from the set |A| to the set |B| such that, for every operation |fA| of |A|
 and corresponding |fB| of |B| (of arity, say, |n|),
@@ -271,6 +298,9 @@ instance Monoid MNat where
   op (M m) (M n)  =  M (m * n)
 \end{code}
 
+% TODO (by DaHe): Where happens to the constructors A and M go in the solution
+% below?
+%
 Exercise: characterise the homomorphisms from |ANat| to |MNat|.
 
 Solution:
@@ -500,6 +530,12 @@ The identity will hold if we take
 \begin{spec}
      (x, x') *? (y, y') = (x * y, x' * y + x * y')
 \end{spec}
+%
+% TODO (by DaHe): It should probably be mentioned that we have now defined
+% instance Num a => FD a where (x, x') (*) (y, y') = ..., and that the exercise
+% below asks to define the rest of the operations on FD (I assume that's what
+% "the instance declarations" refers to below, it is not entirely clear to me)
+%%
 
 Exercise: complete the instance declarations for |(Double, Double)|.
 
