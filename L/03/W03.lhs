@@ -179,8 +179,9 @@ So, if we let ``coordinates'' be just one coordinate, we can take |i =
   L : ℝ³ → ℝ
 \end{spec}
 %
-and we can call the variables |t| for time, |q| for coordinate, and
-|v| for velocity.
+The ``system state'' here is a triple (of type |ℝ³|) and we can call
+the the three components |t| for time, |q| for coordinate, and |v| for
+velocity.
 
 \item Looking again at the same derivative, \(∂L / ∂q\) suggests that
   \(q\) is the name of a real variable, one of the three arguments to
@@ -188,17 +189,12 @@ and we can call the variables |t| for time, |q| for coordinate, and
 %
   In the context, which we do not have, we would expect to find
   somewhere the definition of the Lagrangian as
-  %
-% TODO(DaHe): Where do 't' and 'v' come from here? We have only stated that 'q'
-% should be one of the arguments, what about the others? Maybe we should refer to
-% the sentence "..function of system state(time, coordinates, and velocities)"
-% and deduce that q must be the coordinates.
 %
 \begin{spec}
   L (t, q, v) = ...
 \end{spec}
-\item therefore, \(∂L / ∂q\) should also be a function of a triple of
-  arguments:
+\item therefore, \(∂L / ∂q\) should also be a function of the same
+  triple of arguments:
 
 \begin{spec}
   (∂L / ∂q) : ℝ³ → ℝ
@@ -207,7 +203,7 @@ and we can call the variables |t| for time, |q| for coordinate, and
 It follows that the equation expresses a relation between
 \emph{functions}, therefore the \(0\) on the right-hand side is
 \emph{not} the real number \(0\), but rather the constant function
-\(const 0\):
+|const 0|:
 
 \begin{spec}
   const 0  :  ℝ³ → ℝ
@@ -249,11 +245,11 @@ In an \(n\)-dimensional space, a position is given by \(n\)
 coordinates.
 %
 A path would be a function
-
+%
 \begin{spec}
     w  :  ℝ → ℝⁿ
 \end{spec}
-
+%
 which is equivalent to \(n\) functions of type \(ℝ → ℝ\).
 %
 We would then have an equation for each of them.
@@ -271,10 +267,10 @@ We will use |n=1| for the rest of this example.
 %format dotq = "\dot{q}"
 \begin{spec}
 q  :  ℝ → ℝ
-q t  =  w t
+q t  =  w t        -- or, equivalently, |q = w|
 
 dotq : ℝ → ℝ
-dotq t = dw / dt
+dotq t = dw / dt   -- or, equivalently, |dotq = D w|
 \end{spec}
 %
 % TODO (by DaHe): Things get a little messy here, I rememer this is the part
@@ -286,7 +282,7 @@ dotq t = dw / dt
 The equations do not use a function \(L : ℝ³→ ℝ\), but rather
 
 \begin{spec}
-  L ∘ expand w  :  ℝ → ℝ
+  L ∘ (expand w)  :  ℝ → ℝ
 \end{spec}
 
 where the ``combinator'' |expand| is given by
@@ -306,23 +302,20 @@ where the ``combinator'' |expand| is given by
   have that, instead of |∂L/∂q| what is meant is
 
 %
-% TODO (by DaHe): I think we should have some parentheses here to clarify: Is it
-% (D2 L) . expand w, or D2 (L . expand w) ?.
-%
 \begin{spec}
-  D₂ L ∘ expand w  :  ℝ → ℝ
+  (D₂ L) ∘ (expand w)  :  ℝ → ℝ
 \end{spec}
 
 and instead of |∂L/∂dotq|
 
 \begin{spec}
-  D₃ L ∘ expand w  : ℝ → ℝ
+  (D₃ L) ∘ (expand w)  : ℝ → ℝ
 \end{spec}
 
 The equation becomes
 
 \begin{spec}
-  D (D₃ L ∘ expand w)  -  D₂ L ∘ expand w  =  const 0
+  D ((D₃ L) ∘ (expand w))  -  (D₂ L) ∘ (expand w)  =  const 0
 \end{spec}
 
 a relation between functions of type |ℝ → ℝ|.
@@ -330,9 +323,10 @@ a relation between functions of type |ℝ → ℝ|.
 \end{enumerate}
 
 So, we have figured out what the equation ``means'', in terms of
-operator we recognise.
+operators we recognise.
 %
-If we zoom out slightly we see that the quoted text means something like:
+If we zoom out slightly we see that the quoted text means something
+like:
 %
 If we can describe the mechanical system in terms of ``a Lagrangian'',
 then we can use the equation to check if a particular candidate path
