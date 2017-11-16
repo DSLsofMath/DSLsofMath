@@ -1,14 +1,13 @@
-# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=24230) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
-(Presentation för D2, To 2015-11-19 av Patrik Jansson. Uppdaterad 2016-12-05.)
+(Presentation för D2, To 2017-11-16 av Patrik Jansson.)
 
-* Patrik Jansson: forskare och lärare inom FP-gruppen
+* Patrik Jansson: forskare och lärare inom Funktionell Programmering
     * examinator och kursansvarig för kursen DSLsofMath
     * XPA för D (2011-13), nu "inspektor" för D-sektionen
-* Tidigare kursansvarig: Cezar Ionescu, docent i "Data Science" i Oxford.
+* Gästföreläsare: Cezar Ionescu, docent i Data Science i Oxford.
     * gav kursen första gången 2016
-
-* Vi tror på er förmåga att själv kombinera kurser till en bra helhet
+* Vi tror på er förmåga att själva kombinera kurser till en bra helhet
 * LP3 i D2: ett första smakprov på programmets valfrihet
     * Budskap: *Välj inte bara en av DSLsofMath och ConcProg - välj båda!*
 
@@ -46,13 +45,13 @@ på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
 
 # Funktionell programmering (FP) och typer
 
-* Typer (Int, String, [Int], a -> a -> a, [a -> a], ...)
+* Typer (`Int`, `String`, `[Int]`, `a -> a -> a`, `[a -> a]`, ...)
 * Rena funktioner som bas: från indata till utdata
 * Historik: matematiska bevisverktyg och algoritmer
 * Nutid: Konkurrensfördel, FP-experter eftertraktade!
 * Vackert möte mellan matematik och maskin.
 
-Undervisningsspråket är engelska och implementationsspråket är Haskell.
+Undervisningsspråket är sv/en och implementationsspråket är Haskell.
 
 ```haskell
 
