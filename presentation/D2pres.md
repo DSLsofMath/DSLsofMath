@@ -24,6 +24,13 @@ Kursen är tänkt att ge en fördjupad matematisk förståelse för
 datastudenter och en fördjupad datavetenskaplig förståelse för
 matematikstudenter.
 
+
+\begin{align*}
+   f(x) &= x^2
+\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
+\end{align*}
+
+
 # Historisk bakgrund och motivation för DSLsofMath
 
 Det har under många år funnits en del problem med resultaten på
@@ -51,7 +58,7 @@ på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
 * Nutid: Konkurrensfördel, FP-experter eftertraktade!
 * Vackert möte mellan matematik och maskin.
 
-Undervisningsspråket är sv/en och implementationsspråket är Haskell.
+Undervisning på sv/en och implementering i Haskell.
 
 ```haskell
 
@@ -68,7 +75,7 @@ list = [(1+), (2*), kvadrat, upphöjtFyra]
 
 # Funktionell programmering (FP) och *typer*
 
-* Typer (Int, String, [Int], Int -> Int, [Int -> Int], ...)
+* Typer (`Int`, `String`, `[Int]`, `a -> a -> a`, `[a -> a]`, ...)
 * Rena funktioner som bas: från indata till utdata
 * Historik: matematiska bevisverktyg och algoritmer
 * Nutid: Konkurrensfördel, FP-experter eftertraktade!
@@ -126,7 +133,13 @@ chanser att segla igenom D3 utan att gå på grund.
 
 Välkomna i januari önskar lärarlaget
 
-    Patrik, Cezar, Daniel
+  Patrik, Cezar, Daniel
+
+
+\begin{align*}
+   f(x) &= x^2
+\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
+\end{align*}
 
 ----------------
 
