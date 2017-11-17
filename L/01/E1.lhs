@@ -136,5 +136,20 @@ TODO: formulate simpler exercises to start with. (Working on it (They will hopef
 \end{exercise}
 
 
+TODO: prepare for the "tupling transform" by an exercise converting back and forth between
+
+\begin{spec}
+  a -> (b, c)
+\end{spec}
+
+and
+
+\begin{spec}
+  (a->b, a->c)
+\end{spec}
+
+TODO: perhaps do it again in the logic exercises
+
+
 TODO: Perhaps formulate exercise to implement more efficient show
 using an ackumulating parameter.

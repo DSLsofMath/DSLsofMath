@@ -14,7 +14,7 @@ Course codes: DAT326 / DIT982
 
 * Examiner & main lecturer: Patrik Jansson (patrikj AT)
 * Lecturer: Cezar Ionescu (cezar AT)
-* Teaching assistants: TBD (was Daniel Schoepe (schoepe AT), Frederik Hanghøj Iversen (hanghj AT student))
+* Teaching assistant: Daniel Schoepe (schoepe AT)
 
 ## Objectives
 
@@ -60,7 +60,7 @@ The main references are listed below.
     * Power series and differential equations, exp, sin, log, Taylor series, ...
     * Linear algebra
     * Laplace transform
-* Weekly exercise sessions (Wednesdays 13-15 and Fridays 13-15)
+* Weekly exercise sessions (Tue 15-17 and Thu 15-17)
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
 

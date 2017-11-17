@@ -55,6 +55,7 @@
 %format :++                    = "\mathbin{{:}\!" ++ "}"
 %format :**                    = "\mathbin{{:}" ** "}"
 
+%format powTo n = "{}" ^ n
 %format ^ = "\mathbin{\hat{}}"
 %format undefined = "\Varid{undefined}"
 %format == = "\doubleequals"

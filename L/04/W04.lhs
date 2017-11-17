@@ -254,9 +254,10 @@ algebra often take the form of identities, or \emph{equational laws}.
 
 Example: Monoid equations
 
-% TODO (by DaHe): I think these equations should also be explaied in words,
-% something like "A monoid is an algebra which has an associative operation 'op'
-% and a unit."
+A monoid is an algebra which has an associative operation 'op' and a
+unit.
+%
+The laws can be formulated as the following equations:
 %
 \begin{spec}
 ∀ x : a? (unit `op` x == x  ∧  x `op` unit == x)
@@ -299,7 +300,7 @@ instance Monoid MNat where
 \end{code}
 
 % TODO (by DaHe): Where happens to the constructors A and M go in the solution
-% below?
+% below? Perhaps provide both the "math" and "Haskell" versions to compare.
 %
 Exercise: characterise the homomorphisms from |ANat| to |MNat|.
 

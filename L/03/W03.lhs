@@ -179,7 +179,7 @@ So, if we let ``coordinates'' be just one coordinate, we can take |i =
   L : ℝ³ → ℝ
 \end{spec}
 %
-The ``system state'' here is a triple (of type |ℝ³|) and we can call
+The ``system state'' here is a triple (of type |S = ℝ³|) and we can call
 the the three components |t| for time, |q| for coordinate, and |v| for
 velocity.
 
@@ -210,13 +210,16 @@ It follows that the equation expresses a relation between
   const 0 (t, q, v) = 0
 \end{spec}
 
-\item We now have a problem: \(d / dt\) can only be applied to
-  functions of \emph{one} real argument \(t\), and the result is a
+\item We now have a problem: |d / dt| can only be applied to
+  functions of \emph{one} real argument |t|, and the result is a
   function of one real argument:
 
-\[
-  \frac{d}{dt} \frac{∂L}{∂\dot{q}}  :  ℝ → ℝ
-\]
+%format dotq = "\dot{q}"
+%format ddotq =  ∂ dotq
+%format apply f x = f "\," x
+\begin{spec}
+    apply (d / dt) (∂L / ∂dotq)  :  ℝ → ℝ
+\end{spec}
 
 Since we subtract from this the function \(∂L / ∂q\), it follows that
 this, too, must be of type \(ℝ → ℝ\).
@@ -234,27 +237,28 @@ But we already typed it as |ℝ³ → ℝ|, contradiction!
 %
   Thus, the path is a function of time, let us say
 
-\[
-w  :  ℝ → ℝ, \mbox{where \(w(t)\) is a coordinate (|q|) at time \(t\)}
-\]
+  \begin{spec}
+    w  :  T → C  -- with |T = ℝ| for time and |C = ℝ| for coordinates (|q : C|)
+  \end{spec}
 
-We can now guess that the use of the plural form ``equations'' might
-have something to do with the use of ``coordinates''.
+  We can now guess that the use of the plural form ``equations'' might
+  have something to do with the use of ``coordinates''.
 %
-In an \(n\)-dimensional space, a position is given by \(n\)
-coordinates.
+  In an \(n\)-dimensional space, a position is given by \(n\)
+  coordinates.
 %
-A path would be a function
+  A path would then be a function
 %
-\begin{spec}
-    w  :  ℝ → ℝⁿ
-\end{spec}
+  \begin{spec}
+    w  :  T → C  -- with |C = ℝⁿ|
+  \end{spec}
 %
-which is equivalent to \(n\) functions of type \(ℝ → ℝ\).
+  which is equivalent to \(n\) functions of type \(ℝ → ℝ\), each
+  computing one coordinate as a function of time.
 %
-We would then have an equation for each of them.
+  We would then have an equation for each of them.
 %
-We will use |n=1| for the rest of this example.
+  We will use |n=1| for the rest of this example.
 
 \item The Lagrangian is a ``function of the system state (time,
   coordinates, and velocities)''.
@@ -264,20 +268,22 @@ We will use |n=1| for the rest of this example.
 %
   The velocity is the derivative of the path, also fixed by the path:
 
-%format dotq = "\dot{q}"
-\begin{spec}
-q  :  ℝ → ℝ
-q t  =  w t        -- or, equivalently, |q = w|
+  \begin{spec}
+  q  :  ℝ → ℝ
+  q t  =  w t        -- or, equivalently, |q = w|
 
-dotq : ℝ → ℝ
-dotq t = dw / dt   -- or, equivalently, |dotq = D w|
-\end{spec}
+  dotq : ℝ → ℝ
+  dotq t = dw / dt   -- or, equivalently, |dotq = D w|
+  \end{spec}
 %
 % TODO (by DaHe): Things get a little messy here, I rememer this is the part
 % where I got confused during this lecture. I think we should slow down at this
 % point and take a step back, look at what we have so far, and what we have
 % gained from introducing 'w', before moving on to 'expand'.
-%
+
+% PaJa: OK - some more explaining is needed. Both of |L| (seen as a
+% way to evaluate how good a state is) and |expand w| (which
+% constructs a state from a path and an instant).
 
 The equations do not use a function \(L : ℝ³→ ℝ\), but rather
 
@@ -518,24 +524,21 @@ type class, only from that of its implementation.
 
 
 \subsection{Computing derivatives}
-%
-% TODO (by DaHe): the ^ in (^n) below doesn't show up very clearly in the pdf.
-% Maybe put some spaces around it? Or use another symbol?
-%
+
 The ``little language'' of derivatives:
 
 \begin{spec}
-    D (f + g)    =  D f + D g
-    D (f * g)    =  D f * g + f * D g
+    D (f + g)         =  D f + D g
+    D (f * g)         =  D f * g + f * D g
 
-    D (f ∘ g) x  =  D f (g x) * D g x     -- the chain rule
+    D (f ∘ g) x       =  D f (g x) * D g x     -- the chain rule
 
-    D (const a)  =  const 0
-    D id         =  const 1
-    D (^n)  x    =  (n - 1) * (x^(n-1))
-    D sin   x    =  cos x
-    D cos   x    =  - (sin x)
-    D exp   x    =  exp x
+    D (const a)       =  const 0
+    D id              =  const 1
+    D (powTo n)  x    =  (n - 1) * (x^(n-1))
+    D sin   x         =  cos x
+    D cos   x         =  - (sin x)
+    D exp   x         =  exp x
 \end{spec}
 
 and so on.
@@ -602,47 +605,22 @@ In other words, for any expression |e|, we want
 
 For example, let us derive the |derive| function for |Exp e|:
 %
-% TODO (by DaHe): (*) Would it be possible to have the annotations in the equations
-% below in a separate column, so that each step of the equation is right below
-% the previous one? Having a row between each step of the equation kind of
-% compromises the readability.
-% For example:
-%    eval (derive (Exp e))
-%  = D (eval (Exp e))     {- specification of |derive| above -}
-%  = D (exp (eval e))     {- def. |eval| -}
-%
 \begin{spec}
-     eval (derive (Exp e))
+     eval (derive (Exp e))                          =  {- specification of |derive| above -}
 
-  =  {- specification of |derive| above -}
+     D (eval (Exp e))                               =  {- def. |eval| -}
 
-     D (eval (Exp e))
+     D (exp (eval e))                               =  {- def. |exp| for functions -}
 
-  =  {- def. |eval| -}
+     D (exp . eval e)                               =  {- chain rule -}
 
-     D (exp (eval e))
+     (D exp . eval e) * D (eval e)                  =  {- |D| rule for |exp| -}
 
-  =  {- def. |exp| for functions -}
+     (exp . eval e) * D (eval e)                    =  {- specification of |derive| -}
 
-     D (exp . eval e)
+     (exp . eval e) * (eval (derive e))             =  {- def. of |eval| for |Exp| -}
 
-  =  {- chain rule -}
-
-     (D exp . eval e) * D (eval e)
-
-  =  {- |D| rule for |exp| -}
-
-     (exp . eval e) * D (eval e)
-
-  =  {- specification of |derive| -}
-
-     (exp . eval e) * (eval (derive e))
-
-  =  {- def. of |eval| for |Exp| -}
-
-     (eval (Exp e)) * (eval (derive e))
-
-  =  {- def. of |eval| for |:*:| -}
+     (eval (Exp e)) * (eval (derive e))             =  {- def. of |eval| for |:*:| -}
 
      eval (Exp e  :*:  derive e)
 \end{spec}
@@ -705,28 +683,16 @@ eval'  =   eval . derive
 
 For example:
 %
-% TODO (by DaHe): Same as (*)
-%
 \begin{spec}
-     eval' (Exp e)
+     eval' (Exp e)                      =  {- def. |eval'|, function composition -}
 
-  =  {- def. |eval'|, function composition -}
+     eval (derive (Exp e))		=  {- def. |derive| for |Exp| -}
 
-     eval (derive (Exp e))
+     eval (Exp e :*: derive e)		=  {- def. |eval| for |:*:| -}
 
-  =  {- def. |derive| for |Exp| -}
+     eval (Exp e) * eval (derive e)	=  {- def. |eval| for |Exp| -}
 
-     eval (Exp e :*: derive e)
-
-  =  {- def. |eval| for |:*:| -}
-
-     eval (Exp e) * eval (derive e)
-
-  =  {- def. |eval| for |Exp| -}
-
-     exp (eval e) * eval (derive e)
-
-  =  {- def. |eval'| -}
+     exp (eval e) * eval (derive e)	=  {- def. |eval'| -}
 
      exp (eval e) * eval' e
 \end{spec}
@@ -746,6 +712,9 @@ the same time, being able to evaluate the functions.
 %
 So we can try to do both evaluations simultaneously:
 %
+
+TODO: introduce the terminology "tupling transform" (perhaps earlier and just remineder here)
+
 \begin{code}
 type FD a = (a -> a, a -> a)
 
@@ -760,23 +729,15 @@ We compute, for example:
 % TODO (by DaHe): Same as (*)
 %
 \begin{spec}
-     evalD (Exp e)
+     evalD (Exp e)                           =  {- specification of |evalD| -}
 
-  =  {- specification of |evalD| -}
+     (eval (Exp e), eval' (Exp e))	     =  {- def. |eval| for |Exp| and reusing the computation above -}
 
-     (eval (Exp e), eval' (Exp e))
-
-  =  {- def. |eval| for |Exp| and reusing the computation above -}
-
-     (exp (eval e), exp (eval e) * eval' e)
-
-  =  {- introduce names for subexpressions -}
+     (exp (eval e), exp (eval e) * eval' e)  =  {- introduce names for subexpressions -}
 
      let  f   = eval e
           f'  = eval' e
-     in (exp f, exp f * f')
-
-  =  {- def. |evalD| -}
+     in (exp f, exp f * f')		     =  {- def. |evalD| -}
 
      let (f, f') = evalD e
      in (exp f, exp f * f')

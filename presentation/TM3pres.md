@@ -82,7 +82,7 @@ Välkomna!
 
 \begin{align*}
    f(x) &= x^2
-\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
+\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(t) dt
 \end{align*}
 
 \begin{align*}
