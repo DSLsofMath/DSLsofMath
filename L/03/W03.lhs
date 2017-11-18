@@ -179,9 +179,12 @@ So, if we let ``coordinates'' be just one coordinate, we can take |i =
   L : ℝ³ → ℝ
 \end{spec}
 %
-The ``system state'' here is a triple (of type |S = ℝ³|) and we can call
-the the three components |t| for time, |q| for coordinate, and |v| for
-velocity.
+The ``system state'' here is a triple (of type |S = (T, Q, V) = ℝ³|)
+and we can call the the three components |t : T| for time, |q : Q| for
+coordinate, and |v : V| for velocity.
+%
+(We use |T = Q = V = ℝ| in this example but it can help the reading to
+remember the different uses of |ℝ|.)
 
 \item Looking again at the same derivative, \(∂L / ∂q\) suggests that
   \(q\) is the name of a real variable, one of the three arguments to
@@ -189,42 +192,46 @@ velocity.
 %
   In the context, which we do not have, we would expect to find
   somewhere the definition of the Lagrangian as
-%
-\begin{spec}
-  L (t, q, v) = ...
-\end{spec}
+  %
+  \begin{spec}
+    L  :  (T, Q, V)  ->  ℝ
+    L     (t, q, v)  =   ...
+  \end{spec}
+
 \item therefore, \(∂L / ∂q\) should also be a function of the same
   triple of arguments:
 
-\begin{spec}
-  (∂L / ∂q) : ℝ³ → ℝ
-\end{spec}
+  \begin{spec}
+    (∂L / ∂q) : (T, Q, V) -> ℝ
+  \end{spec}
 
-It follows that the equation expresses a relation between
-\emph{functions}, therefore the \(0\) on the right-hand side is
-\emph{not} the real number \(0\), but rather the constant function
-|const 0|:
+  It follows that the equation expresses a relation between
+  \emph{functions}, therefore the \(0\) on the right-hand side is
+  \emph{not} the real number \(0\), but rather the constant function
+  |const 0|:
 
-\begin{spec}
-  const 0  :  ℝ³ → ℝ
-  const 0 (t, q, v) = 0
-\end{spec}
+  \begin{spec}
+    const 0  :  (T, Q, V)  →  ℝ
+    const 0     (t, q, v)  =   0
+  \end{spec}
 
-\item We now have a problem: |d / dt| can only be applied to
-  functions of \emph{one} real argument |t|, and the result is a
-  function of one real argument:
+\item We now have a problem: |d / dt| can only be applied to functions
+  of \emph{one} real argument |t|, and the result is a function of one
+  real argument:
 
 %format dotq = "\dot{q}"
 %format ddotq =  ∂ dotq
 %format apply f x = f "\," x
 \begin{spec}
-    apply (d / dt) (∂L / ∂dotq)  :  ℝ → ℝ
+    apply (d / dt) (∂L / ∂dotq)  :  T → ℝ
 \end{spec}
 
 Since we subtract from this the function \(∂L / ∂q\), it follows that
-this, too, must be of type \(ℝ → ℝ\).
+this, too, must be of type |T -> ℝ|.
 %
-But we already typed it as |ℝ³ → ℝ|, contradiction!
+But we already typed it as |(T, Q, V) → ℝ|, contradiction!
+%
+\label{item:L:contra}
 
 \item The expression \(∂L / ∂\dot{q}\) appears to also be malformed.
 %
@@ -232,100 +239,114 @@ But we already typed it as |ℝ³ → ℝ|, contradiction!
   \(\dot{q}\) is the same as \(dq / dt\), a function.
 
 \item Looking back at the description above, we see that the only
-  candidate for an application of \(d/dt\) is ``a path that gives the
-  coordinates for each moment of time''.
+  immediate candidate for an application of \(d/dt\) is ``a path that
+  gives the coordinates for each moment of time''.
 %
   Thus, the path is a function of time, let us say
-
+%
   \begin{spec}
-    w  :  T → C  -- with |T = ℝ| for time and |C = ℝ| for coordinates (|q : C|)
+    w  :  T → Q  -- with |T = ℝ| for time and |Q = ℝ| for coordinates (|q : Q|)
   \end{spec}
 
   We can now guess that the use of the plural form ``equations'' might
   have something to do with the use of ``coordinates''.
 %
-  In an \(n\)-dimensional space, a position is given by \(n\)
+  In an |n|-dimensional space, a position is given by |n|
   coordinates.
 %
   A path would then be a function
 %
   \begin{spec}
-    w  :  T → C  -- with |C = ℝⁿ|
+    w  :  T → Q  -- with |Q = ℝⁿ|
   \end{spec}
 %
-  which is equivalent to \(n\) functions of type \(ℝ → ℝ\), each
-  computing one coordinate as a function of time.
+  which is equivalent to |n| functions of type |T → ℝ|, each computing
+  one coordinate as a function of time.
 %
   We would then have an equation for each of them.
 %
   We will use |n=1| for the rest of this example.
 
-\item The Lagrangian is a ``function of the system state (time,
-  coordinates, and velocities)''.
+\item Now that we have a path, the coordinates at any time are given
+  by the path.
+  %
+  And as the time derivative of a coordinate is a velocity, we can
+  actually compute the trajectory of the full system state |(T, Q, V)|
+  starting from just the path.
 %
-  If we have a path, then the coordinates at any time are given by the
-  path.
-%
-  The velocity is the derivative of the path, also fixed by the path:
-
   \begin{spec}
-  q  :  ℝ → ℝ
-  q t  =  w t        -- or, equivalently, |q = w|
+    q  :  T → Q
+    q t  =  w t        -- or, equivalently, |q = w|
 
-  dotq : ℝ → ℝ
-  dotq t = dw / dt   -- or, equivalently, |dotq = D w|
+    dotq : T → V
+    dotq t = dw /dt    -- or, equivalently, |dotq = D w|
   \end{spec}
 %
-% TODO (by DaHe): Things get a little messy here, I rememer this is the part
-% where I got confused during this lecture. I think we should slow down at this
-% point and take a step back, look at what we have so far, and what we have
-% gained from introducing 'w', before moving on to 'expand'.
+  We combine these in the ``combinator'' |expand|, given by
+  %
+  \begin{spec}
+    expand : (T → Q) → (T → (T, Q, V))
+    expand w t  =  (t, w t, D w t)
+  \end{spec}
 
-% PaJa: OK - some more explaining is needed. Both of |L| (seen as a
-% way to evaluate how good a state is) and |expand w| (which
-% constructs a state from a path and an instant).
+\item With |expand| in our toolbox we can fix the typing problem in
+  item \ref{item:L:contra} above.
+  %
+  The Lagrangian is a ``function of the system state (time,
+  coordinates, and velocities)'' and the ``expanded path'' (|expand
+  w|) computes the state from just the time.
+  %
+  By composing them we get a function
+  %
+  \begin{spec}
+    L . (expand w)  :  T -> ℝ
+  \end{spec}
+  %
+  which describes how the Lagrangian would vary over time if the
+  system would evolve according to the path |w|.
 
-The equations do not use a function \(L : ℝ³→ ℝ\), but rather
+  This particular composition is not used in the equation, but we do
+  have
+  %
+  \begin{spec}
+    (∂L / ∂q) . (expand w)  :  T -> ℝ
+  \end{spec}
+  %
+  which is used inside |d / dt|.
 
-\begin{spec}
-  L ∘ (expand w)  :  ℝ → ℝ
-\end{spec}
+\item We now move to using |D| for |d / dt|, |D₂| for |∂ / ∂q|, and
+  |D₃| for |∂ / ∂dotq|.
+  %
+  In combination with |expand w| we find these type correct
+  combinations for the two terms in the equation:
+  %
+  \begin{spec}
+    D ((D₂ L)  ∘  (expand w))  :  T → ℝ
+       (D₃ L)  ∘  (expand w )  :  T → ℝ
+  \end{spec}
 
-where the ``combinator'' |expand| is given by
+  The equation becomes
+  %
+  \begin{spec}
+    D ((D₃ L) ∘ (expand w))  -  (D₂ L) ∘ (expand w)  =  const 0
+  \end{spec}
+  or, after simplification:
+  \begin{spec}
+    D (D₃ L ∘ expand w)  =  D₂ L ∘ expand w
+  \end{spec}
+  %
+  where both sides are functions of type |T → ℝ|.
 
-\begin{spec}
-  expand      :  (ℝ → ℝ) → (ℝ → ℝ³)
-  expand w t  =  (t, w t, D w t)
-\end{spec}
-%
-% TODO (by DaHe): Again, I think we should take a little break here, look at
-% what we have gained by introducing 'expand', and remind the students why we
-% wanted L to be ℝ → ℝ. This business of introducing 'w' and 'expand' was a bit
-% tricky for me and others to wrap our heads around, so I think an all-around
-% slower tempo in this part would be good.
-
-\item Similarly, using |D₁|, |D₂|, |D₃| instead of |∂L/∂t| etc., we
-  have that, instead of |∂L/∂q| what is meant is
-
-%
-\begin{spec}
-  (D₂ L) ∘ (expand w)  :  ℝ → ℝ
-\end{spec}
-
-and instead of |∂L/∂dotq|
-
-\begin{spec}
-  (D₃ L) ∘ (expand w)  : ℝ → ℝ
-\end{spec}
-
-The equation becomes
-
-\begin{spec}
-  D ((D₃ L) ∘ (expand w))  -  (D₂ L) ∘ (expand w)  =  const 0
-\end{spec}
-
-a relation between functions of type |ℝ → ℝ|.
-
+\item ``A path is allowed if and only if it satisfies the Lagrange
+  equations'' means that this equation is a predicate on paths (for a
+  particular |L|):
+  %
+  \begin{spec}
+    Lagrange(L, w) =  D (D₃ L ∘ expand w) == D₂ L ∘ expand w
+  \end{spec}
+  %
+  where we use |(==)| to avoid confusion with the equlity sign (|=|)
+  used for the definition of the predicate.
 \end{enumerate}
 
 So, we have figured out what the equation ``means'', in terms of
@@ -334,14 +355,17 @@ operators we recognise.
 If we zoom out slightly we see that the quoted text means something
 like:
 %
-If we can describe the mechanical system in terms of ``a Lagrangian'',
-then we can use the equation to check if a particular candidate path
-|w : ℝ → ℝ| qualifies as a ``motion of the system'' or not.
+If we can describe the mechanical system in terms of ``a Lagrangian''
+(|L : S -> ℝ|), then we can use the equation to check if a particular
+candidate path |w : T → ℝ| qualifies as a ``motion of the system'' or
+not.
 %
-The unknown of the equation is the path |w|.
+The unknown of the equation is the path |w|, and as the equation
+involves partial derivatives it is an example of a partial
+differential equation (a PDE).
 %
-We will not dig into how to solve such a functional equation, but it
-is widely used in physics.
+We will not dig into how to solve such PDEs, but they are widely used
+in physics.
 
 % TODO (by DaHe) There's two more things I think should be added in this
 % chapter:
