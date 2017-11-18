@@ -302,3 +302,17 @@ TODO: write about the lecture plan and internal dependencies
 \subsection{Notation and code convention}
 
 TODO: fill in more about notation
+
+\subsection{Acknowledgments}
+
+The support from Chalmers Quality Funding 2015 (Dnr C 2014-1712, based
+on Swedish Higher Education Authority evaluation results) is
+gratefully acknowledged.
+%
+Thanks also to Roger Johansson (as Head of Programme in CSE) and Peter
+Ljunglöf (as Vice Head of the CSE Department for BSc and MSc
+education) who provided continued financial support when the national
+political winds changed.
+
+Thanks to Daniel Heurlin who provided many helpful comments during his
+work as a student research assistant in 2017.

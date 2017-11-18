@@ -444,10 +444,9 @@ class  (Eq a, Show a) => Num a  where
     fromInteger    :: Integer -> a
 \end{spec}
 
-TODO: insert proper citation \cite[Sect.~6.4]{haskell2010}
-
-This is taken from the Haskell
-documentation\footnote{Fig. 6.2 in section 6.4 of the Haskell 2010 report: \url{https://www.haskell.org/onlinereport/haskell2010/haskellch6.html}.}
+This is taken from the Haskell documentation\footnote{Fig. 6.2 in
+  \href{https://www.haskell.org/onlinereport/haskell2010/haskellch6.html}{section
+    6.4 of the Haskell 2010 report}: \cite[Sect.~6.4]{haskell2010}.}
 but it appears that |Eq| and |Show| are not necessary, because there
 are meaningful instances of |Num| which don't support them:
 %
@@ -468,8 +467,9 @@ TODO: Start of aside - make it fit in the text better
 
 The instance declaration above looks recursive, but is not.
 %
-The same pattern appeared already in chapter TODO, which near the end
-included roughly the following lines:
+The same pattern appeared already in section
+\ref{sec:firstFromInteger}, which near the end included roughly the
+following lines:
 
 \begin{spec}
 instance Num r => Num (ComplexSyn r) where
@@ -487,21 +487,36 @@ fromIntC =              toComplexSyn . fromInteger
 \end{verbatim}
 
 I have placed the types in the comment, with ``backwards-pointing''
-arrows indicating that |fromInteger :: Integer -> r| and |toComplexSyn
-:: r -> ComplexSyn r| while the resulting function is |fromIntC ::
-Integer -> ComplexSyn r|. The use of |fromInteger| at type |r| means
-that the full type of |fromIntC| must refer to the |Num| class. Thus
-we arrive at the full type:
+arrows indicating that
 %
-% TODO (by DaHe): An example would help to clarify even further here:
-% fromInteger 3 :: ComplexSyn Double =
-% toComplexSyn(fromInteger 3) = toComplexSyn 3.0 = 3.0 + 0i
+|fromInteger :: Integer -> r| and
+%
+|toComplexSyn :: r -> ComplexSyn r|
+%
+while the resulting function is
+%
+|fromIntC :: Integer -> ComplexSyn r|.
+%
+The use of |fromInteger| at type |r| means that the full type of
+|fromIntC| must refer to the |Num| class.
+%
+Thus we arrive at the full type:
 %
 \begin{spec}
 fromIntC :: Num r =>   Integer -> ComplexSyn r
 \end{spec}
 
-TODO: End of aside - connect back to the x->a instance
+As an example we have that
+\begin{spec}
+  (fromInteger 3) :: ComplexSyn Double   ==
+  toComplexSyn (fromInteger 3)           ==
+  toComplexSyn 3.0                       ==
+  3.0 + 0 i
+\end{spec}
+
+
+
+TODO: End of aside - connect back to the |x->a| instance
 
 Next we have |Fractional| for when we also have division:
 \begin{spec}
@@ -723,11 +738,8 @@ For example:
 %
 and the first |e| doesn't go away.
 %
-The semantics of derivatives is not compositional.
-%
-% TODO (by DaHe): Maybe conclude with something like "Thus, it is not possible
-% to implement |derive| using shallow embedding", to answer the question that
-% was asked earlier.
+Thus, it is not possible to directly implement |derive| using shallow
+embedding; the semantics of derivatives is not compositional.
 %
 Or rather, \emph{this} semantics is not compositional.
 %
@@ -735,7 +747,6 @@ It is quite clear that the derivatives cannot be evaluated without, at
 the same time, being able to evaluate the functions.
 %
 So we can try to do both evaluations simultaneously:
-%
 
 TODO: introduce the terminology "tupling transform" (perhaps earlier and just remineder here)
 
@@ -749,8 +760,6 @@ evalD     e       =   (eval e, eval' e)
 Is |evalD| compositional?
 
 We compute, for example:
-%
-% TODO (by DaHe): Same as (*)
 %
 \begin{spec}
      evalD (Exp e)                           =  {- specification of |evalD| -}
@@ -780,3 +789,7 @@ instance Num a => Num (a -> a, a -> a) where
 \end{code}
 
 Exercise: implement the rest
+
+\subsection{Exercises}
+
+%include E3.lhs

@@ -820,6 +820,7 @@ instance Num a => Num (ComplexSyn a) where
 fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
 fromIntegerCS = toComplexSyn . fromInteger
 \end{code}
+\label{sec:firstFromInteger}
 
 TODO: place this paragraph properly.
 \paragraph{From syntax to semantics and back}

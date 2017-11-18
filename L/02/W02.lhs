@@ -179,14 +179,14 @@ but formulas normally contain terms.
 The formulas introduced so far are all \emph{atomic formulas} but we
 will add two more concepts: first the logical conenctives from the
 propositional calculus: |And|, |Or|, |Implies|, |Not|, and then two
-quantifiers: |Forall| and |Exists|.
-%TODO: fix formatting of forall and exists
+quantifiers: ``forall'' (|ForallAlone|) and ``exists''
+(|ExistsAlone|).
 
 An example FOL formula:
 %
-\[
-  \forall x(P(x)\rightarrow (\exists y(Q(f(x,x),y))))
-\]
+\begin{spec}
+  Forall x (P(x) -> (Exists y (Q(f(x,x),y))))
+\end{spec}
 %
 Note that FOL can only quantify over \emph{term} variables, not over
 predicates.
@@ -195,9 +195,9 @@ predicates.
 predicates.)
 
 Another example: a formula stating that |+| is commutative:
-\[
-  \forall x(\forall y((x+y)==(y+x)))
-\]
+\begin{spec}
+  Forall x (Forall y ((x+y)==(y+x)))
+\end{spec}
 %
 Note that |==| is a binary predicate symbol while |+| is a binary
 function symbol.
@@ -409,7 +409,7 @@ isomorphic to the (dependent) function type |{i : 1..n} -> Ai|.
 
 TODO: Add typed quantification for Exists.
 
-(Roughly: |((Exists (x:T) (P x))) = ((Exists x (T x & P x)))|.)
+(Roughly: |(Exists (x:T) (P x)) = (Exists x (T x & P x))|.)
 
 \subsection{Proof by contradition}
 
@@ -510,7 +510,7 @@ A very common kind of formula is ``typed quantification'': if a type
 predicate |T| we can introduce the short-hand notation
 %
 \begin{spec}
-  ((Forall (x:T) (P x))) = ((Forall x (T x => P x)))
+  (Forall (x:T) (P x)) = (Forall x (T x => P x))
 \end{spec}
 %
 A proof of this is a two-argument function |p| which takes a term and
@@ -949,6 +949,9 @@ Exercise: prove that |(a1 haslim L1) & (a2 haslim L2)| implies
 % TODO: Perhaps include something about the relation between |haslim| and |Limp|
 
 % TODO: Perhaps continue with one example: the limit of |invSeq| is |0|. See ../blackboard/W1/20170116_165408.jpg and 20170116_165412.jpg
+
+When we are not interested in the exact limit, just that it exists, we
+say that a sequence |a| is \emph{convergent} when |∃ L ? a haslim L|.
 
 
 \subsection{Questions and answers from the exercise sessions week 2}
