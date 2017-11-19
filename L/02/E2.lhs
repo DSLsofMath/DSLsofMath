@@ -81,7 +81,22 @@ When loading the module, GHC will tell you which types your holes
 (marked by ``\_'') should have for the expression to be type correct.
 
 On to the exercises.
-
+%
+% TODO (by DaHe): My impression when playing around with these execises now is
+% that they aren't particularly difficult (at least the first ones), but
+% students just don't have any idea how to approach them at this point. I think
+% the solution to this isn't necessarily to alter the exercises, but rather to
+% add more examples (step-by-step solutions) of these types of proofs, to give
+% students a feel for the overall workflow.
+%
+% One thing that could be altered though would be to maybe split some of the
+% more involved exercises into sub-questions, so the students could be "guided"
+% through their solution. This would also serve to give students a feel for the
+% workflow when solving this type of exercises. In particular, the law of
+% excluded middle might be a good candidate to be split in this manner (or even
+% turned into an example), since I think that's the one pretty much everyone got
+% stuck at last year.
+%
 \begin{exercise}
 Prove these three theorems (for arbitrary |p| and |q|):
 
