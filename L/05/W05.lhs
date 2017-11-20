@@ -1,64 +1,8 @@
-\section{Week 5: Polynomials and Power Series}
+\section{Polynomials and Power Series}
 \begin{code}
 {-# LANGUAGE TypeSynonymInstances #-}
 module DSLsofMath.W05 where
 \end{code}
-
-\subsection{Preliminaries}
-%
-% TODO (by DaHe): Couldn't this subsection be moved to the end of W4? It seems
-% to have more to do with W4 than the rest of this chapter.
-%
-
-Last time, we defined a |Num| structure on pairs |(Double, Double)| by
-requiring the operations to be compatible with the interpretation |(f
-a, f' a)|.  For example
-
-\begin{spec}
-(x, x') *? (y, y') = (x * y, x' * y + x * y')
-\end{spec}
-
-There is nothing in the ``nature'' of pairs of |Double| that forces
-this definition upon us.
-%
-We chose it, because of the intended interpretation.
-
-This multiplication is obviously not the one we need for \emph{complex
-  numbers}:
-
-\begin{spec}
-(x, x') *. (y, y') = (x * y - x' * y', x * y' + x' * y)
-\end{spec}
-
-Again, there is nothing in the nature of pairs that foists this
-operation on us.
-%
-In particular, it is, strictly speaking, incorrect to say that a
-complex number \emph{is} a pair of real numbers.
-%
-The correct interpretation is that a complex number can be
-\emph{represented} by a pair of real numbers, provided we define the
-operations on these pairs in a suitable way.
-
-The distinction between definition and representation is similar to
-the one between specification and implementation, and, in a certain
-sense, to the one between syntax and semantics.
-%
-All these distinctions are frequently obscured, for example, because
-of prototyping (working with representations / implementations /
-concrete objects in order to find out what definition / specification
-/ syntax is most adequate).
-%
-They can also be context-dependent (one man's specification is another
-man's implementation).
-%
-Insisting on the difference between definition and representation can
-also appear quite pedantic (as in the discussion of complex numbers
-above).
-%
-In general though, it is a good idea to be aware of these
-distinctions, even if they are suppressed for reasons of brevity or
-style.
 
 \subsection{Polynomials}
 
@@ -67,7 +11,7 @@ From \cite{adams2010calculus}, page 55:
 \begin{quote}
 A \textbf{polynomial} is a function $P$ whose value at $x$ is
 
-\[P x = a_n x^n + a_{n-1} x^{n - 1} + ... a_1 x + a_0\]
+\[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
 
 where $a_n$, $a_{n-1}$, \ldots, $a_1$, and $a_0$, called the
 \textbf{coefficients} of the polymonial [original spelling], are
@@ -85,7 +29,7 @@ the zero polynomial?''.
 The types of the elements involved in the definition appear to be
 
 \begin{quote}
-  $P : ℝ → ℝ$, $x ∈ ℝ$, $a_0$, ... $a_n ∈ ℝ$ with $a_n ≠ 0$ if $n > 0$
+  $P : ℝ → ℝ$, $x ∈ ℝ$, $a_0$, \ldots, $a_n ∈ ℝ$ with $a_n ≠ 0$ if $n > 0$
 \end{quote}
 
 The phrasing should be ``whose value at \emph{any} $x$ is''.
@@ -94,17 +38,17 @@ The remark that the $a_i$ are constants is probably meant to indicate
 that they do not depend on $x$, otherwise every function would be a
 polynomial.
 %
-The zero polynomial is, according to this definition, the `const 0`
+The zero polynomial is, according to this definition, the |const 0|
 function.
 %
 Thus, what is meant is
 
 \begin{quote}
   A \textbf{polynomial} is a function $P : ℝ → ℝ$ which is either
-  constant zero, or there exist $a_0$, ..., $a_n$ ∈ ℝ with $a_n ≠ 0$
+  constant zero, or there exist $a_0$, \ldots, $a_n$ ∈ ℝ with $a_n ≠ 0$
   such that, for any $x ∈ ℝ$
 
-  \[P x = a_n x^n + a_{n-1} x^{n - 1} + ... a_1 x + a_0\]
+  \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
 \end{quote}
 
 Obviously, given the coefficients $a_i$ we can evaluate $P$ at any
@@ -119,7 +63,7 @@ as = [a0, a1, ..., an]
 (we prefer counting up), then the evaluation function is written
 
 \begin{spec}
-eval ::  [Real] ->  Real  ->  Real
+eval ::  [REAL] ->  REAL  ->  REAL
 eval     []         x     =   0
 eval     (a : as)   x     =   a + x * eval as x
 \end{spec}
@@ -299,6 +243,7 @@ For example, here is addition:
 
 \textbf{Observations:}
 
+\label{sec:polynotpolyfun}
 \begin{enumerate}
 \item Polynomials are not, in general, isomorphic (in one-to-one
   correspondence) with polynomial functions.

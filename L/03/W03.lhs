@@ -1,4 +1,4 @@
-\section{Week 3: Types in Mathematics}
+\section{Types in Mathematics}
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.W03 where
@@ -221,9 +221,9 @@ remember the different uses of |ℝ|.)
 
 %format dotq = "\dot{q}"
 %format ddotq =  ∂ dotq
-%format apply f x = f "\," x
+%format juxtapose f x = f "\," x
 \begin{spec}
-    apply (d / dt) (∂L / ∂dotq)  :  T → ℝ
+    juxtapose (d / dt) (∂L / ∂dotq)  :  T → ℝ
 \end{spec}
 
 Since we subtract from this the function \(∂L / ∂q\), it follows that

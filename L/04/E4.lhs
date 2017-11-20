@@ -3,7 +3,7 @@
 % class, semantic constructors etc. I have suggested similar exercises for weeks
 % 1 and 3, but I think we could gradually add more parts to the question. In
 % week 1, the focus should be on reading the mathematical text, and expressing
-% it in Haskell. Week 3 can additionally ask the student to introduce a deep and
+% it in Haskell. Chap. 3 can additionally ask the student to introduce a deep and
 % a shallow embedding, and in week 4 we can ask them to "hide" the arguments to
 % the fold by introducing a type class.
 %

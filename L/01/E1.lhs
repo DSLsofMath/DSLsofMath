@@ -1,4 +1,4 @@
-\subsection{Exercises for Week 1: complex numbers and DSLs}
+\subsection{Exercises: complex numbers and DSLs}
 
 TODO: formulate simpler exercises to start with. (Working on it (They will hopefully be simpler //DaHe)).
 

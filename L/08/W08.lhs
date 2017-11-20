@@ -1,4 +1,4 @@
-\section{Week 8: Exponentials and Laplace}
+\section{Exponentials and Laplace}
 
 \subsection{The Exponential Function}
 \label{sec:exp}

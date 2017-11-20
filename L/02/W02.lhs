@@ -1,4 +1,4 @@
-\section{Week 2: Logic and calculational proofs}
+\section{Logic and calculational proofs}
 
 Course learning outcomes:
 

@@ -4,7 +4,7 @@
 module DSLsofMath.W07 where
 \end{code}
 
-\section{Week 7: Matrix algebra and linear transformations}
+\section{Matrix algebra and linear transformations}
 
 
 Often, especially in engineering textbooks, one encounters the

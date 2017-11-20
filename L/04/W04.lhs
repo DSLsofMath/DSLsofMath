@@ -1,4 +1,4 @@
-\section{Week 4: Compositional Semantics and Algebraic Structures}
+\section{Compositional Semantics and Algebraic Structures}
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 module DSLsofMath.W04 where
@@ -456,9 +456,6 @@ to obtain a homomorphism from functions to their codomains:
 Num a => x ->  (x -> a) -> a
 \end{spec}
 %
-% TODO (by DaHe): Something weird is going on with apply. I assume it's not
-% supposed to be rendered as a dot here?
-%
 As suggested by the type, the homomorphism is just function
 application:
 
@@ -554,6 +551,63 @@ type FD a = (a, a)
 \end{spec}
 
 Hint: Something very similar can be used for Assignment 2.
+
+\subsection{Summing up: definitions and representation}
+
+We defined a |Num| structure on pairs |(Double, Double)| by requiring
+the operations to be compatible with the interpretation |(f a, f' a)|.
+%
+For example
+
+\begin{spec}
+(x, x') *? (y, y') = (x * y, x' * y + x * y')
+\end{spec}
+
+There is nothing in the ``nature'' of pairs of |Double| that forces
+this definition upon us.
+%
+We chose it, because of the intended interpretation.
+
+This multiplication is obviously not the one we need for \emph{complex
+  numbers}:
+
+\begin{spec}
+(x, x') *. (y, y') = (x * y - x' * y', x * y' + x' * y)
+\end{spec}
+
+Again, there is nothing in the nature of pairs that foists this
+operation on us.
+%
+In particular, it is, strictly speaking, incorrect to say that a
+complex number \emph{is} a pair of real numbers.
+%
+The correct interpretation is that a complex number can be
+\emph{represented} by a pair of real numbers, provided we define the
+operations on these pairs in a suitable way.
+
+The distinction between definition and representation is similar to
+the one between specification and implementation, and, in a certain
+sense, to the one between syntax and semantics.
+%
+All these distinctions are frequently obscured, for example, because
+of prototyping (working with representations / implementations /
+concrete objects in order to find out what definition / specification
+/ syntax is most adequate).
+%
+They can also be context-dependent (one man's specification is another
+man's implementation).
+%
+Insisting on the difference between definition and representation can
+also appear quite pedantic (as in the discussion of complex numbers
+above).
+%
+In general though, it is a good idea to be aware of these
+distinctions, even if they are suppressed for reasons of brevity or
+style.
+%
+We will see this distinction again in section
+\ref{sec:polynotpolyfun}.
+
 
 \subsubsection{Some helper functions}
 
