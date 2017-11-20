@@ -455,7 +455,10 @@ to obtain a homomorphism from functions to their codomains:
 \begin{spec}
 Num a => x ->  (x -> a) -> a
 \end{spec}
-
+%
+% TODO (by DaHe): Something weird is going on with apply. I assume it's not
+% supposed to be rendered as a dot here?
+%
 As suggested by the type, the homomorphism is just function
 application:
 
