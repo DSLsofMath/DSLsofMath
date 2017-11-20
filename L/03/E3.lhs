@@ -21,8 +21,8 @@
 % type, using knowlege acquired from above
 
 % TODO (DaHe): Describe a thing, ask to implement DSL for that thing by introducing
-% data type, type class, evaluator, (similar to Q1 from old exams) (Maybe in E1
-% instead...)
+% data type, deep shallow embedding, evaluator
+
 
 %% TODO (DaHe): One or two exercieses presenting the definition of a
 % mathematical concept / equation, and then ask student to type the variables and
