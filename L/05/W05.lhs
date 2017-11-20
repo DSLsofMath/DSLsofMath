@@ -5,6 +5,10 @@ module DSLsofMath.W05 where
 \end{code}
 
 \subsection{Preliminaries}
+%
+% TODO (by DaHe): Couldn't this subsection be moved to the end of W4? It seems
+% to have more to do with W4 than the rest of this chapter.
+%
 
 Last time, we defined a |Num| structure on pairs |(Double, Double)| by
 requiring the operations to be compatible with the interpretation |(f
