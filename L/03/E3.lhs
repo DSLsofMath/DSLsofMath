@@ -11,11 +11,32 @@
 % embedding by using the operators of the data type, and casting to the
 % syntactic type
 %
+% ---------------------------------------------------------------------------
 % IDEA: Use the card/hand datatypes from the blackjack haskell lab, and
 % implement a deep and shallow embedding for hands (the shallow one just returns
 % the sum of the cards, based on some score :: Card -> Iteger). Then show that
 % when we introduce a new rule into the game, where the combination (syntax) of
 % the cards in hand matters, the shallow embedding is not enough.
+%
+% This is the data type I have in mind:
+%
+% data Card = Card {rank :: Rank, suit :: Suit}
+%             deriving(Eq, Show)
+
+% data Suit = Hearts | Spades | Diamonds | Clubs
+%     deriving(Eq, Show)
+
+% data Rank = Numeric Integer | Jack | Queen | King | Ace
+%     deriving(Eq, Show)
+
+% data Hand = Empty | Add Card Hand
+%     deriving(Eq, Show)
+%
+% I believe this is given (at least it was during my year) at the start of a
+% lab, so it shouldn't spoil any solution. Alternatively, we could just use
+% a different but similar data type.
+% ---------------------------------------------------------------------------
+
 
 % TODO (DaHe): Exercise asking to implement a deep and a shallow embedding of some data
 % type, using knowlege acquired from above
