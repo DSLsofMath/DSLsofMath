@@ -2,6 +2,7 @@
 
 %include E1_1.lhs
 %include E1_2.lhs
+%include E1_from_exams.lhs
 
 %
 \begin{exercise}
