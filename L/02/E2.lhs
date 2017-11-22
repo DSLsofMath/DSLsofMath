@@ -309,28 +309,32 @@ noContra :: (Either p (p -> Empty) -> Empty) -> Empty
 \end{exercise}
 
 % TODO (DaHe): Fix formatting below so they look good and don't cause errors.
-% \begin{exercise}
-% \textit{From exam 2016-08-23}
 
-% Consider the classical definition of continuity:
+\begin{exercise}
+  \textit{From exam 2016-08-23}
 
-% \textit{Definition:} Let $X \subseteq ℝ$, and $c \in X$.  A function $f : X \to ℝ$ is
-% \textit{continuous at} $c$ if for every $\epsilon > 0$, there exists $\delta > 0$ such that,
-% for every $x$ in the domain of $f$, if $|x - c| < \delta$, then $|f x - f c| <
-% \epsilon$.
+  Consider the classical definition of continuity:
 
-% \begin{enumerate}
-% \item Write the definition formally, using logical connectives
-%       and quantifiers.
+  \begin{quote}
+  \emph{Definition:} Let \(X ⊆ ℝ\), and \(c ∈ X\). A function
+  \(f : X \to ℝ\) is \emph{continuous at \(c\)} if for every \(\epsilon > 0\),
+  there exists \(\delta > 0\) such that, for every \(x\) in the domain of
+  \(f\), if \(|x - c| < \delta\), then \(|f x - f c| < \epsilon\).
+  \end{quote}
 
-% \item Introduce functions and types to simplify the definition.
-
-% \item Prove the following proposition:  If `f` and `g` are
-%       continuous at `c`, `f + g` is continuous at `c`.
-% \end{enumerate}
-
-% \end{exercise}
-
+  \begin{enumerate}
+  \item
+    Write the definition formally, using logical connectives
+    and quantifiers.
+  \item
+    Introduce functions and types to simplify the
+    definition.
+  \item
+    Prove the following proposition: If \texttt{f} and
+    \texttt{g} are continuous at \texttt{c}, \texttt{f\ +\ g} is
+    continuous at \texttt{c}.
+  \end{enumerate}
+\end{exercise}
 
 % \begin{exercise}
 % \textit{From exam 2017-08-22}
