@@ -8,112 +8,130 @@
 % will now revisit this blablabla")
 %
 \begin{exercise}
-\textit{From exam 2017-08-22}
+  \textit{From exam 2017-08-22}
 
   A semiring is a set |R| equipped with two binary operations |+| and
   |⋅|, called addition and multiplication, such that:
-\begin{itemize}
+  \begin{itemize}
 
-\item |(R, +, 0)| is a commutative monoid with identity element |0|:
+  \item |(R, +, 0)| is a commutative monoid with identity element |0|:
 
->     (a + b) + c = a + (b + c)
->     0 + a = a + 0 = a
->     a + b = b + a
+    \begin{spec}
+      (a + b) + c = a + (b + c)
+      0 + a = a + 0 = a
+      a + b = b + a
+    \end{spec}
 
-\item |(R, ⋅, 1)| is a monoid with identity element |1|:
+  \item |(R, ⋅, 1)| is a monoid with identity element |1|:
 
->     (a⋅b)⋅c = a⋅(b⋅c)
->     1⋅a = a⋅1 = a
+    \begin{spec}
+      (a⋅b)⋅c = a⋅(b⋅c)
+      1⋅a = a⋅1 = a
+    \end{spec}
 
-\item Multiplication left and right distributes over |(R, +, 0)|:
+  \item Multiplication left and right distributes over |(R, +, 0)|:
 
->     a⋅(b + c) = (a⋅b) + (a⋅c)
->     (a + b)⋅c = (a⋅c) + (b⋅c)
->     a⋅0 = 0⋅a = 0
+    \begin{spec}
+      a⋅(b + c) = (a⋅b) + (a⋅c)
+      (a + b)⋅c = (a⋅c) + (b⋅c)
+      a⋅0 = 0⋅a = 0
+    \end{spec}
 
-\end{itemize}
+  \end{itemize}
 
   \begin{enumerate}
 
   \item Define a datatype |SR v| for the language of semiring
     expressions (with variables of type |v|) and define a |SemiRing|
-    instance for it. (These are expressions formed from applying the
-    semiring operations to the appropriate number of arguments, e.g.,
-    all the left hand sides and right hand sides of the above
-    equations.)
+    instance for it.
+    %
+    (These are expressions formed from applying the semiring
+    operations to the appropriate number of arguments, e.g., all the
+    left hand sides and right hand sides of the above equations.)
 
-% TODO (DaHe): explain that "assignment function" is the same as varVal in
-% previous exercise?
+    % TODO (DaHe): explain that "assignment function" is the same as varVal in
+    % previous exercise?
   \item Give a type signature for, and define, a general evaluator for
-      |SR v| expressions on the basis of an assignment function.
-
+    |SR v| expressions on the basis of an assignment function.
   \end{enumerate}
 \end{exercise}
 
 \begin{exercise}
-\textit{From exam 2016-03-15}
+  \textit{From exam 2016-03-15}
 
-A *lattice* is a set `L` together with two operations `∨`
-and `∧` (usually pronounced "sup" and "inf") such that
-\begin{itemize}
+  A \emph{lattice} is a set |L| together with two operations |∨| and
+  |∧| (usually pronounced ``sup'' and ``inf'') such that
+  \begin{itemize}
 
-\item `∨` and `∧` are associative:
+  \item |∨| and |∧| are associative:
 
-> ∀ x, y, z ∈ L       (x ∨ y) ∨ z = x ∨ (y ∨ z)
-> ∀ x, y, z ∈ L       (x ∧ y) ∧ z = x ∧ (y ∧ z)
+    \begin{spec}
+      ∀ x, y, z ∈ L       (x ∨ y) ∨ z = x ∨ (y ∨ z)
+      ∀ x, y, z ∈ L       (x ∧ y) ∧ z = x ∧ (y ∧ z)
+    \end{spec}
 
-\item `∨` and `∧` are commutative:
+  \item |∨| and |∧| are commutative:
 
-> ∀ x, y ∈ L           x ∨ y = y ∨ x
-> ∀ x, y ∈ L           x ∧ y = y ∧ x
+    \begin{spec}
+      ∀ x, y ∈ L           x ∨ y = y ∨ x
+      ∀ x, y ∈ L           x ∧ y = y ∧ x
+    \end{spec}
 
-\item `∨` and `∧` satisfy the *absorption laws*:
+  \item |∨| and |∧| satisfy the \emph{absorption laws}:
 
-> ∀ x, y ∈ L           x ∨ (x ∧ y) = x
-> ∀ x, y ∈ L           x ∧ (x ∨ y) = x
-\end{itemize}
+    \begin{spec}
+      ∀ x, y ∈ L           x ∨ (x ∧ y) = x
+      ∀ x, y ∈ L           x ∧ (x ∨ y) = x
+    \end{spec}
+  \end{itemize}
 
-\begin{enumerate}
+  \begin{enumerate}
+  \item Define a datatype for the language of lattice expressions.
 
-\item Define a datatype for the language of lattice expressions.
-
-\item Define a general evaluator for `Lattice` expressions on the
-basis of an assignment function.
-\end{enumerate}
+  \item Define a general evaluator for |Lattice| expressions on the
+    basis of an assignment function.
+  \end{enumerate}
 \end{exercise}
 
 \begin{exercise}
-\textit{From exam 2016-08-23}
+  \textit{From exam 2016-08-23}
 
-An *abelian monoid* is a set `M` together with a constant
-(nullary operation) `0 ∈ M` and a binary operation `⊕ : M → M → M`
-such that:
-\begin{itemize}
+  An \emph{abelian monoid} is a set |M| together with a constant
+  (nullary operation) |0 ∈ M| and a binary operation |⊕ : M → M → M|
+  such that:
+  \begin{itemize}
 
-\item `0` is a unit of `⊕`
+  \item |0| is a unit of |⊕|
 
-> ∀ x ∈ M           x ⊕ 0 = x  and 0 ⊕ x = x
+    \begin{spec}
+      ∀ x ∈ M           x ⊕ 0 = x  and 0 ⊕ x = x
+    \end{spec}
 
-\item `⊕` is associative
+  \item |⊕| is associative
 
-> ∀ x, y, z ∈ M     x ⊕ (y ⊕ z) = (x ⊕ y) ⊕ z
+    \begin{spec}
+      ∀ x, y, z ∈ M     x ⊕ (y ⊕ z) = (x ⊕ y) ⊕ z
+    \end{spec}
 
-\item `⊕` is commutative
+  \item |⊕| is commutative
 
-> ∀ x, y ∈ M        x ⊕ y = y ⊕ x
+    \begin{spec}
+      ∀ x, y ∈ M        x ⊕ y = y ⊕ x
+    \end{spec}
 
-\end{itemize}
+  \end{itemize}
 
-\begin{enumerate}
+  \begin{enumerate}
 
-\item Define a datatype `AbMonoidExp` for the language of abelian
-    monoid expressions.  (These
-    are expressions formed from applying the monoid operations to the
-    appropriate number of arguments, e.g., all the left hand sides and
-    right hand sides of the above equations.)
+  \item Define a datatype |AbMonoidExp| for the language of abelian
+    monoid expressions.
+    %
+    (These are expressions formed from applying the monoid operations
+    to the appropriate number of arguments, e.g., all the left hand
+    sides and right hand sides of the above equations.)
 
-\item Define a general evaluator for `AbMonoidExp` expressions on the
-    basis of an assignment function.
+  \item Define a general evaluator for |AbMonoidExp| expressions on
+    the basis of an assignment function.
 
-\end{enumerate}
+  \end{enumerate}
 \end{exercise}

@@ -7,7 +7,7 @@ $(NAME).pdf: $(NAME).tex
 
 $(NAME).tex: $(NAME).lhs dslm.format ref.bib \
              00/Intro.lhs                     \
-             01/W01.lhs 01/E1.lhs 01/E1_1.lhs 01/E1_2.lhs \
+             01/W01.lhs 01/E1.lhs 01/E1_1.lhs 01/E1_2.lhs 01/E1_from_exams.lhs\
              02/W02.lhs 02/E2.lhs 02/AbstractFOL.lhs \
              03/W03.lhs 03/E3.lhs \
              04/W04.lhs 04/E4.lhs \
