@@ -30,22 +30,66 @@
 
 
 \begin{exercise}
+  Functions and pairs (the ``tupling transform'').
+  %
+  From one function |f :: a -> (b, c)| returning a pair, you can
+  always make a pair of two functions |pf :: (a->b, a->c)|.
+  %
+  Implement this transform:
+  %
+  \begin{spec}
+    f2p :: (a -> (b, c)) -> (a->b, a->c)
+  \end{spec}
+  %
 
+  Also implement the opposite transform:
+  \begin{spec}
+    p2f :: (a->b, a->c) -> (a -> (b, c))
+  \end{spec}
 
-  If you have tPolymorphism TODO: prepare for the "tupling transform" by an exercise converting back and forth between
+  This kind of transformation if often useful, and it works also for
+  |n|-tuples.
 
-\begin{spec}
-  a -> (b, c)
-\end{spec}
-
-and
-
-\begin{spec}
-  (a->b, a->c)
-\end{spec}
+  % Solutions:
+  %   f2p  =  \fg     ->  (fst . fg, snd . fg)
+  %   p2f  =  \(f,g)  ->  \x -> (f x, g x)
 
 \end{exercise}
 
+\begin{exercise}
+  There is also a ``dual'' to the tupling transform: to show this,
+  implement these functions:
+  %
+  \begin{spec}
+    s2p :: (Either b c -> a) -> (b->a, c->a)
+    p2s :: (b->a, c->a) -> (Either b c -> a)
+  \end{spec}
+  %
+
+  % Solutions:
+  %   s2p  =  \fg     ->  (fg . Left, fg . Right)
+  %   p2s  =  \(f,g)  ->  either f g
+
+\end{exercise}
+
+\begin{exercise}
+  Counting values.
+  %
+  Now assume we have |f2p|, |s2f|, etc used with three finite types
+  with cardinalites |A|, |B|, and |C|.
+  %
+  (For example, the cardinality of |Bool| is |2|, the cardinality of
+  |Weekday| is |7|, etc.)
+  %
+  Then what is the cardinality of |Either a b|? |(a, b)|? |a->b|? etc.
+  %
+  These rules for computing the cardinality suggests that |Either| is
+  similar to sum, |(,)| is similar to product and |(->)| to (flipped)
+  power.
+  %
+  These rules show that we can use many intuitions from high-school
+  algebra when working with types.
+\end{exercise}
 
 \begin{exercise}
   TODO: formulate exercise to implement more efficient show using an
