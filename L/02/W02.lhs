@@ -270,6 +270,13 @@ to some text after the equation where something more is said about the
 solution |x|.
 
 
+TODO: Add an example showing how to prove
+\begin{spec}
+  Forall a (Forall b (Forall c ( (a -> (b, c)) <=> (a->b, a->c) )))
+\end{spec}
+
+
+
 
 \subsection{An aside: Pure set theory}
 

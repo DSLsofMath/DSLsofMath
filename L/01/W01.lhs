@@ -153,16 +153,11 @@ TODO: make the following few paragraphs flow better
 
 TODO: Introduce: newtype, products, sums, recursion, parameters
 
-%TODO: (by DaHe) Some that appear in the Q&A of this week are:
-% * newtype vs type vs data, which people might have forgotten since the Haskell course.
-% * how syntax trees are defined using data
-% * Env, Var and variable lookup.
-%
-% A way of clarifying these might be to have a breif recap at the start of this chapter, so that
+%TODO: (by DaHe) have a breif recap at the start of this chapter, so that
 % students' Haskell chops are up to speed before we start using it to describe maths. For instance, we could
 % present a data type that represents basic arithmetic expressions with real numbers. This would give the opportunity
-% to explain type synonyms (type R = Double) and using data to define syntax trees (data Expr = Add Expr Expr | Mul Expr Expr ...).
-% It would also be a good opportunity to explain syntax vs semantics, deep vs shallow embedding, (which I remember
+% to explain type synonyms (type R = Double) and using data to define syntax trees (data Expr = Add Expr Expr | Mul Expr Expr ...). [see Expr.lhs]
+% TODO: It would also be a good opportunity to explain syntax vs semantics, deep vs shallow embedding, (which I remember
 % some of my classmates had trouble grasping when I took the course), as these words are used throughout the chapter.
 % The data type could then be expanded to include variables, making possible expressions like 5*x + 7, and how we need
 % to be able look up the value of the variable (from an env) in order to eval the expression.
@@ -240,8 +235,6 @@ Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|
 data E = V String | P E E | T E E
 \end{code}
 
-%TODO: perhaps also introduce infix constructors
-
 This declaration introduces
 
 \begin{itemize}
@@ -302,11 +295,10 @@ env1 = [("hej", 17), ("du", 38)]
 The |Env| type is commonly used in evaluator functions for syntax trees
 containing variables:
 
-TODO: use a simpler syntax type than complex numbers here
 \begin{code}
-evalCP :: Eq v => Env v sem -> (ComplexSy v r -> sem)
-evalCP env (Var x) = case lookup x env of
-                       Just c -> undefined -- ...
+evalExp :: Eq v => Env v sem -> (Exp v -> sem)
+evalExp env (Var x) = case lookup x env of
+                        Just c -> undefined -- ...
 -- ...
 \end{code}
 
@@ -834,7 +826,6 @@ For our complex numbers we have
 %
 
 TODO: fill in a function from |ComplexSem r -> ComplexSyn r|.
-
 %
 (Roughly |embed (CS (x, y)) = Plus (ToC x) (Times I (ToC y))|.)
 %
@@ -958,6 +949,7 @@ which may take a while to get used to.
 
 
 \subsubsection{Notation and abstract syntax for (infinite) sequences}
+\label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
 As a bit of preparation for the language of sequences and limits in
@@ -1019,7 +1011,7 @@ liftSeq0 :: a -> Seq a
 liftSeq0 c i = c
 \end{code}
 
-Exercice: How is |liftSeq1| related to |fmap|? |liftSeq0| to |conSeq|?
+TODO: convert each "embedded exercise" to a forward pointer (some like "Related exercise: \ref{exc:fmap}")
 
 Exercice: what does function composition do to a sequence?
 (composition on the left?, on the right?)
