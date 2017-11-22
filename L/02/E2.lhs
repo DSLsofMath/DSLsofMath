@@ -307,3 +307,65 @@ Show this by implementing the following function:
 noContra :: (Either p (p -> Empty) -> Empty) -> Empty
 \end{spec}
 \end{exercise}
+
+% TODO (DaHe): Fix the indentation here so the definition is inset, like in exam
+\begin{exercise}
+\textit{From exam 2016-08-23}
+
+Consider the classical definition of continuity:
+
+\textit{Definition:} Let $X \subseteq ℝ$, and $c \in X$.  A function $f : X \to ℝ$ is
+\textit{continuous at} $c$ if for every $\epsilon > 0$, there exists $\delta > 0$ such that,
+for every $x$ in the domain of $f$, if $|x - c| < \delta$, then $|f x - f c| <
+\epsilon$.
+
+\begin{enumerate}
+\item Write the definition formally, using logical connectives
+      and quantifiers.
+
+\item Introduce functions and types to simplify the definition.
+
+\item Prove the following proposition:  If `f` and `g` are
+      continuous at `c`, `f + g` is continuous at `c`.
+\end{enumerate}
+
+\end{exercise}
+
+
+\begin{exercise}
+\textit{From exam 2017-08-22}
+
+Adequate notation for mathematical concepts and proofs
+  (or ``50 shades of continuity'').
+
+  A formal definition of ``$f : X \to ℝ$ is continuous'' and ``$f$ is
+  continuous at $c$'' can be written as follows (using the helper
+  predicate |Q|):
+
+< C(f)        =  ∀ c : X? Cat(f,c)
+< Cat(f,c)    =  ∀ ε > 0? ∃ δ > 0? Q(f,c,ε,δ)
+< Q(f,c,ε,δ)  =  ∀ x : X?  abs(x - c) < δ  ⇒  abs(f x - f c) < ε
+
+By moving the existential quantifier outwards we can introduce the
+function |getδ| which computes the required |δ| from |c| and |ε|:
+
+< C'(f)       =  ∃ getδ : X -> RPos -> RPos? ∀ c : X? ∀ ε > 0? Q(f,c,ε,getδ c ε)
+
+Now, consider this definition of \emph{uniform continuity}:
+
+\textbf{Definition:} Let $X ⊆ ℝ$.  A function $f : X \to ℝ$ is
+\emph{uniformly continuous} if for every $\epsilon > 0$, there exists $\delta > 0$
+such that, for every $x$ and $y$ in the domain of $f$, if |abs (x - y)
+< δ |, then |abs (f x - f y) < ε|.
+
+  \begin{enumerate}
+  \item Write the definition of |UC(f)| = ``|f| is uniformly
+    continuous'' formally, using logical connectives and quantifiers.
+    Try to use |Q|.
+  \item Transform |UC(f)| into a new definition |UC'(f)| by
+    a transformation similar to the one from |C(f)| to |C'(f)|.
+    Explain the new function |newδ| introduced.
+  \item Prove that |∀ f : X -> ℝ? UC'(f) => C'(f)|. Explain
+    your reasoning in terms of |getδ| and |newδ|.
+  \end{enumerate}
+\end{exercise}

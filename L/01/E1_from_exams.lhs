@@ -82,4 +82,38 @@ basis of an assignment function.
 \end{enumerate}
 \end{exercise}
 
-% TODO (DaHe): Also add abelian monoid from 2016-08
+\begin{exercise}
+\textit{From exam 2016-08-23}
+
+An *abelian monoid* is a set `M` together with a constant
+(nullary operation) `0 ∈ M` and a binary operation `⊕ : M → M → M`
+such that:
+\begin{itemize}
+
+\item `0` is a unit of `⊕`
+
+> ∀ x ∈ M           x ⊕ 0 = x  and 0 ⊕ x = x
+
+\item `⊕` is associative
+
+> ∀ x, y, z ∈ M     x ⊕ (y ⊕ z) = (x ⊕ y) ⊕ z
+
+\item `⊕` is commutative
+
+> ∀ x, y ∈ M        x ⊕ y = y ⊕ x
+
+\end{itemize}
+
+\begin{enumerate}
+
+\item Define a datatype `AbMonoidExp` for the language of abelian
+    monoid expressions.  (These
+    are expressions formed from applying the monoid operations to the
+    appropriate number of arguments, e.g., all the left hand sides and
+    right hand sides of the above equations.)
+
+\item Define a general evaluator for `AbMonoidExp` expressions on the
+    basis of an assignment function.
+
+\end{enumerate}
+\end{exercise}
