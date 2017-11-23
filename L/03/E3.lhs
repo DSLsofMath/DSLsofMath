@@ -43,79 +43,91 @@
 % (This should probably come first)
 
 
-% TODO (DaHe): Fix formatting on the questions below so they look good and don't
-% cause errors
-% \begin{exercise}
-% \textit{From exam 2016-03-16}
-%    Consider the following text from Mac Lane's *Mathematics: Form and
-%    Function* (page 182):
+\begin{exercise}
+  \textit{From exam 2016-03-16}
 
-%    In these cases one tries to find not the values of `x` which
-%    make a given function `y = f(x)` a minimum, but the values of a given
-%    function `f(x)` which make a given quantity a minimum.  Typically,
-%    that quantity is usually measured by an integral whose integrand is
-%    some expression `F` involving both `x`, values of the function `y =
-%    f(x)` at interest and the values of its derivatives - say an
-%    integral
-%     $$∫_a^b F(y, y', x)dx,\quad y = f(x).$$
+   Consider the following text from Mac Lane's *Mathematics: Form and Function* (page 182):
 
-%     Give the types of the variables involved (`x`, `y`, `y'`, `f`, `F`,
-%     `a`, `b`) and the type of the four-argument integration operator:
+   \begin{quote}
+     In these cases one tries to find not the values of `x` which
+     make a given function `y = f(x)` a minimum, but the values of a given
+     function `f(x)` which make a given quantity a minimum.  Typically,
+     that quantity is usually measured by an integral whose integrand is
+     some expression `F` involving both `x`, values of the function `y =
+     f(x)` at interest and the values of its derivatives - say an
+     integral
+   \end{quote}
 
-%     $$∫_.^. \cdot d\cdot$$
+    $$∫_a^b F(y, y', x)dx,\quad y = f(x).$$
 
-% \end{exercise}
+    Give the types of the variables involved (|x|, |y|, |y'|, |f|, |F|,
+    |a|, |b|) and the type of the four-argument integration operator:
 
-% \begin{exercise}
-% \textit{From exam 2016-08-23}
+    $$∫_.^. \cdot d\cdot$$
 
-% In the simplest case of probability theory, we start with a
-% *finite*, non-empty set `Ω` of *elementary events*.  *Events* are
-% subsets of `Ω`, i.e. elements of the powerset of Ω, (that is,
-% $\mathcal{P}$ `Ω`).  A *probability function* `P` associates to each
-% event a real number between 0 and 1, such that
+\end{exercise}
 
-%     i.  `P ∅ = 0`, `P Ω = 1`
 
-%     ii.  If events `A` and `B` are disjoint (i.e., `A ∩ B = ∅`),
-%     then`:                     P A + P B = P (A ∪ B)`.
+\begin{exercise}
+  \textit{From exam 2016-08-23}
 
-%     Conditional probabilities are defined as follows (*Elementary
-%     Probability 2nd Edition*, Stirzaker 2003):
+  In the simplest case of probability theory, we start with a
+  \textit{finite}, non-empty set $\Omega$ of \textit{elementary events}.  \textit{Events} are
+  subsets of $\Omega$, i.e. elements of the powerset of $\Omega$, (that is,
+  $\mathcal{P} \Omega$).  a \textit{probability function} |P| associates to each
+  event a real number between 0 and 1, such that
 
-%     > Let `A` and `B` be events with `P B > 0`.  Given that `B`
-%       occurs, the *conditional probability* that `A` occurs is denoted
-%       by `P(A | B)` and defined by
+  \begin{itemize}
 
-%       > `P(A | B) = P(A ∩ B) / P B`
+      \item |P| |∅ = 0|, |P| $\Omega = 1$
 
-% \begin{enumerate}
+      \item |A| and |B| are disjoint (i.e., |A ∩ B = ∅|),
+      then: |P A + P B = P (A ∪ B)|.
+  \end{itemize}
 
-%     \item What are the types of the elements involved in the
-%     definition of conditional probability? (`P`, `∩`, `/`, `|`)
+    Conditional probabilities are defined as follows (\textit{Elementary
+    Probability 2nd Edition}, Stirzaker 2003):
 
-%     \item In the 1933 monograph that set the foundations of
-%     contemporary probability theory, Kolmogorov used, instead of `P(A
-%     | B)`, the expression $P_A\, B$.  Type this expression.  Which
-%     notation do you prefer (provide a *brief* explanation).
+    \begin{quote}
+      Let |A| and |B| be events with |P B > 0|.  given that |B|
+      occurs, the \textit{conditional probability} that |A| occurs is denoted
+      by |P(A| $\vert $ |B)| and defined by
 
-% \end{enumerate}
-% \end{exercise}
+      |P(A| $\vert$ |B) = P(A ∩ B) / P B|
+    \end{quote}
 
-% \begin{exercise}
-% 4. [20pts]
+\begin{enumerate}
 
-%     Consider the following text from Mac Lane's *Mathematics: Form and
-%     Function* (page 168):
+    \item What are the types of the elements involved in the definition of
+        conditional probability? \\ (|P|, ∩, /, $\vert$)
 
-%     > If $z = g(y)$ and $y = h(x)$ are two functions with continuous
-%        derivatives, then in the relevant range $z = g(h(x))$ is a
-%        function of $x$ and has derivative
-%      $$z' (x) = g'(y) * h'(x)$$
+    \item In the 1933 monograph that set the foundations of contemporary
+        probability theory, Kolmogorov used, instead of |P(A| $\vert$ |B)|, the expression
+        $P_A\, B$.  Type this expression.  Which notation do you prefer (provide
+        a \textit{brief} explanation).
 
-%     Give the types of the elements involved (`x`, `y`, `z`, `g`, `h`,
-%     `z'`, `g'`, `h'`, `*` and `'`).
-% \end{exercise}
+\end{enumerate}
+\end{exercise}
+
+
+\begin{exercise}
+    \textit{From Practice Exam 2016}
+
+    Consider the following text from MacLane's \textit{Mathematics: Form and
+    Function} (page 168):
+
+    \begin{quote}
+      If $z = g(y)$ and $y = h(x)$ are two functions with continuous
+      derivatives, then in the relevant range $z = g(h(x))$ is a
+      function of $x$ and has derivative
+    \end{quote}
+
+     $$z' (x) = g'(y) * h'(x)$$
+
+    Give the types of the elements involved (|x|, |y|, |z|, |g|, |h|,
+    |z'|, |g'|, |h'|, |*| and ').
+\end{exercise}
+
 
 \begin{exercise}
 \textit{From exam 2017-03}
