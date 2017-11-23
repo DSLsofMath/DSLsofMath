@@ -69,6 +69,9 @@
 %format phi = "\varphi"
 %format cross x y = x "\times" y
 %format ε = "\epsilon"
+%format δ = "\delta"
+%format getδ = "get\delta"
+%format newδ = "new\delta"
 %%% Use ? to end the variable binding part of forall and exists to avoid clash with . for composition
 %format ? = ".~"
 %format ?? = "?"
