@@ -67,6 +67,8 @@
 %format == = "\doubleequals"
 %format /= = "\not\doubleequals"
 %format phi = "\varphi"
+%format psi = "\psi"
+%format phix = phi "_x"
 %format cross x y = x "\times" y
 %format ε = "\epsilon"
 %format δ = "\delta"

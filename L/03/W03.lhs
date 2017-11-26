@@ -41,18 +41,77 @@ explicitly:
 \subsection{Typing Mathematics: derivative of a function}
 \label{sec:typeDerivative}
 
-Let's start simple with the classical definition of the derivative of
-a one-argument function |f : REAL -> REAL|.
+Let's start simple with the classical definition of the derivative
+from \citet{adams2010calculus}:
 %
-The traditional definition is
+\begin{quote}
+  The \textbf{derivative} of a function |f| is another function |f'| defined by
 %
 \[
-  \frac{df(x)}{dx} = \lim_{h \to 0} \frac{f (x+h) - f(x)}{h}
+  f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
 \]
 %
-Here we already have a few things to note
+at all points |x| for which the limit exists (i.e., is a finite real
+number). If \(f'(x)\) exists, we say that |f| is \textbf{differentiable}
+at |x|.
+\end{quote}
+%
+We can start by assigning types to the expressions in the definition.
+%
+Let's write |X| for the domain of |f| so that we have |f : X -> REAL|
+and |X included REAL| (or, equivalently, |X : PS REAL|).
+%
+If we denote with |Y| the subset of |X| for which |f| is
+differentiable we get |f' : Y -> REAL|
+%
+Thus the operation which maps |f| to |f'| has type |(X->REAL) ->
+(Y->REAL)|.
+%
+Unfortunately, the only notation for this operation given (implicitly)
+in the definition is a postfix prime.
+%
+To make it easier to see we we use a prefix |D| instead and we can
+thus write |D : (X->REAL) -> (Y->REAL)|.
+%
+We will often assume that |X = Y| so that we can can see |D| as
+preserving the type of its argument.
 
-TODO: continue this analysis.
+Now, with the type of |D| sorted out, we can turn to the actual
+definition of the function |D f|.
+%
+The definition is given for a fixed (but arbitrary) |x|.
+%
+He we make small detour to define the |lim| notation.
+
+\begin{quote}
+The limit of a function  TODO: complete from adams
+
+\end{quote}
+
+Coming back to the definition of the derivative we see that the |lim|
+expression is using the (anonymous) function |phi h = frac (f(x+h) - f
+x) h| and that the limit of |phi| is taken at |0|.
+%
+Note that |phi| is defined in the scope of |x| and that its definition
+uses |x| so it can be seen as having |x| as an implicit, first
+argument.
+%
+To be more explicit we write |g x h = frac (f(x+h) - f x) h| and take
+the limit of |g x| at 0.
+%
+So, to sum up, |D f x = lim (g x) 0|.
+%
+\footnote{We could go one step further by noting that |f| is in the scope of |g| and used in its definition.
+%
+Thus the function |psi f x h = g x h|, or |psi f = g|, is used.
+%
+With this notation, and |limAt x f = lim f x|, we obtain a point-free
+definition that can come in handy:
+%
+|D f = limAt 0 . psi f|.}
+
+
+
 
 \subsection{Typing Mathematics: partial derivative}
 \label{sec:typePartialDerivative}
