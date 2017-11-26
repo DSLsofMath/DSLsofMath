@@ -38,6 +38,22 @@ explicitly:
   Exercise: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
 \end{itemize}
 
+\subsection{Typing Mathematics: derivative of a function}
+\label{sec:typeDerivative}
+
+Let's start simple with the classical definition of the derivative of
+a one-argument function |f : REAL -> REAL|.
+%
+The traditional definition is
+%
+\[
+  \frac{df(x)}{dx} = \lim_{h \to 0} \frac{f (x+h) - f(x)}{h}
+\]
+%
+Here we already have a few things to note
+
+TODO: continue this analysis.
+
 \subsection{Typing Mathematics: partial derivative}
 \label{sec:typePartialDerivative}
 
