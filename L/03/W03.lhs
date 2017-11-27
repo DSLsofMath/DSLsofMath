@@ -23,9 +23,9 @@ explicitly:
 
 \begin{itemize}
 \item |lim : (ℕ → ℝ) → ℝ| for \(lim_{n → ∞} \{a_n\}\)
-\item \(d/dt : (ℝ → ℝ) → ℝ → ℝ\)
+\item \(d/dt : (ℝ → ℝ) → (ℝ → ℝ)\)
 \item sometimes, instead of \(df/dt\) one sees \(f'\) or \(\dot{f}\) or |D f|
-\item \(∂f/∂x_i : (ℝⁿ → ℝ) → ℝⁿ → ℝ\)
+\item \(∂f/∂x_i : (ℝⁿ → ℝ) → (ℝⁿ → ℝ)\)
 \item we mostly see \(∂f/∂x\), \(∂f/∂y\), \(∂f/∂z\) etc. when, in the
   context, the function \(f\) has been given a definition of the form
   \(f (x, y, z) = \ldots\)
@@ -89,21 +89,21 @@ The limit of a function  TODO: complete from adams
 \end{quote}
 
 Coming back to the definition of the derivative we see that the |lim|
-expression is using the (anonymous) function |phi h = frac (f(x+h) - f
-x) h| and that the limit of |phi| is taken at |0|.
+expression is using the (anonymous) function |g h = frac (f(x+h) - f
+x) h| and that the limit of |g| is taken at |0|.
 %
-Note that |phi| is defined in the scope of |x| and that its definition
+Note that |g| is defined in the scope of |x| and that its definition
 uses |x| so it can be seen as having |x| as an implicit, first
 argument.
 %
-To be more explicit we write |g x h = frac (f(x+h) - f x) h| and take
-the limit of |g x| at 0.
+To be more explicit we write |phi x h = frac (f(x+h) - f x) h| and take
+the limit of |phi x| at 0.
 %
-So, to sum up, |D f x = lim (g x) 0|.
+So, to sum up, |D f x = lim (phi x) 0|.
 %
-\footnote{We could go one step further by noting that |f| is in the scope of |g| and used in its definition.
+\footnote{We could go one step further by noting that |f| is in the scope of |phi| and used in its definition.
 %
-Thus the function |psi f x h = g x h|, or |psi f = g|, is used.
+Thus the function |psi f x h = phi x h|, or |psi f = phi|, is used.
 %
 With this notation, and |limAt x f = lim f x|, we obtain a point-free
 definition that can come in handy:
