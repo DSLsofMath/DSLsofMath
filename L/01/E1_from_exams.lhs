@@ -1,12 +1,13 @@
-% TODO (DaHe): Newpage before exam exercise?
-
 % TODO (DaHe): I have only included the parts of the exam questions that I think
 % have to do with chapter 1, with the intent that the remaining parts will be
 % covered in later chapters. Should we restate the whole question when the other
 % parts are added, or just refer back to E1? ("In exercise 1.3, we looked at
 % implementing the datatype SR v for the laguage of semiring expressions. We
-% will now revisit this blablabla")
-%
+% will now revisit this blablabla" Answer: refer back.)
+
+TODO: Add an exercise to implement some property as a boolean functions (for example some from the semiring properties.
+
+\newpage
 \begin{exercise}
   \textit{From exam 2017-08-22}
 

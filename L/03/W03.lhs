@@ -81,8 +81,10 @@ definition of the function |D f|.
 %
 The definition is given for a fixed (but arbitrary) |x|.
 %
-He we make small detour to define the |lim| notation.
-
+He we make small detour to define \emph{limit}.
+%
+Here is the definition from \citet{adams2010calculus}.
+%
 \begin{quote}
   \textbf{A formal definition of limit}
 
@@ -90,13 +92,22 @@ He we make small detour to define the |lim| notation.
 
   \[\lim_{x\to a} f(x) = L,\]
 
-if the following condition is satisfied:
-for every number > 0 there exists a number > 0, possibly depending on ,
-such that if 0 < |x a| < , then x belongs to the domain of f and
-| f (x)
-L| < .
+  if the following condition is satisfied:\\
+  for every number \(\epsilon > 0\) there exists a number
+  \(\delta > 0\), possibly depending on \(\epsilon\), such that if
+  |0 < absBar (x - a) < delta|, then \(x\) belongs to the domain of \(f\)
+  and
+  \begin{spec}
+    absBar (f(x) - L) < epsilon {-"."-}
+  \end{spec}
 
 \end{quote}
+%
+The |lim| notation has four components: a variable name |x|, a point
+|a| an expression \(f(x)\) and the limit |L|.
+%
+TODO: cont.
+
 
 Coming back to the definition of the derivative we see that the |lim|
 expression is using the (anonymous) function |g h = frac (f(x+h) - f

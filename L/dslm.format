@@ -86,6 +86,8 @@
 %format Integ = "\int_0^{\infty} "
 %format alpha = "\alpha"
 %format beta  = "\beta"
+%format delta = "\delta"
+%format epsilon  = "\epsilon"
 
 %%% Indexed variable names
 %format a0

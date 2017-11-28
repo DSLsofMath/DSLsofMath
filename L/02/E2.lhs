@@ -10,7 +10,7 @@ import AbstractFOL
   \label{fig:AbstractFOL}
 \end{figure*}
 
-\subsubsection{Exercises for DSLsofMath week 2 (2018)}
+\subsubsection{Exercises}
 \label{exercises-for-dslsofmath-week-2-2017}
 
 The propositional fragment of FOL is given by the rules for ∧, →, ⟷, ¬,
@@ -310,6 +310,7 @@ noContra :: (Either p (p -> Empty) -> Empty) -> Empty
 
 % TODO (DaHe): Fix formatting below so they look good and don't cause errors.
 
+\newpage
 \begin{exercise}
   \textit{From exam 2016-08-23}
 
@@ -351,7 +352,7 @@ noContra :: (Either p (p -> Empty) -> Empty) -> Empty
   \begin{spec}
     C(f)        =  ∀ c : X? Cat(f,c)
     Cat(f,c)    =  ∀ ε > 0? ∃ δ > 0? Q(f,c,ε,δ)
-    Q(f,c,ε,δ)  =  ∀ x : X?  abs(x - c) < δ  ⇒  abs(f x - f c) < ε
+    Q(f,c,ε,δ)  =  ∀ x : X?  absBar(x - c) < δ  ⇒  absBar(f x - f c) < ε
   \end{spec}
 
   By moving the existential quantifier outwards we can introduce the
@@ -366,8 +367,8 @@ noContra :: (Either p (p -> Empty) -> Empty) -> Empty
   \begin{quote}
     \textbf{Definition:} Let $X ⊆ ℝ$.  A function $f : X \to ℝ$ is
     \emph{uniformly continuous} if for every $\epsilon > 0$, there exists $\delta > 0$
-    such that, for every $x$ and $y$ in the domain of $f$, if |abs (x - y)
-    < δ |, then |abs (f x - f y) < ε|.
+    such that, for every $x$ and $y$ in the domain of $f$, if |absBar (x - y)
+    < δ |, then |absBar (f x - f y) < ε|.
   \end{quote}
 
   \begin{enumerate}
@@ -386,6 +387,7 @@ noContra :: (Either p (p -> Empty) -> Empty) -> Empty
   \end{enumerate}
 \end{exercise}
 
+\subsubsection{More exercises}
 
 
 Preliminary remarks

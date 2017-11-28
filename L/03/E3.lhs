@@ -18,7 +18,7 @@
 % data Suit = Hearts | Spades | Diamonds | Clubs
 %     deriving(Eq, Show)
 
-% data Rank = Numeric Integer | Jack | Queen | King | Ace
+% data Rank = Numeric Integer | Jack | Queen | King | Ace
 %     deriving(Eq, Show)
 
 % data Hand = Empty | Add Card Hand
@@ -42,19 +42,38 @@
 % expressions involved. Should be split into parts, similar to exam questions.
 % (This should probably come first)
 
+\subsection{Exercises from old exams}
+
+\begin{exercise}
+    \textit{From Practice Exam 2016}
+
+    Consider the following text from MacLane's \textit{Mathematics: Form and
+    Function} (page 168):
+
+    \begin{quote}
+      If $z = g(y)$ and $y = h(x)$ are two functions with continuous
+      derivatives, then in the relevant range $z = g(h(x))$ is a
+      function of $x$ and has derivative
+    \end{quote}
+
+     $$z' (x) = g'(y) * h'(x)$$
+
+    Give the types of the elements involved (|x|, |y|, |z|, |g|, |h|,
+    |z'|, |g'|, |h'|, |*| and ').
+\end{exercise}
 
 \begin{exercise}
   \textit{From exam 2016-03-16}
 
-   Consider the following text from Mac Lane's *Mathematics: Form and Function* (page 182):
+   Consider the following text from Mac Lane's \emph{Mathematics: Form and Function} (page 182): TODO proper citation
 
    \begin{quote}
-     In these cases one tries to find not the values of `x` which
-     make a given function `y = f(x)` a minimum, but the values of a given
-     function `f(x)` which make a given quantity a minimum.  Typically,
+     In these cases one tries to find not the values of |x| which
+     make a given function |y = f(x)| a minimum, but the values of a given
+     function |f(x)| which make a given quantity a minimum.  Typically,
      that quantity is usually measured by an integral whose integrand is
-     some expression `F` involving both `x`, values of the function `y =
-     f(x)` at interest and the values of its derivatives - say an
+     some expression |F| involving both |x|, values of the function |y =
+     f(x)| at interest and the values of its derivatives - say an
      integral
    \end{quote}
 
@@ -110,27 +129,14 @@
 \end{exercise}
 
 
-\begin{exercise}
-    \textit{From Practice Exam 2016}
-
-    Consider the following text from MacLane's \textit{Mathematics: Form and
-    Function} (page 168):
-
-    \begin{quote}
-      If $z = g(y)$ and $y = h(x)$ are two functions with continuous
-      derivatives, then in the relevant range $z = g(h(x))$ is a
-      function of $x$ and has derivative
-    \end{quote}
-
-     $$z' (x) = g'(y) * h'(x)$$
-
-    Give the types of the elements involved (|x|, |y|, |z|, |g|, |h|,
-    |z'|, |g'|, |h'|, |*| and ').
-\end{exercise}
 
 
 \begin{exercise}
 \textit{From exam 2017-03}
+
+(Note that this exam question was later included as one of the
+examples in this chapter, see \ref{sec:typePartialDerivative}. It is
+kept here in case you want to check if you remember it!)
 
 Consider the following text from page 169 of Mac Lane [1968]: %\cite{maclane1986mathematics}:
 
