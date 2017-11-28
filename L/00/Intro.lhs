@@ -139,7 +139,7 @@ new domain.
 Second, they should be able to handle new mathematical areas using the
 computer science perspective.
 
-To achieve these objective, the course consists of a sequence of case
+To achieve these objectives, the course consists of a sequence of case
 studies in which a mathematical area is first presented (for example,
 a fragment of linear algebra, probability theory, interval analysis,
 or differential equations), followed by a careful analysis that
@@ -276,7 +276,7 @@ expect all students to be familiar with them (for example, limits of
 sequences, continuous functions, derivatives) or because they can be
 useful in many applications (e.g., Laplace transforms, linear algebra).
 
-\subsection{Who should read this book}
+\subsection{Who should read these lecture notes?}
 
 TODO: Convert formal prerequisites to ``what is expected of the reader''
 

@@ -693,7 +693,7 @@ We can compute a few example values:
   \\ 7 & 71 &\ldots
 \end{tabular}
 
-\subsection{Existantial quantification as a pair type}
+\subsection{Existential quantification as a pair type}
 
 We mentioned before that existential quantification can be seen as as
 a ``big |Or|'' of a family of formulas |P a| for all terms |a|.

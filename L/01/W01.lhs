@@ -49,7 +49,7 @@ and then a certain notation for a function, or expression, to be
 integrated.
 %
 Comparing the part after the integral sign to the syntax of a function
-definition \(f(x) = x^2\) reveals the a rather odd rule: instead of
+definition \(f(x) = x^2\) reveals a rather odd rule: instead of
 \emph{starting} with declaring the variable \(x\), the integral syntax
 \emph{ends} with the variable name, and also uses the letter ``d''.
 %
@@ -118,8 +118,8 @@ the Laplace transformation could very well return a function of the
 %
 We can understand that the name of the variable is used to carry
 semantic meaning about its type (this is also common in functional
-programming, for example with the conventional use of |as| to denote a
-list of |a|s).
+programming, for example with the conventional use of a plural "s"
+suffix, as in the name |xs|, to denote a list of values.).
 %
 Moreover, by using this (implicit!) convention, it is easier to deal
 with cases such as that of the Hartley transform (a close relative of
@@ -238,14 +238,10 @@ data E = V String | P E E | T E E
 This declaration introduces
 
 \begin{itemize}
-\item
-  a new type |E| for simple arithmetic expressions,
-\item
-  a constructor |V :: String -> E| to represent variables,
-\item
-  a constructor |P :: E -> E -> E| to represent plus, and
-\item
-  a constructor |T :: E -> E -> E| to represent times.
+\item a new type |E| for simple arithmetic expressions,
+\item a constructor |V :: String -> E| to represent variables,
+\item a constructor |P :: E -> E -> E| to represent plus, and
+\item a constructor |T :: E -> E -> E| to represent times.
 \end{itemize}
 
 Example values: |x = V "x"|, |e1 = P x x|, |e2 = T e1 e1|
@@ -262,18 +258,13 @@ Example values: |y = V "y"|, |e1 = y :+ y|, |e2 = x :* e1|
 Finally, you can add one or more type parameters to make a whole family
 of datatypes in one go:
 
-\begin{code}
-data ComplexSy v r  =  Var v
-                    |  FromCart r r
-                    |  ComplexSy v r  :++  ComplexSy v r
-                    |  ComplexSy v r  :**  ComplexSy v r
-\end{code}
+(TODO: perhaps say something about the constuctor names)
+\begin{spec}
+data E' v = V' v | E' v :+ E' v | E' v :* E' v
+\end{spec}
 
-The purpose of the first parameter |v| here is to enable a free choice
-of type for the variables (be it |String| or |Int| or something else)
-and the second parameter |r| makes is possible to express ``complex
-numbers over'' different base types (like |Double|, |Float|, |Integer|,
-etc.).
+The purpose of the parameter |v| here is to enable a free choice of
+type for the variables (be it |String| or |Int| or something else).
 
 \subsubsection{|Env|, |Var|, and variable lookup}
 
@@ -284,27 +275,31 @@ type Env v s = [(v,s)]
 \end{spec}
 
 is one way of expressing a partial function from |v| to |s|.
-
-Example value:
-
+%
+As an example value of this type:
+%
 \begin{code}
 env1 :: Env String Int
 env1 = [("hej", 17), ("du", 38)]
 \end{code}
 
+TODO: Move this paragraph later and instead just explain (or define) |lookup|. include a comment about syntax and semantics.
+
 The |Env| type is commonly used in evaluator functions for syntax trees
 containing variables:
+%
+TODO: explain ``the evaluator'' (a function from the syntax to the semantics)
 
+TODO: handle the partial function problem using Maybe.
 \begin{code}
-evalExp :: Eq v => Env v sem -> (Exp v -> sem)
-evalExp env (Var x) = case lookup x env of
+evalE' :: Eq v => Env v sem -> (E' v -> Maybe sem)
+evalE' env (V' x) = case lookup x env of
                         Just c -> undefined -- ...
 -- ...
 \end{code}
 
 Notice that |env| maps ``syntax'' (variable names) to ``semantics'',
 just like the evaluator does.
-
 
 \subsection{A case study: complex numbers}
 
@@ -450,24 +445,23 @@ testS1 = map showCA testC1
 \end{code}
 %endif
 
-
 We interpret the sentence ``The last of these examples \ldots'' to
 mean that there is an embedding of the real numbers in |ComplexA|,
 which we introduce explicitly:
 
 \begin{code}
 toComplex :: REAL -> ComplexA
-toComplex x = CPlus1 x 0 i
+toComplex x = CPlus1 x 0 I
 \end{code}
 
 Again, at this stage there are many open questions.
 %
 For example, we can assume that |i 1| stands for the complex number
-|CPlus2 0 i 1|, but what about |i| by itself?
+|CPlus2 0 I 1|, but what about |i| by itself?
 %
 If juxtaposition is meant to denote some sort of multiplication, then
 perhaps |1| can be considered as a unit, in which case we would have
-that |i| abbreviates |i 1| and therefore |CPlus2 0 i 1|.
+that |i| abbreviates |i 1| and therefore |CPlus2 0 I 1|.
 %
 But what about, say, |2i|?
 %
@@ -530,8 +524,7 @@ information:
 to check equality for complex numbers, it is enough to check equality
 of the components (the arguments to the constructor |CPlusC|).
 %
-(Another way of saying this is that |CPlusC| is semantically
-injective.)
+(Another way of saying this is that |CPlusC| is injective.)
 %
 The equality on complex numbers is what we would obtain in Haskell by
 using |deriving Eq|.
@@ -644,8 +637,7 @@ So far we have tried to find a datatype to represent the intended
 %
 That approach is called ``shallow embedding''.
 %
-Now we turn to the \emph{syntax} instead (``deep
-embedding'').
+Now we turn to the \emph{syntax} instead (``deep embedding'').
 
 We want a datatype |ComplexE| for the abstract syntax tree of
 expressions.
@@ -671,9 +663,17 @@ data ComplexE  =  ImagUnit
                |  Times  ComplexE  ComplexE
  deriving (Eq, Show)
 \end{code}
+%
+Note that, in |ComplexA| above, we also had a constructor for
+``plus'', but it was another ``plus''.
+%
+They are distinguished by type: |CPlus1| took (basically) two real
+numbers, while |Plus| here takes two complex numbers as arguments.
 
-And we can write the evaluator by induction over the syntax tree:
+We can implement the evaluator |evalE| by pattern matching on the
+syntax tree and recursion.
 
+TODO: mention ``whishful thinkning''
 \begin{code}
 evalE ImagUnit         = CD (0 , 1)
 evalE (ToComplex r)    = CD (r , 0)
@@ -698,6 +698,8 @@ numbers.
 %
 The simplest is perhaps |square i = -1| from the start of the lecture,
 
+TODO: Explain the use of functions to Bool as specifications where the reading should be ``forall inputs, this should return True''
+%
 \begin{code}
 propImagUnit :: Bool
 propImagUnit = Times ImagUnit ImagUnit === ToComplex (-1)
@@ -705,6 +707,7 @@ propImagUnit = Times ImagUnit ImagUnit === ToComplex (-1)
 (===) :: ComplexE -> ComplexE -> Bool
 z === w  =  evalE z == evalE w
 \end{code}
+TODO: format |===| in a similar way as |==|
 
 and that |fromCD| is an embedding:
 
@@ -871,11 +874,11 @@ real and imaginary components) we can do that for any underlying type
 
 \begin{code}
 type CS = CSem.ComplexSem -- for shorter type expressions below
-liftPlus ::  (r     -> r     -> r     ) ->
-             (CS r  -> CS r  -> CS r  )
-liftPlus (+) (CS (x, y)) (CS (x', y')) = CS (x+x', y+y')
+liftCS ::  (    r  ->     r  ->     r  ) ->
+           (CS  r  -> CS  r  -> CS  r  )
+liftCS (+) (CS (x, y)) (CS (x', y')) = CS (x+x', y+y')
 \end{code}
-Note that |liftPlus| takes |(+)| as its first parameter and uses it
+Note that |liftCS| takes |(+)| as its first parameter and uses it
 twice on the RHS.
 
 %TODO: Perhaps also add as an exercise to use Num to make the parameter implicit. But this should perhaps be placed in a later chapter after Num has been properly introduced.
@@ -953,7 +956,7 @@ which may take a while to get used to.
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
 As a bit of preparation for the language of sequences and limits in
-later lctures we here spend a few lines on the notation and abstract
+later lectures we here spend a few lines on the notation and abstract
 syntax of sequences.
 
 Common math book notation: $\left\{ a_i \right\}_{i=0}^{\infty}$ or
@@ -969,7 +972,7 @@ If we interpret ``subscript'' as function application we can see that
 Some examples:
 %
 \begin{code}
-type Nat = Integer
+type Nat = Integer   -- TODO: hide or explain why Integer is used instead of proper natural numbers
 type Seq a = Nat -> a
 
 idSeq :: Seq Nat
@@ -1109,3 +1112,18 @@ showCD (CD (x, y)) = show x ++ " + " ++ show y ++ "i"
 \end{code}
 
 %include E1.lhs
+
+% ----------------------------------------------------------------
+
+TODO: remove or use some left overs:
+
+\begin{code}
+data ComplexSy v r  =  Var v
+                    |  FromCart r r
+                    |  ComplexSy v r  :++  ComplexSy v r
+                    |  ComplexSy v r  :**  ComplexSy v r
+\end{code}
+ and
+the second parameter |r| makes is possible to express ``complex
+numbers over'' different base types (like |Double|, |Float|,
+|Integer|, etc.).

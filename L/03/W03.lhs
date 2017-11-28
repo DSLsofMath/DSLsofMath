@@ -84,7 +84,17 @@ The definition is given for a fixed (but arbitrary) |x|.
 He we make small detour to define the |lim| notation.
 
 \begin{quote}
-The limit of a function  TODO: complete from adams
+  \textbf{A formal definition of limit}
+
+  We say that \(f(x)\) \textbf{approaches the limit} \(L\) as \(x\) \textbf{approaches} \(a\), and we write
+
+  \[\lim_{x\to a} f(x) = L,\]
+
+if the following condition is satisfied:
+for every number > 0 there exists a number > 0, possibly depending on ,
+such that if 0 < |x a| < , then x belongs to the domain of f and
+| f (x)
+L| < .
 
 \end{quote}
 
