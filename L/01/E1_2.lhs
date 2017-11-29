@@ -3,7 +3,7 @@
 We will now look at a slightly more generalized version of the |Exp| type from the previous exercise:
 %
 \begin{code}
-data E2 a  =  Num a
+data E2 a  =  Con a
            |  Var String
            |  E2 a  `Plus`   E2 a
            |  E2 a  `Minus`  E2 a
@@ -17,9 +17,9 @@ The type has now been parametrized, so that it is no longer limited to represent
 %
     \item Write the following expressions in Haskell, using the new |E2| data type.
     \begin{enumerate}
-        \item \(a1 = 2.0 + a\)
-        \item \(a2 = 5.3 + b * c\)
-        \item \(a3 = a(b + c) - (d + e)(f + a)\)
+        \item |a1 = 2.0 + a|
+        \item |a2 = 5.3 + b * c|
+        \item |a3 = a*(b + c) - (d + e)*(f + a)|
     \end{enumerate}
     %
     % TODO I limited the type to String variable names to keep things simple for the time being. Should I parametrize this instead, so we get |Env v a| instead of just |Env a|?
@@ -39,12 +39,15 @@ The type has now been parametrized, so that it is no longer limited to represent
     \end{tabular}
     \end{table}
     %
-    In Haskell, we can represent this table using the type |type Env a = [(String, a)]|, which is a list of pairs of variable names and values, where each entry in the list corresponds to a row in the table.
-    %
+    In Haskell, we can represent this table using a value of type |Env
+    String a = [(String, a)]|, which is a list of pairs of variable
+    names and values, where each entry in the list corresponds to a
+    row in the table.
+    %**TODO: remind about (partial) functions
     \begin{enumerate}
-        \item E2ress the table above in Haskell by creating |vars :: Env Double|.
+        \item Express the table above in Haskell by creating |vars :: Env Double|.
         \item Create a function |varVal :: Env a -> String -> a| that returns the value of a variable, given an |Env| and a variable name. For instance, |varVal vars "d"| should return 7.4
-        \item Create a function |eval:: Num a => Env a -> E2 -> a| that takes a value of the new |E2| data type and returns the corresponding number. For instance, |eval vars ((Num 2) `Plus` (Var "a")) == 3.5|. Try it on the expressions from the first part, and verify that it works as expected.
+        \item Create a function |eval:: Num a => Env a -> E2 -> a| that takes a value of the new |E2| data type and returns the corresponding number. For instance, |eval vars ((Con 2) `Plus` (Var "a")) == 3.5|. Try it on the expressions from the first part, and verify that it works as expected.
 
     \end{enumerate}
 %

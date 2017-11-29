@@ -67,22 +67,22 @@ TODO: Add an exercise to implement some property as a boolean functions (for exa
   \item |∨| and |∧| are associative:
 
     \begin{spec}
-      ∀ x, y, z ∈ L       (x ∨ y) ∨ z = x ∨ (y ∨ z)
-      ∀ x, y, z ∈ L       (x ∧ y) ∧ z = x ∧ (y ∧ z)
+      Forall (x, y, z ∈ L)      ((x ∨ y) ∨ z = x ∨ (y ∨ z))
+      Forall (x, y, z ∈ L)      ((x ∧ y) ∧ z = x ∧ (y ∧ z))
     \end{spec}
 
   \item |∨| and |∧| are commutative:
 
     \begin{spec}
-      ∀ x, y ∈ L           x ∨ y = y ∨ x
-      ∀ x, y ∈ L           x ∧ y = y ∧ x
+      Forall (x, y ∈ L)         (x ∨ y = y ∨ x)
+      Forall (x, y ∈ L)         (x ∧ y = y ∧ x)
     \end{spec}
 
   \item |∨| and |∧| satisfy the \emph{absorption laws}:
 
     \begin{spec}
-      ∀ x, y ∈ L           x ∨ (x ∧ y) = x
-      ∀ x, y ∈ L           x ∧ (x ∨ y) = x
+      Forall (x, y ∈ L)         (x ∨ (x ∧ y) = x)
+      Forall (x, y ∈ L)         (x ∧ (x ∨ y) = x)
     \end{spec}
   \end{itemize}
 
@@ -105,19 +105,19 @@ TODO: Add an exercise to implement some property as a boolean functions (for exa
   \item |0| is a unit of |⊕|
 
     \begin{spec}
-      ∀ x ∈ M           x ⊕ 0 = x  and 0 ⊕ x = x
+      Forall (x ∈ M)           (0 ⊕ x = x ⊕ 0 = x)
     \end{spec}
 
   \item |⊕| is associative
 
     \begin{spec}
-      ∀ x, y, z ∈ M     x ⊕ (y ⊕ z) = (x ⊕ y) ⊕ z
+      Forall (x, y, z ∈ M)     (x ⊕ (y ⊕ z) = (x ⊕ y) ⊕ z)
     \end{spec}
 
   \item |⊕| is commutative
 
     \begin{spec}
-      ∀ x, y ∈ M        x ⊕ y = y ⊕ x
+      Forall (x, y ∈ M)        (x ⊕ y = y ⊕ x)
     \end{spec}
 
   \end{itemize}

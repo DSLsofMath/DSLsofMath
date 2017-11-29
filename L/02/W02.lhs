@@ -45,7 +45,7 @@ TODO: tidy up the notes below
 Swedish: Satslogik
 
 \begin{tabular}{lll}
-   |A|, |B|, |C|, \ldots  & names of propositions &
+   |a|, |b|, |c|, \ldots  & names of propositions &
 \\ |False|, |True| & Constants &
 \\ |And|      & $\wedge$       & |&|
 \\ |Or|       & $\vee$         & ||||
@@ -58,14 +58,14 @@ Example:
 \begin{code}
 sw :: PropCalc
 sw = ((a & b) -=> (b & a))
-  where  a = N "A"
-         b = N "B"
+  where  a = N "a"
+         b = N "b"
 \end{code}
 %
 The example is based on the following embedding of propositional calculus terms:
 \begin{code}
-data PropCalc  =  N  Name
-               |  C  Bool
+data PropCalc  =  Con   Bool
+               |  Name  String
                |  And      PropCalc  PropCalc
                |  Or       PropCalc  PropCalc
                |  Implies  PropCalc  PropCalc
@@ -73,13 +73,12 @@ data PropCalc  =  N  Name
 
 (&) = And
 (-=>) = Implies
-
-type Name = String
 \end{code}
 With this datatype we can write an evaluator to |Bool| which computes
 the truth value of a term given an enviroment:
 %
 \begin{code}
+type Name = String
 evalPC :: (Name -> Bool) -> PropCalc -> Bool
 evalPC = error "Exercise"
 \end{code}
@@ -102,12 +101,15 @@ A value of this type is a mapping from a truth table to |Bool|.
 This mapping is often also tabulated as a truth table with one more
 ``output'' column.
 
-As a first example, consider the proposition |t = Implies False a|.
+As a first example, consider the proposition |t = Implies (Con False) a|.
+%
+We will use the shorter notation with just |T| for true and |F| for
+false.
 %
 The truth table semantics of |t| is usually drawn as follows: one
-column for the name |a| listing all combinations of |T = Truth| and |F
-= False|, and one column for the result of evaluating the expression.
-%
+column for the name |a| listing all combinations of |T| and |F|, and
+one column for the result of evaluating the expression.
+
 \begin{tabular}{||l||l||}
     \hline   a & t
   \\\hline   F & T

@@ -1,3 +1,17 @@
+\begin{exercise}
+  To get a feeling for the Lagrange equations, let |L(t, q, v) =
+  m*v^2/2 + m*g*q|, compute |expand w|, perform the derivatives and check if the equation is satisfied for
+  \begin{itemize}
+  \item |w1 = id| or
+  \item |w2 = sin| or
+  \item |w3 = (q0-).(g*).(/2).(^2)|
+  \end{itemize}
+\end{exercise}
+% \begin{exercise}
+%   TODO: perhaps add a few more Lagrange equation examples: pendulum, double pendulum, several particles in a gravitational field, etc.
+% See blackboard/W3/20170130_154754.jpg
+% \end{exercise}
+
 % TODO (DaHe): Exercise introducing deep vs shallow embedding using type classes
 % also, maybe introduce the concept of using type classes to return a deep
 % embedding by using the operators of the data type, and casting to the

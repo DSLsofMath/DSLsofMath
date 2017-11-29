@@ -2,7 +2,7 @@
   Consider the following data type for simple arithmetic expressions:
   %
   \begin{code}
-   data Exp  =  Num Integer
+   data Exp  =  Con Integer
              |  Exp  `Plus`   Exp
              |  Exp  `Minus`  Exp
              |  Exp  `Times`  Exp
@@ -22,15 +22,16 @@
   \end{enumerate}
     %
     \item Create a function |eval :: Exp -> Integer| that takes a value of the |Exp| data type
-       and returns the corresponding number (for instance, |eval ((Num 3) `Plus` (Num 3)) == 6|).
+       and returns the corresponding number (for instance, |eval ((Con 3) `Plus` (Con 3)) == 6|).
        Try it on the expressions from the first part, and verify that it works as expected.
     %
     \item Consider the following expression:
-       $$c1 = (x - 15)*(y + 12)*z$$
-       where: \\
-       $x = 5$, \\
-       $y = 8$, \\
-       $z = 13$
+       \begin{spec}
+         c1 = (x - 15)*(y + 12)*z
+          where  x = 5
+                 y = 8
+                 z = 13
+       \end{spec}
 
        In order to represent this with our |Exp| data type, we are going to have
        to make some modifications:

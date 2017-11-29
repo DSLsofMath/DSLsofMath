@@ -675,9 +675,9 @@ TODO: End of aside - connect back to the |x->a| instance
 Next we have |Fractional| for when we also have division:
 \begin{spec}
 class  Num a => Fractional a  where
-    (/)          :: a -> a -> a
-    recip        :: a -> a
-    fromRational :: Rational -> a
+    (/)           :: a -> a -> a
+    recip         :: a -> a             -- (1/)
+    fromRational  :: Rational -> a
 \end{spec}
 and |Floating| when we can implement the ``standard'' funtions from calculus:
 \begin{spec}
@@ -716,10 +716,71 @@ the elements involved is not important from the point of view of the
 type class, only from that of its implementation.
 
 
+\subsection{Type classes in Haskell}
 
+We now abstract from |Num| and look at what a type class is and how it
+is used.
+%
+One view of a type class is as a set of types.
+%
+For |Num| that is the set of ``numeric types'', for |Eq| the set of
+``types with computable equality'', etc.
+%
+The types in this set are called instances and are declared by
+|instance| declarations.
+%
+When a class |C| is defined, there are no types in this set (no
+instances).
+%
+In each Haskell module where |C| is in scope there is a certain
+collection of instance declarations.
+%
+Here is an example of a class with just two instances:
+%
+\begin{code}
+class C a where
+  foo :: a -> a
+instance C Integer where
+  foo = (1+)
+instance C Char where
+  foo = toUpper
+\end{code}
+%
+Here we see the second view of a type class: as a collection of
+overloaded methods (here just |foo|).
+%
+Overloaded here means that the same symbol can be used with different
+meaning at different types.
+%
+If we use |foo| with an integer it will add one, but if we use it with
+a character it will convert it to upper case.
+%
+The full type of |foo| is |C a => a -> a| and this means that it can
+be used at any type |a| for which there is an instance of |C| in
+scope.
+
+Instance declarations can also be parameterised:
+\begin{code}
+instance C a => C [a] where
+  foo xs = map foo xs
+\end{code}
+This means that for any type |a| which is already an instance of |C|
+we also make the type |[a]| an instance (recursively).
+%
+Thus, we now have an infinite collection of instances of |C|: |Char|,
+|[Char]|, |[[Char]]|, etc.
+%
+Similarly, with the function instance for |Num| above, we immediately
+make the types |x->Double|, |x->(y->Double)|, etc.\ into instances
+(for all |x|, |y|, \ldots).
+
+TODO: parhaps make the ``looks recursive'' |fromInteger| example talk
+about |foo| instead? (And then just mention |fromInteger| shortly.)
 
 \subsection{Computing derivatives}
 \label{sec:computingDerivatives}
+
+TODO: intro text
 
 The ``little language'' of derivatives:
 
@@ -793,7 +854,12 @@ makes the following diagram commute:
   |FunExp| \arrow[r, "|eval|"]                        & |Func|
 \end{tikzcd}
 
-In other words, for any expression |e|, we want
+In other words we want
+%
+\begin{spec}
+     eval . derive e = D . eval
+\end{spec}
+or, in other words, for any expression |e|, we want
 %
 \begin{spec}
      eval (derive e) = D (eval e)

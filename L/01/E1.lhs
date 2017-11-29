@@ -7,7 +7,7 @@
 %
 \begin{exercise}
   Read the full chapter and complete the definition of the
-  instance for |Num| for the datatype `ComplexSyn`.
+  instance for |Num| for the datatype |ComplexSyn|.
   %
   Also add a constructor for variables to enable writing expressions
   like |(Var "z") :*: toComplex 1|.

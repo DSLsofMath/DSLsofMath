@@ -82,6 +82,7 @@
 %format <=> = "\Leftrightarrow"
 %format <== = "\Leftarrow"
 %format ->? = "\stackrel{?}{\leftarrow}"
+%format -=> = "\mathrel{{-}\!{=}\!{>}}"
 
 %format Integ = "\int_0^{\infty} "
 %format alpha = "\alpha"
