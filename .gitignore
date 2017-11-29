@@ -23,3 +23,5 @@ cabal.sandbox.config
 *.dvi
 *.toc
 Lecture*.pdf
+*.swp
+*.swo

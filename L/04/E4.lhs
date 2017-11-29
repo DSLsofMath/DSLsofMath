@@ -137,3 +137,30 @@
 
 
 \end{exercise}
+
+
+\begin{exercise}
+
+  Based on the \hyperref[types-in-mathematics]{lecture notes}, complete all the instance and
+  datatype declarations and definitions in the files \\
+  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/FunNumInst.lhs}{FunNumInst.lhs}, \\
+  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/FunExp.lhs}{FunExp.lhs}, \\
+  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/Derive.lhs}{Derive.lhs}, \\
+  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/EvalD.lhs}{EvalD.lhs}, and \\
+  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/ShallowD.lhs}{ShallowD.lhs}.
+
+\end{exercise}
+
+
+\begin{exercise}
+  Write a function
+
+  |simplify  ::  FunExp -> FunExp|
+
+  to simplify the expression resulted from |derive|.  For example
+
+  |simplify (Const 0 :*: Exp Id)   =  Const 0|
+  |simplify (Const 0 :+: Exp Id)   =  Exp Id|
+  |simplify (Const 2 :*: Const 1)  =  Const 2|
+
+\end{exercise}

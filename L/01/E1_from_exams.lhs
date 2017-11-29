@@ -43,8 +43,7 @@ TODO: Add an exercise to implement some property as a boolean functions (for exa
   \begin{enumerate}
 
   \item Define a datatype |SR v| for the language of semiring
-    expressions (with variables of type |v|) and define a |SemiRing|
-    instance for it.
+    expressions (with variables of type |v|).
     %
     (These are expressions formed from applying the semiring
     operations to the appropriate number of arguments, e.g., all the
