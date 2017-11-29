@@ -1,3 +1,6 @@
+%
+% TODO: The ^ looks a bit strange below
+%
 \begin{exercise}
   To get a feeling for the Lagrange equations, let |L(t, q, v) =
   m*v^2/2 + m*g*q|, compute |expand w|, perform the derivatives and check if the equation is satisfied for

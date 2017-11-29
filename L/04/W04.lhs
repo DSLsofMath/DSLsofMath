@@ -621,3 +621,7 @@ instance Num E where -- Some abuse of notation (no proper |negate|, etc.)
 negateE (Con c) = Con (negate c)
 negateE _ = error "negate: not supported"
 \end{code}
+
+\subsection{Exercises}
+
+%include E4.lhs
