@@ -12,6 +12,10 @@ From \cite{adams2010calculus}, page 55:
 A \textbf{polynomial} is a function $P$ whose value at $x$ is
 
 \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
+%
+% TODO(by DaHe): By "original spelling", do you mean that the word "polynomial"
+% used to be spelled "polymonial", or that it was misspelled in the book? (Sic.)
+%
 
 where $a_n$, $a_{n-1}$, \ldots, $a_1$, and $a_0$, called the
 \textbf{coefficients} of the polymonial [original spelling], are
@@ -133,6 +137,10 @@ argument.
 %
 For an arbitrary |x|
 
+%
+% TODO: (by DaHe) Can we put the annotations to the right instead of between the
+% rows in the example(s) below?
+%
 \begin{spec}
   (evalPoly as + evalPoly bs) x = evalPoly (as + bs) x
 
@@ -177,9 +185,13 @@ For the left-hand side, we have:
 
 The homomorphism condition will hold for every |x| if we define
 
-\begin{spec}
-(a : as) + (b : bs)  = (a + b) : (as + bs)
-\end{spec}
+%
+% TODO (by DaHe): This makes it sound like this definition of polynomial
+% addition is something we invent here to make the homomorphism condition
+% hold. But it seems to me this is the most logical way to define addition of
+% polynomials anyway? Maybe this should be discussed/commented on here
+%
+\begin{spec} (a : as) + (b : bs)  = (a + b) : (as + bs) \end{spec}
 
 We leave the derivation of the other cases and operations as an
 exercise.
@@ -210,6 +222,10 @@ polyMul (Cons a as)  (Cons b bs)  =  Cons (a * b) (polyAdd  (polyMul as (Cons b 
 polyNeg :: Num a => Poly a -> Poly a
 polyNeg = fmap negate
 \end{code}
+%
+% TODO (by DaHe): I don't think fmap has been explained at this point (or at any
+% point in the course)
+%
 %
 Therefore, we \emph{can} define a ring structure (the mathematical
 counterpart of |Num|) on |Poly a|, and we have arrived at the
