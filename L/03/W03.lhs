@@ -131,16 +131,42 @@ definition that can come in handy:
 %
 |D f = limAt 0 . psi f|.}
 
+The key here is that we name, type, and specify the operation of
+computing the derivative (of a one-argument function).
+%
+We will use this operation quite a bit in the rest of the book, but
+here are just a few examples to get used to the notation.
 
+\begin{spec}
+  sq x =  x^2
+  double x = 2*x
+  c2 x = 2
+  sq' =  D sq = D (\x -> x^2) = D ({-"{}"-}^2) = (2*) = double
+  sq'' = D sq' = D double = c2 = const 2
+\end{spec}
 
+What we cannot do at this stage is to actually \emph{implement} |D| in
+Haskell.
+%
+If we only have a function |f : REAL -> REAL| as a ``black box'' we
+cannot really compute the actual derivative |f' : REAL -> REAL|, only
+numerical approximations.
+%
+But if we also have access to the ``source code'' of |f|, then we can
+apply the usual rules we have learnt in calculus.
+%
+We will get get back to this question in section
+\ref{sec:computingDerivatives}.
 
 \subsection{Typing Mathematics: partial derivative}
 \label{sec:typePartialDerivative}
 
-As as an example we will try to type the elements of a mathematical
-definition.
-
-For example, on page 169 of \cite{maclane1986mathematics}, we read
+Continuing on our quest of typing the elements of mathematical
+textbook definitions we now turn to a functions of more than one
+argument.
+%
+Our example here will is from page 169 of
+\cite{maclane1986mathematics}, where we read
 
 \begin{linenumbers}
 \begin{quote}
@@ -161,7 +187,9 @@ For example, on page 169 of \cite{maclane1986mathematics}, we read
 \end{linenomath*}
 \end{linenumbers}
 
-What are the types of the elements involved?  We have
+What are the types of the elements involved?
+%
+We have
 
 %{
 %format f'x = "f''_{x}"
@@ -230,6 +258,8 @@ There is the added difficulty that, just like the subscript in |f'x|,
 the |x| in |∂ x| is not the |x| bound by the universal quantifier, but
 just a symbol.
 %}
+
+%TODO: perhaps mention "total derivative" at this stage. That could serve as an intermediate step towards the Langrangian, or could be added after it.
 
 \subsection{Type inference and understanding: Lagrangian case study}
 \label{type-inference-and-understanding}
@@ -557,9 +587,37 @@ instance Num a => Num (x -> a) where
   fromInteger  =  const . fromInteger
 \end{code}
 
-TODO: Start of aside - make it fit in the text better
+This instance for functions allows us to write expressions like |sin +
+cos :: Double -> Double| or |sq * double :: Integer -> Integer|.
+%
+As another example:
+\begin{spec}
+  sin^2 = \x -> (sin x)^(const 2 x) = \x -> (sin x)^2
+\end{spec}
+%
+thus the typical math notation \(\sin^2\) works fine in Haskell.
+%
+(Note that there is a clash with another use of superscript for functions: sometimes |f^n| means \emph{composition} of |f| with itself |n| times.
+%
+With that reading \(sin^2\) would mean |\x->sin (sin x)|.)
 
-\subsubsection{fromInteger (looks recursive)}
+%
+Exercise: play around with this a bit in ghci.
+
+
+\subsubsection{Overloaded integers literals}
+
+In Haskell, every use of an integer literal like |2|, |1738|, etc., is
+actually implicitly an application of |fromInteger| to the literal.
+%
+This means that the same program text can have different meaning
+depending on the type of the context.
+%
+The literal |two = 2|, for example, can be used as an integer, a real
+number, a complex number, or even as a (constant) function (by the
+instance |Num (x -> a)|).
+
+TODO: Start of aside - make it fit in the text better
 
 The instance declaration above looks recursive, but is not.
 %
@@ -658,7 +716,10 @@ the elements involved is not important from the point of view of the
 type class, only from that of its implementation.
 
 
+
+
 \subsection{Computing derivatives}
+\label{sec:computingDerivatives}
 
 The ``little language'' of derivatives:
 

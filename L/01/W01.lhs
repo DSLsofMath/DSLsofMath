@@ -982,7 +982,7 @@ invSeq :: Seq REAL
 invSeq i = 1/(1 + fromInteger i)  -- {1/1, 1/2, 1/3, 1/4, ...}
 
 pow2 :: Num r =>  Seq r
-pow2 = (2^)                       -- {1, 2, 4, 8, ...}
+pow2 = (2^{-"{}"-})               -- {1, 2, 4, 8, ...}
 
 conSeq :: a -> Seq a
 conSeq c i = c                    -- {c, c, c, c, ...}
