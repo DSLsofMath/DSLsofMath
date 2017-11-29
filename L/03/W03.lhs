@@ -2,6 +2,7 @@
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.W03 where
+import Data.Char (toUpper)
 \end{code}
 
 % (Based on ../../2016/Lectures/Lecture05 )

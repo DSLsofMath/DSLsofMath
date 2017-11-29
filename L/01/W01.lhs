@@ -14,6 +14,8 @@ the code for this lecture is placed in a module called
 module DSLsofMath.W01 where
 import qualified DSLsofMath.CSem as CSem
 import DSLsofMath.CSem (ComplexSem(CS))
+import Numeric.Natural (Natural)
+import Data.Ratio (Rational, Ratio, (%))
 \end{code}
 
 \subsection{Intro: Pitfalls with traditional mathematical notation}
@@ -249,9 +251,9 @@ Example values: |x = V "x"|, |e1 = P x x|, |e2 = T e1 e1|
 If you want a contructor to be used as an infix operator you need to use
 symbol characters and start with a colon:
 
-\begin{code}
+\begin{spec}
 data E' = V' String | E' :+ E' | E' :* E'
-\end{code}
+\end{spec}
 
 Example values: |y = V "y"|, |e1 = y :+ y|, |e2 = x :* e1|
 
@@ -259,9 +261,9 @@ Finally, you can add one or more type parameters to make a whole family
 of datatypes in one go:
 
 (TODO: perhaps say something about the constuctor names)
-\begin{spec}
+\begin{code}
 data E' v = V' v | E' v :+ E' v | E' v :* E' v
-\end{spec}
+\end{code}
 
 The purpose of the parameter |v| here is to enable a free choice of
 type for the variables (be it |String| or |Int| or something else).
@@ -691,7 +693,14 @@ fromCD (CD (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 testE1 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
 testE2 = Times ImagUnit ImagUnit
 \end{code}
-%TODO: also draw them as syntax trees - see blackboard/W1/20170116_114619.jpg
+This is |testE1| as an abstract syntax tree:
+\begin{tikzpicture}[level 1/.style={sibling distance=3cm}]
+\node{Plus}
+child {node {ToComplex} child {node {3}}}
+child {node {Times}
+  child {node {ToComplex} child {node {2}}}
+  child {node {ImagUnit}}};
+\end{tikzpicture}
 
 There are certain laws we would like to hold for operations on complex
 numbers.
@@ -972,20 +981,21 @@ If we interpret ``subscript'' as function application we can see that
 Some examples:
 %
 \begin{code}
-type Nat = Integer   -- TODO: hide or explain why Integer is used instead of proper natural numbers
-type Seq a = Nat -> a
+type Nat    =  Natural
+type QQ     =  Ratio Nat
+type Seq a  =  Nat -> a
 
 idSeq :: Seq Nat
-idSeq i = i                       -- {0, 1, 2, 3, ...}
+idSeq i = i                -- {0, 1, 2, 3, ...}
 
-invSeq :: Seq REAL
-invSeq i = 1/(1 + fromInteger i)  -- {1/1, 1/2, 1/3, 1/4, ...}
+invSeq :: Seq QQ
+invSeq i = 1%(1 + i)       -- {1/1, 1/2, 1/3, 1/4, ...}
 
 pow2 :: Num r =>  Seq r
-pow2 = (2^{-"{}"-})               -- {1, 2, 4, 8, ...}
+pow2 = (2^{-"{}"-})        -- {1, 2, 4, 8, ...}
 
 conSeq :: a -> Seq a
-conSeq c i = c                    -- {c, c, c, c, ...}
+conSeq c i = c             -- {c, c, c, c, ...}
 \end{code}
 
 What operations can be perform on sequences?

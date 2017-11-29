@@ -58,8 +58,8 @@ Example:
 \begin{code}
 sw :: PropCalc
 sw = ((a & b) -=> (b & a))
-  where  a = N "a"
-         b = N "b"
+  where  a = Name "a"
+         b = Name "b"
 \end{code}
 %
 The example is based on the following embedding of propositional calculus terms:

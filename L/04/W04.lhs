@@ -14,10 +14,27 @@ Consider a very simple datatype of integer expressions:
 %
 \begin{code}
 data E = Add E E | Mul E E | Con Integer deriving Eq
-e1, e2 :: E
-e1 = Add (Con 1) (Mul (Con 2) (Con 3))
-e2 = Mul (Add (Con 1) (Con 2)) (Con 3)
+e1, e2 :: E                             -- | 1 + 2 * 3 |
+e1 = Add (Con 1) (Mul (Con 2) (Con 3))  -- | 1 +(2 * 3)|
+e2 = Mul (Add (Con 1) (Con 2)) (Con 3)  -- |(1 + 2)* 3 |
 \end{code}
+%
+\begin{tikzpicture}[level 1/.style={sibling distance=2cm}]
+\node{Add}
+child {node {Con} child {node {1}}}
+child {node {Mul}
+  child {node {Con} child {node {2}}}
+  child {node {Con} child {node {3}}}};
+\end{tikzpicture}
+\begin{tikzpicture}[level 1/.style={sibling distance=2cm}]
+\node{Mul}
+child {node {Add}
+  child {node {Con} child {node {1}}}
+  child {node {Con} child {node {2}}}}
+child {node {Con} child {node {3}}};
+\end{tikzpicture}
+
+
 %
 When working with expressions it is often useful to have a
 ``pretty-printer'' to convert the abstract syntax trees to strings

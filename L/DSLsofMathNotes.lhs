@@ -17,7 +17,9 @@
 \RequirePackage[utf8x]{inputenc}
 \RequirePackage{ucs}
 \RequirePackage{amsfonts}
+\usepackage{tikz}
 \usepackage{tikz-cd}
+\usetikzlibrary{trees}
 \usepackage{lineno}
 
 \providecommand\mathbbm{\mathbb}
