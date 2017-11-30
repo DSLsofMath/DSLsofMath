@@ -50,7 +50,7 @@ Another example:
 
 \begin{code}
 example1 :: And q (Not q) -> p
-example1 evAqnq    =  notElim (notIntro (\ hyp_p -> evAqnq))
+example1 evAqnq    =  notElim (notIntro (\ hyp -> evAqnq))
 \end{code}
 
 

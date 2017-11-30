@@ -48,7 +48,7 @@ Swedish: Satslogik
    |a|, |b|, |c|, \ldots  & names of propositions &
 \\ |False|, |True| & Constants &
 \\ |And|      & $\wedge$       & |&|
-\\ |Or|       & $\vee$         & ||||
+\\ |Or|       & $\vee$         & |bar|
 \\ |Implies|  & $\Rightarrow$  &
 \\ |Not|      & $\neg$         &
 \end{tabular}
@@ -57,7 +57,7 @@ Example:
 %
 \begin{code}
 sw :: PropCalc
-sw = ((a & b) -=> (b & a))
+sw = ((a -&- b) -=> (b -&- a))
   where  a = Name "a"
          b = Name "b"
 \end{code}
@@ -71,7 +71,7 @@ data PropCalc  =  Con   Bool
                |  Implies  PropCalc  PropCalc
                |  Not      PropCalc
 
-(&) = And
+(-&-) = And
 (-=>) = Implies
 \end{code}
 With this datatype we can write an evaluator to |Bool| which computes
@@ -187,7 +187,7 @@ quantifiers: ``forall'' (|ForallAlone|) and ``exists''
 An example FOL formula:
 %
 \begin{spec}
-  Forall x (P(x) -> (Exists y (Q(f(x,x),y))))
+  Forall x (P(x) => (Exists y (Q(f(x,x),y))))
 \end{spec}
 %
 Note that FOL can only quantify over \emph{term} variables, not over
@@ -364,6 +364,10 @@ and normal ordered pairs: |(a, b) =~= {S a, {a, b}}|.
 With a bit more machinery it is possible to step by step encode |Nat|,
 |ZZ|, |QQ|, |REAL|, |COMPLEX|.
 
+TODO: cite The Haskell Road to Logic, Math and Programming
+  Kees Doets and Jan van Eijck
+  https://fldit-www.cs.uni-dortmund.de/~peter/PS07/HR.pdf
+
 \subsection{Back to quantifiers}
 
 After this detour through untyped set land let us get back to the most
@@ -429,7 +433,7 @@ We have two main concepts involved: the predicate "irrational" and the
 function "square root of".
 %
 The square root function (for positive real numbers) can be specified
-by $r = \sqrt{s}$ iff |r^2 == s| and |r : Nat|.
+by $r = \sqrt{s}$ iff |r^2 == s| and |r : REAL|.
 %
 The formula ``x is irrational'' is just |not(R x)| where |R| is the
 predicate ``is rational''.
@@ -611,7 +615,7 @@ TODO: include |Either| in the Haskell intro at the end of the previous chapter
 As an example of combining forall, exists and implication let us turn
 to one statement of the fact that there are infiniely many primes.
 %
-If we assume we have a unary predicate expressing that number is prime
+If we assume we have a unary predicate expressing that a number is prime
 and a binary (infix) predicate ordering the natural numbers we can
 define a formula |IP| for ``Infinite many Primes'' as follows:
 %
@@ -715,7 +719,7 @@ Here, for the generalisation of |Or|, we have unified the two rules
 into one with an added parameter |a| corresponding to the label which
 indicates the family member.
 
-In the other direction, if we look at the binary elimination rule, we
+In the other direction, if we look at the binary elimination rule,
 we see the need for two arguments to be sure of how to prove the
 implication for any family member of the binary |Or|.
 \begin{spec}
@@ -779,7 +783,7 @@ Thus by introducing a function |getq| we can move the |∃| out.
 
 \begin{spec}
 type Q = {-"ℝ_{> 0}"-} → (X - {p})
-Limp p X = ∃ getq : Q? ∀ ε > 0? |getq ε - p| < ε
+Limp p X = ∃ getq : Q? ∀ ε > 0? absBar (getq ε - p) < ε
 \end{spec}
 
 Next: introduce the ``open ball'' function |B|.
@@ -967,7 +971,7 @@ say that a sequence |a| is \emph{convergent} when |∃ L ? a haslim L|.
 
 \paragraph{Variables, |Env| and |lookup|}
 
-This was a frequently source of confusion already the first week so
+This was frequently a source of confusion already the first week so
 there is already a question + answers earlier in this text.
 %
 But here is an additional example to help clarify the matter.
