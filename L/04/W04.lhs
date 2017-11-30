@@ -250,6 +250,7 @@ In this lecture, we continue exploring the relationship between type
 classes, mathematical structures, and DSLs.
 
 \subsubsection{Algebras, homomorphisms}
+\label{sec:AlgHomo}
 
 From Wikipedia:
 

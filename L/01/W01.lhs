@@ -909,18 +909,29 @@ TODO: Talk more about the properties tested above in
 Approximation is often necessary, but makes many laws false. Thus,
 attempt to do it late.)
 
-TODO: Draw the syntax tree diagrams for distributivity. See \verb+blackboard/W1/20170116_161151.jpg+
-
 |Distributive (*) (+) = Forall (a, b, c) ((a+b)*c = (a*c)+(b*c))|
 
-TODO: Forward pointer to homomorphisms in a later chapter (|*c| is a |(+)|-homomorphism).
-\begin{verbatim}
-    *    |       +
-   / \   |     /   \
-  +   c  |    *     *
- / \     |   / \   / \
-a   b    |  a   c b   c
-\end{verbatim}
+\tikzset{
+  AbsSyn/.style={%
+    baseline,
+    text height=1.5ex,text depth=.25ex,
+    level 1/.style={sibling distance=1.5cm, level distance=1cm},level 2/.style={sibling distance=1cm}
+  }
+}
+\begin{tikzpicture}[AbsSyn]
+\node{|*|}
+child {node {|+|} child {node {|a|}} child {node {|b|}}}
+child {node {|c|}};
+\end{tikzpicture}
+\begin{tikzpicture}[AbsSyn]
+\node{|+|}
+child {node {|*|} child {node {|a|}} child {node {|c|}}}
+child {node {|*|} child {node {|b|}} child {node {|c|}}};
+\end{tikzpicture}
+%
+
+(In the language of section \ref{sec:AlgHomo}, distributivity means
+that |(*c)| is a |(+)|-homomorphism.)
 
 Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
 % Answer: |max|
@@ -981,8 +992,8 @@ If we interpret ``subscript'' as function application we can see that
 Some examples:
 %
 \begin{code}
-type Nat    =  Natural
-type QQ     =  Ratio Nat
+type Nat    =  Natural     -- imported from |Numeric.Natural|
+type QQ     =  Ratio Nat   -- imported from |Data.Ratio|
 type Seq a  =  Nat -> a
 
 idSeq :: Seq Nat
