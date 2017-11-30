@@ -842,6 +842,15 @@ eval      (e1 :*: e2)    =   eval e1  *  eval e2    -- ``lifted |*|''
 eval      (Exp e1)       =   exp (eval e1)          -- and ``lifted |exp|''
 -- and so on
 \end{code}
+%
+An example:
+\begin{code}
+f1 :: Double -> Double
+f1 x = exp (x^2)
+e1 :: FunExp
+e1 = Exp (Id :*: Id)
+\end{code}
+
 
 We can implement the derivative of such expressions using the rules of
 derivatives.
@@ -907,7 +916,8 @@ derive     (Exp e)        =  Exp e :*: derive e
 Exercise: complete the |FunExp| type and the |eval| and |derive|
 functions.
 
-\subsection{Shallow embeddings}\label{sec:evalD}
+\subsection{Shallow embeddings}
+\label{sec:evalD}
 
 The DSL of expressions, whose syntax is given by the type |FunExp|,
 turns out to be almost identical to the DSL defined via type classes
@@ -957,10 +967,16 @@ For example:
 
      exp (eval e) * eval (derive e)	=  {- def. |eval'| -}
 
-     exp (eval e) * eval' e
+     exp (eval e) * eval' e             =  {- let |f = eval e|, |f' = eval' e| -}
+
+     exp f * f'
 \end{spec}
 %
-and the first |e| doesn't go away.
+Thus, given only the derivative |f' = eval' e|, it is impossible to
+compute |eval' (Exp e)|.
+%
+(There is no way to implement |eval'Exp :: (REAL -> REAL) -> (REAL ->
+REAL)|.)
 %
 Thus, it is not possible to directly implement |derive| using shallow
 embedding; the semantics of derivatives is not compositional.
@@ -1000,7 +1016,12 @@ We compute, for example:
      in (exp f, exp f * f')
 \end{spec}
 
-This semantics \emph{is} compositional.
+This semantics \emph{is} compositional and the |Exp| case is:
+%
+\begin{code}
+evalDExp ::  FD Double  ->  FD Double
+evalDExp     (f, f')  =   (exp f, exp f * f')
+\end{code}
 %
 We can now define a shallow embedding for the computation of
 derivatives, using the numerical type classes.

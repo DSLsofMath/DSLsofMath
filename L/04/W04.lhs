@@ -253,10 +253,29 @@ pretty' = foldIE
 %
 \subsubsection{Back to derivatives and evaluation}
 
+TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
+
 Review section \ref{sec:evalD} again with the definition of |eval'|
 being non-compositional (just like |pretty|) and |evalD| a more
 complex, but compositional, semantics.
 %
+
+We want to implement |eval' = eval . derive| in the following diagram:
+
+\tikzcdset{diagrams={column sep = 2cm, row sep = 2cm}}
+\quad%
+\begin{tikzcd}
+  |FunExp| \arrow[r, "|eval|"] \arrow[d, "|derive|"]
+                               \arrow[dr, "|eval'|"]  & |(REAL -> REAL)| \arrow[d, "D"] \\
+  |FunExp| \arrow[r, "|eval|"]                        & |(REAL -> REAL)|
+\end{tikzcd}
+
+As we saw in section \ref{sec:evalD} this does not work.
+%
+Instead we need to use the ``tupling transform'' to compute a pair of
+|f| and |D f| at once.
+
+%TODO: Perhaps make a diagram for this case as well.
 
 % Compositionality:
 % * simpler example of non-compositional function [See L9]
@@ -426,6 +445,28 @@ Exercise: define |GoodClass| and instantiate |FunExp| and |Double ->
 Double| as instances of it.
 %
 Find another instance of |GoodClass|.
+%
+\begin{code}
+class GoodClass t where
+  addF :: t -> t -> t
+  mulF :: t -> t -> t
+  expF :: t -> t
+  -- ... TODO: continue to mimic the |FunExp| datatype as a class
+
+newtype FD a = FD (a -> a, a -> a)
+
+instance Num a => GoodClass (FD a) where
+  addF = evalDApp
+  mulF = evalDMul
+  expF = evalDExp
+  -- ... TODO
+
+evalDApp = error "TODO"
+evalDMul = error "TODO"
+evalDExp = error "TODO"
+\end{code}
+%
+
 
 Therefore, we can always define a homomorphism from |FunExp| to
 \emph{any} instance of |GoodClass|, in an essentially unique way.

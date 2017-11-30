@@ -63,21 +63,49 @@ Assuming the coefficients are given as
 \begin{spec}
 as = [a0, a1, ..., an]
 \end{spec}
-
+%
 (we prefer counting up), then the evaluation function is written
-
+%
 \begin{spec}
 eval ::  [REAL] ->  REAL  ->  REAL
 eval     []         x     =   0
 eval     (a : as)   x     =   a + x * eval as x
 \end{spec}
+%
+Exercise: Show that this evaluation function gives the same result as the formula above.
+%
+Exercise: Use the |Num| instance for functions to rewrite |eval| into
+a one-argument function.
+%TODO: check the solution: eval [] = const 0; eval (a:as) = const a + id*eval as
+%
+As an example, the polynomial which is usually written just |x| is
+represented by the list |[0, 1]| and the polynomial |\x -> x^2-1| is
+represented by the list |[-1,0,1]|.
 
-Not every list is valid according to the definition.
+It is worth noting that the definition of a polynomial function is
+semantic, not syntactic.
+%
+This may seem pedantic, but here is an interesting example of a family
+of functions which syntactically looks very trigonometric:
+%
+\(T_n(x) = \cos (n*\arccos(x))\).
+%
+It can be shown that \(T_n\) is a polynomial function of degree |n|.
+%
+Exercise: show this by induction on |n| using the rule for
+\(cos(\alpha+\beta)\).
+%
+Start by computing \(T_0\), \(T_1\), and \(T_2\) by hand to get a
+feeling for how it works.
+
+
+
+Not every list of coefficients is valid according to the definition.
 %
 In particular, the empty list is not a valid list of coefficients, so
 we have a conceptual, if not empirical, type error in our evaluator.
 
-The valid lists are those *finite* lists in the set
+The valid lists are those \emph{finite} lists in the set
 
 \begin{spec}
   {[0]} ∪ {(a : as) | last (a : as) ≠ 0}
@@ -115,7 +143,7 @@ Since we only use the arithmetical operations, we can generalise our
 evaluator:
 
 \begin{code}
-evalPoly :: Num a => Poly a -> a -> a
+evalPoly :: Num a => Poly a -> (a -> a)
 evalPoly (Single a)     x   =  a
 evalPoly (Cons a as)    x   =  a + x * evalPoly as x
 \end{code}
@@ -336,8 +364,9 @@ In the section on |eval| and |eval'| for |FunExp| we have seen
 introduce another way.
 
 The |degree| of a polynomial is a good candidate for being a
-homomorphism: if we multiply two polynomials we can normally add their
-degrees.
+homomorphism:
+%
+if we multiply two polynomials we can normally add their degrees.
 %
 If we try to check that |degree :: Poly a -> Nat| is the function
 underlying a monoid morphism we need to decide on the monoid structure
@@ -355,8 +384,9 @@ degree (Single 1) = 0
 \end{spec}
 %
 The first law is no problem and for most polynomials the second law is
-also straighforward to prove (exercise: prove it) except for one
-special case: the zero polynomial.
+also straighforward to prove (exercise: prove it).
+%
+But we run into trouble with one special case: the zero polynomial.
 
 Looking back at the definition from \cite{adams2010calculus}, page 55
 it says that the degree of the zero polynomial is not defined.
