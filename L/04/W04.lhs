@@ -19,19 +19,19 @@ e1 = Add (Con 1) (Mul (Con 2) (Con 3))  -- | 1 +(2 * 3)|
 e2 = Mul (Add (Con 1) (Con 2)) (Con 3)  -- |(1 + 2)* 3 |
 \end{code}
 %
-\begin{tikzpicture}[level 1/.style={sibling distance=2cm}]
-\node{Add}
-child {node {Con} child {node {1}}}
-child {node {Mul}
-  child {node {Con} child {node {2}}}
-  child {node {Con} child {node {3}}}};
+\begin{tikzpicture}[AbsSyn]
+\node{|Add|}
+child {node {|Con|} child {node {|1|}}}
+child {node {|Mul|}
+  child {node {|Con|} child {node {|2|}}}
+  child {node {|Con|} child {node {|3|}}}};
 \end{tikzpicture}
-\begin{tikzpicture}[level 1/.style={sibling distance=2cm}]
-\node{Mul}
-child {node {Add}
-  child {node {Con} child {node {1}}}
-  child {node {Con} child {node {2}}}}
-child {node {Con} child {node {3}}};
+\begin{tikzpicture}[AbsSyn]
+\node{|Mul|}
+child {node {|Add|}
+  child {node {|Con|} child {node {|1|}}}
+  child {node {|Con|} child {node {|2|}}}}
+child {node {|Con|} child {node {|3|}}};
 \end{tikzpicture}
 
 
@@ -65,9 +65,9 @@ prettyCon :: Integer -> String
 Now, if we try to implement the semantic constructors without thinking
 too much we would get the following:
 \begin{code}
-prettyAdd sx sy  = sx ++ "+" ++ sy
-prettyMul sx sy  = sx ++ "*" ++ sy
-prettyCon i      = show i
+prettyAdd xs ys  = xs ++ "+" ++ ys
+prettyMul xs ys  = xs ++ "*" ++ ys
+prettyCon c      = show c
 
 p1, p2 :: String
 p1 = pretty e1
@@ -136,22 +136,33 @@ Informally a ``fold'' is a recursive function which replaces each
 abstract syntax constructor |Ci| of |Syn| with a ``semantic
 constructor'' |ci|.
 %
+Thus, in our datatype |E|, a compositional semantics means that |Add|
+maps to |add|, |Mul {-"\mapsto"-} mul|, and |Con {-"\mapsto"-} con|
+for some ``semantic functions'' |add|, |mul|, and |con|.
+%
 
-TODO: Picture to illustrate
-\begin{verbatim}
-    Add                           add
-   /   \                         /   \
-Con 1   Mul         |----->   con 1   mul
-       /   \                         /   \
-    Con 2  Con 3                  con 2  con 3
-\end{verbatim}
+\begin{tikzpicture}[AbsSyn]
+\node (lhs) {|Add|}
+child {node {|Con 1|}}
+child {node {|Mul|}
+  child {node {|Con 2|}}
+  child {node {|Con 3|}}};
+%
+\node (rhs) at (5,0) {|add|}
+child {node {|con 1|}}
+child {node {|mul|}
+  child {node {|con 2|}}
+  child {node {|con 3|}}};
+%
+\path (2,-1) edge[||->] (3,-1);
+%
+\end{tikzpicture}
 
 As an example we can define a general |foldE| for the integer
 expressions:
 %
 \begin{code}
-foldE ::  (t -> t -> t) -> (t -> t -> t) -> (Integer -> t) ->
-          E -> t
+foldE ::  (s -> s -> s) -> (s -> s -> s) -> (Integer -> s) -> (E -> s)
 foldE add mul con = rec
   where  rec (Add x y)  = add (rec x) (rec y)
          rec (Mul x y)  = mul (rec x) (rec y)
@@ -188,9 +199,9 @@ parameters to the fold) in a type class:
 %
 \begin{code}
 class IntExp t where
-  add :: t -> t -> t
-  mul :: t -> t -> t
-  con :: Integer -> t
+  add  ::  t -> t -> t
+  mul  ::  t -> t -> t
+  con  ::  Integer -> t
 \end{code}
 %
 In this way we can make ``hide'' the arguments to the fold:
@@ -214,6 +225,18 @@ idE' = foldIE
 
 evalE' :: E -> Integer
 evalE' = foldIE
+\end{code}
+
+And we can also see |pretty| as instance:
+
+\begin{code}
+instance IntExp String where
+  add = prettyAdd
+  mul = prettyMul
+  con = prettyCon
+
+pretty' :: E -> String
+pretty' = foldIE
 \end{code}
 
 % TODO (by DaHe): Maybe we should show how to do this with FunExp (here or in

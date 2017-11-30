@@ -19,7 +19,7 @@
 \RequirePackage{amsfonts}
 \usepackage{tikz}
 \usepackage{tikz-cd}
-\usetikzlibrary{trees}
+\usetikzlibrary{trees,graphs}
 \usepackage{lineno}
 
 \providecommand\mathbbm{\mathbb}
