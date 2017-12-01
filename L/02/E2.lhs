@@ -404,11 +404,9 @@ Preliminary remarks
 \item to keep things short, let us abbreviate a significant chunk of
   the definition of |a haslim L| (see section
   \ref{par:LimitOfSequence}) by
-
-  TODO: check why |(ε > 0) → | is included here but not in \ref{par:LimitOfSequence}
-  %
   \begin{spec}
-     P a ε L = (ε > 0) → Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (|an - L| < ε)))
+     P : Seq X -> X -> RPos -> Prop
+     P a L ε = Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (absBar (an - L) < ε)))
   \end{spec}
 
 \end{itemize}
@@ -425,14 +423,14 @@ Preliminary remarks
   \item The statement ``the sequence |{an}| is convergent'' is
     formalised as
     \begin{spec}
-      Exists (L : ℝ) (Forall (ε : ℝ) (P a ε L))
+      Exists (L : ℝ) (Forall (ε > 0) (P a L ε))
     \end{spec}
 
     The formalisation of ``the sequence |{an}| is not convergent'' is
     therefore
 
     \begin{spec}
-      ¬ Exists (L : ℝ) (Forall (ε : ℝ) (P a ε L))
+      ¬ Exists (L : ℝ) (Forall (ε > 0) (P a L ε))
     \end{spec}
 
     Simplify this expression using the rules
@@ -458,7 +456,7 @@ Preliminary remarks
   \begin{enumerate}
   \item There are many ways of formalising this in FOL.  For example:
     \begin{spec}
-      let Q a L = Forall (ε : ℝ) (P a ε L)
+      let Q a L = Forall (ε > 0) (P a L ε)
       in  Forall (L₁ : ℝ) (Forall (L₂ : ℝ) ( (Q a L₁ ∧ Q a L₂) → L₁ = L₂) )
     \end{spec}
 

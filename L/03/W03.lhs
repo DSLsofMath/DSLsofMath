@@ -48,13 +48,13 @@ from \citet{adams2010calculus}:
 \begin{quote}
   The \textbf{derivative} of a function |f| is another function |f'| defined by
 %
-\[
-  f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
-\]
+  \[
+    f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
+  \]
 %
-at all points |x| for which the limit exists (i.e., is a finite real
-number). If \(f'(x)\) exists, we say that |f| is \textbf{differentiable}
-at |x|.
+  at all points |x| for which the limit exists (i.e., is a finite real
+  number). If \(f'(x)\) exists, we say that |f| is \textbf{differentiable}
+  at |x|.
 \end{quote}
 %
 We can start by assigning types to the expressions in the definition.
@@ -63,9 +63,9 @@ Let's write |X| for the domain of |f| so that we have |f : X -> REAL|
 and |X included REAL| (or, equivalently, |X : PS REAL|).
 %
 If we denote with |Y| the subset of |X| for which |f| is
-differentiable we get |f' : Y -> REAL|
+differentiable we get |f' : Y -> REAL|.
 %
-Thus the operation which maps |f| to |f'| has type |(X->REAL) ->
+Thus, the operation which maps |f| to |f'| has type |(X->REAL) ->
 (Y->REAL)|.
 %
 Unfortunately, the only notation for this operation given (implicitly)

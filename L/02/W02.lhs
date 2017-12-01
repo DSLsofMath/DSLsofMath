@@ -949,7 +949,7 @@ binary infix predicate |haslim| using a helper predicate |P|:
 \begin{spec}
   a haslim L  =  ∀ ε > 0? P a L ε
 
-  P a ε L = ∃ N : ℤ? ∀ n ≥ N? absBar (an - L) < ε
+  P a L ε = ∃ N : Nat? ∀ n ≥ N? absBar (an - L) < ε
 \end{spec}
 
 
