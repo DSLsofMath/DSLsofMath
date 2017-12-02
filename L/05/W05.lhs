@@ -691,3 +691,5 @@ fmapPoly f (Cons a as)  = Cons (f a) (fmapPoly f as)
 po1 :: Num a => Poly a
 po1 = 1 + x^2 - 3*x^4
 \end{code}
+
+%include E5.lhs
