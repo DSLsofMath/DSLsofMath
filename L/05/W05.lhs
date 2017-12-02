@@ -266,6 +266,11 @@ canonical definition of polynomials, as found in any algebra book
   \textbf{polynomials} with coefficients in |A|.
 \end{quote}
 
+%
+% TODO (by DaHe): Maybe it should be stated sooner (right after the introduction
+% of evalPoly) that polynomial functions are the evaluations of polynomials.
+% So if as is a polynomial, then evalPoly as is a polynomial function.
+%
 The functions |evalPoly as| are known as \emph{polynomial functions}.
 
 \textbf{Caveat:} The canonical representation of polynomials in
@@ -302,7 +307,11 @@ For example, here is addition:
   multiplication modulo |2|).
   %
   In this ring, we have
-
+  %
+  % TODO (by DaHe): I don't think it will be obvious for students why the
+  % equation below is true, so perhaps it should be shown step by step.
+  % (x + x^2 = 0, ∀ x : ℤ₂)
+  %
   \begin{spec}
     evalPoly [0, 1, 1] = const 0 = evalPoly [0]  {- in |ℤ₂ -> ℤ₂| -}
   \end{spec}
@@ -397,6 +406,9 @@ Assume there is a |z| such that |degree 0 = z| and that we have some
 polynomial |p| with |degree p = n|.
 %
 Then we get
+%
+% TODO (by DaHe): Again, it would be nicer to have the annotations in the right
+% column rather than between the rows.
 %
 \begin{spec}
   z
@@ -519,6 +531,10 @@ takePoly n (Cons a as)  =  if n <= 1
                               else  Cons a (takePoly (n-1) as)
 \end{code}
 %
+% TODO (by DaHe): Maybe also write out the intermediate steps below:
+% eval 2 (x*x) 1 = evalPoly (takePoly 2 [0, 0, 1]) 1
+% = evalPoly [0,0] 1 = 0, and similarly for RHS.
+%
 Note that |eval n| is not a homomorphism: for example |eval 2 (x*x) 1
 = 0 /= 1 = 1*1 = (eval 2 x 1) * (eval 2 x 1)|.
 
@@ -527,6 +543,12 @@ Note that |eval n| is not a homomorphism: for example |eval 2 (x*x) 1
 
 Power series have a richer structure than polynomials.
 %
+% TODO (by DaHe): I think the note about moving from Z to Q could be expanded
+% upon. In Q, we have potentially infinite (repeating) digits, allowing division.
+% Similarly, PowerSeries have infinite coefficients, and thus allows division.
+% (not sure if there is any actual connection or just a coincidence, but still
+% interesting to note)
+%
 For example, we also have division (this is similar to the move from |ℤ|
 to |ℚ|).
 %
@@ -534,7 +556,10 @@ Assume that |a * b ≠ 0|.
 %
 Then (again, using list notation for brevity), we want to find, for
 any given |(a : as)| and |(b : bs)|, the series |(c : cs)| satisfying
-
+%
+% TODO (by DaHe): Again, would be nicer to have annotations to the right instead
+% of in between the rows.
+%
 \begin{spec}
   (a : as) / (b : bs) = (c : cs)
 
