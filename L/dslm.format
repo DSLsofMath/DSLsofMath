@@ -167,3 +167,5 @@
 %format mini = min "_i"
 
 %format mod x y = x "\%" y
+
+%format liftSeq1 = liftSeq "_1"

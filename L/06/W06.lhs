@@ -43,9 +43,7 @@ import DSLsofMath.W05
 f x = sin x + 2 * x
 \end{code}
 %
-% TODO (by DaHe): Isn't f 0 = 0? And is the s between "f 2" and "etc" a typo?
-%
-We have: |f 0 = 1|, |f 2 = 4.909297426825682|s, etc.
+We have: |f 0 = 0|, |f 2 = 4.909297426825682|, etc.
 
 The type of |f| is |f :: Floating a => a -> a|.
 
@@ -209,7 +207,7 @@ instance Floating a => Floating (a, a) where
 
 %
 % TODO (by DaHe): I don't think it's obvious why (a, a) is a generalization of
-% FD a, so perhaps this could be elaborated upon.
+% FD a, so perhaps this could be elaborated upon. [Also a newtype might be better.]
 %
 In fact, the latter represents a generalisation of the former.  It is
 also the ``maximally general'' such generalisation (discounting the
@@ -336,7 +334,7 @@ to any infinite list of |Num a|:
 % this Num instance makes sense for a list of [f, f', f'',...] but not
 % necessarily for any list of a? For instance, in another situation you might
 % want * on [a] to give you the scalar product.
-%
+% [Or even a newtype.]
 \begin{code}
 instance Num a => Num [a] where
   (a : as)  +  (b : bs)  =  (a + b)  :  (as + bs)
@@ -351,7 +349,7 @@ functions above:
 drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 \end{code}
 
-This is a very inefficient way of computing derivatives!
+Exercise: Compare the efficiency of different ways of computing derivatives.
 %
 % TODO (by DaHe): Maybe elaborate on why it is inefficient.
 %
@@ -394,13 +392,12 @@ integ  as a0  =  Cons a0 (integ' as 1)
   where  integ' (Single a)   n  =  Single  (a / n)
          integ' (Cons a as)  n  =  Cons    (a / n)  (integ' as (n+1))
 \end{code}
+%
+Note that |a0| is the constant that we need due to indefinite integration.
+%
 
-%
-% TODO (by DaHe) Maybe it should be mentioned explicitly that a0 is the constant
-% that we need due to indefinite interation.
-%
-Everything here makes sense, irrespective of convergence, hence
-``formal''.
+All these definitions make sense, irrespective of convergence, hence
+``formal''. %TODO say something about finite prefixes (they are always correct)
 
 If the power series involved do converge, then |eval| is a morphism
 between the formal structure and that of the functions represented:

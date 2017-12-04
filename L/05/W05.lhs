@@ -166,9 +166,6 @@ argument.
 For an arbitrary |x|
 
 %
-% TODO: (by DaHe) Can we put the annotations to the right instead of between the
-% rows in the example(s) below?
-%
 \begin{spec}
   (evalPoly as + evalPoly bs) x = evalPoly (as + bs) x
 
@@ -192,21 +189,13 @@ evalPoly (a : as) x  +  evalPoly (b : bs) x  =  evalPoly ((a : as)  +  (b : bs))
 For the left-hand side, we have:
 %
 \begin{spec}
-  evalPoly (a : as) x  +  evalPoly (b : bs) x
+  evalPoly (a : as) x  +  evalPoly (b : bs) x      =  {- def. |evalPoly| -}
 
-=  {- def. |evalPoly| -}
+  (a + x * evalPoly as x) + (b + x * eval bs x)    =  {- properties of |+|, valid in any ring -}
 
-  (a + x * evalPoly as x) + (b + x * eval bs x)
+  (a + b) + x * (evalPoly as x + evalPoly bs x)    =  {- homomorphism condition -}
 
-=  {- properties of |+|, valid in any ring -}
-
-  (a + b) + x * (evalPoly as x + evalPoly bs x)
-
-=  {- homomorphism condition -}
-
-  (a + b) + x * (evalPoly (as + bs) x)
-
-=  {- def. |evalPoly| -}
+  (a + b) + x * (evalPoly (as + bs) x)             =  {- def. |evalPoly| -}
 
   evalPoly ((a + b) : (as + bs)) x
 \end{spec}
@@ -219,7 +208,9 @@ The homomorphism condition will hold for every |x| if we define
 % hold. But it seems to me this is the most logical way to define addition of
 % polynomials anyway? Maybe this should be discussed/commented on here
 %
-\begin{spec} (a : as) + (b : bs)  = (a + b) : (as + bs) \end{spec}
+\begin{spec}
+  (a : as) + (b : bs)  = (a + b) : (as + bs)
+\end{spec}
 
 We leave the derivation of the other cases and operations as an
 exercise.
@@ -407,18 +398,15 @@ polynomial |p| with |degree p = n|.
 %
 Then we get
 %
-% TODO (by DaHe): Again, it would be nicer to have the annotations in the right
-% column rather than between the rows.
-%
 \begin{spec}
-  z
-= {- assumption -}
-  degree 0
-= {- simple calculation -}
-  degree (0 * p)
-= {- homomorphism condition -}
-  degree 0 + degree p
-= {- assumption -}
+  z                               = {- assumption -}
+
+  degree 0                        = {- simple calculation -}
+
+  degree (0 * p)                  = {- homomorphism condition -}
+
+  degree 0 + degree p             = {- assumption -}
+
   z + n
 \end{spec}
 %
@@ -561,24 +549,16 @@ any given |(a : as)| and |(b : bs)|, the series |(c : cs)| satisfying
 % of in between the rows.
 %
 \begin{spec}
-  (a : as) / (b : bs) = (c : cs)
+  (a : as) / (b : bs) = (c : cs)                     <=> {- def. of division -}
 
-<=> {- def. of division -}
+  (a : as) = (c : cs) * (b : bs)                     <=> {- def. of |*| for |Cons| -}
 
-  (a : as) = (c : cs) * (b : bs)
+  (a : as) = (c * b)  :  (cs * (b : bs)  +  [c]*bs)  <=> {- equality on compnents, def. of division -}
 
-<=> {- def. of |*| for |Cons| -}
+  c   = a / b                          {- and -}
+  as  = cs * (b : bs) + [a/b] * bs     {-" "-}       <=> {- arithmetics -}
 
-  (a : as) = (c * b)  :  (cs * (b : bs)  +  [c]*bs)
-
-<=> {- equality on compnents, def. of division -}
-
-  c   = a / b    {- and -}
-  as  = cs * (b : bs) + [a/b] * bs
-
-<=> {- arithmetics -}
-
-  c   = a / b    {- and -}
+  c   = a / b                          {- and -}
   cs  =  (as - [a/b] * bs) / (b : bs)
 \end{spec}
 
