@@ -15,6 +15,39 @@
 %
 
 % TODO (by DaHe): Proper way to reference exercises?
+
+
+
+\begin{exercise}
+  Complete the instance declarations for |FunExp| (for |Num|,
+  |Fractional|, and |Floating|).
+\end{exercise}
+
+\begin{exercise}
+  Complete the instance declarations for |(Double, Double)|, deriving
+  them from the homomorphism requirement for |apply| (from the end of
+  the week 4 lecture notes).
+\end{exercise}
+
+\begin{exercise}
+  We now have three different ways of computing the derivative of a
+  function such as |f x = sin x + exp (exp x)| at a given point, say
+  |x = pi|.
+  \begin{enumerate}
+
+    \item Find |e :: FunExp| such that |eval e = f| and use |eval'|.
+
+    \item Find an expression of (the first version of) type |FD Double|
+    and use |apply|.
+
+    \item Apply |f| directly to the appropriate |(x, x')| and use |snd|.
+
+\end{enumerate}
+
+  Do you get the same result?
+\end{exercise}
+
+
 \begin{exercise}
   \textit{From exam 2017-08-22}
 
