@@ -15,6 +15,7 @@ Course codes: DAT326 / DIT982
 * Examiner & main lecturer: Patrik Jansson (patrikj AT)
 * Lecturer: Cezar Ionescu (cezar AT)
 * Teaching assistant: Daniel Schoepe (schoepe AT)
+* (Project assistants: Daniel Heurlin, Sólrún Einarsdóttir)
 
 ## Objectives
 
