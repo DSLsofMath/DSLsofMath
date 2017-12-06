@@ -48,6 +48,7 @@
 \end{exercise}
 
 
+
 \begin{exercise}
   \textit{From exam 2017-08-22}
 
@@ -125,6 +126,88 @@
 
   \end{enumerate}
 
+\end{exercise}
+
+
+\begin{exercise}
+  (Closely related to exam question)
+
+  A \textit{ring} is a set |A| together with two constants (or nullary
+  operations), |0| and |1|, one unary operation, |negate|, and two
+  binary operations, |+| and |*|, such that
+
+  \begin{enumerate}
+
+    \item |0| is the neutral element of |+|
+
+      \begin{spec}
+        ∀ x ∈ A      x + 0 = 0 + x = x
+      \end{spec}
+
+    \item |+| is associative
+
+      \begin{spec}
+        ∀ x, y, z ∈ A      x + (y + z) = (x + y) + z
+      \end{spec}
+
+    \item |negate| inverts elements with respect to addition
+
+      \begin{spec}
+        ∀ x ∈ A      x + negate x = negate x + x = 0
+      \end{spec}
+
+    \item |+| is commutative
+
+      \begin{spec}
+        ∀ x, y ∈ A      x + y = y + x
+      \end{spec}
+
+    \item |1| is the unit of |*|
+
+      \begin{spec}
+        ∀ x ∈ A     x * 1 = 1 * x = x
+      \end{spec}
+
+    \item |*| is associative
+
+      \begin{spec}
+        ∀ x, y, z ∈ A      x * (y * z) = (x * y) * z
+      \end{spec}
+
+    \item |*| distributes over |+|
+
+      \begin{spec}
+        ∀ x, y, z ∈ A      x * (y + z)  =  (x * y) + (x * z)
+        ∀ x, y, z ∈ A      (x + y) * z  =  (x * z) + (y * z)
+      \end{spec}
+
+
+  \end{enumerate}
+
+  Remarks:
+
+  \begin{itemize}
+    \item a. and b. say that |(A, 0, +)| is a monoid
+    \item a---c. say that |(A, 0, +, negate)| is a group
+    \item a---d.  say that |(A, 0, +, negate)| is a commutative group
+    \item e. and f. say that |(A, 1, *)| is a monoid
+  \end{itemize}
+
+  \begin{enumerate}
+    \item  Define a type class `Ring` that corresponds to the ring structure.
+
+    \item  Define a datatype for the language of ring expressions (including
+           variables) and define a `Ring` instance for it.
+
+    \item  Find two other instances of the `Ring` class.
+
+    \item  Define a general evaluator for `Ring` expressions on the basis of
+    a given assignment function.
+
+    \item  Specialise the evaluator to the two `Ring` instances defined at point
+      3.  Take three ring expressions, give the appropriate assignments and
+      compute the results of evaluating, in each case, the three expressions.
+  \end{enumerate}
 \end{exercise}
 
 \begin{exercise}
