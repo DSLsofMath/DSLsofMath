@@ -4,6 +4,17 @@
 % TODO: Add some exercises to get comfortable with the stuff that is used in the
 % exam questions below.
 %
+\begin{exercise} \leavevmode
+
+  \begin{enumerate}
+
+    \item Implement |idx'|, |sinx'| and |cosx'| using |solve|
+
+    \item Complete the instance |Floating (PowerSeries a)|
+
+  \end{enumerate}
+
+\end{exercise}
 
 \begin{exercise}
   \textit{From exam 2016-03-15}
