@@ -742,3 +742,5 @@ instance Floating a => Floating (a, a) where
   sin (f, f')       =  (sin f, cos f * f')
   cos (f, f')       =  (cos f, -(sin f) * f')
 \end{code}
+
+%include E6.lhs
