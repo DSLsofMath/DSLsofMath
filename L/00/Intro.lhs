@@ -97,7 +97,7 @@ Climate Impact Research in the context of
   Systems Science}, \cite{LinckeJanssonetalDSLWC2009,
   ionescujansson2013DTPinSciComp, jaeger13:GSSshort,
   ionescujansson:LIPIcs:2013:3899, DBLP:journals/corr/BottaJICB16,
-  Botta2017Avoidability}).
+  botta_jansson_ionescu_2017_avoidability}).
 
 
 Thus, a course on designing and implementing DSLs can be an important

@@ -51,7 +51,7 @@ The main references are listed below.
 
 ## Course setup
 
-* Lectures (Prel. Tue. 13-15 in TBD, and Thu 13-15 in TBD)
+* Lectures (Prel. Tue. 13-15 and Thu 13-15 in EB)
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
@@ -61,7 +61,7 @@ The main references are listed below.
     * Power series and differential equations, exp, sin, log, Taylor series, ...
     * Linear algebra
     * Laplace transform
-* Weekly exercise sessions (Tue 15-17 and Thu 15-17)
+* Weekly exercise sessions (Tue 15-17 and Thu 15-17 in ES52)
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
 
