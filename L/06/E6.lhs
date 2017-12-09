@@ -106,7 +106,7 @@
   $$f''\, t + f'\, t - 2 * f\, t = e^{3 * t},\quad f\, 0 = 1,\quad f'\, 0 = 2$$
 
   We will solve this equation assuming that |f| can be expressed by a power
-  series |fs|, and find the three first coefficients of |fs|.
+  series |fs|, and finding the three first coefficients of |fs|.
 
   \begin{enumerate}
     \item Implement |expx3 :: PowerSeries|, a power series representation of
