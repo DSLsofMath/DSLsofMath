@@ -59,6 +59,32 @@
 
 \end{exercise}
 
+\begin{exercise}
+  The exponential function |exp t = e^t| has the property that |{-"\int"-} exp t
+  dt = exp t + C|. Use this fact to express the functions below as |PowerSeries|
+  using |integ|. \textit{Hint: the definitions will be recursive}.
+
+  \begin{enumerate}
+    \item |\t -> exp t  |
+    \item |\t -> exp (3*t)|
+    \item |\t -> 3 * exp (2*t)|
+  \end{enumerate}
+
+\end{exercise}
+
+\begin{exercise}
+  In the chapter, we saw that a representation |expx :: PowerSeries| of the
+  exponential function can be implemented using |solve| as |expx = solve (\f ->
+  f) 1|. Use the same method to implement power series representations of the
+  following functions:
+
+  \begin{enumerate}
+    \item |\t -> exp (3*t)|
+    \item |\t -> 3 * exp (2*t)|
+  \end{enumerate}
+
+\end{exercise}
+
 \begin{exercise} \leavevmode
 
   \begin{enumerate}
@@ -69,6 +95,36 @@
 
   \end{enumerate}
 
+\end{exercise}
+
+%% TODO: Try solving the one below and make sure it is not unsolvable for some reason
+
+\begin{exercise}
+
+  Consider the following differential equation:
+
+  $$f''\, t + f'\, t - 2 * f\, t = e^{3 * t},\quad f\, 0 = 1,\quad f'\, 0 = 2$$
+
+  We will solve this equation assuming that |f| can be expressed by a power
+  series |fs|, and find the three first coefficients of |fs|.
+
+  \begin{enumerate}
+    \item Implement |expx3 :: PowerSeries|, a power series representation of
+      $e^{3 * t}$
+
+    \item Find an expression for |fs''|, the second derivative of |fs|, in terms
+      of |expx3|, |fs'|, and |fs|.
+
+    \item Find an expression for |fs'| in terms of |fs''|, using |integ|.
+
+    \item Find an expression for |fs| in terms of |fs'|, using |integ|.
+
+    \item Use |takePoly| to find the first three coefficients of |fs|. You can
+      check that your solution is correct using a tool such as MATLAB or
+      WolframAlpha, by first finding an expression for |f t|, and then getting
+      the Taylor series expansion for that expression.
+
+  \end{enumerate}
 \end{exercise}
 
 \begin{exercise}
