@@ -8,7 +8,7 @@
 % TODO (by DaHe): How to phrase this question better? It feels a bit clumsy
 % right now.
 
-\begin{exercise} \label{ex:findFunExp}
+\begin{exercise} \label{exc:findFunExp}
 
   As shown at the start of the chapter, we can find expressions |e :: FunExp|
   such that |eval e = f| automatically using the assignment |e = f Id|. This is
@@ -29,10 +29,10 @@
 
 \end{exercise}
 
-\begin{exercise} \label{ex:derivFunExp}
+\begin{exercise} \label{exc:derivFunExp}
 
   For each of the expressions |e :: FunExp| you found in exercise
-  \ref{ex:findFunExp}, use |derive| to find an expression |e' :: FunExp|
+  \ref{exc:findFunExp}, use |derive| to find an expression |e' :: FunExp|
   representing the derivative of the expression, and verify that |e'| is indeed
   the derivative of |e|.
 \end{exercise}
@@ -53,9 +53,9 @@
 
   Try using each of these methods to find the values of |f1' 2|, |f2' 2|, and
   |f3' 2|, i.e. the derivatives of each of the functions in exercise
-  \ref{ex:findFunExp}, evaluated at the point 2. You can verify that the result
+  \ref{exc:findFunExp}, evaluated at the point 2. You can verify that the result
   is correct by comparing it with the expressions |e1'|, |e2'| and |e3'| that
-  you found in \ref{ex:derivFunExp}.
+  you found in \ref{exc:derivFunExp}.
 
 \end{exercise}
 

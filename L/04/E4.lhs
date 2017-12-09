@@ -1,8 +1,8 @@
-% TODO (by DaHe): One or more exercises on 'characterize the homomorphisms from
-% X to Y'
+% TODO (by DaHe): One or more exercises on "characterize the homomorphisms from
+% X to Y"
 
-% TODO (by DaHe): One or more exercises on 'is X a homomorphism? Show that Y is
-% a homomorphism'. Can start off with some really easy ones to get students
+% TODO (by DaHe): One or more exercises on "is X a homomorphism? Show that Y is
+% a homomorphism". Can start off with some really easy ones to get students
 % familiar with the idea of homomorphism, and how to check if something is a
 % homomorphism. Then move on to an example that requires some more mathematcal
 % thought, like "show that exp is a homomorphism". They will of course be able
@@ -13,10 +13,6 @@
 % a little more approachable. Maybe show some more examples of what we want to
 % be able to do with it.
 %
-
-% TODO (by DaHe): Proper way to reference exercises?
-
-
 
 \begin{exercise}
   Complete the instance declarations for |FunExp| (for |Num|,
@@ -52,7 +48,7 @@
 \begin{exercise}
   \textit{From exam 2017-08-22}
 
-  In exercise 1.3, we looked at the datatype |SR v| for the language of semiring
+  In exercise \ref{exc:e1_semiring} we looked at the datatype |SR v| for the language of semiring
   expressions. We will now use some of the concepts discussed in this chapter to
   expand on this language.
 
@@ -77,7 +73,7 @@
 \begin{exercise}
   \textit{From exam 2016-03-15}
 
-  In exercise 1.4, we looked a datatype for the language of lattice
+  In exercise \ref{exc:e1_lattice}, we looked a datatype for the language of lattice
   expressions. We will now use some of the concepts discussed in this chapter to
   expand on this language.
 
@@ -104,7 +100,7 @@
   \textit{From exam 2016-08-23}
 
 
-  In exercise 1.5, we looked a datatype for the language of abelian monoid
+  In exercise \ref{exc:e1_abMon}, we looked a datatype for the language of abelian monoid
   expressions. We will now use some of the concepts discussed in this chapter to
   expand on this language.
 

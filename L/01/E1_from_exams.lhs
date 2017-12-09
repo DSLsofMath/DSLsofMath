@@ -8,7 +8,7 @@
 TODO: Add an exercise to implement some property as a boolean functions (for example some from the semiring properties.
 
 \newpage
-\begin{exercise}
+\begin{exercise} \label{exc:e1_semiring}
   \textit{From exam 2017-08-22}
 
   A semiring is a set |R| equipped with two binary operations |+| and
@@ -56,7 +56,7 @@ TODO: Add an exercise to implement some property as a boolean functions (for exa
   \end{enumerate}
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise} \label{exc:e1_lattice}
   \textit{From exam 2016-03-15}
 
   A \emph{lattice} is a set |L| together with two operations |∨| and
@@ -93,7 +93,7 @@ TODO: Add an exercise to implement some property as a boolean functions (for exa
   \end{enumerate}
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise} \label{exc:e1_abMon}
   \textit{From exam 2016-08-23}
 
   An \emph{abelian monoid} is a set |M| together with a constant
