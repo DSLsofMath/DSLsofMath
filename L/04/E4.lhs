@@ -21,8 +21,8 @@
 
 \begin{exercise}
   Complete the instance declarations for |(Double, Double)|, deriving
-  them from the homomorphism requirement for |apply| (from the end of
-  the week 4 lecture notes).
+  them from the homomorphism requirement for |apply| (in section
+  \ref{sec:apply}).
 \end{exercise}
 
 \begin{exercise}
@@ -60,7 +60,7 @@
     \item Define a |SemiRing| instance for the datatype |SR v| that you
       defined in exercise 1.3.
 
-    \item Find two other instances of the |SemiRing| class. 
+    \item Find two other instances of the |SemiRing| class.
 
     \item Specialise the evaluator that you defined in exercise 1.3.2 to the two
       |SemiRing| instances defined above. Take three semiring
@@ -137,44 +137,44 @@
     \item |0| is the neutral element of |+|
 
       \begin{spec}
-        ∀ x ∈ A      x + 0 = 0 + x = x
+        Forall (x ∈ A)      (x + 0 = 0 + x = x)
       \end{spec}
 
     \item |+| is associative
 
       \begin{spec}
-        ∀ x, y, z ∈ A      x + (y + z) = (x + y) + z
+        Forall (x, y, z ∈ A)     (x + (y + z) = (x + y) + z)
       \end{spec}
 
     \item |negate| inverts elements with respect to addition
 
       \begin{spec}
-        ∀ x ∈ A      x + negate x = negate x + x = 0
+        Forall (x ∈ A)      (x + negate x = negate x + x = 0)
       \end{spec}
 
     \item |+| is commutative
 
       \begin{spec}
-        ∀ x, y ∈ A      x + y = y + x
+        Forall (x, y ∈ A)      (x + y = y + x)
       \end{spec}
 
     \item |1| is the unit of |*|
 
       \begin{spec}
-        ∀ x ∈ A     x * 1 = 1 * x = x
+        Forall (x ∈ A)     (x * 1 = 1 * x = x)
       \end{spec}
 
     \item |*| is associative
 
       \begin{spec}
-        ∀ x, y, z ∈ A      x * (y * z) = (x * y) * z
+        Forall (x, y, z ∈ A)      (x * (y * z) = (x * y) * z)
       \end{spec}
 
     \item |*| distributes over |+|
 
       \begin{spec}
-        ∀ x, y, z ∈ A      x * (y + z)  =  (x * y) + (x * z)
-        ∀ x, y, z ∈ A      (x + y) * z  =  (x * z) + (y * z)
+        Forall (x, y, z ∈ A)      (x * (y + z)  =  (x * y) + (x * z))
+        Forall (x, y, z ∈ A)      ((x + y) * z  =  (x * z) + (y * z))
       \end{spec}
 
 
@@ -182,15 +182,17 @@
 
   Remarks:
 
+  %TODO: make letters into labels.
   \begin{itemize}
     \item a. and b. say that |(A, 0, +)| is a monoid
-    \item a---c. say that |(A, 0, +, negate)| is a group
-    \item a---d.  say that |(A, 0, +, negate)| is a commutative group
+    \item a--c. say that |(A, 0, +, negate)| is a group
+    \item a--d.  say that |(A, 0, +, negate)| is a commutative group
     \item e. and f. say that |(A, 1, *)| is a monoid
   \end{itemize}
 
+  %%TODO: perhaps change numbering to avoid confusion with earlier labels for the laws. \renewcommand*{\theenumi}{\textbf{\arabic{enumi}}}
   \begin{enumerate}
-    \item  Define a type class `Ring` that corresponds to the ring structure.
+  \item  Define a type class `Ring` that corresponds to the ring structure.
 
     \item  Define a datatype for the language of ring expressions (including
            variables) and define a `Ring` instance for it.

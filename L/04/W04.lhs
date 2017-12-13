@@ -545,6 +545,7 @@ application:
 apply :: a -> (a -> b) -> b
 apply a = \f -> f a
 \end{spec}
+\label{sec:apply}
 
 Indeed, writing |h = apply c| for some fixed |c|, we have
 
