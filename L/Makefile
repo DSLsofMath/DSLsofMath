@@ -20,6 +20,12 @@ $(NAME).tex: $(NAME).lhs dslm.format ref.bib \
 build:
 	stack build
 
+zip:
+	mkdir DSLsofMath_temp
+	cp -LR DSLsofMath DSLsofMath_temp/DSLsofMath
+	cd DSLsofMath_temp && zip -r ../DSLsofMath.zip DSLsofMath
+	rm -r DSLsofMath_temp
+
 clean:
 	- rm *.ptb *.pag *.aux *.bbl *.blg *.fdb_latexmk *.log \
              $(NAME).tex $(NAME).pdf *.idx *.ilg *.ind *.toc *~ \
