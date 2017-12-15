@@ -294,6 +294,8 @@ classes, mathematical structures, and DSLs.
 \subsubsection{Algebras, homomorphisms}
 \label{sec:AlgHomo}
 
+TODO: rewrite to make it smoother
+
 From Wikipedia:
 
 \begin{quote}
@@ -324,17 +326,38 @@ The laws can be formulated as the following equations:
 ∀ x, y, z : a? (x `op` (y `op` z) == (x `op` y) `op` z)
 \end{spec}
 
-% TODO (by DaHe): It woud be a good idea to also have a more informal
-% explanation of homomorphisms here, along with some examples of homomorphisms
-% that students are familiar with. Something like "A homomorphism is an
-% operation that preserves structure". Good examples might be:
-% log: log(a * b) = log a + log b
-% and
-% exp: exp(a + b) = exp a * exp b
-A homomorphism between two algebras |A| and |B| is a function |h: A → B|
-from the set |A| to the set |B| such that, for every operation |fA| of |A|
-and corresponding |fB| of |B| (of arity, say, |n|),
-|h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
+\end{quote}
+
+Examples of monoids include numbers with additions, |(REAL, 0, (+))|,
+numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
+with composition |(a->a,id, (.))|.
+%
+It is a good exercise to check that the laws are satisfied.
+
+In mathematics, as soon as there are several examples of a structure,
+the question of what ``translation'' between them comes up.
+%
+An important class of such ``translations'' are ``structure preserving
+maps'' called \emph{homomorphisms}.
+%
+As two examples, we have the homomorphisms |log| and |exp|:
+
+\begin{spec}
+  exp  :  REAL  ->  RPos
+  exp  0        =   1
+  exp  (a + b)  =   exp a  *  exp b
+
+  log  :  RPos  ->  REAL
+  log  1        =   0
+  log  (a * b)  =   log a  +  log b
+\end{spec}
+
+\begin{quote}
+
+  More formally, a homomorphism between two algebras |A| and |B| is a
+function |h : A → B| from the set |A| to the set |B| such that, for
+every operation |fA| of |A| and corresponding |fB| of |B| (of arity,
+say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
 
 \end{quote}
 
@@ -391,6 +414,17 @@ Every choice of |h 1| ``induces a homomorphism''.
 %
 This means that the value of the function |h| is fully determined by
 its value for |1|.
+
+Exercise: show that |const| is a homomorphism.
+
+\begin{spec}
+  h a + h b                     =
+  const a  +  const b           =
+  (\x-> const a x + const b x)  =
+  (\x->  a + b )                =
+  const (a+b)                   =
+  h (a + b)                     =
+\end{spec}
 
 \subsubsection{Homomorphism and compositional semantics}
 

@@ -48,8 +48,10 @@
 \begin{exercise}
   \textit{From exam 2017-08-22}
 
-  In exercise \ref{exc:e1_semiring} we looked at the datatype |SR v| for the language of semiring
-  expressions. We will now use some of the concepts discussed in this chapter to
+  In exercise \ref{exc:e1_semiring} we looked at the datatype |SR v|
+  for the language of semiring expressions.
+  %
+  We will now use some of the concepts discussed in this chapter to
   expand on this language.
 
   \begin{enumerate}
@@ -62,10 +64,13 @@
 
     \item Find two other instances of the |SemiRing| class.
 
-    \item Specialise the evaluator that you defined in exercise 1.3.2 to the two
-      |SemiRing| instances defined above. Take three semiring
-      expressions of type |SR String|, give the appropriate assignments and
-      compute the results of evaluating, in each case, the three expressions.
+    \item Specialise the evaluator that you defined in exercise
+      \ref{exc:e1_semiring} to the two |SemiRing| instances defined
+      above.
+      %
+      Take three semiring expressions of type |SR String|, give the
+      appropriate assignments and compute the results of evaluating,
+      in each case, the three expressions.
 
   \end{enumerate}
 \end{exercise}

@@ -263,7 +263,7 @@ just a symbol.
 %TODO: perhaps mention "total derivative" at this stage. That could serve as an intermediate step towards the Langrangian, or could be added after it.
 
 \subsection{Type inference and understanding: Lagrangian case study}
-\label{type-inference-and-understanding}
+\label{sec:Lagrangian}
 
 From (Sussman and Wisdom 2013):
 

@@ -214,3 +214,15 @@ Multiplication for matrices (from the matrix algebra DSL).
   \end{enumerate}
 
 \end{exercise}
+
+\begin{exercise}
+  (Extra material outside the course.)
+  %
+  In the same direction as the Lagrangian case study in section
+  \ref{sec:Lagrangian} there are two nice blog posts about Hamiltonian
+  dynamics: one
+  \href{https://blog.jle.im/entry/introducing-the-hamilton-library.html}{introductory}
+  and one \href{https://blog.jle.im/entry/hamiltonian-dynamics-in-haskell.html}{more advanced}.
+  %
+  It is a good exercise to work through the examples in these posts.
+\end{exercise}
