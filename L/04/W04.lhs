@@ -364,8 +364,8 @@ say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
 Example: Monoid homomorphism
 
 \begin{spec}
-h unit        =  unit
-h (x `op` y)  =  h x `op` h y
+h unit        =  unit             -- |h| takes units to units
+h (x `op` y)  =  h x `op` h y     -- and distributes over |op|
 \end{spec}
 
 \begin{code}
@@ -416,15 +416,25 @@ This means that the value of the function |h| is fully determined by
 its value for |1|.
 
 Exercise: show that |const| is a homomorphism.
-
+%
+The distribution law can be shown as follows:
+%
 \begin{spec}
-  h a + h b                     =
-  const a  +  const b           =
-  (\x-> const a x + const b x)  =
-  (\x->  a + b )                =
-  const (a+b)                   =
-  h (a + b)                     =
+  h a + h b                     =  {- |h = const| in this case -}
+  const a  +  const b           =  {- By def. of |(+)| on functions -}
+  (\x-> const a x + const b x)  =  {- By def. of |const|, twice -}
+  (\x->  a + b )                =  {- By def. of |const| -}
+  const (a + b)                 =  {- |h = const| -}
+  h (a + b)
 \end{spec}
+
+We now have a homomorphism from values to functions, and you may
+wonder if there is a homomorphism in the other direction.
+%
+The answer is ``Yes, many''.
+%
+Exercise: Show that |apply c| is a homomorphism for all |c|, where
+|apply x f = f x|.
 
 \subsubsection{Homomorphism and compositional semantics}
 
@@ -584,17 +594,11 @@ apply a = \f -> f a
 Indeed, writing |h = apply c| for some fixed |c|, we have
 
 \begin{spec}
-     h (f + g)
+     h (f + g)         =  {- def. |apply| -}
 
-  =  {- def. |apply| -}
+     (f + g) c         =  {- def. |+| for functions -}
 
-     (f + g) c
-
-  =  {- def. |+| for functions -}
-
-     f c + g c
-
-  =  {- def. |apply| -}
+     f c + g c         =  {- def. |apply| -}
 
      h f + h g
 \end{spec}
@@ -603,15 +607,15 @@ etc.
 
 Can we do something similar for |FD|?
 
-The elements of |FD| a are pairs of functions, so we can take
+The elements of |FD a| are pairs of functions, so we can take
 
 \begin{spec}
-apply ::  a ->  FD a     ->  (a, a)
-apply     c     (f, f')  =   (f c, f' c)
+applyFD ::  a ->  FD a     ->  (a, a)
+applyFD     c     (f, f')  =   (f c, f' c)
 \end{spec}
 
 We now have the domain of the homomorphism |(FD a)| and the
-homomorphism itself |(apply c)|, but we are missing the structure on
+homomorphism itself |(applyFD c)|, but we are missing the structure on
 the codomain, which now consists of pairs |(a, a)|.
 %
 In fact, we can \emph{compute} this structure from the homomorphism
@@ -626,7 +630,7 @@ For example:
 
      h (f * g, f' * g + f * g')
 
-  =  {- def. |h = apply c| -}
+  =  {- def. |h = applyFD c| -}
 
      ((f * g) c, (f' * g + f * g') c)
 
@@ -638,7 +642,7 @@ For example:
 
      h (f, f') *? h (g, g')
 
-  =  {- def. |h = apply c| -}
+  =  {- def. |h = applyFD c| -}
 
      (f c, f' c) *? (g c, g' c)
 \end{spec}
@@ -648,6 +652,7 @@ The identity will hold if we take
 \begin{spec}
      (x, x') *? (y, y') = (x * y, x' * y + x * y')
 \end{spec}
+% TODO: state explicitly that |(applyFD c)| is a |Num|-homomorphism for all |c|
 %
 % TODO (by DaHe): It should probably be mentioned that we have now defined
 % instance Num a => FD a where (x, x') (*) (y, y') = ..., and that the exercise
@@ -739,6 +744,7 @@ negateE (Con c) = Con (negate c)
 negateE _ = error "negate: not supported"
 \end{code}
 
+% TODO: Perhaps include the comparison of the |Num t => Num (Bool -> t)| instance (as a special case of functions as |Num|) and the |Num r => Num (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
 \subsection{Exercises}
 
 %include E4.lhs

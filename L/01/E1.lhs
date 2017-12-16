@@ -29,7 +29,7 @@
 \end{exercise}
 
 
-\begin{exercise}
+\begin{exercise}\label{exc:tuplingE1}
   Functions and pairs (the ``tupling transform'').
   %
   From one function |f :: a -> (b, c)| returning a pair, you can
@@ -91,10 +91,34 @@
   algebra when working with types.
 \end{exercise}
 
-\begin{exercise}
-  TODO: formulate exercise to implement more efficient show using an
-  accumulating parameter.
+\begin{exercise}\label{exc:funtupE1}
+  Functions as tuples.
+  %
+  For any type |t| the type |Bool -> t| is basically ``the same'' as
+  the type |(t,t)|.
+  %
+  Implement the two functions |isoR| and |isoL| forming an isomorphism:
+  %
+  \begin{spec}
+    isoR :: (Bool -> t) -> (t, t)
+    isoL :: (t, t) -> (Bool -> t)
+  \end{spec}
+  %
+  and show that |isoL . isoR = id| and |isoR . isoL = id|.
+
+% TODO: place this code in a list of solutions somewhere
+% isoR f = (f False, f True)
+% isoL (fa, tr) = \b-> case b of {False -> fa; True -> tr}
+% TODO: complete the proof
+
+% TODO: example: which function represents the pair (7, 3)?
+% Answer: f False = 7; f True = 3
+
 \end{exercise}
+% \begin{exercise}
+%   TODO: formulate exercise to implement more efficient |show| using an
+%   accumulating parameter.
+% \end{exercise}
 
 \begin{exercise}
   (From section \ref{sec:infseq}): How is |liftSeq1| related to

@@ -988,14 +988,16 @@ the same time, being able to evaluate the functions.
 %
 So we can try to do both evaluations simultaneously:
 
-TODO: introduce the terminology "tupling transform" (perhaps earlier and just remineder here)
-
 \begin{code}
 type FD a = (a -> a, a -> a)
 
 evalD ::  FunExp  ->  FD Double
 evalD     e       =   (eval e, eval' e)
 \end{code}
+%
+(Note: At this point, you are adviced to look up and solve exercise
+\ref{exc:tuplingE1} on the ``tupling transform'' in case you have not
+done so already.)
 
 Is |evalD| compositional?
 

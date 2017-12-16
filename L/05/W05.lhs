@@ -55,8 +55,7 @@ Thus, what is meant is
   \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
 \end{quote}
 
-Obviously, given the coefficients $a_i$ we can evaluate $P$ at any
-given $x$.
+Given the coefficients $a_i$ we can evaluate $P$ at any given $x$.
 %
 Assuming the coefficients are given as
 
@@ -72,6 +71,10 @@ eval     []         x     =   0
 eval     (a : as)   x     =   a + x * eval as x
 \end{spec}
 %
+Note that we can read the type as |eval :: [REAL] -> (REAL -> REAL)|
+and thus identify |[REAL]| as the tyoe for the (abstract) syntax and
+|(REAL -> REAL)| as the type of the semantics.
+%
 Exercise: Show that this evaluation function gives the same result as the formula above.
 %
 Exercise: Use the |Num| instance for functions to rewrite |eval| into
@@ -82,8 +85,16 @@ As an example, the polynomial which is usually written just |x| is
 represented by the list |[0, 1]| and the polynomial |\x -> x^2-1| is
 represented by the list |[-1,0,1]|.
 
-It is worth noting that the definition of a polynomial function is
-semantic, not syntactic.
+It is worth noting that the definition of a what is called a
+``polynomial function'' is semantic, not syntactic.
+%
+A syntactic defintion would talk about the form of the expression (a
+sum of coefficients times natural powers of x).
+%
+This semantic definition only requires that the function |P|
+\emph{behaves like} such a sum.
+%
+(Has the same value for all |x|.)
 %
 This may seem pedantic, but here is an interesting example of a family
 of functions which syntactically looks very trigonometric:
@@ -98,7 +109,7 @@ Exercise: show this by induction on |n| using the rule for
 Start by computing \(T_0\), \(T_1\), and \(T_2\) by hand to get a
 feeling for how it works.
 
-
+% TODO: perhaps talk about an alternative, recursive, definition of polynomial function, closer to the implementation of |eval| blackboard/W5/20170213_114415.jpg
 
 Not every list of coefficients is valid according to the definition.
 %
@@ -480,6 +491,16 @@ Power series are usually denoted
 \[   \sum_{n = 0}^{\infty} a_n * x^n   \]
 
 the interpretation of |x| being the same as before.
+%
+The simplest operation, addition, can be illustrated as follows:
+\[
+\begin{array}{>{\displaystyle}lllll}
+    \sum_{i = 0}^{\infty} a_i * x^i            &\cong  &[a_0,     &a_1,    &\ldots ]
+\\  \sum_{i = 0}^{\infty} b_i * x^i            &\cong  &[b_0,     &b_1,    &\ldots ]
+\\  \sum_{i = 0}^{\infty} (a_i+b_i) * x^i      &\cong  &[a_0+b_0, &a_1+b_1,&\ldots ]
+\end{array}
+\]
+
 
 The evaluation of a power series represented by |a : ℕ → A| is defined,
 in case the necessary operations make sense on |A|, as a function
@@ -518,13 +539,26 @@ takePoly n (Cons a as)  =  if n <= 1
                               then  Single a
                               else  Cons a (takePoly (n-1) as)
 \end{code}
+%TODO: perhaps explain with plain lists: |takeP :: Nat -> PS r -> P r| with |takeP n (PS as) = P (take n as)|
 %
-% TODO (by DaHe): Maybe also write out the intermediate steps below:
-% eval 2 (x*x) 1 = evalPoly (takePoly 2 [0, 0, 1]) 1
-% = evalPoly [0,0] 1 = 0, and similarly for RHS.
+Note that |eval n| is not a homomorphism: for example:
 %
-Note that |eval n| is not a homomorphism: for example |eval 2 (x*x) 1
-= 0 /= 1 = 1*1 = (eval 2 x 1) * (eval 2 x 1)|.
+\begin{spec}
+  eval 2 (x*x) 1                     =
+  evalPoly (takePoly 2 [0, 0, 1]) 1  =
+  evalPoly [0,0] 1                   =
+  0
+\end{spec}
+but
+\begin{spec}
+  (eval 2 x 1)                    =
+  evalPoly (takePoly 2 [0, 1]) 1  =
+  evalPoly [0, 1] 1               =
+  1
+\end{spec}
+%
+and thus |eval 2 (x*x) 1 = 0 /= 1 = 1*1 = (eval 2 x 1) * (eval 2 x
+1)|.
 
 
 \subsection{Operations on power series}
@@ -540,13 +574,56 @@ Power series have a richer structure than polynomials.
 For example, we also have division (this is similar to the move from |ℤ|
 to |ℚ|).
 %
-Assume that |a * b ≠ 0|.
+We start with a special case: trying to compute |p = frac 1 (1-x)| as a
+power series.
 %
-Then (again, using list notation for brevity), we want to find, for
-any given |(a : as)| and |(b : bs)|, the series |(c : cs)| satisfying
+The specification of |a/b = c| is |a=c*b|, thus in our case we need to
+find a |p| such that |1 = (1-x)*p|.
 %
-% TODO (by DaHe): Again, would be nicer to have annotations to the right instead
-% of in between the rows.
+For polynomials there is no solution to this equation.
+%
+One way to see that is by using the homomorphism |degree|: the degree
+of the left hand side is |0| and the degree of the RHS is |1 +  degree p /= 0|.
+%
+But there is still hope if we move to formal power series.
+
+Remember that |p| is then represented by a stream of coefficients
+|[p0, p1, ...]|.
+%
+We make a table of the coefficients of the RHS |= (1-x)*p =
+p - x*p| and of the LHS |= 1| (seen as a power series).
+%
+\begin{spec}
+  p      ==  [  p0,  p1,     p2,     ...
+  x*p    ==  [  0,   p0,     p1,     ...
+  p-x*p  ==  [  p0,  p1-p0,  p2-p1,  ...
+  1      ==  [  1,   0,      0,      ...
+\end{spec}
+%
+Thus, to make the last two lines equal, we are looking for
+coefficients satisfying |p0=1|, |p1-p0=0|, |p2-p1=0|, \ldots.
+%
+The solution is unique: |1 = p0 = p1 = p2 = | \ldots
+%
+but only exists for streams (infinite lists) of coefficients.
+%
+In the common math notation we have just computed
+%
+\[
+  \frac{1}{1-x} = \sum_{i = 0}^{\infty} x^i
+\]
+%
+Note that this equation holds when we interpret both sides as formal
+power series, but not necessarily if we try to evaluate the
+expressions for a particular |x|.
+%
+That works for |absBar x < 1| but not for |x=2|, for example.
+
+For a more general case of power series division |p/q| with |p =
+a:as|, |q = b:bs|, we assume that |a * b ≠ 0|.
+%
+Then we want to find, for any given |(a : as)| and |(b : bs)|, the
+series |(c : cs)| satisfying
 %
 \begin{spec}
   (a : as) / (b : bs) = (c : cs)                     <=> {- def. of division -}
@@ -649,11 +726,11 @@ serious'' \cite{mcilroy1999functional}.
 
 % ================================================================
 
-\subsection{Signals and Shapes}
-
-Shallow and deep embeddings of a DSL
-
-TODO: perhaps textify DSL/
+% \subsection{Signals and Shapes}
+%
+% Shallow and deep embeddings of a DSL
+%
+% TODO: perhaps textify DSL/
 
 
 
