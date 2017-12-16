@@ -6,10 +6,15 @@ module DSLsofMath.W07 where
 
 \section{Matrix algebra and linear transformations}
 
+% TODO (by DaHe): Why are so many words on this page in quotation marks?
+% "definition", "row vector", "pointwise", "scalar" ...
 
 Often, especially in engineering textbooks, one encounters the
 ``definition'': a vector is an |n+1|-tuple of real or complex numbers,
 arranged as a column:
+
+% TODO (by DaHe): A lot of graphical things are done with verbatim throughout
+% the chapter, I guess these should be converted to proper LaTeX at some point
 
 \begin{verbatim}
         v0
@@ -24,6 +29,8 @@ Other times, this is suplemented by the definition of a ``row vector'':
 \begin{verbatim}
  v =  v0, ..., vn
 \end{verbatim}
+
+% TODO (by DaHe): The "i" in "vis" below should probably be in subscript
 
 The |vi|s are real or complex numbers, or, more generally, elements of
 a \emph{field} (analogous to being an instance of |Fractional|).
@@ -86,12 +93,23 @@ v = v0 * e0 + ... + vn * en
 There is a temptation to model vectors by lists or tuples, but the
 simplest (at least conceptually) way is to view them as
 \emph{functions}:
-
+%
+% TODO (by DaHe): Perhaps elaborate on why it is simpler to view vectors as
+% functions, since students will be very used to seeing them represented as
+% lists, from MATLAB and similar.
+%
 
 \begin{spec}
+% TODO (by DaHe) Zn should be written with the correct symbol
 type S          =   ... -- the scalars, forming a field (|REAL|, or |Complex|, or |Zn|, etc.)
 type Vector G   =   G -> S
 \end{spec}
+
+%
+% TODO (by DaHe): I think it should be clarified what G is. The notation might
+% be a little bit confusing to students otherwise, even though there is nothing
+% actually complicated about it.
+%
 
 Usually, |G| is finite, i.e., |Bounded| and |Enumerable|.
 
@@ -104,6 +122,9 @@ embedding of constants, give us exactly the structure needed for the
 vector operations.
 %
 For example
+
+% TODO (by DaHe): Annotations should be to the right instead of between each
+% row.
 
 \begin{spec}
     s * v
@@ -152,6 +173,11 @@ v =  v 0 * e 0 + ... + v n * e n
 \end{spec}
 
 \subsection{Functions on vectors}
+%
+% TODO (by DaHe): I don't think the term "vector space" has been defined yet.
+% What does "another" vector space mean? What is the difference between
+% G' and G? I don't think this is clear at this point.
+%
 
 What if we have another vector space, |Vector G' = G' -> S|?
 %
@@ -190,6 +216,11 @@ Each of |m k| is a |Vector G'|, as is the resulting |f v|.
 %
 We have
 
+%
+% TODO (by DaHe): The annotations shoud be to the right of each row, not between
+% the rows
+%
+
 \begin{spec}
   f v g'
 
@@ -199,6 +230,10 @@ We have
 
 = {- |*| and |+| for functions are def. pointwise -}
 
+%
+% TODO (by DaHe): Shouldn't the row below be
+% \g' -> v 0 * m 0 g' + ... ?
+%
   v 0 * m 0 g' + ... + v n * m n g'
 
 = {- using |sum| -}
@@ -216,6 +251,9 @@ M = [m 0 | ... | m n]
 
 The columns of |M| are the images of the canonical base vectors |e i|
 through |f|.
+%
+%
+% TODO (by DaHe): What is meant by |card G'|?
 %
 Every |m k| has |card G'| rows, and it has become standard to use |M i
 j| to mean the |i|th element of the |j|th column, i.e., |m j i|, so
@@ -329,6 +367,8 @@ coefficients.
 This is quite similar to ``standard'' geometrical vectors represented
 by |n+1| coordinates.
 %
+% TODO (by DaHe): Missing end parenthesis below
+%
 This suggests that polynomials of degree |n+1| form a vector space,
 and we could interpret that as |{0, ..., n} -> REAL| (or, more
 generally, |Field a => {0, ..., n} -> a|.
@@ -350,6 +390,10 @@ As for geometrical vectors, they are
 e i : {0, ..., n} -> Real, e i j = i `is` j
 \end{spec}
 
+%
+% TODO (by DaHe): I think this should be clarified. If e i j = i `is` j, then
+% why would the evaluation of |e i| return \x -> x^i ?
+%
 The evaluation of |e i| returns the function |\ x -> x^i|, as
 expected.
 
