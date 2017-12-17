@@ -4,6 +4,12 @@
 module DSLsofMath.W07 where
 \end{code}
 
+%
+% TODO (by DaHe): There are lots of tasks marked as "exercise" scattered
+% throughout the chapter. I think these ought to be moved into E7.lhs, perhaps
+% with references to the text.
+%
+
 \section{Matrix algebra and linear transformations}
 
 % TODO (by DaHe): Why are so many words on this page in quotation marks?
@@ -432,7 +438,10 @@ Example: |n+1 = 3|:
 \end{verbatim}
 
 Take the polynomial
-
+%
+% TODO (by DaHe): Shouldn't this be formatted with lower-case x and superscript
+% instead of ^ ?
+%
 \begin{spec}
 3 * X^2 + 2 * X + 1
 \end{spec}
@@ -453,6 +462,10 @@ and we have
                 0  0  2      3        6
 \end{verbatim}
 
+%
+% TODO (by DaHe): Shouldn't this be formatted with lower-case x and superscript
+% instead of ^ ?
+%
 representing the polynomial |6 * X^2 + 2 * X|.
 
 Exercise: write the (infinite-dimensional) matrix representing |D| for
@@ -462,6 +475,9 @@ Exercise: write the matrix associate with integration of polynomials.
 
 \subsubsection{Simple deterministic systems (transition systems)}
 
+% TODO (by DaHe): The term "endo-function" should probably be defined explicitly,
+% even though it is pretty easy to deduce approximately what it means in this
+% context.
 Simple deterministic systems are given by endo-functions on a finite
 set |f : G -> G|.
 %
@@ -494,6 +510,8 @@ A node in the graph represents a state.
 %
 A transition |i -> j| means |f i = j|.
 %
+% TODO (by DaHe): Again, the sentence below doesn't really make sense if one
+% doesn't know the definition of an endo-function
 Since |f| is an endo-function, every node must be the source of
 exactly one arrow.
 
@@ -510,6 +528,9 @@ Each |e i| is the characteristic function of a singleton set, |{i}|.
 %
 Thus, the inputs to |f| are canonical vectors.
 
+% TODO (by DaHe): I think it could be made clearer what |f| actually does:
+% if f i = j, it means that if we are currently in state i, the next state will
+% be j.
 To write the matrix associated to |f|, we have to compute what vector
 is associated to each canonical base vector vector:
 
@@ -532,11 +553,14 @@ Therefore:
 Starting with a canonical base vector |e i|, we obtain |M * e i = e (f
 i)|, as we would expect.
 
+% TODO (by DaHe): The two lines below should probably integrated into the next
+% paragraph, as they say almost the same thing
 It is more interesting if we start with a non-base vector.
 %
 For example, |e 2 + e 4|, which represents the subset |{2, 4}|.
 
-
+% TODO (by DaHe): Is [0, 1, 1] supposed to represent |e 2 + e 4|? Shouldn't it
+% be [0, 0, 1, 0, 1] or am I missing something?
 The more interesting thing is if we start with something different
 from a basis vector, say |[0, 1, 1]|.
 %
@@ -604,11 +628,20 @@ m1 (G g') (G g)  =  g'  `is`  f1 g
 
 Test:
 
+% TODO (by DaHe): Is the line below meant as an exercise? Otherwise, shouldn't
+% we get to see the result of the 'test'?
 \begin{code}
 t1 = toL (mul m1 (e 3 + e 4))
 \end{code}
 
 \subsubsection{Non-deterministic systems}
+
+%
+% TODO (by DaHe): I think it should be stated somewhere in this section that for
+% non-deterministic stystems, the result of applying the function a number of
+% times from a given starting state is a list of the possible states one could
+% end up in.
+%
 
 Another interpretation of the application of |M| to characteristic
 functions of a subset is the following: assuming that all I know is
@@ -705,6 +738,10 @@ The associated matrix:
 m2 (G g') (G g) = f2 g g'
 \end{code}
 
+%
+% TODO (by DaHe): Should probably elaborate on why we needed a field before, and
+% now a Num instance
+%
 We need a |Num| instance for |Bool| (not a field!):
 
 \begin{code}
@@ -732,6 +769,9 @@ future states.
 In particular, we can have \emph{probabilities} of these transitions.
 %
 For example
+%
+% TODO (by DaHe): The "loop" going from node 6 to itself looks really weird in
+% the pdf
 
 \begin{verbatim}
                   +---+
@@ -812,6 +852,8 @@ formula is identical to a matrix-vector multiplication.
 As usual, we write the associated matrix by looking at how the
 canonical base vectors are transformed.
 %
+% TODO (by DaHe): Again, I find this a little confusing: If e = is, then how is
+% e i the probability distribution concentrated in i?
 In this case, the canonical base vector |e i = \ j -> i `is` j| is the
 probability distribution \emph{concentrated} in |i|:
 
@@ -858,6 +900,13 @@ t3 = toL (mul m3 (e 2 + e 4))
 
 
 \subsection{Monadic dynamical systems}
+
+%
+% TODO (by DaHe): I think most students don't have any idea how monads or the
+% monad laws work, so perhaps these two sections should be marked as extra
+% material for those who are interested. When this was discussed during a
+% lecture, almost everyone started scratching their heads and looked confused.
+%
 
 All the examples of dynamical systems we have seen in the previous
 section have a similar structure.
