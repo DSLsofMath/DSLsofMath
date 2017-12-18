@@ -8,6 +8,8 @@ Course codes: DAT326 / DIT982
 
 ## News
 
+* 2017-12-16: [Lecture notes](L/snapshots/) now at 113 pages (and growing)
+* 2017-11-01: Daniel Heurlin starts working as Student Research Assistant (amanuens) on improving the course
 * 2017-09-28: First draft of the course page for the 2018 instance
 
 ## Course team
@@ -51,7 +53,7 @@ The main references are listed below.
 
 ## Course setup
 
-* Lectures (Prel. Tue. 13-15 and Thu 13-15 in EB)
+* Lectures (Tue. 13-15 and Thu 13-15 in EB. [[TimeEdit]](https://se.timeedit.net/web/chalmers/db1/public/ri157375X39Z06Q5Z46g0Y30y5096Y35Q01gQY5Q55767.html))
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
@@ -64,6 +66,9 @@ The main references are listed below.
 * Weekly exercise sessions (Tue 15-17 and Thu 15-17 in ES52)
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
+* Schedule exceptions:
+    * 2018-02-15 Thu: lecture + ex. **moved to Fri (same time) in EA + ES52**.
+    * 2018-03-08 Thu: Exercise session in **ES53** this time only.
 
 ## Changes from last year
 

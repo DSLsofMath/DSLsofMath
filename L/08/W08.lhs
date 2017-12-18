@@ -145,8 +145,8 @@ i.e.
 % name.
 %
 \begin{spec}
-a (2 * n)  = (-1)^n / (2 * n)!
-a (2*n+1)  = 0
+cosa (2 * n)  = (-1)^n / (2 * n)!
+cosa (2*n+1)  = 0
 \end{spec}
 
 and the terms of |sinx| are
@@ -158,8 +158,8 @@ and the terms of |sinx| are
 i.e.
 
 \begin{spec}
-a (2 * n)  = 0
-a (2*n+1)  = (-1)^n / (2*n+1)!
+sina (2 * n)  = 0
+sina (2*n+1)  = (-1)^n / (2*n+1)!
 \end{spec}
 
 This can be proven from the definitions of |cosx| and |sinx|.
@@ -203,10 +203,8 @@ using the standard notation |a+i*b| for |C (a, b)|
   e^(a + i * b)
 \end{spec}
 
-%
-% TODO (by DaHe): Maybe some kind of conclusion, like "thus, we see that exp is
-% periodic, as exp a = exp (a + T) with T = i * 2 * pi
-%
+Thus, we see that |exp| is periodic, because we have shown that |exp a
+= exp (a + T)| with |T = i * 2 * pi|.
 
 \subsubsection{Exponential function: Associated code}
 
