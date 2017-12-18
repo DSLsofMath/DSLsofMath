@@ -138,11 +138,7 @@ Therefore, the coefficients of |cosx| are
 
 i.e.
 %
-% TODO (by DaHe): What is "a" in this case? The function representing the
-% series, i assume. Perhaps the "a" representing the series for cos and the one
-% representing the series for sin should be given different names, like "acos"
-% and "asin" or similar, as it is a little confusing that they have the same
-% name.
+The function representation of the coefficients for |cos| is
 %
 \begin{spec}
 cosa (2 * n)  = (-1)^n / (2 * n)!
@@ -155,7 +151,7 @@ and the terms of |sinx| are
 [0, 1, 0, -1/3!, 0, 1/5!, 0, -1/7!, ...]
 \end{spec}
 
-i.e.
+i.e., the corresponding function for |sin| is
 
 \begin{spec}
 sina (2 * n)  = 0
@@ -177,7 +173,7 @@ A function |f : A -> B| is said to be periodic if there exists |T ∈ A|
 such that
 
 \begin{spec}
-f a = f (a + T)  --  |∀ a ∈ A|
+f x = f (x + T)  --  |∀ x ∈ A|
 \end{spec}
 
 (therefore, for this definition to make sense, we need addition on
@@ -185,26 +181,30 @@ f a = f (a + T)  --  |∀ a ∈ A|
 addition and subtraction).
 
 Since |sin| and |cos| are periodic, with period |2 * pi|, we have,
-using the standard notation |a+i*b| for |C (a, b)|
+using the standard notation |a+i*b| for some |z = C (a, b)|:
 
 \begin{spec}
-  e^(a + i * b + i * 2*pi)
-=
-  e^(a + i * (b + 2*pi))
-=
-  e^a * e^(i * (b + 2 * pi))
-=
-  e^a * (cos (b + 2 * pi) + i * sin (b + 2 * pi))
-=
-  e^a * (cos b + i * sin b)
-=
-  e^a * e^(i*b)
-=
-  e^(a + i * b)
+  e^(z + 2*pi*i)                              = {- Def. of |z| -}
+
+  e^((a + i * b) + 2*pi*i)                    = {- Rearranging -}
+
+  e^(a + i * (b + 2*pi))                      = {- |exp| is a homomorphism from |(+)| to |(*)| -}
+
+  e^a * e^(i * (b + 2*pi)  )                  = {- Euler's formula -}
+
+  e^a * (cos (b+2*pi) + i * sin (b+2*pi))     = {- |cos| and |sin| are |2*pi|-periodic -}
+
+  e^a * (cos b + i * sin b)                   = {- Euler's formula -}
+
+  e^a * e^(i*b)                               = {- |exp| is a homomorphism -}
+
+  e^(a + i * b)                               = {- Def. of |z| -}
+
+  e^z
 \end{spec}
 
-Thus, we see that |exp| is periodic, because we have shown that |exp a
-= exp (a + T)| with |T = i * 2 * pi|.
+Thus, we see that |exp| is periodic, because |exp z = exp (z + T)|
+with |T = 2*pi*i|, for all |z|.
 
 \subsubsection{Exponential function: Associated code}
 
