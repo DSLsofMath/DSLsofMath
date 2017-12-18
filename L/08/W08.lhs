@@ -137,7 +137,13 @@ Therefore, the coefficients of |cosx| are
 \end{spec}
 
 i.e.
-
+%
+% TODO (by DaHe): What is "a" in this case? The function representing the
+% series, i assume. Perhaps the "a" representing the series for cos and the one
+% representing the series for sin should be given different names, like "acos"
+% and "asin" or similar, as it is a little confusing that they have the same
+% name.
+%
 \begin{spec}
 a (2 * n)  = (-1)^n / (2 * n)!
 a (2*n+1)  = 0
@@ -196,6 +202,11 @@ using the standard notation |a+i*b| for |C (a, b)|
 =
   e^(a + i * b)
 \end{spec}
+
+%
+% TODO (by DaHe): Maybe some kind of conclusion, like "thus, we see that exp is
+% periodic, as exp a = exp (a + T) with T = i * 2 * pi
+%
 
 \subsubsection{Exponential function: Associated code}
 
@@ -265,6 +276,13 @@ without a computer), so it's worth looking for alternatives.
 
 We have gone from
 
+%
+% TODO (by DaHe): I think the analogy of "zooming in/out" could be clarified. We
+% have supposedly "zoomed in" on f by representing it as a power series a, so it
+% seems to me we've gone from f : R -> R to a : N -> R. Yet on the line below,
+% it says we've gone from a to f, the other way?
+%
+
 \begin{spec}
 a : ℕ → ℝ  {-"\qquad to \qquad"-}   f : ℝ → ℝ
 \end{spec}
@@ -284,10 +302,25 @@ a : ℕ → ℝ  {-"\qquad to \qquad"-}  f : ℝ → ℝ   {-"\qquad to \qquad"-
 
 via
 
+%
+% TODO (by DaHe): I think the question mark below is a bit confusing. A better
+% way might be to write something like:
+%
+%  a : N -> R       to            f : R -> R   to   ?
+%           \                    ^          \     ^
+%            v                  /            v   /
+%              (Sigma an * x^n)               (?)
+%
+
 \begin{spec}
                Sigma an * x^n    {-"\qquad \qquad"-}         ??
 \end{spec}
 
+%
+% TODO (by DaHe) What is "the second part"? I assume it means the "via" part,
+% which could be expressed in a clearer way (though I have to admit I can't
+% really think of a better way myself...)
+%
 At least the second part is ``easy''.
 %
 The analogue of series for a continuous function is integral
@@ -328,6 +361,10 @@ We have
 
 Remember that |D (f * g) = D f * g + f * D g|, therefore
 
+%
+% TODO (by DaHe): It would be nicer to move the annotations to the right in the
+% equations below, instead of between the lines.
+%
 \begin{spec}
   ℒ f' x
 
@@ -424,6 +461,19 @@ Returning to our differential equation, we have
 
   ℒ (f'' - 3 * f' + 2 * f)  =  ℒ (exp ∘ (3*)), f 0 = 1, f' 0 = 0  -- Eq. (1)
 \end{spec}
+
+%
+% TODO (by DaHe): I think it would be worth noting that the Laplace transform
+% can also be viewed as a generalization of the Fourier transform, which is a
+% way of expressing functions as a linear combination of frequency components
+% rather than as a function of time. The Laplace transform then expands on this
+% by expressing functions as a sum of "complex frequencies", allowing a wider
+% range of functions to be transformed.
+%
+% This should of course not be the primary way the Laplace transform is explained
+% in this course, but it is still interesting to note, since this is how it is
+% introduced in the Transforms, Signals and Systems (TSS) course.
+%
 
 \textbf{Remark:} Note that this is a necessary condition, but not a
 sufficient one.
