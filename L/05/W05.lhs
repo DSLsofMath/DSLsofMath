@@ -12,13 +12,9 @@ From \cite{adams2010calculus}, page 55:
 A \textbf{polynomial} is a function $P$ whose value at $x$ is
 
 \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
-%
-% TODO(by DaHe): By "original spelling", do you mean that the word "polynomial"
-% used to be spelled "polymonial", or that it was misspelled in the book? (Sic.)
-%
 
 where $a_n$, $a_{n-1}$, \ldots, $a_1$, and $a_0$, called the
-\textbf{coefficients} of the polymonial [original spelling], are
+\textbf{coefficients} of the polymonial [misspelled in the book], are
 constants and, if $n > 0$, then $a_n ≠ 0$.
 %
 The number $n$, the degree of the highest power of $x$ in the

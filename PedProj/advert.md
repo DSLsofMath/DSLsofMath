@@ -1,6 +1,6 @@
 # Open positions as "Student Research Assistants" in the DSLsofMath project
 
-Domain Specific Languages of Mathematics" is the name of a course
+"Domain Specific Languages of Mathematics" is the name of a course
 and a pedagogical project funded by the CSE department. Ongoing work
 includes preparing course material (part of which may turn into a
 proper book in the long run), evaluating the student results from
