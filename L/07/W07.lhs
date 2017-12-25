@@ -16,78 +16,39 @@ module DSLsofMath.W07 where
 % "definition", "row vector", "pointwise", "scalar" ...
 
 Often, especially in engineering textbooks, one encounters the
-``definition'': a vector is an |n+1|-tuple of real or complex numbers,
+``definition'': a vector is an \(n+1\)-tuple of real or complex numbers,
 arranged as a column:
 
-% TODO (by DaHe): A lot of graphical things are done with verbatim throughout
-% the chapter, I guess these should be converted to proper LaTeX at some point
-
-\begin{verbatim}
-        v0
-         .
- v  =    .
-         .
-        vn
-\end{verbatim}
+\[v = \colvec{v}\]
 
 Other times, this is suplemented by the definition of a ``row vector'':
 
-\begin{verbatim}
- v =  v0, ..., vn
-\end{verbatim}
-
-% TODO (by DaHe): The "i" in "vis" below should probably be in subscript
+\[v = \rowvec{v}\]
 
 The |vi|s are real or complex numbers, or, more generally, elements of
 a \emph{field} (analogous to being an instance of |Fractional|).
 %
-Vectors can be added ``point-wise'' and multiplied with ``scalars'',
-i.e., elements of the field:
+Vectors can be added point-wise and multiplied with scalars, i.e.,
+elements of the field:
 
-\begin{verbatim}
-             v0      w0        v0 + w0
-              .       .           .
- v + w  =     .   +   .    =      .
-              .       .           .
-             vn      wn        vn + wn
-\end{verbatim}
+\[v + w = \colvec{v} + \colvec{w} = \colvecc{v_0 + w_0}{v_n + w_n}\]
 
-\begin{verbatim}
-            s*v0
-             .
- s * v  =    .
-             .
-            s*vn
-\end{verbatim}
+\[s * v = \colvecc{s*v_0}{s*v_n}\]
 
-The scalar |s| ``scales'' all the components of |v|.
+The scalar |s| scales all the components of |v|.
 
 In fact, the most important feature of vectors is that they can be
 \emph{uniquely} expressed as a simple sort of combination of other
 vectors:
 
-\begin{verbatim}
-        v0         1               0
-         .         0               .
- v  =    .  = v0 * 0 ...  + ... vn *
-         .         .               0
-        vn         0               1
-\end{verbatim}
+\[v = \colvec{v} = v_0 * \colveccc{1 \\ 0 \\ \vdots \\ 0} +
+                   v_1 * \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
+                   v_n * \colveccc{0 \\ 0 \\ \vdots \\ 1}
+\]
 
 We denote by
 
-\begin{verbatim}
-          0
-          0
- ek  =    .
-          .
-          0
-          1     <-- position k
-          0
-          .
-          .
-          0
-\end{verbatim}
+\[e_k = \colveccc{0\\0\\\vdots\\0\\1 \makebox[0pt][l]{\qquad $\leftarrow$ position $k$} \\0\\\vdots\\0}\]
 
 the vector that is everywhere |0| except at position |k|, where it is
 |1|, so that
@@ -96,28 +57,26 @@ the vector that is everywhere |0| except at position |k|, where it is
 v = v0 * e0 + ... + vn * en
 \end{spec}
 
-There is a temptation to model vectors by lists or tuples, but the
-simplest (at least conceptually) way is to view them as
-\emph{functions}:
+The algebraic structure that captures a set of vectors, with zero,
+addition, and scaling is called a \emph{vector space}.
 %
-% TODO (by DaHe): Perhaps elaborate on why it is simpler to view vectors as
-% functions, since students will be very used to seeing them represented as
-% lists, from MATLAB and similar.
-%
+For every field |S| of scalars and every set |G| of indeces, the set
+|Vector G = G -> S| can be given a vector space structure.
 
+There is a temptation to model vectors by lists or tuples, but a more
+general (and conceptually simpler) way is to view them as
+\emph{functions} from a set of indeces |G|:
+%
 \begin{spec}
-% TODO (by DaHe) Zn should be written with the correct symbol
 type S          =   ... -- the scalars, forming a field (|REAL|, or |Complex|, or |Zn|, etc.)
 type Vector G   =   G -> S
 \end{spec}
-
+Usually, |G| is finite, i.e., |Bounded| and |Enumerable| and in the
+examples so far we have used indeces from \(G = \{0, \ldots, n\}\).
 %
-% TODO (by DaHe): I think it should be clarified what G is. The notation might
-% be a little bit confusing to students otherwise, even though there is nothing
-% actually complicated about it.
-%
+We sometime use |card G| to denote the \emph{cardinality} of the set
+|G|, the number of elements (\(n+1\) in this case).
 
-Usually, |G| is finite, i.e., |Bounded| and |Enumerable|.
 
 We know from the previous lectures that if |S| is an instance of
 |Num|, |Fractional|, etc. then so is |G -> S|, with the pointwise
@@ -129,27 +88,16 @@ vector operations.
 %
 For example
 
-% TODO (by DaHe): Annotations should be to the right instead of between each
-% row.
-
 \begin{spec}
-    s * v
+    s * v                      =  {- |s| is promoted to a function -}
 
-=  {- |s| is promoted to a function -}
+    const s * v                =  {- |Num| instance definition -}
 
-    const s * v
-
-=  {- |Num| instance definition -}
-
-    \ g -> (const s) g * v g
-
-=  {- definition of |const| -}
+    \ g -> (const s) g * v g   =  {- definition of |const| -}
 
     \ g -> s * v g
 \end{spec}
 
-The set |G| is typically |{0, 1, ..., n}|.
-%
 The basis vectors are then
 
 \begin{spec}
@@ -159,9 +107,11 @@ e i  :  G -> S,    e i g = i `is` g
 Implementation:
 
 \begin{code}
+is :: Num s => Int -> Int -> s
 is a b = if a == b then 1 else 0
 
-e g = \ (G g') -> g `is` g'
+e :: Num s => G -> (G -> s)
+e (G g) = \ (G g')  ->   g `is` g'
 
 toL v = [v g | g <- [minBound .. maxBound]]   -- so we can actually see them
 \end{code}
@@ -172,29 +122,29 @@ and every
 v : G -> S
 \end{spec}
 
-is trivially a linear combination of |e i|s:
+is trivially a linear combination of vectors |e i|:
 
 \begin{spec}
 v =  v 0 * e 0 + ... + v n * e n
 \end{spec}
 
-\subsection{Functions on vectors}
-%
-% TODO (by DaHe): I don't think the term "vector space" has been defined yet.
-% What does "another" vector space mean? What is the difference between
-% G' and G? I don't think this is clear at this point.
-%
 
-What if we have another vector space, |Vector G' = G' -> S|?
+
+\subsection{Functions on vectors}
+
+As we have seen in earlier chapters, morphisms between structures are often importan.
 %
-We are interested in functions |f : Vector G -> Vector G'|:
+Vector spaces are no different: if we have two vector spaces |Vector
+G| and |Vector G'| (for the same set of scalars |S|) we can study
+functions |f : Vector G -> Vector G'|:
 
 \begin{spec}
 f v  =  f (v 0 * e 0 + ... + v n * e n)
 \end{spec}
 
-A ``good'' function should translate the operations in |Vector G| into
-operations in |Vector G'|, i.e., should be a homomorphism:
+For |f| to be a ``good'' function it should translate the operations
+in |Vector G| into operations in |Vector G'|, i.e., should be a
+homomorphism:
 
 \begin{spec}
 f v =  f (v 0 * e 0 + ... + v n * e n) = v 0 * f (e 0) + ... + v n * f (e n)
@@ -222,27 +172,12 @@ Each of |m k| is a |Vector G'|, as is the resulting |f v|.
 %
 We have
 
-%
-% TODO (by DaHe): The annotations shoud be to the right of each row, not between
-% the rows
-%
-
 \begin{spec}
-  f v g'
+  f v g'                                             = {- as above -}
 
-= {- as above -}
+  (v 0 * m 0 + ... + v n * m n) g'                   = {- |*| and |+| for functions are def. pointwise -}
 
-  v 0 * m 0 + ... + v n * m n
-
-= {- |*| and |+| for functions are def. pointwise -}
-
-%
-% TODO (by DaHe): Shouldn't the row below be
-% \g' -> v 0 * m 0 g' + ... ?
-%
-  v 0 * m 0 g' + ... + v n * m n g'
-
-= {- using |sum| -}
+  v 0 * m 0 g' + ... + v n * m n g'                  = {- using |sum| -}
 
   sum [v i * m i g' | i <- [minBound .. maxBound]]
 \end{spec}
@@ -257,9 +192,6 @@ M = [m 0 | ... | m n]
 
 The columns of |M| are the images of the canonical base vectors |e i|
 through |f|.
-%
-%
-% TODO (by DaHe): What is meant by |card G'|?
 %
 Every |m k| has |card G'| rows, and it has become standard to use |M i
 j| to mean the |i|th element of the |j|th column, i.e., |m j i|, so
@@ -281,13 +213,17 @@ Example:
 i.e., |e k| extracts the |k|th column from |M| (hence the notation
 ``e'' for ``extract'').
 
-Given an arbitrary matrix |M|, we can define
+We have seen how a homomorphism |f| can be fully described by a matrix
+of scalars, |M|.
+%
+Similarly, in the opposite direction, given an arbitrary matrix |M|,
+we can define
 
 \begin{spec}
 f v = M * v
 \end{spec}
 
-and obtain a linear transformation |(M*)|.
+and obtain a linear transformation |f = (M*)|.
 %
 Moreover |((M*) . e) g g' = M g' g|, i.e., the matrix constructed as
 above for |f| is precisely |M|.
@@ -314,7 +250,7 @@ Exercise: work this out in detail.
 Exercise: show that matrix-matrix multiplication is associative.
 
 Perhaps the simplest vector space is obtained for |G = ()|, the
-singleton set.
+singleton index set.
 %
 In this case, the vectors |s : () -> S| are functions that can take
 exactly one argument, therefore have exactly one value: |s ()|, so
@@ -359,7 +295,7 @@ i.e., the scalar product of |v| and |w|.
 For the connection between matrices, linear transformations, and
 geometry, I warmly recommend binge-watching the ``Essence of linear
 algebra'' videos on youtube (start here:
-https://www.youtube.com/watch?v=kjBOesZCoqc).
+\url{https://www.youtube.com/watch?v=kjBOesZCoqc}).
 
 
 \subsection{Examples of matrix algebra}
@@ -373,11 +309,9 @@ coefficients.
 This is quite similar to ``standard'' geometrical vectors represented
 by |n+1| coordinates.
 %
-% TODO (by DaHe): Missing end parenthesis below
-%
 This suggests that polynomials of degree |n+1| form a vector space,
 and we could interpret that as |{0, ..., n} -> REAL| (or, more
-generally, |Field a => {0, ..., n} -> a|.
+generally, |Field a => {0, ..., n} -> a|).
 %
 The operations |+| and |*| are defined in the same way as they are for
 functions.
@@ -431,11 +365,16 @@ D (e 0) = 0
 
 Example: |n+1 = 3|:
 
-\begin{verbatim}
-          0  1  0
-   M  =
-          0  0  2
-\end{verbatim}
+% TODO (by DaHe): A lot of graphical things are done with verbatim throughout
+% the chapter, I guess these should be converted to proper LaTeX at some point
+
+\begin{displaymath}
+M =
+  \begin{bmatrix}
+    0 & 1 & 0 \\
+    0 & 0 & 2
+  \end{bmatrix}
+\end{displaymath}
 
 Take the polynomial
 %
@@ -606,6 +545,11 @@ instance Bounded G where
 instance Enum G where
   toEnum          =  G
   fromEnum (G n)  =  n
+
+instance Num G where
+  fromInteger = G . fromInteger
+  -- Note that this is just for convient notation (integer literals),
+  -- G should normally not be used with
 \end{code}
 
 The transition function:
@@ -631,7 +575,8 @@ Test:
 % TODO (by DaHe): Is the line below meant as an exercise? Otherwise, shouldn't
 % we get to see the result of the 'test'?
 \begin{code}
-t1 = toL (mul m1 (e 3 + e 4))
+t1' = mul m1 (e 3 + e 4)
+t1 = toL t1'
 \end{code}
 
 \subsubsection{Non-deterministic systems}
@@ -758,7 +703,8 @@ instance Num Bool where
 Test:
 
 \begin{code}
-t2 = toL (mul m2 (e 3 + e 4))
+t2' = mul m2 (e 3 + e 4)
+t2 = toL t2'
 \end{code}
 
 \subsubsection{Stochastic systems}

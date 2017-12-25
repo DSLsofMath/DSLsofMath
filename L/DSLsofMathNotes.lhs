@@ -61,6 +61,11 @@
   \end{picture}}}
 %% If you remove the %format == command the lhs2TeX default yields ≡, which can be a problem
 \providecommand{\cpp}{C\kern-0.05em\texttt{+\kern-0.03em+}}
+\newcommand{\colvec}[1]{\colvecc{#1_0}{#1_n}}
+\newcommand{\colvecc}[2]{\colveccc{#1 \\ \vdots \\ #2}}
+\newcommand{\colveccc}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\rowvec}[1]{\rowvecc{#1_0}{#1_n}}
+\newcommand{\rowvecc}[2]{\begin{bmatrix} #1 &  \cdots &  #2 \end{bmatrix}}
 
 \title{Domain Specific Languages of Mathematics: Lecture Notes}
 \author{Patrik Jansson \and Cezar Ionescu}

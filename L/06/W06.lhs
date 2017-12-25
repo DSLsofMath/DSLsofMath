@@ -54,7 +54,7 @@ We have several choices.
 \begin{enumerate}
 \item Using |FunExp|
 
-Recall (week 3):
+Recall (section~\ref{sec:FunExp}):
 
 \begin{code}
 data FunExp  =  Const Rational

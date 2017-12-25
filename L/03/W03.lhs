@@ -820,7 +820,7 @@ expressions (representing functions in one variable):
 etc.
 
 We can implement this in a datatype:
-
+\label{sec:FunExp}
 \begin{code}
 data FunExp  =  Const Double
              |  Id

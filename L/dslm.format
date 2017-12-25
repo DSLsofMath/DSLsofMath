@@ -5,6 +5,7 @@
 %format REAL                    =  "\mathbb{R}"
 %format COMPLEX                 =  "\mathbb{C}"
 %format ZZ                      =  "\mathbb{Z}"
+%format Zn                      =  ZZ "_n"
 %format QQ                      =  "\mathbb{Q}"
 %format Nat                     =  "\mathbb{N}"
 %format Pos                     =  "\mathbb{N}_{> 0}"
@@ -156,7 +157,9 @@
 %format bt = b "_{t}"
 %format di = d "_{i}"
 %format xi = x "_{i}"
-
+%format vi = v "_{i}"
+%format e0
+%format en = e "_n"
 %format Orn = Or "_{n}"
 
 %format AllIntro    = ∀ "\!\text{-}" Intro
