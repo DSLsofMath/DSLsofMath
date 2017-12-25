@@ -51,18 +51,27 @@
     mulP [a] p = -- TODO
     mulP p [b] = -- TODO
   \end{spec}
-  % Answer: map (a*) p and map (*b) p
+  % Answer: map (a*) p and map (*b) p because scaling a polynomial by a constant is done by scaling all coefficients.
   \begin{spec}
     mulP (0:as) p = -- TODO
     mulP p (0:bs) = -- TODO
   \end{spec}
-  % Answer: 0:(mulP as p) and 0:(mulP p bs)
+  % Answer: 0:(mulP as p) and 0:(mulP p bs) because (x*p)*q = x*(p*q)
   Finally we reach the main case
   \begin{spec}
     mulP (a:as) q@(b:bs) = -- TODO
   \end{spec}
-  % Answer: (a*b):(map (a*) bs `addP`  (as  `mulP`  q)
+  % Answer: (a*b):(map (a*) bs `addP`  (as  `mulP`  q)  because  we can first split (a:as) into [a] + (0:as), etc.
 
+% TODO: format and move into solutions appendix
+% (a:as) * q =
+% ([a] + (0:as)) * q =
+% ([a]*q) + (0:as)*q =
+% (map (a*) q) + 0:(as*q) =
+% (map (a*) (b:bs)) + 0:(as*q) =
+% ((a*b):map (a*) bs)) + 0:(as*q) =
+% ((a*b)+0) : (map (a*) bs) + as*q) =
+% a*b  :  (map (a*) bs) + as*q) =
 \end{exercise}
 
 

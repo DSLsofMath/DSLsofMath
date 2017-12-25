@@ -386,6 +386,7 @@ deriv (Cons a as)  =  deriv' as 1
 
 and integrate:
 
+%TODO: Perhaps swap the order of arguments to |integ| to match the order of |Cons|. Or remove that argument and just use |a0 +| in combination with a 1-arg. |integ|.
 \begin{code}
 integ  ::  Fractional a => PowerSeries a -> a -> PowerSeries a
 integ  as a0  =  Cons a0 (integ' as 1)

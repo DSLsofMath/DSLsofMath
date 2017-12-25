@@ -629,10 +629,10 @@ series |(c : cs)| satisfying
   (a : as) = (c * b)  :  (cs * (b : bs)  +  [c]*bs)  <=> {- equality on compnents, def. of division -}
 
   c   = a / b                          {- and -}
-  as  = cs * (b : bs) + [a/b] * bs     {-" "-}       <=> {- arithmetics -}
+  as  = cs * (b : bs) + [c] * bs     {-" "-}       <=> {- arithmetics -}
 
   c   = a / b                          {- and -}
-  cs  =  (as - [a/b] * bs) / (b : bs)
+  cs  =  (as - [c] * bs) / (b : bs)
 \end{spec}
 
 This leads to the implementation:
@@ -675,6 +675,28 @@ trailing |0.0|).
 example0   = takePoly 10 ps0
 example01  = takePoly 10 (ps0 * (1-x))
 \end{code}
+
+We can get a feeling for the definition by computing |ps0| ``by
+hand''.
+%
+We let |p = [1]| and |q=[1,-1]| and seek |r = p/q|.
+%
+\begin{spec}
+  divPS p q                    =
+  divPS [1]      (1:[-1])      =  {- 3rd case -}
+  divPS (1:[0])  (1:[-1])      =  {- 4th case -}
+  (1/1) : divPS ([0] - [1] * [-1])  (1:[-1])
+  1 : divPS ([0] - [-1]) (1:[-1])
+  1 : divPS [1] (1:[-1])
+  1 : divPS p q
+\end{spec}
+%
+Thus, the answer |r| starts with |1| and continues with |r|!
+%
+In other words, we have that |1/[1,-1] = [1,1..]| as infinite lists of
+coefficients and \(\frac{1}{1-x} = \sum_{i=0}^{\infty} x^i\) in the
+more traditional mathematical notation.
+
 
 \subsection{Formal derivative}
 
