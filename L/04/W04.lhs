@@ -1,4 +1,5 @@
 \section{Compositional Semantics and Algebraic Structures}
+\label{sec:CompSem}
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 module DSLsofMath.W04 where

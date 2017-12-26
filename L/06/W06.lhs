@@ -6,6 +6,7 @@ import DSLsofMath.W05
 \end{code}
 
 \section{Higher-order Derivatives and their Applications}
+\label{sec:deriv}
 
 \subsection{Review}
 

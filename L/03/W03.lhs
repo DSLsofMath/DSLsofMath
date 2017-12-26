@@ -1,4 +1,5 @@
 \section{Types in Mathematics}
+\label{sec:types}
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.W03 where

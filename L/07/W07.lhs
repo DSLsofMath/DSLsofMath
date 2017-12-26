@@ -11,6 +11,7 @@ module DSLsofMath.W07 where
 %
 
 \section{Matrix algebra and linear transformations}
+\label{sec:LinAlg}
 
 % TODO (by DaHe): Why are so many words on this page in quotation marks?
 % "definition", "row vector", "pointwise", "scalar" ...

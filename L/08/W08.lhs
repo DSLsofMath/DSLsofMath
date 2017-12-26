@@ -1,4 +1,5 @@
 \section{Exponentials and Laplace}
+\label{sec:Laplace}
 
 \subsection{The Exponential Function}
 \label{sec:exp}

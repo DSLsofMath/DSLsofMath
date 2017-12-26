@@ -1,4 +1,5 @@
 \section{A DSL for arithmetic expressions and complex numbers}
+\label{sec:DSLComplex}
 
 This chapter is partly based on the paper
 \citep{TFPIE15_DSLsofMath_IonescuJansson} from the International

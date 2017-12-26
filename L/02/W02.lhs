@@ -1,4 +1,5 @@
 \section{Logic and calculational proofs}
+\label{sec:logic}
 
 Course learning outcomes:
 

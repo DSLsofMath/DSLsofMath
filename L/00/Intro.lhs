@@ -1,5 +1,5 @@
 \setcounter{section}{-1}
-\section{Introduction}
+\section{sec:intro}
 
 These lecture notes aim to cover the lectures and exercises of the
 recently introduced BSc-level course ``Domain Specific Languages of

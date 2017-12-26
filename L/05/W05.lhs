@@ -1,4 +1,5 @@
 \section{Polynomials and Power Series}
+\label{sec:poly}
 \begin{code}
 {-# LANGUAGE TypeSynonymInstances #-}
 module DSLsofMath.W05 where
