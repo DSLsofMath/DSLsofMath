@@ -272,71 +272,39 @@ sufficiently many |a|-values for a good approximation).
 Still, recursive equations are not always easy to solve (especially
 without a computer), so it's worth looking for alternatives.
 
-We have gone from
+When ``zooming in'' we go from |f| to |a|, but we can also look at it
+in the other direction: we have ``zoomed out'' from |a| to |f| via an
+infinite series:
 
+\begin{tikzcd}
+  |a : ℕ → ℝ| \arrow[r, "\sum a_n * x^n"] & |f : ℝ → ℝ|
+\end{tikzcd}
+
+We would like to go one step further
+
+\begin{tikzcd}
+  |a : ℕ → ℝ| \arrow[r, "\sum a_n * x^n"] & |f : ℝ → ℝ| \arrow[r, "??"] & |F : ??|
+\end{tikzcd}
+
+That is, we are looking for a transformation of |f| to some |F| in a
+way which resembles the transformation from |a| to |f|.
 %
-% TODO (by DaHe): I think the analogy of "zooming in/out" could be clarified. We
-% have supposedly "zoomed in" on f by representing it as a power series a, so it
-% seems to me we've gone from f : R -> R to a : N -> R. Yet on the line below,
-% it says we've gone from a to f, the other way?
-%
+The analogue of ``sum of an infinite series'' for a continuous function is an integral:
 
-\begin{spec}
-a : ℕ → ℝ  {-"\qquad to \qquad"-}   f : ℝ → ℝ
-\end{spec}
+\begin{tikzcd}
+  |a : ℕ → ℝ| \arrow[r, "\sum a_n * x^n"] & |f : ℝ → ℝ| \arrow[r, "\int (f t) * x^t dt"] & |F : ??|
+\end{tikzcd}
 
-via
-
-\begin{spec}
-               Sigma an * x^n
-\end{spec}
-
-In ``zooming out'', we would like to go one step further
-
-
-\begin{spec}
-a : ℕ → ℝ  {-"\qquad to \qquad"-}  f : ℝ → ℝ   {-"\qquad to \qquad"-}     ??
-\end{spec}
-
-via
-
-%
-% TODO (by DaHe): I think the question mark below is a bit confusing. A better
-% way might be to write something like:
-%
-%  a : N -> R       to            f : R -> R   to   ?
-%           \                    ^          \     ^
-%            v                  /            v   /
-%              (Sigma an * x^n)               (?)
-%
-
-\begin{spec}
-               Sigma an * x^n    {-"\qquad \qquad"-}         ??
-\end{spec}
-
-%
-% TODO (by DaHe) What is "the second part"? I assume it means the "via" part,
-% which could be expressed in a clearer way (though I have to admit I can't
-% really think of a better way myself...)
-%
-At least the second part is ``easy''.
-%
-The analogue of series for a continuous function is integral
-
-\begin{spec}
-               Sigma an * x^n     {-"\qquad \qquad"-}        Integ (f t) * x^t dt
-\end{spec}
-
-We note that, for the integral |Integ (f t) * x^t dt| to
-converge for a larger class of functions (say, bounded functions), we
-have to limit ourselves to |absBar x < 1|.
+We note that, for the integral |Integ (f t) * x^t dt| to converge for
+a larger class of functions (say, bounded functions), we have to limit
+ourselves to |absBar x < 1|.
 %
 Both this condition and the integral make sense for |x ∈ ℂ|, so we
 could take
 
-\begin{spec}
-a : ℕ → ℝ {-"\qquad to \qquad"-}  f : ℝ → ℝ  {-"\qquad to \qquad"-}   F : {z | |z| < 1} → ℂ
-\end{spec}
+\begin{tikzcd}
+  |a : ℕ → ℝ| \arrow[r, "\sum a_n * x^n"] & |f : ℝ → ℝ| \arrow[r, "\int (f t) * x^t dt"] & |F : {z || absBar z < 1} → ℂ|
+\end{tikzcd}
 
 but let us stick to |ℝ| for now.
 
@@ -364,25 +332,15 @@ Remember that |D (f * g) = D f * g + f * D g|, therefore
 % equations below, instead of between the lines.
 %
 \begin{spec}
-  ℒ f' x
+  ℒ f' x                                                       =  {- |g t = x^t|; |g' t = log x * x^t| -}
 
-=  { g t = x^t; g' t = log x * x^t }
+  Integ (D (f t * x^t)) - f t * log x * x^t dt                 =
 
-  Integ (D (f t * x^t)) - f t * log x * x^t dt
+  Integ (D (f t * x^t)) dt  -  Integ f t * log x * x^t dt      =
 
-=
+  {-"lim_{t \to \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt  =
 
-  Integ (D (f t * x^t)) dt  -  Integ f t * log x * x^t dt
-
-=
-
-  {-"lim_{t \to \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt
-
-=
-
-  - f 0 - log x * Integ f t * x^t dt
-
-=
+  - f 0 - log x * Integ f t * x^t dt                           =
 
   -f 0  - log x * ℒ f x
 \end{spec}
@@ -393,13 +351,9 @@ Let us therefore return to the definition of |ℒ| and operate a change
 of variables:
 
 \begin{spec}
-  ℒ f x = Integ (f t) * x^t dt
+  ℒ f x = Integ (f t) * x^t dt                <=>  {- |x = exp (log x)| -}
 
-<=>  { x = exp (log x) }
-
-  ℒ f x = Integ (f t) * (exp (log x))^t dt
-
-<=>  { (a^b)^c = a^(b*c) }
+  ℒ f x = Integ (f t) * (exp (log x))^t dt    <=>  {- |(a^b)^c = a^(b*c)| -}
 
   ℒ f x = Integ (f t) * exp (log x *t) dt
 \end{spec}
@@ -419,11 +373,9 @@ This is the definition of the Laplace transform of the function |f|.
 Going back to the problem of computing |ℒ f'|, we now have
 
 \begin{spec}
-  ℒ f' s
+  ℒ f' s                      = {- The computation above with |s = -log x|. -}
 
-= {- The computation above with |s = -log x|. -}
-
-  - f 0 + s * ℒ f s
+  - f 0 + s * ℒ f s           {-" "-}
 \end{spec}
 
 We have obtained
@@ -435,12 +387,9 @@ We have obtained
 From this, we can deduce
 
 \begin{spec}
-  ℒ f'' s
-=
-  s * ℒ f' s - f' 0
-=
-  s * (s * ℒ f s - f 0) - f' 0
-=
+  ℒ f'' s                               =
+  s * ℒ f' s - f' 0                     =
+  s * (s * ℒ f s - f 0) - f' 0          =
   s^2 * ℒ f s - s * f 0 - f' 0
 \end{spec}
 

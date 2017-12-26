@@ -799,17 +799,19 @@ canonical base vectors are transformed.
 In this case, the canonical base vector |e i = \ j -> i `is` j| is the
 probability distribution \emph{concentrated} in |i|:
 
-% TODO (by DaHe): A lot of graphical things are done with verbatim throughout
-% the chapter, I guess these should be converted to proper LaTeX at some point
-\begin{verbatim}
-          0    0    0    0    0    0    0
-          .4   0    0    0    .5   0    0
-          .6   0    0    0    0    0    0
-   M  =   0    1    0    0    0    0    0
-          0    0    .7   0    0    1    0
-          0    0    .3   0    0    0    0
-          0    0    0    1    .5   0    1
-\end{verbatim}
+\[
+  M =
+  \bordermatrix{
+         & c_0 & c_1 & c_2 & c_3 & c_4 & c_5 & c_6 \cr
+    r_0  &  0  &  0  &  0  &  0  &  0  &  0  &  0 \cr
+    r_1  &  .4 &  0  &  0  &  0  &  .5 &  0  &  0 \cr
+    r_2  &  .6 &  0  &  0  &  0  &  0  &  0  &  0 \cr
+    r_3  &  0  &  1  &  0  &  0  &  0  &  0  &  0 \cr
+    r_4  &  0  &  0  &  .7 &  0  &  0  &  1  &  0 \cr
+    r_5  &  0  &  0  &  .3 &  0  &  0  &  0  &  0 \cr
+    r_6  &  0  &  0  &  0  &  1  &  .5 &  0  &  1 \cr
+  }
+\]
 
 Exercise: starting from state 0, how many steps do you need to take
 before the probability is concentrated in state 6?
