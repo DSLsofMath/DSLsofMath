@@ -340,9 +340,9 @@ Remember that |D (f * g) = D f * g + f * D g|, therefore
 
   {-"lim_{t \to \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt  =
 
-  - f 0 - log x * Integ f t * x^t dt                           =
+  -f 0 - log x * Integ f t * x^t dt                           =
 
-  -f 0  - log x * ℒ f x
+  -f 0 - log x * ℒ f x
 \end{spec}
 
 The factor |log x| is somewhat awkward.
@@ -410,17 +410,7 @@ Returning to our differential equation, we have
 \end{spec}
 
 %
-% TODO (by DaHe): I think it would be worth noting that the Laplace transform
-% can also be viewed as a generalization of the Fourier transform, which is a
-% way of expressing functions as a linear combination of frequency components
-% rather than as a function of time. The Laplace transform then expands on this
-% by expressing functions as a sum of "complex frequencies", allowing a wider
-% range of functions to be transformed.
-%
-% This should of course not be the primary way the Laplace transform is explained
-% in this course, but it is still interesting to note, since this is how it is
-% introduced in the Transforms, Signals and Systems (TSS) course.
-%
+
 
 \textbf{Remark:} Note that this is a necessary condition, but not a
 sufficient one.
@@ -471,21 +461,13 @@ Applying this to the left-hand side of (1), we have for any |s|
 For the right-hand side, we apply the definition:
 
 \begin{spec}
-  ℒ (exp ∘ (3*)) s
+  ℒ (exp ∘ (3*)) s                                                                                  = {- Def. of |ℒ| -}
 
-= {- Def. of |ℒ| -}
+  Integ exp (3 * t)  *  exp (-s * t) dt                                                             =
 
-  Integ exp (3 * t)  *  exp (-s * t) dt
+  Integ exp ((3 - s) * t)) dt                                                                       =
 
-=
-
-  Integ exp ((3 - s) * t)) dt
-
-=
-
-  {-"lim_{t \to \infty} "-}  frac (exp ((3 - s) * t)) (3 - s)  -  frac (exp ((3 - s) * 0)) (3 - s)
-
-= {- for |s > 3| -}
+  {-"lim_{t \to \infty} "-}  frac (exp ((3 - s) * t)) (3 - s)  -  frac (exp ((3 - s) * 0)) (3 - s)  = {- for |s > 3| -}
 
   frac 1 (s - 3)
 \end{spec}
@@ -499,15 +481,11 @@ Therefore, we have, writing |F| for |ℒ f|
 and therefore
 
 \begin{spec}
-  F s
+  F s                                                = {- Solve for |F s| -}
 
-= {- Solve for |F s| -}
+  frac (frac 1 (s - 3) + s - 3) (s^2 - 3 * s + 2)    =  {- |s^2 - 3 * s + 2 = (s - 1) * (s - 2)| -}
 
-  frac (frac 1 (s - 3) + s - 3) (s^2 - 3 * s + 2)
-
-=  {- |s^2 - 3 * s + 2 = (s - 1) * (s - 2)| -}
-
-  frac (10 - 6 * s + s^2) ((s-1)*(s-2)*(s-3))
+  frac (10 - 6 * s + s^2) ((s-1)*(s-2)*(s-3))        {-" "-}
 \end{spec}
 
 We now have the problem of ``recovering'' the function |f| from its
@@ -568,3 +546,31 @@ Our mix of necessary and sufficient conditions makes it necessary to
 check that we have, indeed, a solution for the differential equation.
 %
 The verification is in this case trivial.
+
+\subsection{Laplace and other transforms}
+\label{sec:LaplaceSum}
+
+To sum up, we have defined the Laplace transform and shown that it can
+be used to solve differential equations.
+%
+It can be seen as a continuous version of the transform between the
+infinite sequence of coeeficients |a : Nat -> REAL| and the functions
+behind formal power series.
+%
+
+
+Laplace is also closely related to Fourier series, which is a way of
+expressing functions on a closed interval as a linear combination of
+dicrete frequency components rather than as a function of time.
+%
+Finally, Laplace is also a close relative of the Fourier transform.
+%
+Both transforms are used to express functions as a sum of ``complex
+frequencies'', but Laplace allows a wider range of functions to be
+transformed.
+
+TODO: cite http://www.math.chalmers.se/Math/Grundutb/CTH/mve025/1516/Dokument/F-analys.pdf
+
+(Fourier is a common tool in courses on Transforms, Signals and
+Systems.)
+%
