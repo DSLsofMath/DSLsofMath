@@ -19,7 +19,7 @@
 \RequirePackage{amsfonts}
 \usepackage{tikz}
 \usepackage{tikz-cd}
-\usetikzlibrary{trees,graphs}
+\usetikzlibrary{trees,graphs,quotes}
 \usepackage{lineno}
 
 \providecommand\mathbbm{\mathbb}
@@ -65,7 +65,8 @@
 \newcommand{\colvecc}[2]{\colveccc{#1 \\ \vdots \\ #2}}
 \newcommand{\colveccc}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 \newcommand{\rowvec}[1]{\rowvecc{#1_0}{#1_n}}
-\newcommand{\rowvecc}[2]{\begin{bmatrix} #1 &  \cdots &  #2 \end{bmatrix}}
+\newcommand{\rowvecc}[2]{\rowveccc{#1 &  \cdots &  #2}}
+\newcommand{\rowveccc}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 
 \title{Domain Specific Languages of Mathematics: Lecture Notes}
 \author{Patrik Jansson \and Cezar Ionescu}

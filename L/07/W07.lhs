@@ -365,9 +365,6 @@ D (e 0) = 0
 
 Example: |n+1 = 3|:
 
-% TODO (by DaHe): A lot of graphical things are done with verbatim throughout
-% the chapter, I guess these should be converted to proper LaTeX at some point
-
 \begin{displaymath}
 M =
   \begin{bmatrix}
@@ -387,61 +384,49 @@ Take the polynomial
 
 as a vector
 
-\begin{verbatim}
-          1
-   v  =   2
-          3
-\end{verbatim}
+\[
+ v = \colveccc{1\\2\\3}
+\]
 
 and we have
 
-\begin{verbatim}
-                0  1  0      1        2
-   M  * v  =              *  2   =
-                0  0  2      3        6
-\end{verbatim}
+\[
+   M  * v  = \rowveccc{\colveccc{0\\0} & \colveccc{1\\0} & \colveccc{0\\2}}  * \colveccc{1\\2\\3} = \colveccc{2\\6}
+\]
+% TODO: Perhaps explain this "row of columns" view of a matrix in contrast with the "column of rows" view.
+% TODO: Perhaps also (or instead) just make the matrix be a two-dimensional grid of scalars.
 
-%
-% TODO (by DaHe): Shouldn't this be formatted with lower-case x and superscript
-% instead of ^ ?
-%
-representing the polynomial |6 * X^2 + 2 * X|.
+representing the polynomial |6*x + 2|.
 
 Exercise: write the (infinite-dimensional) matrix representing |D| for
 power series.
 
-Exercise: write the matrix associate with integration of polynomials.
+Exercise: write the matrix associated with integration of polynomials.
 
 \subsubsection{Simple deterministic systems (transition systems)}
 
-% TODO (by DaHe): The term "endo-function" should probably be defined explicitly,
-% even though it is pretty easy to deduce approximately what it means in this
-% context.
-Simple deterministic systems are given by endo-functions on a finite
-set |f : G -> G|.
+%TODO: Define endo-function earlier and give examples.
+Simple deterministic systems are given by endo-functions\footnote{An
+  \emph{endo-function} is a function from a set |X| to itself: |f : X
+  -> X|.} on a finite set |f : G -> G|.
 %
 They can often be conveniently represented as a graph, for example
 
-\begin{verbatim}
-                  +---+
-                  | 3 |
-                  +---+
-                 ^      \
-                /        v
-            +---+         +---+
-            | 1 |         | 6 |
-            +---+         +---+
-           ^             ^  |
-          /             /   |
-      +---+        +---+    |
-      | 0 |        | 4 |    |
-      +---+        +---+    |
-                        ^   |
-                         \  v
-           +---+          +---+
-           | 2 |--------->| 5 |
-           +---+          +---+
-\end{verbatim}
+\tikz [nodes={circle,draw}] {
+
+  \node (n0) at (1,1) {0};
+  \node (n1) at (2,2) {1};
+  \node (n3) at (3,3) {3};
+  \node (n6) at (4,2) {6};
+  \node (n4) at (3,1) {4};
+  \node (n5) at (4,0) {5};
+  \node (n2) at (2,0) {2};
+
+  \graph {
+  (n0) -> (n1) -> (n3) -> (n6) -> (n5) -> (n4) -> (n6);
+  (n2) -> (n5);
+  };
+}
 
 Here, |G = {0, ..., 6}|.
 %
@@ -479,15 +464,19 @@ M = [ f (e 0), f (e 1), ..., f (e n) ]
 
 Therefore:
 
-\begin{verbatim}
-          0    0    0    0    0    0    0
-          1    0    0    0    0    0    0
-          0    0    0    0    0    0    0
-   M  =   0    1    0    0    0    0    0
-          0    0    0    0    0    1    0
-          0    0    1    0    0    0    1
-          0    0    0    1    1    0    0
-\end{verbatim}
+\[
+  M =
+  \bordermatrix{
+         & c_0 & c_1 & c_2 & c_3 & c_4 & c_5 & c_6 \cr
+    r_0  &  0  &  0  &  0  &  0  &  0  &  0  &  0 \cr
+    r_1  &  1  &  0  &  0  &  0  &  0  &  0  &  0 \cr
+    r_2  &  0  &  0  &  0  &  0  &  0  &  0  &  0 \cr
+    r_3  &  0  &  1  &  0  &  0  &  0  &  0  &  0 \cr
+    r_4  &  0  &  0  &  0  &  0  &  0  &  1  &  0 \cr
+    r_5  &  0  &  0  &  1  &  0  &  0  &  0  &  1 \cr
+    r_6  &  0  &  0  &  0  &  1  &  1  &  0  &  0 \cr
+  }
+\]
 
 Starting with a canonical base vector |e i|, we obtain |M * e i = e (f
 i)|, as we would expect.
@@ -610,26 +599,25 @@ Every node can be the source of one, none, or many arrows.
 
 For example:
 
-\begin{verbatim}
-                  +---+
-                  | 3 |
-                  +---+
-                 ^      \
-                /        v
-            +---+         +---+
-            | 1 |         | 6 |
-            +---+         +---+
-           ^     ^       ^
-          /       \     /
-      +---+        +---+
-      | 0 |        | 4 |
-      +---+        +---+
-           \     ^      ^
-            v   /        \
-           +---+          +---+
-           | 2 |--------->| 5 |
-           +---+          +---+
-\end{verbatim}
+\tikz [nodes={circle,draw}] {
+
+  \node (n0) at (1,1) {0};
+  \node (n1) at (2,2) {1};
+  \node (n3) at (3,3) {3};
+  \node (n6) at (4,2) {6};
+  \node (n4) at (3,1) {4};
+  \node (n5) at (4,0) {5};
+  \node (n2) at (2,0) {2};
+
+  \graph {
+    (n0) -> { (n1), (n2) };
+    (n1) -> (n3);
+    (n2) -> { (n4), (n5) };
+    (n3) -> (n6);
+    (n4) -> { (n1), (n6) };
+    (n5) -> (n4);
+  };
+}
 
 Now, starting in |0| we might and up either in |1| or |2| (but not
 both!).
@@ -639,15 +627,19 @@ Starting in |6|, the system breaks down: there is no successor state.
 The matrix associated to |R| is built in the same fashion: we need to
 determine what vectors the canonical base vectors are associated with:
 
-\begin{verbatim}
-          0    0    0    0    0    0    0
-          1    0    0    0    1    0    0
-          1    0    0    0    0    0    0
-   M  =   0    1    0    0    0    0    0
-          0    0    1    0    0    1    0
-          0    0    1    0    0    0    0
-          0    0    0    1    1    0    0
-\end{verbatim}
+\[
+  M =
+  \bordermatrix{
+         & c_0 & c_1 & c_2 & c_3 & c_4 & c_5 & c_6 \cr
+    r_0  &  0  &  0  &  0  &  0  &  0  &  0  &  0 \cr
+    r_1  &  1  &  0  &  0  &  0  &  1  &  0  &  0 \cr
+    r_2  &  1  &  0  &  0  &  0  &  0  &  0  &  0 \cr
+    r_3  &  0  &  1  &  0  &  0  &  0  &  0  &  0 \cr
+    r_4  &  0  &  0  &  1  &  0  &  0  &  1  &  0 \cr
+    r_5  &  0  &  0  &  1  &  0  &  0  &  0  &  0 \cr
+    r_6  &  0  &  0  &  0  &  1  &  1  &  0  &  0 \cr
+  }
+\]
 
 Exercise: start with |e 2 + e 3| and iterate a number of times, to get
 a feeling for the possible evolutions.
@@ -719,26 +711,30 @@ For example
 % TODO (by DaHe): The "loop" going from node 6 to itself looks really weird in
 % the pdf
 
-\begin{verbatim}
-                  +---+
-                  | 3 |
-                  +---+
-               1 ^      \ 1
-                /        v
-            +---+         +---+ 1
-            | 1 |         | 6 |---.
-            +---+         +---+<--´
-           ^     ^       ^
-       .4 /    .5 \     / .5
-      +---+        +---+
-      | 0 |        | 4 |
-      +---+        +---+
-           \   .7^      ^ 1
-         .6 v   /        \
-           +---+   .3     +---+
-           | 2 |--------->| 5 |
-           +---+          +---+
-\end{verbatim}
+\tikz [nodes={circle,draw}, scale=1.2]{
+
+  \node (n0) at (1,1) {0};
+  \node (n1) at (2,2) {1};
+  \node (n3) at (3,3) {3};
+  \node (n6) at (4,2) {6};
+  \node (n4) at (3,1) {4};
+  \node (n5) at (4,0) {5};
+  \node (n2) at (2,0) {2};
+
+  \graph [edges={->,>=latex,nodes={draw=none}}] {
+     (n0) ->[".4"] (n1);
+     (n0) ->[".6",swap] (n2);
+     (n1) ->["1"]  (n3);
+     (n2) ->[".7"] (n4);
+     (n2) ->[".3"] (n5);
+     (n3) ->["1"]  (n6);
+     (n4) ->[".5",swap] (n1);
+     (n4) ->[".5"] (n6);
+     (n5) ->["1",swap]  (n4);
+%     (n6) ->[loop right] (n6);
+  };
+  \path[->,>=latex,nodes={draw=none}] (n6) edge ["1",loop right] node {} (n6);
+}
 
 One could say that this case is a generalisation of the previous one,
 in which we can take all probabilities to be equally distributed among
@@ -803,6 +799,8 @@ canonical base vectors are transformed.
 In this case, the canonical base vector |e i = \ j -> i `is` j| is the
 probability distribution \emph{concentrated} in |i|:
 
+% TODO (by DaHe): A lot of graphical things are done with verbatim throughout
+% the chapter, I guess these should be converted to proper LaTeX at some point
 \begin{verbatim}
           0    0    0    0    0    0    0
           .4   0    0    0    .5   0    0
