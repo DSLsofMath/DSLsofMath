@@ -91,9 +91,9 @@ Typical examples include |i, j, k| for natural numbers or integers,
 The absence of explicit types in mathematical texts can sometimes lead
 to confusing formulations.
 %
-For example, a standard text on differential equations by Edwards,
-Penney and Calvis \cite{edwards2008elementary} contains at page 266
-the following remark:
+For example, a standard text on differential equations by
+\citet*{edwards2008elementary} contains at page 266 the following
+remark:
 
 \newcommand{\Lap}[1]{\ensuremath{|Lap|\{#1\}}}
 \begin{quote}
@@ -800,13 +800,14 @@ TODO: mention the parameterised |newtype ComplexSem r = CS (r , r)    deriving E
 
 % TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
 % See data blackboard/W1/20170116_114608.jpg, eval blackboard/W1/20170116_114613.jpg
+\label{sec:toComplexSyn}
 \begin{code}
 data ComplexSyn r  =  FromCartesian r r
                    |  ComplexSyn r  :+:  ComplexSyn r
                    |  ComplexSyn r  :*:  ComplexSyn r
 
 toComplexSyn :: Num a => a -> ComplexSyn a
-toComplexSyn x = FromCartesian x (fromInteger 0)
+toComplexSyn x = FromCartesian x 0
 
 -- From CSem: newtype ComplexSem r = CS (r , r)    deriving Eq
 
@@ -1036,16 +1037,11 @@ liftSeq0 :: a -> Seq a
 liftSeq0 c i = c
 \end{code}
 
-TODO: convert each "embedded exercise" to a forward pointer (some like "Related exercise: \ref{exc:fmap}")
-
-Exercice: what does function composition do to a sequence?
-(composition on the left?, on the right?)
-
-(TODO: perhaps mention limits, sums, just a teasers for later chapters)
+Exercice \ref{exc:fmap}: what does function composition do to a sequence?
 
 Another common mathematical operator on sequences is the limit.
 %
-We will get back to limits in a later chapter, but here we just
+We will get back to limits in later chapters (\ref{sec:LimPoint}, \ref{sec:FunLimit}), but here we just
 analyse the notation and typing.
 %
 This definition is slightly adapted from Wikipedia (2017-11-08):

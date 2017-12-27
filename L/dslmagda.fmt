@@ -25,7 +25,7 @@
 
 \providecommand\mathbbm{\mathbb}
 
-% TODO: Define more of these ...
+%TODO: Define more of these ...
 \DeclareUnicodeCharacter{737}{\textsuperscript{l}}
 \DeclareUnicodeCharacter{8718}{\ensuremath{\blacksquare}}
 \DeclareUnicodeCharacter{8759}{::}
@@ -34,7 +34,7 @@
 \DeclareUnicodeCharacter{10214}{\ensuremath{\llbracket}}
 \DeclareUnicodeCharacter{10215}{\ensuremath{\rrbracket}}
 
-% TODO: This is in general not a good idea.
+%TODO: This is in general not a good idea.
 \providecommand{\textepsilon}{\ensuremath{\epsilon}}
 \providecommand{\textphi}{\ensuremath{\phi}}
 \providecommand{\textmu}{\ensuremath{\mu}}
@@ -44,7 +44,7 @@
 %Actually, varsyms should not occur in Agda output.
 %subst varsym a = "\Varid{" a "}"
 
-% TODO: Make this configurable. IMHO, italics doesn't work well
+%TODO: Make this configurable. IMHO, italics doesn't work well
 % for Agda code.
 
 %%\renewcommand\Varid[1]{\mathord{\textsf{#1}}}

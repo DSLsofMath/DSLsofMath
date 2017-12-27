@@ -759,7 +759,7 @@ TODO: Or talk a bit about open and closed sets. (Open set = every
 point is internal = there is some wiggle-room around each point in the
 set. Closed set contains all its limit points.)
 
-\paragraph{Limit point}
+\paragraph{Limit point}\label{sec:LimPoint}
 
 \emph{Definition} (adapted from \cite{rudin1964principles}, page 28):
 Let |X| be a subset of |ℝ|.

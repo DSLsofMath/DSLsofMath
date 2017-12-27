@@ -83,9 +83,11 @@ definition of the function |D f|.
 %
 The definition is given for a fixed (but arbitrary) |x|.
 %
-He we make small detour to define \emph{limit}.
+Here we make small detour to define \emph{limit}.
 %
-Here is the definition from \citet{adams2010calculus}.
+The definition from \citet{adams2010calculus} is as follows:
+%
+\label{sec:FunLimit}
 %
 \begin{quote}
   \textbf{A formal definition of limit}
@@ -108,8 +110,21 @@ Here is the definition from \citet{adams2010calculus}.
 The |lim| notation has four components: a variable name |x|, a point
 |a| an expression \(f(x)\) and the limit |L|.
 %
-TODO: cont.
-
+The variable name + the expression can be combined into just the
+function |f| and this leaves us with three essential components: |f|,
+|a|, and |L|.
+%
+Thus, |lim| can be seen as a ternary (3-argument) predicate which is
+satisfied if the limit of |f| exists at |a| and equals |L|.
+%
+This predicate can be shown to be a partial function of two arguments,
+|f| and |a|.
+%
+This means that each function |f| can have \emph{at most} one limit
+|L| in a point |a|.
+%
+(This is not evident from the definition and proving it is a good
+exercise.)
 
 Coming back to the definition of the derivative we see that the |lim|
 expression is using the (anonymous) function |g h = frac (f(x+h) - f
@@ -495,7 +510,7 @@ differential equation (a PDE).
 We will not dig into how to solve such PDEs, but they are widely used
 in physics.
 
-% TODO (by DaHe) There's two more things I think should be added in this
+%TODO (by DaHe) There's two more things I think should be added in this
 % chapter:
 % * Typing the conditional probability notation. The notation P(A | B) is
 %   something that I and others were confused during the statistics course. In one
@@ -504,7 +519,7 @@ in physics.
 %   think many would agree that this is indeed a very confusing notation, so it
 %   is a great idea to cover it in this book. Cezar had a very good rant about
 %   this during his guest lecture last year.
-%
+%TODO: [Include the problem from E3.lhs and the solution from ../../Exam/2016-03/Ex2.hs]
 % * Using Haskell to type mathematical expressions. I leared a lot about typing
 %   maths by playing around with mathematical expressions in Haskell. A good
 %   example is Exam/2016-03/Ex2.hs, where the solution is a haskell program
@@ -609,19 +624,22 @@ Exercise: play around with this a bit in ghci.
 
 \subsubsection{Overloaded integers literals}
 
+As an aside, we will spend some time explaining a convenient syntactic
+shorthand which is very useful but which can be confusing: overloaded
+integers.
+%
 In Haskell, every use of an integer literal like |2|, |1738|, etc., is
 actually implicitly an application of |fromInteger| to the literal.
 %
 This means that the same program text can have different meaning
 depending on the type of the context.
 %
-The literal |two = 2|, for example, can be used as an integer, a real
+The literal |three = 3|, for example, can be used as an integer, a real
 number, a complex number, or even as a (constant) function (by the
 instance |Num (x -> a)|).
 
-TODO: Start of aside - make it fit in the text better
-
-The instance declaration above looks recursive, but is not.
+The instance declaration of the method |fromInteger| above looks
+recursive, but is not.
 %
 The same pattern appeared already in section
 \ref{sec:firstFromInteger}, which near the end included roughly the
@@ -664,24 +682,33 @@ fromIntC :: Num r =>   Integer -> ComplexSyn r
 
 As an example we have that
 \begin{spec}
-  (fromInteger 3) :: ComplexSyn Double   ==
-  toComplexSyn (fromInteger 3)           ==
-  toComplexSyn 3.0                       ==
-  3.0 + 0 i
+  3 :: ComplexSyn Double                 ==  {- |Integer| literals have an implicit |fromInteger| -}
+  (fromInteger 3) :: ComplexSyn Double   ==  {- |Num| instance for |ComplexSyn| -}
+  toComplexSyn   (fromInteger 3)         ==  {- |Num| instance for |Double| -}
+  toComplexSyn   3.0                     ==  {- Def. of |toComplexSyn| from Section \ref{sec:toComplexSyn} -}
+  FromCartesian  3.0  0                  ==  {- |Integer| literals have an implicit |fromInteger| -}
+  FromCartesian  3.0  (fromInteger 0)    ==  {- |Num| instance for |Double|, again -}
+  FromCartesian  3.0  0.0
 \end{spec}
 
+\subsubsection{Back to the numeric hierarchy instances for functions}
 
+Back to the main track: defining numeric operations on functions.
+%
+We have already defined the operations of the |Num| class, but we can
+move on to the neighbouring classes |Fractional| and |Floating|.
 
-TODO: End of aside - connect back to the |x->a| instance
-
-Next we have |Fractional| for when we also have division:
+The class |Fractional| is for types which in addition to the |Num|
+operations also supports division:
+%
 \begin{spec}
 class  Num a => Fractional a  where
     (/)           :: a -> a -> a
-    recip         :: a -> a             -- (1/)
-    fromRational  :: Rational -> a
+    recip         :: a -> a             -- |\x -> 1/x|
+    fromRational  :: Rational -> a      -- similar to |fromInteger|
 \end{spec}
-and |Floating| when we can implement the ``standard'' funtions from calculus:
+and the |Floating| class collects the ``standard'' functions from
+calculus:
 \begin{spec}
 class  Fractional a => Floating a  where
     pi                   :: a
@@ -776,16 +803,20 @@ Similarly, with the function instance for |Num| above, we immediately
 make the types |x->Double|, |x->(y->Double)|, etc.\ into instances
 (for all |x|, |y|, \ldots).
 
-TODO: parhaps make the ``looks recursive'' |fromInteger| example talk
-about |foo| instead? (And then just mention |fromInteger| shortly.)
+%TODO: parhaps make the ``looks recursive'' |fromInteger| example talk
+% about |foo| instead? (And then just mention |fromInteger| shortly.)
 
 \subsection{Computing derivatives}
 \label{sec:computingDerivatives}
 
-TODO: intro text
-
-The ``little language'' of derivatives:
-
+An important part of calculus is the collection of laws, or rules, for
+computing derivatives.
+%
+Using the notation |D f| for the derivative of |f| and lifting the
+numeric operations to functions we can fill in a nice table of
+examples which can be followed to compute derivatives of many
+functions:
+%
 \begin{spec}
     D (f + g)         =  D f + D g
     D (f * g)         =  D f * g + f * D g
@@ -799,16 +830,37 @@ The ``little language'' of derivatives:
     D cos   x         =  - (sin x)
     D exp   x         =  exp x
 \end{spec}
-
+%
 and so on.
+%
+
+If we want to get a bit closer to actually implementing |D| we quickly
+notice a problem: if |D| has type |(REAL -> REAL) -> (REAL -> REAL)|
+we have no way of telling which of these rules we should apply.
+%
+Given a real (semantic) function |f| as an argument, |D| cannot know
+if this function was written using a |+|, or |sin| or |exp| as
+outermost operation.
+%
+The only thing |D| could do would be to numerically approximate the
+derivative, and that is not what we are exploring in this course.
+%
+Thus we need to take a step back and change the type that we work on.
+%
+All the rules in the table seem to work on \emph{syntactic} functions:
+abstract syntax trees \emph{representing} the real (semantic)
+functions.
 
 We observe that we can compute derivatives for any expressions made
 out of arithmetical functions, standard functions, and their
 compositions.
 %
-In other words, the computation of derivatives is based on a DSL of
-expressions (representing functions in one variable):
-
+In other words, the computation of derivatives is based on a domain
+specific langauge (a DSL) of expressions (representing functions in
+one variable).
+%
+Here is the start of a grammar for this little language:
+%
 \begin{spec}
    expression  ∷=  const ℝ
                |   id
@@ -818,15 +870,13 @@ expressions (representing functions in one variable):
                |   ...
 \end{spec}
 
-etc.
-
 We can implement this in a datatype:
 \label{sec:FunExp}
 \begin{code}
 data FunExp  =  Const Double
              |  Id
-             |  FunExp :+: FunExp
-             |  FunExp :*: FunExp
+             |  FunExp  :+:  FunExp
+             |  FunExp  :*:  FunExp
              |  Exp FunExp
              -- and so on
              deriving Show
@@ -835,12 +885,12 @@ data FunExp  =  Const Double
 The intended meaning of elements of the |FunExp| type is functions:
 
 \begin{code}
-eval  ::  FunExp         ->  Double -> Double
+eval  ::  FunExp         ->  (Double -> Double)
 eval      (Const alpha)  =   const alpha
 eval      Id             =   id
-eval      (e1 :+: e2)    =   eval e1  +  eval e2    -- note the use of ``lifted |+|''
-eval      (e1 :*: e2)    =   eval e1  *  eval e2    -- ``lifted |*|''
-eval      (Exp e1)       =   exp (eval e1)          -- and ``lifted |exp|''
+eval      (e1 :+: e2)    =   eval e1  +  eval e2    -- note the use of ``lifted |+|'',
+eval      (e1 :*: e2)    =   eval e1  *  eval e2    -- ``lifted |*|'',
+eval      (Exp e1)       =   exp (eval e1)          -- and ``lifted |exp|''.
 -- and so on
 \end{code}
 %
@@ -852,9 +902,8 @@ e1 :: FunExp
 e1 = Exp (Id :*: Id)
 \end{code}
 
-
-We can implement the derivative of such expressions using the rules of
-derivatives.
+We can implement the derivative of |FunExp| expressions using the
+rules of derivatives.
 %
 We want to implement a function |derive :: FunExp -> FunExp| which
 makes the following diagram commute:
@@ -868,12 +917,12 @@ makes the following diagram commute:
 In other words we want
 %
 \begin{spec}
-     eval . derive e = D . eval
+     eval . derive e  =  D . eval
 \end{spec}
 or, in other words, for any expression |e|, we want
 %
 \begin{spec}
-     eval (derive e) = D (eval e)
+     eval (derive e)  =  D (eval e)
 \end{spec}
 
 For example, let us derive the |derive| function for |Exp e|:

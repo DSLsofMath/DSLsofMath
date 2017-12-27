@@ -155,8 +155,8 @@ valuable for improving the students' understanding of the mathematical
 area.
 %
 The DSL is then implemented in Haskell.
-% **TODO: adjust to real areas covered.
-% **TODO: add these comparisons
+%**TODO: adjust to real areas covered.
+%**TODO: add these comparisons
 The resulting implementation can be compared with existing ones, such
 as Matlab in the case of linear algebra, or R in the case of
 statistical computations.
@@ -216,7 +216,7 @@ The work that lead up to the current course is as follows:
   instance, wrote a paper \citep{TFPIE15_DSLsofMath_IonescuJansson}
   about the course and pressented the pedagogical ideas at several
   events (TODO: perhaps fill in TFPIE'15, DSLDI'15, IFIP WG 2.1 \#73
-  in Göteborg).
+  in Göteborg, LiVe4CS in Glasgow).
 \item 2016: we ran the first instance of DSLM (partly paid by the
   regular course budget, partly by this project) with Cezar Ionescu as
   main lecturer.
@@ -300,6 +300,27 @@ TODO: write about the lecture plan and internal dependencies
 
 
 \subsection{Notation and code convention}
+
+Each chapter ends with exercises to help the reader practice the
+concepts just taught.
+%
+Most exam questions from the first five exams of the DSLsofMath course
+have been included as exercises, so for those of you taking the
+course, you can check your progress towards the final examination.
+%
+Sometimes the chapter text contains short, inlined questions, like
+``Exercice \ref{exc:fmap}: what does function composition do to a sequence?''.
+%
+In such cases there is some more explanation in the exercises section
+at the end of the chapter.
+
+In several places the book contains an indented quote of a definition
+or paragraph from a mathematical textbook, followed by detailed
+analysis of that quote.
+%
+The aim is to improve the reader's skills in understanding, modelling,
+and implementing mathematical text.
+
 
 TODO: fill in more about notation
 

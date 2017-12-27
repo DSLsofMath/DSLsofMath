@@ -1,21 +1,20 @@
 %
-% TODO: The ^ looks a bit strange below
-%
 \begin{exercise}
   To get a feeling for the Lagrange equations, let |L(t, q, v) =
   m*v^2/2 + m*g*q|, compute |expand w|, perform the derivatives and check if the equation is satisfied for
   \begin{itemize}
   \item |w1 = id| or
   \item |w2 = sin| or
-  \item |w3 = (q0-).(g*).(/2).(^2)|
+  \item |w3 = (q0-).(g*).(/2).(powTo 2)|
+%TODO: check
   \end{itemize}
 \end{exercise}
 % \begin{exercise}
-%   TODO: perhaps add a few more Lagrange equation examples: pendulum, double pendulum, several particles in a gravitational field, etc.
+%TODO: perhaps add a few more Lagrange equation examples: pendulum, double pendulum, several particles in a gravitational field, etc.
 % See blackboard/W3/20170130_154754.jpg
 % \end{exercise}
 
-% TODO (DaHe): Exercise introducing deep vs shallow embedding using type classes
+%TODO (DaHe): Exercise introducing deep vs shallow embedding using type classes
 % also, maybe introduce the concept of using type classes to return a deep
 % embedding by using the operators of the data type, and casting to the
 % syntactic type
@@ -47,14 +46,14 @@
 % ---------------------------------------------------------------------------
 
 
-% TODO (DaHe): Exercise asking to implement a deep and a shallow embedding of some data
+%TODO (DaHe): Exercise asking to implement a deep and a shallow embedding of some data
 % type, using knowlege acquired from above
 
-% TODO (DaHe): Describe a thing, ask to implement DSL for that thing by introducing
+%TODO (DaHe): Describe a thing, ask to implement DSL for that thing by introducing
 % data type, deep shallow embedding, evaluator
 
 
-%% TODO (DaHe): One or two exercieses presenting the definition of a
+%TODO (DaHe): One or two exercieses presenting the definition of a
 % mathematical concept / equation, and then ask student to type the variables and
 % expressions involved. Should be split into parts, similar to exam questions.
 % (This should probably come first)
@@ -64,8 +63,9 @@
 \begin{exercise}
     \textit{From Practice Exam 2016}
 
-    Consider the following text from MacLane's \textit{Mathematics: Form and
-    Function} (page 168):
+    Consider the following text from
+    \citeauthor{maclane1986mathematics}'s \textit{Mathematics: Form
+    and Function} (page 168):
 
     \begin{quote}
       If $z = g(y)$ and $y = h(x)$ are two functions with continuous
@@ -82,7 +82,9 @@
 \begin{exercise}
   \textit{From exam 2016-03-16}
 
-   Consider the following text from Mac Lane's \emph{Mathematics: Form and Function} (page 182): TODO proper citation
+    Consider the following text from
+    \citeauthor{maclane1986mathematics}'s \textit{Mathematics: Form
+    and Function} (page 182):
 
    \begin{quote}
      In these cases one tries to find not the values of |x| which
@@ -180,7 +182,7 @@ last line?
 You are welcome to introduce functions and names to explain your reasoning.
 \end{exercise}
 
-% TODO (by DaHe) This has to do with matrices, which have not been covered yet
+%TODO (by DaHe) This has to do with matrices, which have not been covered yet
 % in W3, so should this exercise be here or later?. It doesn't actually seem to
 % use any of the matrix DSL, so I think it should be solvable at this point
 \begin{exercise}

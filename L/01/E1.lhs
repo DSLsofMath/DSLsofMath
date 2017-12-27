@@ -120,7 +120,14 @@
 %   accumulating parameter.
 % \end{exercise}
 
-\begin{exercise}
-  (From section \ref{sec:infseq}): How is |liftSeq1| related to
-  |fmap|? |liftSeq0| to |conSeq|?
+\begin{exercise}\label{exc:fmap}
+  From section \ref{sec:infseq}:
+  %
+  \begin{itemize}
+  \item What does function composition do to a sequence? (composition
+    on the left?, on the right?)
+  \item How is |liftSeq1| related to |fmap|? |liftSeq0| to |conSeq|?
+  \end{itemize}
+%
+
 \end{exercise}

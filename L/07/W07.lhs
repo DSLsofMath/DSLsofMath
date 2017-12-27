@@ -5,7 +5,7 @@ module DSLsofMath.W07 where
 \end{code}
 
 %
-% TODO (by DaHe): There are lots of tasks marked as "exercise" scattered
+%TODO (by DaHe): There are lots of tasks marked as "exercise" scattered
 % throughout the chapter. I think these ought to be moved into E7.lhs, perhaps
 % with references to the text.
 %
@@ -13,16 +13,13 @@ module DSLsofMath.W07 where
 \section{Matrix algebra and linear transformations}
 \label{sec:LinAlg}
 
-% TODO (by DaHe): Why are so many words on this page in quotation marks?
-% "definition", "row vector", "pointwise", "scalar" ...
-
 Often, especially in engineering textbooks, one encounters the
-``definition'': a vector is an \(n+1\)-tuple of real or complex numbers,
+definition: a vector is an \(n+1\)-tuple of real or complex numbers,
 arranged as a column:
 
 \[v = \colvec{v}\]
 
-Other times, this is suplemented by the definition of a ``row vector'':
+Other times, this is suplemented by the definition of a row vector:
 
 \[v = \rowvec{v}\]
 
@@ -38,6 +35,9 @@ elements of the field:
 
 The scalar |s| scales all the components of |v|.
 
+But, as you might have guessed, the layout of the components on paper
+(in a column or row) is not the most important feature of a vector.
+%
 In fact, the most important feature of vectors is that they can be
 \emph{uniquely} expressed as a simple sort of combination of other
 vectors:
@@ -185,7 +185,7 @@ We have
 
 Implementation:
 
-This is the almost the standard ``vector-matrix'' multiplication:
+This is the almost the standard vector-matrix multiplication:
 
 \begin{spec}
 M = [m 0 | ... | m n]
@@ -307,7 +307,7 @@ algebra'' videos on youtube (start here:
 We have represented polynomials of degree |n+1| by the list of their
 coefficients.
 %
-This is quite similar to ``standard'' geometrical vectors represented
+This is quite similar to standard geometrical vectors represented
 by |n+1| coordinates.
 %
 This suggests that polynomials of degree |n+1| form a vector space,
@@ -520,7 +520,7 @@ The problem is that |({0, 1}, max, min)| is not a field, and neither is
 |(REAL, max, min)|.
 %
 This is not a problem if all we want is to compute the evolutions of
-possible states, but we cannot apply most of the ``deeper'' results of
+possible states, but we cannot apply most of the deeper results of
 linear algebra.
 
 In the example above, we have:
@@ -709,9 +709,6 @@ In particular, we can have \emph{probabilities} of these transitions.
 %
 For example
 %
-% TODO (by DaHe): The "loop" going from node 6 to itself looks really weird in
-% the pdf
-
 \tikz [nodes={circle,draw}, scale=1.2]{
 
   \node (n0) at (1,1) {0};
@@ -916,7 +913,7 @@ was in effect:
 
 So, we apply |f| to every state, as if we were starting from precisely
 that state, obtaining the possible future states starting from that
-state, and then collect all these ``hypothetical'' possible future
+state, and then collect all these hypothetical possible future
 states in some way that takes into account the initial uncertainty
 (represented by |v 0|, ..., |v n|) and the nature of the uncertainty
 (the specific |+| and |*|).

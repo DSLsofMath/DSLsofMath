@@ -117,7 +117,7 @@ paren s = "(" ++ s ++ ")"
 Exercise: Another way to make this example go through is to refine the
 semantic domain from |String| to |Precedence -> String|.
 %
-% TODO (by DaHe): The term "tupling transform" has not been defined! Perhaps should explain what
+%TODO (by DaHe): The term "tupling transform" has not been defined! Perhaps should explain what
 % it means, when we introduce FD in the prev chapter. (If I'm correct in
 % assuming that is also a tupling transform)
 %
@@ -240,7 +240,7 @@ pretty' :: E -> String
 pretty' = foldIE
 \end{code}
 
-% TODO (by DaHe): Maybe we should show how to do this with FunExp (here or in
+%TODO (by DaHe): Maybe we should show how to do this with FunExp (here or in
 % 4.2.2.), and how we can build a FunExp out of the semantic constructors if we
 % have instantiated the type classes: then evaluate the expression to either the
 % syntactic or semantic type by typecasting (exp :: FunExp = F, exp :: (t ->
@@ -383,7 +383,7 @@ instance Monoid MNat where
   op (M m) (M n)  =  M (m * n)
 \end{code}
 
-% TODO (by DaHe): Where happens to the constructors A and M go in the solution
+%TODO (by DaHe): Where happens to the constructors A and M go in the solution
 % below? Perhaps provide both the "math" and "Haskell" versions to compare.
 %
 Exercise: characterise the homomorphisms from |ANat| to |MNat|.
@@ -496,7 +496,7 @@ class GoodClass t where
   addF :: t -> t -> t
   mulF :: t -> t -> t
   expF :: t -> t
-  -- ... TODO: continue to mimic the |FunExp| datatype as a class
+  -- ... Exercise: continue to mimic the |FunExp| datatype as a class
 
 newtype FD a = FD (a -> a, a -> a)
 
@@ -504,11 +504,11 @@ instance Num a => GoodClass (FD a) where
   addF = evalDApp
   mulF = evalDMul
   expF = evalDExp
-  -- ... TODO
+  -- ... Exercise: fill in the rest
 
-evalDApp = error "TODO"
-evalDMul = error "TODO"
-evalDExp = error "TODO"
+evalDApp = error "Exercise"
+evalDMul = error "Exercise"
+evalDExp = error "Exercise"
 \end{code}
 %
 
@@ -625,25 +625,15 @@ condition.
 For example:
 
 \begin{spec}
-     h ((f, f') * (g, g'))
+     h ((f, f') * (g, g'))                       =  {- def. |*| for |FD a| -}
 
-  =  {- def. |*| for |FD a| -}
+     h (f * g, f' * g + f * g')                  =  {- def. |h = applyFD c| -}
 
-     h (f * g, f' * g + f * g')
+     ((f * g) c, (f' * g + f * g') c)            =  {- def. |*| and |+| for functions -}
 
-  =  {- def. |h = applyFD c| -}
+     (f c * g c, f' c * g c + f c * g' c)        =  {- homomorphism condition from step 1 -}
 
-     ((f * g) c, (f' * g + f * g') c)
-
-  =  {- def. |*| and |+| for functions -}
-
-     (f c * g c, f' c * g c + f c * g' c)
-
-  =  {- homomorphism condition from step 1 -}
-
-     h (f, f') *? h (g, g')
-
-  =  {- def. |h = applyFD c| -}
+     h (f, f') *? h (g, g')                      =  {- def. |h = applyFD c| -}
 
      (f c, f' c) *? (g c, g' c)
 \end{spec}
@@ -653,9 +643,9 @@ The identity will hold if we take
 \begin{spec}
      (x, x') *? (y, y') = (x * y, x' * y + x * y')
 \end{spec}
-% TODO: state explicitly that |(applyFD c)| is a |Num|-homomorphism for all |c|
+%TODO: state explicitly that |(applyFD c)| is a |Num|-homomorphism for all |c|
 %
-% TODO (by DaHe): It should probably be mentioned that we have now defined
+%TODO (by DaHe): It should probably be mentioned that we have now defined
 % instance Num a => FD a where (x, x') (*) (y, y') = ..., and that the exercise
 % below asks to define the rest of the operations on FD (I assume that's what
 % "the instance declarations" refers to below, it is not entirely clear to me)
@@ -745,7 +735,7 @@ negateE (Con c) = Con (negate c)
 negateE _ = error "negate: not supported"
 \end{code}
 
-% TODO: Perhaps include the comparison of the |Num t => Num (Bool -> t)| instance (as a special case of functions as |Num|) and the |Num r => Num (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
+%TODO: Perhaps include the comparison of the |Num t => Num (Bool -> t)| instance (as a special case of functions as |Num|) and the |Num r => Num (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
 \subsection{Exercises}
 
 %include E4.lhs

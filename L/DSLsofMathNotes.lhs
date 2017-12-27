@@ -24,7 +24,7 @@
 
 \providecommand\mathbbm{\mathbb}
 
-% TODO: Define more of these ...
+%TODO: Define more of these ...
 \DeclareUnicodeCharacter{737}{\textsuperscript{l}}
 \DeclareUnicodeCharacter{8718}{\ensuremath{\blacksquare}}
 \DeclareUnicodeCharacter{8759}{::}
@@ -37,7 +37,7 @@
 %if submit
 \newcommand{\todo}[2][?]{}
 %else
-\newcommand{\todo}[2][?]{\marginpar{\raggedright \tiny TODO: #2}}
+\newcommand{\todo}[2][?]{\marginpar{\raggedright\tiny{}TODO: #2}}
 %endif
 
 \setlength{\parindent}{0pt}

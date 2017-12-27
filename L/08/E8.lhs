@@ -1,1 +1,1 @@
-% TODO
+TODO: Fill in exercises
