@@ -22,6 +22,9 @@ cabal.sandbox.config
 *.fls
 *.dvi
 *.toc
+*.bbl
+*.blg
+*.ptb
 Lecture*.pdf
 *.swp
 *.swo
