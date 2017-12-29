@@ -25,15 +25,3 @@ Linear algebra, vector spaces, matrices, bases
 
 Chapter \ref{sec:Laplace}:
 |exp|, |Laplace|
-
-
-
-
-
-\subsection*{Acknowledgements}
-TODO: ackn. Chalmers quality funding, the CSE prog. and the CSE dept.
-
-This work was partially supported by the projects GRACeFUL (grant
-agreement No 640954) and CoeGSS (grant agreement No 676547), which
-have received funding from the European Union’s Horizon 2020 research
-and innovation programme.

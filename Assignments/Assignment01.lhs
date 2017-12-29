@@ -1,84 +1,129 @@
-DSLsofMath 2017: Assignment 1
-============
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{a4wide}
+\usepackage{natbib}
+\usepackage{url}
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8x]{inputenc}
+\RequirePackage{ucs}
+\RequirePackage{amsfonts}
+%include polycode.fmt
+%include ../L/dslm.format
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\providecommand{\textepsilon}{\ensuremath{\epsilon}}
+\begin{document}
+\title{DSLsofMath 2018: Assignment 1}
+\author{Patrik Jansson}
+\date{}
+\maketitle
+\section{DSLsofMath 2018: Assignment 1}
+\label{dslsofmath-2018-assignment-1}
 
-In this assignment the focus is on the following three learning outcomes:
+In this assignment the focus is on the following three learning
+outcomes:
 
-* organize areas of mathematics in DSL terms
-* develop adequate notation for mathematical concepts
-* discuss and compare different software implementations of mathematical concepts
+\begin{itemize}
 
-DSLs, sets and von Neumann
---------------------------
+\item organize areas of mathematics in DSL terms
+\item develop adequate notation for mathematical concepts
+\item discuss and compare different software implementations of
+  mathematical concepts
+\end{itemize}
 
-In this assignment you will build up a domain specific language (a
-DSL) for finite sets. The domain you should model is pure set theory
-where all members are sets.
+\subsection{DSLs, sets and von Neumann}
+\label{dsls-sets-and-von-neumann}
 
-Define a datatype SET v for the abstract syntax of set expressions
-with variables of type v and a datatype PRED for predicates over pure
-set expressions.
+In this assignment you will build up a domain specific language (a DSL)
+for finite sets. The domain you should model is pure set theory where
+all members are sets.
 
-----
+Define a datatype |SET v| for the abstract syntax of set expressions with
+variables of type |v| and a datatype |PRED| for predicates over pure set
+expressions.
 
-Part 1. SET should have constructors for
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
-* the Empty set
-* the one-element set constructor Singleton
-* Union, and Intersection
-    - you can also try Powerset
-* set-valued variables (Var :: v -> SET v)
+\paragraph{Part 1.} |SET| should have constructors for
 
-PRED should have contructors for
+\begin{itemize}
 
-* the two predicates Elem, Subset
-* the logical connectives And, Or, Implies, Not
+\item the |Empty| set
+\item the one-element set constructor |Singleton|
+\item |Union|, and |Intersection|
+  \begin{itemize}
 
-----
+  \item you can also try |Powerset|
+  \end{itemize}
+\item set-valued variables (|Var :: v -> SET v|)
+\end{itemize}
 
-Part 2. A possible semantic domain for pure sets is
+|PRED| should have contructors for
 
-> newtype Set = S [Set]
+\begin{itemize}
+
+\item the two predicates |Elem|, |Subset|
+\item the logical connectives |And|, |Or|, |Implies|, |Not|
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+\paragraph{Part 2.} A possible semantic domain for pure sets is
+
+\begin{code}
+newtype Set = S [Set]
+\end{code}
 
 Implement the evaluation functions
 
-> eval  :: Eq v => Env v Set ->  SET v -> Set
-> check :: Eq v => Env v Set ->  PRED v -> Bool
+\begin{code}
+eval  :: Eq v => Env v Set ->  SET v -> Set
+check :: Eq v => Env v Set ->  PRED v -> Bool
+\end{code}
 
-> type Env var dom = [(var , dom)]
+\begin{code}
+type Env var dom = [(var , dom)]
+\end{code}
 
-Note that the type parameter v to SET is for the type of variables
-in the set expressions, not the type of elements of the sets. (You
-can think of pure set theory as "untyped" or "unityped".)
+Note that the type parameter |v| to |SET| is for the type of variables
+in the set expressions, not the type of elements of the sets. (You can
+think of pure set theory as ``untyped'' or ``unityped''.)
 
-----
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
-Part 3. The von Neumann encoding of natural numbers as sets is defined
-recursively as
+\paragraph{Part 3.} The von Neumann encoding of natural numbers as
+sets is defined recursively as
 
-<   vonNeumann 0        =  Empty
-<   vonNeumann (n + 1)  =  Union  (vonNeumann n)
-<                                 (Singleton (vonNeumann n))
+\begin{spec}
+  vonNeumann 0        =  Empty
+  vonNeumann (n + 1)  =  Union  (vonNeumann n)
+                                (Singleton (vonNeumann n))
+\end{spec}
 
-Implement vonNeumann and explore, explain and implement the following
-"pseudocode" claims as functions in Haskell:
+Implement |vonNeumann| and explore, explain and implement the following
+``pseudocode'' claims as functions in Haskell:
 
-    + claim1 n1 n2  =  "(n1 <= n2)  implies  (n1 ⊆ n2)"
-    + claim2 n      =  "n = {0, 1, ..., n − 1}"
+\begin{spec}
+  claim1 n1 n2  =  {- |(n1 <= n2)|  implies  |(n1 ⊆ n2)| -}
+  claim2 n      =  {- |n = {0, 1, ..., n − 1}| -}
+\end{spec}
 
-You need to insert some embeddings and types and you should use the
-eval and check functions. (For debugging it is useful to implement a
-show function for Set which uses numerals to show the von Neumann
-naturals.)
+You need to insert some embeddings and types and you should use the eval
+and check functions. (For debugging it is useful to implement a show
+function for Set which uses numerals to show the von Neumann naturals.)
 
-----
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
 Admin:
 
-- *Submission*: Assignments are to be submitted via Fire:
+\begin{itemize}
+\item \emph{Submission}: Assignments are to be submitted via Fire:
 
-    https://dsls-lp3-17.frs.cse.chalmers.se/login
-
-- *Deadline*:   Tuesday, 2017-01-31, 23:59.
-- *Grading*: Discussions with each of the teams during the exercises
-  session of Friday, 2017-02-03.
+  TODO: update link (was https://dsls-lp3-17.frs.cse.chalmers.se/login)
+\item \emph{Deadline}: 2018-01-30
+\item \emph{Grading}: Discussions with each of the teams during the
+  slot 2018-02-05, 13.00-15.00
+\end{itemize}
 
 Note: The examination will be in English.
+\end{document}

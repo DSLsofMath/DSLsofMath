@@ -1,9 +1,4 @@
-default: Assignment02.pdf
-
-Assignment01.pdf: Assignment01.lhs
-	pandoc --latex-engine=xelatex Assignment01.lhs -o Assignment01.pdf
-
-# TODO: make sure ⊆ appears in the output
+default: Assignment01.pdf Assignment02.pdf
 
 %.pdf: %.tex
 	latexmk -pdf $<
@@ -12,4 +7,5 @@ Assignment01.pdf: Assignment01.lhs
 	lhs2TeX --poly $< > $@
 
 clean:
+	-rm Assignment01.tex Assignment01.pdf
 	-rm Assignment02.tex Assignment02.pdf

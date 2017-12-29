@@ -325,7 +325,7 @@ and implementing mathematical text.
 
 TODO: fill in more about notation
 
-\subsection{Acknowledgments}
+\subsection*{Acknowledgments}
 
 The support from Chalmers Quality Funding 2015 (Dnr C 2014-1712, based
 on Swedish Higher Education Authority evaluation results) is
@@ -338,3 +338,8 @@ political winds changed.
 
 Thanks to Daniel Heurlin who provided many helpful comments during his
 work as a student research assistant in 2017.
+
+This work was partially supported by the projects GRACeFUL (grant
+agreement No 640954) and CoeGSS (grant agreement No 676547), which
+have received funding from the European Union’s Horizon 2020 research
+and innovation programme.
