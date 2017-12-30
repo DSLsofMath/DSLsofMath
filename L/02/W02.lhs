@@ -1,33 +1,10 @@
 \section{Logic and calculational proofs}
 \label{sec:logic}
 
-Course learning outcomes:
-
-\begin{itemize}
-\item Knowledge and understanding
-  \begin{itemize}
-  \item design and implement a DSL (Domain Specific Language) for a new domain
-  \item organize areas of mathematics in DSL terms
-  \item explain main concepts of elementary real and complex analysis,
-        algebra, and linear algebra
-  \end{itemize}
-\item Skills and abilities
-  \begin{itemize}
-  \item develop adequate notation for mathematical concepts
-  \item perform calculational proofs
-  \item use power series for solving differential equations
-  \item use Laplace transforms for solving differential equations
-  \end{itemize}
-\item Judgement and approach
-  \begin{itemize}
-  \item discuss and compare different software implementations of
-        mathematical concepts
-  \end{itemize}
-\end{itemize}
-
-This week we focus on ``develop adequate notation for mathematical
-concepts'' and ``perform calculational proofs'' (still in the context
-of ``organize areas of mathematics in DSL terms'').
+The learning outcomes of this chapter is ``develop adequate notation
+for mathematical concepts'' and ``perform calculational proofs''
+(still in the context of ``organize areas of mathematics in DSL
+terms'').
 
 There will be a fair bit of theory: introducing propositional and
 first order logic, but also ``applications'' to mathematics: prime

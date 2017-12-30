@@ -5,6 +5,7 @@
 module DSLsofMath.CSem where
 
 newtype ComplexSem r = CS (r , r)    deriving Eq
+\end{code}
 
 \paragraph{Lifting operations to a parameterised type}
 
@@ -13,7 +14,7 @@ real and imaginary components) we can do that for any underlying type
 |r| which supports addition.
 
 \begin{code}
-type CS = CSem.ComplexSem -- for shorter type expressions below
+type CS = ComplexSem -- for shorter type expressions below
 liftCS ::  (    r  ->     r  ->     r  ) ->
            (CS  r  -> CS  r  -> CS  r  )
 liftCS (+) (CS (x, y)) (CS (x', y')) = CS (x+x', y+y')

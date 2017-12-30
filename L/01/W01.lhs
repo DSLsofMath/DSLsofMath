@@ -980,48 +980,46 @@ fromIntegerCS = toComplexSyn . fromInteger
 We have seen evaluation functions from abstract syntax to semantics
 (|eval :: Syn -> Sem|).
 %
-Often a partial inverse is also available: |embed :: Sem -> Syn|.
+Often an inverse is also available: |embed :: Sem -> Syn|.
 %
 For our complex numbers we have
 %
-
-TODO: fill in a function from |ComplexSem r -> ComplexSyn r|.
-%
-(Roughly |embed (CS (x, y)) = Plus (ToC x) (Times I (ToC y))|.)
-%
-
-TODO: draw diagram of the types and the functions |eval| and |embed| to give an intuition for the ``round-trip'' property
+\begin{code}
+embed :: CSem.ComplexSem r -> ComplexSyn r
+embed (CS (x, y)) = FromCartesian x y
+\end{code}
 
 The embedding should satisfy a round-trip property:
 %
-|eval (embed s) == s| for all |s|.
+|eval (embed s) == s| for all semantic complex numbers |s|.
 %
+Here is a diagram showing how the types and the functions fit together
 
-TODO: Perhaps add typed quantification
+\begin{tikzcd}
+  |ComplexSyn r| \arrow[d, bend left, "|eval|"]  \arrow[loop right, "|embed . eval|"] \\
+  |ComplexSem r| \arrow[u, bend left, "|embed|"] \arrow[loop right, "|eval . embed|"]
+\end{tikzcd}
 
+%TODO: Perhaps add typed quantification
 %
-Exercise: What about the opposite direction?
+Exercise \ref{exc:embedeval}: What about the opposite direction?
 %
 When is |embed (eval e) == e|?
-%
-(Step 0: type the quantification.
-%
-Step 1: what equality is suitable here?
-%
-Step 2: if you use ``equality up to eval'' - how is the resulting
-property related to the first round-trip property?
-%See blackboard/W1/20170116_161148.jpg
-)
 
-%
-We can also state and check properties relating the semantic and the
-syntactic operations:
+%TODO: perhaps include
+% We can also state and check properties relating the semantic and the syntactic operations:
 
-|a + b = eval (Plus (embed a) (embed b))| for all |a| and |b|.
+% |a + b = eval (Plus (embed a) (embed b))| for all |a| and |b|.
 
 \paragraph{More about laws}
 
-TODO: Associative, Commutative, Distributive, \ldots
+Some laws appear over and over again in different mathematical contexts.
+%
+Binary operators are often as associative or commutative, and
+sometimes one operator distributes over another.
+%
+We will work more formally with logic in chapter~\ref{sec:logic} but
+we introduce a few definitions already here:
 
 |Associative (+) = Forall (a, b, c) ((a+b)+c = a+(b+c))|
 
@@ -1030,37 +1028,45 @@ TODO: Associative, Commutative, Distributive, \ldots
 Non-examples: division is not commutative, average is commutative but
 not associative.
 
-TODO: Talk more about the properties tested above in
-|propDistTimesPlus|, \ldots.
-%
-(The underlying set matters: |(+)| for |REAL| has some properties,
-|(+)| for |Double| has other, \ldots.
-%
-Approximation is often necessary, but makes many laws false.
-%
-Thus, attempt to do it late.)
-
 |Distributive (*) (+) = Forall (a, b, c) ((a+b)*c = (a*c)+(b*c))|
+
+We saw implementations of some of these laws as |propAssocA| and
+|propDistTimesPlus| earlier, and learnt that the underlying set
+matters: |(+)| for |REAL| has some properties, but |(+)| for |Double|
+has other.
+%
+When implementing, approximation is often necessary, but makes many
+laws false.
+%
+Thus, we should attempt to do it late, and if possible, leave a
+parameter to make the degree of approximation tunable (|Int|,
+|Integer|, |Float|, |Double|, |QQ|, syntax trees, etc.).
+
+To get a feeling for the distribution law, it can be helpful to study
+the syntax trees of the left and right hand sides.
+%
+Note that |(*c)| is pushed down (distributed) to both |a| and |b|:
 
 \tikzset{
   AbsSyn/.style={%
     baseline,
     text height=1.5ex,text depth=.25ex,
     level 1/.style={sibling distance=1.5cm, level distance=1cm},level 2/.style={sibling distance=1cm}
-  }
+  },
+  emph/.style={edge from parent/.style={thick,draw},font=\boldmath},
+  bold/.style={font=\boldmath}
 }
 \begin{tikzpicture}[AbsSyn]
-\node{|*|}
+\node [bold] {|*|}
 child {node {|+|} child {node {|a|}} child {node {|b|}}}
-child {node {|c|}};
+child[emph] {node {|c|}};
 \end{tikzpicture}
 \begin{tikzpicture}[AbsSyn]
 \node{|+|}
-child {node {|*|} child {node {|a|}} child {node {|c|}}}
-child {node {|*|} child {node {|b|}} child {node {|c|}}};
+child {node [bold] {|*|} child {node {|a|}} child[emph] {node {|c|}}}
+child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 \end{tikzpicture}
 %
-
 (In the language of section \ref{sec:AlgHomo}, distributivity means
 that |(*c)| is a |(+)|-homomorphism.)
 
@@ -1073,27 +1079,46 @@ Exercise: Find other pairs of operators satisfying a distributive law.
 
 \paragraph{Function composition.}
 
-The infix operator \verb+.+ in Haskell is an implementation of the
-mathematical operation of function composition.
-
+The infix operator \verb+.+ (period) in Haskell is an implementation
+of the mathematical operation of function composition.
+%
+The period is an ASCII approximation of the composition symbol $\circ{}$ typically
+used in mathematics.
+%
+(The symbol $\circ{}$ is encoded as \verb"U+2218" and called \textsc{ring
+operator} in Unicode, \verb+&#8728+ in HTML, \verb+\circ+ in \TeX,
+etc.)
+%
+Its implementation is:
+%
 \begin{spec}
 f . g = \x -> f (g x)
 \end{spec}
 
-The period is an ASCII approximation of the composition symbol $\circ{}$ typically
-used in mathematics.
-%
-(The symbol $\circ{}$ is encoded as \verb"U+2218" and called RING
-OPERATOR in Unicode, \verb+&#8728+ in HTML, \verb+\circ+ in \TeX,
-etc.)
-
 The type is perhaps best illustrated by a diagram with types as nodes
 and functions (arrows) as directed edges:
+%
+
 
 \begin{figure}[htbp]
-\centering
-\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
-\caption{Function composition diagram}
+\hfill
+\begin{tikzcd}
+  |a| \arrow[d, "|g|"] \arrow[rd, "|f.g|", dashed] &  \\
+  |b| \arrow[r, "|f|"]            & |c|
+\end{tikzcd}
+\hfill
+\begin{tikzcd}
+  |[Int]| \arrow[d, "|sort|"] \arrow[rd, "|head.sort|", dashed] &  \\
+  |[Int]| \arrow[r, "|head|"]            & |Int|
+\end{tikzcd}
+\hfill
+\begin{tikzcd}
+  |Env v s| \arrow[d, "|head|"] \arrow[rd, "|fst.head|", dashed] &  \\
+  |(v, s)| \arrow[r, "|fst|"]            & |v|
+\end{tikzcd}
+\hfill{}
+%\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
+\caption{Function composition diagrams: in general, and two examples}
 \end{figure}
 
 In Haskell we get the following type:
@@ -1131,19 +1156,19 @@ type QQ     =  Ratio Nat   -- imported from |Data.Ratio|
 type Seq a  =  Nat -> a
 
 idSeq :: Seq Nat
-idSeq i = i                -- {0, 1, 2, 3, ...}
+idSeq i = i                -- |{0, 1, 2, 3, ...}|
 
 invSeq :: Seq QQ
-invSeq i = 1%(1 + i)       -- {1/1, 1/2, 1/3, 1/4, ...}
+invSeq i = 1%(1 + i)       -- |{frac 1 1, frac 1 2, frac 1 3, frac 1 4, ...}|
 
 pow2 :: Num r =>  Seq r
-pow2 = (2^{-"{}"-})        -- {1, 2, 4, 8, ...}
+pow2 = (2^{-"{}"-})        -- |{1, 2, 4, 8, ...}|
 
 conSeq :: a -> Seq a
-conSeq c i = c             -- {c, c, c, c, ...}
+conSeq c i = c             -- |{c, c, c, c, ...}|
 \end{code}
 
-What operations can be perform on sequences?
+What operations can be performed on sequences?
 %
 We have seen the first one: given a value |c| we can generate a
 constant sequence with |conSeq c|.
@@ -1158,12 +1183,12 @@ and in general lift any binary operation |op :: a -> b -> c| to the
 corresponding, pointwise, operation of sequences:
 \begin{code}
 liftSeq2 :: (a->b->c) -> Seq a -> Seq b -> Seq c
-liftSeq2 op f g i = op (f i) (g i)    -- {op (f 0) (g 0), op (f 1) (g 1), ...}
+liftSeq2 op f g i = op (f i) (g i)    -- |{op (f 0) (g 0), op (f 1) (g 1), ...}|
 \end{code}
 Similarly we can lift unary operations, and ``nullary'' operations:
 \begin{code}
 liftSeq1 :: (a->b) -> Seq a -> Seq b
-liftSeq1 h f i = h (f i)              -- {h (f 0), h (f 1), h (f 2), ...}
+liftSeq1 h f i = h (f i)              -- |{h (f 0), h (f 1), h (f 2), ...}|
 
 liftSeq0 :: a -> Seq a
 liftSeq0 c i = c
@@ -1210,7 +1235,7 @@ We will return to limits and their proofs in
 %
 Here we just define one more common operation: the sum of a sequence
 (like \(\sigma = \sum_{i=0}^{\infty} 1/i!\)).
-
+%
 Just as not all sequences have a limit, not all have a sum either.
 %
 But for every sequence we can define a new sequence of partial sums:
@@ -1239,12 +1264,14 @@ definition
 %
 \[f'(x) = \lim_{h\to0} \frac{f(x+h)-f(x)}{h}\]
 
-TODO: sum up the results in terms of a DSL: a type (Seq a), some
-operations (|conSeq|, |addSeq|, |fmap|, |sums|, ...) and some "run
-functions" or predicates (like |lim|)
+To sum up this subsection, we have defined a small Domain Specific
+Language (DSL) for infinite sequences by defining a type (|Seq a|),
+some operations (|conSeq|, |addSeq|, |fmap|, |sums|, \ldots) and some
+``run functions'' or predicates (like |lim| and |sum|).
 
 % ----------------------------------------------------------------
 
+%if False
 \subsection{Some helper functions (can be skipped)}
 
 \begin{code}
@@ -1260,5 +1287,6 @@ instance Show ComplexD where
 showCD :: ComplexD -> String
 showCD (CD (x, y)) = show x ++ " + " ++ show y ++ "i"
 \end{code}
+%endif
 
 %include E1.lhs

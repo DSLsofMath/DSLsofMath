@@ -132,3 +132,18 @@
 %
 
 \end{exercise}
+
+\begin{exercise}
+  \label{exc:embedeval}
+
+  When is |embed (eval e) == e|?
+
+Step 0: type the quantification: what is the type of |e|?
+
+Step 1: what equality is suitable for this type?
+
+Step 2: if you use ``equality up to eval'' --- how is the resulting
+property related to the first round-trip property?
+%See blackboard/W1/20170116_161148.jpg
+
+\end{exercise}

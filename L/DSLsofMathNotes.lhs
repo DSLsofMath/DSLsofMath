@@ -11,6 +11,7 @@
 %%% Our own formatting directives
 %include dslm.format
 \usepackage{natbib}
+\usepackage{wrapfig}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \RequirePackage[T1]{fontenc}

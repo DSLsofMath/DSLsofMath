@@ -130,8 +130,6 @@ We provide a wide range of applications of the DSLs introduced,
 so that the new concepts can be seen ``in action'' as soon as
 possible.
 
-TODO: update with actual learning outcomes
-
 The course has two major learning outcomes.
 %
 First, the students should be able to design and implement a DSL in a
@@ -139,6 +137,34 @@ new domain.
 %
 Second, they should be able to handle new mathematical areas using the
 computer science perspective.
+%
+(For the detailed learning outcomes, see figure~\ref{fig:LearningOutcomes}.)
+
+\begin{wrapfigure}{R}{0.5\textwidth}
+\begin{itemize}
+\item Knowledge and understanding
+  \begin{itemize}
+  \item design and implement a DSL (Domain Specific Language) for a new domain
+  \item organize areas of mathematics in DSL terms
+  \item explain main concepts of elementary real and complex analysis,
+        algebra, and linear algebra
+  \end{itemize}
+\item Skills and abilities
+  \begin{itemize}
+  \item develop adequate notation for mathematical concepts
+  \item perform calculational proofs
+  \item use power series for solving differential equations
+  \item use Laplace transforms for solving differential equations
+  \end{itemize}
+\item Judgement and approach
+  \begin{itemize}
+  \item discuss and compare different software implementations of
+        mathematical concepts
+  \end{itemize}
+\end{itemize}
+  \caption{Learning outcomes for DSLsofMath}
+  \label{fig:LearningOutcomes}
+\end{wrapfigure}
 
 To achieve these objectives, the course consists of a sequence of case
 studies in which a mathematical area is first presented (for example,
@@ -177,7 +203,7 @@ CSE programmes) shows, math students are usually able to catch up fairly
 quickly, and in any case we aim to keep to a restricted subset of
 Haskell (no ``advanced'' features are required).
 
-TODO: rewrite when the evaluation results are available
+%TODO: rewrite 2018 when the evaluation results are available
 
 To assess the impact in terms of increased quality of education, we
 plan to measure how well the students do in ulterior courses that
@@ -200,37 +226,38 @@ the possibility of comparing the results with those of a control group
 
 The work that lead up to the current course is as follows:
 
-\begin{itemize}
-\item 2014: in interaction with our colleagues from the various study
-  programmes, we performed an assessment of the current status of
-  potential students for the course in terms of their training (what
-  prerequisites we can reasonably assume) and future path (what
-  mathematical fields they are likely to encounter in later studies),
-  and we worked out a course plan (which we submitted in February
-  2015, so that the first instance of the course could start in
-  January 2016).
+\paragraph{2014:} in interaction with our colleagues from the various
+study programmes, we performed an assessment of the current status of
+potential students for the course in terms of their training (what
+prerequisites we can reasonably assume) and future path (what
+mathematical fields they are likely to encounter in later studies),
+and we worked out a course plan (which we submitted in February 2015,
+so that the first instance of the course could start in January 2016).
 %
-  We also make a survey of similar courses being offered at other
-  universities, but did not find any close matches.
+We also make a survey of similar courses being offered at other
+universities, but did not find any close matches.
 
-\item 2015: we developed course materials for use within the first
-  instance, wrote a paper \citep{TFPIE15_DSLsofMath_IonescuJansson}
-  about the course and pressented the pedagogical ideas at several
-  events (TODO: perhaps fill in TFPIE'15, DSLDI'15, IFIP WG 2.1 \#73
-  in Göteborg, LiVe4CS in Glasgow).
-\item 2016: we ran the first instance of DSLM (partly paid by the
-  regular course budget, partly by this project) with Cezar Ionescu as
-  main lecturer.
-\item 2017: we ran the second instance of DSLM (paid fully by the
-  regular course budget), now with Patrik Jansson as main lecturer.
-\item 2016 and 2017: we used the feedback from students following the
-  standard Chalmers course evaluation in order to improve and further
-  develop the course material.
-\end{itemize}
+\paragraph{2015:} we developed course materials for use within the
+first instance, wrote a paper
+\citep{TFPIE15_DSLsofMath_IonescuJansson} about the course and
+pressented the pedagogical ideas at several events (TFPIE'15,
+DSLDI'15, IFIP WG 2.1 \#73 in Göteborg, LiVe4CS in Glasgow).
 
-Future work includes involving faculty from CSE and mathematics in the
-development of other mathematics courses (prel.\ Linear Algebra,
-Analysis) with the aim to incorporate these ideas also there.
+\paragraph{2016:} we ran the first instance of DSLM (partly paid by
+the regular course budget, partly by this project) with Cezar Ionescu
+as main lecturer.
+
+\paragraph{2017:} we ran the second instance of DSLM (paid fully by
+the regular course budget), now with Patrik Jansson as main lecturer.
+
+\paragraph{2016 and 2017:} we used the feedback from students
+following the standard Chalmers course evaluation in order to improve
+and further develop the course material.
+
+\paragraph{Future work} includes involving faculty from CSE and
+mathematics in the development of other mathematics courses (prel.\
+Linear Algebra, Analysis) with the aim to incorporate these ideas also
+there.
 %
 A major concern will be to work together with our colleagues in the
 mathematics department in order to distill the essential principles
@@ -279,10 +306,13 @@ useful in many applications (e.g., Laplace transforms, linear algebra).
 
 \subsection{Who should read these lecture notes?}
 
-TODO: Convert formal prerequisites to ``what is expected of the reader''
+The prerequisites of the underlying course may give a hint about what
+is expected of the reader.
+%
+But feel free to keep going and fill in missing concepts as you go
+along.
 
 The student should have successfully completed
-
 \begin{itemize}
 \item a course in discrete mathematics as for example Introductory Discrete Mathematics.
 \item 15 hec in mathematics, for example Linear Algebra and Calculus
@@ -293,10 +323,13 @@ The student should have successfully completed
 Informally: One full time year (60 hec) of university level study
 consisting of a mix of mathematics and computer science.
 
+Working knowledge of functional programming is helpful, but it should
+be possible to pick up quite a bit of Haskell along the way.
 
-\subsection{Roadmap}
 
-TODO: write about the lecture plan and internal dependencies
+% \subsection{Roadmap}
+
+%TODO: write about the lecture plan and internal dependencies
 
 
 
@@ -323,7 +356,7 @@ The aim is to improve the reader's skills in understanding, modelling,
 and implementing mathematical text.
 
 
-TODO: fill in more about notation
+%TODO: fill in more about notation
 
 \subsection*{Acknowledgments}
 
