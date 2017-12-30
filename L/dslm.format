@@ -68,6 +68,7 @@
 %format undefined = "\Varid{undefined}"
 %format == = "\doubleequals"
 %format /= = "\not\doubleequals"
+%format === = "\tripleequals"
 %format phi = "\varphi"
 %format psi = "\psi"
 %format phix = phi "_x"

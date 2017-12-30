@@ -57,3 +57,14 @@ We may also need the Haskell standard library version for some testing later:
 
 > instance Arbitrary ComplexD where
 >   arbitrary = fmap (\(CS p) -> CD p) arbitrary
+
+
+
+> eqFun2 :: Eq c => (a -> b -> c) -> (a -> b -> c) -> (a -> b -> Bool)
+> eqFun2 f g a b  =  f a b == g a b
+
+> cmpEvalEnv :: Int -> Env Int String -> Bool
+> cmpEvalEnv = eqFun2 lookup (flip evalEnv)
+
+> testEvalEnv :: IO ()
+> testEvalEnv = quickCheck cmpEvalEnv

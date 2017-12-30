@@ -17,6 +17,7 @@ import qualified DSLsofMath.CSem as CSem
 import DSLsofMath.CSem (ComplexSem(CS))
 import Numeric.Natural (Natural)
 import Data.Ratio (Rational, Ratio, (%))
+import Data.List(find)
 \end{code}
 
 \subsection{Intro: Pitfalls with traditional mathematical notation}
@@ -124,7 +125,7 @@ semantic meaning about its type (this is also common in functional
 programming, for example with the conventional use of a plural "s"
 suffix, as in the name |xs|, to denote a list of values.).
 %
-Moreover, by using this (implicit!) convention, it is easier to deal
+Moreover, by using this (implicit!)\ convention, it is easier to deal
 with cases such as that of the Hartley transform (a close relative of
 the Fourier transform), which does not change the type of the input
 function, but rather the \emph{interpretation} of that type.
@@ -149,25 +150,13 @@ types is one of the guiding principles of this course.
 We will see that keeping track of types can guide the development of
 theories, languages, programs and proofs.
 %
-To start out we introduce some of the ways types are described in
-Haskell.
+To start out we introduce some of the ways types are defined in
+Haskell, the language we use for implementation (and often also
+specification) of mathematical concepts.
 
 TODO: make the following few paragraphs flow better
 
-TODO: Introduce: newtype, products, sums, recursion, parameters
-
-%TODO: (by DaHe) have a breif recap at the start of this chapter, so that
-% students' Haskell chops are up to speed before we start using it to describe maths. For instance, we could
-% present a data type that represents basic arithmetic expressions with real numbers. This would give the opportunity
-% to explain type synonyms (type R = Double) and using data to define syntax trees (data Expr = Add Expr Expr | Mul Expr Expr ...). [see Expr.lhs]
-% TODO: It would also be a good opportunity to explain syntax vs semantics, deep vs shallow embedding, (which I remember
-% some of my classmates had trouble grasping when I took the course), as these words are used throughout the chapter.
-% The data type could then be expanded to include variables, making possible expressions like 5*x + 7, and how we need
-% to be able look up the value of the variable (from an env) in order to eval the expression.
-%
-% This way, the idea of a math DSL would be presented in the most basic way possible, before we make it one step more complicated
-% by trying to construct a DSL from a book's definition of complex numbers.
-
+%TODO: Perhaps use more from Expr.lhs
 
 \subsubsection{type / newtype / data}
 
@@ -211,40 +200,104 @@ numbers as a pair of numbers in the cartesian representation but may
 also be useful to have another newtype for complex as a pair of numbers
 in the polar representation.
 
-\paragraph{data -- for syntax trees}
+\paragraph{The keyword |data| -- for syntax trees}
 
-Some examples:
+The simplest form of a recursive datatype is the unary notation for
+natural numbers:
 
 \begin{code}
 data N = Z | S N
 \end{code}
 
 This declaration introduces
-
 \begin{itemize}
-\item
-  a new type |N| for unary natural numbers,
-\item
-  a constructor |Z :: N| to represent zero, and
-\item
-  a constructor |S :: N -> N| to represent the successor.
+\item a new type |N| for unary natural numbers,
+\item a constructor |Z :: N| to represent zero, and
+\item a constructor |S :: N -> N| to represent the successor.
 \end{itemize}
-
 Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|
 
+The |data| keyword will be used throughout the course to define
+datatypes of syntax trees for different kinds of expressions: simple
+arithmetic expresssions, complex number expresssions, etc.
+%
+But it can also be used for non-recursive datatypes, like |data Bool =
+False || True|, or |data Person = P String Age Shoe|.
+%
+The |Bool| type is the simplest example of a \emph{sum type}, where
+each value uses either of the two variants |False| and |True| as the
+constructor.
+%
+The |Person| type is an example of a \emph{product type}, where each
+value uses the same constructor |P| and records values for the name,
+age, and shoe size of the person modelled.
+%
+(See exercise \ref{exc:counting} for the intuition behind the terms
+``sum'' and ``product'' used here.)
+
+\subsubsection{|Env|, |Maybe|, and variable |lookup|}
+
+The type synonym
+%
+\begin{spec}
+type Env v s = [(v,s)]
+\end{spec}
+%
+is one way of expressing a partial function from |v| to |s|.
+%
+As an example value of this type we can take:
+%
+\begin{code}
+env1 :: Env String Int
+env1 = [("hej", 17), ("du", 38)]
+\end{code}
+
+We can see the type |Env v s| as a syntactic representation of a
+partial function from |v| to |s|.
+%
+We can convert to a total function |Maybe| returning an |s| using
+|evalEnv|:
+%
+\begin{code}
+evalEnv :: Eq v =>  Env v s -> (v -> Maybe s)
+evalEnv vss var  =  findFst vss
+  where  findFst ((v,s):vss)
+           | var == v         =  Just s
+           | otherwise        =  findFst vss
+         findFst []           =  Nothing
+\end{code}
+%
+Or we can use the Haskell prelude function |lookup = flip evalEnv|:
+%
+\begin{spec}
+lookup :: (Eq a) => a -> [(a, b)] -> Maybe b
+\end{spec}
+%
+We will use |Env| and |lookup| below (in section~\ref{sec:ArithExp})
+when we introduce abstract syntax trees containing variables.
+
 \subsection{A syntax for simple arithmetical expressions}
+\label{sec:ArithExp}
+
+%TODO: (by DaHe) It would also be a good opportunity to explain syntax vs semantics, deep vs shallow embedding, (which I remember
+% some of my classmates had trouble grasping when I took the course), as these words are used throughout the chapter.
+% The data type could then be expanded to include variables, making possible expressions like 5*x + 7, and how we need
+% to be able look up the value of the variable (from an env) in order to eval the expression.
+%
+% This way, the idea of a math DSL would be presented in the most basic way possible, before we make it one step more complicated
+% by trying to construct a DSL from a book's definition of complex numbers.
 
 \begin{code}
-data E = V String | P E E | T E E
+data AE = V String | P AE AE | T AE AE
 \end{code}
 
 This declaration introduces
 
 \begin{itemize}
-\item a new type |E| for simple arithmetic expressions,
-\item a constructor |V :: String -> E| to represent variables,
-\item a constructor |P :: E -> E -> E| to represent plus, and
-\item a constructor |T :: E -> E -> E| to represent times.
+\item a new type |AE| for simple arithmetic expressions,
+\item a constructor |V :: String -> AE| to represent variables,
+\item a constructor |P :: AE -> AE -> AE| to represent plus, and
+\item a constructor |T :: AE -> AE -> AE| to represent times.
 \end{itemize}
 
 Example values: |x = V "x"|, |e1 = P x x|, |e2 = T e1 e1|
@@ -253,7 +306,7 @@ If you want a contructor to be used as an infix operator you need to use
 symbol characters and start with a colon:
 
 \begin{spec}
-data E' = V' String | E' :+ E' | E' :* E'
+data AE' = V' String | AE' :+ AE' | AE' :* AE'
 \end{spec}
 
 Example values: |y = V "y"|, |e1 = y :+ y|, |e2 = x :* e1|
@@ -261,48 +314,66 @@ Example values: |y = V "y"|, |e1 = y :+ y|, |e2 = x :* e1|
 Finally, you can add one or more type parameters to make a whole family
 of datatypes in one go:
 
-(TODO: perhaps say something about the constuctor names)
 \begin{code}
-data E' v = V' v | E' v :+ E' v | E' v :* E' v
+data AE' v = V' v | AE' v :+ AE' v | AE' v :* AE' v
 \end{code}
-
+%
 The purpose of the parameter |v| here is to enable a free choice of
 type for the variables (be it |String| or |Int| or something else).
 
-\subsubsection{|Env|, |Var|, and variable lookup}
-
-The type synonym
-
-\begin{spec}
-type Env v s = [(v,s)]
-\end{spec}
-
-is one way of expressing a partial function from |v| to |s|.
+The careful reader will note that the same Haskell module cannot
+contain both these definitions of |AE'|.
 %
-As an example value of this type:
+This is because the name of the type and the names of the constructors
+are clashing.
+%
+The typical ways around this are: define the types in different
+modules, or rename one of them (often by adding primes as in |AE'|).
+%
+In this book we often take the liberty of presenting more than one
+version of a datatype without changing the names, to avoid multiple
+modules or too many primes.
+
+
+Together with a datatype for the syntax of arithmetic expressions we
+also want to define an evaluator of the expressions.
+%
+The concept of ``an evaluator'', a function from the syntax to the
+semantics, is something we will return to many times in this book.
+%
+We have already seen one example: the function |evalEnv| which
+translates from a list of key-value-pairs (the abstract syntax of the
+environment) to a function (the semantics).
+
+In the evaluator for |AE' v| we take this one step further: given an
+environment |env| and the syntax of an arithmetic expression |e| we
+compute the semantics of that expression.
 %
 \begin{code}
-env1 :: Env String Int
-env1 = [("hej", 17), ("du", 38)]
+evalAE :: Env String Integer -> (AE -> Maybe Integer)
+evalAE env (V x)      =  evalEnv env x
+evalAE env (P e1 e2)  =  mayP  (evalAE env e1)  (evalAE env e2)
+evalAE env (T e1 e2)  =  mayT  (evalAE env e1)  (evalAE env e2)
+
+mayP :: Maybe Integer -> Maybe Integer -> Maybe Integer
+mayP (Just a) (Just b)  =  Just (a+b)
+mayP _        _         =  Nothing
+
+mayT :: Maybe Integer -> Maybe Integer -> Maybe Integer
+mayT (Just a) (Just b)  =  Just (a*b)
+mayT _        _         =  Nothing
 \end{code}
 
-TODO: Move this paragraph later and instead just explain (or define) |lookup|. include a comment about syntax and semantics.
-
-The |Env| type is commonly used in evaluator functions for syntax trees
-containing variables:
-%
-TODO: explain ``the evaluator'' (a function from the syntax to the semantics)
-
-TODO: handle the partial function problem using Maybe.
 \begin{code}
-evalE' :: Eq v => Env v sem -> (E' v -> Maybe sem)
-evalE' env (V' x) = case lookup x env of
-                        Just c -> undefined -- ...
--- ...
-\end{code}
+evalAE' :: (Eq v, Num sem) =>  (Env v sem) -> (AE' v -> Maybe sem)
+evalAE' env (V' x)      =  evalEnv env x
+evalAE' env (e1 :+ e2)  =  liftM (+)   (evalAE' env e1)  (evalAE' env e2)
+evalAE' env (e1 :* e2)  =  liftM (*)   (evalAE' env e1)  (evalAE' env e2)
 
-Notice that |env| maps ``syntax'' (variable names) to ``semantics'',
-just like the evaluator does.
+liftM :: (a -> b -> c) -> (Maybe a -> Maybe b -> Maybe c)
+liftM op   (Just a)  (Just b)  =  Just (op a b)
+liftM _op  _         _         =  Nothing
+\end{code}
 
 \subsection{A case study: complex numbers}
 
@@ -675,8 +746,32 @@ numbers, while |Plus| here takes two complex numbers as arguments.
 
 We can implement the evaluator |evalE| by pattern matching on the
 syntax tree and recursion.
+%
+To write a recursive function requires a small leap of faith.
+%
+It can be difficult to get started implementing a function (like
+|eval|) that should handle all the cases and all the levels of a
+recursive datatype (like |ComplexE|).
+%
+One way to overcome this difficulty is through ``wishful thinking'':
+assume that all but one case has been implemented already.
+%
+All you need to focus on is that one remaining case, and you can
+freely call the function (that you are implementing) recursively, as
+long as you do it for subtrees.
+%
 
-TODO: mention ``whishful thinkning''
+For example, when implementing the |evalE (Plus c1 c2)| case, you can
+assume that you already know the values |s1, s2 :: ComplexD|
+corresponding to the subtrees |c1| and |c2|.
+%
+The only thing left is to add them up componentwise and we can assume
+there is a function |(+.) :: ComplexD -> ComplexD -> ComplexD| taking
+care of this step.
+%
+Continuing in this direction (by ``wishful thinking'') we arrive at
+the following implementation.
+%
 \begin{code}
 evalE ImagUnit         = CD (0 , 1)
 evalE (ToComplex r)    = CD (r , 0)
@@ -694,21 +789,34 @@ fromCD (CD (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 testE1 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
 testE2 = Times ImagUnit ImagUnit
 \end{code}
+
 This is |testE1| as an abstract syntax tree:
 \begin{tikzpicture}[level 1/.style={sibling distance=3cm}]
-\node{Plus}
-child {node {ToComplex} child {node {3}}}
-child {node {Times}
-  child {node {ToComplex} child {node {2}}}
-  child {node {ImagUnit}}};
+\node{|Plus|}
+child {node {|ToComplex|} child {node {|3|}}}
+child {node {|Times|}
+  child {node {|ToComplex|} child {node {|2|}}}
+  child {node {|ImagUnit|}}};
 \end{tikzpicture}
 
+\subsection{Laws, properties and testing}
 There are certain laws we would like to hold for operations on complex
 numbers.
 %
-The simplest is perhaps |square i = -1| from the start of the lecture,
+To specify these laws, in a way which can be easily testable in
+Haskell, we use functions to |Bool| (also called \emph{predicates} or
+\emph{properties}).
+%
+The intended meaning of such a boolean function is ``forall inputs,
+this should return |True|''.
+%
+This idea is at the core of \emph{property based testing} (pioneered
+by \citet{claessen_quickcheck_2000}) and conveniently available in the
+library QuickCheck.
+%
 
-TODO: Explain the use of functions to Bool as specifications where the reading should be ``forall inputs, this should return True''
+%
+The simplest law is perhaps |square i = -1| from the start of the lecture,
 %
 \begin{code}
 propImagUnit :: Bool
@@ -717,7 +825,6 @@ propImagUnit = Times ImagUnit ImagUnit === ToComplex (-1)
 (===) :: ComplexE -> ComplexE -> Bool
 z === w  =  evalE z == evalE w
 \end{code}
-TODO: format |===| in a similar way as |==|
 
 and that |fromCD| is an embedding:
 
@@ -730,9 +837,9 @@ but we also have that |Plus| and |Times| should be associative and
 commutative and |Times| should distribute over |Plus|:
 
 \begin{code}
-propAssocPlus  x y z  =  Plus (Plus x y) z === Plus x (Plus y z)
-propAssocTimes x y z  =  Times (Times x y) z === Times x (Times y z)
-propDistTimesPlus x y z = Times x (Plus y z) === Plus (Times x y) (Times x z)
+propAssocPlus  x y z     =  Plus (Plus x y) z    ===  Plus x (Plus y z)
+propAssocTimes x y z     =  Times (Times x y) z  ===  Times x (Times y z)
+propDistTimesPlus x y z  =  Times x (Plus y z)   ===  Plus (Times x y) (Times x z)
 \end{code}
 
 These three laws actually fail, but not because of the implementation
@@ -809,7 +916,7 @@ data ComplexSyn r  =  FromCartesian r r
 toComplexSyn :: Num a => a -> ComplexSyn a
 toComplexSyn x = FromCartesian x 0
 
--- From CSem: newtype ComplexSem r = CS (r , r)    deriving Eq
+-- From CSem: |newtype ComplexSem r = CS (r , r)    deriving Eq|
 
 evalCSyn :: Num r => ComplexSyn r -> CSem.ComplexSem r
 evalCSyn (FromCartesian x y) = CS (x , y)
@@ -820,8 +927,8 @@ instance Num a => Num (ComplexSyn a) where
    (+) = (:+:)
    (*) = (:*:)
    fromInteger = fromIntegerCS
-   -- TODO: add a few more operations (hint: extend ComplexSyn as well)
-   -- TODO: also extend eval
+   -- Exercise: add a few more operations (hint: extend |ComplexSyn| as well)
+   -- Exercise: also extend |eval|
 
 fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
 fromIntegerCS = toComplexSyn . fromInteger

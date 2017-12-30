@@ -60,6 +60,11 @@
     \put(7,14){\line(1,0){25}} \put(45,14){\line(1,0){25}}
   \end{picture}}}
 %% If you remove the %format == command the lhs2TeX default yields ≡, which can be a problem
+\def\tripleequals{\mathrel{\unitlength 0.01em
+  \begin{picture}(116,40)
+    \put(7,34){\line(1,0){25}} \put(45,34){\line(1,0){25}} \put(83,34){\line(1,0){25}}
+    \put(7,14){\line(1,0){25}} \put(45,14){\line(1,0){25}} \put(83,14){\line(1,0){25}}
+  \end{picture}}}
 \providecommand{\cpp}{C\kern-0.05em\texttt{+\kern-0.03em+}}
 \newcommand{\colvec}[1]{\colvecc{#1_0}{#1_n}}
 \newcommand{\colvecc}[2]{\colveccc{#1 \\ \vdots \\ #2}}
