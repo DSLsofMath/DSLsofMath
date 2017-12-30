@@ -154,9 +154,9 @@ To start out we introduce some of the ways types are defined in
 Haskell, the language we use for implementation (and often also
 specification) of mathematical concepts.
 
-TODO: make the following few paragraphs flow better
+%TODO: perhaps make the following few paragraphs flow better
 
-%TODO: Perhaps use more from Expr.lhs
+%TODO: perhaps use more from Expr.lhs
 
 \subsubsection{type / newtype / data}
 
@@ -176,8 +176,9 @@ type Env v s = [(v,s)]
 \end{code}
 
 The new name for the type on the RHS does not add type safety, just
-readability (if used wisely). The |Env| example shows that a type
-synonym can have type parameters.
+readability (if used wisely).
+%
+The |Env| example shows that a type synonym can have type parameters.
 
 \paragraph{newtype -- more protection}
 
@@ -235,7 +236,33 @@ age, and shoe size of the person modelled.
 (See exercise \ref{exc:counting} for the intuition behind the terms
 ``sum'' and ``product'' used here.)
 
-\subsubsection{|Env|, |Maybe|, and variable |lookup|}
+\paragraph{|Maybe| and parameterised types.}
+%
+It is very often possible describe a family of types of the same ``shape''.
+%
+One simple example is the type constructor |Maybe|:
+%
+\begin{spec}
+data Maybe a = Nothing | Just a
+\end{spec}
+%
+This declaration introduces
+\begin{itemize}
+\item a new type |Maybe a| for every type |a|,
+\item a constructor |Nothing :: Maybe a| to represent ``no value'', and
+\item a constructor |Just :: a -> Maybe a| to represent ``just a value''.
+\end{itemize}
+%
+A maybe type is often used when a function may, or may not, return a
+value.
+
+Two other examples of, often used, parameterised types are |(a,b)| for
+the type of pairs (a product type) and |Either a b| for either an |a|
+or a |b| (a sum type).
+%
+
+
+\subsubsection{|Env| and variable |lookup|.}
 
 The type synonym
 %
@@ -279,13 +306,21 @@ when we introduce abstract syntax trees containing variables.
 \subsection{A syntax for simple arithmetical expressions}
 \label{sec:ArithExp}
 
-%TODO: (by DaHe) It would also be a good opportunity to explain syntax vs semantics, deep vs shallow embedding, (which I remember
-% some of my classmates had trouble grasping when I took the course), as these words are used throughout the chapter.
-% The data type could then be expanded to include variables, making possible expressions like 5*x + 7, and how we need
-% to be able look up the value of the variable (from an env) in order to eval the expression.
+%TODO: (by DaHe) It would also be a good opportunity to explain deep
+% vs shallow embedding, (which I remember some of my classmates had
+% trouble grasping when I took the course), as these words are used
+% throughout the chapter.
+
+%TODO: The data type could then be expanded to include variables,
+% [introduce the type without variables before the currrent type?]
+% making possible expressions like 5*x + 7, and how we need to be able
+% look up the value of the variable (from an env) in order to eval the
+% expression.
 %
-% This way, the idea of a math DSL would be presented in the most basic way possible, before we make it one step more complicated
-% by trying to construct a DSL from a book's definition of complex numbers.
+% This way, the idea of a math DSL would be presented in the most
+% basic way possible, before we make it one step more complicated by
+% trying to construct a DSL from a book's definition of complex
+% numbers.
 
 \begin{code}
 data AE = V String | P AE AE | T AE AE
@@ -688,17 +723,25 @@ Starting from |ComplexA|, the type has evolved by successive
 refinements through |ComplexB|, |ComplexC|, ending up in |ComplexD|
 (see Fig.~\ref{fig:ComplexTypeSummary}).
 %
+(We can also make a parameterised version of |ComplexD|, by noting
+that the definitions for complex number operations work fine for a
+range of underlying numeric types.
+%
+The operations for |ComplexSem| are defined in module |CSem|,
+available in appendix~\ref{app:CSem}.)
+
+%
 \begin{figure}[tbph]
 \begin{spec}
-data     ImagUnits =  I
-data     ComplexA  =  CPlus1  REAL   REAL ImagUnits
-                   |  CPlus2  REAL   ImagUnits REAL
-data     ComplexB  =  CPlusB  REAL   REAL ImagUnits
-data     ComplexC  =  CPlusC  REAL   REAL
-newtype  ComplexD  =  CD  (REAL, REAL)   deriving Eq
+data     ImagUnits     =  I
+data     ComplexA      =  CPlus1  REAL   REAL ImagUnits
+                       |  CPlus2  REAL   ImagUnits REAL
+data     ComplexB      =  CPlusB  REAL   REAL ImagUnits
+data     ComplexC      =  CPlusC  REAL   REAL
+newtype  ComplexD      =  CD  (REAL, REAL)   deriving Eq
+newtype  ComplexSem r  =  CS  (r , r)        deriving Eq
 \end{spec}
-
-  \caption{Complex number datatype refinement.}
+  \caption{Complex number datatype refinement (semantics).}
   \label{fig:ComplexTypeSummary}
 \end{figure}
 
@@ -902,12 +945,10 @@ type for |REAL|.
 %
 At the same time we generalise |ToComplex| to |FromCartesian|:
 
-TODO: mention the parameterised |newtype ComplexSem r = CS (r , r)    deriving Eq| as well. Currently imported. Perhaps in the figure summarizing the evolution.
-
-
-% TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
+%TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
 % See data blackboard/W1/20170116_114608.jpg, eval blackboard/W1/20170116_114613.jpg
 \label{sec:toComplexSyn}
+\label{sec:firstFromInteger}
 \begin{code}
 data ComplexSyn r  =  FromCartesian r r
                    |  ComplexSyn r  :+:  ComplexSyn r
@@ -916,16 +957,16 @@ data ComplexSyn r  =  FromCartesian r r
 toComplexSyn :: Num a => a -> ComplexSyn a
 toComplexSyn x = FromCartesian x 0
 
--- From CSem: |newtype ComplexSem r = CS (r , r)    deriving Eq|
+-- From |CSem| in appendix~\ref{app:CSem}: |newtype ComplexSem r = CS (r , r)    deriving Eq|
 
 evalCSyn :: Num r => ComplexSyn r -> CSem.ComplexSem r
 evalCSyn (FromCartesian x y) = CS (x , y)
-evalCSyn (l :+: r) = evalCSyn l CSem.+. evalCSyn r
-evalCSyn (l :*: r) = evalCSyn l CSem.*. evalCSyn r
+evalCSyn (l :+: r)  = evalCSyn l  CSem.+.  evalCSyn r
+evalCSyn (l :*: r)  = evalCSyn l  CSem.*.  evalCSyn r
 
 instance Num a => Num (ComplexSyn a) where
-   (+) = (:+:)
-   (*) = (:*:)
+   (+)  = (:+:)
+   (*)  = (:*:)
    fromInteger = fromIntegerCS
    -- Exercise: add a few more operations (hint: extend |ComplexSyn| as well)
    -- Exercise: also extend |eval|
@@ -933,9 +974,7 @@ instance Num a => Num (ComplexSyn a) where
 fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
 fromIntegerCS = toComplexSyn . fromInteger
 \end{code}
-\label{sec:firstFromInteger}
 
-TODO: place this paragraph properly.
 \paragraph{From syntax to semantics and back}
 
 We have seen evaluation functions from abstract syntax to semantics
@@ -958,7 +997,7 @@ The embedding should satisfy a round-trip property:
 |eval (embed s) == s| for all |s|.
 %
 
-TODO: Add typed quantification
+TODO: Perhaps add typed quantification
 
 %
 Exercise: What about the opposite direction?
@@ -980,28 +1019,7 @@ syntactic operations:
 
 |a + b = eval (Plus (embed a) (embed b))| for all |a| and |b|.
 
-
-
-\subsubsection{Other}
-TODO: find a good place for this part
-
-\paragraph{Lifting operations to a parameterised type}
-When we define addition on complex numbers (represented as pairs of
-real and imaginary components) we can do that for any underlying type
-|r| which supports addition.
-
-\begin{code}
-type CS = CSem.ComplexSem -- for shorter type expressions below
-liftCS ::  (    r  ->     r  ->     r  ) ->
-           (CS  r  -> CS  r  -> CS  r  )
-liftCS (+) (CS (x, y)) (CS (x', y')) = CS (x+x', y+y')
-\end{code}
-Note that |liftCS| takes |(+)| as its first parameter and uses it
-twice on the RHS.
-
-%TODO: Perhaps also add as an exercise to use Num to make the parameter implicit. But this should perhaps be placed in a later chapter after Num has been properly introduced.
-
-\paragraph{Laws}
+\paragraph{More about laws}
 
 TODO: Associative, Commutative, Distributive, \ldots
 
@@ -1013,10 +1031,14 @@ Non-examples: division is not commutative, average is commutative but
 not associative.
 
 TODO: Talk more about the properties tested above in
-|propDistTimesPlus|, \ldots.  (The underlying set matters: |(+)| for
-|REAL| has some properties, |(+)| for |Double| has other, \ldots.
-Approximation is often necessary, but makes many laws false. Thus,
-attempt to do it late.)
+|propDistTimesPlus|, \ldots.
+%
+(The underlying set matters: |(+)| for |REAL| has some properties,
+|(+)| for |Double| has other, \ldots.
+%
+Approximation is often necessary, but makes many laws false.
+%
+Thus, attempt to do it late.)
 
 |Distributive (*) (+) = Forall (a, b, c) ((a+b)*c = (a*c)+(b*c))|
 
@@ -1047,9 +1069,9 @@ Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
 
 Exercise: Find other pairs of operators satisfying a distributive law.
 
-\subsection{More Haskell}
+\subsection{More about functions}
 
-\subsubsection{Function composition}
+\paragraph{Function composition.}
 
 The infix operator \verb+.+ in Haskell is an implementation of the
 mathematical operation of function composition.
@@ -1059,8 +1081,11 @@ f . g = \x -> f (g x)
 \end{spec}
 
 The period is an ASCII approximation of the composition symbol $\circ{}$ typically
-used in mathematics. (The symbol $\circ{}$ is encoded as \verb"U+2218" and called RING
-OPERATOR in Unicode, \verb+&#8728+ in HTML, \verb+\circ+ in \TeX, etc.)
+used in mathematics.
+%
+(The symbol $\circ{}$ is encoded as \verb"U+2218" and called RING
+OPERATOR in Unicode, \verb+&#8728+ in HTML, \verb+\circ+ in \TeX,
+etc.)
 
 The type is perhaps best illustrated by a diagram with types as nodes
 and functions (arrows) as directed edges:
@@ -1237,18 +1262,3 @@ showCD (CD (x, y)) = show x ++ " + " ++ show y ++ "i"
 \end{code}
 
 %include E1.lhs
-
-% ----------------------------------------------------------------
-
-TODO: remove or use some left overs:
-
-\begin{code}
-data ComplexSy v r  =  Var v
-                    |  FromCart r r
-                    |  ComplexSy v r  :++  ComplexSy v r
-                    |  ComplexSy v r  :**  ComplexSy v r
-\end{code}
- and
-the second parameter |r| makes is possible to express ``complex
-numbers over'' different base types (like |Double|, |Float|,
-|Integer|, etc.).

@@ -126,6 +126,9 @@
 \newpage
 %include End.lhs
 
+\appendix
+%include 01/CSem.lhs
+
 \bibliographystyle{abbrvnat}
 \bibliography{ref}
 \end{document}

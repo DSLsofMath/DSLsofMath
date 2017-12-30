@@ -174,3 +174,7 @@
 %format mod x y = x "\%" y
 
 %format liftSeq1 = liftSeq "_1"
+
+
+%format CSem.+. = "\mathbin{\stackrel{\scriptscriptstyle" CSem "}{" +. "}}"
+%format CSem.*. = "\mathbin{\stackrel{\scriptscriptstyle" CSem "}{" *. "}}"
