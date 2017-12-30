@@ -72,7 +72,7 @@
 
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise}\label{exc:counting}
   Counting values.
   %
   Now assume we have |f2p|, |s2f|, etc used with three finite types
