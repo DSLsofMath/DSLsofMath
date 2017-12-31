@@ -1,3 +1,4 @@
+
 \section{Types in Mathematics}
 \label{sec:types}
 \begin{code}

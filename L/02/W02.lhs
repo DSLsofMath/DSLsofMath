@@ -171,9 +171,11 @@ rational number expressions as an example.
 %
 In this case we can model the terms as a datatype:
 %
-\begin{code}
-data Rat v = RV v | FromI Integer | RPlus (Rat v) (Rat v) | RDiv (Rat v) (Rat v)
-\end{code}
+%{
+%let rat = True
+%include FOLRat.lhs
+%let rat = False
+%}
 %
 This introduces variables and three function symbols:
 %
@@ -233,7 +235,19 @@ Here is the same formula without infix operators:
   Forall x (Forall y (Eq(plus(x,y),plus(y,x))))
 \end{spec}
 
-TODO: perhaps add simple |data FOL| for the formulas.
+As before we can model the terms as a datatype.
+%
+We keep the logical connectives |And|, |Or|, |Implies|, |Not| from the
+type |PropCalc|, add predicates over terms, and quantification.
+%
+The constructor |Equal| could be eliminated in favor of |P "Eq"| but
+is often included.
+%
+%{
+%let fol = True
+%include FOLRat.lhs
+%let fol = False
+%}
 
 Forall quantification can be seen as a generalisation of |And|.
 %

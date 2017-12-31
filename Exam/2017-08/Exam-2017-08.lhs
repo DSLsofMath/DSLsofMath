@@ -32,7 +32,7 @@
 
 \newcommand\todo[1]{\textbf{TODO\{}#1\textbf{\}}}
 
-%include lhs2TeX.fmt
+%include polycode.fmt
 %include forall.fmt
 %format == = "\doubleequals"
 \title{Domain Specific Languages of Mathematics\\Course codes: DAT326 / DIT982}
