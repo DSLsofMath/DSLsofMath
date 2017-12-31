@@ -15,43 +15,61 @@ module DSLsofMath.W02 where
 \end{code}
 
 \subsection{Propositional Calculus}
+%TODO: Build up a small DSLsofMath dictionary
+(Swedish: Satslogik)
 
-Now we turn to the main topic of this week: logic and proofs.
-
-TODO: tidy up the notes below
-
-Swedish: Satslogik
-
+Now we turn to the main topic of this chapter: logic and proofs.
+%
+Our first DSL for this chapter is the language of \emph{propositional
+  calculus} (or logic), modelling simple propositions with the usual
+combinators for and, or, implies, etc.
+%
+The syntactic constructs are collected in Table~\ref{tab:PropCalc}.
+%
+\begin{table}[htbp]
+  \centering
 \begin{tabular}{lll}
-   |a|, |b|, |c|, \ldots  & names of propositions &
-\\ |False|, |True| & Constants &
+   |a|, |b|, |c|, \ldots  & \multicolumn{2}{@@{}l@@{}}{names of propositions}
+\\ |False|, |True| & \multicolumn{2}{@@{}l@@{}}{Constants}
 \\ |And|      & $\wedge$       & |&|
 \\ |Or|       & $\vee$         & |bar|
 \\ |Implies|  & $\Rightarrow$  &
 \\ |Not|      & $\neg$         &
 \end{tabular}
+\caption{Syntax for propositions}
+\label{tab:PropCalc}
+\end{table}
 
-Example:
+Some example propositions: \(|p1| = a \wedge (\neg a)\),
+\(|p2| = a \Rightarrow b\), \(|p3| = a \vee (\neg a)\),
+\(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).
 %
-\begin{code}
-sw :: PropCalc
-sw = ((a -&- b) -=> (b -&- a))
-  where  a = Name "a"
-         b = Name "b"
-\end{code}
+If we assign a truth value to each name, we can compute a truth value
+of the whole proposition.
 %
-The example is based on the following embedding of propositional calculus terms:
+In our examples, |p1| is always false, |p2| is mixed and |p3| and |p4|
+are always true.
+
+%TODO: perhaps use
+% \begin{code}
+% sw :: PropCalc
+% sw = ((a -&- b) -=> (b -&- a))
+%   where  a = Name "a"
+%          b = Name "b"
+% (-&-) = And
+% (-=>) = Implies
+% \end{code}
+%
+We can model the propositions as a datatype:
 \begin{code}
-data PropCalc  =  Con   Bool
-               |  Name  String
+data PropCalc  =  Con      Bool
+               |  Name     String
                |  And      PropCalc  PropCalc
                |  Or       PropCalc  PropCalc
                |  Implies  PropCalc  PropCalc
                |  Not      PropCalc
-
-(-&-) = And
-(-=>) = Implies
 \end{code}
+%
 With this datatype we can write an evaluator to |Bool| which computes
 the truth value of a term given an enviroment:
 %
@@ -79,14 +97,16 @@ A value of this type is a mapping from a truth table to |Bool|.
 This mapping is often also tabulated as a truth table with one more
 ``output'' column.
 
-As a first example, consider the proposition |t = Implies (Con False) a|.
+As a first example, consider the proposition |t = Implies (Con False)
+a|.
 %
 We will use the shorter notation with just |T| for true and |F| for
 false.
 %
-The truth table semantics of |t| is usually drawn as follows: one
-column for the name |a| listing all combinations of |T| and |F|, and
-one column for the result of evaluating the expression.
+The truth table semantics of |t| is usually drawn as follows:
+%
+one column for the name |a| listing all combinations of |T| and |F|,
+and one column for the result of evaluating the expression.
 
 \begin{tabular}{||l||l||}
     \hline   a & t
@@ -95,11 +115,15 @@ one column for the result of evaluating the expression.
   \\\hline
 \end{tabular}
 
-If we continue with the example |sw| from above we have two names |a|
+If we continue with the example |p4| from above we have two names |a|
 and |b| which together can have any of four combinations of true and
-false. After the name-columns are filled, we fill in the rest of the
-table one operation (column) at a time. The |&| columns become |F F F
-T| and finally the |=>| column becomes true everywhere.
+false.
+%
+After the name-columns are filled, we fill in the rest of the table
+one operation (column) at a time.
+%
+The |&| columns become |F F F T| and finally the |=>| column (the
+output) becomes true everywhere.
 
 \begin{tabular}{||lllllll||}
     \hline   |a| & |&| & |b| & |=>| & |b| & |&| & |a|
@@ -110,7 +134,7 @@ T| and finally the |=>| column becomes true everywhere.
   \\\hline
 \end{tabular}
 
-A proposition whose truth table is always true is called a
+A proposition whose truth table output is constantly true is called a
 \emph{tautology}.
 %
 Truth table verification is only viable for propositions with few
@@ -127,12 +151,13 @@ over them) to the calculus.
 
 
 \subsection{First Order Logic (predicate logic)}
+%
+(Swedish: Första ordningens logik = predikatlogik)
 
-Swedish: Första ordningens logik = predikatlogik
-
-% TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
-
-We now add \emph{terms} as another datatype to the calculus.
+%TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
+Our second DSL is that of \emph{First Order Logic (FOL)}.
+%
+This laguage has two datatypes: propositions, and \emph{terms} (new).
 %
 A \emph{term} is either a (term) \emph{variable} (like |x|, |y|, |z|),
 or the application of a \emph{function symbol} (like |f|, |g|) to a
@@ -140,9 +165,25 @@ suitable number of terms.
 %
 If we have the function symbols |f| of arity |2| and |g| of arity |3|
 we can form terms like |f(x,x)|, |g(y,z,z)|, |g(x,y,f(x,y))|, etc.
+%
+The actual function symbols are usually domain specific --- we can use
+rational number expressions as an example.
+%
+In this case we can model the terms as a datatype:
+%
+\begin{code}
+data Rat v = RV v | FromI Integer | RPlus (Rat v) (Rat v) | RDiv (Rat v) (Rat v)
+\end{code}
+%
+This introduces variables and three function symbols:
+%
+|FromI| of arity |1|, |RPlus|, |RDiv| of arity |2|.
 
-TODO: Add simple datatype for terms. (Perhaps |Rat| from further down?)
-
+The propositions from |PropCalc| are extended so that they can refer
+to terms.
+%
+We will normally refer to a |FOL| proposition as a \emph{formula}.
+%
 The names from the propositional calculus are generalised to
 \emph{predicate symbols} of different arity.
 %
@@ -152,15 +193,19 @@ predicate symbols or formulas.
 If we have the predicate symbols |N| of arity |0|, |P| of arity |1|
 and |Q| of arity |2| we can form \emph{formulas} like |N|, |P(x)|,
 |Q(f(x,x),y)|, etc.
-
-Note that we have two separate layers: terms cannot contain formulas,
-but formulas normally contain terms.
+%
+Note that we have two separate layers:
+%
+formulas normally refer to terms, but terms cannot refer to formulas.
 
 The formulas introduced so far are all \emph{atomic formulas} but we
-will add two more concepts: first the logical conenctives from the
-propositional calculus: |And|, |Or|, |Implies|, |Not|, and then two
-quantifiers: ``forall'' (|ForallAlone|) and ``exists''
-(|ExistsAlone|).
+will add two more concepts:
+%
+first the logical conenctives from the propositional calculus:
+%
+|And|, |Or|, |Implies|, |Not|, and then two quantifiers:
+%
+``forall'' (|ForallAlone|) and ``exists'' (|ExistsAlone|).
 
 An example FOL formula:
 %

@@ -120,6 +120,8 @@
 %format p0
 %format p1
 %format p2
+%format p3
+%format p4
 %format r1
 %format r2
 %format s1
