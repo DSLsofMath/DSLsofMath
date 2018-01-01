@@ -148,8 +148,6 @@ What we call ``names'' are often called ``(propositional) variables''
 but we will soon add another kind of variables (and quantification
 over them) to the calculus.
 
-
-
 \subsection{First Order Logic (predicate logic)}
 %
 (Swedish: Första ordningens logik = predikatlogik)
@@ -270,7 +268,7 @@ Then the final step is to introduce the notation |Forall i A(i)| for
 |A(i1) & A(i2) & ... |.
 %
 %
-% TODO (by DaHe) It might be a good idea to explain the below paragraph
+%TODO (by DaHe) It might be a good idea to explain the below paragraph
 % (until next subsection) in a more informal way too, since this is a
 % fairly technical explanation.  Something like "If we can show P(a)
 % for some unknown term a, we know P(t) for any t, since we have not
@@ -307,15 +305,6 @@ roughly |Exists x (x^2 + 2*x + 1 == 0)|.
 We write ``roughly'' here because the scope of |x| very often extends
 to some text after the equation where something more is said about the
 solution |x|.
-
-
-TODO: Add an example showing how to prove
-\begin{spec}
-  Forall a (Forall b (Forall c ( (a -> (b, c)) <=> (a->b, a->c) )))
-\end{spec}
-
-
-
 
 \subsection{An aside: Pure set theory}
 
@@ -597,36 +586,96 @@ the language Agda.
 
 
 \subsection{Proofs for |And| and |Or|}
+\label{sec:PropFrag}
+When formally proving properties in FOL we should use the introduction
+and elimination rules.
+%
+The propositional fragment of FOL is given by the rules for ∧, →, ⟷, ¬,
+∨.
+%
+We can use the Haskell type checker to check proofs in this fragment,
+using the functional models for introduction and elimination rules.
+%
+\begin{figure*}[tbp]
+%{
+%let abstractfol = True
+%include AbstractFOL.lhs
+%let abstractfol = False
+%}
+  \caption{The Haskell module |AbstractFOL|.}
+  \label{fig:AbstractFOL}
+\end{figure*}
+%
+Examine Fig.\ \ref{fig:AbstractFOL} (also available in the file
+\url{AbstractFOL.lhs}), which introduces an empty datatype for every
+connective (except ⟷), and corresponding types for the introduction
+and elimination rules.
+%
+The introduction and elimination rules are explicitly left
+undefined, but we can still combine them and type check the
+results.
+%
+For example:
 
-TODO: textify
+\begin{code}
+example0 :: And p q -> And q p
+example0 evApq   =  andIntro (andElimR evApq) (andElimL evApq)
+\end{code}
+%
+(The variable name |evApq| is a mnemonic for ``evidence of |And p q|''.)
+
+Notice that Haskell will not accept
 
 \begin{spec}
-  andIntro  :  P  ->  Q  -> P&Q
-  andElimL  :  P&Q ->  P
-  andElimR  :  P&Q ->  Q
+example0 evApq   =  andIntro (andElimL evApq) (andElimR evApq)
+\end{spec}
+
+unless we change the type.
+
+Another example:
+
+\begin{code}
+example1 :: And q (Not q) -> p
+example1 evAqnq    =  notElim (notIntro (\ hyp -> evAqnq))
+\end{code}
+
+To sum up the |And| case we have one introduction and two elimination rules:
+\begin{spec}
+  andIntro  ::  p -> q -> And p q
+  andElimL  ::  And p q ->  p
+  andElimR  ::  And p q ->  q
 \end{spec}
 %
-% TODO (by DaHeu): I think we need some examples of proofs using andIntro,
-% orIntro and implIntro. At the start of week 2's exercises, there are two
-% examples. Why not put them here? I think we also need at least one slightly
-% longer example.
-%
+%TODO (by DaHeu):
 % The technique of using typed holes is also mentioned at the start of the
 % exercises. I think it would be a good idea to use one of the examples to
 % demonstrate a step-by-step solution using this technique.
 %
 If we see these introduction and elimination rules as an API, what
-would be a resonable implementation of the datatype |P&Q|?
+would be a resonable implementation of the datatype |And p q|?
 %
 A type of pairs!
 %
 Then we see that the corresponding Haskell functions would be
 %
 \begin{spec}
-  pair  :: p -> q -> (p, q)  -- andIntro
-  fst   :: (p, q) -> p       -- andElimL
-  snd   :: (p, q) -> q       -- andElimR
+  pair  :: p -> q -> (p, q)  -- |andIntro|
+  fst   :: (p, q) -> p       -- |andElimL|
+  snd   :: (p, q) -> q       -- |andElimR|
 \end{spec}
+
+%{
+%let tupling = True
+%include AbstractFOL.lhs
+%let tupling = False
+%}
+
+\paragraph{|Or| is the dual of |And|.}
+%
+Most of the properties of |And| have corresponding properies for |Or|.
+%
+Often it is enough to simply swap the direction of the ``arrows''
+(implications) and swap the role between introduction and elimination.
 
 \begin{spec}
   orIntroL  :  P   ->  P|Q
@@ -644,8 +693,6 @@ disjoint union and in Haskell: |Either|.
   either l r (Left x)   =  l x
   either l r (Right y)  =  r y
 \end{spec}
-
-TODO: include |Either| in the Haskell intro at the end of the previous chapter
 
 \subsection{Case study: there is always another prime}
 

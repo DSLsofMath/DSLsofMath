@@ -260,6 +260,9 @@ Two other examples of, often used, parameterised types are |(a,b)| for
 the type of pairs (a product type) and |Either a b| for either an |a|
 or a |b| (a sum type).
 %
+\begin{spec}
+data Either p q = Left p | Right q
+\end{spec}
 
 
 \subsubsection{|Env| and variable |lookup|.}

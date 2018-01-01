@@ -155,8 +155,9 @@
 %format An = A "_{n}"
 %format L1 = L "_{1}"
 %format L2 = L "_{2}"
-%format i1 = i "_{1}"
-%format i2 = i "_{2}"
+%format i0
+%format i1
+%format i2
 %format bt = b "_{t}"
 %format di = d "_{i}"
 %format xi = x "_{i}"

@@ -3,63 +3,17 @@
 import AbstractFOL
 \end{code}
 
-\begin{figure*}[tbp]
-  \centering
-%include AbstractFOL.lhs
-  \caption{The Haskell module |AbstractFOL|.}
-  \label{fig:AbstractFOL}
-\end{figure*}
-
 \subsubsection{Exercises}
 \label{exercises-for-dslsofmath-week-2-2017}
 
-The propositional fragment of FOL is given by the rules for ∧, →, ⟷, ¬,
-∨.
-
-We can use the Haskell type checker to check proofs in this fragment,
-using the functional models for introduction and elimination rules.
-%
-Examine Fig.\ \ref{fig:AbstractFOL} (also available in the file
-\url{AbstractFOL.lhs}), which introduces an empty datatype for every
-connective (except ⟷), and corresponding types for the introduction
-and elimination rules.
-%
-The introduction and elimination rules are explicitly left
-``undefined'', but we can still combine them and type check the
-results.
-%
-For example:
-
-\begin{code}
-example0 :: And p q -> And q p
-example0 evApq   =  andIntro (andElimR evApq) (andElimL evApq)
-\end{code}
-%
-(The variable name |evApq| is a mnemonic for ``evidence of |And p q|''.)
-
-
-Notice that Haskell will not accept
-
-\begin{spec}
-example0 evApq   =  andIntro (andElimL evApq) (andElimR evApq)
-\end{spec}
-
-unless we change the type.
-
-Another example:
-
-\begin{code}
-example1 :: And q (Not q) -> p
-example1 evAqnq    =  notElim (notIntro (\ hyp -> evAqnq))
-\end{code}
-
-
 \paragraph{Short technical note}\label{short-technical-note}
 
-For these exercises, you might find it useful to take a look at typed
-holes, a feature which is enabled by default in GHC and available (the
-same way as the language extension \texttt{EmptyCase} above) from
-version 7.8.1 onwards: \url{https://wiki.haskell.org/GHC/Typed_holes}.
+For these first exercises on the propositional fragment of FOL
+(introduced in section~\ref{sec:PropFrag}), you might find it useful
+to take a look at typed holes, a feature which is enabled by default
+in GHC and available (the same way as the language extension
+\texttt{EmptyCase} above) from version 7.8.1 onwards:
+\url{https://wiki.haskell.org/GHC/Typed_holes}.
 
 If you are familiar with Agda, these will be familiar to use.
 %
@@ -306,9 +260,10 @@ Show this by implementing the following function:
 \begin{spec}
 noContra :: (Either p (p -> Empty) -> Empty) -> Empty
 \end{spec}
-\end{exercise}
 
-% TODO (DaHe): Fix formatting below so they look good and don't cause errors.
+Hint: The key is to use the function argument to |noContra| twice.
+
+\end{exercise}
 
 \newpage
 \begin{exercise}
