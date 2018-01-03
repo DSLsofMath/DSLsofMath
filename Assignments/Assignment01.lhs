@@ -104,7 +104,7 @@ Implement |vonNeumann| and explore, explain and implement the following
 ``pseudocode'' claims as functions in Haskell:
 
 \begin{spec}
-  claim1 n1 n2  =  {- |(n1 <= n2)|  implies  |(n1 ⊆ n2)| -}
+  claim1 n1 n2  =  {- if |(n1 <= n2)|  then  |(n1 ⊆ n2)| -}
   claim2 n      =  {- |n = {0, 1, ..., n − 1}| -}
 \end{spec}
 
