@@ -1,4 +1,4 @@
 default: DSLsofMath.pdf
 
-%.pdf: %.md
-	pandoc -o $@ $<
+%.pdf: %.md template.tex
+	pandoc --template=template.tex -o $@ $<

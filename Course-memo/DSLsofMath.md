@@ -1,16 +1,16 @@
-# Domain-Specific Languages of Mathematics
+% Domain-Specific Languages of Mathematics, 2018
+% Course-memo for the 2018 instance of a 7.5hec BSc course at Chalmers and GU.
+% Patrik Jansson
 
-Course-memo for the 2018 instance of a 7.5hec BSc course at Chalmers and GU.
-
-Homepage: https://github.com/DSLsofMath/DSLsofMath/
+\url{http://github.com/DSLsofMath/DSLsofMath/}
 
 Course codes: DAT326 / DIT982
 
 ## Course team
 
-* Examiner & main lecturer: Patrik Jansson (patrikj AT)
-* Lecturer: Cezar Ionescu (cezar AT)
-* Teaching assistants: TBD (was Daniel Schoepe (schoepe AT), Frederik Hanghøj Iversen (hanghj AT student))
+* Examiner&main lecturer: Patrik Jansson (patrikj@)
+* Guest lecturer: Cezar Ionescu (cezar@)
+* Teaching assistant: Daniel Schoepe (schoepe@)
 
 ## Objectives
 
@@ -39,12 +39,12 @@ students at both Chalmers and GU.
 
 ## Course material
 
-Lecture notes + references therein cover the course but there is no
-printed course textbook.
+Lecture notes are freely available online. These notes + references
+therein cover the course (but there is no printed course textbook).
 
 ## Course setup
 
-* Lectures (Prel. Tue. 13-15 in TBD, and Thu 13-15 in TBD)
+* Lectures (Tue 13-15 and Thu 13-15 in EB)
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
@@ -52,9 +52,9 @@ printed course textbook.
     * Domain Specific Languages and algebraic structures, algebras, homomorphisms
     * Polynomials, series, power series
     * Power series and differential equations, exp, sin, log, Taylor series, ...
-    * Laplace transform
     * Linear algebra
-* Weekly exercise sessions (Wednesdays 13-15 and Fridays 13-15)
+    * Laplace transform
+* Exercise sessions (Tue 15-17 and Thu 15-17 in ES52)
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
 

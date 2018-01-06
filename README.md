@@ -7,9 +7,9 @@ A quality project funded by Chalmers with 260kkr/y for 2014, 2015, 2017 resultin
 
 **[2018 edition of the course.](Course2018.md)**
 
-**[2017 edition of the course.](Course2017.md)**
+[2017 edition of the course.](2017/Course2017.md)
 
-**[2016 edition of the course.](2016/Course2016.md)** See also the [Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).
+[2016 edition of the course.](2016/Course2016.md) See also the [Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).
 
 ## More about the project
 [A paper has been accepted for the proceedings of TFPIE](https://github.com/DSLsofMath/tfpie2015).

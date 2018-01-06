@@ -8,14 +8,12 @@ Course codes: DAT326 / DIT982
 
 ## News
 
-* 2017-12-16: [Lecture notes](L/snapshots/) now at 113 pages (and growing)
-* 2017-11-01: Daniel Heurlin starts working as Student Research Assistant (amanuens) on improving the course
-* 2017-09-28: First draft of the course page for the 2018 instance
+* 2018-01-01: [Lecture notes](L/snapshots/) now at 116 pages
 
 ## Course team
 
 * Examiner & main lecturer: Patrik Jansson (patrikj AT)
-* Lecturer: Cezar Ionescu (cezar AT)
+* Guest lecturer: Cezar Ionescu (cezar AT)
 * Teaching assistant: Daniel Schoepe (schoepe AT)
 * (Project assistants: Daniel Heurlin, Sólrún Einarsdóttir)
 
