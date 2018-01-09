@@ -267,24 +267,26 @@ terms |i0|, |i1|, \ldots
 Then the final step is to introduce the notation |Forall i A(i)| for
 |A(i1) & A(i2) & ... |.
 %
+
+Now, a proof of |Forall x A(x)| should in some way contain a proof of
+|A(x)| for every possible |x|.
 %
-%TODO (by DaHe) It might be a good idea to explain the below paragraph
-% (until next subsection) in a more informal way too, since this is a
-% fairly technical explanation.  Something like "If we can show P(a)
-% for some unknown term a, we know P(t) for any t, since we have not
-% relied on any specific property of a specific t".  A simple example
-% might also be a good idea, where we end up with a function f where
-% f t is a proof of P t for all terms t.
+For the binary |And| we simply provide the two proofs, but in the
+inifinite case, we need an infinite collection of proofs.
 %
-Now to prove |Forall x P(x)| it would be difficult to provide an
-infinite collection of proofs of |P(xi)|.
+The standard procedure is to introduce a fresh constant term |a| and
+prove |A(a)|.
 %
-Instead the standard procedure is to introduce a fresh constant term
-|a| and prove |P(a)|.
+Intuitively, if we can show |A(a)| without knowing anything about |a|,
+we have proved |Forall x A(x)|.
 %
 Another way to view this is to say that a proof of |Forall x (P x)| is
-a function |f| from terms to proofs such that |f t| is a proof of
-|P t| for all terms |t|.
+a function |f| from terms to proofs such that |f t| is a proof of |P
+t| for all terms |t|.
+
+% TODO: A simple example might also be a good idea, where we end up
+% with a function f where f t is a proof of P t for all terms t.
+%
 
 Note that the syntactic rule for |Forall x b| is similar to the rule
 for a function definition, |f x = b|, and for anonymous functions, |\x
