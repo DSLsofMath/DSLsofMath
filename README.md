@@ -12,10 +12,15 @@ A quality project funded by Chalmers with 260kkr/y for 2014, 2015, 2017 resultin
 [2016 edition of the course.](2016/Course2016.md) See also the [Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).
 
 ## More about the project
-[A paper has been accepted for the proceedings of TFPIE](https://github.com/DSLsofMath/tfpie2015).
+[A paper was published in the proceedings of TFPIE](https://github.com/DSLsofMath/tfpie2015).
 
-The project was also presented at [DSLDI 2015](https://github.com/DSLsofMath/dsldi2015) and
-at the [IFIP WG 2.1 meeting #73](http://www.cse.chalmers.se/~patrikj/talks/WG2.1_Goteborg_Jansson_Ionescu_DSLsofMath.pdf).
+The project was also presented at
+
+* [DSLDI 2015](https://github.com/DSLsofMath/dsldi2015)
+* [IFIP WG 2.1 meeting #73](http://www.cse.chalmers.se/~patrikj/talks/WG2.1_Goteborg_Jansson_Ionescu_DSLsofMath.pdf)
+* [FP div. winter meeting: Typing Mathematics](http://www.cse.chalmers.se/~patrikj/talks/DSLsofMath_FP_WM_2018_Jansson.pdf)
+
+
 
 See [QualityProject/](QualityProject/) for more details.
 
