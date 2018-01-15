@@ -44,7 +44,7 @@ students at both Chalmers and GU.
 
 ## Course material
 
-Lecture notes + references therein cover the course but there is no
+[Lecture notes](L/snapshots/) + references therein cover the course but there is no
 printed course textbook.
 
 The main references are listed below.
@@ -55,16 +55,19 @@ The main references are listed below.
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
-	* Type classes, derivatives, derivation,
+	* Type classes, derivatives, differentiation, calculational proofs
     * Domain Specific Languages and algebraic structures, algebras, homomorphisms
     * Polynomials, series, power series
     * Power series and differential equations, exp, sin, log, Taylor series, ...
-    * Linear algebra
-    * Laplace transform
+    * Linear algebra: vectors, matrices, functions, bases, dynamical systems as matrices and graphs
+    * Laplace transform: exp, powers series cont., solving PDEs with Laplace
 * Weekly exercise sessions (Tue 15-17 and Thu 15-17 in ES52)
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
 * Schedule exceptions:
+    * 2018-01-18 Thu: exercises **moved to Fri (same time) in ES52**.
+    * 2018-01-25 Thu: exercises **moved to Fri (same time) in ES52**.
+    * 2018-02-09 Thu: exercises **moved to Fri (same time) in ES52**.
     * 2018-02-15 Thu: lecture + ex. **moved to Fri (same time) in EA + ES52**.
     * 2018-03-08 Thu: Exercise session in **ES53** this time only.
 
@@ -100,10 +103,10 @@ The latest PDF snapshot of the full lecture notes can be found in
 The "source code" for the lecture notes are in subdirectories of
 L/: [L/01/](L/01), [L/02/](L/02/), etc.
 
-
 ## Exercises
 
-See the [E/ subdirectory](E/README.md)
+Chapter 1-8 of the Lecture Notes end with weekly exercises for weeks
+1-8.
 
 ## Evaluation
 
