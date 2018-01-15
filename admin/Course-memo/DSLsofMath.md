@@ -48,7 +48,7 @@ therein cover the course (but there is no printed course textbook).
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
-	* Type classes, derivatives, differentiation, calculational proofs
+        * Type classes, derivatives, differentiation, calculational proofs
     * Domain Specific Languages and algebraic structures, algebras, homomorphisms
     * Polynomials, series, power series
     * Power series and differential equations, exp, sin, log, Taylor series, ...
@@ -58,21 +58,24 @@ therein cover the course (but there is no printed course textbook).
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
 * Schedule exceptions:
-    * 2018-01-18 Thu: E **moved to Fri in ES52**.
-    * 2018-01-25 Thu: E **moved to Fri in ES52**.
-    * 2018-02-09 Thu: E **moved to Fri in ES52**.
-    * 2018-02-15 Thu: L + E **moved to Fri in EA + ES52**.
-    * 2018-03-08 Thu: E in **ES53** this time only.
+    * 2018-01-19 E: **Thu $\to$ Fri in ES52**.
+    * 2018-01-26 E: **Thu $\to$ Fri in ES52**.
+    * 2018-02-09 E: **Thu $\to$ Fri in ES52**.
+    * 2018-02-16 L+E: **Thu $\to$ Fri in EA+ES52**.
+    * 2018-03-08 Thu E in **ES53** this time only.
 
 ## Changes from last year
 
-The main changes for 2018 (based on the [course eval meeting](eval/2017-04-28.md)) are
+The main changes for 2018 (based on the [course eval meeting](../../eval/2017-04-28.md)) are
 
-* New course literature (complete lecture notes)
+* New course literature (lecture notes covering the full course)
+* More material on functional programming in Haskell
 * Developed more exercises to solve (primarily easier exercises to start each week with)
-* Weekly hand-ins to encourage students to spend more hours on the course
 * More solving of exercises at the whiteboard
 * Schedule changes (alternating L, E, L, E instead of L, L, E, E)
+* Weekly hand-ins to encourage students to spend more hours on the course (not part of the formal examination)
+
+One of the student evaluators from 2017 (DaHe) was hired part time to help out with these improvements.
 
 ## Examination
 
@@ -82,7 +85,7 @@ There are two compulsory course elements:
     * two compulsory hand-in assignments (2018-01-30, 2018-02-27)
     * Grading: Pass or fail
 * E = Exam (individual written exam at the end of the course)
-    * Grading: Chalmers: U, 3, 4, 5; GU: U, G, VG
+    * Grading: **Chalmers**: U, 3, 4, 5; **GU**: U, G, VG
     * Date: [2018-03-13 at 14.00](https://www.student.chalmers.se/sp/course?course_id=26170)
     * Aids: One textbook of your choice
 

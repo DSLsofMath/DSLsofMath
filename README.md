@@ -66,11 +66,11 @@ The main references are listed below.
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
 * Schedule exceptions:
-    * 2018-01-18 Thu: exercises **moved to Fri (same time) in ES52**.
-    * 2018-01-25 Thu: exercises **moved to Fri (same time) in ES52**.
-    * 2018-02-09 Thu: exercises **moved to Fri (same time) in ES52**.
-    * 2018-02-15 Thu: lecture + ex. **moved to Fri (same time) in EA + ES52**.
-    * 2018-03-08 Thu: Exercise session in **ES53** this time only.
+    * 2018-01-19 Thu exercises **moved to Fri (same time) in ES52**.
+    * 2018-01-26 Thu exercises **moved to Fri (same time) in ES52**.
+    * 2018-02-09 Thu exercises **moved to Fri (same time) in ES52**.
+    * 2018-02-16 Thu lecture + ex. **moved to Fri (same time) in EA + ES52**.
+    * 2018-03-08 Thu Exercise session in **ES53** this time only.
 
 ## Changes from last year
 
