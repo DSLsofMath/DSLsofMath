@@ -169,6 +169,8 @@ Some important references:
 
   This article was one of the main triggers of this course.
 
+  [Short summary of the recommendations](PedProj/CommunicatingMathematics_Wells.md)
+
 ### Mathematics
 
 - **The Language of First-Order Logic, 3rd Edition**, Jon Barwise and John
