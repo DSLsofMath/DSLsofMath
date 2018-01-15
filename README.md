@@ -88,6 +88,7 @@ There are two compulsory course elements:
 * Assignments (written + oral examination in groups of three students)
     * two compulsory hand-in assignments (2018-01-30, 2018-02-27)
     * Grading: Pass or fail
+    * The assignments are to be handed in via [Fire](https://dslm-lp3-18.frs.cse.chalmers.se)
 * Exam (individual written exam at the end of the course)
     * Grading: Chalmers: U, 3, 4, 5; GU: U, G, VG
     * Date: [2018-03-13 at 14.00](https://www.student.chalmers.se/sp/course?course_id=26170)
