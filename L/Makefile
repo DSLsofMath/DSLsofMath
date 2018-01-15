@@ -22,9 +22,15 @@ $(NAME).tex: $(NAME).lhs dslm.format ref.bib \
 build:
 	stack build
 
+sdist:
+	stack sdist --test-tarball
+
+# The target zip is deprecated in favour of sdist
 zip:
 	mkdir DSLsofMath_temp
 	cp -LR DSLsofMath DSLsofMath_temp/DSLsofMath
+	cp DSLsofMath.cabal stack.yaml DSLsofMath_temp/DSLsofMath
+#	cp TestAll.lhs DSLsofMath_temp
 	cd DSLsofMath_temp && zip -r ../DSLsofMath.zip DSLsofMath
 	rm -r DSLsofMath_temp
 

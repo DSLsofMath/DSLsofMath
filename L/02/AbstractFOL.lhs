@@ -3,7 +3,7 @@
 %      andIntro, andElimL, andElimR,  orIntroL, orIntroR, orElim
 %   )
 \begin{code}
-module AbstractFOL where
+module DSLsofMath.AbstractFOL where
 
 data And   p  q;                                     data Or    p  q
 data Impl  p  q;                                     data Not   p

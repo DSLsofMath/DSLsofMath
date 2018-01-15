@@ -12,6 +12,8 @@ numbers, (ir)rationals, limit points, limits, etc.
 
 \begin{code}
 module DSLsofMath.W02 where
+import qualified DSLsofMath.AbstractFOL as FOL
+import DSLsofMath.AbstractFOL (andIntro, andElimR, andElimL, notIntro, notElim)
 \end{code}
 
 \subsection{Propositional Calculus}
@@ -620,7 +622,7 @@ results.
 For example:
 
 \begin{code}
-example0 :: And p q -> And q p
+example0 :: FOL.And p q -> FOL.And q p
 example0 evApq   =  andIntro (andElimR evApq) (andElimL evApq)
 \end{code}
 %
@@ -637,7 +639,7 @@ unless we change the type.
 Another example:
 
 \begin{code}
-example1 :: And q (Not q) -> p
+example1 :: FOL.And q (FOL.Not q) -> p
 example1 evAqnq    =  notElim (notIntro (\ hyp -> evAqnq))
 \end{code}
 
