@@ -1054,6 +1054,81 @@ Exercise: prove that |(a1 haslim L1) & (a2 haslim L2)| implies
 When we are not interested in the exact limit, just that it exists, we
 say that a sequence |a| is \emph{convergent} when |∃ L ? a haslim L|.
 
+\subsection{Case study: The limit of a function}
+\label{sec:LimitOfFunction}
+%
+At the core of DSLsofMath is the ability to analyse definitions from
+mathematical texts, and here we will use the definition of the limit
+of a function of type |REAL -> REAL| from \citet{adams2010calculus}:
+%
+\label{sec:FunLimit}
+%
+\begin{quote}
+  \textbf{A formal definition of limit}
+
+  We say that \(f(x)\) \textbf{approaches the limit} \(L\) as \(x\) \textbf{approaches} \(a\), and we write
+
+  \[\lim_{x\to a} f(x) = L,\]
+
+  if the following condition is satisfied:\\
+  for every number \(\epsilon > 0\) there exists a number
+  \(\delta > 0\), possibly depending on \(\epsilon\), such that if
+  |0 < absBar (x - a) < delta|, then \(x\) belongs to the domain of \(f\)
+  and
+  \begin{spec}
+    absBar (f(x) - L) < epsilon {-"."-}
+  \end{spec}
+
+\end{quote}
+%
+The |lim| notation has four components: a variable name |x|, a point
+|a| an expression \(f(x)\) and the limit |L|.
+%
+The variable name + the expression can be combined into just the
+function |f| and this leaves us with three essential components: |f|,
+|a|, and |L|.
+%
+Thus, |lim| can be seen as a ternary (3-argument) predicate which is
+satisfied if the limit of |f| exists at |a| and equals |L|.
+%
+If we apply our logic toolbox we can define |lim| starting something like this:
+%
+\begin{spec}
+lim f a L  =  Forall (epsilon > 0) (Exists (delta > 0) (P epsilon delta))
+\end{spec}
+%
+It is often useful to introduce a local name (like |P| here) to help
+break the definition down into more manageable parts.
+%
+If we now naively translate the last part we get this ``definition''
+for |P|:
+%
+\begin{spec}
+{-"\quad"-}  where  P epsilon delta = (0 < absBar (x - a) < delta) => (x `elem` Dom f  && absBar (f x - L) < epsilon))
+\end{spec}
+%
+Note that there is a scoping problem: we have |f|, |a|, and |L| from
+the ``call'' to |lim| and we have |epsilon| and |delta| from the two
+quantifiers, but where did |x| come from?
+%
+It turns out that the formulation ``if \ldots then \ldots'' hides a
+quantifier that binds |x|.
+%
+Thus we get this definition:
+%
+\begin{spec}
+lim a f L  =  Forall (epsilon > 0) (Exists (delta > 0) (Forall x (P epsilon delta x)))
+  where  P epsilon delta x = (0 < absBar (x - a) < delta) => (x `elem` Dom f  && absBar (f x - L) < epsilon))
+\end{spec}
+%
+The predicate |lim| can be shown to be a partial function of two
+arguments, |f| and |a|.
+%
+This means that each function |f| can have \emph{at most} one limit
+|L| at a point |a|.
+%
+(This is not evident from the definition and proving it is a good
+exercise.)
 
 \subsection{Questions and answers from the exercise sessions week 2}
 

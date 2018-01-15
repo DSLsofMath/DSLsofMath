@@ -84,52 +84,11 @@ definition of the function |D f|.
 %
 The definition is given for a fixed (but arbitrary) |x|.
 %
-Here we make small detour to define \emph{limit}.
+(At this point it is useful to briefly look back to the definition of
+``limit of a function'' in Section~\ref{sec:LimitOfFunction}.)
 %
-The definition from \citet{adams2010calculus} is as follows:
-%
-\label{sec:FunLimit}
-%
-\begin{quote}
-  \textbf{A formal definition of limit}
-
-  We say that \(f(x)\) \textbf{approaches the limit} \(L\) as \(x\) \textbf{approaches} \(a\), and we write
-
-  \[\lim_{x\to a} f(x) = L,\]
-
-  if the following condition is satisfied:\\
-  for every number \(\epsilon > 0\) there exists a number
-  \(\delta > 0\), possibly depending on \(\epsilon\), such that if
-  |0 < absBar (x - a) < delta|, then \(x\) belongs to the domain of \(f\)
-  and
-  \begin{spec}
-    absBar (f(x) - L) < epsilon {-"."-}
-  \end{spec}
-
-\end{quote}
-%
-The |lim| notation has four components: a variable name |x|, a point
-|a| an expression \(f(x)\) and the limit |L|.
-%
-The variable name + the expression can be combined into just the
-function |f| and this leaves us with three essential components: |f|,
-|a|, and |L|.
-%
-Thus, |lim| can be seen as a ternary (3-argument) predicate which is
-satisfied if the limit of |f| exists at |a| and equals |L|.
-%
-This predicate can be shown to be a partial function of two arguments,
-|f| and |a|.
-%
-This means that each function |f| can have \emph{at most} one limit
-|L| in a point |a|.
-%
-(This is not evident from the definition and proving it is a good
-exercise.)
-
-Coming back to the definition of the derivative we see that the |lim|
-expression is using the (anonymous) function |g h = frac (f(x+h) - f
-x) h| and that the limit of |g| is taken at |0|.
+The |lim| expression is using the (anonymous) function |g h = frac
+(f(x+h) - f x) h| and that the limit of |g| is taken at |0|.
 %
 Note that |g| is defined in the scope of |x| and that its definition
 uses |x| so it can be seen as having |x| as an implicit, first
