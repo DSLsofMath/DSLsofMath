@@ -1039,3 +1039,5 @@ instance Floating a => Floating (x -> a) where
   f ** g   =  \ x -> (f x)**(g x)
   -- and so on
 \end{code}
+
+%include E7.lhs

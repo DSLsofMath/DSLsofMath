@@ -575,3 +575,5 @@ TODO: cite http://www.math.chalmers.se/Math/Grundutb/CTH/mve025/1516/Dokument/F-
 (Fourier is a common tool in courses on Transforms, Signals and
 Systems.)
 %
+
+%include E8.lhs

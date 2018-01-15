@@ -1,1 +1,5 @@
-% TODO convert from last year (../../E/W7.md ?)
+\subsection{Exercises}
+
+Search the chapter for tasks marked ``Exercise''.
+
+TODO: Maybe convert these to proper exercises.
