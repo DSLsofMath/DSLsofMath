@@ -8,6 +8,7 @@ Course codes: DAT326 / DIT982
 
 ## News
 
+* 2018-01-15: Please register for the [DSLsofMath google group](https://groups.google.com/forum/#!forum/dslsofmath).
 * 2018-01-01: [Lecture notes](L/snapshots/) now at 116 pages
 
 ## Course team

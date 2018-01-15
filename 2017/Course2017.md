@@ -1,5 +1,7 @@
 # Domain-Specific Languages of Mathematics
 
+**Note: this is the archived 2017 instance of the course**
+
 ## News
 
 * 2017-09-19: The lecture notes are slowly but surely being completed and converted from raw notes and blackboard pictures.

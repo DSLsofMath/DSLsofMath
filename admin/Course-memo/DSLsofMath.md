@@ -44,19 +44,25 @@ therein cover the course (but there is no printed course textbook).
 
 ## Course setup
 
-* Lectures (Tue 13-15 and Thu 13-15 in EB)
+* L = Lectures (Tue 13-15 and Thu 13-15 in EB)
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
-	* Type classes, derivatives, derivation,
+	* Type classes, derivatives, differentiation, calculational proofs
     * Domain Specific Languages and algebraic structures, algebras, homomorphisms
     * Polynomials, series, power series
     * Power series and differential equations, exp, sin, log, Taylor series, ...
-    * Linear algebra
-    * Laplace transform
-* Exercise sessions (Tue 15-17 and Thu 15-17 in ES52)
+    * Linear algebra: vectors, matrices, functions, bases, dynamical systems as matrices and graphs
+    * Laplace transform: exp, powers series cont., solving PDEs with Laplace
+* E = Weekly exercise sessions (Tue 15-17 and Thu 15-17 in ES52)
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
+* Schedule exceptions:
+    * 2018-01-18 Thu: E **moved to Fri in ES52**.
+    * 2018-01-25 Thu: E **moved to Fri in ES52**.
+    * 2018-02-09 Thu: E **moved to Fri in ES52**.
+    * 2018-02-15 Thu: L + E **moved to Fri in EA + ES52**.
+    * 2018-03-08 Thu: E in **ES53** this time only.
 
 ## Changes from last year
 
@@ -72,10 +78,10 @@ The main changes for 2018 (based on the [course eval meeting](eval/2017-04-28.md
 
 There are two compulsory course elements:
 
-* Assignments (written + oral examination in groups of three students)
+* A = Assignments (written + oral examination in groups of three students)
     * two compulsory hand-in assignments (2018-01-30, 2018-02-27)
     * Grading: Pass or fail
-* Exam (individual written exam at the end of the course)
+* E = Exam (individual written exam at the end of the course)
     * Grading: Chalmers: U, 3, 4, 5; GU: U, G, VG
     * Date: [2018-03-13 at 14.00](https://www.student.chalmers.se/sp/course?course_id=26170)
     * Aids: One textbook of your choice
