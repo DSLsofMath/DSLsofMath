@@ -5,11 +5,11 @@ Domain Specific Languages of Mathematics
 
 A quality project funded by Chalmers with 260kkr/y for 2014, 2015, 2017 resulting in a new BSc level course from 2016.
 
-**[2018 edition of the course.](Course2018.md)**
+**[2018 edition of the course.](../README.md)**
 
-[2017 edition of the course.](2017/Course2017.md)
+[2017 edition of the course.](../2017/Course2017.md)
 
-[2016 edition of the course.](2016/Course2016.md) See also the [Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).
+[2016 edition of the course.](../2016/Course2016.md) See also the [Year 2016 release](https://github.com/DSLsofMath/DSLsofMath/releases/tag/Year2016).
 
 ## More about the project
 [A paper was published in the proceedings of TFPIE](https://github.com/DSLsofMath/tfpie2015).
@@ -22,7 +22,7 @@ The project was also presented at
 
 
 
-See [QualityProject/](QualityProject/) for more details.
+See [QualityProject/](../2016/QualityProject/) for more details.
 
 * [Chalmers project database entry](https://research.chalmers.se/en/project/?id=7038)
 
