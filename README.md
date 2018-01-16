@@ -56,7 +56,7 @@ The main references are listed below.
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
-	* Type classes, derivatives, differentiation, calculational proofs
+        * Type classes, derivatives, differentiation, calculational proofs
     * Domain Specific Languages and algebraic structures, algebras, homomorphisms
     * Polynomials, series, power series
     * Power series and differential equations, exp, sin, log, Taylor series, ...
@@ -76,22 +76,25 @@ The main references are listed below.
 
 The main changes for 2018 (based on the [course eval meeting](eval/2017-04-28.md)) are
 
-* New course literature (complete lecture notes)
+* New course literature (lecture notes covering the full course)
+* More material on functional programming in Haskell
 * Developed more exercises to solve (primarily easier exercises to start each week with)
-* Weekly hand-ins to encourage students to spend more hours on the course
 * More solving of exercises at the whiteboard
 * Schedule changes (alternating L, E, L, E instead of L, L, E, E)
+* Weekly hand-ins to encourage students to spend more hours on the course (not part of the formal examination)
+
+One of the student evaluators from 2017 (DaHe) was hired part time to help out with these improvements.
 
 ## Examination
 
 There are two compulsory course elements:
 
-* Assignments (written + oral examination in groups of three students)
+* A = Assignments (written + oral examination in groups of three students)
     * two compulsory hand-in assignments (2018-01-30, 2018-02-27)
     * Grading: Pass or fail
     * The assignments are to be handed in via [Fire](https://dslm-lp3-18.frs.cse.chalmers.se)
-* Exam (individual written exam at the end of the course)
-    * Grading: Chalmers: U, 3, 4, 5; GU: U, G, VG
+* E Exam (individual written exam at the end of the course)
+    * Grading: **Chalmers**: U, 3, 4, 5; **GU**: U, G, VG
     * Date: [2018-03-13 at 14.00](https://www.student.chalmers.se/sp/course?course_id=26170)
     * Aids: One textbook of your choice
 
@@ -112,12 +115,15 @@ Chapter 1-8 of the Lecture Notes end with weekly exercises for weeks
 
 ## Evaluation
 
-DSLsofMath course evaluation student representatives 2018 (TBD):
+DSLsofMath course evaluation student representatives 2018:
 
-| Email            | Name                   |
+| Email (@student) | Name                   |
 | ---------------- | ---------------------- |
-| TBD		   | 			    |
-
+| markusi   	   | Markus Ingvarsson	    |
+| marcuols 	   | Marcus Lindvärn	    |
+| jlucas   	   | Lucas Norman Jonsson   |
+| annunt   	   | Anna-Maria Unterberger |
+| vonejo   	   | Jonas von Essen        |
 
 ## References
 

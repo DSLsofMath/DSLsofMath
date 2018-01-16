@@ -17,7 +17,7 @@ import DSLsofMath.AbstractFOL (andIntro, andElimR, andElimL, notIntro, notElim)
 \end{code}
 
 \subsection{Propositional Calculus}
-%TODO: Build up a small DSLsofMath dictionary
+%TODO: Build up a small DSLsofMath dictionary: perhaps here: https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms
 (Swedish: Satslogik)
 
 Now we turn to the main topic of this chapter: logic and proofs.
