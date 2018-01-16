@@ -1070,6 +1070,7 @@ child {node [bold] {|*|} child {node {|a|}} child[emph] {node {|c|}}}
 child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 \end{tikzpicture}
 %
+
 (In the language of section \ref{sec:AlgHomo}, distributivity means
 that |(*c)| is a |(+)|-homomorphism.)
 

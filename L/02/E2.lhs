@@ -265,7 +265,7 @@ Hint: The key is to use the function argument to |noContra| twice.
 
 \end{exercise}
 
-\newpage
+%\newpage
 \begin{exercise}
   \textit{From exam 2016-08-23}
 

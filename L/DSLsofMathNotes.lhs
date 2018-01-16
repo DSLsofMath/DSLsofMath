@@ -1,4 +1,4 @@
-\documentclass{article}
+\documentclass[twoside]{article}
 \usepackage{a4wide}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -107,29 +107,34 @@
 
 \tableofcontents
 
+\cleardoublepage
 %include 00/Intro.lhs
-\newpage
+\cleardoublepage
 %include 01/W01.lhs
-\newpage
+\cleardoublepage
 %include 02/W02.lhs
-\newpage
+
+\cleardoublepage
 %include 03/W03.lhs
-\newpage
+\cleardoublepage
 %include 04/W04.lhs
-\newpage
+\cleardoublepage
 %include 05/W05.lhs
-\newpage
+\cleardoublepage
 %include 06/W06.lhs
-\newpage
+\cleardoublepage
 %include 07/W07.lhs
-\newpage
+\cleardoublepage
 %include 08/W08.lhs
-\newpage
+\cleardoublepage
 %include End.lhs
 
+\clearpage
 \appendix
+
 %include 01/CSem.lhs
 
+\cleardoublepage
 \bibliographystyle{abbrvnat}
 \bibliography{ref}
 \end{document}

@@ -28,14 +28,9 @@ The type has now been parametrized, so that it is no longer limited to represent
 
     \begin{table}[h]
     \centering
-    \begin{tabular}{ll}
-    Name & Value \\
-    a    & 1.5   \\
-    b    & 4.8   \\
-    c    & 2.4   \\
-    d    & 7.4   \\
-    e    & 5.8   \\
-    f    & 1.7
+    \begin{tabular}{lrrrrrr}
+    Name  &  |a|   & |b|   & |c|   & |d|   & |e|   & |f|   \\
+    Value &  |1.5| & |4.8| & |2.4| & |7.4| & |5.8| & |1.7| \\
     \end{tabular}
     \end{table}
     %

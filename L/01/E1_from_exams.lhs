@@ -7,7 +7,7 @@
 
 %TODO: Add an exercise to implement some property as a boolean functions (for example some from the semiring properties.
 
-\newpage
+%\newpage
 \begin{exercise} \label{exc:e1_semiring}
   \textit{From exam 2017-08-22}
 
