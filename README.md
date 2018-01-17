@@ -113,6 +113,29 @@ L/: [L/01/](L/01), [L/02/](L/02/), etc.
 Chapter 1-8 of the Lecture Notes end with weekly exercises for weeks
 1-8.
 
+## Using the DSLsofMath
+
+In order to do some of the exercises, you may need/want to have access to the
+DSLs introduced during the lectures and in the lecture notes.
+
+To do this, first make sure you have installed
+[stack](https://docs.haskellstack.org/en/stable/README/). Next, download [this
+tarball](L/DSLsofMath-0.1.9.1.tar.gz) and extract it in a desired location (on
+Linux and Mac, you can do this by running `tar -zxf DSLsofMath-x.x.x.x.tar.gz
+` in the terminal. In Windows, you might have to use a tool like
+[7-Zip](http://www.7-zip.org/)).
+
+Now go into the extracted folder `DSLsofMath-x.x.x.x/` and run `stack init`. You can now interact with
+the code from the lectures by typing `stack ghci`, which puts you in ghci with all
+DSLs loaded. You can also place your own haskell files inside this folder and import the DSLs you
+want by typing the following at the start of your file:
+
+```haskell
+import DSLsofMath.W0X
+```
+where X is the chapter that contains the code you want to use. You should be
+able to load your own haskell files in normal ghci.
+
 ## Evaluation
 
 DSLsofMath course evaluation student representatives 2018:
