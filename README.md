@@ -113,6 +113,9 @@ L/: [L/01/](L/01), [L/02/](L/02/), etc.
 Chapter 1-8 of the Lecture Notes end with weekly exercises for weeks
 1-8.
 
+In [L/RecEx.md](L/RecEx.md) you will find a list of recommended exercises
+for each chapter of the lecture notes.
+
 ## Using the DSLsofMath
 
 In order to do some of the exercises, you may need/want to have access to the
