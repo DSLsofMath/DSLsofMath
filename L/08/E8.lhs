@@ -1,5 +1,34 @@
 \subsection{Exercises}
 
+\begin{exercise}
+  Find the Laplace transforms of the following functions:
+%
+  \begin{enumerate}
+    \item $\lambda t. \, 3*e^{5 * t}$
+    \item $\lambda t. \, e^{\alpha * t} - \beta$
+    \item $\lambda t. \, e^{(t + \frac{\pi}{6})}$
+  \end{enumerate}
+
+\end{exercise}
+
+\begin{exercise}  \leavevmode
+  \begin{enumerate}
+   %
+    \item Show that:
+      \begin{enumerate}
+        \item $\sin t = \frac{1}{2*i} \left(  e^{i*t} - e^{-i*t}\right)$
+        \item $\cos t = \frac{1}{2} \left(  e^{i*t} + e^{-i*t}\right)$
+      \end{enumerate}
+
+    \item Find the Laplace transforms
+      $\mathcal{L}\, (\lambda t. \, \sin t)$ and $\mathcal{L}\,  (\lambda t.  \, \cos t)$
+
+  \end{enumerate}
+\end{exercise}
+
+% TODO (by DaHe): Add some exercises on inverse Laplace transforms and partial
+% fraction decomposition
+
 \subsubsection{Exercises from old exams}
 
 \begin{exercise}
