@@ -61,7 +61,7 @@
 \subsection{Exercises from old exams}
 
 \begin{exercise}
-    \textit{From Practice Exam 2016}
+    \textit{From exam 2016-Practice}
 
     Consider the following text from
     \citeauthor{maclane1986mathematics}'s \textit{Mathematics: Form

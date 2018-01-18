@@ -154,7 +154,7 @@
 \end{exercise}
 
 \begin{exercise}
-  \textit{From practice exam}
+  \textit{From exam 2016-Practice}
 
   Consider the following differential equation:
 
