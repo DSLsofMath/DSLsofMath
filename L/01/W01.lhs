@@ -426,7 +426,7 @@ For this section, we bracket our previous knowledge and approach the
 text as we would a completely new domain, even if that leads to a
 somewhat exaggerated attention to detail.
 
-Adams and Essex introduce complex numbers in Appendix 1.
+Adams and Essex introduce complex numbers in Appendix A.
 %
 The section \emph{Definition of Complex Numbers} begins with:
 
