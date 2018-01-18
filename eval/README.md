@@ -1,5 +1,16 @@
 ## DSLsofMath course evaluation student representatives 2017:
 
+
+| Email            | Name                    | Bekräftat
+| ---------------- | ----------------------- | ---
+| markusi          | Markus Ingvarsson       |
+| jlucas           | Lucas Norman Jonsson    |
+| annunt           | Anna-Maria Unterberger  |
+| vonejo           | Jonas von Essen         | Ja
+
+
+## DSLsofMath course evaluation student representatives 2017:
+
 | Email            | Name                   | Bekräftat
 | ---------------- | ---------------------- | ---
 | andreahe@student |  Andreas Henriksson    | OK
