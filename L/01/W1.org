@@ -1,0 +1,53 @@
+DSLsofMath week 1: a short summary
+
+* L1.1 learning outcomes:
+** variable scope and binding in mathematical expressions [integral, fun.def.]
+** Haskell type system:
+*** |type|, |newtype|, |data|
+*** types and their constructors
+*** |data|: choice, recursion, parameters
+*** datatype of syntax trees of simple arith. expr.
+** Haskell interpreter use and interp. of error messages [interactive live coding]
+** Syntax trees
+** First evaluator: |eval :: E -> Integer|
+* E1.1 learning outcomes:
+** syntax trees with constructor for variables
+** definition and use of |Env|
+** laws, properties, and testing
+* Reminder about learning outcomes (for the whole course)
+** KU = Knowledge and understanding
+*** KU.DSL      = design and implement a DSL for a new domain
+*** KU.Org      = organize areas of mathematics in DSL terms
+*** KU.Explain  = explain main concepts of elementary real and complex analysis, algebra, and linear algebra
+** SA = Skills and abilities
+*** SA.Notation = develop adequate notation for mathematical concepts
+*** SA.Calc     = perform calculational proofs
+*** SA.Power    = use power series for solving differential equations
+*** SA.Laplace  = use Laplace transforms for solving differential equations
+** JA = Judgement and approach
+*** JA = discuss and compare different software implementations of mathematical concepts
+* Reminder about spending time on the course:
+** Advice from last years' students: spending time on the course pays off. It is not enough to just focus on the labs.
+** Patrik's advice: please try to solve all the exercises, and hand in E1.N (where N = 4 + the last digit of your "personnummer") by Monday.
+* L1.2 learning outcomes:
+** Active reading of mathematical text [Complex number case study]
+** Modelling (different versions of) Complex in Haskell
+** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
+** More examples of |data| and |newtype|
+*** |Nat|, |ImagUnits|, |CA|, |CB|, |CE|
+** Syntax and semantics
+** |eval| for complex number expressions
+** TODO: Function composition
+** TODO: Infinite sequences (as functions)
+* E1.2 learning outcomes:
+** syntax trees for |ComplexSyn r|, the "complex numbers extension" of a type |r|
+** more use of |Env| and |lookup|
+** more on pattern matching: deep patterns (in |simplifyStep|)
+** more laws, properties, and testing
+** TODO: |Maybe|, |Either|
+* Notation for this file:
+** L1.1 means week 1, lecture 1
+** L1.2 means week 1, lecture 2
+** E1.1 means week 1, exercise session 1 (the presentation / live coding part)
+** E1.2 means week 1, exercise session 2 (the presentation / live coding part)
+** The format of the file is Emacs Org-mode
