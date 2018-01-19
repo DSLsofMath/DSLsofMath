@@ -3,9 +3,8 @@
 -- without modifying the lecture files (since this is another exercise).
 -- For simplicity, we stick to strings as variables for this exercise.
 import DSLsofMath.W01 (Env)
-import Data.Maybe
-import Data.Ratio
-import Test.QuickCheck
+import Data.Maybe ( fromMaybe )
+import Test.QuickCheck ( Arbitrary (arbitrary), Gen, sized, oneof )
 
 -- We add a constructor for variables, so that simplification can't
 -- just evaluate the expression completely
@@ -13,6 +12,7 @@ data ComplexSyn r = FromCartesian r r
                   | ComplexSyn r  :+:  ComplexSyn r
                   | ComplexSyn r  :*:  ComplexSyn r
                   | Var String
+  deriving (Eq, Show)
 
 -- This function implements a single evaluation step:
 simplifyStep :: (Num r, Eq r) => ComplexSyn r -> ComplexSyn r
@@ -28,8 +28,8 @@ simplifyStep x = x
 
 -- We can then iterate this, until the expression no longer changes:
 simplify :: (Num r, Eq r) => ComplexSyn r -> ComplexSyn r
-simplify exp | exp == exp' = exp
-             | otherwise = simplify exp'
+simplify exp | exp == exp'  = exp
+             | otherwise    = simplify exp'
   where exp' = simplifyStep exp
 
 -- Exercise to the reader: Implement more simplification steps and then check that
@@ -65,6 +65,9 @@ exprSize (a :+: b) = exprSize a + exprSize b
 
 simplifySimplifies :: (Eq r, Arbitrary r, Num r) => ComplexSyn r -> Bool
 simplifySimplifies expr = exprSize (simplify expr) <= exprSize expr
+
+----------------
+-- Writing generators is not part of the course.
 
 -- We define a QuickCheck generator for sized expression to avoid
 -- non-terminating generators; also, we make it slightly more likely
