@@ -40,7 +40,7 @@ The type has now been parametrized, so that it is no longer limited to represent
     row in the table.
     %**TODO: remind about (partial) functions
     \begin{enumerate}
-        \item Express the table above in Haskell by creating |vars :: Env Double|.
+        \item Express the table above in Haskell by creating |vars :: Env String Double|.
         \item Create a function |varVal :: Env a -> String -> a| that returns the value of a variable, given an |Env| and a variable name. For instance, |varVal vars "d"| should return 7.4
         \item Create a function |eval:: Num a => Env a -> E2 -> a| that takes a value of the new |E2| data type and returns the corresponding number. For instance, |eval vars ((Con 2) `Plus` (Var "a")) == 3.5|. Try it on the expressions from the first part, and verify that it works as expected.
 
