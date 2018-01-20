@@ -154,7 +154,7 @@ This result is known as \emph{the Curry-Howard isomorphism}.
 \begin{exercise}
  Can we extend the Curry-Howard isomorphism to formulas with |¬|?
 %
-  In other words, is there a type that we could use to define Not p,
+  In other words, is there a type that we could use to define |Not p|,
   which would work together with pairs, |->|, and |Either| to give a
   full translation of sentential logic?
 
@@ -226,42 +226,33 @@ but you will not be able to prove the converse.
 
 \end{exercise}
 \begin{exercise}
- The implementation |Not p = p -> Empty| is not adequate for
-  representing the sentential fragment of FOL, but it is adequate for
+  The implementation |Not p = p -> Empty| is not adequate for
+  representing all the closed formulas in FOL, but it is adequate for
   \emph{constructive logic} (also known as \emph{intuitionistic}).
 %
   In constructive logic, the |¬ p| is \emph{defined} as |p -> ⊥|, and
-  the following elimination rule is given for |⊥|
+  the following elimination rule is given for |⊥|: |⊥-Elim : ⊥ -> a|,
+  corresponding to the principle that everything follows from a
+  contradiction (``if you believe ⊥, you believe everything'').
 
-TODO: This notation has not been introduced: replace with the stype used above.
-\begin{spec}
-    ...
-    i? ⊥
-    ...
-    j? p      (⊥-Elim: i)
-\end{spec}
-
-corresponding to the principle that everything follows from a
-contradiction (``if you believe ⊥, you believe everything'').
-
-Every sentence provable in constructive logic is provable in classical
-logic, but the converse, as we have seen in the previous exercise,
-does not hold.
+  Every sentence provable in constructive logic is provable in
+  classical logic, but the converse, as we have seen in the previous
+  exercise, does not hold.
 %
-On the other hand, there is no sentence in classical logic which would
-be contradicted in constructive logic.
+  On the other hand, there is no sentence in classical logic which
+  would be contradicted in constructive logic.
 %
-In particular, while we cannot prove |p ∨ ¬ p|, we \emph{can} prove
-(constructively!) that there is no |p| for which |¬ (p ∨ ¬ p)|, i.e.,
-that the sentence |¬ ¬ (p ∨ ¬p)| is always true.
+  In particular, while we cannot prove |p ∨ ¬ p|, we \emph{can} prove
+  (constructively!) that there is no |p| for which |¬ (p ∨ ¬ p)|,
+  i.e., that the sentence |¬ ¬ (p ∨ ¬p)| is always true.
 
-Show this by implementing the following function:
+  Show this by implementing the following function:
 
-\begin{spec}
-noContra :: (Either p (p -> Empty) -> Empty) -> Empty
-\end{spec}
+  \begin{spec}
+    noContra :: (Either p (p -> Empty) -> Empty) -> Empty
+  \end{spec}
 
-Hint: The key is to use the function argument to |noContra| twice.
+  Hint: The key is to use the function argument to |noContra| twice.
 
 \end{exercise}
 
