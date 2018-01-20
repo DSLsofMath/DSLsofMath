@@ -17,8 +17,10 @@ import DSLsofMath.AbstractFOL (andIntro, andElimR, andElimL, notIntro, notElim)
 \end{code}
 
 \subsection{Propositional Calculus}
-%TODO: Build up a small DSLsofMath dictionary: perhaps here: https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms
-(Swedish: Satslogik)
+%
+(Swedish: Satslogik\footnote{Some Swe-Eng translations are collected
+  here:
+  \url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}.})
 
 Now we turn to the main topic of this chapter: logic and proofs.
 %
@@ -46,23 +48,16 @@ Some example propositions: \(|p1| = a \wedge (\neg a)\),
 \(|p2| = a \Rightarrow b\), \(|p3| = a \vee (\neg a)\),
 \(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).
 %
-If we assign a truth value to each name, we can compute a truth value
-of the whole proposition.
+If we assign all combinations of truth values for the names, we can
+compute a truth value of the whole proposition.
 %
 In our examples, |p1| is always false, |p2| is mixed and |p3| and |p4|
 are always true.
 
-%TODO: perhaps use
-% \begin{code}
-% sw :: PropCalc
-% sw = ((a -&- b) -=> (b -&- a))
-%   where  a = Name "a"
-%          b = Name "b"
-% (-&-) = And
-% (-=>) = Implies
-% \end{code}
 %
-We can model the propositions as a datatype:
+Just as we did with simple arithmetic, and with complex number
+expressions in chapter~\ref{sec:DSLComplex}, we can model the abstract
+syntax of propositions as a datatype:
 \begin{code}
 data PropCalc  =  Con      Bool
                |  Name     String
@@ -72,13 +67,22 @@ data PropCalc  =  Con      Bool
                |  Not      PropCalc
 \end{code}
 %
-With this datatype we can write an evaluator to |Bool| which computes
-the truth value of a term given an enviroment:
+The example expressions can then be expressed as
+%
+\begin{code}
+p1 = And (Name "a") (Not (Name "a"))
+p2 = Implies (Name "a") (Name "b")
+p3 = Or (Name "a") (Not (Name "a"))
+p4 = Implies (And a b) (And b a) where a = Name "a"; b= Name "b"
+\end{code}
+%
+From this datatype we can write an evaluator to |Bool| which computes
+the truth value of a term given an environment:
 %
 \begin{code}
 type Name = String
 evalPC :: (Name -> Bool) -> PropCalc -> Bool
-evalPC = error "Exercise"
+evalPC = error "Exercise" -- see \ref{par:SETandPRED} for a similar function
 \end{code}
 %
 The function |evalPC| translates from the syntactic to the semantic
@@ -90,17 +94,18 @@ domain.
 Here |PropCalc| is the (abstract) \emph{syntax} of the language of
 propositional calculus and |Bool| is the \emph{semantic
   domain}.
-%
+
 Alternatively, we can view |(Name -> Bool) -> Bool| as the semantic
 domain.
 %
-A value of this type is a mapping from a truth table to |Bool|.
+A value of this type is a mapping from a truth table (for the names)
+to |Bool|.
 %
 This mapping is often also tabulated as a truth table with one more
 ``output'' column.
 
-As a first example, consider the proposition |t = Implies (Con False)
-a|.
+As a first example of a truth table, consider the proposition |t =
+Implies (Con False) a|.
 %
 We will use the shorter notation with just |T| for true and |F| for
 false.
@@ -110,12 +115,19 @@ The truth table semantics of |t| is usually drawn as follows:
 one column for the name |a| listing all combinations of |T| and |F|,
 and one column for the result of evaluating the expression.
 
+%TODO: It would look nicer with a small figure on the right and text flowing around it.
 \begin{tabular}{||l||l||}
     \hline   a & t
   \\\hline   F & T
   \\         T & T
   \\\hline
 \end{tabular}
+%
+This table shows that no matter what value assignment we try for the
+only variable |a|, the semantic value is |T = True|.
+%
+Thus the whole expression could be simplified to just |T| without
+changing the semantics.
 
 If we continue with the example |p4| from above we have two names |a|
 and |b| which together can have any of four combinations of true and
@@ -139,6 +151,8 @@ output) becomes true everywhere.
 A proposition whose truth table output is constantly true is called a
 \emph{tautology}.
 %
+Thus both |t| and |p4| are tautologies.
+%
 Truth table verification is only viable for propositions with few
 names because of the exponential growth in the number of cases to
 check: we get $2^n$ cases for |n| names.
@@ -157,7 +171,7 @@ over them) to the calculus.
 %TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
 Our second DSL is that of \emph{First Order Logic (FOL)}.
 %
-This laguage has two datatypes: propositions, and \emph{terms} (new).
+This language has two datatypes: propositions, and \emph{terms} (new).
 %
 A \emph{term} is either a (term) \emph{variable} (like |x|, |y|, |z|),
 or the application of a \emph{function symbol} (like |f|, |g|) to a
@@ -177,7 +191,8 @@ In this case we can model the terms as a datatype:
 %let rat = False
 %}
 %
-This introduces variables and three function symbols:
+This introduces variables %(with the constructor |RV|)
+and three function symbols:
 %
 |FromI| of arity |1|, |RPlus|, |RDiv| of arity |2|.
 
@@ -203,7 +218,7 @@ formulas normally refer to terms, but terms cannot refer to formulas.
 The formulas introduced so far are all \emph{atomic formulas} but we
 will add two more concepts:
 %
-first the logical conenctives from the propositional calculus:
+first the logical connectives from the propositional calculus:
 %
 |And|, |Or|, |Implies|, |Not|, and then two quantifiers:
 %
@@ -221,26 +236,30 @@ predicates.
 (Second order logic and higher order logic allow quantification over
 predicates.)
 
-Another example: a formula stating that |+| is commutative:
-\begin{spec}
-  Forall x (Forall y ((x+y)==(y+x)))
-\end{spec}
-%
-Note that |==| is a binary predicate symbol while |+| is a binary
-function symbol.
-%
-Here is the same formula without infix operators:
+Another example: a formula stating that function symbol |plus| is
+commutative:
 %
 \begin{spec}
   Forall x (Forall y (Eq(plus(x,y),plus(y,x))))
 \end{spec}
+%
+Here is the same formula with infix operators:
+%
+\begin{spec}
+  Forall x (Forall y ((x+y)==(y+x)))
+\end{spec}
+%
+Note that |==| is a binary predicate symbol (written |Eq| above),
+while |+| is a binary function symbol (written |plus| above).
 
-As before we can model the terms as a datatype.
+
+As before we can model the expression syntax (for FOL, in this case)
+as a datatype.
 %
 We keep the logical connectives |And|, |Or|, |Implies|, |Not| from the
 type |PropCalc|, add predicates over terms, and quantification.
 %
-The constructor |Equal| could be eliminated in favor of |P "Eq"| but
+The constructor |Equal| could be eliminated in favour of |P "Eq"| but
 is often included.
 %
 %{
@@ -249,14 +268,16 @@ is often included.
 %let fol = False
 %}
 
-Forall quantification can be seen as a generalisation of |And|.
+\paragraph{Quantifiers: meaning, proof and syntax.}
+%
+``Forall''-quantification can be seen as a generalisation of |And|.
 %
 First we can generalise the binary operator to an |n|-ary version:
 |Andn|.
 %
-To prove |Andn A1 A2 ... An| we need a proof of each |Ai|.
+To prove |Andn(A1,A2, ..., An)| we need a proof of each |Ai|.
 %
-Thus we could define |Andn A1 A2 ... An = A1 & A2 & ... & An| where
+Thus we could define |Andn(A1,A2, ..., An) = A1 & A2 & ... & An| where
 |&| is the infix version of binary |And|.
 %
 The next step is to note that the formulas |Ai| can be generalised to
@@ -274,7 +295,7 @@ Now, a proof of |Forall x A(x)| should in some way contain a proof of
 |A(x)| for every possible |x|.
 %
 For the binary |And| we simply provide the two proofs, but in the
-inifinite case, we need an infinite collection of proofs.
+infinite case, we need an infinite collection of proofs.
 %
 The standard procedure is to introduce a fresh constant term |a| and
 prove |A(a)|.
@@ -284,7 +305,7 @@ we have proved |Forall x A(x)|.
 %
 Another way to view this is to say that a proof of |Forall x (P x)| is
 a function |f| from terms to proofs such that |f t| is a proof of |P
-t| for all terms |t|.
+t| for each term |t|.
 
 % TODO: A simple example might also be a good idea, where we end up
 % with a function f where f t is a proof of P t for all terms t.
@@ -303,7 +324,7 @@ The scoping of |x| in |Exists x b| is the same as in |Forall x b|.
 One common source of confusion in mathematical (and other semi-formal)
 texts is that variable binding sometimes is implicit.
 %
-A typical example is equations: |x^2 + 2*x + 1 == 0| ususally means
+A typical example is equations: |x^2 + 2*x + 1 == 0| usually means
 roughly |Exists x (x^2 + 2*x + 1 == 0)|.
 %
 We write ``roughly'' here because the scope of |x| very often extends
@@ -318,43 +339,22 @@ set theory and define all concepts by translation to sets.
 We will only work with this as a mathematical domain to study, not as
 ``the right way'' of doing mathematics (there are other ways).
 %
-The core of the language of pure set theory has the Empty set, the
-one-element set constructor Singleton, set Union, and Intersection.
+In this section we keep the predicate part of the version of |FOL|
+from the previous section, but we replace the term language |RatT|
+with pure (untyped) set theory.
 %
-There are no ``atoms'' or ``elements'' to start from except for the
-empty set but it turns out that quite a large part of mathematics can
-still be expressed.
 
-\paragraph{Natural numbers} To talk about things like natural numbers
-in pure set theory they need to be encoded. Here is one such encoding
-(which is explored further in the first hand-in assignment).
-
-\begin{spec}
-vonNeumann 0        =  Empty
-vonNeumann (n + 1)  =  Union  (vonNeumann n)
-                              (Singleton (vonNeumann n))
-\end{spec}
-
-\paragraph{Pairs}
-
-Definition:  A pair |(a,b)| is encoded as |{{a},{a,b}}|.
-
-% (a,b) \coloneqq \big\{\,\{a\},\{a,b\}\,\big\} ;
-
-TODO: merge the text below and above
-
-As an example term language we can use pure (untyped) set theory.
+The core of the language of pure set theory is captured by four
+function symbols.
 %
 We have a nullary function symbol |{}| for the empty set (sometimes
-writen $\emptyset$) and a unary function symbol |S| for the function
+written $\emptyset$) and a unary function symbol |S| for the function
 that builds a singleton set from an ``element''.
-%
-In pure set theory we don't actually have any ``elements'' to start
-from: every term denotes a set.
 %
 All non-variable terms so far are |{}|, |S {}|, |S (S {})|, \ldots
 %
-The first set is empty but all the others are one-element sets.
+The first set is empty but all the others are (different) one-element sets.
+%
 
 Next we add two binary function symbols for union and intersection of
 sets (denoted by terms).
@@ -363,9 +363,25 @@ Using union we can build sets of more than one element, for example
 |Union (S {}) (S (S {}))| which has two ``elements'': |{}| and |S {}|.
 %
 
+In pure set theory we don't actually have any distinguished
+``elements'' to start from (other than sets), but it turns out that
+quite a large part of mathematics can still be expressed.
+%
+Every term in pure set theory denotes a set, and the elements of each
+set are again sets.
+%
+(Yes, this can make your head spin.)
+
+\paragraph{Natural numbers}
+%
+To talk about things like natural numbers in pure set theory they need
+to be encoded.
+%
 FOL does not have function definitions or recursion, but in a suitable
-meta-langauge (like Haskell) we can write a function that creates a
-set with |n| elements (for any natural number |n|) as a term in FOL:
+meta-language (like Haskell) we can write a function that creates a
+set with |n| elements (for any natural number |n|) as a term in FOL.
+%
+Here is some pseudo-code defining the ``von Neumann'' encoding:
 %
 \begin{spec}
   vN 0      = {}
@@ -379,29 +395,32 @@ If we use conventional set notation we get |vN 0 = {}|, |vN 1 = {{}}|,
 %format over x = "\overline{" x "}"
 If we use the shorthand |over n| for |vN n| we see that |over 0 = {}|,
 |over 1 = {over 0}|, |over 2 = {over 0, over 1}|, |over 3 = {over 0,
-  over 1, over 2}| and, in general, that |over n| has cardinality |n|.
+  over 1, over 2}| and, in general, that |over n| has cardinality |n|
+(meaning it has |n| elements).
 %
 The function |vN| is explored in more detail in the first assignment
 of the DSLsofMath course.
 
+
+\paragraph{Pairs}
+%
 The constructions presented so far show that, even starting from no
 elements, we can embed all natural numbers in pure set theory.
 %
 We can also embed unordered pairs: |{a, b} =~= Union (S a) (S b)|
-and normal ordered pairs: |(a, b) =~= {S a, {a, b}}|.
+and normal, ordered pairs: |(a, b) =~= {S a, {a, b}}|.
 %
 % |{S a, {a, b}} = Union (S (S a)) (S (Union (S a) (S b)))|
 With a bit more machinery it is possible to step by step encode |Nat|,
-|ZZ|, |QQ|, |REAL|, |COMPLEX|.
+|ZZ|, |QQ|, |REAL|, and |COMPLEX|.
 
-TODO: cite The Haskell Road to Logic, Math and Programming
-  Kees Doets and Jan van Eijck
-  https://fldit-www.cs.uni-dortmund.de/~peter/PS07/HR.pdf
+A good read in this direction is ``The Haskell Road to Logic, Maths
+and Programming'' \citep{doets-haskellroadto-2004}.
 
 \subsection{Back to quantifiers}
 
-After this detour through untyped set land let us get back to the most
-powerful concept of FOL: the quantifiers.
+After this detour through untyped set land, let us get back to the
+most powerful concept of FOL: the quantifiers.
 %
 We have already seen how the ``forall'' quantifier can be seen as a
 generalisation of |And| and in the same way we can see the ``exists''
@@ -429,38 +448,87 @@ how to prove them:
 |f| is a proof of |Forall x (P(x))| if |f t| is a proof of |P(t)| for all |t|.
 \end{quote}
 
+\paragraph{Curry-Howard}
+%
 If we abbreviate ``is a proof'' as |:| and use the Haskell convention
 for function application we get
 %
 \begin{spec}
-(t, bt)  :  Exists x (P x)   {-"\quad\textbf{if}\quad"-}  bt   : P t
-f        :  Forall x (P x)   {-"\quad\textbf{if}\quad"-}  f t  : P t   {-"\text{~for all~}"-}  t
+(t, bt)  :  (Exists x (P x))   {-"\quad\textbf{if}\quad"-}  bt   : P t
+f        :  (Forall x (P x))   {-"\quad\textbf{if}\quad"-}  f t  : P t   {-"\text{~for all~}"-}  t
 \end{spec}
 %
 This now very much looks like type rules, and that is not a coincidence.
 %
-The Curry-Howard correspondence says that we can think of propositions
-as types and proofs as ``programs''.
+The \emph{Curry-Howard correspondence} says that we can think of
+propositions as types and proofs as ``programs''.
 %
-These typing judgments are not part of FOL, but the correspondence is
+These typing judgements are not part of FOL, but the correspondence is
 used quite a bit in this course to keep track of proofs.
 
-TODO: Add more about Curry-Howard (the binary logical connectives, etc.)
+We can also interpret the simpler binary connectives using the
+Curry-Howard correspondence.
+%
+A proof of |And P Q| is a pair of a proof of |P| and a proof of |Q|.
+%
+Or, as terms: if |p : P| and |q : Q| then |(p,q) : And P Q|.
+%
+Similarly, a proof of |Or P Q| is either a proof of |P| or a proof of
+|Q|: we can pick the left (|P|) or the right (|Q|) using the Haskell
+datatype |Either|:
+%
+if |p : P| then |Left p : Or P Q| and if |q : Q| then |Right q : Or P
+Q|.
+%
+In this way we can build up what is called ``proof terms'' for a large
+fragment of logic.
+%
+It turns out that each such proof term is basically a program in a
+functional programming language, and that the formula a certain term
+proves is the type for the program.
 
-TODO: find the right place for the a note that the type of tuples is
-isomorphic to the (dependent) function type |{i : 1..n} -> Ai|.
+\paragraph{Typed quantification}
+%
+In each instance of FOL, quantification is always over the full set of
+terms, but it is often convenient to quantify over a subset with a
+certain property (like all even numbers, or all non-empty sets).
+%
+We will use a notation we can call ``typed quantification'' as a
+short-hand notation for the full quantification in combination with a
+restriction to the subset.
+%
+For existential and universal quantification these are the definitions
+(assuming |T| is a property of terms, that is a unary predicate on
+terms):
 
-TODO: Add typed quantification for Exists.
+% (Exists (x:T) (P x)) =~= (Exists x (And (T x) (P x)))
+\begin{spec}
+(Exists (x:T) (P x)) =~= (Exists x (T x & P x))
+(Forall (x:T) (P x)) =~= (Forall x (T x => P x))
+\end{spec}
+% (Forall (x:T) (P x)) =~= (Forall x (Implies (T x) (P x)))
+\label{sec:TypedQuant}
 
-(Roughly: |(Exists (x:T) (P x)) = (Exists x (T x & P x))|.)
+A good exercise is to work out the rules for ``pushing negation
+through'' typed quantification, from the corresponding rules for full
+quantification.
 
-\subsection{Proof by contradition}
+%TODO: include somewhere as a solution.
+%   not (Exists (x:T) (P x))          = {- Def. of typed quantification -}
+%   not (Exists x (T x & P x))        = {- de-Morgan for existential    -}
+%   Forall x (not (T x & P x))        = {- de-Morgan for and            -}
+%   Forall x (not (T x) | not (P x))  = {- |(A => B)  ==  (not A | B)|  -}
+%   Forall x (T x => not (P x))       = {- Def. of typed quantification -}
+%   Forall (x:T) (not (P x))
+
+
+\subsection{Proof by contradiction}
 
 Let's try to express and prove the irrationality of the square
 root of 2.
 %
-We have two main concepts involved: the predicate "irrational" and the
-function "square root of".
+We have two main concepts involved: the predicate ``irrational'' and the
+function ``square root of''.
 %
 The square root function (for positive real numbers) can be specified
 by $r = \sqrt{s}$ iff |r^2 == s| and |r : REAL|.
@@ -517,10 +585,13 @@ What about the third clause: is |x=p^q==r^r| rational?
 We can reason about two possible cases, one of which has to hold: |R
 x| or |not (R x)|.
 
-Case 1: |R x| holds. Then we have a proof of |S| with |p=q=r=sqrt 2|.
+Case 1: |R x| holds.
+%
+Then we have a proof of |S| with |p=q=r=sqrt 2|.
 
-Case 2: |not (R x)| holds. Then we have another irrational number |x|
-to play with.
+Case 2: |not (R x)| holds.
+%
+Then we have another irrational number |x| to play with.
 %
 Let's try |p=x| and |q=r|.
 %
@@ -541,23 +612,27 @@ actually are!
 To prove a formula |P => Q| we assume a proof |p : P| and derive a
 proof |q : Q|.
 %
-Such a proof can be expressed as |(\p -> q) : (P => Q)|: a proof of an
-implication is a function from proofs to proofs.
+Such a proof can be expressed as |(\p -> q) : (P => Q)|:
+%
+a proof of an implication is a function from proofs to proofs.
 
 As we saw earlier, a similar rule holds for the ``forall'' quantifier:
+%
 a function |f| from terms |t| to proofs of |P t| is a proof of |Forall
 x (P x)|.
 
-A very common kind of formula is ``typed quantification'': if a type
-(a set) |S| of terms can be decribed as those that satisfy the unary
-predicate |T| we can introduce the short-hand notation
+As we saw in section~\ref{sec:TypedQuant}, a very common kind of
+formula is ``typed quantification'':
+%
+if a type (a set) |S| of terms can be described as those that satisfy
+the unary predicate |T| we can introduce the short-hand notation
 %
 \begin{spec}
   (Forall (x:T) (P x)) = (Forall x (T x => P x))
 \end{spec}
 %
-A proof of this is a two-argument function |p| which takes a term and
-a proof to a proof.
+A proof of this is a two-argument function |p| which takes a term |t|
+and a proof of |T t| to a proof of |P t|.
 
 In pseudo-Haskell we can express the implication laws as follows:
 %
@@ -588,6 +663,7 @@ Haskell supports limited forms of dependent types and more is coming
 every year but for proper dependently typed programming I recommend
 the language Agda.
 
+%TODO: find the right place for the a note that the type of tuples is isomorphic to the (dependent) function type |{i : 1..n} -> Ai|.
 
 \subsection{Proofs for |And| and |Or|}
 \label{sec:PropFrag}
@@ -610,7 +686,7 @@ using the functional models for introduction and elimination rules.
   \label{fig:AbstractFOL}
 \end{figure*}
 %
-Examine Fig.\ \ref{fig:AbstractFOL} (also available in the file
+Examine Fig.~\ref{fig:AbstractFOL} (also available in the file
 \url{AbstractFOL.lhs}), which introduces an empty datatype for every
 connective (except ⟷), and corresponding types for the introduction
 and elimination rules.
@@ -625,25 +701,26 @@ For example:
 example0 :: FOL.And p q -> FOL.And q p
 example0 evApq   =  andIntro (andElimR evApq) (andElimL evApq)
 \end{code}
-%
+%TODO: perhaps explain the "FOL." prefix (module name, for disambiguation)
 (The variable name |evApq| is a mnemonic for ``evidence of |And p q|''.)
 
 Notice that Haskell will not accept
-
+%
 \begin{spec}
 example0 evApq   =  andIntro (andElimL evApq) (andElimR evApq)
 \end{spec}
-
+%
 unless we change the type.
 
 Another example:
-
+%
 \begin{code}
 example1 :: FOL.And q (FOL.Not q) -> p
 example1 evAqnq    =  notElim (notIntro (\ hyp -> evAqnq))
 \end{code}
 
 To sum up the |And| case we have one introduction and two elimination rules:
+%
 \begin{spec}
   andIntro  ::  p -> q -> And p q
   andElimL  ::  And p q ->  p
@@ -656,7 +733,7 @@ To sum up the |And| case we have one introduction and two elimination rules:
 % demonstrate a step-by-step solution using this technique.
 %
 If we see these introduction and elimination rules as an API, what
-would be a resonable implementation of the datatype |And p q|?
+would be a reasonable implementation of the datatype |And p q|?
 %
 A type of pairs!
 %
@@ -676,44 +753,36 @@ Then we see that the corresponding Haskell functions would be
 
 \paragraph{|Or| is the dual of |And|.}
 %
-Most of the properties of |And| have corresponding properies for |Or|.
+Most of the properties of |And| have corresponding properties for |Or|.
 %
 Often it is enough to simply swap the direction of the ``arrows''
 (implications) and swap the role between introduction and elimination.
 
 \begin{spec}
-  orIntroL  :  P   ->  P|Q
-  orIntroR  :  Q   ->  P|Q
+  orIntroL  :  P   ->  (P|Q)
+  orIntroR  :  Q   ->  (P|Q)
   orElim    :  (P=>R)->(Q=>R) -> ((P|Q) => R)
 \end{spec}
 
 Here the implementation type can be a labelled sum type, also called
 disjoint union and in Haskell: |Either|.
-%TODO: put in separate file, make sure it type checks, include back.
-\begin{spec}
-  data Either p q = Left p | Right q
-  -- |Left| is |orIntroL|, |Right| is |orIntroR|
-  either :: (p->r) -> (q->r) -> Either p q -> r
-  either l r (Left x)   =  l x
-  either l r (Right y)  =  r y
-\end{spec}
 
 \subsection{Case study: there is always another prime}
 
 As an example of combining forall, exists and implication let us turn
-to one statement of the fact that there are infiniely many primes.
+to one statement of the fact that there are infinitely many primes.
 %
 If we assume we have a unary predicate expressing that a number is prime
 and a binary (infix) predicate ordering the natural numbers we can
-define a formula |IP| for ``Infinite many Primes'' as follows:
+define a formula |IP| for ``Infinitely many Primes'' as follows:
 %
 \begin{spec}
  IP = Forall n (Prime n => Exists m (Prime m & m > n))
 \end{spec}
-%*TODO: perhaps introduce Prime and < in L01
+%TODO: perhaps introduce Prime and < in L01
 %
 Combined with the fact that there is at least one prime (like |2|) we
-can repeatadly refer to this statement to produce a never-ending
+can repeatedly refer to this statement to produce a never-ending
 stream of primes.
 
 To prove this formula we first translate from logic to programs as
@@ -750,13 +819,13 @@ The proof |pm| is the core of the theorem.
 First, we note that for any |2<=p<=n| we have
 %
 \begin{spec}
- mod m' p ==
- mod (1 + n!) p ==
- mod 1 p + mod (n!) p ==
- 1 + 0 ==
+ mod m' p                ==  {- Def. of |m'| -}
+ mod (1 + n!) p          ==  {- modulo distributes of |+| -}
+ mod 1 p  +  mod (n!) p  ==  {- modulo comp.: |n!| has |p| as a factor -}
+ 1        +  0           ==
  1
 \end{spec}
-% TODO: explain that mod x y is shown as x % y
+where |mod x y| is the remainder after integer division of |x| by |y|.
 %
 Thus |m'| is not divisible by any number from |2| to |n|.
 %
@@ -810,8 +879,9 @@ indicates the family member.
 In the other direction, if we look at the binary elimination rule,
 we see the need for two arguments to be sure of how to prove the
 implication for any family member of the binary |Or|.
+%
 \begin{spec}
-orElim    :  (P=>R)->(Q=>R) -> ((P|Q) => R)
+orElim    :  (P=>R) -> (Q=>R) -> ((P|Q) => R)
 \end{spec}
 %
 The generalisation unifies these two to one family of arguments.
@@ -838,13 +908,13 @@ It is time time to apply it to some concepts in calculus.
 We start we the concept of ``limit point'' which is used in the
 formulation of different properties of limits of functions.
 
-TODO: Perhaps start with the ``expression'' $lim_{x\to x_0} f(x)$ and
-explain that not all |x_0| make sense, etc. [For context and
-motivation.]
-
-TODO: Or talk a bit about open and closed sets. (Open set = every
-point is internal = there is some wiggle-room around each point in the
-set. Closed set contains all its limit points.)
+% TODO: Perhaps start with the ``expression'' $lim_{x\to x_0} f(x)$ and
+% explain that not all |x_0| make sense, etc. [For context and
+% motivation.]
+%
+% TODO: Or talk a bit about open and closed sets. (Open set = every
+% point is internal = there is some wiggle-room around each point in the
+% set. Closed set contains all its limit points.)
 
 \paragraph{Limit point}\label{sec:LimPoint}
 
@@ -903,7 +973,6 @@ No! |X - {p} = {}| (there is no |q/=p| in |X|), thus there cannot
 exist a function |getq| because it would have to return elements in
 the empty set!
 
-
 Example 2: Is |p=1| a limit point of the open interval |X = (0,1)|?
 %
 First note that |p ∉ X|, but it is ``very close'' to |X|.
@@ -938,7 +1007,6 @@ define |getq ε = max (17/38,1-ε/2)|.
 %
 Similarly, we can show that any internal point (like |1/2|) is a limit
 point.
-
 
 Example 3: limit of an infinite discrete set |X|
 
@@ -977,17 +1045,13 @@ Exercise: prove that |0| is the \emph{only} limit point of |X|.
 ∀ p ∈ ℝ? not (Limp p X)
 \end{spec}
 %
-This is a good excercise in quantifier negation!
+This is a good exercises in quantifier negation!
 %
 \begin{spec}
-  not (Limp p X)
-= {- Def. of |Limp| -}
-  not (∃ getq : Q? ∀ ε > 0? getq ε ∈ B p ε)
-= {- Negation of existential -}
-  ∀ getq : Q? not (∀ ε > 0? getq ε ∈ B p ε)
-= {- Negation of universal -}
-  ∀ getq : Q? ∃ ε > 0? not (getq ε ∈ B p ε)
-= {- Simplification -}
+  not (Limp p X)                                  = {- Def. of |Limp| -}
+  not (∃ getq : Q? ∀ ε > 0? getq ε ∈ B p ε)       = {- Negation of existential -}
+  ∀ getq : Q? not (∀ ε > 0? getq ε ∈ B p ε)       = {- Negation of universal -}
+  ∀ getq : Q? ∃ ε > 0? not (getq ε ∈ B p ε)       = {- Simplification -}
   ∀ getq : Q? ∃ ε > 0? absBar (getq ε - p) >= ε
 \end{spec}
 %
@@ -1025,24 +1089,86 @@ in |X - {p}| which gets arbitrarily close to |p|.
 Note that this construction can be seen as a proof of |Limp p X =>
 Infinite X|.
 
-\paragraph{The limit of a sequence} TODO: transcribe the 2016 notes
+\subsection{The limit of a sequence}
+% TODO: transcribe more of the 2016 notes
 \label{par:LimitOfSequence}
 
 Now we can move from limit points to the more familiar limit of a
 sequence.
 %
-A sequence |a| is a function from |Nat| to |REAL| and we define a
-binary infix predicate |haslim| using a helper predicate |P|:
+At the core of DSLsofMath is the ability to analyse definitions from
+mathematical texts, and here we will use the definition of the limit
+of a sequence from \citet[page 498]{adams2010calculus}:
+
+\begin{quote}
+  We say that sequence ${a_n}$ converges to the limit $L$, and we
+  write $\lim_{n→∞} a_n = L$, if for every positive real number |ε|
+  there exists an integer $N$ (which may depend on |ε|) such that if
+  $n > N$, then $|a_n - L| < \varepsilon$.
+\end{quote}
+%
+
+The first step is to type the variables introduced.
+%
+A sequence |a| is a function from |Nat| to |REAL|, thus |a : Nat ->
+REAL| where |an| is special syntax for normal function application of
+|a| to |n : Nat|.
+%
+Then we have |L : REAL|, |ε : RPos|, and |N : Nat| (or |N : RPos ->
+Nat|).
+%
+
+In the next step we analyse the new concept introduced:
+%
+the syntactic form $\lim_{n→∞} a_n = L$ which we could express as an
+infix binary predicate |haslim| where |a haslim L| is well-typed if |a
+: Nat -> REAL| and |L : REAL|.
+%
+
+The third step is to formalise the definition using logic: we define
+|haslim| using a ternary helper predicate |P|:
 %
 \begin{spec}
-  a haslim L  =  ∀ ε > 0? P a L ε
+  a haslim L  =  ∀ ε > 0? P a L ε   -- ``for every positive real number |ε| \ldots''
 
-  P a L ε = ∃ N : Nat? ∀ n ≥ N? absBar (an - L) < ε
+  P a L ε  = ∃ N : Nat? ∀ n ≥ N? absBar (an - L) < ε
+           = ∃ N : Nat? ∀ n ≥ N? an ∈ B L ε
+           = ∃ N : Nat? I a N ⊆ B L ε
+\end{spec}
+%
+where we have introduced an ``image function'' for sequences ``from |N| onward'':
+%
+\begin{spec}
+  I : (Nat → X) → Nat → PS X
+  I a N = {a n | n ≥ N}
 \end{spec}
 
+The ``forall-exists''-pattern is very common and it is often useful to
+transform such formulas into another form.
+%
+In general |Forall (x : X) (Exists (y : Y) (Q x y))| is equivalent to
+|Exists (gety : X -> Y) (Forall (x : X) (Q x (gety x)))|.
+%
+In the new form we more clearly see the function |gety| which shows
+how the choice of |y| depends on |x|.
+%
+For our case with |haslim| we can thus write
+%
+\begin{spec}
+  a haslim L  =  ∃ getN : RPos -> Nat? ∀ ε > 0? I a (getN ε)  ⊆  B L ε
+\end{spec}
+%
+where we have made the function |getN| more visible.
+%
+The core evidence of |a haslim L| is the existence of such a function
+(with suitable properties).
 
-TODO: perhaps swap the argument order in the definition of |Limp| to
-make it fit better with |haslim|.
+% TODO: perhaps swap the argument order in the definition of |Limp| to
+% make it fit better with |haslim|.
+
+Exercise: Prove that the limit of a sequence is unique.
+
+%TODO: add the proof from file:~/src/DSLM/DSLsofMath/2016/Lectures/BasicConcepts.lhs
 
 Exercise: prove that |(a1 haslim L1) & (a2 haslim L2)| implies
 |(a1+a2) haslim (L1+L2)|.
@@ -1057,9 +1183,9 @@ say that a sequence |a| is \emph{convergent} when |∃ L ? a haslim L|.
 \subsection{Case study: The limit of a function}
 \label{sec:LimitOfFunction}
 %
-At the core of DSLsofMath is the ability to analyse definitions from
-mathematical texts, and here we will use the definition of the limit
-of a function of type |REAL -> REAL| from \citet{adams2010calculus}:
+As our next mathematical text book quote we take the definition of the
+limit of a function of type |REAL -> REAL| from
+\citet{adams2010calculus}:
 %
 \label{sec:FunLimit}
 %
@@ -1130,23 +1256,25 @@ This means that each function |f| can have \emph{at most} one limit
 (This is not evident from the definition and proving it is a good
 exercise.)
 
-\subsection{Questions and answers from the exercise sessions week 2}
+\subsection{Recap of syntax tres with variables, |Env| and |lookup|}
 
-\paragraph{Variables, |Env| and |lookup|}
+% TODO reformulate in book form (or more earlier, or remove)
 
 This was frequently a source of confusion already the first week so
 there is already a question + answers earlier in this text.
 %
 But here is an additional example to help clarify the matter.
+%
 \begin{code}
 data Rat v = RV v | FromI Integer | RPlus (Rat v) (Rat v) | RDiv (Rat v) (Rat v)
   deriving (Eq, Show)
 
 newtype RatSem = RSem (Integer, Integer)
 \end{code}
+%
 We have a type |Rat v| for the syntax trees of rational number
-expressions and a type |RatSem| for the semantics of those rational
-number expressions as pairs of integers.
+expressions (with variables of type |v|) and a type |RatSem| for the
+semantics of those rational number expressions as pairs of integers.
 %
 The constructor |RV :: v -> Rat v| is used to embed variables with
 names of type |v| in |Rat v|.
@@ -1154,6 +1282,10 @@ names of type |v| in |Rat v|.
 We could use |String| instead of |v| but with a type parameter |v| we
 get more flexibility at the same time as we get better feedback from
 the type checker.
+%
+Note that this type parameter serves a different purpose from the type
+parameter in~\ref{sec:toComplexSyn}.
+
 %
 To evaluate some |e :: Rat v| we need to know how to evaluate the
 variables we encounter.
@@ -1196,14 +1328,17 @@ divSem (RSem (a, b)) (RSem (c, d)) = RSem (a*d, b*c)
 
 Often the first argument |ev| to the eval function is constructed from
 a list of pairs:
+%
 \begin{code}
 type Env v s = [(v, s)]
+
 envToFun :: (Show v, Eq v) => Env v s -> (v -> s)
 envToFun [] v = error ("envToFun: variable "++ show v ++" not found")
 envToFun ((w,s):env) v
   | w == v     = s
   | otherwise  = envToFun env v
 \end{code}
+%
 Thus, |Env v s| can be seen as an implementation of a ``lookup
 table''.
 %
@@ -1212,27 +1347,30 @@ but efficiency is not the point here.
 %
 Finally, with |envToFun| in our hands we can implement a second
 version of the evaluator:
+%
 \begin{code}
 evalRat2 :: (Show v, Eq v) => (Env v RatSem) -> (Rat v -> RatSem)
 evalRat2 env e = evalRat1 (envToFun env) e
 \end{code}
 
-\paragraph{The law of the excluded middle}
-
-Many had problems with implementing the ``law of the excluded middle''
-in the exercises and it is indeed a tricky property to prove.
+% \paragraph{The law of the excluded middle}
 %
-They key to implementing it lies in double negation and as that is
-encoded with higher order functions it gets a bit hairy.
-
-TODO[Daniel]: more explanation
+% Many had problems with implementing the ``law of the excluded middle''
+% in the exercises and it is indeed a tricky property to prove.
+% %
+% They key to implementing it lies in double negation and as that is
+% encoded with higher order functions it gets a bit hairy.
+%
+% TODO[Daniel]: more explanation
 
 \paragraph{SET and PRED}
+%
+\label{par:SETandPRED}
 
 Several groups have had trouble grasping the difference between |SET|
 and |PRED|.
 %
-This is understandable, beacuse we have so far in the lectures mostly
+This is understandable, because we have so far in the lectures mostly
 talked about term syntax + semantics, and not so much about predicate
 syntax and semantics.
 %
@@ -1293,13 +1431,14 @@ positiveSem  = error "TODO"
 
 \subsection{More general code for first order languages}
 
-``överkurs''
+This subsection contains some extra material which is not a required
+part of the course.
 
-It is possible to make one generic implementation which can be
-specialised to any first order language.
+It is possible to make one generic implementation of |FOL| which can
+be specialised to any first order language.
 %
 
-TODO: add explanatory text
+% TODO: perhaps add some explanatory text
 
 \begin{itemize}
 \item |Term| = Syntactic terms
@@ -1330,8 +1469,8 @@ data WFF n f v p =
   deriving Show
 \end{spec}
 
-TODO: Perhaps introduce GADT datatype notation in exercises
-
 \subsection{Exercises: abstract FOL}
+
+% TODO: Perhaps introduce GADT datatype notation use in some exercise solutions
 
 %include E2.lhs

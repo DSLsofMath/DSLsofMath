@@ -1202,8 +1202,8 @@ Exercice \ref{exc:fmap}: what does function composition do to a sequence?
 
 Another common mathematical operator on sequences is the limit.
 %
-We will get back to limits in later chapters (\ref{sec:LimPoint}, \ref{sec:FunLimit}), but here we just
-analyse the notation and typing.
+We will get back to limits in later chapters (\ref{sec:LimPoint},
+\ref{sec:FunLimit}), but here we just analyse the notation and typing.
 %
 This definition is slightly adapted from Wikipedia (2017-11-08):
 \begin{quote}
