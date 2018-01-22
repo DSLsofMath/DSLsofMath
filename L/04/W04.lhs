@@ -117,10 +117,6 @@ paren s = "(" ++ s ++ ")"
 Exercise: Another way to make this example go through is to refine the
 semantic domain from |String| to |Precedence -> String|.
 %
-%TODO (by DaHe): The term "tupling transform" has not been defined! Perhaps should explain what
-% it means, when we introduce FD in the prev chapter. (If I'm correct in
-% assuming that is also a tupling transform)
-%
 This can be seen as another variant of the result after the tupling
 transform: if |Precedence| is an |n|-element type then |Precedence ->
 String| can be seen as an |n|-tuple.
@@ -227,6 +223,9 @@ idE' = foldIE
 evalE' :: E -> Integer
 evalE' = foldIE
 \end{code}
+% TODO: Show some concrete values, not just functions, to bring home the message.
+% add (con 3) (con 4) :: Integer = 7
+% add (con 3) (con 4) :: E = Add (Con 3) (Con 4)
 
 And we can also see |pretty| as instance:
 
@@ -240,21 +239,9 @@ pretty' :: E -> String
 pretty' = foldIE
 \end{code}
 
-%TODO (by DaHe): Maybe we should show how to do this with FunExp (here or in
-% 4.2.2.), and how we can build a FunExp out of the semantic constructors if we
-% have instantiated the type classes: then evaluate the expression to either the
-% syntactic or semantic type by typecasting (exp :: FunExp = F, exp :: (t ->
-% Double) = f) or applying the types to id or Id respectively.
-%
-% Alternatively, we could just show this for E, something like
-% add (con 3) (con 4) :: Integer = 7
-% add (con 3) (con 4) :: E = Add (Con 3) (Con 4)
-%
-% And leave it as an exercise to play around with the same thing using FunExp
-%
 \subsubsection{Back to derivatives and evaluation}
 
-TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
+% TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
 
 Review section \ref{sec:evalD} again with the definition of |eval'|
 being non-compositional (just like |pretty|) and |evalD| a more
@@ -383,7 +370,7 @@ instance Monoid MNat where
   op (M m) (M n)  =  M (m * n)
 \end{code}
 
-%TODO (by DaHe): Where happens to the constructors A and M go in the solution
+%TODO (by DaHe): Where do the constructors A and M go in the solution
 % below? Perhaps provide both the "math" and "Haskell" versions to compare.
 %
 Exercise: characterise the homomorphisms from |ANat| to |MNat|.
@@ -485,6 +472,14 @@ eval :: GoodClass a  =>  FunExp -> a
 %
 where |GoodClass| gives exactly the structure we need for the
 translation.
+%TODO (by DaHe): Maybe we should show how to get both syntax and semantics from the same smart constructors with FunExp (here or in
+% 4.2.2.), and how we can build a FunExp out of the semantic constructors if we
+% have instantiated the type classes: then evaluate the expression to either the
+% syntactic or semantic type by typecasting (exp :: FunExp = F, exp :: (t ->
+% Double) = f) or applying the types to id or Id respectively.
+%
+% And leave it as an exercise to play around with the same thing using FunExp
+%
 
 Exercise: define |GoodClass| and instantiate |FunExp| and |Double ->
 Double| as instances of it.

@@ -334,7 +334,7 @@ e i : {0, ..., n} -> Real, e i j = i `is` j
 %
 % TODO (by DaHe): I think this should be clarified. If e i j = i `is` j, then
 % why would the evaluation of |e i| return \x -> x^i ?
-%
+%  [explain the interpretation of the [0001000] vector as 1 in front of x^i and 0 for other terms.
 The evaluation of |e i| returns the function |\ x -> x^i|, as
 expected.
 
@@ -376,11 +376,8 @@ M =
 
 Take the polynomial
 %
-% TODO (by DaHe): Shouldn't this be formatted with lower-case x and superscript
-% instead of ^ ?
-%
 \begin{spec}
-3 * X^2 + 2 * X + 1
+3 * x^2 + 2 * x + 1
 \end{spec}
 
 as a vector
@@ -436,7 +433,7 @@ A node in the graph represents a state.
 A transition |i -> j| means |f i = j|.
 %
 % TODO (by DaHe): Again, the sentence below doesn't really make sense if one
-% doesn't know the definition of an endo-function
+% doesn't know the definition of an endo-function. More explanation needed.
 Since |f| is an endo-function, every node must be the source of
 exactly one arrow.
 
@@ -793,7 +790,7 @@ As usual, we write the associated matrix by looking at how the
 canonical base vectors are transformed.
 %
 % TODO (by DaHe): Again, I find this a little confusing: If e = is, then how is
-% e i the probability distribution concentrated in i?
+% e i the probability distribution concentrated in i? PaJa: show that the type is right and the sum is 1.
 In this case, the canonical base vector |e i = \ j -> i `is` j| is the
 probability distribution \emph{concentrated} in |i|:
 

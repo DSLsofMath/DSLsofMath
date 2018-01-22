@@ -329,9 +329,6 @@ We have
 Remember that |D (f * g) = D f * g + f * D g|, therefore
 
 %
-%TODO (by DaHe): It would be nicer to move the annotations to the right in the
-% equations below, instead of between the lines.
-%
 \begin{spec}
   ℒ f' x                                                       =  {- |g t = x^t|; |g' t = log x * x^t| -}
 

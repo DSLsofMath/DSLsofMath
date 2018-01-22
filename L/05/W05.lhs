@@ -251,7 +251,7 @@ polyNeg = fmap negate
 \end{code}
 %
 % TODO (by DaHe): I don't think fmap has been explained at this point (or at any
-% point in the course)
+% point in the course): PaJa: introduce in Ch. 2 or 3 (perhaps in exercises)
 %
 %
 Therefore, we \emph{can} define a ring structure (the mathematical
@@ -268,7 +268,7 @@ canonical definition of polynomials, as found in any algebra book
 %
 % TODO (by DaHe): Maybe it should be stated sooner (right after the introduction
 % of evalPoly) that polynomial functions are the evaluations of polynomials.
-% So if as is a polynomial, then evalPoly as is a polynomial function.
+% So if |as| is a polynomial, then |evalPoly as| is a polynomial function.
 %
 The functions |evalPoly as| are known as \emph{polynomial functions}.
 
@@ -309,7 +309,7 @@ For example, here is addition:
   %
   % TODO (by DaHe): I don't think it will be obvious for students why the
   % equation below is true, so perhaps it should be shown step by step.
-  % (x + x^2 = 0, ∀ x : ℤ₂)
+  % (x + x^2 = 0, ∀ x : ℤ₂) PaJa: perhaps add exe. in Ch. 3 about ring instances.
   %
   \begin{spec}
     evalPoly [0, 1, 1] = const 0 = evalPoly [0]  {- in |ℤ₂ -> ℤ₂| -}
@@ -362,7 +362,7 @@ This justifies the standard notation
 
 \subsection{Polynomial degree as a homomorphism}
 
-TODO: textify black board notes
+%TODO: textify black board notes
 
 It is often the case that a certain function is \emph{almost} a
 homomorphism and the domain or range \emph{almost} a monoid.
