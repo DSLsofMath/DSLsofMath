@@ -46,7 +46,7 @@
         variable name, and returns the value of that variable. For now, the
         function just needs to be defined for the variables in the expression
         above, i.e. |varVal "x"| should return 5, |varVal "y"| should return 8, and
-        |varVal "x"| should return 13.
+        |varVal "z"| should return 13.
         %
         \item Update the |eval| function so that it supports the new |Var|
         constructor, and use it get a numeric value of the expression $c1$.
