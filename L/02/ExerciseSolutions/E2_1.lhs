@@ -2,6 +2,8 @@
 {-# LANGUAGE ScopedTypeVariables #-}
 import DSLsofMath.AbstractFOL
 \end{code}
+The scoped type variables extension is only needed to give
+types to sub-proofs defined in where clauses.
 
 In order to obtain sound proofs, we can only use the following
 functions to manipulate terms of types representing logical
