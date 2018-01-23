@@ -14,7 +14,7 @@
 \providecommand{\textepsilon}{\ensuremath{\epsilon}}
 \begin{document}
 \title{DSLsofMath 2018: Assignment 1}
-\author{Patrik Jansson}
+\author{Patrik Jansson and Daniel Schoepe}
 \date{}
 \maketitle
 \section{DSLsofMath 2018: Assignment 1}
@@ -39,7 +39,7 @@ for finite sets. The domain you should model is pure set theory where
 all members are sets.
 
 Define a datatype |SET v| for the abstract syntax of set expressions with
-variables of type |v| and a datatype |PRED| for predicates over pure set
+variables of type |v| and a datatype |PRED v| for predicates over pure set
 expressions.
 
 \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
@@ -77,8 +77,8 @@ newtype Set = S [Set]
 Implement the evaluation functions
 
 \begin{code}
-eval  :: Eq v => Env v Set ->  SET v -> Set
-check :: Eq v => Env v Set ->  PRED v -> Bool
+eval   :: Eq v => Env v Set ->  SET v   -> Set
+check  :: Eq v => Env v Set ->  PRED v  -> Bool
 \end{code}
 
 \begin{code}
@@ -108,9 +108,10 @@ Implement |vonNeumann| and explore, explain and implement the following
   claim2 n      =  {- |n = {0, 1, ..., n − 1}| -}
 \end{spec}
 
-You need to insert some embeddings and types and you should use the eval
-and check functions. (For debugging it is useful to implement a show
-function for Set which uses numerals to show the von Neumann naturals.)
+You need to insert some embeddings and types and you should use the
+|eval| and |check| functions. (For debugging it is useful to implement
+a |show| function for |Set| which uses numerals to show the von
+Neumann naturals.)
 
 \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
@@ -118,11 +119,10 @@ Admin:
 
 \begin{itemize}
 \item \emph{Submission}: Assignments are to be submitted via Fire:
-
-  TODO: update link (was https://dsls-lp3-17.frs.cse.chalmers.se/login)
+  https://dslm-lp3-18.frs.cse.chalmers.se
 \item \emph{Deadline}: 2018-01-30
 \item \emph{Grading}: Discussions with each of the teams during the
-  slot 2018-02-05, 13.00-15.00
+  slot 2018-02-05, 10-12 or 15-17
 \end{itemize}
 
 Note: The examination will be in English.
