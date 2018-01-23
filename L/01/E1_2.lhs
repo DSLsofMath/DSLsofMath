@@ -22,8 +22,6 @@ The type has now been parametrized, so that it is no longer limited to represent
         \item |a3 = a*(b + c) - (d + e)*(f + a)|
     \end{enumerate}
     %
-    % TODO I limited the type to String variable names to keep things simple for the time being. Should I parametrize this instead, so we get |Env v a| instead of just |Env a|?
-    %
     \item In order to evaluate these expressions, we will need a way of translating a variable name into the value. The following table shows the value of each variable in the expressions above:
 
     \begin{table}[h]
@@ -34,15 +32,15 @@ The type has now been parametrized, so that it is no longer limited to represent
     \end{tabular}
     \end{table}
     %
-    In Haskell, we can represent this table using a value of type |Env
+    In Haskell, we can represent this table using a value of type |Table a = Env
     String a = [(String, a)]|, which is a list of pairs of variable
     names and values, where each entry in the list corresponds to a
-    row in the table.
+    column in the table.
     %**TODO: remind about (partial) functions
     \begin{enumerate}
-        \item Express the table above in Haskell by creating |vars :: Env String Double|.
-        \item Create a function |varVal :: Env a -> String -> a| that returns the value of a variable, given an |Env| and a variable name. For instance, |varVal vars "d"| should return 7.4
-        \item Create a function |eval:: Num a => Env a -> E2 -> a| that takes a value of the new |E2| data type and returns the corresponding number. For instance, |eval vars ((Con 2) `Plus` (Var "a")) == 3.5|. Try it on the expressions from the first part, and verify that it works as expected.
+        \item Express the table above in Haskell by creating |vars :: Table Double|.
+        \item Create a function |varVal :: Table a -> String -> a| that returns the value of a variable, given a table and a variable name. For instance, |varVal vars "d"| should return 7.4
+        \item Create a function |eval :: Num a => Table a -> E2 a -> a| that takes a value of the new |E2| data type and returns the corresponding number. For instance, |eval vars ((Con 2) `Plus` (Var "a")) == 3.5|. Try it on the expressions from the first part, and verify that it works as expected.
 
     \end{enumerate}
 %
