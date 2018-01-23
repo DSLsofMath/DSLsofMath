@@ -1,8 +1,6 @@
 # DSLsofMath hand-in assignments
 
--- 2018 instance not yet decided
-
-Prel. deadlines:
+Deadlines:
 * A1: Hand-in Tue 2018-01-30, explain Mon 2018-02-05
 * A2: Hand-in Tue 2018-02-27, explain Fri 2018-03-02
 
@@ -15,4 +13,4 @@ the EDIT building.
 
 ## Oral presentation
 
-[Schedule](schedule.md)
+2018-02-05: Times to be announced (15 minute slots during 10-12 or 15-17).
