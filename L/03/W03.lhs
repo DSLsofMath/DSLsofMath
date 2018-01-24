@@ -1,4 +1,3 @@
-
 \section{Types in Mathematics}
 \label{sec:types}
 \begin{code}
@@ -474,21 +473,140 @@ in physics.
 % chapter:
 % * Typing the conditional probability notation. The notation P(A | B) is
 %   something that I and others were confused during the statistics course. In one
-%   assignment during that course, my solution claimed somthing along the
-%   lines of that {P | A} was an event, that had a certain probability. So I
+%   assignment during that course, my solution claimed something along the
+%   lines of that {P | A} was an event, that had a certain probability. So I
 %   think many would agree that this is indeed a very confusing notation, so it
 %   is a great idea to cover it in this book. Cezar had a very good rant about
 %   this during his guest lecture last year.
-%TODO: [Include the problem from E3.lhs and the solution from ../../Exam/2016-03/Ex2.hs]
-% * Using Haskell to type mathematical expressions. I leared a lot about typing
-%   maths by playing around with mathematical expressions in Haskell. A good
-%   example is Exam/2016-03/Ex2.hs, where the solution is a haskell program
-%   which compiles and type checks. This has a similar advantage to the 'typed
-%   hole' method in the previous chapter, in that it encourages students to
-%   take the trial-end-error approach that can often be used when solving
-%   programming problems, and apply it to a mathematical context. I think this
-%   chapter should include at least one example of using this method to type a
-%   mathematical expression.
+
+\subsection{Playing with types}
+
+So far we have worked on typing mathematics ``by hand'', but we can
+actually get the Haskell interpreter to help a bit even when we are
+still at the specification stage.
+%
+It is often useful to collect the known (or assumed) facts about types
+in a Haskell file and regularly check if the type checker agrees.
+%
+Consider the following text from \citeauthor{maclane1986mathematics}'s
+\textit{Mathematics: Form and Function} (page 182):
+%
+
+\begin{linenumbers}
+   \begin{quote}
+     In these cases one tries to find not the values of
+     |x|\linelabel{line:exam1603_x} which make a given function |y =
+     f(x)| a minimum, but the values of a given function |f(x)| which
+     make a given quantity a minimum.  Typically, that quantity is
+     usually measured by an integral whose integrand is some
+     expression |F|\linelabel{line:exam1603_F} involving both |x|,
+     values of the function |y = f(x)| at interest and the values of
+     its derivatives - say an integral
+   \end{quote}
+  \begin{linenomath*}
+    \[\int_a^b F(y, y', x)dx,\quad y = f(x).\] \linelabel{line:exam1603_int}
+  \end{linenomath*}
+\end{linenumbers}
+%
+Typing the variables and the integration operators in this text was an
+exam question in 2016 and we will use it here as an example of getting
+feedback from a type checker.
+%
+We start by declaring two types, |X| and |Y|, and a function |f|
+between them:
+%
+\begin{code}
+data X   -- |X| must include the interval |[a,b]| of the reals
+data Y   -- another subset of the reals
+
+f :: X -> Y
+f = undefined
+\end{code}
+%
+These ``empty'' |data|-declarations mean that Haskell now knows the
+types exist, but nothing about any values of those types.
+%
+Similarly, |f| has a type, but no proper implementation.
+%
+We will declare types of the rest of the variables as well, and as we
+are not implementing any of them right now, we can just make one
+``dummy'' implementation of a few of them in one go:
+%
+\begin{code}
+(x, deriv, ff, a, b, int) = undefined
+\end{code}
+%
+We write |ff| for the capital |F| (to fit with Haskell's rules for
+variable names), |deriv| for the postix prime, and |int| for the
+integral operator.
+%
+On line~\ref{line:exam1603_x} ``values of |x|'' hints at the type |X|
+for |x| and the way |y| is used indicates that it is to be seen as an
+alias for |f| (and thus must have the same type)
+%
+As we have discussed above, the derivative normally preserves the type
+and thus we can write:
+%
+\begin{code}
+x   :: X
+y   :: X -> Y
+y   =  f
+y'  :: X -> Y
+y'  =  deriv f
+deriv :: (X -> Y) -> (X -> Y)
+\end{code}
+%
+Next up (on line~\ref{line:exam1603_F}) is the ``expression |F|''
+(which we write |ff|).
+%
+It should take three arguments: |y|, |y'|, |x|, and return ``a
+quantity''.
+%
+We can invent a new type |Z| and write:
+%
+\begin{code}
+data Z   -- Probably also some subset of the real numbers
+ff :: (X -> Y) -> (X -> Y) -> X -> Z
+\end{code}
+%
+Then we have the operation of definite integration, which we know
+should take two limits |a, b :: X| and a function |X -> Z|.
+%
+The traditional mathematics notation for integration uses an
+expression (in |x|) followed by |dx|, but we can treat that as a
+function |expr| binding |x|:
+%
+\begin{code}
+a, b :: X
+integral = int a b expr
+  where  expr x = ff y y' x
+
+int :: X -> X -> (X -> Z) -> Z
+\end{code}
+%
+Now we have reached a stage where all the operations have types and
+the type checker is happy with them.
+%
+At this point it is possible to experiment with variations based on
+alternative interpretations of the text.
+%
+For this kind of ``refactoring'' is very helpful to have the type
+checker to make sure the types still make sense.
+%
+For example, we could write |ff2 :: Y -> Y -> X -> Z| as a variant of
+|ff| as long as we also change the expression in the integral:
+%
+\begin{code}
+ff2 :: Y -> Y -> X -> Z
+ff2 = undefined
+integral2 = int a b expr
+  where  expr x = ff2 y y' x
+           where  y   = f x
+                  y'  = deriv f x
+\end{code}
+%
+Both versions (and a few more minor variations) would be fine as exam
+solutions, but not something where the types don't match up.
 
 \subsection{Type in Mathematics (Part II)}
 
