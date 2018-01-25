@@ -1,12 +1,17 @@
 ## DSLsofMath course evaluation student representatives 2018:
 
-| Email            | Name                    | Bekräftat
+| Email            | Name                    | Confirmed
 | ---------------- | ----------------------- | ---
-| markusi          | Markus Ingvarsson       | Ja
+| markusi          | Markus Ingvarsson       | Yes
 | jlucas           | Lucas Norman Jonsson    |
-| annunt           | Anna-Maria Unterberger  | Ja
-| vonejo           | Jonas von Essen         | Ja
+| annunt           | Anna-Maria Unterberger  | Yes
+| vonejo           | Jonas von Essen         | Yes
 
+
+## Mid-course evaluation meeting
+
+2018-02-02, at 13.00 in room 5128: the teaching team meets the student
+representatives.
 
 ----
 Old information below
