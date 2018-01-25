@@ -764,17 +764,25 @@ toList x = head x : toList (tail x)
 In the other direction, if we want to build a stream we only have one
 constructor: |cons| but no ``base case''.
 %
-But instead of describing a stream by how to build it, we can define
-it in terms of how to take it apart; by specifying |head| and |tail|.
+Instead of describing a stream by how to build it, we can define it in
+terms of how to take it apart; by specifying |head| and |tail|.
 %
-As an example we can take a constant stream with |X = ConStream A|:
+As an example we can specify a constant stream |ca| by
 %
 \begin{code}
-data ConStream a = CS a
-headCS (CS a)  = a
-tailCS s       = s
+head ca  = a
+tail ca  = ca
 \end{code}
 %
+In Haskell, thanks to laziness, we can also define it directly using
+|cons|:
+%
+\begin{code}
+constS :: A -> X
+constS a = ca
+  where ca = cons a ca
+\end{code}
+
 The last part of the API are a few laws we expect to hold.
 %
 The first law simply states that if we first take a stream |s| apart
