@@ -85,9 +85,18 @@ There are many ways to fix this, some more ``pretty'' than others, but
 the main problem is that some information is lost in the translation.
 %
 
-TODO(perhaps): Explain using three pretty printers for the three
-``contexts'': at top level, inside |Add|, inside |Mul|, ... then
-combine them with the tupling transform just as with |evalD|.
+\paragraph{For the curious.}
+%
+One solution to the problem with parentheses is to create three
+(slightly) different functions intended for printing in different
+contexts.
+%
+The first of them is for the top level, the second for use inside
+|Add|, and the third for use inside |Mul|.
+%
+These three functions all have type |E -> String| and can thus be
+combined with the tupling transform into one function returning a
+triple: |prVersions :: E -> (String, String, String)|.
 %
 The result is the following:
 %
@@ -96,16 +105,21 @@ prTop :: E -> String
 prTop e =  let (pTop, _, _) = prVersions e
            in pTop
 
+type ThreeVersions = (String, String, String)
+prVersions :: E -> ThreeVersions
 prVersions = foldE prVerAdd prVerMul prVerCon
 
+prVerAdd :: ThreeVersions -> ThreeVersions -> ThreeVersions
 prVerAdd (xTop, xInA, xInM) (yTop, yInA, yInM) =
   let s = xInA ++ "+" ++ yInA  -- use |InA| because we are ``in |Add|''
   in (s, paren s, paren s)     -- parens needed except at top level
 
+prVerMul :: ThreeVersions -> ThreeVersions -> ThreeVersions
 prVerMul (xTop, xInA, xInM) (yTop, yInA, yInM) =
   let s = xInM ++ "*" ++ yInM  -- use |InM| because we are ``in |Mul|''
   in (s, s, paren s)           -- parens only needed inside |Mul|
 
+prVerCon :: Integer -> ThreeVersions
 prVerCon i =
   let s = show i
   in (s, s, s)                 -- parens never needed
@@ -735,114 +749,10 @@ negateE _ = error "negate: not supported"
 
 %TODO: Intro: In the coming chapters there will be quite a bit of material on infinite structures ...
 
-\paragraph{Streams as an abstract datatype.}
+%
+%include AbstractStream.lhs
 
-Consider the API for streams of values of type |A| represented by some
-abstract type |X|:
-%
-\begin{code}
-head  ::  X  ->  A
-tail  ::  X  ->  X
-cons  ::  A  ->  X  ->  X
-
-law1     s  = {-"\qquad"-}  s == cons (head s) (tail s)
-law2  a  s  =               s == tail (cons a s)
-law3  a  s  =               a == head (cons a s)
-\end{code}
-%
-With this API we can use |head| to extract the first element of the
-stream, and |tail| to extract the rest as a new stream of type |X|.
-%
-Using |head| and |tail| recursively we can extract an infinite list of
-values of type |A|:
-%
-\begin{code}
-toList :: X -> [A]
-toList x = head x : toList (tail x)
-\end{code}
-%
-In the other direction, if we want to build a stream we only have one
-constructor: |cons| but no ``base case''.
-%
-Instead of describing a stream by how to build it, we can define it in
-terms of how to take it apart; by specifying |head| and |tail|.
-%
-As an example we can specify a constant stream |ca| by
-%
-\begin{code}
-head ca  = a
-tail ca  = ca
-\end{code}
-%
-In Haskell, thanks to laziness, we can also define it directly using
-|cons|:
-%
-\begin{code}
-constS :: A -> X
-constS a = ca
-  where ca = cons a ca
-\end{code}
-
-The last part of the API are a few laws we expect to hold.
-%
-The first law simply states that if we first take a stream |s| apart
-into its head and its tail, we can get back to the original stream by
-|cons|ing them back together.
-%
-The second and third are variant on this theme, and together the three
-laws specify how the three operations interact.
-
-\paragraph{An unusual stream}
-
-(Credits: \citep{Pavlovic:1998:CCF:788020.788885})
-
-Now consider |X = REAL -> REAL|, and |A = REAL| with the following definitions:
-
-\begin{code}
-head  f    = f 0                 -- value of |f| at |0|
-tail  f    = deriv f             -- derivative of |f|
-cons a f   = const a + integ f   -- start at |a|, integrate |f| from |0|
-\end{code}
-
-Then the first law becomes
-
-\begin{spec}
-law1c f =
-  f  ==  cons (head f) (tail f)
-     ==  (head f) + integ (tail f)
-     ==  f 0  +  integ (deriv f)
-\end{spec}
-or, in traditional notation:
-
-\[
-  f(x) = f(0) + \int_0^x f'(t) \text{d}t
-\]
-
-which we recognize as the fundamental law of calculus!
-%
-There is much more to discover in this direction and we present some
-of it in the next few chapters.
-%
-
-\paragraph{For the curious.}
-%
-Here are the other two stream laws, in case you wondered.
-%
-\begin{spec}
-law2c a f  =
-  f  ==  tail (cons a f)
-     ==  deriv (const a + integ f)
-     ==  deriv (integ f)
-\end{spec}
-%
-\begin{spec}
-law3c a f  =
-  a  ==  head (cons a f)
-  a  ==  head (const a + integ f)
-  a  ==  (const a + integ f) 0
-  a  ==  a + (integ f) 0
-  0  ==  integ f 0
-\end{spec}
+%include UnusualStream.lhs
 
 \subsection{Exercises}
 
