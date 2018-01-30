@@ -146,6 +146,9 @@
 %format y1
 %format y2
 %format y3
+%format w1
+%format w2
+%format w3
 
 
 %format Andn = And "_{n}"
@@ -181,3 +184,5 @@
 
 %format CSem.+. = "\mathbin{\stackrel{\scriptscriptstyle" CSem "}{" +. "}}"
 %format CSem.*. = "\mathbin{\stackrel{\scriptscriptstyle" CSem "}{" *. "}}"
+
+%format eval'Exp = eval' "_{\!" Exp "}"

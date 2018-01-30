@@ -501,7 +501,7 @@ Consider the following text from \citeauthor{maclane1986mathematics}'s
      usually measured by an integral whose integrand is some
      expression |F|\linelabel{line:exam1603_F} involving both |x|,
      values of the function |y = f(x)| at interest and the values of
-     its derivatives - say an integral
+     its derivatives --- say an integral
    \end{quote}
   \begin{linenomath*}
     \[\int_a^b F(y, y', x)dx,\quad y = f(x).\] \linelabel{line:exam1603_int}
@@ -903,7 +903,7 @@ functions:
 
     D (const a)       =  const 0
     D id              =  const 1
-    D (powTo n)  x    =  (n - 1) * (x^(n-1))
+    D (powTo n)  x    =  n * (x^(n-1))
     D sin   x         =  cos x
     D cos   x         =  - (sin x)
     D exp   x         =  exp x
@@ -963,7 +963,9 @@ data FunExp  =  Const Double
 The intended meaning of elements of the |FunExp| type is functions:
 
 \begin{code}
-eval  ::  FunExp         ->  (Double -> Double)
+type Func = REAL -> REAL
+
+eval  ::  FunExp         ->  Func
 eval      (Const alpha)  =   const alpha
 eval      Id             =   id
 eval      (e1 :+: e2)    =   eval e1  +  eval e2    -- note the use of ``lifted |+|'',
@@ -974,7 +976,7 @@ eval      (Exp e1)       =   exp (eval e1)          -- and ``lifted |exp|''.
 %
 An example:
 \begin{code}
-f1 :: Double -> Double
+f1 :: REAL -> REAL
 f1 x = exp (x^2)
 e1 :: FunExp
 e1 = Exp (Id :*: Id)
@@ -992,12 +994,13 @@ makes the following diagram commute:
   |FunExp| \arrow[r, "|eval|"]                        & |Func|
 \end{tikzcd}
 
-In other words we want
+As a formula we want
 %
 \begin{spec}
      eval . derive e  =  D . eval
 \end{spec}
-or, in other words, for any expression |e|, we want
+%
+or, in other words, for any expression |e :: FunExp|, we want
 %
 \begin{spec}
      eval (derive e)  =  D (eval e)
@@ -1078,7 +1081,7 @@ We check whether the semantics of derivatives is compositional.
 The evaluation function for derivatives is
 
 \begin{code}
-eval'  ::  FunExp -> Double -> Double
+eval'  ::  FunExp -> Func
 eval'  =   eval . derive
 \end{code}
 
@@ -1103,8 +1106,7 @@ For example:
 Thus, given only the derivative |f' = eval' e|, it is impossible to
 compute |eval' (Exp e)|.
 %
-(There is no way to implement |eval'Exp :: (REAL -> REAL) -> (REAL ->
-REAL)|.)
+(There is no way to implement |eval'Exp :: Func -> Func|.)
 %
 Thus, it is not possible to directly implement |derive| using shallow
 embedding; the semantics of derivatives is not compositional.
@@ -1157,14 +1159,15 @@ We can now define a shallow embedding for the computation of
 derivatives, using the numerical type classes.
 
 \begin{code}
-instance Num a => Num (a -> a, a -> a) where
+instance Num a => Num (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
   (f, f')  +  (g, g')  =  (f  +  g,  f'      +  g'      )
   (f, f')  *  (g, g')  =  (f  *  g,  f' * g  +  f * g'  )
   fromInteger n        =  (fromInteger n, const 0)
 \end{code}
 
-Exercise: implement the rest
+Exercise: implement the rest of the |Num| instance for |FD a|.
 
+\pagebreak[4]
 \subsection{Exercises}
 
 %include E3.lhs
