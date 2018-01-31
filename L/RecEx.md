@@ -34,6 +34,8 @@
 
 Search the chapter for tasks marked “Exercise”.
 
+7.1
+
 ## Chapter 8
 
 8.1, 8.2, 8.3, 8.6, 8.7 + Work through some old exams
