@@ -665,7 +665,7 @@ Exercise: complete the instance declarations for |(Double, Double)|.
 Note: As this computation goes through also for the other cases we can
 actually work with just pairs of values (at an implicit point |c ::
 a|) instead of pairs of functions.
-%
+%TODO: new name to avoid confusion in the lab
 Thus we can redefine |FD| to be
 %
 \begin{spec}

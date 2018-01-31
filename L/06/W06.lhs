@@ -133,6 +133,7 @@ type FD a = (a -> a, a -> a)
 
 applyFD (f, g) x = (f x, g x)
 \end{code}
+%TODO: Note that applyFD had the arguments in the opposite order earlier. Fix.
 
 The operations on |FD a| are such that, if |eval e = f|, then
 
