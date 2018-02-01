@@ -997,7 +997,7 @@ makes the following diagram commute:
 As a formula we want
 %
 \begin{spec}
-     eval . derive e  =  D . eval
+     eval . derive  =  D . eval
 \end{spec}
 %
 or, in other words, for any expression |e :: FunExp|, we want
