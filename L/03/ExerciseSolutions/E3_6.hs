@@ -1,10 +1,13 @@
+-- This example is using some type system features not present in normal Haskell,
+-- so we have to enable some extensions to work with numbers on the type level
 {-# LANGUAGE GADTs, KindSignatures, DataKinds, ScopedTypeVariables #-}
 {-# LANGUAGE FlexibleInstances, EmptyCase, FlexibleContexts #-}
-{-# LANGUAGE OverlappingInstances, ConstraintKinds #-}
+{-# LANGUAGE ConstraintKinds #-}
 import Data.Type.Natural
 import Data.List
 
 -- First we define a type encoding numbers up to some number n:
+-- Intuitively, Fin n = {0, .., n-1}
 data Fin (n :: Nat) where
   F0 :: Fin (S n)
   FS :: Fin n -> Fin (S n)
@@ -16,7 +19,7 @@ finToInteger (FS n) = finToInteger n + 1
 
 -- And a show instance
 instance Show (Fin n) where
-  show i = "F" ++ show (finToInteger i)
+  show i = show (finToInteger i)
 
 -- An n x m matrix is can be modeled as a function returning an element for
 -- an pair of numbers (i, j) where 0 <= i < n and 0 <= j < m.
@@ -56,11 +59,11 @@ projVector i (Vector v) = v i
 -- for Fin.
 -- Note that Fin Z is not an instance of Bounded, since
 -- the type has no elements.
-instance Bounded (Fin (S Z)) where
+instance {-# OVERLAPPING #-} Bounded (Fin (S Z)) where
   minBound = F0
   maxBound = F0
 
-instance Bounded (Fin n) => Bounded (Fin (S n)) where
+instance {-# OVERLAPPING #-} Bounded (Fin n) => Bounded (Fin (S n)) where
   minBound = F0
   maxBound = FS (maxBound :: Fin n)
 
@@ -78,7 +81,7 @@ instance Enum (Fin n) => Enum (Fin (S n)) where
 -- for the operations below:
 type Length n = (Enum (Fin n), Bounded (Fin n))
 
--- For convenience we can also show a vector:
+-- We can also show a vector:
 instance (Length n, Show a) => Show (Vector a n) where
   show v = "[" ++ intercalate ", " elts ++ "]"
     where elts = map (\i -> show (projVector i v)) [minBound .. maxBound]
@@ -105,9 +108,9 @@ m1 = Matrix f
         f (FS F0) F0 = 17
         f (FS (FS (F0))) F0 = 9
 
--- Then can define the sum of all vector elements using the Enum instance:
+-- We can then define the sum of all vector elements using the Enum instance:
 sumVector :: (Length n, Num a) => Vector a n -> a
-sumVector v = sum . map (\i -> projVector i v) $ [minBound .. maxBound]
+sumVector v = sum . map (`projVector` v) $ [minBound .. maxBound]
 
 -- If we have two vectors of equal length, we can combine each
 -- pair of elements given a function of matching type:
