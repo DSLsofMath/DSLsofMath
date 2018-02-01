@@ -6,6 +6,12 @@ Homepage: https://github.com/DSLsofMath/DSLsofMath/
 
 Course codes: DAT326 / DIT982
 
+## News
+
+* 2018-01-15: Please register for the [DSLsofMath google group](https://groups.google.com/forum/#!forum/dslsofmath).
+* 2018-02-01: [Lecture notes](L/snapshots/) now at 126 pages
+* 2018-02-01: [Presentation schedule for Assignment 1](Assignments/schedule.md)
+
 ## Course team
 
 * Examiner & main lecturer: Patrik Jansson (patrikj AT)
