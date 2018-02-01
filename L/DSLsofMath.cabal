@@ -27,6 +27,6 @@ library
 
   -- other-modules:
   -- other-extensions:
-  build-depends:       base >=4.9 && <4.11, QuickCheck
+  build-depends:       base >=4.9 && <4.11, QuickCheck, type-natural
 --  hs-source-dirs:
   default-language:    Haskell2010
