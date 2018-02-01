@@ -1,4 +1,4 @@
-## DSLsofMath course evaluation student representatives 2018:
+# DSLsofMath course evaluation student representatives 2018:
 
 | Email            | Name                    | Confirmed
 | ---------------- | ----------------------- | ---
@@ -8,10 +8,29 @@
 | vonejo           | Jonas von Essen         | Yes
 
 
-## Mid-course evaluation meeting
+# Mid-course evaluation meeting
 
 2018-02-02, at 13.00 in room 5128: the teaching team meets the student
 representatives.
+
+## Changes from last year
+
+The main changes for 2018 (based on the [course eval meeting](eval/2017-04-28.md)) are
+
+* New course literature (lecture notes covering the full course)
+* More material on functional programming in Haskell
+* Developed more exercises to solve (primarily easier exercises to start each week with)
+* More solving of exercises at the whiteboard
+* Schedule changes (alternating L, E, L, E instead of L, L, E, E)
+* Weekly hand-ins to encourage students to spend more hours on the course (not part of the formal examination)
+
+One of the student evaluators from 2017 (DaHe) was hired part time to help out with these improvements.
+
+## Input from the course representatives
+
+TODO
+
+
 
 ----
 Old information below
