@@ -5,7 +5,6 @@
 | markusi          | Markus Ingvarsson       | Yes
 | jlucas           | Lucas Norman Jonsson    |
 | annunt           | Anna-Maria Unterberger  | Yes
-| vonejo           | Jonas von Essen         | Yes
 
 
 # Mid-course evaluation meeting
@@ -28,8 +27,33 @@ One of the student evaluators from 2017 (DaHe) was hired part time to help out w
 
 ## Input from the course representatives
 
-TODO
+Difficult to know what do in the exercises + assignments. More clear
+instructions wanted. [Clarification of the actual text in the
+Ex. sections of the lectures.]
 
+Assignments: how should different ways of solving the problem be
+"graded" or rated.
+
+Unclear expectations of the "presentation slots".
+
+Good with all the online resources.
+
+Good with the lecture case studies and going from specific cases to
+the general cases.
+
+Good with more basic exercises. When you get stuck you can go back to
+easier exercises.
+
+Good with accumulation of solutions of exercises. [They are by design not in the lecture notes to avoid temptation.]
+
+Would be good with more recipes = solution strategies.
+
+Patrik: I will try to extract some from the solutions. Some are already in the notes (like the "wishful thinking" principle for implementing |eval|).
+
+Like the idea of weekly hand-ins. 1-2 ex. to solve. Perhaps using a bonus system.
+
+TODO: Patrik - check the course plan.
+TODO: Perhaps use a peer-review system already this year.
 
 
 ----
