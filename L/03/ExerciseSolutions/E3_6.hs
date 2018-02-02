@@ -1,3 +1,12 @@
+-- This solution handles more than what the task is asking
+-- for, since we actually implement row and col, manually,
+-- and keep track of length for rows and columns, to
+-- demonstrate how length constraint can be encoded
+-- and enforced using the Haskell type system.
+-- In an exam, this amount of detail is not required.
+-- For a simpler solution, see E3_6_simple.lhs in the
+-- same directory.
+
 -- This example is using some type system features not present in normal Haskell,
 -- so we have to enable some extensions to work with numbers on the type level
 {-# LANGUAGE GADTs, KindSignatures, DataKinds, ScopedTypeVariables #-}
@@ -5,13 +14,6 @@
 {-# LANGUAGE ConstraintKinds #-}
 import Data.Type.Natural
 import Data.List
-
--- This solution handles more than what the task is asking
--- for, since we actually implement row and col, manually,
--- and keep track of length for rows and columns, to
--- demonstrate how length constraint can be encoded
--- and enforced using the Haskell type system.
--- In an exam, this amount of detail is not required.
 
 -- First we define a type encoding numbers up to some number n:
 -- Intuitively, Fin n = {0, .., n-1}
