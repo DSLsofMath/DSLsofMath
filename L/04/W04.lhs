@@ -4,6 +4,7 @@
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 module DSLsofMath.W04 where
 import Prelude hiding (Monoid)
+import DSLsofMath.FunExp
 \end{code}
 
 \subsection{Compositional semantics}
@@ -215,7 +216,7 @@ class IntExp t where
   con  ::  Integer -> t
 \end{code}
 %
-In this way we can make ``hide'' the arguments to the fold:
+In this way we can ``hide'' the arguments to the fold:
 %
 \begin{code}
 foldIE :: IntExp t =>  E -> t
@@ -237,11 +238,27 @@ idE' = foldIE
 evalE' :: E -> Integer
 evalE' = foldIE
 \end{code}
-% TODO: Show some concrete values, not just functions, to bring home the message.
-% add (con 3) (con 4) :: Integer = 7
-% add (con 3) (con 4) :: E = Add (Con 3) (Con 4)
 
-And we can also see |pretty| as instance:
+To get a more concrete feeling for this, we define some concrete
+values, not just functions:
+\begin{code}
+seven :: IntExp a => a
+seven = add (con 3) (con 4)
+
+testI :: Integer
+testI = seven
+
+testE :: E
+testE = seven
+
+check :: Bool
+check = and [ testI == 7
+            , testE == Add (Con 3) (Con 4)
+            , testP == "3+4"
+            ]
+\end{code}
+
+We can also see |pretty| as instance:
 
 \begin{code}
 instance IntExp String where
@@ -251,7 +268,20 @@ instance IntExp String where
 
 pretty' :: E -> String
 pretty' = foldIE
+
+testP :: String
+testP = seven
 \end{code}
+
+To sum up, by defining a class |IntExp| (and some instances) we can
+use the metods (|add|, |mul|, |con|) of the class as ``smart
+constructors'' which adapt to the context.
+%
+An overloaded expression, like |seven :: Num a => a|, which only uses
+these smart constructors can be instantiated to different types,
+ranging from the syntax tree type |E| to different semantic
+interpretations (like |Integer|, and |String|).
+
 
 \subsubsection{Back to derivatives and evaluation}
 
@@ -272,34 +302,64 @@ We want to implement |eval' = eval . derive| in the following diagram:
   |FunExp| \arrow[r, "|eval|"]                        & |(REAL -> REAL)|
 \end{tikzcd}
 
-As we saw in section \ref{sec:evalD} this does not work.
+As we saw in section \ref{sec:evalD} this does not work in the sense
+that |eval'| cannot directly be implemented compositionally.
 %
-Instead we need to use the ``tupling transform'' to compute a pair of
-|f| and |D f| at once.
-
-%TODO: Perhaps make a diagram for this case as well.
-
-% Compositionality:
-% * simpler example of non-compositional function [See L9]
-% * then back to |eval'|
-% * and show |evalD|
-% * general pattern: tupling
+The problem is that some of the rules of computing the derivative
+depends not only on the derivative of the subexpressions, but also on
+the subexpressions before taking the derivative.
 %
+A typical example of the problem is |derive (f :*: g)| where the
+result involves not only |derive f| and |derive g|, but also |f| and
+|g|.
+%
+
+The solution is to extend the the return type of |eval'| from one
+semantic value |f| of type |Func = REAL -> REAL| to two such values
+|(f, f') :: (Func, Func)| where |f' = D f|.
+%
+One way of expressing this is to say that in order to implement |eval'
+:: FunExp -> Func| we need to also compute |eval :: FunExp -> Func|.
+%
+Thus we need to implement a pair of |eval|-functions |(eval, eval')|
+together.
+%
+Using the ``tupling transform'' we can express this as computing just
+one function |evalD :: FunExp -> (Func, Func)| returning a pair of |f|
+and |D f| at once.
+%
+
+This combination \emph{is} compositional, and we can then get |eval'|
+back as the second component of |evalD e|:
+%
+\begin{spec}
+eval' :: FunExp -> Func
+eval' = snd . evalD
+\end{spec}
+
+% \tikzcdset{diagrams={column sep = 2cm, row sep = 2cm}}
+% \quad%
+% \begin{tikzcd}
+%   |FunExp| \arrow[r, "|evalD|"] \arrow[d, "|derive|"]
+%                                 \arrow[dr, "|eval'|"]  & |(Func, Func)| \arrow[d, "D"] \\
+%   |FunExp| \arrow[r, "|evalD|"]                        & |(Func, Func)|
+% \end{tikzcd}
 
 \subsection{Algebraic Structures and DSLs}
 
 % based on ../../2016/Lectures/Lecture09.lhs
 
-In this lecture, we continue exploring the relationship between type
+In this section, we continue exploring the relationship between type
 classes, mathematical structures, and DSLs.
 
 \subsubsection{Algebras, homomorphisms}
 \label{sec:AlgHomo}
 
-TODO: rewrite to make it smoother
+The matematical theory behind compositionality talks about
+homomorphisms between algebraic structures.
 
 From Wikipedia:
-
+%
 \begin{quote}
   In universal algebra, an algebra (or algebraic structure) is a set |A|
   together with a collection of operations on |A|.
@@ -335,6 +395,10 @@ numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
 with composition |(a->a,id, (.))|.
 %
 It is a good exercise to check that the laws are satisfied.
+%
+(An ``endofunction'' is simply a function of type |X->X| for some set
+|X|.)
+
 
 In mathematics, as soon as there are several examples of a structure,
 the question of what ``translation'' between them comes up.
@@ -342,17 +406,24 @@ the question of what ``translation'' between them comes up.
 An important class of such ``translations'' are ``structure preserving
 maps'' called \emph{homomorphisms}.
 %
-As two examples, we have the homomorphisms |log| and |exp|:
-
+As two examples, we have the homomorphisms |exp| and |log|, specified
+as follows:
+%
 \begin{spec}
   exp  :  REAL  ->  RPos
-  exp  0        =   1
-  exp  (a + b)  =   exp a  *  exp b
+  exp  0        =   1                 --  \(e^0 = 1\)
+  exp  (a + b)  =   exp a  *  exp b   --  \(e^{a+b} = e^a e^b\)
 
   log  :  RPos  ->  REAL
-  log  1        =   0
-  log  (a * b)  =   log a  +  log b
+  log  1        =   0                 -- \(\log 1 = 0\)
+  log  (a * b)  =   log a  +  log b   -- \(\log(ab) = \log a + \log b \)
 \end{spec}
+%
+What we recognize as the familiar laws of exponentiation and
+logarithms are actually examples of the homomorphism conditions for
+|exp| and |log|.
+%
+Back to Wikipedia:
 
 \begin{quote}
 
@@ -363,13 +434,23 @@ say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
 
 \end{quote}
 
-Example: Monoid homomorphism
-
+Our examples |exp| and |log| are homomorphisms between monoids and the
+general monoid homomorphism conditions for |h : A -> B| are:
+%
 \begin{spec}
 h unit        =  unit             -- |h| takes units to units
-h (x `op` y)  =  h x `op` h y     -- and distributes over |op|
+h (x `op` y)  =  h x `op` h y     -- and distributes over |op| (for all |x| and |y|)
 \end{spec}
+%
+Note that both |unit| and |op| have different types on the left and right hand sides.
+%
+On the left they belong to the monoid |(A, unitA, opA)| and on the
+right the belong to |(B, unitB, opB)|.
 
+To make this a bit more concrete, here are two examples of monoids in
+Haskell: the additive monoid |ANat| and the multiplicative monoid
+|MNat|.
+%
 \begin{code}
 newtype ANat      =  A Int          deriving (Show, Num, Eq)
 
@@ -383,25 +464,25 @@ instance Monoid MNat where
   unit            =  M 1
   op (M m) (M n)  =  M (m * n)
 \end{code}
-
-%TODO (by DaHe): Where do the constructors A and M go in the solution
-% below? Perhaps provide both the "math" and "Haskell" versions to compare.
 %
+In mathematical texts the constructors |M| and |A| are usually omitted
+and below we will stick to that tradition.
+
 Exercise: characterise the homomorphisms from |ANat| to |MNat|.
 
 Solution:
 
 Let |h : ANat -> MNat| be a homomorphism.
 %
-Then
+Then it must satisfy the following conditions:
 
 \begin{spec}
 h 0        = 1
-h (x + y)  = h x * h y
+h (x + y)  = h x * h y  -- for all |x| and |y|
 \end{spec}
 
 For example |h (x + x) = h x * h x = (h x) ^ 2| which for |x = 1|
-means that |h 2 = (h 1) ^ 2|.
+means that |h 2 = h (1 + 1) = (h 1) ^ 2|.
 
 More generally, every |n| in |ANat| is equal to the sum of |n| ones:
 |1 + 1 + ... + 1|.
@@ -414,8 +495,8 @@ h n = (h 1) ^ n
 
 Every choice of |h 1| ``induces a homomorphism''.
 %
-This means that the value of the function |h| is fully determined by
-its value for |1|.
+This means that the value of the function |h| for any natural number,
+is fully determined by its value for |1|.
 
 Exercise: show that |const| is a homomorphism.
 %
@@ -440,7 +521,7 @@ Exercise: Show that |apply c| is a homomorphism for all |c|, where
 
 \subsubsection{Homomorphism and compositional semantics}
 
-Last time, we saw that |eval| is compositional, while |eval'| is not.
+Earlier, we saw that |eval| is compositional, while |eval'| is not.
 %
 Another way of phrasing that is to say that |eval| is a homomorphism,
 while |eval'| is not.
@@ -454,10 +535,11 @@ instance Num FunExp where
   fromInteger  =  Const . fromInteger
 
 instance Fractional FunExp where
+  -- Exercise: fill in
 
 instance Floating FunExp where
   exp          =  Exp
-
+  -- Exercise: fill in
 \end{spec}
 %
 and so on.
@@ -486,22 +568,34 @@ eval :: GoodClass a  =>  FunExp -> a
 %
 where |GoodClass| gives exactly the structure we need for the
 translation.
-%TODO (by DaHe): Maybe we should show how to get both syntax and semantics from the same smart constructors with FunExp (here or in
-% 4.2.2.), and how we can build a FunExp out of the semantic constructors if we
-% have instantiated the type classes: then evaluate the expression to either the
-% syntactic or semantic type by typecasting (exp :: FunExp = F, exp :: (t ->
-% Double) = f) or applying the types to id or Id respectively.
 %
-% And leave it as an exercise to play around with the same thing using FunExp
+With this class in place we can define generic expressions using smart
+constructors just like in the case of |IntExp| above.
 %
+For example, we could define
+%
+\begin{code}
+twoexp :: GoodClass a => a
+twoexp = mulF (constF 2) (expF idF)
+\end{code}
+%
+and instantiate it to either syntax or semantics:
+\begin{code}
+testFE :: FunExp
+testFE = twoexp
 
-Exercise: define |GoodClass| and instantiate |FunExp| and |Double ->
-Double| as instances of it.
+testFu :: Func
+testFu = twoexp
+\end{code}
+
+Exercise: define the class |GoodClass| and instances for |FunExp| and
+|Func = REAL -> REAL| to make the example work.
 %
 Find another instance of |GoodClass|.
 %
 \begin{code}
 class GoodClass t where
+  constF :: REAL -> t
   addF :: t -> t -> t
   mulF :: t -> t -> t
   expF :: t -> t
@@ -521,11 +615,11 @@ evalDExp = error "Exercise"
 \end{code}
 %
 
-
-Therefore, we can always define a homomorphism from |FunExp| to
-\emph{any} instance of |GoodClass|, in an essentially unique way.
+We can always define a homomorphism from |FunExp| to \emph{any}
+instance of |GoodClass|, in an essentially unique way.
 %
-In the language of category theory, |FunExp| is an initial algebra.
+In the language of category theory, the datatype |FunExp| is an
+initial algebra.
 
 Let us explore this in the simpler context of |Monoid|.
 %
@@ -557,8 +651,8 @@ evalM  f  (Op e1 e2)  =  op (evalM f e1) (evalM f e2)
 evalM  f  (V x)       =  f x
 \end{code}
 
-(Observation: In |FunExp|, the role of variables was played by
-|Double|, and the role of the assignment by the identity.)
+(Observation: In |FunExp|, the role of variables was played by |REAL|,
+and the role of the assignment by the identity.)
 
 The following correspondence summarises the discussion so far:
 
@@ -572,7 +666,7 @@ The following correspondence summarises the discussion so far:
 \end{tabular}
 
 The underlying theory of this table is a fascinating topic but mostly
-out of scope for the DSLsofMath course.
+out of scope for these lecture notes (and the DSLsofMath course).
 %
 See
 \href{http://wiki.portal.chalmers.se/cse/pmwiki.php/CTFP14/CoursePlan}{Category
@@ -582,8 +676,8 @@ See
 
 \subsubsection{Other homomorphisms}
 
-Last time, we defined a |Num| instance for functions with a |Num|
-codomain.
+In Section~\ref{sec:FunNumInst}, we defined a |Num| instance for
+functions with a |Num| codomain.
 %
 If we have an element of the domain of such a function, we can use it
 to obtain a homomorphism from functions to their codomains:
@@ -621,7 +715,7 @@ The elements of |FD a| are pairs of functions, so we can take
 
 \begin{spec}
 applyFD ::  a ->  FD a     ->  (a, a)
-applyFD     c     (f, f')  =   (f c, f' c)
+applyFD     c     (FD (f, f'))  =   FD (f c, f' c)
 \end{spec}
 
 We now have the domain of the homomorphism |(FD a)| and the
@@ -631,7 +725,7 @@ the codomain, which now consists of pairs |(a, a)|.
 In fact, we can \emph{compute} this structure from the homomorphism
 condition.
 %
-For example:
+For example (we skip the constructor |FD| for brevity):
 
 \begin{spec}
      h ((f, f') * (g, g'))                       =  {- def. |*| for |FD a| -}
@@ -649,34 +743,38 @@ For example:
 
 The identity will hold if we take
 
-\begin{spec}
-     (x, x') *? (y, y') = (x * y, x' * y + x * y')
-\end{spec}
-%TODO: state explicitly that |(applyFD c)| is a |Num|-homomorphism for all |c|
-%
-%TODO (by DaHe): It should probably be mentioned that we have now defined
-% instance Num a => FD a where (x, x') (*) (y, y') = ..., and that the exercise
-% below asks to define the rest of the operations on FD (I assume that's what
-% "the instance declarations" refers to below, it is not entirely clear to me)
-%%
+\begin{code}
+type Dup a = (a, a)
 
-Exercise: complete the instance declarations for |(Double, Double)|.
+(*?) :: Num a =>  Dup a -> Dup a -> Dup a
+(x, x') *? (y, y')  =  (x * y, x' * y + x * y')
+\end{code}
+
+Thus, if we define a ``multiplication'' on pairs of values using
+|(*?)|, we get that |(applyFD c)| is a |Num|-homomorphism for all |c|
+(or, at least for the operation |(*)|).
+%
+We can now define an instance
+%
+\begin{code}
+instance Num a => Num (Dup a) where
+  (*) = (*?)
+  -- ... exercise
+\end{code}
+%
+Exercise: complete the instance declarations for |(REAL, REAL)|.
 
 Note: As this computation goes through also for the other cases we can
 actually work with just pairs of values (at an implicit point |c ::
 a|) instead of pairs of functions.
-%TODO: new name to avoid confusion in the lab
-Thus we can redefine |FD| to be
 %
-\begin{spec}
-type FD a = (a, a)
-\end{spec}
+Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|
 
 Hint: Something very similar can be used for Assignment 2.
 
 \subsection{Summing up: definitions and representation}
 
-We defined a |Num| structure on pairs |(Double, Double)| by requiring
+We defined a |Num| structure on pairs |(REAL, REAL)| by requiring
 the operations to be compatible with the interpretation |(f a, f' a)|.
 %
 For example
@@ -685,7 +783,7 @@ For example
 (x, x') *? (y, y') = (x * y, x' * y + x * y')
 \end{spec}
 
-There is nothing in the ``nature'' of pairs of |Double| that forces
+There is nothing in the ``nature'' of pairs of |REAL| that forces
 this definition upon us.
 %
 We chose it, because of the intended interpretation.
@@ -745,9 +843,17 @@ negateE _ = error "negate: not supported"
 \end{code}
 
 %TODO: Perhaps include the comparison of the |Num t => Num (Bool -> t)| instance (as a special case of functions as |Num|) and the |Num r => Num (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
+
 \subsection{Co-algebra and the Stream calculus}
 
-%TODO: Intro: In the coming chapters there will be quite a bit of material on infinite structures ...
+In the coming chapters there will be quite a bit of material on
+infinite structures.
+%
+These are often captured not by algebras, but by co-algebras.
+%
+We will not build up a general theory of co-algebras in these notes,
+but I could not resist to introduce a few examples which hint at the
+important role co-algebra plays in calculus.
 
 %
 %include AbstractStream.lhs

@@ -22,6 +22,7 @@
 \usepackage{tikz-cd}
 \usetikzlibrary{trees,graphs,quotes}
 \usepackage{lineno}
+\usepackage{enumitem}
 
 \providecommand\mathbbm{\mathbb}
 

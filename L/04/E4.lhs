@@ -9,18 +9,13 @@
 % to look up this proof in a math textbook, but it will still be forced to think
 % of the definition in terms of homomorphisms.
 
-%TODO (by DaHe): Expand on the 'GoodClass' exercise from the chapter, making it
-% a little more approachable. Maybe show some more examples of what we want to
-% be able to do with it.
-%
-
 \begin{exercise}
   Complete the instance declarations for |FunExp| (for |Num|,
   |Fractional|, and |Floating|).
 \end{exercise}
 
 \begin{exercise}
-  Complete the instance declarations for |(Double, Double)|, deriving
+  Complete the instance declarations for |(REAL, REAL)|, deriving
   them from the homomorphism requirement for |apply| (in section
   \ref{sec:apply}).
 \end{exercise}
@@ -33,8 +28,7 @@
 
     \item Find |e :: FunExp| such that |eval e = f| and use |eval'|.
 
-    \item Find an expression of (the first version of) type |FD Double|
-    and use |apply|.
+    \item Find an expression of type |FD REAL| and use |apply|.
 
     \item Apply |f| directly to the appropriate |(x, x')| and use |snd|.
 
@@ -189,28 +183,34 @@
 
   %TODO: make letters into labels.
   \begin{itemize}
-    \item a. and b. say that |(A, 0, +)| is a monoid
-    \item a--c. say that |(A, 0, +, negate)| is a group
-    \item a--d.  say that |(A, 0, +, negate)| is a commutative group
-    \item e. and f. say that |(A, 1, *)| is a monoid
+  \item a. and b. say that |(A, 0, +)| is a monoid
+  \item a--c. say that |(A, 0, +, negate)| is a group
+  \item a--d.  say that |(A, 0, +, negate)| is a commutative group
+  \item e. and f. say that |(A, 1, *)| is a monoid
   \end{itemize}
 
-  %%TODO: perhaps change numbering to avoid confusion with earlier labels for the laws. \renewcommand*{\theenumi}{\textbf{\arabic{enumi}}}
-  \begin{enumerate}
-  \item  Define a type class `Ring` that corresponds to the ring structure.
+{
+  \begin{enumerate}[label=\roman*]
+  %\renewcommand*{\theenumi}{\textbf{\roman{enumi}}}
+  \item Define a type class |Ring| that corresponds to the ring
+    structure.
 
-    \item  Define a datatype for the language of ring expressions (including
-           variables) and define a `Ring` instance for it.
+  \item Define a datatype for the language of ring expressions
+    (including variables) and define a |Ring| instance for it.
 
-    \item  Find two other instances of the `Ring` class.
+  \item \label{point:otherinstances} Find two other instances of the |Ring| class.
 
-    \item  Define a general evaluator for `Ring` expressions on the basis of
-    a given assignment function.
+  \item Define a general evaluator for |Ring| expressions on the basis
+    of a given assignment function.
 
-    \item  Specialise the evaluator to the two `Ring` instances defined at point
-      3.  Take three ring expressions, give the appropriate assignments and
-      compute the results of evaluating, in each case, the three expressions.
+  \item Specialise the evaluator to the two |Ring| instances defined
+    at point \ref{point:otherinstances}.
+    %
+    Take three ring expressions, give the appropriate assignments and
+    compute the results of evaluating, in each case, the three
+    expressions.
   \end{enumerate}
+}
 \end{exercise}
 
 \begin{exercise}
@@ -219,21 +219,20 @@
   Recall the type of expressions
 
   \begin{code}
-  data FunExp  =  Const Rational
-               |  Id
-               |  FunExp  :+:  FunExp
-               |  FunExp  :*:  FunExp
-               |  FunExp  :/:  FunExp
-               |  Exp  FunExp
-               |  Sin  FunExp
-               |  Cos  FunExp
+  data FunExp  =  Const Rational           |  Id
+               |  FunExp  :+:  FunExp      |  Exp  FunExp
+               |  FunExp  :*:  FunExp      |  Sin  FunExp
+               |  FunExp  :/:  FunExp      |  Cos  FunExp
                -- and so on
                deriving Show
   \end{code}
 
   and consider the function
 
-  \begin{code} f :: Double -> Double f x = exp (sin x) + x \end{code}
+  \begin{code}
+    f :: REAL -> REAL
+    f x = exp (sin x) + x
+  \end{code}
 
   \begin{enumerate}
 
@@ -260,12 +259,13 @@
 
 \begin{exercise}
 
-  Based on the \hyperref[types-in-mathematics]{lecture notes}, complete all the instance and
-  datatype declarations and definitions in the files \\
-  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/FunNumInst.lhs}{FunNumInst.lhs}, \\
-  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/FunExp.lhs}{FunExp.lhs}, \\
-  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/Derive.lhs}{Derive.lhs}, \\
-  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/EvalD.lhs}{EvalD.lhs}, and \\
+  Based on the lecture notes, complete all the instance and datatype
+  declarations and definitions in the files
+  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/FunNumInst.lhs}{FunNumInst.lhs},
+  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/FunExp.lhs}{FunExp.lhs},
+  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/Derive.lhs}{Derive.lhs},
+  \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/EvalD.lhs}{EvalD.lhs},
+  and
   \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/ShallowD.lhs}{ShallowD.lhs}.
 
 \end{exercise}
@@ -273,13 +273,22 @@
 
 \begin{exercise}
   Write a function
+  \begin{code}
+  simplify :: FunExp -> FunExp
+  \end{code}
 
-  |simplify  ::  FunExp -> FunExp|
+  to simplify the expression resulted from |derive|.
+  %
+  For example, the following tests should work:
+  \begin{spec}
+  simplify (Const 0 :*: Exp Id)   ==  Const 0
+  simplify (Const 0 :+: Exp Id)   ==  Exp Id
+  simplify (Const 2 :*: Const 1)  ==  Const 2
+  simplify (derive (Id:*:Id))     ==  Const 2 :*: Id
+  \end{spec}
 
-  to simplify the expression resulted from |derive|.  For example
-
-  |simplify (Const 0 :*: Exp Id)   =  Const 0|
-  |simplify (Const 0 :+: Exp Id)   =  Exp Id|
-  |simplify (Const 2 :*: Const 1)  =  Const 2|
+  As a motivating example, note that |derive (Id:*:Id)| evalutes to
+  |(Const 1.0 :*: Id) :+: (Id :*: Const 1.0)| without |simplify|, and
+  that the second derivative looks even worse.
 
 \end{exercise}

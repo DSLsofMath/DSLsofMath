@@ -671,6 +671,7 @@ This is taken from the Haskell documentation\footnote{Fig. 6.2 in
 but it appears that |Eq| and |Show| are not necessary, because there
 are meaningful instances of |Num| which don't support them:
 %
+\label{sec:FunNumInst}
 \begin{code}
 instance Num a => Num (x -> a) where
   f + g        =  \x -> f x + g x

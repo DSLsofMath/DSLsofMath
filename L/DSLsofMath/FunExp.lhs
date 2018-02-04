@@ -1,13 +1,14 @@
 > module DSLsofMath.FunExp where
 > import DSLsofMath.FunNumInst
 
-> data FunExp      =  Const Double
+> type REAL = Double
+> data FunExp      =  Const REAL
 >                  |  Id
 >                  |  FunExp     :+: FunExp
 >                  |  FunExp     :*: FunExp
 >                  |  Exp FunExp
 >                  -- and so on
->                  deriving Show
+>                  deriving (Eq, Show)
 
 Example:
 
@@ -18,7 +19,8 @@ What is the function corresponding to this expression?
 
 > f x  = 2 * exp (exp x)
 
-> eval  ::  FunExp          ->  Double -> Double
+> type Func = REAL -> REAL
+> eval  ::  FunExp          ->  Func
 > eval      (Const alpha)    =  const alpha
 > eval      Id               =  id
 > eval      (e1 :+: e2)      =  eval e1 + eval e2

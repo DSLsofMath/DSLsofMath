@@ -186,3 +186,10 @@
 %format CSem.*. = "\mathbin{\stackrel{\scriptscriptstyle" CSem "}{" *. "}}"
 
 %format eval'Exp = eval' "_{\!" Exp "}"
+
+%format fA = f "_" A
+%format fB = f "_" B
+%format opA = op "_{\!" A "}"
+%format opB = op "_{\!" B "}"
+%format unitA = unit "_{\!" A "}"
+%format unitB = unit "_{\!" B "}"
