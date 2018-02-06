@@ -36,6 +36,27 @@
   % Hint: |zipWith as [] = []| but |zipWith' as [] = as|
   % blackboard/W5/20170213_114418.jpg
 \end{exercise}
+
+\begin{exercise}
+
+  The helper function |mapPoly :: (a->b) -> (Poly a -> Poly b)| that
+  was used in the implementation of |polyNeg| is a close relative of
+  the usual |map :: (a->b) -> ([a] -> [b])|.
+%
+  Both these are members of a typeclass called |Functor|:
+%
+\begin{spec}
+class Functor f where
+  fmap :: (a->b) -> (f a -> f b)
+\end{spec}
+%
+  Implement an instance of |Functor| for |Maybe| and |ComplexSyn| from
+  Chapter 1 and for |Rat| from Chapter 2.
+
+  Is |fmap f| a homomorphism?
+
+\end{exercise}
+
 \begin{exercise}
   Polynomial multiplication.
   %

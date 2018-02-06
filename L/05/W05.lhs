@@ -3,6 +3,7 @@
 \begin{code}
 {-# LANGUAGE TypeSynonymInstances #-}
 module DSLsofMath.W05 where
+import DSLsofMath.FunNumInst
 \end{code}
 
 \subsection{Polynomials}
@@ -63,23 +64,29 @@ as = [a0, a1, ..., an]
 (we prefer counting up), then the evaluation function is written
 %
 \begin{spec}
-eval ::  [REAL] ->  REAL  ->  REAL
-eval     []         x     =   0
-eval     (a : as)   x     =   a + x * eval as x
+evalL ::  [REAL] ->  REAL  ->  REAL
+evalL     []         x     =   0
+evalL     (a : as)   x     =   a + x * evalL as x
 \end{spec}
 %
-Note that we can read the type as |eval :: [REAL] -> (REAL -> REAL)|
-and thus identify |[REAL]| as the tyoe for the (abstract) syntax and
-|(REAL -> REAL)| as the type of the semantics.
+Note that we can read the type as |evalL :: [REAL] -> (REAL -> REAL)|
+and thus identify |[REAL]| as the type for the (abstract) syntax (for
+polynomials) and |(REAL -> REAL)| as the type of the semantics (for
+polynomial functions).
 %
 Exercise: Show that this evaluation function gives the same result as the formula above.
 %
-Exercise: Use the |Num| instance for functions to rewrite |eval| into
-a one-argument function.
-%TODO: check the solution: eval [] = const 0; eval (a:as) = const a + id*eval as
+Using the |Num| instance for functions we can rewrite |eval| into
+a one-argument function (returning a polynomial function):
+%
+\begin{code}
+evalL :: Num a => [a] -> (a -> a)
+evalL []      = const 0
+evalL (a:as)  = const a  +  id * evalL as
+\end{code}
 %
 As an example, the polynomial which is usually written just |x| is
-represented by the list |[0, 1]| and the polynomial |\x -> x^2-1| is
+represented by the list |[0, 1]| and the polynomial function |\x -> x^2-1| is
 represented by the list |[-1,0,1]|.
 
 It is worth noting that the definition of a what is called a
@@ -127,9 +134,11 @@ data Poly a  =  Single a  |  Cons a (Poly a)
                 deriving (Eq, Ord)
 \end{code}
 
-(TODO: show the version and motivation for using just |[a]| as well.
-Basically, one can use |[]| as the syntax for the ``zero polynomial''
-and |(c:cs)| for all other.)
+Note that if we drop the requirement of what constitutes a ``valid''
+list of coefficients we can use |[a]| instead of |Poly a|.
+%
+Basically, we then use |[]| as the syntax for the ``zero polynomial''
+and |(c:cs)| for all non-zero polynomials.
 
 The relationship between |Poly a| and |[a]| is given by the following
 functions:
@@ -139,9 +148,10 @@ toList :: Poly a   ->  [a]
 toList (Single a)   =  a : []
 toList (Cons a as)  =  a : toList as
 
-fromList :: [a]         ->  Poly a
-fromList (a : [])        =  Single a
-fromList (a0 : a1 : as)  =  Cons a0 (fromList (a1 : as))
+fromList :: Num a => [a]  ->  Poly a
+fromList (a : [])         =  Single a
+fromList (a0 : a1 : as)   =  Cons a0 (fromList (a1 : as))
+fromList []               =  Single 0  -- to complete the pattern match
 
 instance Show a => Show (Poly a) where
   show = show . toList
@@ -209,16 +219,14 @@ For the left-hand side, we have:
 \end{spec}
 
 The homomorphism condition will hold for every |x| if we define
-
-%
-% TODO (by DaHe): This makes it sound like this definition of polynomial
-% addition is something we invent here to make the homomorphism condition
-% hold. But it seems to me this is the most logical way to define addition of
-% polynomials anyway? Maybe this should be discussed/commented on here
 %
 \begin{spec}
   (a : as) + (b : bs)  = (a + b) : (as + bs)
 \end{spec}
+%
+This is definition looks natural (we could probably have guessed it
+early on) but it is still interesting to see that we can derive the
+definition as the the form it has to take for the proof to go through.
 
 We leave the derivation of the other cases and operations as an
 exercise.
@@ -247,12 +255,12 @@ polyMul (Cons a as)  (Single b )  =  Cons (a * b) (polyMul as (Single b))
 polyMul (Cons a as)  (Cons b bs)  =  Cons (a * b) (polyAdd  (polyMul as (Cons b bs))
                                                             (polyMul (Single a) bs)  )
 polyNeg :: Num a => Poly a -> Poly a
-polyNeg = fmap negate
+polyNeg = mapPoly negate
+
+mapPoly :: (a->b) -> (Poly a -> Poly b)
+mapPoly f (Single a)   = Single (f a)
+mapPoly f (Cons a as)  = Cons (f a) (mapPoly f as)
 \end{code}
-%
-% TODO (by DaHe): I don't think fmap has been explained at this point (or at any
-% point in the course): PaJa: introduce in Ch. 2 or 3 (perhaps in exercises)
-%
 %
 Therefore, we \emph{can} define a ring structure (the mathematical
 counterpart of |Num|) on |Poly a|, and we have arrived at the
@@ -265,10 +273,6 @@ canonical definition of polynomials, as found in any algebra book
   \textbf{polynomials} with coefficients in |A|.
 \end{quote}
 
-%
-% TODO (by DaHe): Maybe it should be stated sooner (right after the introduction
-% of evalPoly) that polynomial functions are the evaluations of polynomials.
-% So if |as| is a polynomial, then |evalPoly as| is a polynomial function.
 %
 The functions |evalPoly as| are known as \emph{polynomial functions}.
 
@@ -305,14 +309,14 @@ For example, here is addition:
   For example, consider the ring |ℤ₂| (|{0, 1}| with addition and
   multiplication modulo |2|).
   %
-  In this ring, we have
+  In this ring, we have that |p x = x+x^2| is actually a constant function.
   %
-  % TODO (by DaHe): I don't think it will be obvious for students why the
-  % equation below is true, so perhaps it should be shown step by step.
-  % (x + x^2 = 0, ∀ x : ℤ₂) PaJa: perhaps add exe. in Ch. 3 about ring instances.
+  The only two input values to |p| are |0| and |1| and we can easily
+  check that |p 0 = 0| and also |p 1 = mod (1+1^2) 2 = mod 2 2 = 0|.
   %
+  Thus
   \begin{spec}
-    evalPoly [0, 1, 1] = const 0 = evalPoly [0]  {- in |ℤ₂ -> ℤ₂| -}
+    evalPoly [0, 1, 1] = p = const 0 = evalPoly [0]  {- in |ℤ₂ -> ℤ₂| -}
   \end{spec}
 
   but
@@ -361,8 +365,6 @@ This justifies the standard notation
 \end{enumerate}
 
 \subsection{Polynomial degree as a homomorphism}
-
-%TODO: textify black board notes
 
 It is often the case that a certain function is \emph{almost} a
 homomorphism and the domain or range \emph{almost} a monoid.
@@ -424,7 +426,7 @@ numbers |n|!
 At this stage we could either give up, or think out of the box.
 %
 Intuitively we could try to use |z = -Infinity|, which would seem to
-satisfy the law but which is not a natural number.
+satisfy the law but which is not a natural number (not even an integer).
 %
 More formally what we need to do is to extend the monoid |(Nat,0,+)|
 by one more element.
@@ -439,29 +441,30 @@ class Monoid' a where
   op    :: a -> a -> a
 
 instance Monoid' a => Monoid' (Maybe a) where
-  unit  = Nothing
+  unit  = Just unit
   op    = opMaybe
 
-opMaybe Nothing    m          = m
-opMaybe m          Nothing    = m
+opMaybe Nothing    m          = Nothing    -- |-Inf + m   = -Inf|
+opMaybe m          Nothing    = Nothing    -- |m + (-Inf) = -Inf|
 opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
 \end{code}
 %}
 
-We quote the Haskell prelude implementation:
-% https://hackage.haskell.org/package/base-4.9.1.0/docs/src/GHC.Base.html#line-314
-\begin{quote}
-  Lift a semigroup into |Maybe| forming a |Monoid| according to
-  \url{http://en.wikipedia.org/wiki/Monoid}: "Any semigroup |S| may be
-  turned into a monoid simply by adjoining an element |e| not in |S|
-  and defining |e*e = e| and |e*s = s = s*e| for all |s ∈ S|." Since
-  there is no |Semigroup| typeclass [..], we use |Monoid| instead.
-\end{quote}
+% TODO: perhaps mention another construction:
+% We quote the Haskell prelude implementation:
+% % https://hackage.haskell.org/package/base-4.9.1.0/docs/src/GHC.Base.html#line-314
+% \begin{quote}
+%   Lift a semigroup into |Maybe| forming a |Monoid| according to
+%   \url{http://en.wikipedia.org/wiki/Monoid}: "Any semigroup |S| may be
+%   turned into a monoid simply by adjoining an element |e| not in |S|
+%   and defining |e*e = e| and |e*s = s = s*e| for all |s ∈ S|." Since
+%   there is no |Semigroup| typeclass [..], we use |Monoid| instead.
+% \end{quote}
 
 Thus, to sum up, |degree| is a monoid homomorphism from |(Poly a, 1,
-*)| to |(Maybe Nat, Nothing, opMaybe)|.
+*)| to |(Maybe Nat, Just 0, opMaybe)|.
 
-TODO: check all the properties.
+Exercise: check all the Monoid and homomorphism properties.
 
 \subsection{Power Series}
 
@@ -715,7 +718,7 @@ series through the folowing computation:
 %
 Thus the $m$th coefficient of the derivative is \((m+1) * a_{m+1}\).
 
-TODO: redo to arrive at the recursive formulation.
+%TODO: redo to arrive at the recursive formulation.
 
 We can implement this, for example, as
 
@@ -758,14 +761,33 @@ serious'' \cite{mcilroy1999functional}.
 
 \begin{code}
 instance Functor Poly where
-  fmap = fmapPoly
-
-fmapPoly :: (a->b) -> (Poly a -> Poly b)
-fmapPoly f (Single a)   = Single (f a)
-fmapPoly f (Cons a as)  = Cons (f a) (fmapPoly f as)
+  fmap = mapPoly
 
 po1 :: Num a => Poly a
 po1 = 1 + x^2 - 3*x^4
+
+instance Num a => Monoid' (Poly a) where
+  unit = Single 1
+  op = (*)
+
+instance Monoid' Integer where
+  unit = 0
+  op = (+)
+
+type Nat = Integer
+
+degree :: (Eq a, Num a) => Poly a -> Maybe Nat
+degree (Single 0) = Nothing
+degree (Single x) = Just 0
+degree (Cons x xs) = maxd (degree (Single x)) (fmap (1+) (degree xs))
+  where  maxd x        Nothing   = x
+         maxd Nothing  (Just d)  = Just d
+         maxd (Just a) (Just b)  = Just (max a b)
+
+checkDegree0 = degree (unit :: Poly Integer) == unit
+checkDegreeM :: Poly Integer -> Poly Integer -> Bool
+checkDegreeM p q = degree (p*q) == op (degree p) (degree q)
+
 \end{code}
 
 %include E5.lhs

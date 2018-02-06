@@ -70,6 +70,18 @@
 \end{exercise}
 
 \begin{exercise}
+  Show that arithmetic modulo |n| satisfies the semiring laws (it is
+  even a ring).
+%
+  In more details: show that |ZZn = {0,1,...,n-1}| with |plus x y = mod (x+y)
+  n| and |times x y = mod (x*y) n| forms a semiring.
+%
+
+  With |h x = mod x n|, show that |h| is a homomorphism from |ZZ| to
+  |ZZn|.
+\end{exercise}
+
+\begin{exercise}
   \textit{From exam 2016-03-15}
 
   In exercise \ref{exc:e1_lattice}, we looked a datatype for the language of lattice
