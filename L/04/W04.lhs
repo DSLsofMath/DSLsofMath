@@ -82,9 +82,11 @@ trouble = p1 == p2
 Note that both |e1| and |e2| are different but they pretty-print to
 the same string.
 %
+This means that the parsing (the inverse of |pretty|) is not a
+homomorphism.
+%
 There are many ways to fix this, some more ``pretty'' than others, but
 the main problem is that some information is lost in the translation.
-%
 
 \paragraph{For the curious.}
 %
@@ -252,13 +254,13 @@ testE :: E
 testE = seven
 
 check :: Bool
-check = and [ testI == 7
-            , testE == Add (Con 3) (Con 4)
-            , testP == "3+4"
-            ]
+check = and  [  testI  ==  7
+             ,  testE  ==  Add (Con 3) (Con 4)
+             ,  testP  ==  "3+4"
+             ]
 \end{code}
 
-We can also see |pretty| as instance:
+We can also see |String| and |pretty| as an instance:
 
 \begin{code}
 instance IntExp String where
