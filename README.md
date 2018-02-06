@@ -11,6 +11,7 @@ Course codes: DAT326 / DIT982
 * 2018-01-15: Please register for the [DSLsofMath google group](https://groups.google.com/forum/#!forum/dslsofmath).
 * 2018-02-04: [Lecture notes](L/snapshots/) now at 128 pages, and Chapter 4 ready.
 * 2018-02-01: [Presentation schedule for Assignment 1](Assignments/schedule.md)
+* 2018-02-06: [Peer review of exercises using GitHub classroom](https://github.com/DSLsofMath/DSLM-peer-review)
 
 ## Course team
 
