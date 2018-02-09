@@ -2,6 +2,17 @@ theory MonoidNormalForms
   imports Main
 begin
 
+(* This is a formalization of the monoid simplification we discussed
+   in the exercises in the proof assistant Isabelle. Isabelle checks
+   that steps in a proof are valid, so one no longer has to
+   trust individual steps in a proof, just that the data types, functions
+   and theorem statements make sense. *)
+
+(* NOTE: this file is just here for people who are interested in how
+   normal pen-and-paper proofs look like in proof assistants that
+   mechanically check the correctness of proofs. Understanding Isabelle code
+   is NOT required for the exam. *)
+
 (* Isabelle code is somewhat similar to Haskell with a few differences:
   - : for lists is #
   - ++ is @
