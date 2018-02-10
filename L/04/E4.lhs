@@ -1,13 +1,37 @@
+\begin{exercise}
+\textbf{Homomorphisms.}
+Consider the following definitions:
+\begin{spec}
+  -- |h : A -> B| is a homomorphism from |Op : A->A->A| to |op : B->B->B|
+  H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
+  -- |h : A -> B| is a homomorphism from |F : A -> A| to |f : B -> B|
+  H1(h,F,f)    =  Forall x (h(F x) == f (h x))
+  -- |h : A -> B| is a homomorphism from |E : A| to |e : B|
+  H0(h,E,e)    =  h E == e
+\end{spec}
+
+Prove or disprove the following claims:
+\begin{itemize}
+\item |H2((2*),(+),(+))|
+\item |H2((2*),(*),(*))|
+\item |H2(exp,(+),(*))|
+\item |H2(eval',(:+:),(+))|
+\item |H1(sqrt,(4*),(2*))|
+\item |Exists f (H1(f,(2*).(1+),(1+).(2*)))|
+  % |Exists f (Forall x (f.(2*).(1+) == (1+).(2*).f))|
+  % |Exists f (Forall x (f (2*(1+x)) == 1+2*(f x)))|
+  % |Exists f (Forall x (f (2*(1+x)) == 1+2*(f x)))|
+  % Assume f = const c
+  % |c == 1+2*c|
+  % |-1 == c|
+  % So, yes, there exists such a function, and |const (-1)| is an example.
+\end{itemize}
+
+\end{exercise}
+
+
 %TODO (by DaHe): One or more exercises on "characterize the homomorphisms from
 % X to Y"
-
-%TODO (by DaHe): One or more exercises on "is X a homomorphism? Show that Y is
-% a homomorphism". Can start off with some really easy ones to get students
-% familiar with the idea of homomorphism, and how to check if something is a
-% homomorphism. Then move on to an example that requires some more mathematcal
-% thought, like "show that exp is a homomorphism". They will of course be able
-% to look up this proof in a math textbook, but it will still be forced to think
-% of the definition in terms of homomorphisms.
 
 \begin{exercise}
   Complete the instance declarations for |FunExp| (for |Num|,
@@ -73,12 +97,12 @@
   Show that arithmetic modulo |n| satisfies the semiring laws (it is
   even a ring).
 %
-  In more details: show that |ZZn = {0,1,...,n-1}| with |plus x y = mod (x+y)
+  In more details: show that |Zn = {0,1,...,n-1}| with |plus x y = mod (x+y)
   n| and |times x y = mod (x*y) n| forms a semiring.
 %
 
   With |h x = mod x n|, show that |h| is a homomorphism from |ZZ| to
-  |ZZn|.
+  |Zn|.
 \end{exercise}
 
 \begin{exercise}
