@@ -75,7 +75,7 @@ polynomials) and |(REAL -> REAL)| as the type of the semantics (for
 polynomial functions).
 %
 Exercise: Show that this evaluation function gives the same result as the formula above.
-%
+
 Using the |Num| instance for functions we can rewrite |eval| into
 a one-argument function (returning a polynomial function):
 %
@@ -89,7 +89,7 @@ As an example, the polynomial which is usually written just |x| is
 represented by the list |[0, 1]| and the polynomial function |\x -> x^2-1| is
 represented by the list |[-1,0,1]|.
 
-It is worth noting that the definition of a what is called a
+It is worth noting that the definition of what we call a
 ``polynomial function'' is semantic, not syntactic.
 %
 A syntactic defintion would talk about the form of the expression (a
@@ -103,15 +103,15 @@ This semantic definition only requires that the function |P|
 This may seem pedantic, but here is an interesting example of a family
 of functions which syntactically looks very trigonometric:
 %
-\(T_n(x) = \cos (n*\arccos(x))\).
+\[T_n(x) = \cos (n*\arccos(x))\ .\]
 %
 It can be shown that \(T_n\) is a polynomial function of degree |n|.
 %
-Exercise: show this by induction on |n| using the rule for
-\(cos(\alpha+\beta)\).
+(Exercise \ref{ex:chebyshev} guides you to a proof.
 %
-Start by computing \(T_0\), \(T_1\), and \(T_2\) by hand to get a
-feeling for how it works.
+At this point you could just compute \(T_0\), \(T_1\), and \(T_2\) by
+hand to get a feeling for how it works.
+)
 
 % TODO: perhaps talk about an alternative, recursive, definition of polynomial function, closer to the implementation of |eval| blackboard/W5/20170213_114415.jpg
 

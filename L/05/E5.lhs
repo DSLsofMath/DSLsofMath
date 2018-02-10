@@ -57,7 +57,7 @@ above.
   \end{spec}
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise}\label{ex:chebyshev}\textbf{Chebyshev polynomials.}
 Let
 \(T_n(x) = \cos (n*\arccos(x))\).
 %
@@ -72,25 +72,37 @@ To prove this, here are a few hints:
 
 \begin{itemize}
 \item \(cos(\alpha)+cos(\beta)=2\cos((\alpha+\beta)/2)\cos((\alpha-\beta)/2)\)
-\item let |\alpha = (n+1)*\arccos(x)| and |\beta = (n+1)*\arccos(x)|
+\item let \(\alpha = (n+1)*\arccos(x)\) and \(\beta = (n-1)*\arccos(x)\)
 \item Simplify \(T_{n+1}(x)+T_{n-1}(x)\) to relate it to \(T_n(x)\).
-\item Note that the relation can be seen as an inductive definition of |T_{n+1}(x)|.
+\item Note that the relation can be seen as an inductive definition of \(T_{n+1}(x)\).
 \item Use induction on |n|.
 \end{itemize}
 \end{exercise}
 
 \begin{exercise}
-  Complete the following definition
+  Another view of |Tn| from Exercise \ref{ex:chebyshev} is as a
+  homomorphism.
+%
+  Let |H1(h,F,f) = Forall x (h(F x) == f (h x))| be the predicate
+  that states ``|h : A -> B| is a homomorphism from |F : A -> A| to |f : B -> B|''.
+%
+  Show that |H1(cos,(n*),Tn)| holds, where |cos : RPosz -> [-1,1]|,
+  |(n*) : RPosz -> RPosz|, and |Tn : [-1,1] -> [-1,1]|.
+\end{exercise}
+
+\begin{exercise}
+  Complete the following definition for polynomials represented as a
+  plain list of coefficients:
   \begin{spec}
     instance Num a => Num [a] where
-      (+) = addP
-      (*) = mulP
+      (+)  = addP
+      (*)  = mulP
       -- ... TODO
 
-    addP :: Num a => [a] -> [a] -> [a]
-    addP = zipWith' (+)
-    mulP :: Num a => [a] -> [a] -> [a]
-    mulP = -- TODO
+    addP  :: Num a => [a] -> [a] -> [a]
+    addP  = zipWith' (+)
+    mulP  :: Num a => [a] -> [a] -> [a]
+    mulP  = -- TODO
   \end{spec}
   %
   Note that |zipWith'| is almost, but not quite, the definition of
@@ -138,6 +150,4 @@ class Functor f where
 
 \end{exercise}
 
-
-
-TODO: more exercises!
+%TODO: more exercises!

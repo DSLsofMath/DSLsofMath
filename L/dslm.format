@@ -143,6 +143,10 @@
 %format x2
 %format x3
 %format xn = x "_n"
+%format Tn = T "_n"
+%format H0
+%format H1
+%format H2
 %format y1
 %format y2
 %format y3
