@@ -1,0 +1,8 @@
+Chebyshev ex.
+Let H1(h,F,f) =def= ∀x. h (F x) == f (h x)
+"h:A→B is a homomorphism from F:A→A to f:B→B"
+Show ∀n. ∃Tₙ. H1(cos,(n⋅),Tₙ), where
+cos : ℝ₊ → [−1,1],
+(n⋅) : ℝ₊ → ℝ₊, and
+Tₙ : [−1,1] → [−1,1] is a polynomial of degree n.
+https://github.com/DSLsofMath/DSLsofMath

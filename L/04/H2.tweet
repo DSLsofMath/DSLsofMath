@@ -1,0 +1,8 @@
+One of the examples from last week:
+
+"h : A → B is a homomorphism from Op : A → A → A to op : B → B → B"
+H2 (h, Op, op) =def= ∀ x . ∀ y. h (Op x y) == op (h x) (h y)
+
+Example: H2(exp,(+),(⋅)) says that  eᴬ⁺ᴮ == eᴬ ⋅ eᴮ for all A and B.
+
+https://github.com/DSLsofMath/DSLsofMath/tree/master/L/snapshots
