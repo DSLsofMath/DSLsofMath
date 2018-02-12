@@ -52,8 +52,9 @@ Patrik: I will try to extract some from the solutions. Some are already in the n
 
 Like the idea of weekly hand-ins. 1-2 ex. to solve. Perhaps using a bonus system.
 
-TODO: Patrik - check the course plan.
-TODO: Perhaps use a peer-review system already this year.
+DONE: Patrik - check the course plan: too late to change the rules this year.
+
+DONE: Perhaps use a peer-review system already this year: there is now a peer-review system in place using GitHub classroom.
 
 
 ----
