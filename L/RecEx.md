@@ -20,11 +20,11 @@
 
 ## Chapter 4
 
-4.1, 4.2, 4.3, 4.4, 4.7, 4.8, 4.10
+4.1, 4.2, 4.3, 4.4, 4.5, 4.8, 4.9, 4.11
 
 ## Chapter 5
 
-5.1, 5.2, 5.3
+5.1, 5.2, 5.3, 5.5, 5.6
 
 ## Chapter 6
 
@@ -39,4 +39,3 @@ Search the chapter for tasks marked “Exercise”.
 ## Chapter 8
 
 8.1, 8.2, 8.3, 8.6, 8.7 + Work through some old exams
-
