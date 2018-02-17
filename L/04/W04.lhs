@@ -601,6 +601,7 @@ class GoodClass t where
   addF :: t -> t -> t
   mulF :: t -> t -> t
   expF :: t -> t
+  idF  :: t
   -- ... Exercise: continue to mimic the |FunExp| datatype as a class
 
 newtype FD a = FD (a -> a, a -> a)
@@ -614,6 +615,15 @@ instance Num a => GoodClass (FD a) where
 evalDApp = error "Exercise"
 evalDMul = error "Exercise"
 evalDExp = error "Exercise"
+
+instance GoodClass FunExp where
+  addF = (:+:)
+  -- ...
+
+instance GoodClass (REAL->REAL) where
+  addF = (+)
+  -- ...
+
 \end{code}
 %
 

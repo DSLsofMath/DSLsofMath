@@ -51,6 +51,8 @@ infinite recursion.)
 > simplify (x :+: y) = simpAdd (simplify x) (simplify y)
 > simplify (x :*: y) = simpMul (simplify x) (simplify y)
 > simplify (Exp x)   = simpExp (simplify x)
+> simplify (Sin x)   = simpSin (simplify x)
+> simplify (Cos x)   = simpCos (simplify x)
 > simplify Id        = Id
 > simplify (Const c) = Const c
 
@@ -81,6 +83,14 @@ More work is needed to handle constants well.
 > simpExp :: SimpleExp -> SimpleExp
 > simpExp (Const c)  = Const (exp c)
 > simpExp x          = Exp x
+
+> simpSin :: SimpleExp -> SimpleExp
+> simpSin (Const c)  = Const (sin c)
+> simpSin x          = Exp x
+
+> simpCos :: SimpleExp -> SimpleExp
+> simpCos (Const c)  = Const (cos c)
+> simpCos x          = Exp x
 
 > scaledEq x y                         | x==y = Left (1,1,x)
 > scaledEq            x  (Const b:*:y) | x==y = Left (1,b,x)

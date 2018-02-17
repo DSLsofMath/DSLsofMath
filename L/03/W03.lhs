@@ -4,6 +4,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.W03 where
 import Data.Char (toUpper)
+type REAL = Double
 \end{code}
 
 % (Based on ../../2016/Lectures/Lecture05 )

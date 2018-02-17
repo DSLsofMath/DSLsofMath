@@ -17,4 +17,5 @@
 >   pi       =  const pi
 >   exp f    =  exp . f
 >   f ** g   =  \ x -> (f x)**(g x)
+>   cos f    =  cos . f
 >   -- and so on

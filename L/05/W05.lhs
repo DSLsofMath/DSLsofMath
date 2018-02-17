@@ -686,12 +686,12 @@ hand''.
 We let |p = [1]| and |q=[1,-1]| and seek |r = p/q|.
 %
 \begin{spec}
-  divPS p q                    =
-  divPS [1]      (1:[-1])      =  {- 3rd case -}
-  divPS (1:[0])  (1:[-1])      =  {- 4th case -}
-  (1/1) : divPS ([0] - [1] * [-1])  (1:[-1])
-  1 : divPS ([0] - [-1]) (1:[-1])
-  1 : divPS [1] (1:[-1])
+  divPS p q                                   =  {- def. of |p| and |q| -}
+  divPS [1]      (1:[-1])                     =  {- 3rd case of |divPS| -}
+  divPS (1:[0])  (1:[-1])                     =  {- 4th case of |divPS| -}
+  (1/1) : divPS ([0] - [1] * [-1])  (1:[-1])  =  {- simplification, def. of |(*)| -}
+  1 : divPS ([0] - [-1]) (1:[-1])             =  {- def. of |(-)| -}
+  1 : divPS [1] (1:[-1])                      =  {- def. of |p| and |q| -}
   1 : divPS p q
 \end{spec}
 %
@@ -730,7 +730,7 @@ deriv (Cons a as)  =  deriv' as 1
 \end{code}
 
 Side note: we cannot in general implement a Boolean equality test for
-PowerSeries.
+|PowerSeries|.
 %
 For example, we know that |deriv ps0| equals |ps1| but we cannot
 compute |True| in finite time by comparing the coefficients of the two

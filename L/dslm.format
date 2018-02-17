@@ -114,9 +114,18 @@
 %format f1
 %format f2
 %format f3
+%format e1' = "e''_1"
+%format e2' = "e''_2"
+%format e3' = "e''_3"
+%format f1' = "f''_1"
+%format f2' = "f''_2"
+%format f3' = "f''_3"
 %format m1
 %format m2
 %format m3
+%format ps0
+%format ps1
+%format ps2
 %format p0
 %format p1
 %format p2
@@ -197,3 +206,6 @@
 %format opB = op "_{\!" B "}"
 %format unitA = unit "_{\!" A "}"
 %format unitB = unit "_{\!" B "}"
+
+%format gSyn = g "_{" syn "}"
+%format gSem = g "_{" sem "}"
