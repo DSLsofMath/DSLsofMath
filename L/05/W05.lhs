@@ -8,7 +8,7 @@ import DSLsofMath.FunNumInst
 
 \subsection{Polynomials}
 
-From \cite{adams2010calculus}, page 55:
+From \cite{adams2010calculus}, page 39:
 
 \begin{quote}
 A \textbf{polynomial} is a function $P$ whose value at $x$ is
@@ -31,7 +31,7 @@ the zero polynomial?''.
 The types of the elements involved in the definition appear to be
 
 \begin{quote}
-  $P : ℝ → ℝ$, $x ∈ ℝ$, $a_0$, \ldots, $a_n ∈ ℝ$ with $a_n ≠ 0$ if $n > 0$
+  $n ∈ ℕ$, $P : ℝ → ℝ$, $x ∈ ℝ$, $a_0$, \ldots, $a_n ∈ ℝ$ with $a_n ≠ 0$ if $n > 0$
 \end{quote}
 
 The phrasing should be ``whose value at \emph{any} $x$ is''.
@@ -285,13 +285,23 @@ algebra does not use finite lists, but the equivalent
   \end{spec}
 \end{quote}
 
-Exercise: what are the ring operations on |Poly' A|?
+Exercise: what are the ring operations on |Poly' A|?  Note: they are different from the operation induced by the ring operations on |A|.
+
 %
 For example, here is addition:
 
 \begin{spec}
   a + b = c  <=>  a n + b n = c n  --  |∀ n : ℕ|
 \end{spec}
+
+Remark:  Using functions in the definition has certain ``technical'' advantages over using finite lists.  For example, consider adding |[a0, a1, ..., an]| with |[b0, b1, ..., m]|, with |n > m|.  Then, we obtain a polynomial of degree |n|: |[c0, c1, ..., cn]|.  The formula for the |c_i| must now be given via a case distinction:
+
+< ci = if i > m then ai else ai + bi
+
+\noindent
+since |bi| does not exist for values greater than |m|.
+
+Compare this with the above formula for functions: no case distinction necessary.  The advantage is even clearer in the case of multiplication.
 
 \textbf{Observations:}
 
@@ -363,6 +373,25 @@ This justifies the standard notation
 \[as = \sum_{i = 0}^n a_i * x^i\]
 
 \end{enumerate}
+
+\subsection{Aside: division and the degree of the zero polynomial}
+
+Recall the fundamental property of division we learned in high school:
+
+For all natural numbers |a|, |b|, with |b ≠ 0|, there there exist *unique* integers |q| and |r|, such that
+
+< a = b ｘ q + r, with r < b
+
+When |r = 0|, |a| is divisible by |b|.  Questions of divisibility are essential in number theory and its applications (including cryptography).
+
+A similar theorem holds for polynomials (see, for example, \cite{adams2010calculus} page 40):
+
+For all polynomials |as|, |bs|, with |bs ≠ Single 0|, there there exist *unique* polynomials |qs| and |rs|, such that
+
+< as = bs * qs + rs, with degree rs < degree bs
+
+The condition |r < b| is replaced by |degree rs < degree bs|.  However, we now have a problem.  Every polynomial is divisible by any non-zero constant polynomial, resulting in a zero polynomial remainder.  But the degree of a constant polynomial is zero.  If the degree of the zero polynomial were a natural number, it would have to be smaller than zero.  For this reason, it is either considered undefined (as in \cite{adams2010calculus}), or it is defined as |-∞|.  The next section examines this question from a different point of view, that of homomorphisms.
+
 
 \subsection{Polynomial degree as a homomorphism}
 
@@ -467,6 +496,39 @@ Thus, to sum up, |degree| is a monoid homomorphism from |(Poly a, 1,
 Exercise: check all the Monoid and homomorphism properties.
 
 \subsection{Power Series}
+
+Consider the following ``pseudo proof'':
+
+\begin{theorem}
+Let |m, n ∈ ℕ| and let |cs| and |as| be any polynomials of degree |m + n| and |n|, respectively.  Then |cs| is divisible by |as|.
+\end{theorem}
+
+\begin{proof}
+We need to find |bs = [b0, ..., bm]| such that |cs = as * bs|.  From the multiplication of polynomials, we know that
+
+< ck = Sum_{i = 0}^k ai*b_{k-i}
+
+Therefore:
+
+< c0 = a0 * b0  
+
+Since |c0| and |a0| are known, computing |b0| is trivial.
+
+< c1 = a0 * b1 + a1 * b0
+
+Again, we are given |c1|, |a0| and |a1|, and we have just computed |b0|, therfore we can obtain |b1|.
+
+< c2 = a0 * b2 + a1 * b1 + a2 * b0
+
+from which we obtain, exactly as before, the value of |b2|.
+
+It is clear that this process can be continued, yielding at every step a value for a coefficient of |bs|, and thus we have obtained |bs| satisfying |cs = as * bs|.
+
+\end{proof}
+
+The problem with this ``proof'' is in the statement ``it is clear that this process can be continued''.  In fact, it is rather clear that it cannot!  Indeed, |bs| only has |m+1| coefficients, therefore for all remaining |n| equations of the form |ck = Sum_{i = 0}^k ai*b_{k-i}|, the values of |bk| have to be zero.  But in general this will not satisfy the equations.
+
+However, we can now see that, if we were able to continue, we would be able to divide |cs| by |as| exactly.  The only obstacle is the ``finite'' nature of our lists of coefficients.
 
 Power series are obtained from polynomials by removing in |Poly'| the
 restriction that there should be a \emph{finite} number of non-zero
