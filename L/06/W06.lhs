@@ -210,9 +210,6 @@ instance Floating a => Floating (a, a) where  -- just pairs
 \end{spec}
 
 %
-% TODO (by DaHe): I don't think it's obvious why (a, a) is a generalization of
-% FD a, so perhaps this could be elaborated upon. [Also a newtype might be better.]
-%
 In fact, the latter represents a generalisation of the former.
 %
 To see this, note that if we have a |Floating| instance for some |A|,
@@ -638,8 +635,8 @@ cx = 1  :  neg 0  :  frac (neg 1) 2  :  0               :  error "TODO"
 %
 %if False
 \begin{code}
-neg = negate
-frac = (/)
+neg = negate   -- |neg| is used to typeset unary minus as a shorter dash, closer to its argument
+frac = (/)     -- |frac| is used to typeset a fraction (more compactly than |x / y|)
 \end{code}
 %endif
 
