@@ -23,6 +23,7 @@
 \usetikzlibrary{trees,graphs,quotes}
 \usepackage{lineno}
 \usepackage{enumitem}
+\newtheorem{theorem}{Theorem}
 
 \providecommand\mathbbm{\mathbb}
 

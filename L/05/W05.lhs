@@ -380,7 +380,7 @@ Recall the fundamental property of division we learned in high school:
 
 For all natural numbers |a|, |b|, with |b ≠ 0|, there there exist *unique* integers |q| and |r|, such that
 
-< a = b ｘ q + r, with r < b
+< a = b * q + r, with r < b
 
 When |r = 0|, |a| is divisible by |b|.  Questions of divisibility are essential in number theory and its applications (including cryptography).
 
@@ -499,24 +499,32 @@ Exercise: check all the Monoid and homomorphism properties.
 
 Consider the following ``pseudo proof'':
 
-\begin{theorem}
-Let |m, n ∈ ℕ| and let |cs| and |as| be any polynomials of degree |m + n| and |n|, respectively.  Then |cs| is divisible by |as|.
+\begin{theorem}[Fake theorem]
+Let |m, n ∈ ℕ| and let |cs| and |as| be any polynomials of degree |m + n| and |n|, respectively, and with |a0 /= 0|.
+%
+Then |cs| is divisible by |as|.
 \end{theorem}
 
 \begin{proof}
-We need to find |bs = [b0, ..., bm]| such that |cs = as * bs|.  From the multiplication of polynomials, we know that
+We need to find |bs = [b0, ..., bm]| such that |cs = as * bs|.
+%
+From the multiplication of polynomials, we know that
 
-< ck = Sum_{i = 0}^k ai*b_{k-i}
+< ck = {-"\sum_{i = 0}^k a_i * b_{k-i}"-}
 
 Therefore:
 
-< c0 = a0 * b0  
+< c0 = a0 * b0
 
-Since |c0| and |a0| are known, computing |b0| is trivial.
+Since |c0| and |a0| are known, computing |b0 = c0/a0| is trivial.
+%
+Next
 
 < c1 = a0 * b1 + a1 * b0
 
-Again, we are given |c1|, |a0| and |a1|, and we have just computed |b0|, therfore we can obtain |b1|.
+Again, we are given |c1|, |a0| and |a1|, and we have just computed |b0|, therefore we can obtain |b1|.
+%
+Similarly
 
 < c2 = a0 * b2 + a1 * b1 + a2 * b0
 
@@ -526,9 +534,17 @@ It is clear that this process can be continued, yielding at every step a value f
 
 \end{proof}
 
-The problem with this ``proof'' is in the statement ``it is clear that this process can be continued''.  In fact, it is rather clear that it cannot!  Indeed, |bs| only has |m+1| coefficients, therefore for all remaining |n| equations of the form |ck = Sum_{i = 0}^k ai*b_{k-i}|, the values of |bk| have to be zero.  But in general this will not satisfy the equations.
+The problem with this ``proof'' is in the statement ``it is clear that this process can be continued''.
+%
+In fact, it is rather clear that it cannot (for polynomials)!
+%
+Indeed, |bs| only has |m+1| coefficients, therefore for all remaining |n| equations of the form |ck = {-"\sum_{i = 0}^k a_i * b_{k-i}"-}|, the values of |bk| have to be zero.
+%
+But in general this will not satisfy the equations.
 
-However, we can now see that, if we were able to continue, we would be able to divide |cs| by |as| exactly.  The only obstacle is the ``finite'' nature of our lists of coefficients.
+However, we can now see that, if we were able to continue for ever, we would be able to divide |cs| by |as| exactly.
+%
+The only obstacle is the ``finite'' nature of our lists of coefficients.
 
 Power series are obtained from polynomials by removing in |Poly'| the
 restriction that there should be a \emph{finite} number of non-zero
@@ -695,7 +711,7 @@ series |(c : cs)| satisfying
   (a : as) = (c * b)  :  (cs * (b : bs)  +  [c]*bs)  <=> {- equality on compnents, def. of division -}
 
   c   = a / b                          {- and -}
-  as  = cs * (b : bs) + [c] * bs     {-" "-}       <=> {- arithmetics -}
+  as  = cs * (b : bs) + [c] * bs       {-" "-}       <=> {- arithmetics -}
 
   c   = a / b                          {- and -}
   cs  =  (as - [c] * bs) / (b : bs)

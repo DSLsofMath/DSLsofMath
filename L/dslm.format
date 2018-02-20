@@ -106,8 +106,11 @@
 %format b3
 %format bk = b "_k"
 %format bn = b "_n"
+%format bm = b "_m"
+%format c0
 %format c1
 %format c2
+%format ck = c "_k"
 %format e1
 %format e2
 %format f0
