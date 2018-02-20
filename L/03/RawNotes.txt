@@ -1,5 +1,20 @@
-* L6+L9: Core
-* L10-13: Core applications
-* L7+8 (guest lectures) will probably move to L11-12
+Some notes whith no natural place in the current notes.
 
-Lecture06: Notice the similarity with Exp in L1
+
+limAt a f = limAt 0 (\h->f(a+h)) = limAt 0 (f.(a+)) = lim0 (f.(a+))
+
+D f x = lim0 (psi f x)
+
+where
+
+psi f x h = (f(x+h)-f(x))/h
+
+psi2 f x y =  (f(y)-f(x))/(y-x)
+
+psi2 f x (x+h) =  (f(x+h)-f(x))/(x+h-x)  = (f(x+h)-f(x))/h = psi f x h
+
+(psi2 f x) . (x+) = psi f x
+
+Thus, using the lim0 lemma,
+
+D f x = lim0 (psi f x) = lim0 ((psi2 f x) . (x+)) = limAt x (psi2 f x)

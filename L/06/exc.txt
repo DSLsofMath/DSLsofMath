@@ -1,0 +1,27 @@
+Raw notes for a possible exercise, but turned out too messy for DSLsofMath.
+
+f x = sum_{n=0}^{\infty} (a n x)
+
+a n x = (1/(4n^2-1))*x^(2n+1)
+
+  (a n)' x
+=
+  (1/(2n+1)/(2n-1))*(2n+1)*x^(2n)
+=
+  (1/(2n-1))*x^(2n)
+
+
+separate the first term (n=0 => -1) and factor out |x| from the rest:
+
+f' x = (sum_{n=0}^{\infty} (a n x))'
+     = sum_{n=0}^{\infty} ((a n)' x)
+     = sum_{n=0}^{\infty} ((1/(2n-1))*x^(2n))
+     = -1 + x*sum_{n=1}^{\infty} ((1/(2n-1))*x^(2n-1))
+     = -1 + x*sum_{m=0}^{\infty} ((1/(2m+1))*x^(2m+1))
+     = -1 + x * g x
+
+b m x = (1/(2m+1))*x^(2m+1)
+(b m)' x = x^(2m)
+
+
+g x = sum_{m=0}^{\infty} ((1/(2m+1))*x^(2m+1))
