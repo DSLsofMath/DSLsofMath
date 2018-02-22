@@ -322,26 +322,83 @@ evalAll (e1 :*: e2) = evalAll e1 * evalAll e2
 
 where the |(*)| sign stands for the multiplication of infinite lists of
 functions, the operation we are trying to determine.
+%
+We assume that we have already derived the definition of |+| for these
+lists (it is |zipWith (+)|).
 
-We have, writing |eval| for |evalFunExp| in order to save ink
+We have, writing |eval| for |evalFunExp| and |d| for |derive| in order
+to save ink
 
 \begin{spec}
-    evalAll (e1 :*: e2) = evalAll e1 * evalAll e2
-<=>
-    eval (e1 :*: e2) : evalAll (derive (e1 :*: e2)) =
-    eval e1 : evalAll (derive e) * eval e1 : evalAll (derive e2)
-<=>
-    (eval e1 * eval e2) : evalAll (derive (e1 :*: e2)) =
-    eval e1 : evalAll (derive e) * eval e1 : evalAll (derive e2)
-<=>
-    (eval e1 * eval e2) : evalAll (derive e1 :*: e2 :+: e1 * derive e2) =
-    eval e1 : evalAll (derive e) * eval e1 : evalAll (derive e2)
-<==
-    (a : as) * (b : bs) = (a * b) : (as * (b : bs) + (a : as) * bs)
+    LHS
+= {- def. -}
+    evalAll (e1 :*: e2)
+= {- def. of |evalAll| -}
+    eval (e1 :*: e2) : evalAll (d (e1 :*: e2))
+= {- def. of |eval| for |(:*:)| -}
+    (eval e1 * eval e2) : evalAll (d (e1 :*: e2))
+= {- def. of |derive| for |(:*:)| -}
+    (eval e1 * eval e2) : evalAll (d e1 :*: e2 :+: e1 * d e2)
+= {- we assume |H2(evalAll, (:+:), (+))| -}
+    (eval e1 * eval e2) : evalAll (d e1 :*: e2) + evalAll (e1 :*: d e2)
 \end{spec}
 
-The final line represents the definition of |(*)| needed for ensuring
-the conditions are met.
+Similarly, starting from the other end we get
+
+\begin{spec}
+    evalAll e1 * evalAll e2
+=
+    (eval e1 : evalAll (d e1)) * (eval e2 : evalAll (d e2))
+\end{spec}
+
+Now, to see the pattern it is useful to give simpler names to some
+common subexpressions: let |a = eval e1|, |b = eval e2|.
+
+\begin{spec}
+    (a * b) : evalAll (d e1 :*: e2) + evalAll (e1 * d e2)
+=?
+    (a : evalAll (d e1)) * (b : evalAll (d e2))
+\end{spec}
+%
+Now we can solve part of the problem by defining |(*)| as
+%
+\begin{spec}
+(a : as) * (b : bs) = (a*b) : help a b as bs
+\end{spec}
+
+The remaining part is then
+
+\begin{spec}
+    evalAll (d e1 :*: e2) + evalAll (e1 * d e2)
+=?
+    help a b (evalAll (d e1)) (evalAll (d e2))
+\end{spec}
+
+Informally, we can refer to (co-)induction at this point and rewrite
+|evalAll (d e1 :*: e2)| to |evalAll (d e1) * evalAll e2|.
+%
+We also have |evalAll . d = tail . evalAll| which leads to:
+
+\begin{spec}
+    tail (evalAll e1) * evalAll e2 + evalAll e1 * tail (evalAll e2)
+=?
+    help a b (tail (evalAll e1)) (tail (evalAll e2))
+\end{spec}
+Finally we rename common subexpressions:
+let |a:as = evalAll e1| and |b:bs = evalAll e2|.
+\begin{spec}
+    tail (a:as) * (b:bs)  +  (a:as) * tail (b:bs)
+=?
+    help a b as bs
+\end{spec}
+which clearly is solved by defining |help| as follows:
+\begin{code}
+help a b as bs = as * (b : bs) + (a : as) * bs
+\end{code}
+Thus, we can eliminate |help| to arrive at a definition for multiplication:
+\begin{code}
+(a : as) * (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
+\end{code}
 
 As in the case of pairs, we find that we do not need any properties of
 functions, other than their |Num| structure, so the definitions apply
