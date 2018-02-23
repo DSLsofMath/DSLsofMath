@@ -389,9 +389,9 @@ let |a:as = evalAll e1| and |b:bs = evalAll e2|.
 \begin{spec}
     tail (a:as) * (b:bs)  +  (a:as) * tail (b:bs)
 =?
-    help a b as bs
+    help a b (tail (a:as)) (tail (b:bs))
 \end{spec}
-which clearly is solved by defining |help| as follows:
+This is clearly is solved by defining |help| as follows:
 \begin{code}
 help a b as bs = as * (b : bs) + (a : as) * bs
 \end{code}
