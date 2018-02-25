@@ -201,9 +201,22 @@ that
 \begin{spec}
 (M * v) i = sum [M i j * v j | j <- [0 .. n]]
 \end{spec}
+We can implement this matrix-vector multiplication as |mulMV|:
 \begin{code}
-mul m v g' = sum [m g' g * v g | g <- [minBound .. maxBound]]
+mulMV ::  (Bounded g, Enum g, Num s) =>
+          (g'->g->s)  ->  (g->s)     ->  (g'->s)
+mulMV m v g' = sum [m g' g * v g | g <- [minBound .. maxBound]]
+type Matrix g g' = g' -> g -> S
+-- |mulMV : Matrix g g' ->  (Vector g  ->  Vector g')|
 \end{code}
+%
+Note that in the terminology of the earlier chapter we can see |Matrix
+g g'| as a type of syntax and the linear transformation (of type
+|Vector g -> Vector g'|) as semantics.
+%
+With this view, |mulMV| is just another |eval :: Syntax -> Semantics|.
+%
+
 
 Example:
 
@@ -288,7 +301,7 @@ type |() -> S|, thus, the only component of |M * w| is
 (M * w) () = w 0 * fv 0 () + ... + w n * fv n () = w 0 * v 0 + ... + w n * v n
 \end{spec}
 
-i.e., the scalar product of |v| and |w|.
+i.e., the scalar product of the vectors |v| and |w|.
 
 
 \textbf{Remark:} I have not discussed the geometrical point of view.
@@ -564,7 +577,7 @@ Test:
 % TODO (by DaHe): Is the line below meant as an exercise? Otherwise, shouldn't
 % we get to see the result of the 'test'?
 \begin{code}
-t1' = mul m1 (e 3 + e 4)
+t1' = mulMV m1 (e 3 + e 4)
 t1 = toL t1'
 \end{code}
 
@@ -696,7 +709,7 @@ instance Num Bool where
 Test:
 
 \begin{code}
-t2' = mul m2 (e 3 + e 4)
+t2' = mulMV m2 (e 3 + e 4)
 t2 = toL t2'
 \end{code}
 
@@ -840,7 +853,7 @@ m3 g' g   =  undefined
 Test
 
 \begin{code}
-t3 = toL (mul m3 (e 2 + e 4))
+t3 = toL (mulMV m3 (e 2 + e 4))
 \end{code}
 
 \subsection{Monadic dynamical systems}
