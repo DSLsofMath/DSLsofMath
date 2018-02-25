@@ -30,9 +30,12 @@ Chapter \ref{sec:Laplace}:
 
 You have reached the end --- rejoice!
 \ldots and work through the old exams, as extra practice.
+%
+(As you do that you may note that all the exam questions from 2016 and
+2017 are already included as separate exercises earlier in the book.)
 
 \begin{exercise}
-Exam 2016-Practice:
+Exam 2016-Practice (Appendix \ref{app:Exam2016-Practice}):
   \begin{itemize}
   \item Algebra: Vector space,
   \item Typing: derivative chain law,
@@ -41,7 +44,7 @@ Exam 2016-Practice:
   \end{itemize}
 \end{exercise}
 \begin{exercise}
-Exam 2016-03:
+Exam 2016-03 (Appendix \ref{app:Exam2016-03}):
   \begin{itemize}
   \item Algebra: Lattice,
   \item Typing: integration of functional,
@@ -50,7 +53,7 @@ Exam 2016-03:
   \end{itemize}
 \end{exercise}
 \begin{exercise}
-Exam 2016-08:
+Exam 2016-08 (Appendix \ref{app:Exam2016-08}):
   \begin{itemize}
   \item Algebra: Abelian group,
   \item Typing: conditional probability,
@@ -59,7 +62,7 @@ Exam 2016-08:
   \end{itemize}
 \end{exercise}
 \begin{exercise}
-Exam 2017-03:
+Exam 2017-03 (Appendix \ref{app:Exam2017-03}):
   \begin{itemize}
   \item Typing: Partial derivative,
   \item Laplace,
@@ -69,7 +72,7 @@ Exam 2017-03:
   \end{itemize}
 \end{exercise}
 \begin{exercise}
-Exam 2017-08:
+Exam 2017-08 (Appendix \ref{app:Exam2017-08}):
   \begin{itemize}
   \item Algebra: Semirings,
   \item Typing/LinAlg: matrix mult.,

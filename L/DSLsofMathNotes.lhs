@@ -23,6 +23,7 @@
 \usetikzlibrary{trees,graphs,quotes}
 \usepackage{lineno}
 \usepackage{enumitem}
+\usepackage{pdfpages}
 \newtheorem{theorem}{Theorem}
 
 \providecommand\mathbbm{\mathbb}
@@ -133,6 +134,21 @@
 
 \clearpage
 \appendix
+
+\newcommand{\includeexam}[1]{\includeexaminner{Exam #1}{app:Exam#1}{../Exam/#1/Exam-#1.pdf}}
+
+\newcommand{\includeexaminner}[3]{%
+\section{#1}
+\label{#2}
+\includegraphics[page=1,trim={2cm 3.5cm 2cm 3.5cm},clip]{#3}
+\includepdf[pages=2-3]{#3}
+}
+
+\includeexam{2016-Practice}
+\includeexam{2016-03}
+\includeexam{2016-08}
+\includeexam{2017-03}
+\includeexam{2017-08}
 
 %include 01/CSem.lhs
 
