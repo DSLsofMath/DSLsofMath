@@ -19,7 +19,7 @@ arranged as a column:
 
 \[v = \colvec{v}\]
 
-Other times, this is suplemented by the definition of a row vector:
+Other times, this is supplemented by the definition of a row vector:
 
 \[v = \rowvec{v}\]
 
@@ -61,19 +61,19 @@ v = v0 * e0 + ... + vn * en
 The algebraic structure that captures a set of vectors, with zero,
 addition, and scaling is called a \emph{vector space}.
 %
-For every field |S| of scalars and every set |G| of indeces, the set
+For every field |S| of scalars and every set |G| of indices, the set
 |Vector G = G -> S| can be given a vector space structure.
 
 There is a temptation to model vectors by lists or tuples, but a more
 general (and conceptually simpler) way is to view them as
-\emph{functions} from a set of indeces |G|:
+\emph{functions} from a set of indices |G|:
 %
 \begin{spec}
 type S          =   ... -- the scalars, forming a field (|REAL|, or |Complex|, or |Zn|, etc.)
 type Vector G   =   G -> S
 \end{spec}
 Usually, |G| is finite, i.e., |Bounded| and |Enumerable| and in the
-examples so far we have used indeces from \(G = \{0, \ldots, n\}\).
+examples so far we have used indices from \(G = \{0, \ldots, n\}\).
 %
 We sometime use |card G| to denote the \emph{cardinality} of the set
 |G|, the number of elements (\(n+1\) in this case).
@@ -133,7 +133,7 @@ v =  v 0 * e 0 + ... + v n * e n
 
 \subsection{Functions on vectors}
 
-As we have seen in earlier chapters, morphisms between structures are often importan.
+As we have seen in earlier chapters, morphisms between structures are often important.
 %
 Vector spaces are no different: if we have two vector spaces |Vector
 G| and |Vector G'| (for the same set of scalars |S|) we can study
@@ -229,7 +229,7 @@ and obtain a linear transformation |f = (M*)|.
 Moreover |((M*) . e) g g' = M g' g|, i.e., the matrix constructed as
 above for |f| is precisely |M|.
 
-Exercise: compute |((M*) . e ) g g'|.
+Exercise \ref{exc:Mstarcompose}: compute |((M*) . e ) g g'|.
 
 Therefore, every linear transformation is of the form |(M*)| and every
 |(M*)| is a linear transformation.
@@ -246,9 +246,9 @@ that is
 ((M' * M)*) = (M' *) . (M *)
 \end{spec}
 
-Exercise: work this out in detail.
+Exercise \ref{exc:Mstarhomomorphismcompose}: work this out in detail.
 
-Exercise: show that matrix-matrix multiplication is associative.
+Exercise \ref{exc:MMmultAssoc}: show that matrix-matrix multiplication is associative.
 
 Perhaps the simplest vector space is obtained for |G = ()|, the
 singleton index set.
@@ -314,8 +314,8 @@ This suggests that polynomials of degree |n+1| form a vector space,
 and we could interpret that as |{0, ..., n} -> REAL| (or, more
 generally, |Field a => {0, ..., n} -> a|).
 %
-The operations |+| and |*| are defined in the same way as they are for
-functions.
+The operations |+| (vector addition) and |*| (vector scaling) are
+defined in the same way as they are for functions.
 
 The |derive| function takes polynomials of degree |n+1| to polynomials
 of degree |n|, and since |D (f + g) = D f + D g| and |D (s * f) = s *
@@ -333,7 +333,7 @@ e i : {0, ..., n} -> Real, e i j = i `is` j
 
 %
 % TODO (by DaHe): I think this should be clarified. If e i j = i `is` j, then
-% why would the evaluation of |e i| return \x -> x^i ?
+% why would the evaluation of |e i| return |\x -> x^i| ?
 %  [explain the interpretation of the [0001000] vector as 1 in front of x^i and 0 for other terms.
 The evaluation of |e i| returns the function |\ x -> x^i|, as
 expected.
@@ -346,16 +346,20 @@ M = [ D (e 0), D (e 1), ..., D (e n) ]
 
 where each |D (e i)| has length |n|.
 %
-Vector |e (i+1)| represents |x^(i+1)|, therefore
+Vector |e (i+1)| represents |\x->x^(i+1)|, therefore
 
 \begin{spec}
-D (e (i+1)) = (i+1) * x^i
+eval (D (e (i+1)))  =  {- |eval| is a homomorphism. Note that the |D| has another type. -}
+D (eval (e (i+1)))  =  {- Def. of |eval| -}
+D (powTo (i+1))     =  {- Def. of |D| for polynomial functions -}
+\x -> (i+1) * x^i   =  {- Def. of |eval| for the base vectors -}
+eval ((i+1)*e i)
 \end{spec}
 
 i.e.
 
 \begin{spec}
-D (e (i+1)) !! j = if i == j then i+1 else 0
+D (e (i+1)) j  =  if i == j then i+1 else 0
 \end{spec}
 
 and
@@ -377,7 +381,7 @@ M =
 Take the polynomial
 %
 \begin{spec}
-3 * x^2 + 2 * x + 1
+1 + 2 * x + 3 * x^2
 \end{spec}
 
 as a vector
@@ -394,19 +398,19 @@ and we have
 % TODO: Perhaps explain this "row of columns" view of a matrix in contrast with the "column of rows" view.
 % TODO: Perhaps also (or instead) just make the matrix be a two-dimensional grid of scalars.
 
-representing the polynomial |6*x + 2|.
+representing the polynomial |2 + 6*x|.
 
-Exercise: write the (infinite-dimensional) matrix representing |D| for
+Exercise \ref{exc:Dmatrixpowerseries}: write the (infinite-dimensional) matrix representing |D| for
 power series.
 
-Exercise: write the matrix associated with integration of polynomials.
+Exercise \ref{exc:matrixIntegPoly}: write the matrix associated with integration of polynomials.
 
 \subsubsection{Simple deterministic systems (transition systems)}
 
-%TODO: Define endo-function earlier and give examples.
-Simple deterministic systems are given by endo-functions\footnote{An
-  \emph{endo-function} is a function from a set |X| to itself: |f : X
-  -> X|.} on a finite set |f : G -> G|.
+Simple deterministic systems are given by endo-functions%
+\footnote{An \emph{endo-function} is a function from a set |X| to
+  itself: |f : X -> X|.}%
+on a finite set |f : G -> G|.
 %
 They can often be conveniently represented as a graph, for example
 
@@ -432,8 +436,6 @@ A node in the graph represents a state.
 %
 A transition |i -> j| means |f i = j|.
 %
-% TODO (by DaHe): Again, the sentence below doesn't really make sense if one
-% doesn't know the definition of an endo-function. More explanation needed.
 Since |f| is an endo-function, every node must be the source of
 exactly one arrow.
 
@@ -535,7 +537,7 @@ instance Enum G where
 
 instance Num G where
   fromInteger = G . fromInteger
-  -- Note that this is just for convient notation (integer literals),
+  -- Note that this is just for convenient notation (integer literals),
   -- G should normally not be used with
 \end{code}
 
@@ -567,10 +569,11 @@ t1 = toL t1'
 \end{code}
 
 \subsubsection{Non-deterministic systems}
+\label{sec:NonDetSys}
 
 %
 % TODO (by DaHe): I think it should be stated somewhere in this section that for
-% non-deterministic stystems, the result of applying the function a number of
+% non-deterministic systems, the result of applying the function a number of
 % times from a given starting state is a list of the possible states one could
 % end up in.
 %
@@ -639,8 +642,8 @@ determine what vectors the canonical base vectors are associated with:
   }
 \]
 
-Exercise: start with |e 2 + e 3| and iterate a number of times, to get
-a feeling for the possible evolutions.
+Exercise \ref{exc:NonDetExample1}: start with |e 2 + e 3| and iterate
+a number of times, to get a feeling for the possible evolutions.
 %
 What do you notice?
 %
@@ -698,6 +701,7 @@ t2 = toL t2'
 \end{code}
 
 \subsubsection{Stochastic systems}
+\label{sec:StocSys}
 
 Quite often, we have more information about the transition to possible
 future states.
@@ -733,7 +737,7 @@ For example
 
 One could say that this case is a generalisation of the previous one,
 in which we can take all probabilities to be equally distributed among
-the various possiblities.
+the various possibilities.
 %
 While this is plausible, it is not entirely correct.
 %
@@ -808,14 +812,14 @@ probability distribution \emph{concentrated} in |i|:
   }
 \]
 
-Exercise: starting from state 0, how many steps do you need to take
-before the probability is concentrated in state 6?
+Exercise \ref{exc:StocExample1}: starting from state 0, how many steps
+do you need to take before the probability is concentrated in state 6?
 %
 Reverse again the arrow from 2 to 4.
 %
 What can you say about the long-term behaviour of the system now?
 
-Exercise: Implement the example.
+Exercise \ref{exc:StocExample1Impl}: Implement the example.
 %
 You will need to define:
 
@@ -839,15 +843,11 @@ Test
 t3 = toL (mul m3 (e 2 + e 4))
 \end{code}
 
-
 \subsection{Monadic dynamical systems}
 
-%
-% TODO (by DaHe): I think most students don't have any idea how monads or the
-% monad laws work, so perhaps these two sections should be marked as extra
-% material for those who are interested. When this was discussed during a
-% lecture, almost everyone started scratching their heads and looked confused.
-%
+This section is not part of the intended learning outcomes of the
+course, but it presents a useful unified view of the three previous
+sections which could help your understanding.
 
 All the examples of dynamical systems we have seen in the previous
 section have a similar structure.

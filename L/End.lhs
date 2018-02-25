@@ -25,3 +25,55 @@ Linear algebra, vector spaces, matrices, bases
 
 Chapter \ref{sec:Laplace}:
 |exp|, |Laplace|
+
+\subsection{Exercises}
+
+You have reached the end --- rejoice!
+\ldots and work through the old exams, as extra practice.
+
+\begin{exercise}
+Exam 2016-Practice:
+  \begin{itemize}
+  \item Algebra: Vector space,
+  \item Typing: derivative chain law,
+  \item Laplace,
+  \item Proof: limits
+  \end{itemize}
+\end{exercise}
+\begin{exercise}
+Exam 2016-03:
+  \begin{itemize}
+  \item Algebra: Lattice,
+  \item Typing: integration of functional,
+  \item Laplace,
+  \item Proof: continuity of (+)
+  \end{itemize}
+\end{exercise}
+\begin{exercise}
+Exam 2016-08:
+  \begin{itemize}
+  \item Algebra: Abelian group,
+  \item Typing: conditional probability,
+  \item Laplace,
+  \item Proof: continuity of (.)
+  \end{itemize}
+\end{exercise}
+\begin{exercise}
+Exam 2017-03:
+  \begin{itemize}
+  \item Typing: Partial derivative,
+  \item Laplace,
+  \item Proof: derivative \& chain rule,
+  \item FunExp + derive,
+  \item LinAlg: transition matrix
+  \end{itemize}
+\end{exercise}
+\begin{exercise}
+Exam 2017-08:
+  \begin{itemize}
+  \item Algebra: Semirings,
+  \item Typing/LinAlg: matrix mult.,
+  \item Laplace,
+  \item Proof: flavours of continuity
+  \end{itemize}
+\end{exercise}

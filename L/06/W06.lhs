@@ -915,17 +915,17 @@ instance Floating FunExp where
 
 \begin{spec}
 instance Num a => Num (FD a) where
-  (f, f') + (g, g') = (f + g, f' + g')
-  (f, f') * (g, g') = (f * g, f' * g + f * g')
-  fromInteger n     = (fromInteger n, const 0)
+  (f, f') + (g, g')  = (f + g, f' + g')
+  (f, f') * (g, g')  = (f * g, f' * g + f * g')
+  fromInteger n      = (fromInteger n, const 0)
 
 instance Fractional a => Fractional (FD a) where
-  (f, f') / (g, g') = (f / g, (f' * g - g' * f) / (g * g))
+  (f, f') / (g, g')  = (f / g, (f' * g - g' * f) / (g * g))
 
 instance Floating a => Floating (FD a) where
-  exp (f, f')       =  (exp f, (exp f) * f')
-  sin (f, f')       =  (sin f, (cos f) * f')
-  cos (f, f')       =  (cos f, -(sin f) * f')
+  exp (f, f')        =  (exp f, (exp f) * f')
+  sin (f, f')        =  (sin f, (cos f) * f')
+  cos (f, f')        =  (cos f, -(sin f) * f')
 \end{spec}
 
 \subsubsection{This is included instead}
@@ -933,17 +933,17 @@ instance Floating a => Floating (FD a) where
 
 \begin{code}
 instance Num a => Num (a, a) where
-  (f, f') + (g, g') = (f + g, f' + g')
-  (f, f') * (g, g') = (f * g, f' * g + f * g')
-  fromInteger n     = (fromInteger n, fromInteger 0)
+  (f, f') + (g, g')  = (f + g, f' + g')
+  (f, f') * (g, g')  = (f * g, f' * g + f * g')
+  fromInteger n      = (fromInteger n, fromInteger 0)
 
 instance Fractional a => Fractional (a, a) where
-  (f, f') / (g, g') = (f / g, (f' * g - g' * f) / (g * g))
+  (f, f') / (g, g')  = (f / g, (f' * g - g' * f) / (g * g))
 
 instance Floating a => Floating (a, a) where
-  exp (f, f')       =  (exp f, (exp f) * f')
-  sin (f, f')       =  (sin f, cos f * f')
-  cos (f, f')       =  (cos f, -(sin f) * f')
+  exp (f, f')        =  (exp f, (exp f) * f')
+  sin (f, f')        =  (sin f, cos f * f')
+  cos (f, f')        =  (cos f, -(sin f) * f')
 \end{code}
 
 %include E6.lhs
