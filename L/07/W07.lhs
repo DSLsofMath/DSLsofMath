@@ -2,6 +2,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
 module DSLsofMath.W07 where
+import DSLsofMath.FunNumInst
 \end{code}
 
 %
@@ -178,21 +179,21 @@ We have
 
   (v 0 * m 0 + ... + v n * m n) g'                   = {- |*| and |+| for functions are def. pointwise -}
 
-  v 0 * m 0 g' + ... + v n * m n g'                  = {- using |sum| -}
+  v 0 * m 0 g' + ... + v n * m n g'                  = {- using |sum|, and |(*)| commutative -}
 
-  sum [v i * m i g' | i <- [minBound .. maxBound]]
+  sum [m j g' * v j | j <- [minBound .. maxBound]]
 \end{spec}
 
 Implementation:
 
-This is the almost the standard vector-matrix multiplication:
+This is almost the standard vector-matrix multiplication:
 
 \begin{spec}
 M = [m 0 | ... | m n]
 \end{spec}
 
 The columns of |M| are the images of the canonical base vectors |e i|
-through |f|.
+through |f| (or, in other words, the columns of |M| are |f (e i)|).
 %
 Every |m k| has |card G'| rows, and it has become standard to use |M i
 j| to mean the |i|th element of the |j|th column, i.e., |m j i|, so
@@ -1025,29 +1026,76 @@ bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
 
 \subsection{Associated code}
 
-TODO: import from suitable earlier lecture.
-
+The scalar product of two vectors is a good building block for matrix
+multiplication:
+%
 \begin{code}
-instance Num a => Num (x -> a) where
-  f + g        =  \x -> f x + g x
-  f - g        =  \x -> f x - g x
-  f * g        =  \x -> f x * g x
-  negate f     =  negate . f
-  abs f        =  abs . f
-  signum f     =  signum . f
-  fromInteger  =  const . fromInteger
-
-instance Fractional a => Fractional (x -> a) where
-  recip  f         =  recip . f
-  fromRational     =  const . fromRational
-
-instance Floating a => Floating (x -> a) where
-  pi       =  const pi
-  exp f    =  exp . f
-  sin f    =  sin . f
-  cos f    =  cos . f
-  f ** g   =  \ x -> (f x)**(g x)
-  -- and so on
+dot ::  (Enum g, Bounded g, Num s) =>
+        (g->s) -> (g->s) -> s
+dot v w = sum (map (v * w) [minBound .. maxBound])
 \end{code}
+%
+Note that |v * w :: g -> s| is using the |FunNumInst|.
+
+Using it we can shorten the definition of |mulMV|
+
+\begin{spec}
+  mulMV m v g'
+= -- Earlier definition
+  sum [m g' g * v g | g <- [minBound .. maxBound]]
+= -- replace list comprehension with |map|
+  sum (map (\g -> m g' g * v g) [minBound .. maxBound])
+= -- use |FunNumInst| for |(*)|
+  sum (map (m g' * v) [minBound .. maxBound])
+= -- Def. of |dot|
+  dot (m g') v
+\end{spec}
+Thus, we can defined matrix-vector multiplication by
+\begin{spec}
+mulMV m v g' =  dot (m g') v
+\end{spec}
+We can even go one step further:
+\begin{spec}
+  mulMV m v
+= -- Def.
+  \g' -> dot (m g') v
+= -- |dot| is commutative
+  \g' -> dot v (m g')
+= -- Def. of |(.)|
+  dot v . m
+\end{spec}
+to end up at
+\begin{code}
+mulMV' ::  (Bounded g, Enum g, Num s) =>
+           Mat g g' s ->  Vec g s  ->  Vec g' s
+mulMV' m v  =  dot v . m
+type Mat r c s = c -> r -> s
+type Vec r s = r -> s
+\end{code}
+
+% Similarly, we can define matrix-matrix multiplication:
+% \begin{code}
+% mulMM ::  (Finite b, Num s) =>
+%            Mat a b s  ->  Mat b c s  ->  Mat a c s
+% mulMM a b  =  undefined
+%
+% \end{code}
+% -- Specification: (a * b) * v == a * (M * v)
+% -- Specification: mulMV (mulMM a b) v == mulMV a (mulMV b v)
+% -- Specification: mulMV (mulMM a b) == (mulMV a) . (mulMV b)
+% -- Specification: eval (mulMM a b) == (eval a) . (eval b)
+%
+%   eval (mulMM a b)
+% = -- spec.
+%   (eval a) . (eval b)
+% = -- def. of |eval|
+%   (\w -> dot w . a) . (\v -> dot v . b)
+% = -- def. of |(.)|
+%   \v -> (\w -> dot w . a) ((\v -> dot v . b) v)
+% = -- simplification
+%   \v -> (\w -> dot w . a) (dot v . b)
+% = -- simplification
+%   \v -> (dot (dot v . b) . a)
+% ... gets too complicated for this chapter
 
 %include E7.lhs
