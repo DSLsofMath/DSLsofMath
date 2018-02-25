@@ -1,15 +1,11 @@
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 module DSLsofMath.W07 where
 import DSLsofMath.FunNumInst
+type REAL = Double
 \end{code}
-
-%
-%TODO (by DaHe): There are lots of tasks marked as "exercise" scattered
-% throughout the chapter. I think these ought to be moved into E7.lhs, perhaps
-% with references to the text.
-%
 
 \section{Matrix algebra and linear transformations}
 \label{sec:LinAlg}
@@ -70,8 +66,8 @@ general (and conceptually simpler) way is to view them as
 \emph{functions} from a set of indices |G|:
 %
 \begin{spec}
-type S          =   ... -- the scalars, forming a field (|REAL|, or |Complex|, or |Zn|, etc.)
-type Vector G   =   G -> S
+type S           =   ... -- the scalars, forming a field (|REAL|, or |Complex|, or |Zn|, etc.)
+type Vector s g  =   g -> s
 \end{spec}
 Usually, |G| is finite, i.e., |Bounded| and |Enumerable| and in the
 examples so far we have used indices from \(G = \{0, \ldots, n\}\).
@@ -112,10 +108,10 @@ Implementation:
 is :: Num s => Int -> Int -> s
 is a b = if a == b then 1 else 0
 
-e :: Num s => G -> (G -> s)
-e (G g) = \ (G g')  ->   g `is` g'
+e :: Num s => G -> Vector s G
+e (G g) = V (\ (G g')  ->   g `is` g')
 
-toL v = [v g | g <- [minBound .. maxBound]]   -- so we can actually see them
+toL (V v) = [v g | g <- [minBound .. maxBound]]   -- so we can actually see them
 \end{code}
 
 and every
@@ -204,16 +200,18 @@ that
 \end{spec}
 We can implement this matrix-vector multiplication as |mulMV|:
 \begin{code}
-mulMV ::  (Bounded g, Enum g, Num s) =>
-          (g'->g->s)  ->  (g->s)     ->  (g'->s)
-mulMV m v g' = sum [m g' g * v g | g <- [minBound .. maxBound]]
-type Matrix g g' = g' -> g -> S
--- |mulMV : Matrix g g' ->  (Vector g  ->  Vector g')|
+mulMV ::  (Finite g, Num s) =>
+          (g'->Vector s g)  ->  Vector s g     ->  Vector s g'
+mulMV m v  = V $ \g' -> sumV (m g' * v)
+type Matrix s g g' = g' -> Vector s g
+sumV :: (Finite g, Num s) => Vector s g -> s
+sumV (V v) = sum (map v [minBound..maxBound])
+-- |mulMV : Matrix s g g' ->  (Vector s g  ->  Vector s g')|
 \end{code}
 %
 Note that in the terminology of the earlier chapter we can see |Matrix
 g g'| as a type of syntax and the linear transformation (of type
-|Vector g -> Vector g'|) as semantics.
+|Vector s g -> Vector s g'|) as semantics.
 %
 With this view, |mulMV| is just another |eval :: Syntax -> Semantics|.
 %
@@ -289,7 +287,7 @@ M = [m 0 | ... | m n] = [fv 0 | ... | fv n]
 having |n+1| columns (the dimension of |Vector G|) and one row
 (dimension of |Vector ()|).
 %
-Let |w :: Vector G|:
+Let |w :: Vector s G|:
 
 \begin{spec}
 M * w = w 0 * fv 0 + ... + w n * fv n
@@ -315,8 +313,7 @@ algebra'' videos on youtube (start here:
 
 \subsection{Examples of matrix algebra}
 
-\subsubsection{Derivative}
-
+\subsubsection{Polynomials and their derivatives}
 
 We have represented polynomials of degree |n+1| by the list of their
 coefficients.
@@ -330,6 +327,47 @@ generally, |Field a => {0, ..., n} -> a|).
 %
 The operations |+| (vector addition) and |*| (vector scaling) are
 defined in the same way as they are for functions.
+%
+
+To explain the vector space it is useful to start by defining the canonical base vectors.
+%
+As for geometrical vectors, they are
+%
+\begin{spec}
+e i : {0, ..., n} -> Real, e i j = i `is` j
+\end{spec}
+%
+but how do we interpret them as polynomial functions?
+%
+
+When we represented a polynomial by its list of coefficients, we saw
+that the polynomial function |\x -> x^3| could be represented as
+|[0,0,0,1]|, where |1| is the coefficient of |x^3|.
+%
+Similarly, representing this list of coefficients as a vector (a
+function from |{0, ..., n} -> REAL|), we get the vector |\j -> if j ==
+3 then 1 else 0|, which is |\j -> 3 `is` j| or simply |e 3|.
+
+In general, |\x -> x^i| is represented by |e i|, which is another way
+of saying that |e i| should be interpreted as |\x -> x^i|.
+%
+Any other polynomial function |p| equals the linear combination of
+monomials, and can therefore be represented as a linear combination of
+our base vectors |e i|.
+%
+For example, |p x = 2+x^3| is represented by |2 * e 0 + e 3|.
+%
+
+In general, the evaluator from the vector representation to polynomial
+functions is as follows:
+%
+\begin{code}
+evalM :: G -> (REAL -> REAL)
+evalM (G i) = \x -> x^i
+
+evalP :: Vector REAL G -> (REAL -> REAL)
+evalP (V v) x = sum (map (\i -> v i * evalM i x) [minBound..maxBound])
+\end{code}
 
 The |derive| function takes polynomials of degree |n+1| to polynomials
 of degree |n|, and since |D (f + g) = D f + D g| and |D (s * f) = s *
@@ -337,20 +375,6 @@ D f|, we expect it to be a linear transformation.
 %
 What is its associated matrix?
 
-To answer that, we must first determine the canonical base vectors.
-%
-As for geometrical vectors, they are
-
-\begin{spec}
-e i : {0, ..., n} -> Real, e i j = i `is` j
-\end{spec}
-
-%
-% TODO (by DaHe): I think this should be clarified. If e i j = i `is` j, then
-% why would the evaluation of |e i| return |\x -> x^i| ?
-%  [explain the interpretation of the [0001000] vector as 1 in front of x^i and 0 for other terms.
-The evaluation of |e i| returns the function |\ x -> x^i|, as
-expected.
 
 The associated matrix will be
 
@@ -466,9 +490,9 @@ Each |e i| is the characteristic function of a singleton set, |{i}|.
 %
 Thus, the inputs to |f| are canonical vectors.
 
-% TODO (by DaHe): I think it could be made clearer what |f| actually does:
-% if f i = j, it means that if we are currently in state i, the next state will
-% be j.
+To make what |f| does more explicit: if |f i == j| the transition from
+state |i| goes to state |j|.
+
 To write the matrix associated to |f|, we have to compute what vector
 is associated to each canonical base vector vector:
 
@@ -495,16 +519,8 @@ Therefore:
 Starting with a canonical base vector |e i|, we obtain |M * e i = e (f
 i)|, as we would expect.
 
-% TODO (by DaHe): The two lines below should probably integrated into the next
-% paragraph, as they say almost the same thing
-It is more interesting if we start with a non-base vector.
-%
-For example, |e 2 + e 4|, which represents the subset |{2, 4}|.
-
-% TODO (by DaHe): Is [0, 1, 1] supposed to represent |e 2 + e 4|? Shouldn't it
-% be [0, 0, 1, 0, 1] or am I missing something?
 The more interesting thing is if we start with something different
-from a basis vector, say |[0, 1, 1]|.
+from a basis vector, say |[0, 0, 1, 0, 1, 0, 0] == e 2 + e 4|.
 %
 We obtain |{f 2, f 4} = {5, 6}|, the image of |{2, 4}| through |f|.
 %
@@ -570,33 +586,30 @@ f1 6 = 5
 The associated matrix:
 
 \begin{code}
-m1 (G g') (G g)  =  g'  `is`  f1 g
+m1 (G g') = V $ \(G g) ->  g'  `is`  f1 g
 \end{code}
+% $
 
 Test:
 
-% TODO (by DaHe): Is the line below meant as an exercise? Otherwise, shouldn't
-% we get to see the result of the 'test'?
 \begin{code}
 t1' = mulMV m1 (e 3 + e 4)
-t1 = toL t1'
+t1 = toL t1'                  -- |[0,0,0,0,0,0,2]|
 \end{code}
 
 \subsubsection{Non-deterministic systems}
 \label{sec:NonDetSys}
-
-%
-% TODO (by DaHe): I think it should be stated somewhere in this section that for
-% non-deterministic systems, the result of applying the function a number of
-% times from a given starting state is a list of the possible states one could
-% end up in.
-%
 
 Another interpretation of the application of |M| to characteristic
 functions of a subset is the following: assuming that all I know is
 that the system is in one of the states of the subset, where can it
 end up after one step?  (this assumes the |max|-|min| algebra as
 above).
+%
+
+The general idea for non-deterministic systems, is that the result of
+applying the step function a number of times from a given starting
+state is a list of the possible states one could end up in.
 
 In this case, the uncertainty is entirely caused by the fact that we
 do not know the exact initial state.
@@ -687,7 +700,7 @@ f2 6 g      =   False
 The associated matrix:
 
 \begin{code}
-m2 (G g') (G g) = f2 g g'
+m2 (G g') = V $ \(G g) -> f2 g g'
 \end{code}
 
 %
@@ -711,7 +724,7 @@ Test:
 
 \begin{code}
 t2' = mulMV m2 (e 3 + e 4)
-t2 = toL t2'
+t2 = toL t2'  -- |[False,True,False,False,False,False,True]|
 \end{code}
 
 \subsubsection{Stochastic systems}
@@ -810,7 +823,10 @@ canonical base vectors are transformed.
 % TODO (by DaHe): Again, I find this a little confusing: If e = is, then how is
 % e i the probability distribution concentrated in i? PaJa: show that the type is right and the sum is 1.
 In this case, the canonical base vector |e i = \ j -> i `is` j| is the
-probability distribution \emph{concentrated} in |i|:
+probability distribution \emph{concentrated} in |i|.
+%
+This means that the probability to be in state |i| is 100\% and the
+probability of being anwhere else is |0|.
 
 \[
   M =
@@ -851,11 +867,6 @@ m3 ::  G -> (G -> Double)
 m3 g' g   =  undefined
 \end{code}
 
-Test
-
-\begin{code}
-t3 = toL (mulMV m3 (e 2 + e 4))
-\end{code}
 
 \subsection{Monadic dynamical systems}
 
@@ -973,8 +984,8 @@ Our definition will work for \emph{finite types} only.
 
 \begin{code}
 type S            =  Double
-data Vector g     =  V (g -> S)
-toF (V v)         =  v
+newtype Vector s g  =  V (g -> s) deriving Num
+toF (V v)           =  v
 
 class     (Bounded a, Enum a, Eq a) => Finite a  where
 instance  (Bounded a, Enum a, Eq a) => Finite a  where
@@ -982,17 +993,17 @@ instance  (Bounded a, Enum a, Eq a) => Finite a  where
 class FinFunc f where
   func :: (Finite a, Finite b) =>  (a -> b) -> f a -> f b
 
-instance FinFunc Vector where
+instance Num s => FinFunc (Vector s) where
   func = funcV
 
-funcV :: (Finite g, Eq g') => (g -> g') -> Vector g -> Vector g'
+funcV :: (Finite g, Eq g', Num s) => (g -> g') -> Vector s g -> Vector s g'
 funcV f (V v) =  V (\ g' -> sum [v g | g <- [minBound .. maxBound], g' == f g])
 
 class FinMon f where
   embed   ::  Finite a => a -> f a
   bind    ::  (Finite a, Finite b) => f a -> (a -> f b) -> f b
 
-instance FinMon Vector where
+instance Num s => FinMon (Vector s) where
   embed a       =  V (\ a' -> if a == a' then 1 else 0)
   bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- [minBound .. maxBound]])
 \end{code}
@@ -1026,11 +1037,12 @@ bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
 
 \subsection{Associated code}
 
+
 The scalar product of two vectors is a good building block for matrix
 multiplication:
 %
 \begin{code}
-dot ::  (Enum g, Bounded g, Num s) =>
+dot ::  (Finite g, Num s) =>
         (g->s) -> (g->s) -> s
 dot v w = sum (map (v * w) [minBound .. maxBound])
 \end{code}
@@ -1066,11 +1078,11 @@ We can even go one step further:
 \end{spec}
 to end up at
 \begin{code}
-mulMV' ::  (Bounded g, Enum g, Num s) =>
-           Mat g g' s ->  Vec g s  ->  Vec g' s
+mulMV' ::  (Finite g, Num s) =>
+           Mat s g g' ->  Vec s g  ->  Vec s g'
 mulMV' m v  =  dot v . m
-type Mat r c s = c -> r -> s
-type Vec r s = r -> s
+type Mat s r c = c -> r -> s
+type Vec s r = r -> s
 \end{code}
 
 % Similarly, we can define matrix-matrix multiplication:
