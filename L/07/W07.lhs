@@ -110,8 +110,6 @@ is a b = if a == b then 1 else 0
 
 e :: Num s => G -> Vector s G
 e (G g) = V (\ (G g')  ->   g `is` g')
-
-toL (V v) = [v g | g <- [minBound .. maxBound]]   -- so we can actually see them
 \end{code}
 
 and every
@@ -177,7 +175,7 @@ We have
 
   v 0 * m 0 g' + ... + v n * m n g'                  = {- using |sum|, and |(*)| commutative -}
 
-  sum [m j g' * v j | j <- [minBound .. maxBound]]
+  sum [m j g' * v j | j <- [0 .. n]]
 \end{spec}
 
 Implementation:
@@ -205,7 +203,7 @@ mulMV ::  (Finite g, Num s) =>
 mulMV m v  = V $ \g' -> sumV (m g' * v)
 type Matrix s g g' = g' -> Vector s g
 sumV :: (Finite g, Num s) => Vector s g -> s
-sumV (V v) = sum (map v [minBound..maxBound])
+sumV (V v) = sum (map v finiteDomain)
 -- |mulMV : Matrix s g g' ->  (Vector s g  ->  Vector s g')|
 \end{code}
 %
@@ -366,7 +364,7 @@ evalM :: G -> (REAL -> REAL)
 evalM (G i) = \x -> x^i
 
 evalP :: Vector REAL G -> (REAL -> REAL)
-evalP (V v) x = sum (map (\i -> v i * evalM i x) [minBound..maxBound])
+evalP (V v) x = sum (map (\i -> v i * evalM i x) finiteDomain)
 \end{code}
 
 The |derive| function takes polynomials of degree |n+1| to polynomials
@@ -737,6 +735,7 @@ In particular, we can have \emph{probabilities} of these transitions.
 %
 For example
 %
+
 \tikz [nodes={circle,draw}, scale=1.2]{
 
   \node (n0) at (1,1) {0};
@@ -747,7 +746,7 @@ For example
   \node (n5) at (4,0) {5};
   \node (n2) at (2,0) {2};
 
-  \graph [edges={->,>=latex,nodes={draw=none}}] {
+  \graph [edges={ ->,>=latex,nodes={draw=none}}] {
      (n0) ->[".4"] (n1);
      (n0) ->[".6",swap] (n2);
      (n1) ->["1"]  (n3);
@@ -997,7 +996,7 @@ instance Num s => FinFunc (Vector s) where
   func = funcV
 
 funcV :: (Finite g, Eq g', Num s) => (g -> g') -> Vector s g -> Vector s g'
-funcV f (V v) =  V (\ g' -> sum [v g | g <- [minBound .. maxBound], g' == f g])
+funcV f (V v) =  V (\ g' -> sum [v g | g <- finiteDomain, g' == f g])
 
 class FinMon f where
   embed   ::  Finite a => a -> f a
@@ -1005,7 +1004,7 @@ class FinMon f where
 
 instance Num s => FinMon (Vector s) where
   embed a       =  V (\ a' -> if a == a' then 1 else 0)
-  bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- [minBound .. maxBound]])
+  bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- finiteDomain])
 \end{code}
 
 A better implementation, using associated types, is in file
@@ -1037,6 +1036,26 @@ bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
 
 \subsection{Associated code}
 
+Conversions and |Show| functions so that we can actuall see our vectors.
+%
+\begin{code}
+toL :: Finite g => Vector s g -> [s]
+toL (V v) = map v finiteDomain
+
+finiteDomain :: Finite a => [a]
+finiteDomain = [minBound..maxBound]
+
+instance (Finite g, Show s) => Show (g->s)        where  show = showFun
+instance (Finite g, Show s) => Show (Vector s g)  where  show = showVector
+
+showVector :: (Finite g, Show s) => Vector s g -> String
+showVector (V v) = showFun v
+showFun :: (Finite a, Show b) => (a->b) -> String
+showFun f = show (map f finiteDomain)
+\end{code}
+
+
+TODO: convert to using the |newtype Vector|.
 
 The scalar product of two vectors is a good building block for matrix
 multiplication:
@@ -1044,7 +1063,7 @@ multiplication:
 \begin{code}
 dot ::  (Finite g, Num s) =>
         (g->s) -> (g->s) -> s
-dot v w = sum (map (v * w) [minBound .. maxBound])
+dot v w = sum (map (v * w) finiteDomain)
 \end{code}
 %
 Note that |v * w :: g -> s| is using the |FunNumInst|.
@@ -1054,11 +1073,11 @@ Using it we can shorten the definition of |mulMV|
 \begin{spec}
   mulMV m v g'
 = -- Earlier definition
-  sum [m g' g * v g | g <- [minBound .. maxBound]]
+  sum [m g' g * v g | g <- finiteDomain]
 = -- replace list comprehension with |map|
-  sum (map (\g -> m g' g * v g) [minBound .. maxBound])
+  sum (map (\g -> m g' g * v g) finiteDomain)
 = -- use |FunNumInst| for |(*)|
-  sum (map (m g' * v) [minBound .. maxBound])
+  sum (map (m g' * v) finiteDomain)
 = -- Def. of |dot|
   dot (m g') v
 \end{spec}

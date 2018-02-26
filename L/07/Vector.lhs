@@ -9,9 +9,9 @@ This code is not formally part of the DSLsofMath course.
 
 > is a b = if a == b then 1 else 0
 
-> type S         =  Double
-> data Vector g  =  V (g -> S)
-> toF (V v)      =  v
+> type S            =  Double
+> newtype Vector g  =  V (g -> S)
+> toF (V v)         =  v
 
 > class (Bounded a, Enum a, Eq a) => Finite a
 > instance (Bounded a, Enum a, Eq a) => Finite a
@@ -116,4 +116,4 @@ instance Functor f => Func f where func = funcFromFunctor
 >   show = showVector
 
 > showVector :: Finite g => Vector g -> String
-> showVector (V v) = show (fmap v [minBound .. maxBound])
+> showVector (V v) = show (map v [minBound .. maxBound])
