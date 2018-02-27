@@ -29,8 +29,8 @@ where M m n a = Fin m -> Fin n -> a
 > mul :: SemiRing a => M m n a -> M n p a -> M m p a
 
 The function |proj| is parametrically polymorphic: it can project from
-a matrix containing any type of elements. Thus is needs no class
-contraint. For matrix multiplication to make sense you need addition
+a matrix containing any type of elements. Thus it needs no class
+constraint. For matrix multiplication to make sense you need addition
 and multiplication on the element type. In standard Haskell you would
 probably use the |Num| class and in a more mathematical setting you
 may want to use a structure like |SemiRing| from P1.

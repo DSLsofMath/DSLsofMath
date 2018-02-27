@@ -206,7 +206,7 @@ Multiplication for matrices (from the matrix algebra DSL).
     type of the values |{0, 1, ..., n-1}|.
   \item Introduce types for the functions |mul| and |proj|
     where $AB$ = |mul A B| and |proj i j M| = ``take the $(i, j)^{th}$
-    entry of $M$''. What class contraints (if any) are needed on the
+    entry of $M$''. What class constraints (if any) are needed on the
     type of the matrix entries in the two cases?
   \item Implement |mul| in Haskell. You may use the functions
     |row| and |col| specified by |row i M| = ``the $i^{th}$ row of
