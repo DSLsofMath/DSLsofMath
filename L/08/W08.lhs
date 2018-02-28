@@ -5,8 +5,6 @@
 \label{sec:exp}
 
 \begin{code}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE TypeSynonymInstances #-}
 module DSLsofMath.W08 where
 import DSLsofMath.W05
 import DSLsofMath.W06
@@ -209,14 +207,18 @@ with |T = 2*pi*i|, for all |z|.
 
 \subsubsection{Exponential function: Associated code}
 
-TODO: Perhaps import from W01
+%TODO: Perhaps import from W01 - but it also useful to remind the reader. Alternatively, back-port this code to W01.
+
 
 \begin{code}
 instance Num r => Num (Complex r) where
   (+) = addC
   (*) = mulC
-  fromInteger n = C (fromInteger n, 0)
+  fromInteger = toC . fromInteger
 --  abs = absC  -- requires Floating r as context
+
+toC :: Num r => r -> Complex r
+toC x = C (x, 0)
 
 addC :: Num r =>  Complex r -> Complex r -> Complex r
 addC (C (a , b)) (C (x , y))  =  C ((a + x) , (b + y))
@@ -228,20 +230,20 @@ modulusSquaredC :: Num r => Complex r -> r
 modulusSquaredC (C (x, y)) = x^2 + y^2
 
 absC :: Floating r => Complex r -> Complex r
-absC c = C (sqrt (modulusSquaredC c), 0)
+absC = toC . sqrt . modulusSquaredC
 
-scale :: Num r => r -> Complex r -> Complex r
-scale a (C (x, y)) = C (a * x, a * y)
+scaleC :: Num r => r -> Complex r -> Complex r
+scaleC a (C (x, y)) = C (a * x, a * y)
 
 conj :: Num r => Complex r -> Complex r
-conj (C (x, x'))   = C (x, -x')
+conj (C (x, y))   = C (x, -y)
 
 instance Fractional r => Fractional (Complex r) where
   (/) = divC
-  fromRational r = C (fromRational r, 0)
+  fromRational = toC . fromRational
 
 divC :: Fractional a => Complex a -> Complex a -> Complex a
-divC x y = scale (1/modSq) (x * conj y)
+divC x y = scaleC (1/modSq) (x * conj y)
   where  modSq  =  modulusSquaredC y
 \end{code}
 
@@ -379,19 +381,27 @@ Going back to the problem of computing |ℒ f'|, we now have
 We have obtained
 
 \begin{spec}
-ℒ f' s  =  s * ℒ f s - f 0
+ℒ f' s  =  s * ℒ f s - f 0     -- The "Laplace-D" law
 \end{spec}
+
+% ℒ (D f) = id * ℒ f - const (f 0)     -- "Laplace-D" in point-free form
+%TODO: Note that we cannot directly express this as a homomorphism:
+% not quite H1(ℒ, D, \F -> id * F - const (f 0))  -- we don't have access to |f| here, only |F|
+% A minor variation is fine: L0 f = (ℒ f, allD0 f) where allD0 f = f 0 : allD0 (D f)
+%   H1(L0, D, \(F,f0:f0s) -> (id * F - const f0,f0s))
+% But this would take us too far off track for the course.
+
 
 From this, we can deduce
 
 \begin{spec}
-  ℒ f'' s                               =
-  s * ℒ f' s - f' 0                     =
-  s * (s * ℒ f s - f 0) - f' 0          =
+  ℒ f'' s                               = {- Laplace-D for |f'| -}
+  s * ℒ f' s - f' 0                     = {- Laplace-D for |f| -}
+  s * (s * ℒ f s - f 0) - f' 0          = {- Simplification -}
   s^2 * ℒ f s - s * f 0 - f' 0
 \end{spec}
 
-Exercise: what is the general formula for |ℒ {-"f^{(k)} "-} s|?
+Exercise \ref{exc:LaplaceDk}: what is the general formula for |ℒ {-"f^{(k)} "-} s|?
 
 Returning to our differential equation, we have
 
@@ -566,11 +576,13 @@ Finally, Laplace is also a close relative of the Fourier transform.
 Both transforms are used to express functions as a sum of ``complex
 frequencies'', but Laplace allows a wider range of functions to be
 transformed.
-
-TODO: cite http://www.math.chalmers.se/Math/Grundutb/CTH/mve025/1516/Dokument/F-analys.pdf
-
-(Fourier is a common tool in courses on Transforms, Signals and
-Systems.)
 %
+A nice local overview and comparison is B.\ Berndtsson's ``Fourier and
+Laplace Transforms''\footnote{Available from
+  \url{http://www.math.chalmers.se/Math/Grundutb/CTH/mve025/1516/Dokument/F-analys.pdf}.}
+%
+Fourier analysis is a common tool in courses on Transforms, Signals
+and Systems.
+
 
 %include E8.lhs

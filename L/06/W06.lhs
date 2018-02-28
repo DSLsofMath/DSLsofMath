@@ -397,7 +397,7 @@ help a b as bs = as * (b : bs) + (a : as) * bs
 \end{code}
 Thus, we can eliminate |help| to arrive at a definition for multiplication:
 \begin{code}
-(a : as) * (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
+mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 \end{code}
 
 As in the case of pairs, we find that we do not need any properties of
@@ -415,7 +415,6 @@ addStream :: Num a => Stream a -> Stream a -> Stream a
 addStream (a : as)  (b : bs)  =  (a + b)  :  (as + bs)
 
 mulStream :: Num a => Stream a -> Stream a -> Stream a
-mulStream (a : as)  (b : bs)  =  (a * b)  :  (as * (b : bs) + (a : as) * bs)
 \end{code}
 
 Exercise: complete the instance declarations for |Fractional| and

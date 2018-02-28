@@ -1,6 +1,15 @@
 \subsection{Exercises}
 
 \begin{exercise}
+\label{exc:LaplaceDk}
+Starting from the ``Laplace-D'' law
+\begin{spec}
+ℒ f' s  =  s * ℒ f s - f 0
+\end{spec}
+Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
+\end{exercise}
+
+\begin{exercise}
   Find the Laplace transforms of the following functions:
 %
   \begin{enumerate}
