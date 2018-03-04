@@ -194,26 +194,27 @@ j| to mean the |i|th element of the |j|th column, i.e., |m j i|, so
 that
 
 \begin{spec}
-(M * v) i = sum [M i j * v j | j <- [0 .. n]]
+  (M * v) i                                   = -- as above
+  sum [M i j * v j | j <- [0 .. n]]           = -- rewrite list comprehension using |map|
+  sum (map (\j -> M i j  *  v j) [0 .. n])    = -- use |(*)| from the function instance for |Num|
+  sum (map (M i * v) [0 .. n])
 \end{spec}
 We can implement this matrix-vector multiplication as |mulMV|:
 \begin{code}
 mulMV ::  (Finite g, Num s) =>
-          (g'->Vector s g)  ->  Vector s g     ->  Vector s g'
+          Matrix s g g'  ->  Vector s g     ->  Vector s g'
 mulMV m v  = V $ \g' -> sumV (m g' * v)
 type Matrix s g g' = g' -> Vector s g
 sumV :: (Finite g, Num s) => Vector s g -> s
 sumV (V v) = sum (map v finiteDomain)
--- |mulMV : Matrix s g g' ->  (Vector s g  ->  Vector s g')|
 \end{code}
 %
-Note that in the terminology of the earlier chapter we can see |Matrix
+Note that in the terminology of the earlier chapter we can see |Matrix s
 g g'| as a type of syntax and the linear transformation (of type
 |Vector s g -> Vector s g'|) as semantics.
 %
 With this view, |mulMV| is just another |eval :: Syntax -> Semantics|.
 %
-
 
 Example:
 
@@ -1104,13 +1105,20 @@ type Mat s r c = c -> r -> s
 type Vec s r = r -> s
 \end{code}
 
-% Similarly, we can define matrix-matrix multiplication:
-% \begin{code}
-% mulMM ::  (Finite b, Num s) =>
-%            Mat a b s  ->  Mat b c s  ->  Mat a c s
-% mulMM a b  =  undefined
-%
-% \end{code}
+Similarly, we can define matrix-matrix multiplication:
+\begin{code}
+mulMM' ::  (Finite b, Num s) =>
+           Mat s b c   ->  Mat s a b  ->  Mat s a c
+mulMM' m1 m2 = \r c -> mulMV' m1 (getCol m2 c) r
+
+transpose :: Mat s g g' -> Mat s g' g
+transpose m i j = m j i
+getCol :: Mat s g g' -> g -> Vec s g'
+getCol = transpose
+getRow :: Mat s g g' -> g' -> Vec s g
+getRow = id
+\end{code}
+
 % -- Specification: (a * b) * v == a * (M * v)
 % -- Specification: mulMV (mulMM a b) v == mulMV a (mulMV b v)
 % -- Specification: mulMV (mulMM a b) == (mulMV a) . (mulMV b)
