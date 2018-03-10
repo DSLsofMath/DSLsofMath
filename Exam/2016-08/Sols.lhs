@@ -64,6 +64,18 @@ The Kolmogorov notation is much easier to type.
 
 3.a
 
+-- Equations:
+exps  = integ exps 1
+fs    = integ fs'  1
+fs'   = integ fs'' 4
+fs''  = -6*fs + 5*fs' + exps
+
+-- First few terms (not asked for in this exam):
+exps = 1  : 1  : 1/2 : 1/6 : ...
+fs   = 1  : 4  :15/2 :26/3 : ...
+fs'  = 4  : 15 :  26 : ...
+fs'' = (-6*1+5*4+1) : (-6*4+5*15+1) : ...
+     = 15 : 52 : ...
 
 3.b
 									  -
