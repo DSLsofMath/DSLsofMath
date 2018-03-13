@@ -68,6 +68,8 @@ instance Num FunExp            -- ...
 instance Fractional FunExp     -- ...
 instance Floating FunExp       -- ...
 instance Num a => Num (x -> a) -- ...
+instance Fractional a => Fractional (x -> a) -- ...
+instance Floating a => Floating (x -> a) -- ...
 -- etc.
 \end{code}
 
@@ -75,7 +77,17 @@ Some type signatures of functions used above:
 
 \begin{code}
 eval :: Fractional a => FunExp -> (a -> a)
-eval = undefined
+eval (f:/:g) = eval f / eval g
+-- Alt. |eval (f:/:g) = \x -> eval f x / eval g x| without the NumFunInst
+-- ... fill in the rest
+
+-- Or, to cover the full FunExp type:
+
+eval2 :: Floating a => FunExp -> (a -> a)
+eval2 (Sin f) = sin (eval f)
+eval2 (f:/:g) = eval f / eval g
+-- Alt. |eval (f:/:g) = \x -> eval f x / eval g x| without the NumFunInst
+-- ... fill in the rest
 
 derive :: FunExp -> FunExp
 derive = undefined
