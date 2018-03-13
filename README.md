@@ -13,6 +13,7 @@ Course codes: DAT326 / DIT982
 * 2018-02-01: [Presentation schedule for Assignment 1](Assignments/schedule.md)
 * 2018-02-05: [Assignment 2 released](Assignments/Assignment02.pdf) (some clarifications from the 2017 version)
 * 2018-02-06: [Peer review of exercises using GitHub classroom](https://github.com/DSLsofMath/DSLM-peer-review)
+* 2018-03-13: Added [exam + solutions](Exam/2018-03/)
 
 ## Course team
 
