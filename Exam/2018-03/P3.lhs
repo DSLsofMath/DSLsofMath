@@ -16,7 +16,14 @@
 
     Show that your solution does indeed satisfy the three requirements.
 
+----
+Short answers:
+a) fs = integ fs'  a; fs'  = integ fs'' b; fs'' = 2*fs-fs'
+   fs = a : b : a-b/2 : ...
+b) f t = ((2*a+b)/3)*exp(t)+((a-b)/3)*exp(-2*t)
+
 ----------------
+More details:
 
 3a.
 \begin{code}
