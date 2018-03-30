@@ -4,7 +4,7 @@ Homepage for the 2018 instance of a 7.5hec BSc course at Chalmers and GU.
 
 Homepage: https://github.com/DSLsofMath/DSLsofMath/
 
-Course codes: DAT326 / DIT982
+Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
 ## News
 

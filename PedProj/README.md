@@ -39,7 +39,7 @@ See [QualityProject/](../2016/QualityProject/) for more details.
 * University of Gothenburg
     * The course is part of the Computer Science Bachelor's Programme
     * and is also given as a single subject course at the University of Gothenburg.
-    * Course plan link: http://kursplaner.gu.se/english/DIT982.pdf
+    * Course plan link: http://kursplaner.gu.se/pdf/kurs/en/DIT982
 
 # Course description (short abstract)
 
