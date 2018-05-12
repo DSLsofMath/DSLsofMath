@@ -6,5 +6,5 @@
 %include polycode.fmt
 
 \begin{document}
-%include DSLsofMath.lhs
+%include DSLsofMath.tex
 \end{document}

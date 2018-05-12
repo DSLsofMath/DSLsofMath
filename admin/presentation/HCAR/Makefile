@@ -3,7 +3,7 @@ default: HCAR.pdf
 %.tex: %.lhs
 	lhs2TeX --poly $< > $@
 
-HCAR.tex:: DSLsofMath.lhs
+HCAR.tex:: DSLsofMath.tex
 
 %.pdf: %.tex
 	latexmk -pdf $<
