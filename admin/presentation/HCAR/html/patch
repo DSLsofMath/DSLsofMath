@@ -1,0 +1,44 @@
+--- DSLsofMath_old.html	2018-05-21 17:08:50.344527374 +0200
++++ DSLsofMath_new.html	2018-05-21 22:55:13.833077877 +0200
+@@ -4,11 +4,7 @@
+ 
+ 
+ <div class="headertable"><table class="header"><tbody><tr><td class="hleft">Report by:</td><td class="hright">Patrik Jansson</td></tr><tr></tr><tr><td class="hleft">Participants:</td><td class="hright">Cezar Ionescu, Daniel Heurlin, Daniel Schoepe</td></tr><tr></tr><tr><td class="hleft">Status:</td><td class="hright">active development</td></tr><tr></tr></tbody></table>
+-</div></div><p class="first">
+-
+- 0.01em
+-  Unknown begin: \begin{picture}
+-</p><p>
++</div></div><p>
+ “Domain Specific Languages of Mathematics” is a project at
+ <a class="extern" href="http://www.chalmers.se/en/Pages/default.aspx">Chalmers</a> and
+ <a class="extern" href="http://www.gu.se/english">UGOT</a> which lead to a new BSc level course of
+@@ -28,19 +24,20 @@
+ The lecture notes have been collected in an informal “book” during
+ the last six months; contributions and ideas are welcome!</p><p>
+ Just two example to give a feeling for the contents:</p><p>
+-Given the definition of “|h : A -&gt; B| is a homomorphism from
+-|Op : A-&gt;A-&gt;A| to |op : B-&gt;B-&gt;B|”:
+-Unknown begin: \begin{spec}
++Given the definition of “<tt>h : A -&gt; B</tt> is a homomorphism from
++<tt>Op : A-&gt;A-&gt;A</tt> to <tt>op : B-&gt;B-&gt;B</tt>”:
++<p><tt>&nbsp;&nbsp;H2(h, Op, op) = &forall; x. &forall; y. h (Op x y) == op (h x) (h y)</tt></p>
+ 
+-Then |H2(exp,(+),(â‹…))| says that e<sup>x+y</sup> |==| e<sup>x</sup> e<sup>y</sup>
++<p>Then <tt>H2(exp,(+),(&middot;))</tt> says that e<sup>x+y</sup> == e<sup>x</sup>&middot;e<sup>y</sup>
+ for all x and y.</p><p>
+ A somewhat longer example (<a class="extern" href="https://twitter.com/patrikja/status/966074410611413000">two tweets</a>):
++<br>
+ <tt>import&nbsp;Prelude&nbsp;hiding&nbsp;(exp,sin,cos)<br>
+ z=zipWith<br>
+-câˆ«f&nbsp;&nbsp;=&nbsp;c:z&nbsp;(/)&nbsp;f&nbsp;[1..]<br>
+-exp&nbsp;&nbsp;=&nbsp;1âˆ«exp<br>
+-sin&nbsp;&nbsp;=&nbsp;0âˆ«cos<br>
+-cos&nbsp;&nbsp;=&nbsp;1âˆ«(-sin)<br>
++c&int;f&nbsp;&nbsp;=&nbsp;c:z&nbsp;(/)&nbsp;f&nbsp;[1..]<br>
++exp&nbsp;&nbsp;=&nbsp;1&int;exp<br>
++sin&nbsp;&nbsp;=&nbsp;0&int;cos<br>
++cos&nbsp;&nbsp;=&nbsp;1&int;(-sin)<br>
+ instance&nbsp;Num&nbsp;a&nbsp;=&gt;&nbsp;Num&nbsp;[a]&nbsp;where<br>
+ &nbsp;&nbsp;(+)&nbsp;&nbsp;=&nbsp;z&nbsp;(+)<br>
+ &nbsp;&nbsp;(-)&nbsp;&nbsp;=&nbsp;z&nbsp;(-)<br>

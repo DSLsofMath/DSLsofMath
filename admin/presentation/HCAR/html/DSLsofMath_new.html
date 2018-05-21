@@ -1,0 +1,65 @@
+<div class="kept"><div class="updated"><a name="dslsofmath"></a><a name="sect4.8.4"></a>
+<h4>4.8.4&nbsp;&nbsp;DSLsofMath</h4>
+
+
+
+<div class="headertable"><table class="header"><tbody><tr><td class="hleft">Report by:</td><td class="hright">Patrik Jansson</td></tr><tr></tr><tr><td class="hleft">Participants:</td><td class="hright">Cezar Ionescu, Daniel Heurlin, Daniel Schoepe</td></tr><tr></tr><tr><td class="hleft">Status:</td><td class="hright">active development</td></tr><tr></tr></tbody></table>
+</div></div><p>
+“Domain Specific Languages of Mathematics” is a project at
+<a class="extern" href="http://www.chalmers.se/en/Pages/default.aspx">Chalmers</a> and
+<a class="extern" href="http://www.gu.se/english">UGOT</a> which lead to a new BSc level course of
+the same name, including accompanying material for learning and applying
+classical mathematics (mainly basics of real and complex analysis).
+The main idea is to encourage the students to approach mathematical domains
+from a functional programming perspective:
+to identify the main functions and types involved and, when necessary, to
+introduce new abstractions;
+to give calculational proofs;
+to pay attention to the syntax of the mathematical expressions;
+and, finally, to organize the resulting functions and types in domain-specific
+languages.</p><p>
+The third instance of the course was carried out Jan–March 2018 in Gothenburg
+and the course material is available on
+<a class="extern" href="https://github.com/DSLsofMath/DSLsofMath">github</a>.
+The lecture notes have been collected in an informal “book” during
+the last six months; contributions and ideas are welcome!</p><p>
+Just two example to give a feeling for the contents:</p><p>
+Given the definition of “<tt>h : A -&gt; B</tt> is a homomorphism from
+<tt>Op : A-&gt;A-&gt;A</tt> to <tt>op : B-&gt;B-&gt;B</tt>”:
+<p><tt>&nbsp;&nbsp;H2(h, Op, op) = &forall; x. &forall; y. h (Op x y) == op (h x) (h y)</tt></p>
+
+<p>Then <tt>H2(exp,(+),(&middot;))</tt> says that e<sup>x+y</sup> == e<sup>x</sup>&middot;e<sup>y</sup>
+for all x and y.</p><p>
+A somewhat longer example (<a class="extern" href="https://twitter.com/patrikja/status/966074410611413000">two tweets</a>):
+<br>
+<tt>import&nbsp;Prelude&nbsp;hiding&nbsp;(exp,sin,cos)<br>
+z=zipWith<br>
+c&int;f&nbsp;&nbsp;=&nbsp;c:z&nbsp;(/)&nbsp;f&nbsp;[1..]<br>
+exp&nbsp;&nbsp;=&nbsp;1&int;exp<br>
+sin&nbsp;&nbsp;=&nbsp;0&int;cos<br>
+cos&nbsp;&nbsp;=&nbsp;1&int;(-sin)<br>
+instance&nbsp;Num&nbsp;a&nbsp;=&gt;&nbsp;Num&nbsp;[a]&nbsp;where<br>
+&nbsp;&nbsp;(+)&nbsp;&nbsp;=&nbsp;z&nbsp;(+)<br>
+&nbsp;&nbsp;(-)&nbsp;&nbsp;=&nbsp;z&nbsp;(-)<br>
+&nbsp;&nbsp;(*)&nbsp;&nbsp;=&nbsp;m<br>
+&nbsp;&nbsp;fromInteger&nbsp;i&nbsp;=&nbsp;fromInteger&nbsp;i&nbsp;:&nbsp;repeat&nbsp;0<br>
+m&nbsp;(x:xs)&nbsp;q@(y:ys)&nbsp;=&nbsp;x*y&nbsp;:&nbsp;(map&nbsp;(x*)&nbsp;ys)&nbsp;+&nbsp;xs*q<br>
+one&nbsp;=&nbsp;1&nbsp;::&nbsp;[Rational]<br>
+test&nbsp;=&nbsp;(sin^2+cos^2)&nbsp;=~&nbsp;one<br>
+d&nbsp;cs&nbsp;=&nbsp;zipWith&nbsp;(*)&nbsp;[1..]&nbsp;(tail&nbsp;cs)<br>
+xs&nbsp;=~&nbsp;ys&nbsp;=&nbsp;and&nbsp;(take&nbsp;10&nbsp;(z&nbsp;(==)&nbsp;xs&nbsp;ys))<br>
+test2&nbsp;=&nbsp;exp&nbsp;=~&nbsp;d&nbsp;exp<br>
+</tt></p></div><p>
+
+See also the HCAR entry “Learn you a Physics”&nbsp;(&#8594;<a class="ref" href="https://www.haskell.org/communities/05-2018/html/report.html#learn-you-a-physics">4.8.5</a>) by
+a group of BSc students.</p><p>
+</p><h4>Further reading</h4><p class="first">
+
+</p><ul class="compact"><li class="compact"><a class="extern" href="https://github.com/DSLsofMath">DSLsofMath (github organisation)</a>
+</li><li class="compact"><a class="extern" href="https://github.com/DSLsofMath/BScProj2018/">“Learn you a Physics”</a> BSc project applying DSLsofMath ideas.
+</li><li class="compact"><a class="extern" href="https://github.com/DSLsofMath/DSLsofMath/tree/master/L/snapshots">Latest snapshot of the DSLsofMath Lecture Notes (work in progress)</a>
+</li><li class="compact"><a class="extern" href="https://github.com/DSLsofMath/DSLsofMath/blob/master/Exam/2018-03/">Exam 2018 with solutions</a>
+</li><li class="compact"><a class="extern" href="https://github.com/DSLsofMath/tfpie2015">TFPIE 2015 paper</a>
+</li></ul><p>
+</p><p>
+</p>
