@@ -1,6 +1,6 @@
 # Domain-Specific Languages of Mathematics
 
-Homepage for the 2019 instance of a 7.5hec BSc course at Chalmers and GU.
+Homepage for the 2018 instance of a 7.5hec BSc course at Chalmers and GU.
 
 Homepage: https://github.com/DSLsofMath/DSLsofMath/
 
@@ -11,12 +11,18 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170
 * Re-exam in August: 2018-08-28, 14.00-18.00 at "M" (registration closes 2018-08-01)
 * 2018-03-25: (Inofficial) [exam results](Exam/2018-03/anon_results.md)
 * 2018-03-13: Added [exam + solutions](Exam/2018-03/)
+* 2018-02-06: [Peer review of exercises using GitHub classroom](https://github.com/DSLsofMath/DSLM-peer-review)
+* 2018-02-05: [Assignment 2 released](Assignments/Assignment02.pdf) (some clarifications from the 2017 version)
+* 2018-02-01: [Presentation schedule for Assignment 1](Assignments/schedule.md)
+* 2018-02-04: [Lecture notes](L/snapshots/) now at 128 pages, and Chapter 4 ready.
+* 2018-01-15: Please register for the [DSLsofMath google group](https://groups.google.com/forum/#!forum/dslsofmath).
 
 ## Course team
 
 * Examiner & main lecturer: Patrik Jansson (patrikj AT)
 * Guest lecturer: Cezar Ionescu (cezar AT)
-* Teaching assistant: To be decided (was Daniel Schoepe (schoepe AT))
+* Teaching assistant: Daniel Schoepe (schoepe AT)
+* (Project assistants: Daniel Heurlin, Sólrún Einarsdóttir)
 
 ## Objectives
 
@@ -26,7 +32,7 @@ paying attention to syntax and types, and ultimately constructing DSLs
 of some mathematical areas mentioned below.
 
 Learning outcomes as in the
-[course syllabus](https://www.student.chalmers.se/sp/course?course_id=27332).
+[course syllabus](https://www.student.chalmers.se/sp/course?course_id=26170).
 
 * Knowledge and understanding
     * design and implement a DSL (Domain Specific Language) for a new domain
@@ -52,7 +58,7 @@ The main references are listed below.
 
 ## Course setup
 
-* Lectures (TBD [was Tue. 13-15 and Thu 13-15 in EB. [[TimeEdit]](https://se.timeedit.net/web/chalmers/db1/public/ri157375X39Z06Q5Z46g0Y30y5096Y35Q01gQY5Q55767.html)])
+* Lectures (Tue. 13-15 and Thu 13-15 in EB. [[TimeEdit]](https://se.timeedit.net/web/chalmers/db1/public/ri157375X39Z06Q5Z46g0Y30y5096Y35Q01gQY5Q55767.html))
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
@@ -62,29 +68,40 @@ The main references are listed below.
     * Power series and differential equations, exp, sin, log, Taylor series, ...
     * Linear algebra: vectors, matrices, functions, bases, dynamical systems as matrices and graphs
     * Laplace transform: exp, powers series cont., solving PDEs with Laplace
-* Weekly exercise sessions (TBD [was Tue 15-17 and Thu 15-17 in ES52])
+* Weekly exercise sessions (Tue 15-17 and Thu 15-17 in ES52)
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
+* Schedule exceptions:
+    * 2018-01-19 Thu exercises **moved to Fri (same time) in ES52**.
+    * 2018-01-26 Thu exercises **moved to Fri (same time) in ES52**.
+    * 2018-02-09 Thu exercises **moved to Fri (same time) in ES52**.
+    * 2018-02-16 Thu lecture + ex. **moved to Fri (same time) in EA + ES52**.
+    * 2018-03-05 Thu lecture + ex. **moved earlier to Mon at 10 and 15.15**.
 
 ## Changes from last year
 
-The main changes for 2019 (based on the [course eval meeting](eval/2018.txt)) are
+The main changes for 2018 (based on the [course eval meeting](eval/2017-04-28.md)) are
 
-* Exercise session structure: first (hour) supervised work, second (hour) demonstration
-* More stress on students solving exercises
-** Weekly hand-ins to encourage students to spend more hours on the course (not part of the formal examination)
+* New course literature (lecture notes covering the full course)
+* More material on functional programming in Haskell
+* Developed more exercises to solve (primarily easier exercises to start each week with)
+* More solving of exercises at the whiteboard
+* Schedule changes (alternating L, E, L, E instead of L, L, E, E)
+* Weekly hand-ins to encourage students to spend more hours on the course (not part of the formal examination)
+
+One of the student evaluators from 2017 (DaHe) was hired part time to help out with these improvements.
 
 ## Examination
 
 There are two compulsory course elements:
 
 * A = Assignments (written + oral examination in groups of three students)
-    * two compulsory hand-in assignments (To be decided for 2019 (was 2018-01-30, 2018-02-27))
+    * two compulsory hand-in assignments (2018-01-30, 2018-02-27)
     * Grading: Pass or fail
     * The assignments are to be handed in via [Fire](https://dslm-lp3-18.frs.cse.chalmers.se)
 * E Exam (individual written exam at the end of the course)
     * Grading: **Chalmers**: U, 3, 4, 5; **GU**: U, G, VG
-    * Date: [2019-03-19, 14.00-18.00](https://www.student.chalmers.se/sp/course?course_id=27332) (registration closes 2019-02-28)
+    * Date: [2018-03-13 at 14.00](https://www.student.chalmers.se/sp/course?course_id=26170)
     * Aids: One textbook of your choice
 
 To pass the course you need to pass both course elements.
@@ -130,11 +147,15 @@ able to load your own haskell files in normal ghci.
 
 ## Evaluation
 
-DSLsofMath course evaluation student representatives 2019: TBD
+DSLsofMath course evaluation student representatives 2018:
 
 | Email (@student) | Name                   |
 | ---------------- | ---------------------- |
-|    | 	    |
+| markusi   	   | Markus Ingvarsson	    |
+| marcuols 	   | Marcus Lindvärn	    |
+| jlucas   	   | Lucas Norman Jonsson   |
+| annunt   	   | Anna-Maria Unterberger |
+| vonejo   	   | Jonas von Essen        |
 
 ## References
 
