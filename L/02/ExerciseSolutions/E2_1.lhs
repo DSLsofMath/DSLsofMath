@@ -44,9 +44,14 @@ Case q: In this case, assume that q holds. Therefore, we know by rule orIntroL
 that q ∨ r holds for any r, in particular also for r=p, therefore q ∨ p holds.
 
 \begin{code}
+-- Helper lemma (ex21c):
+notMap :: (a->b) -> (Not b -> Not a)
+notMap a2b nb = notIntro  -- To show |Not a| by contradiction:
+                  (\a ->                 -- assume |a|
+                   andIntro (a2b a) nb)  -- show |b| and |Not b|
 
-ex21c :: forall p. Or p (Not p)
-ex21c = notElim $ nnlem -- We show that it is not the case that `Or p (Not p)`
+ex21d :: forall p. Or p (Not p)
+ex21d = notElim $ nnlem -- We show that it is not the case that `Or p (Not p)`
                         -- is false
   where nnlem :: Not (Not (Or p (Not p)))
         nnlem = notIntro $ \nlem -> nlemToContradiction nlem
@@ -61,34 +66,29 @@ ex21c = notElim $ nnlem -- We show that it is not the case that `Or p (Not p)`
         -- 1. Showing that Not (Or p (Not p)) implies p
         -- 2. Showing that Not (Or p (Not p)) implies Not p
         nlemToContradiction nlem = andIntro (p nlem) (np nlem)
-        -- We can show the second case by assuming p and deriving
-        -- a contradiction. Then Not p must hold
-        np :: Not (Or p (Not p)) -> Not p
-        -- We do this by showing And (Or p (Not p)) (Not (Or p (Not p))), given
-        -- p Since the above statement is of the form And r (Not r), this is a
-        -- contradiction. Therefore we conclude Not p.
-        np nlem = notIntro (\p -> andIntro (orIntroL p) nlem)
-        p :: Not (Or p (Not p)) -> p
-        -- To show p when assuming (Not (Or p (Not p))), we again need
-        -- show that p cannot be false; i.e. we show that Not (Not p)
-        p nlem = notElim $ nnp nlem
+        p   :: Not (Or p (Not p)) -> p
+        np  :: Not (Or p (Not p)) -> Not p
+        -- We can show the second case using |notMap|:
+        -- using |orIntroL :: p -> Or p (Not p)|
+        np = notMap orIntroL
+        -- To show |p| when assuming |Not (Or p (Not p))|, we again need
+        -- show that |p| cannot be false; i.e. we show that |Not (Not p)|
+        p nlem = notElim (nnp nlem)
+        -- Again, |notMap| comes in handy, now with
+        --   |orIntroR :: Not p -> Or p (Not p)|
         nnp :: Not (Or p (Not p)) -> Not (Not p)
-        -- To show this, we assume Not p, then derive the same contradiction as
-        -- above.
-        nnp nlem = notIntro $ \np -> andIntro (orIntroR np) nlem
+        nnp = notMap orIntroR
 
--- Alternative solution via And (Or p (Not p)) (Not (Or p(Not p)))
-ex21c' :: forall p. Or p (Not p)
-ex21c' = notElim $ nnlem
+-- Alternative solution via r = Or p (Not p) in the contradiction:
+ex21d' :: forall p. Or p (Not p)
+ex21d' = notElim $ nnlem
   where nnlem :: Not (Not (Or p (Not p)))
-        nnlem = notIntro $ \nlem -> nlemToContradiction nlem
+        nnlem = notIntro nlemToContradiction
         nlemToContradiction :: Not (Or p (Not p))
                             -> And (Or p (Not p)) (Not (Or p (Not p)))
-        nlemToContradiction nlem = andIntro (x nlem) nlem
-        x :: Not (Or p (Not p)) -> Or p (Not p)
-        x nlem = orIntroR $ y nlem
-        y :: Not (Or p (Not p)) -> Not p
-        y nlem = notIntro $ \p -> z nlem p
-        z :: Not (Or p (Not p)) -> p -> And (Or p (Not p)) (Not (Or p (Not p)))
-        z nlem p = andIntro (orIntroL p) nlem
+        nlemToContradiction nlem = andIntro (f nlem) nlem
+        f :: Not (Or p (Not p)) -> Or p (Not p)
+        f nlem = orIntroR (g nlem)
+        g :: Not (Or p (Not p)) -> Not p
+        g = notMap orIntroL
 \end{code}

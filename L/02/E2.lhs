@@ -52,17 +52,18 @@ On to the exercises.
 % stuck at last year.
 %
 \begin{exercise}
-Prove these three theorems (for arbitrary |p| and |q|):
+Prove these theorems (for arbitrary |p|, |q| and |r|):
 
 \begin{spec}
   Impl (And p q) q
   Or p q -> Or q p
-  Or p (Not p)
+  (p->q) -> (Not q -> Not p)      -- call it |notMap|
+  Or p (Not p)                    -- Hard. Use |notElim|, |notMap|, etc.
 \end{spec}
 
 \end{exercise}
 \begin{exercise}
- Translate to Haskell and prove the De Morgan laws:
+Translate to Haskell and prove the De Morgan laws:
 
 \begin{spec}
   ¬ (p ∨ q) ⟷  ¬p ∧ ¬q

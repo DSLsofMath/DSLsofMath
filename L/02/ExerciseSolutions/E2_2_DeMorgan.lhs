@@ -73,7 +73,7 @@ f = notMap andElimL
 g = notMap andElimR
 \end{code}
 Also the next theorem in line is simplified: we start from |Not| and want
-to prove two |Not|s, thus we can use |notMap|:
+to prove two |Not|s, thus we can use |notMap| twice:
 \begin{code}
 no2an = implIntro $ no2an'
 no2an' :: NotOr p q -> AndNot p q
