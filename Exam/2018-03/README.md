@@ -2,6 +2,7 @@
 
 * [Exam](Exam-2018-03.pdf)
 * Possible solutions
+    * [All in one file (for reading / printing)](Sol-2018-03.lhs.pdf)
     * [P1.lhs](P1.lhs)
     * [P2.lhs](P2.lhs)
     * [P3.lhs](P3.lhs)
