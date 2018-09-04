@@ -113,13 +113,17 @@ computing the derivative (of a one-argument function).
 %
 We will use this operation quite a bit in the rest of the book, but
 here are just a few examples to get used to the notation.
-
+%
+With the following definitions:
 \begin{spec}
-  sq x =  x^2
-  double x = 2*x
-  c2 x = 2
-  sq' =  D sq = D (\x -> x^2) = D ({-"{}"-}^2) = (2*) = double
-  sq'' = D sq' = D double = c2 = const 2
+  sq x      =  x^2
+  double x  =  2*x
+  c2 x      =  2
+\end{spec}
+Then we have the following equalities:
+\begin{spec}
+  sq'   ==  D sq   == D (\x -> x^2) == D ({-"{}"-}^2) == (2*) == double
+  sq''  ==  D sq'  == D double == c2 == const 2
 \end{spec}
 
 What we cannot do at this stage is to actually \emph{implement} |D| in

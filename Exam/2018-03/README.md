@@ -8,6 +8,6 @@
     * [P3.lhs](P3.lhs)
     * [P4.lhs](P4.lhs)
 
-Exam check (granskning) is Wednesday 2017-03-28 at 12.30-12.55 in EDIT 5468.
+Exam check (granskning) is Wednesday 2018-03-28 at 12.30-12.55 in EDIT 5468.
 
 [Inofficial anonymous result list](anon_results.md)
