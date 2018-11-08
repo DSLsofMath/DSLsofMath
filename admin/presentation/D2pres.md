@@ -1,6 +1,6 @@
 # Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
-(Presentation för D2, To 2017-11-16 av Patrik Jansson.)
+(Presentation för D2, Fr 2018-11-16 av Patrik Jansson.)
 
 * Patrik Jansson: forskare och lärare inom Funktionell Programmering
     * examinator och kursansvarig för kursen DSLsofMath
@@ -9,7 +9,7 @@
     * gav kursen första gången 2016
 * Vi tror på er förmåga att själva kombinera kurser till en bra helhet
 * LP3 i D2: ett första smakprov på programmets valfrihet
-    * Budskap: *Välj inte bara en av DSLsofMath och ConcProg - välj båda!*
+    * Budskap: *Välj både DSLsofMath (i LP3) och ConcProg (i LP1)*
 
 # Kursidé för "Matematikens domänspecifika språk"
 
@@ -30,7 +30,6 @@ matematikstudenter.
 \\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
 \end{align*}
 
-
 # Historisk bakgrund och motivation för DSLsofMath
 
 Det har under många år funnits en del problem med resultaten på
@@ -41,6 +40,26 @@ hösten i trean med ett gott självförtroende på mattesidan.
 Ett annat återkommande önskemål från D-studenter är en
 "mellan-avancerad FP-kurs". DSLsofMath kan ses som ett naturligt steg
 på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
+
+# Resultatstatistik
+
+* Resultat på DSLsofMath:
+    * 2016: 28 reg., godkända: 68%
+    * 2017: 43 reg., godkända: 58%
+    * 2018: 39 reg., godkända: **89%**
+
+
+* Resultat i D3 (Transformer samt Regler)
+
+| D3-kurs       | Valde inte DSL | Valde DSL | Godkänd DSL |
+| ------------- | ----:| ---:| ---:|
+| Transformer   | 36% | 57% | **77%**  |
+| Regler        | 40% | 45% | **68%**  |
+
+Dvs. de som tar DSL-kursen får mycket bättre resultat hösten i D3.
+
+(Totalt 145 varav Valde inte DSL=92, Valde=53, Godk.=34, .)
+
 
 # Aktiva studier
 
@@ -99,7 +118,7 @@ list         =  [(1+), (2*), kvadrat, upphöjtFyra]
 Exempel:
 
 * datum:
-    * Syntax: "2015-11-18", "tredje onsdagen i oktober", "nästa lördag"
+    * Syntax: "2011-11-11", "tredje onsdagen i oktober", "nästa lördag"
     * Semantik: Date, eller kanske Date -> Date
 * excel-formler:
     * Syntax: "SUM(A1:A9)", "RIGHT(LEFT(C7,4),2)", ...
@@ -109,7 +128,7 @@ Exempel:
 
 # Linjär algebra: vektorer, matriser, egenvärden, ...
 
-![Upper triangular](https://pbs.twimg.com/media/Baz4Lj5IAAAfUNp.jpg:large)
+![Upper triangular](UpperTriangularChocolateTwitter.png)
 
 # Matematikens domänspecifika språk (DSLsofMath)
 
@@ -131,9 +150,11 @@ Jag rekommenderar er att välja *både* DSLsofMath *och* ConcProg under
 er utbildning, men att börja med DSLsofMath eftersom den ger er bättre
 chanser att segla igenom D3 utan att gå på grund.
 
+(De som tar DSL-kursen får mycket bättre resultat hösten i D3.)
+
 Välkomna i januari önskar lärarlaget
 
-  Patrik, Cezar, Daniel
+  Patrik, Cezar, Maximilian
 
 
 \begin{align*}
