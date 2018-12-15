@@ -1,4 +1,5 @@
-\section{A DSL for arithmetic expressions and complex numbers}
+%**TODO: change title to reflect extended contents (or split into two chapters)
+\section{Types, DSLs, and complex numbers}
 \label{sec:DSLComplex}
 
 This chapter is partly based on the paper
@@ -17,8 +18,19 @@ import qualified DSLsofMath.CSem as CSem
 import DSLsofMath.CSem (ComplexSem(CS))
 import Numeric.Natural (Natural)
 import Data.Ratio (Rational, Ratio, (%))
-import Data.List(find)
+import Data.List (find)
 \end{code}
+
+These lines constitute the module header which usually start a Haskell
+file.
+%
+We will not go into details of the module header syntax here but the
+purpose is to ``name'' the module itself (here |DSLsofMath.W01|) and
+to |import| (bring into scope) definitions from other modules.
+%
+As an example, the second to last line imports types for rational
+numbers and the infix operator |(%)| used to construct ratios
+(|1%7| is Haskell notation for $\frac{1}{7}$, etc.).
 
 \subsection{Intro: Pitfalls with traditional mathematical notation}
 
@@ -79,15 +91,75 @@ Mathematics text books usually avoid the risk of confusion by
 (silently) renaming variables when needed, but we believe this
 renaming is a sufficiently important operation to be more explicitly
 mentioned.
+%*TODO: Add simple exercises on renaming and variable capture
+
+\subsection{Types of |data|}
+
+Dividing up the world (or problem domain) into values of different
+types is one of the guiding principles of this course.
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\linewidth]{New_cuyama.jpg}
+  \caption{Humorously inappropriate use of numbers on a sign in New Cuyama, California. \href{https://commons.wikimedia.org/w/index.php?curid=2513523}{By I, MikeGogulski, CC BY 2.5, Wikipedia.} }
+  \label{fig:TypeErrorSign}
+\end{figure}
+%
+We will see that keeping track of types can guide the development of
+theories, languages, programs and proofs.
+
+\subsubsection{What is a type?}
+
+As mentioned in the introduction, we emphasise the dividing line
+between syntax (what mathematical expressions look like) and semantics
+(what they mean).
+%
+As an example we start with \emph{type expressions} --- first in
+mathematics and then in Haskell.
+%
+To a first approximation you can think of types as sets.
+%
+The type of truth values, |True| and |False|, is often called |Bool|
+or just |BB|.
+%
+Thus the name (syntax) is |BB| and the semantics (meaning) is the
+two-element set |{False, True}|.
+%
+Similarly, we have the type |Nat| whose semantics is the infinite set
+of natural numbers |{0, 1, 2, ...}|.
+%
+Other common types are |ZZ| of integers, |QQ| of rationals, and |REAL|
+of real numbers.
+%
+
+So far the syntax is trivial --- just names for certain sets --- but
+we can also combine these, and the most important construction is the
+function type.
+%
+For any two type expressions |A| and |B| we can form the function type
+|A -> B|.
+%
+The semantics is the set of ``functions from |A| to
+|B|''\footnote{Formally the semantics is the set of functions from the
+  semantics of |A| to the semantics of |B|.}
+%
+As an example, the semantics of |BB -> BB| is a set of four functions:
+|{const False, id, not, const True}| where |not : BB -> BB| is boolean
+negation.
+%
+The function type construction is very powerful, and can be used to
+model a wide range of concepts in mathematics (and the real world).
+
+% **TODO: Perhaps more about cartesion product, etc.
 
 \paragraph{Variable names as type hints}
 
 In mathematical texts there are often conventions about the names used
 for variables of certain types.
 %
-Typical examples include |i, j, k| for natural numbers or integers,
-|x, y| for real numbers and |z, w| for complex numbers.
-
+Typical examples include |f, g| for functions, |i, j, k| for natural
+numbers or integers, |x, y| for real numbers and |z, w| for complex
+numbers.
 
 The absence of explicit types in mathematical texts can sometimes lead
 to confusing formulations.
@@ -135,27 +207,25 @@ syntactical conventions, and to use type synonyms for the case in
 which we have different interpretations of the same type.
 %
 In the example of the Laplace transformation, this leads to
-
+%
 \begin{spec}
-type T  =  Real
-type S  =  CC
 Lap : (T -> CC) -> (S -> CC)
 \end{spec}
-
-\subsection{Types of |data|}
-
-Dividing up the world (or problem domain) into values of different
-types is one of the guiding principles of this course.
 %
-We will see that keeping track of types can guide the development of
-theories, languages, programs and proofs.
+where |T = REAL| and |S = CC|
 %
-To start out we introduce some of the ways types are defined in
+Note that the function type constructor |(->)| is used three times
+here: once in |T -> CC|, once in |S -> CC| and finally at the top
+level to indicate that the transform maps functions to functions.
+%
+This means that |Lap| is an example of a \emph{higher-order} function,
+and we will see many uses of this idea in this book.
+
+Now we move to introducing some of the ways types are defined in
 Haskell, the language we use for implementation (and often also
 specification) of mathematical concepts.
 
 %TODO: perhaps make the following few paragraphs flow better
-
 %TODO: perhaps use more from Expr.lhs
 
 \subsubsection{type / newtype / data}
@@ -167,39 +237,65 @@ There are three keywords in Haskell involved in naming types: |type|,
 
 The |type| keyword is used to create a type synonym - just another name
 for a type expression.
+%
+The semantics is unchanged: the set of values of type |Heltal| is
+exactly the same as the set of values of type |Integer|, etc.
 
 \begin{code}
-type Heltal = Integer
-type Foo = (Maybe [String], [[Heltal]])
-type BinOp = Heltal -> Heltal -> Heltal
-type Env v s = [(v,s)]
+type Heltal   =  Integer
+type Foo      =  (Maybe [String], [[Heltal]])
+type BinOp    =  Heltal -> Heltal -> Heltal
+type Env v s  =  [(v,s)]
 \end{code}
 
-The new name for the type on the RHS does not add type safety, just
-readability (if used wisely).
+The new name for the type on the right hand side (RHS) does not add
+type safety, just readability (if used wisely).
 %
 The |Env| example shows that a type synonym can have type parameters.
+%
+Note that |Env v s| is a type (for any types |v| and |s|), but |Env|
+itself is not a type but a \emph{type constructor}.
 
 \paragraph{newtype -- more protection}
 
 A simple example of the use of |newtype| in Haskell is to distinguish
-values which should be kept apart. A simple example is
+values which should be kept apart.
+%
+A fun example of \emph{not} keeping values apart is shown in Figure
+\ref{fig:TypeErrorSign}.
+%
+To avoid this class of problems Haskell provides the |newtype|
+construct as a stronger version of |type|.
 
 \begin{code}
-newtype Age   = Ag Int  -- Age in years
-newtype Shoe  = Sh Int  -- Shoe size (EU)
+newtype Population       = Pop  Int  -- Population count
+newtype Ftabovesealevel  = Hei  Int  -- Elevation in feet above sea level
+newtype Established      = Est  Int  -- Year of establishment
+
+-- Example values of the new types
+pop :: Population;       pop  = Pop   562;
+hei :: Ftabovesealevel;  hei  = Hei  2150;
+est :: Established;      est  = Est  1951;
 \end{code}
 
-Which introduces two new types, |Age| and |Shoe|, which both are
-internally represented by an |Int| but which are good to keep apart.
+This example introduces three new types, |Population|,
+|Ftabovesealevel|, and |Established|, which all are internally
+represented by an |Int| but which are good to keep apart.
+%
+The syntax also introduces \emph{constructor functions} |Pop :: Int ->
+Population|, |Hei| and |Est| which can be used to translate from plain
+integers to the new types, and for pattern matching.
+%*TODO: pehaps add example of pattern matching as well
+The semantics of |Population| is the set of values of the form |Pop i|
+for every value |i :: Int|.
+%
+It is not the same as the semantics of |Int| but it is isomorphic
+(there is a one-to-one correspondence between the sets).
 
-The constructor functions |Ag :: Int -> Age| and |Sh :: Int -> Shoe| are
-used to translate from plain integers to ages and shoe sizes.
-
-In the lecture notes we used a newtype for the semantics of complex
-numbers as a pair of numbers in the cartesian representation but may
-also be useful to have another newtype for complex as a pair of numbers
-in the polar representation.
+Later in this chapter we use a newtype for the semantics of complex
+numbers as a pair of numbers in the cartesian representation but it
+may also be useful to have another newtype for complex as a pair of
+numbers in the polar representation.
 
 \paragraph{The keyword |data| -- for syntax trees}
 
@@ -216,22 +312,26 @@ This declaration introduces
 \item a constructor |Z :: N| to represent zero, and
 \item a constructor |S :: N -> N| to represent the successor.
 \end{itemize}
-Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|
+The semantics of |N| is the set infinite |{Z, S Z, S (S Z), ...}|
+which is isomorphic to |Nat|.
+%
+Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
+
 
 The |data| keyword will be used throughout the course to define
 datatypes of syntax trees for different kinds of expressions: simple
 arithmetic expresssions, complex number expresssions, etc.
 %
 But it can also be used for non-recursive datatypes, like |data Bool =
-False || True|, or |data Person = P String Age Shoe|.
+False || True|, or |data TownData = Town String Population Established|.
 %
 The |Bool| type is the simplest example of a \emph{sum type}, where
 each value uses either of the two variants |False| and |True| as the
 constructor.
 %
-The |Person| type is an example of a \emph{product type}, where each
-value uses the same constructor |P| and records values for the name,
-age, and shoe size of the person modelled.
+The |TownData| type is an example of a \emph{product type}, where each
+value uses the same constructor |Town| and records values for the
+name, population, and year of establishment of the town modelled.
 %
 (See exercise \ref{exc:counting} for the intuition behind the terms
 ``sum'' and ``product'' used here.)

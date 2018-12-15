@@ -1,5 +1,5 @@
 \newpage
-\subsection{Exercises: complex numbers and DSLs}
+\subsection{Exercises: Haskell, DSLs and complex numbers}
 
 %include E1_1.lhs
 %include E1_2.lhs
