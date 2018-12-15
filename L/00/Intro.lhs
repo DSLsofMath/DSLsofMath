@@ -203,26 +203,54 @@ CSE programmes) shows, math students are usually able to catch up fairly
 quickly, and in any case we aim to keep to a restricted subset of
 Haskell (no ``advanced'' features are required).
 
-%TODO: rewrite 2018 when the evaluation results are available
-
 To assess the impact in terms of increased quality of education, we
-plan to measure how well the students do in ulterior courses that
+planned to measure how well the students do in ulterior courses that
 require mathematical competence (in the case of engineering students)
 or software compentence (in the case of math students).
 %
-For example, for CS and CSE students we will measure the percentage of
+For math students, we would like to measure their performance in
+ulterior scientific computing courses, but there has been too few math
+students so far to make good statistics.
+%
+But for CSE students we have measured the percentage of
 students who, having taken DSLM, pass the third-year courses
 \emph{\href{https://www.student.chalmers.se/sp/course?course_id=21865}{Transforms,
-    signals and systems}} and
+    signals and systems (TSS)}} and
 \emph{\href{https://www.student.chalmers.se/sp/course?course_id=21303}{Control
-    Theory (Reglerteknik)}}, which are current major stumbling blocks.
+    Theory (sv: Reglerteknik)}}, which are current major stumbling blocks.
 %
-For math students, we would like to measure their performance in
-ulterior scientific computing courses.
+Since the course is, at least initially, an elective one, we have also
+used the possibility to compare the results with those of a control
+group (students who have not taken the course).
+%
+The evaluation of the student results shows improvements in the pass
+rates and grades in later courses.
+%
+This is very briefly summarised in Table \ref{tab:res} and more
+details are explained in
+\citet{TFPIE18_DSLMResults_JanssonEinarsdottirIonescu}.
 
-Since the course is, at least initially, an elective one, we also have
-the possibility of comparing the results with those of a control group
-(students who have not taken the course).
+%% -------------------------------------------------------------------
+% Subsequent results
+\begin{table}[h]
+  \centering
+  \begin{tabu}{l*{3}{c}}
+                       & PASS  & IN   & OUT  \\
+    \hline
+    TSS pass rate   & 77\%  & 57\% & 36\% \\
+    \rowfont{\scriptsize}
+    TSS mean grade  & 4.23  & 4.10 & 3.58 \\
+    Control pass rate   & 68\%  & 45\% & 40\% \\
+    \rowfont{\scriptsize}
+    Control mean grade  & 3.91  & 3.88 & 3.35 \\
+
+  \end{tabu}
+\caption{Pass rate and mean grade in third year courses for students who took and passed DSLsofMath and those who did not. Group sizes: PASS 34, IN 53, OUT 92 (145 in all)}
+  \label{tab:res}
+\end{table}
+
+
+
 
 The work that lead up to the current course is as follows:
 
@@ -234,7 +262,7 @@ mathematical fields they are likely to encounter in later studies),
 and we worked out a course plan (which we submitted in February 2015,
 so that the first instance of the course could start in January 2016).
 %
-We also make a survey of similar courses being offered at other
+We also made a survey of similar courses being offered at other
 universities, but did not find any close matches.
 
 \paragraph{2015:} we developed course materials for use within the
@@ -244,25 +272,29 @@ pressented the pedagogical ideas at several events (TFPIE'15,
 DSLDI'15, IFIP WG 2.1 \#73 in Göteborg, LiVe4CS in Glasgow).
 
 \paragraph{2016:} we ran the first instance of DSLM (partly paid by
-the regular course budget, partly by this project) with Cezar Ionescu
-as main lecturer.
+the regular course budget, partly by the pedagogical project) with
+Cezar Ionescu as main lecturer.
 
 \paragraph{2017:} we ran the second instance of DSLM (paid fully by
 the regular course budget), now with Patrik Jansson as main lecturer.
 
-\paragraph{2016 and 2017:} we used the feedback from students
+\paragraph{2016, 2017, and 2018:} we used the feedback from students
 following the standard Chalmers course evaluation in order to improve
 and further develop the course material.
 
+\paragraph{2018:} we wrote a paper presenting three examples from the
+course material, and an evaluation of the student results showing
+improvements in the pass rates and grades in later courses.
+
+
 \paragraph{Future work} includes involving faculty from CSE and
-mathematics in the development of other mathematics courses (prel.\
-Linear Algebra, Analysis) with the aim to incorporate these ideas also
-there.
+mathematics in the development of other mathematics courses with the
+aim to incorporate these ideas also there.
 %
 A major concern will be to work together with our colleagues in the
 mathematics department in order to distill the essential principles
 that can be ``back-ported'' to the other mathematics courses, such as
-Mathematical Analysis or Linear Algebra.
+Calculus or Linear Algebra.
 %
 Ideally, the mathematical areas used in DSLM will become increasingly
 challenging, the more the effective aspects of the computer science
@@ -299,10 +331,21 @@ We shall use Haskell as our main vehicle, but only at a basic level,
 and we shall introduce the elements of the language as they are
 needed.
 %
-The mathematical topic treated have been chosen either because we
+The mathematical topics treated have been chosen either because we
 expect all students to be familiar with them (for example, limits of
 sequences, continuous functions, derivatives) or because they can be
 useful in many applications (e.g., Laplace transforms, linear algebra).
+
+In the first three years, the enrolment and results of the DSLsofMath
+course itself was as follows:
+\begin{itemize}
+\item 2016: 28 students, pass rate: 68\%
+\item 2017: 43 students, pass rate: 58\%
+\item 2018: 39 students, pass rate: 89\%
+\end{itemize}
+Note that this also counts students from other programmes (mainly SE
+and Math) while Table \ref{tab:res} only deals with the CSE
+programme students.
 
 \subsection{Who should read these lecture notes?}
 

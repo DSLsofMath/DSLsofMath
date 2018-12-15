@@ -24,6 +24,7 @@
 \usepackage{lineno}
 \usepackage{enumitem}
 \usepackage{pdfpages}
+\usepackage{tabu}
 \newtheorem{theorem}{Theorem}
 
 \providecommand\mathbbm{\mathbb}
