@@ -13,8 +13,7 @@ the code for this lecture is placed in a module called
 
 \begin{code}
 module DSLsofMath.W01 where
-import qualified DSLsofMath.CSem as CSem
-import DSLsofMath.CSem (ComplexSem(CS))
+import DSLsofMath.CSem (ComplexSem(CS), (.+.), (.*.))
 import Numeric.Natural (Natural)
 import Data.Ratio (Rational, Ratio, (%))
 import Data.List (find)
@@ -217,25 +216,35 @@ have.
 The type is perhaps best illustrated by a diagram with types as nodes
 and functions (arrows) as directed edges:
 %
-
-
 \begin{figure}[htbp]
 \hfill
 \begin{tikzcd}
-  |a| \arrow[d, "|g|"] \arrow[rd, "|f.g|", dashed] &  \\
-  |b| \arrow[r, "|f|"]            & |c|
+  |a| \arrow{d}[swap]{|g|} \arrow{rd}[dashed]{|f.g|} &  \\
+  |b| \arrow{r}{|f|}            & |c|
 \end{tikzcd}
 \hfill
 \begin{tikzcd}
-  |[Int]| \arrow[d, "|sort|"] \arrow[rd, "|head.sort|", dashed] &  \\
-  |[Int]| \arrow[r, "|head|"]            & |Int|
+  |REAL| \arrow{d}[swap]{|round|} \arrow{rd}[dashed]{|even . round|} &  \\
+  |ZZ|   \arrow{r}{|even|}            & |Bool|
 \end{tikzcd}
 \hfill
 \begin{tikzcd}
-  |Env v s| \arrow[d, "|head|"] \arrow[rd, "|fst.head|", dashed] &  \\
-  |(v, s)| \arrow[r, "|fst|"]            & |v|
+  |ZZ| \arrow{d}[swap]{|(%1)|} \arrow{rd}[dashed]{|inv . (%1)|} &  \\
+  |QQ|   \arrow{r}{|inv|}            & |Maybe QQ|
 \end{tikzcd}
-\hfill{}
+
+%TODO: perhaps reuse, but note that the functions are partial!
+%**TODO: somewhere: mention that some Haskell "functions" are actually partial and that some mathematical functions are not computable
+% \begin{tikzcd}
+%   |[Int]| \arrow[d, "|sort|"] \arrow[rd, "|head.sort|", dashed] &  \\
+%   |[Int]| \arrow[r, "|head|"]            & |Int|
+% \end{tikzcd}
+% \hfill
+% \begin{tikzcd}
+%   |Env v s| \arrow[d, "|head|"] \arrow[rd, "|fst.head|", dashed] &  \\
+%   |(v, s)| \arrow[r, "|fst|"]            & |v|
+% \end{tikzcd}
+% \hfill{}
 %\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
 \caption{Function composition diagrams: in general, and two examples}
 \end{figure}
@@ -630,6 +639,7 @@ liftM _op  _         _         =  Nothing
 \end{code}
 
 \subsection{A case study: complex numbers}
+\label{sec:complexcase}
 
 We now turn to our first case study: an analytic reading of the
 introduction of complex numbers in \cite{adams2010calculus}.
@@ -867,10 +877,11 @@ information:
 to check equality for complex numbers, it is enough to check equality
 of the components (the arguments to the constructor |CPlusC|).
 %
-(Another way of saying this is that |CPlusC| is injective.)
+Another way of saying this is that |CPlusC| is injective.
 %
 The equality on complex numbers is what we would obtain in Haskell by
 using |deriving Eq|.
+%*TODO: explain more about deriving - perhaps in a \footnote{}
 
 This shows that the set of complex numbers is, in fact, isomorphic
 with the set of pairs of real numbers, a point which we can make
@@ -911,7 +922,7 @@ im z @ (CD (x , y))   =   y
 \noindent
 a potential source of confusion being that the symbol |z| introduced
 by the as-pattern is not actually used on the right-hand side of the
-equations.
+equations (although it could be).
 
 The use of as-patterns such as ``|z = x + yi|'' is repeated throughout
 the text, for example in the definition of the algebraic operations on
@@ -936,17 +947,22 @@ We can describe these operations in a \emph{shallow embedding} in
 terms of the concrete datatype |ComplexD|, for example:
 
 \begin{code}
-(+.) :: ComplexD -> ComplexD -> ComplexD
-(CD (a , b)) +. (CD (x , y))  =  CD ((a + x) , (b + y))
+plusD :: ComplexD -> ComplexD -> ComplexD
+plusD (CD (a , b)) (CD (x , y))  =  CD ((a + x) , (b + y))
 \end{code}
 
 \noindent
 or we can build a datatype of ``syntactic'' complex numbers from the
 algebraic operations to arrive at a \emph{deep embedding} as seen in
 the next section.
+%
+Both shallow and deep embeddings will be further explained in section
+\ref{sec:evalD}.
+
 
 Exercises:
 \begin{itemize}
+%*TODO: make this one of the numbered exercises
 \item implement |(*.)| for |ComplexD|
 \end{itemize}
 
@@ -957,12 +973,12 @@ Starting from |ComplexA|, the type has evolved by successive
 refinements through |ComplexB|, |ComplexC|, ending up in |ComplexD|
 (see Fig.~\ref{fig:ComplexTypeSummary}).
 %
-(We can also make a parameterised version of |ComplexD|, by noting
+We can also make a parameterised version of |ComplexD|, by noting
 that the definitions for complex number operations work fine for a
 range of underlying numeric types.
 %
 The operations for |ComplexSem| are defined in module |CSem|,
-available in appendix~\ref{app:CSem}.)
+available in appendix~\ref{app:CSem}.
 
 %
 \begin{figure}[tbph]
@@ -975,6 +991,7 @@ data     ComplexC      =  CPlusC  REAL   REAL
 newtype  ComplexD      =  CD  (REAL, REAL)   deriving Eq
 newtype  ComplexSem r  =  CS  (r , r)        deriving Eq
 \end{spec}
+%*TODO: explain deriving
   \caption{Complex number datatype refinement (semantics).}
   \label{fig:ComplexTypeSummary}
 \end{figure}
@@ -1008,7 +1025,7 @@ We make these four \emph{constructors} in one recursive datatype as
 follows:
 
 \begin{code}
-data ComplexE  =  ImagUnit
+data ComplexE  =  ImagUnit  -- syntax for |i|, not to be confused with the type |ImagUnits|
                |  ToComplex REAL
                |  Plus   ComplexE  ComplexE
                |  Times  ComplexE  ComplexE
@@ -1019,7 +1036,30 @@ Note that, in |ComplexA| above, we also had a constructor for
 ``plus'', but it was another ``plus''.
 %
 They are distinguished by type: |CPlus1| took (basically) two real
-numbers, while |Plus| here takes two complex numbers as arguments.
+numbers, while |Plus| here takes two (expressions representing)
+complex numbers as arguments.
+
+Here are two examples of type |ComplexE| as Haskell code and as
+abstract syntax trees:
+\begin{code}
+testE1 = Times ImagUnit ImagUnit
+testE2 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
+\end{code}
+
+\hspace{2em}
+\begin{tikzpicture}[level 1/.style={sibling distance=3cm},baseline]
+\node{|Times|}
+child {node {|ImagUnit|}}
+child {node {|ImagUnit|}};
+\end{tikzpicture}
+\hspace{2em}
+\begin{tikzpicture}[level 1/.style={sibling distance=3cm},baseline]
+\node{|Plus|}
+child {node {|ToComplex|} child {node {|3|}}}
+child {node {|Times|}
+  child {node {|ToComplex|} child {node {|2|}}}
+  child {node {|ImagUnit|}}};
+\end{tikzpicture}
 
 We can implement the evaluator |evalE| by pattern matching on the
 syntax tree and recursion.
@@ -1031,50 +1071,70 @@ It can be difficult to get started implementing a function (like
 recursive datatype (like |ComplexE|).
 %
 One way to overcome this difficulty is through ``wishful thinking'':
-assume that all but one case has been implemented already.
+assume that all but one case have been implemented already.
 %
 All you need to focus on is that one remaining case, and you can
 freely call the function (that you are implementing) recursively, as
-long as you do it for subtrees.
+long as you do it for subexpressions (subtrees of the abstrac syntax
+tree datatype).
 %
 
 For example, when implementing the |evalE (Plus c1 c2)| case, you can
 assume that you already know the values |s1, s2 :: ComplexD|
-corresponding to the subtrees |c1| and |c2|.
+corresponding to the subtrees |c1| and |c2| of type |ComplexE|.
 %
 The only thing left is to add them up componentwise and we can assume
-there is a function |(+.) :: ComplexD -> ComplexD -> ComplexD| taking
-care of this step.
+there is a function |plusD :: ComplexD -> ComplexD -> ComplexD| taking
+care of this step (in fact, we implemented it earlier in section \ref{sec:complexcase}).
 %
 Continuing in this direction (by ``wishful thinking'') we arrive at
 the following implementation.
 %
 \begin{code}
-evalE ImagUnit         = CD (0 , 1)
-evalE (ToComplex r)    = CD (r , 0)
-evalE (Plus  c1 c2)    = evalE c1   +.  evalE c2
-evalE (Times c1 c2)    = evalE c1   *.  evalE c2
+evalE ImagUnit         = imagUnitD
+evalE (ToComplex r)    = toComplexD r
+evalE (Plus  c1 c2)    = plusD   (evalE c1)  (evalE c2)
+evalE (Times c1 c2)    = timesD  (evalE c1)  (evalE c2)
 \end{code}
+%
+Note the pattern here: for each constructor of the syntax datatype we
+assume there exists a corresponding semantic function.
+%
+The next step is to implement these functions, but let us first list
+their types and compare with the types of the syntactic constructors:
+\begin{code}
+imagUnitD :: ComplexD                        -- |ComplexE|
+toComplexD :: REAL -> ComplexD               -- |REAL -> ComplexE|
+timesD  :: ComplexD -> ComplexD -> ComplexD  -- |ComplexE -> ComplexE -> ComplexE|
+\end{code}
+%plusD   :: ComplexD -> ComplexD -> ComplexD  -- |ComplexE -> ComplexE -> ComplexE|
+As we can see, each use of |ComplexE| has been replaced be a use of |ComplexD|.
+%
+Finally, we can start filling in the implementations:
+\begin{code}
+imagUnitD     = CD (0 ,  1)
+toComplexD r  = CD (r ,  0)
+\end{code}
+The function |plusD| was defined earlier and |timesD| is left as an
+exercise for the reader.
+%
+To sum up we have now implemented a recursive datatype for
+mathematical expressions describing complex numbers, and an evaluator
+that computes the underlying number.
+%
+Note that many different syntactic expressions will evaluate to the
+same number (|evalE| is not injective).
 
-We also define a function to embed a semantic complex number in the
-syntax:
-
+Generalising from the example of |testE2| we also define a function to
+embed a semantic complex number in the syntax:
+%
 \begin{code}
 fromCD :: ComplexD -> ComplexE
 fromCD (CD (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
-
-testE1 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
-testE2 = Times ImagUnit ImagUnit
 \end{code}
+%
+This function is injective.
 
-This is |testE1| as an abstract syntax tree:
-\begin{tikzpicture}[level 1/.style={sibling distance=3cm}]
-\node{|Plus|}
-child {node {|ToComplex|} child {node {|3|}}}
-child {node {|Times|}
-  child {node {|ToComplex|} child {node {|2|}}}
-  child {node {|ImagUnit|}}};
-\end{tikzpicture}
 
 \subsection{Laws, properties and testing}
 There are certain laws we would like to hold for operations on complex
@@ -1084,8 +1144,8 @@ To specify these laws, in a way which can be easily testable in
 Haskell, we use functions to |Bool| (also called \emph{predicates} or
 \emph{properties}).
 %
-The intended meaning of such a boolean function is ``forall inputs,
-this should return |True|''.
+The intended meaning of such a boolean function (representing a law)
+is ``forall inputs, this should return |True|''.
 %
 This idea is at the core of \emph{property based testing} (pioneered
 by \citet{claessen_quickcheck_2000}) and conveniently available in the
@@ -1093,25 +1153,35 @@ library QuickCheck.
 %
 
 %
-The simplest law is perhaps |square i = -1| from the start of the lecture,
+The simplest law is perhaps |square i = -1| from the start of section
+\ref{sec:complexcase},
 %
 \begin{code}
 propImagUnit :: Bool
-propImagUnit = Times ImagUnit ImagUnit === ToComplex (-1)
-
+propImagUnit =  Times ImagUnit ImagUnit === ToComplex (-1)
+\end{code}
+Note the we use a new operator here, |(===)|, because the left hand
+side (LHS) is clearly not syntactically equal to the right hand side
+(RHS).
+%
+The new operator is used to test for equality \emph{after evaluation}:
+%
+\begin{code}
 (===) :: ComplexE -> ComplexE -> Bool
 z === w  =  evalE z == evalE w
 \end{code}
 
-and that |fromCD| is an embedding:
-
+Another law is that |fromCD| is an embedding: if we start from a
+semantic value, translate it to syntax, and evaluate that syntax we
+get back to the value we started from.
+%
 \begin{code}
 propFromCD :: ComplexD -> Bool
-propFromCD c =  evalE (fromCD c) == c
+propFromCD s =  evalE (fromCD s) == s
 \end{code}
 
-but we also have that |Plus| and |Times| should be associative and
-commutative and |Times| should distribute over |Plus|:
+Other desirable laws are that |Plus| and |Times| should be associative
+and commutative and |Times| should distribute over |Plus|:
 
 \begin{code}
 propAssocPlus  x y z     =  Plus (Plus x y) z    ===  Plus x (Plus y z)
@@ -1131,7 +1201,7 @@ propAssocA (+?) x y z =  (x +? y) +? z == x +? (y +? z)
 \end{code}
 
 Note that |propAssocA| is a higher order function: it takes a function
-(a binary operator) as its first parameter.
+(a binary operator name |(+?)|) as its first parameter.
 %
 It is also polymorphic: it works for many different types |a| (all
 types which have an |==| operator).
@@ -1146,13 +1216,13 @@ We can try out |propAssocA| for a few of them.
 %
 
 \begin{code}
-propAssocAInt    = propAssocA (+) :: Int -> Int -> Int -> Bool
-propAssocADouble = propAssocA (+) :: Double -> Double -> Double -> Bool
+propAssocAInt     = propAssocA (+) ::  Int     -> Int     -> Int     -> Bool
+propAssocADouble  = propAssocA (+) ::  Double  -> Double  -> Double  -> Bool
 \end{code}
 
 The first is fine, but the second fails due to rounding errors.
 %
-QuickCheck can be used to find small examples - I like this one best:
+QuickCheck can be used to find small examples --- I like this one best:
 
 \begin{code}
 notAssocEvidence :: (Double , Double , Double , Bool)
@@ -1161,8 +1231,8 @@ notAssocEvidence = (lhs , rhs , lhs-rhs , lhs==rhs)
          rhs =  1+(1+1/3)
 \end{code}
 
-For completeness: this is the answer:
-
+For completeness: these are the values:
+%
 \begin{spec}
   (  2.3333333333333335     -- Notice the five at the end
   ,  2.333333333333333,     -- which is not present here.
@@ -1177,27 +1247,36 @@ But to be sure there is no other bug hiding we need to make one more
 version of the complex number type: parameterise on the underlying
 type for |REAL|.
 %
-At the same time we generalise |ToComplex| to |FromCartesian|:
+At the same time we combine |ImagUnit| and |ToComplex| to
+|ToComplexCart|:
+%*TODO: perhaps explain more about the generalisation step.
 
 %TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
 % See data blackboard/W1/20170116_114608.jpg, eval blackboard/W1/20170116_114613.jpg
 \label{sec:toComplexSyn}
 \label{sec:firstFromInteger}
 \begin{code}
-data ComplexSyn r  =  FromCartesian r r
+data ComplexSyn r  =  ToComplexCart r r
                    |  ComplexSyn r  :+:  ComplexSyn r
                    |  ComplexSyn r  :*:  ComplexSyn r
 
 toComplexSyn :: Num a => a -> ComplexSyn a
-toComplexSyn x = FromCartesian x 0
+toComplexSyn x = ToComplexCart x 0
+\end{code}
 
--- From |CSem| in appendix~\ref{app:CSem}: |newtype ComplexSem r = CS (r , r)    deriving Eq|
+From appendix~\ref{app:CSem} we import |newtype ComplexSem r = CS (r ,
+r) deriving Eq| and the semantic operations |(.+.)| and |(.*.)|
+corresponding to |plusD| and |timesD|.
 
-evalCSyn :: Num r => ComplexSyn r -> CSem.ComplexSem r
-evalCSyn (FromCartesian x y) = CS (x , y)
-evalCSyn (l :+: r)  = evalCSyn l  CSem.+.  evalCSyn r
-evalCSyn (l :*: r)  = evalCSyn l  CSem.*.  evalCSyn r
+\begin{code}
+evalCSyn :: Num r => ComplexSyn r -> ComplexSem r
+evalCSyn (ToComplexCart x y) = CS (x , y)
+evalCSyn (l :+: r)  = evalCSyn l  .+.  evalCSyn r
+evalCSyn (l :*: r)  = evalCSyn l  .*.  evalCSyn r
+\end{code}
 
+%if False
+\begin{code}
 instance Num a => Num (ComplexSyn a) where
    (+)  = (:+:)
    (*)  = (:*:)
@@ -1208,8 +1287,10 @@ instance Num a => Num (ComplexSyn a) where
 fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
 fromIntegerCS = toComplexSyn . fromInteger
 \end{code}
+%endif
 
 \paragraph{From syntax to semantics and back}
+%**TODO: Duplication? why here in Ch.1? To stress difference between syntax (big type with many "synonyms") and semantics (small type with "just what is needed").
 
 We have seen evaluation functions from abstract syntax to semantics
 (|eval :: Syn -> Sem|).
@@ -1219,8 +1300,8 @@ Often an inverse is also available: |embed :: Sem -> Syn|.
 For our complex numbers we have
 %
 \begin{code}
-embed :: CSem.ComplexSem r -> ComplexSyn r
-embed (CS (x, y)) = FromCartesian x y
+embed :: ComplexSem r -> ComplexSyn r
+embed (CS (x, y)) = ToComplexCart x y
 \end{code}
 
 The embedding should satisfy a round-trip property:
@@ -1250,7 +1331,7 @@ When is |embed (eval e) == e|?
 
 Some laws appear over and over again in different mathematical contexts.
 %
-Binary operators are often as associative or commutative, and
+Binary operators are often associative or commutative, and
 sometimes one operator distributes over another.
 %
 We will work more formally with logic in chapter~\ref{sec:logic} but
@@ -1306,16 +1387,14 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 (In the language of section \ref{sec:AlgHomo}, distributivity means
 that |(*c)| is a |(+)|-homomorphism.)
 
-Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
+%**TODO: hide or give hints / method (otherwise too hard and a bit off topic)
+%Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
 % Answer: |max|
 
+%*TODO: numbering in the exercise
 Exercise: Find other pairs of operators satisfying a distributive law.
 
-\subsection{More about functions}
-%**TODO: perhaps remove subsection heading
-
-
-\subsubsection{Notation and abstract syntax for (infinite) sequences}
+\subsection{Notation and abstract syntax for (infinite) sequences}
 \label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
@@ -1328,7 +1407,7 @@ just $\left\{ a_i \right\}$ and (not always) an indication of the type
 $X$ of the $a_i$.
 %
 Note that the |a| at the center of this notation actually carries all
-of the information: an infinite family of values $a_i : X$.
+of the information: an infinite family of values $a_i$ each of type |X|.
 %
 If we interpret ``subscript'' as function application we can see that
 |a : Nat -> X| is a useful typing of a sequence.
@@ -1465,8 +1544,8 @@ type QQ     =  Ratio Integer
 propAssocAdd :: (Eq a, Num a) => a -> a -> a -> Bool
 propAssocAdd = propAssocA (+)
 
-(*.) :: ComplexD -> ComplexD -> ComplexD
-CD (ar, ai) *. CD (br, bi) = CD (ar*br - ai*bi, ar*bi + ai*br)
+-- timesD :: ComplexD -> ComplexD -> ComplexD
+timesD (CD (ar, ai)) (CD (br, bi)) = CD (ar*br - ai*bi, ar*bi + ai*br)
 
 instance Show ComplexD where
   show = showCD
