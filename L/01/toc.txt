@@ -1,12 +1,12 @@
 TODO: clarify chapter structure
-  (change title to reflect extended contents or split into two chapters)
 
-\section{A DSL for arithmetic expressions and complex numbers}
+\section{Types, DSLs, and complex numbers}
   \subsection{Intro: Pitfalls with traditional mathematical notation}
       \paragraph{A function or the value at a point?}
       \paragraph{Scoping}
-      \paragraph{Variable names as type hints}
   \subsection{Types of |data|}
+    \subsubsection{What is a type?}
+      \paragraph{Variable names as type hints}
     \subsubsection{type / newtype / data}
       \paragraph{type -- abbreviating type expressions}
       \paragraph{newtype -- more protection}

@@ -1,4 +1,3 @@
-%**TODO: change title to reflect extended contents (or split into two chapters)
 \section{Types, DSLs, and complex numbers}
 \label{sec:DSLComplex}
 
@@ -91,7 +90,7 @@ Mathematics text books usually avoid the risk of confusion by
 (silently) renaming variables when needed, but we believe this
 renaming is a sufficiently important operation to be more explicitly
 mentioned.
-%*TODO: Add simple exercises on renaming and variable capture
+%*TODO: Perhaps add simple exercises on renaming and variable capture
 
 \subsection{Types of |data|}
 
@@ -150,7 +149,110 @@ negation.
 The function type construction is very powerful, and can be used to
 model a wide range of concepts in mathematics (and the real world).
 
-% **TODO: Perhaps more about cartesion product, etc.
+\paragraph{Function building blocks.}
+%
+As function types are really important, we will now introduce a few basic
+building blocks which are as useful for functions as zero and one are
+for numbers.
+%
+For each type |A| there is an \emph{identity function} |idA : A -> A|.
+%
+In Haskell all of these functions are defined once and for all as follows:
+\begin{code}
+id :: a -> a
+id x = x
+\end{code}
+%
+When a type variable (here |a|) is used in a type signature it is
+implicitly quantified (bound) as if preceded by ``for all types |a|''.
+%
+This use of type variables is called ``parametric polymorphism'' and
+the compiler gives more help when implementing functions with such
+types.
+%
+Another ``function building block'' is |const| which has two type
+variables and two arguments:
+%
+\begin{code}
+const :: a -> b -> a
+const x _ = x
+\end{code}
+%
+Two-argument functions like |const| are sometimes used as binary
+operators.
+
+As a first example of a \emph{higher-order} function we present |flip|
+which ``flips'' the two arguments of a binary operator.
+%
+\begin{code}
+flip :: (a -> b -> c) -> (b -> a -> c)
+flip op x y = op y x
+\end{code}
+%
+As an example |flip (-) 5 10 == 10 - 5| and |flip const x y ==
+const y x == y|.
+
+\paragraph{Function composition.}
+
+The infix operator \verb+.+ (period) in Haskell is an implementation
+of the mathematical operation of function composition.
+%
+The period is an ASCII approximation of the composition symbol
+$\circ{}$ typically used in mathematics.
+%
+(The symbol $\circ{}$ is encoded as \verb"U+2218" and called \textsc{ring
+operator} in Unicode, \verb+&#8728+ in HTML, \verb+\circ+ in \TeX,
+etc.)
+%
+Its implementation is:
+%
+\begin{spec}
+f . g = \x -> f (g x)
+\end{spec}
+%
+As an exercise it is good to experiment a bit with these building
+blocks to see how they fit together and what types their combinations
+have.
+
+The type is perhaps best illustrated by a diagram with types as nodes
+and functions (arrows) as directed edges:
+%
+
+
+\begin{figure}[htbp]
+\hfill
+\begin{tikzcd}
+  |a| \arrow[d, "|g|"] \arrow[rd, "|f.g|", dashed] &  \\
+  |b| \arrow[r, "|f|"]            & |c|
+\end{tikzcd}
+\hfill
+\begin{tikzcd}
+  |[Int]| \arrow[d, "|sort|"] \arrow[rd, "|head.sort|", dashed] &  \\
+  |[Int]| \arrow[r, "|head|"]            & |Int|
+\end{tikzcd}
+\hfill
+\begin{tikzcd}
+  |Env v s| \arrow[d, "|head|"] \arrow[rd, "|fst.head|", dashed] &  \\
+  |(v, s)| \arrow[r, "|fst|"]            & |v|
+\end{tikzcd}
+\hfill{}
+%\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
+\caption{Function composition diagrams: in general, and two examples}
+\end{figure}
+
+In Haskell we get the following type:
+
+\begin{spec}
+(.) :: (b->c) -> (a->b) -> (a->c)
+\end{spec}
+
+which may take a while to get used to.
+
+
+
+%**TODO: Perhaps more about cartesion product, etc.
+%*TODO forward pointer to exercises about cardinality \ref{exc:counting}
+%*TODO explain the e : t syntax (and mention e `elem` t)
 
 \paragraph{Variable names as type hints}
 
@@ -218,7 +320,7 @@ Note that the function type constructor |(->)| is used three times
 here: once in |T -> CC|, once in |S -> CC| and finally at the top
 level to indicate that the transform maps functions to functions.
 %
-This means that |Lap| is an example of a \emph{higher-order} function,
+This means that |Lap| is an example of a higher-order function,
 and we will see many uses of this idea in this book.
 
 Now we move to introducing some of the ways types are defined in
@@ -228,12 +330,12 @@ specification) of mathematical concepts.
 %TODO: perhaps make the following few paragraphs flow better
 %TODO: perhaps use more from Expr.lhs
 
-\subsubsection{type / newtype / data}
+\subsubsection{Types in Haskell: |type|, |newtype|, and |data|}
 
 There are three keywords in Haskell involved in naming types: |type|,
 |newtype|, and |data|.
 
-\paragraph{type -- abbreviating type expressions}
+\paragraph{|type| -- abbreviating type expressions}
 
 The |type| keyword is used to create a type synonym - just another name
 for a type expression.
@@ -256,7 +358,7 @@ The |Env| example shows that a type synonym can have type parameters.
 Note that |Env v s| is a type (for any types |v| and |s|), but |Env|
 itself is not a type but a \emph{type constructor}.
 
-\paragraph{newtype -- more protection}
+\paragraph{|newtype| -- more protection}
 
 A simple example of the use of |newtype| in Haskell is to distinguish
 values which should be kept apart.
@@ -338,7 +440,7 @@ name, population, and year of establishment of the town modelled.
 
 \paragraph{|Maybe| and parameterised types.}
 %
-It is very often possible describe a family of types of the same ``shape''.
+It is very often possible describe a family of types using a type parameter.
 %
 One simple example is the type constructor |Maybe|:
 %
@@ -353,9 +455,16 @@ This declaration introduces
 \item a constructor |Just :: a -> Maybe a| to represent ``just a value''.
 \end{itemize}
 %
-A maybe type is often used when a function may, or may not, return a
-value.
+A maybe type is often used when an operation may, or may not, return a
+value:
+%
+\begin{code}
+inv :: QQ -> Maybe QQ
+inv 0  = Nothing
+inv r  = Just (1/r)
+\end{code}
 
+%*TODO: perhaps move cartesian product earlier (to math / set part)
 Two other examples of, often used, parameterised types are |(a,b)| for
 the type of pairs (a product type) and |Either a b| for either an |a|
 or a |b| (a sum type).
@@ -390,6 +499,23 @@ We can convert to a total function |Maybe| returning an |s| using
 %
 \begin{code}
 evalEnv :: Eq v =>  Env v s -> (v -> Maybe s)
+\end{code}
+%
+This type signature deserves some more explanation.
+%
+The first part (|Eq v =>|) is a constraint which says that the
+function works, not for \emph{all} types |v|, but only for those who
+support a boolean equality check (|(==) :: v -> v -> Bool|).
+%
+The rest of the type signature (|Env v s -> (v -> Maybe s)|) can be
+interpreted in two ways: either as the type of a one-argument function
+taking an |Env v s| and returning a function, or as the type of a
+two-argument function taking an |Env v s| and a |v| and maybe
+returning an |s|.
+
+%**TODO: Explain |where| clause syntax
+%**TODO: Explain boolean guards
+\begin{code}
 evalEnv vss var  =  findFst vss
   where  findFst ((v,s):vss)
            | var == v         =  Just s
@@ -408,22 +534,6 @@ when we introduce abstract syntax trees containing variables.
 
 \subsection{A syntax for simple arithmetical expressions}
 \label{sec:ArithExp}
-
-%TODO: (by DaHe) It would also be a good opportunity to explain deep
-% vs shallow embedding, (which I remember some of my classmates had
-% trouble grasping when I took the course), as these words are used
-% throughout the chapter.
-
-%TODO: The data type could then be expanded to include variables,
-% [introduce the type without variables before the currrent type?]
-% making possible expressions like 5*x + 7, and how we need to be able
-% look up the value of the variable (from an env) in order to eval the
-% expression.
-%
-% This way, the idea of a math DSL would be presented in the most
-% basic way possible, before we make it one step more complicated by
-% trying to construct a DSL from a book's definition of complex
-% numbers.
 
 \begin{code}
 data AE = V String | P AE AE | T AE AE
@@ -447,7 +557,7 @@ symbol characters and start with a colon:
 data AE' = V' String | AE' :+ AE' | AE' :* AE'
 \end{spec}
 
-Example values: |y = V "y"|, |e1 = y :+ y|, |e2 = x :* e1|
+Example values: |y = V' "y"|, |e1 = y :+ y|, |e2 = x :* e1|
 
 Finally, you can add one or more type parameters to make a whole family
 of datatypes in one go:
@@ -470,7 +580,7 @@ modules, or rename one of them (often by adding primes as in |AE'|).
 %
 In this book we often take the liberty of presenting more than one
 version of a datatype without changing the names, to avoid multiple
-modules or too many primes.
+modules or too many primed names.
 
 
 Together with a datatype for the syntax of arithmetic expressions we
@@ -487,6 +597,8 @@ In the evaluator for |AE' v| we take this one step further: given an
 environment |env| and the syntax of an arithmetic expression |e| we
 compute the semantics of that expression.
 %
+%*TODO: perhaps swith Times to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
+%**TODO explain more for those not used to Haskell
 \begin{code}
 evalAE :: Env String Integer -> (AE -> Maybe Integer)
 evalAE env (V x)      =  evalEnv env x
@@ -502,6 +614,10 @@ mayT (Just a) (Just b)  =  Just (a*b)
 mayT _        _         =  Nothing
 \end{code}
 
+The corresponding code for |AE'| is more general and you don't need to
+understand it at this stage, but it is left here as an example for
+those with a stronger Haskell background.
+%
 \begin{code}
 evalAE' :: (Eq v, Num sem) =>  (Env v sem) -> (AE' v -> Maybe sem)
 evalAE' env (V' x)      =  evalEnv env x
@@ -515,8 +631,8 @@ liftM _op  _         _         =  Nothing
 
 \subsection{A case study: complex numbers}
 
-We will start by an analytic reading of the introduction of complex
-numbers in \cite{adams2010calculus}.
+We now turn to our first case study: an analytic reading of the
+introduction of complex numbers in \cite{adams2010calculus}.
 %
 We choose a simple domain to allow the reader to concentrate on the
 essential elements of our approach without the distraction of
@@ -543,6 +659,7 @@ The section \emph{Definition of Complex Numbers} begins with:
   square.
 \end{quote}
 
+%*TODO: Perhaps use this as an example of "specification by equation" pattern which is also used in the lab.
 At this stage, it is not clear what the type of |i| is meant to be, we
 only know that |i| is not a real number.
 %
@@ -550,10 +667,11 @@ Moreover, we do not know what operations are possible on |i|, only
 that |square i| is another name for |-1| (but it is not obvious that,
 say |i * i| is related in any way with |square i|, since the
 operations of multiplication and squaring have only been introduced so
-far for numerical types such as |Nat| or |REAL|, and not for symbols).
+far for numerical types such as |Nat| or |REAL|, and not for
+``symbols'').
 
-For the moment, we introduce a type for the value |i|, and, since we
-know nothing about other values, we make |i| the only member of this
+For the moment, we introduce a type for the symbol |i|, and, since we
+know nothing about other symbols, we make |i| the only member of this
 type:
 
 \begin{code}
@@ -562,9 +680,20 @@ data ImagUnits = I
 i :: ImagUnits
 i = I
 \end{code}
-
+%
 We use a capital |I| in the |data| declaration because a lowercase
 constructor name would cause a syntax error in Haskell.
+%
+For convenience we add a synonym |i == I|.
+%
+We can give the translation from the abstract syntax to the concrete
+syntax as a function |showIU|:
+%
+\begin{code}
+showIU ::  ImagUnits       ->  String
+showIU     I               =   "i"
+\end{code}
+
 
 Next, we have the following definition:
 
@@ -582,15 +711,16 @@ the keyword ``form'').
 %
 This is underlined by the presentation of \emph{two} forms, which can
 suggest that the operation of juxtaposing |i| (multiplication?) is not
-commutative.
+commutative\footnote{See section \ref{sec:commutative} for more about
+  commutativity.}.
 
 A profitable way of dealing with such concrete syntax in functional
 programming is to introduce an abstract representation of it in the
 form of a datatype:
 
 \begin{code}
-data ComplexA  =  CPlus1 REAL REAL ImagUnits
-               |  CPlus2 REAL ImagUnits REAL
+data ComplexA  =  CPlus1 REAL REAL ImagUnits  -- the form |a + bi|
+               |  CPlus2 REAL ImagUnits REAL  -- the form |a + ib|
 \end{code}
 
 We can give the translation from the abstract syntax to the concrete
@@ -598,8 +728,8 @@ syntax as a function |showCA|:
 
 \begin{code}
 showCA ::  ComplexA       ->  String
-showCA     (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ "i"
-showCA     (CPlus2 x i y)  =  show x ++ " + " ++ "i" ++ show y
+showCA     (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ showIU i
+showCA     (CPlus2 x i y)  =  show x ++ " + " ++ showIU i ++ show y
 \end{code}
 
 Notice that the type |REAL| is not implemented yet and it is not
@@ -668,14 +798,15 @@ toComplex x = CPlus1 x 0 I
 
 Again, at this stage there are many open questions.
 %
-For example, we can assume that |i 1| stands for the complex number
-|CPlus2 0 I 1|, but what about |i| by itself?
+For example, we can assume that the mathematical expression $i 1$
+stands for the complex number |CPlus2 0 I 1|, but what about the
+expression $i$ by itself?
 %
 If juxtaposition is meant to denote some sort of multiplication, then
-perhaps |1| can be considered as a unit, in which case we would have
-that |i| abbreviates |i 1| and therefore |CPlus2 0 I 1|.
+perhaps $1$ can be considered as a unit, in which case we would have
+that $i$ abbreviates $i 1$ and therefore |CPlus2 0 I 1|.
 %
-But what about, say, |2i|?
+But what about, say, $2 i$?
 %
 Abbreviations with |i| have only been introduced for the |ib| form,
 and not for the |bi| one!
@@ -713,7 +844,7 @@ data ComplexC = CPlusC REAL REAL
 
 \noindent
 (The renaming of the constructor to |CPlusC| serves as a guard against
-the case we have suppressed potentially semantically relevant syntax.)
+the case that we have suppressed potentially semantically relevant syntax.)
 
 We read further:
 
@@ -1114,7 +1245,8 @@ When is |embed (eval e) == e|?
 
 % |a + b = eval (Plus (embed a) (embed b))| for all |a| and |b|.
 
-\paragraph{More about laws}
+\paragraph{More about laws}%
+\label{sec:commutative}
 
 Some laws appear over and over again in different mathematical contexts.
 %
@@ -1180,58 +1312,7 @@ Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
 Exercise: Find other pairs of operators satisfying a distributive law.
 
 \subsection{More about functions}
-
-\paragraph{Function composition.}
-
-The infix operator \verb+.+ (period) in Haskell is an implementation
-of the mathematical operation of function composition.
-%
-The period is an ASCII approximation of the composition symbol $\circ{}$ typically
-used in mathematics.
-%
-(The symbol $\circ{}$ is encoded as \verb"U+2218" and called \textsc{ring
-operator} in Unicode, \verb+&#8728+ in HTML, \verb+\circ+ in \TeX,
-etc.)
-%
-Its implementation is:
-%
-\begin{spec}
-f . g = \x -> f (g x)
-\end{spec}
-
-The type is perhaps best illustrated by a diagram with types as nodes
-and functions (arrows) as directed edges:
-%
-
-
-\begin{figure}[htbp]
-\hfill
-\begin{tikzcd}
-  |a| \arrow[d, "|g|"] \arrow[rd, "|f.g|", dashed] &  \\
-  |b| \arrow[r, "|f|"]            & |c|
-\end{tikzcd}
-\hfill
-\begin{tikzcd}
-  |[Int]| \arrow[d, "|sort|"] \arrow[rd, "|head.sort|", dashed] &  \\
-  |[Int]| \arrow[r, "|head|"]            & |Int|
-\end{tikzcd}
-\hfill
-\begin{tikzcd}
-  |Env v s| \arrow[d, "|head|"] \arrow[rd, "|fst.head|", dashed] &  \\
-  |(v, s)| \arrow[r, "|fst|"]            & |v|
-\end{tikzcd}
-\hfill{}
-%\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
-\caption{Function composition diagrams: in general, and two examples}
-\end{figure}
-
-In Haskell we get the following type:
-
-\begin{spec}
-(.) :: (b->c) -> (a->b) -> (a->c)
-\end{spec}
-
-which may take a while to get used to.
+%**TODO: perhaps remove subsection heading
 
 
 \subsubsection{Notation and abstract syntax for (infinite) sequences}
@@ -1256,13 +1337,13 @@ Some examples:
 %
 \begin{code}
 type Nat    =  Natural     -- imported from |Numeric.Natural|
-type QQ     =  Ratio Nat   -- imported from |Data.Ratio|
+type QQP    =  Ratio Nat   -- imported from |Data.Ratio|
 type Seq a  =  Nat -> a
 
 idSeq :: Seq Nat
 idSeq i = i                -- |{0, 1, 2, 3, ...}|
 
-invSeq :: Seq QQ
+invSeq :: Seq QQP
 invSeq i = 1%(1 + i)       -- |{frac 1 1, frac 1 2, frac 1 3, frac 1 4, ...}|
 
 pow2 :: Num r =>  Seq r
@@ -1379,6 +1460,8 @@ some operations (|conSeq|, |addSeq|, |fmap|, |sums|, \ldots) and some
 \subsection{Some helper functions (can be skipped)}
 
 \begin{code}
+type QQ     =  Ratio Integer
+
 propAssocAdd :: (Eq a, Num a) => a -> a -> a -> Bool
 propAssocAdd = propAssocA (+)
 
