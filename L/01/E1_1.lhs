@@ -9,8 +9,8 @@
      deriving(Eq, Show)
   \end{code}
   %
-  (Note the use of ``backticks'' around |Plus| etc. which makes it
-  possible to use a name as an infix operator.)
+  Note the use of ``backticks'' around |Plus| etc. which makes it
+  possible to use a name as an infix operator.
   %
   \begin{enumerate}
    %
@@ -28,9 +28,7 @@
     \item Consider the following expression:
        \begin{spec}
          c1 = (x - 15)*(y + 12)*z
-          where  x = 5
-                 y = 8
-                 z = 13
+          where  x = 5; y = 8; z = 13
        \end{spec}
 
        In order to represent this with our |Exp| data type, we are going to have

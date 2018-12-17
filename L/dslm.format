@@ -198,7 +198,9 @@
 
 %format mod x y = x "\%" y
 
+%format liftSeq0 = liftSeq "_0"
 %format liftSeq1 = liftSeq "_1"
+%format liftSeq2 = liftSeq "_2"
 
 
 %format .+. = "\mathbin{.\!+\!.}"

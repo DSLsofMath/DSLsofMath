@@ -1459,10 +1459,11 @@ liftSeq0 c i = c
 \end{code}
 
 Exercice \ref{exc:fmap}: what does function composition do to a sequence?
+  For a sequence |a| what is |a . (1+)|? What is |(1+) . a|?
 
 Another common mathematical operator on sequences is the limit.
 %
-We will get back to limits in later chapters (\ref{sec:LimPoint},
+We will get back to limits in later sections (\ref{sec:LimPoint},
 \ref{sec:FunLimit}), but here we just analyse the notation and typing.
 %
 This definition is slightly adapted from Wikipedia (2017-11-08):
@@ -1496,9 +1497,11 @@ Then \(L = \lim_{i\to\infty} x_i\) would mean |Just L = lim x|
 %
 We will return to limits and their proofs in
 \refSec{par:LimitOfSequence} after we have reviewed some logic.
-%
+
+
 Here we just define one more common operation: the sum of a sequence
-(like \(\sigma = \sum_{i=0}^{\infty} 1/i!\)).
+(like \(\sigma = \sum_{i=0}^{\infty} 1/i!\)\footnote{Here |n! =
+  1*2* ... *n| is the factorial (sv: fakultet).}).
 %
 Just as not all sequences have a limit, not all have a sum either.
 %
@@ -1506,11 +1509,25 @@ But for every sequence we can define a new sequence of partial sums:
 %
 \begin{code}
 sums :: Num a => Seq a -> Seq a
-sums = scan 0 (+)
-scan :: a -> (a->a->a) -> Seq a -> Seq a
-scan z (+) f = s
+sums = scan (+) 0
+\end{code}
+The function |sums| is perhaps best illustrated by examples:
+\begin{spec}
+  sums (conSeq c)  == {0, c, 2*c, 3*c, ...}
+  sums (idSeq)     == {0, 0, 1, 3, 6, 10, ...}
+\end{spec}
+The general pattern is to start at zero and accumulate the sum of
+initial prefixes of the input sequence.
+%
+The definition of |sums| uses |scan| which is a generalisation which
+``sums'' with a user-supplied operator |(+)| starting from an
+arbitrary |z| (instead of zero).
+%
+\begin{code}
+scan :: (b->a->b) -> b -> Seq a -> Seq b
+scan (+) z a = s
   where  s 0 = z
-         s i = s (i-1)  +  f i
+         s i = s (i-1)  +  a i
 \end{code}
 %
 And by combining this with limits we can state formally that the sum
@@ -1530,8 +1547,9 @@ definition
 
 To sum up this subsection, we have defined a small Domain Specific
 Language (DSL) for infinite sequences by defining a type (|Seq a|),
-some operations (|conSeq|, |addSeq|, |fmap|, |sums|, \ldots) and some
+some operations (|conSeq|, |addSeq|, |liftSeq1|, |sums|, |scan|, \ldots) and some
 ``run functions'' or predicates (like |lim| and |sum|).
+%*TODO: the concept of "run functions" has not yet been introduced
 
 % ----------------------------------------------------------------
 
