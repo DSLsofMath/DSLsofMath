@@ -1,6 +1,6 @@
 chapters:
 	cp ../DSLsofMathNotes.pdf .
-	pdftk DSLsofMathNotes.pdf cat   9-32  output DSLsofMath_Chapter_1.pdf
+	pdftk DSLsofMathNotes.pdf cat  11-32  output DSLsofMath_Chapter_1.pdf
 	pdftk DSLsofMathNotes.pdf cat  33-52  output DSLsofMath_Chapter_2.pdf
 	pdftk DSLsofMathNotes.pdf cat  53-68  output DSLsofMath_Chapter_3.pdf
 	pdftk DSLsofMathNotes.pdf cat  69-84  output DSLsofMath_Chapter_4.pdf
