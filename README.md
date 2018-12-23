@@ -128,6 +128,16 @@ import DSLsofMath.W0X
 where X is the chapter that contains the code you want to use. You should be
 able to load your own haskell files in normal ghci.
 
+### Installing stack on the Chalmers linux machines
+
+On the linux remote machines you have a number of options to get stack to work.
+Regardless of how you do it the goal is to have a local stack executable in the directory `~/.local/bin`.
+One way to do this is to follow these steps:
+* Run `stack upgrade`, optionally download the right executable from the stack website.
+* Make sure you add `export PATH="/chalmers/home/<<<Your CID here>>>/.local/bin/:$PATH"` to your `.bashrc`.
+* Restart the terminal
+* Make sure that `which stack` prints `/chalmers/home/<<<Your CID here>>>/.local/bin/stack`
+
 ## Evaluation
 
 DSLsofMath course evaluation student representatives 2019: TBD
