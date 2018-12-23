@@ -80,7 +80,7 @@ To prove this, here are a few hints:
 \end{exercise}
 
 \begin{exercise}
-  Another view of |Tn| from Exercise \ref{ex:chebyshev} is as a
+  Another view of |Tn| from Exercise~\ref{ex:chebyshev} is as a
   homomorphism.
 %
   Let |H1(h,F,f) = Forall x (h(F x) == f (h x))| be the predicate

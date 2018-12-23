@@ -107,7 +107,7 @@ of functions which syntactically looks very trigonometric:
 %
 It can be shown that \(T_n\) is a polynomial function of degree |n|.
 %
-(Exercise \ref{ex:chebyshev} guides you to a proof.
+(Exercise~\ref{ex:chebyshev} guides you to a proof.
 %
 At this point you could just compute \(T_0\), \(T_1\), and \(T_2\) by
 hand to get a feeling for how it works.

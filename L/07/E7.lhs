@@ -46,7 +46,7 @@ degree |n|.
 
 \begin{exercise}
 \label{exc:NonDetExample1}
-In the context of section \ref{sec:NonDetSys}: start with |v0 = e 2 +
+In the context of \refSec{sec:NonDetSys}: start with |v0 = e 2 +
 e 3| and iterate |M*| a number of times, to get a feeling for the
 possible evolutions.
 %
@@ -67,7 +67,7 @@ Can you prove it?
 \begin{exercise}
 \label{exc:StocExample1}
 
-In the context of the example matrix |M| in section \ref{sec:StocSys}:
+In the context of the example matrix |M| in \refSec{sec:StocSys}:
 starting from state |0|, how many steps do you need to take before the
 probability is concentrated in state |6|?
 %
@@ -81,7 +81,7 @@ What can you say about the long-term behaviour of the system now?
 
 \begin{exercise}
 \label{exc:StocExample1Impl}
-In the context of the example matrix |M| in section \ref{sec:StocSys}:
+In the context of the example matrix |M| in \refSec{sec:StocSys}:
 implement the example.
 %
 You will need to define the transition function of type |G -> (G ->

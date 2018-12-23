@@ -57,7 +57,7 @@ We have several choices.
 \begin{enumerate}
 \item Using |FunExp|
 
-Recall (section~\ref{sec:FunExp}):
+Recall (\refSec{sec:FunExp}):
 
 \begin{spec}
 data FunExp  =  Const Rational

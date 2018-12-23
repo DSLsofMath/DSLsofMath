@@ -138,7 +138,7 @@ new domain.
 Second, they should be able to handle new mathematical areas using the
 computer science perspective.
 %
-(For the detailed learning outcomes, see figure~\ref{fig:LearningOutcomes}.)
+(For the detailed learning outcomes, see Figure~\ref{fig:LearningOutcomes}.)
 
 \begin{wrapfigure}{R}{0.5\textwidth}
 \begin{itemize}
@@ -226,7 +226,7 @@ group (students who have not taken the course).
 The evaluation of the student results shows improvements in the pass
 rates and grades in later courses.
 %
-This is very briefly summarised in Table \ref{tab:res} and more
+This is very briefly summarised in Table~\ref{tab:res} and more
 details are explained in
 \citet{TFPIE18_DSLMResults_JanssonEinarsdottirIonescu}.
 
@@ -344,7 +344,7 @@ course itself was as follows:
 \item 2018: 39 students, pass rate: 89\%
 \end{itemize}
 Note that this also counts students from other programmes (mainly SE
-and Math) while Table \ref{tab:res} only deals with the CSE
+and Math) while Table~\ref{tab:res} only deals with the CSE
 programme students.
 
 \subsection{Who should read these lecture notes?}
@@ -386,7 +386,7 @@ have been included as exercises, so for those of you taking the
 course, you can check your progress towards the final examination.
 %
 Sometimes the chapter text contains short, inlined questions, like
-``Exercice \ref{exc:fmap}: what does function composition do to a sequence?''.
+``Exercice~\ref{exc:fmap}: what does function composition do to a sequence?''.
 %
 In such cases there is some more explanation in the exercises section
 at the end of the chapter.

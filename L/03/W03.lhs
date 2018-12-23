@@ -85,7 +85,7 @@ definition of the function |D f|.
 The definition is given for a fixed (but arbitrary) |x|.
 %
 (At this point it is useful to briefly look back to the definition of
-``limit of a function'' in Section~\ref{sec:LimitOfFunction}.)
+``limit of a function'' in \refSec{sec:LimitOfFunction}.)
 %
 The |lim| expression is using the (anonymous) function |g h = frac
 (f(x+h) - f x) h| and that the limit of |g| is taken at |0|.
@@ -136,8 +136,7 @@ numerical approximations.
 But if we also have access to the ``source code'' of |f|, then we can
 apply the usual rules we have learnt in calculus.
 %
-We will get get back to this question in section
-\ref{sec:computingDerivatives}.
+We will get get back to this question in \refSec{sec:computingDerivatives}.
 
 \subsection{Typing Mathematics: partial derivative}
 \label{sec:typePartialDerivative}
@@ -725,8 +724,7 @@ instance |Num (x -> a)|).
 The instance declaration of the method |fromInteger| above looks
 recursive, but is not.
 %
-The same pattern appeared already in section
-\ref{sec:firstFromInteger}, which near the end included roughly the
+The same pattern appeared already in \refSec{sec:firstFromInteger}, which near the end included roughly the
 following lines:
 
 \begin{spec}
@@ -769,7 +767,7 @@ As an example we have that
   3 :: ComplexSyn Double                 ==  {- |Integer| literals have an implicit |fromInteger| -}
   (fromInteger 3) :: ComplexSyn Double   ==  {- |Num| instance for |ComplexSyn| -}
   toComplexSyn   (fromInteger 3)         ==  {- |Num| instance for |Double| -}
-  toComplexSyn   3.0                     ==  {- Def. of |toComplexSyn| from Section \ref{sec:toComplexSyn} -}
+  toComplexSyn   3.0                     ==  {- Def. of |toComplexSyn| from \refSec{sec:toComplexSyn} -}
   FromCartesian  3.0  0                  ==  {- |Integer| literals have an implicit |fromInteger| -}
   FromCartesian  3.0  (fromInteger 0)    ==  {- |Num| instance for |Double|, again -}
   FromCartesian  3.0  0.0
@@ -1131,9 +1129,9 @@ evalD ::  FunExp  ->  FD Double
 evalD     e       =   (eval e, eval' e)
 \end{code}
 %
-(Note: At this point, you are adviced to look up and solve exercise
-\ref{exc:tuplingE1} on the ``tupling transform'' in case you have not
-done so already.)
+(Note: At this point, you are adviced to look up and solve
+Exercise~\ref{exc:tuplingE1} on the ``tupling transform'' in case you
+have not done so already.)
 
 Is |evalD| compositional?
 

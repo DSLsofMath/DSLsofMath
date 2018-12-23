@@ -39,9 +39,9 @@ Prove or disprove the following claims:
 \end{exercise}
 
 \begin{exercise}
-  Complete the instance declarations for |(REAL, REAL)|, deriving
-  them from the homomorphism requirement for |apply| (in section
-  \ref{sec:apply}).
+  Complete the instance declarations for |(REAL, REAL)|, deriving them
+  from the homomorphism requirement for |apply| (in
+  \refSec{sec:apply}).
 \end{exercise}
 
 \begin{exercise}
@@ -66,7 +66,7 @@ Prove or disprove the following claims:
 \begin{exercise}
   \textit{From exam 2017-08-22}
 
-  In exercise \ref{exc:e1_semiring} we looked at the datatype |SR v|
+  In Exercise~\ref{exc:e1_semiring} we looked at the datatype |SR v|
   for the language of semiring expressions.
   %
   We will now use some of the concepts discussed in this chapter to
@@ -82,9 +82,9 @@ Prove or disprove the following claims:
 
     \item Find two other instances of the |SemiRing| class.
 
-    \item Specialise the evaluator that you defined in exercise
-      \ref{exc:e1_semiring} to the two |SemiRing| instances defined
-      above.
+    \item Specialise the evaluator that you defined in
+      Exercise~\ref{exc:e1_semiring} to the two |SemiRing| instances
+      defined above.
       %
       Take three semiring expressions of type |SR String|, give the
       appropriate assignments and compute the results of evaluating,
@@ -108,7 +108,7 @@ Prove or disprove the following claims:
 \begin{exercise}
   \textit{From exam 2016-03-15}
 
-  In exercise \ref{exc:e1_lattice}, we looked a datatype for the language of lattice
+  In Exercise~\ref{exc:e1_lattice}, we looked a datatype for the language of lattice
   expressions. We will now use some of the concepts discussed in this chapter to
   expand on this language.
 
@@ -135,7 +135,7 @@ Prove or disprove the following claims:
   \textit{From exam 2016-08-23}
 
 
-  In exercise \ref{exc:e1_abMon}, we looked a datatype for the language of abelian monoid
+  In Exercise~\ref{exc:e1_abMon}, we looked a datatype for the language of abelian monoid
   expressions. We will now use some of the concepts discussed in this chapter to
   expand on this language.
 
@@ -240,7 +240,7 @@ Prove or disprove the following claims:
     of a given assignment function.
 
   \item Specialise the evaluator to the two |Ring| instances defined
-    at point \ref{point:otherinstances}.
+    at point~\ref{point:otherinstances}.
     %
     Take three ring expressions, give the appropriate assignments and
     compute the results of evaluating, in each case, the three

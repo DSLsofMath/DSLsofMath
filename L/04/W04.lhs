@@ -289,7 +289,7 @@ interpretations (like |Integer|, and |String|).
 
 % TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
 
-Review section \ref{sec:evalD} again with the definition of |eval'|
+Review \refSec{sec:evalD} again with the definition of |eval'|
 being non-compositional (just like |pretty|) and |evalD| a more
 complex, but compositional, semantics.
 %
@@ -304,7 +304,7 @@ We want to implement |eval' = eval . derive| in the following diagram:
   |FunExp| \arrow[r, "|eval|"]                        & |(REAL -> REAL)|
 \end{tikzcd}
 
-As we saw in section \ref{sec:evalD} this does not work in the sense
+As we saw in \refSec{sec:evalD} this does not work in the sense
 that |eval'| cannot directly be implemented compositionally.
 %
 The problem is that some of the rules of computing the derivative
@@ -688,7 +688,7 @@ See
 
 \subsubsection{Other homomorphisms}
 
-In Section~\ref{sec:FunNumInst}, we defined a |Num| instance for
+In \refSec{sec:FunNumInst}, we defined a |Num| instance for
 functions with a |Num| codomain.
 %
 If we have an element of the domain of such a function, we can use it
@@ -837,8 +837,8 @@ In general though, it is a good idea to be aware of these
 distinctions, even if they are suppressed for reasons of brevity or
 style.
 %
-We will see this distinction again in section
-\ref{sec:polynotpolyfun}.
+We will see this distinction again in
+\refSec{sec:polynotpolyfun}.
 
 
 \subsubsection{Some helper functions}

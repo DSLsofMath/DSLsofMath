@@ -9,7 +9,7 @@ import AbstractFOL
 \paragraph{Short technical note}\label{short-technical-note}
 
 For these first exercises on the propositional fragment of FOL
-(introduced in section~\ref{sec:PropFrag}), you might find it useful
+(introduced in \refSec{sec:PropFrag}), you might find it useful
 to take a look at typed holes, a feature which is enabled by default
 in GHC and available (the same way as the language extension
 \texttt{EmptyCase} above) from version 7.8.1 onwards:
@@ -349,8 +349,8 @@ Preliminary remarks
   monotonic) without formalisation.
 
 \item to keep things short, let us abbreviate a significant chunk of
-  the definition of |a haslim L| (see section
-  \ref{par:LimitOfSequence}) by
+  the definition of |a haslim L| (see
+  \refSec{par:LimitOfSequence}) by
   \begin{spec}
      P : Seq X -> X -> RPos -> Prop
      P a L ε = Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (absBar (an - L) < ε)))

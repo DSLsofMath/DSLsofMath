@@ -5,7 +5,7 @@ The learning outcomes of this chapter is ``develop adequate notation
 for mathematical concepts'' and ``perform calculational proofs''
 (still in the context of ``organize areas of mathematics in DSL
 terms'').
-
+%
 There will be a fair bit of theory: introducing propositional and
 first order logic, but also ``applications'' to mathematics: prime
 numbers, (ir)rationals, limit points, limits, etc.
@@ -56,7 +56,7 @@ are always true.
 
 %
 Just as we did with simple arithmetic, and with complex number
-expressions in chapter~\ref{sec:DSLComplex}, we can model the abstract
+expressions in Chapter~\ref{sec:DSLComplex}, we can model the abstract
 syntax of propositions as a datatype:
 \begin{code}
 data PropCalc  =  Con      Bool
@@ -621,7 +621,7 @@ As we saw earlier, a similar rule holds for the ``forall'' quantifier:
 a function |f| from terms |t| to proofs of |P t| is a proof of |Forall
 x (P x)|.
 
-As we saw in section~\ref{sec:TypedQuant}, a very common kind of
+As we saw in \refSec{sec:TypedQuant}, a very common kind of
 formula is ``typed quantification'':
 %
 if a type (a set) |S| of terms can be described as those that satisfy

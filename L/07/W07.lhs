@@ -240,7 +240,7 @@ and obtain a linear transformation |f = (M*)|.
 Moreover |((M*) . e) g g' = M g' g|, i.e., the matrix constructed as
 above for |f| is precisely |M|.
 
-Exercise \ref{exc:Mstarcompose}: compute |((M*) . e ) g g'|.
+Exercise~\ref{exc:Mstarcompose}: compute |((M*) . e ) g g'|.
 
 Therefore, every linear transformation is of the form |(M*)| and every
 |(M*)| is a linear transformation.
@@ -257,9 +257,9 @@ that is
 ((M' * M)*) = (M' *) . (M *)
 \end{spec}
 
-Exercise \ref{exc:Mstarhomomorphismcompose}: work this out in detail.
+Exercise~\ref{exc:Mstarhomomorphismcompose}: work this out in detail.
 
-Exercise \ref{exc:MMmultAssoc}: show that matrix-matrix multiplication is associative.
+Exercise~\ref{exc:MMmultAssoc}: show that matrix-matrix multiplication is associative.
 
 Perhaps the simplest vector space is obtained for |G = ()|, the
 singleton index set.
@@ -437,10 +437,10 @@ and we have
 
 representing the polynomial |2 + 6*x|.
 
-Exercise \ref{exc:Dmatrixpowerseries}: write the (infinite-dimensional) matrix representing |D| for
+Exercise~\ref{exc:Dmatrixpowerseries}: write the (infinite-dimensional) matrix representing |D| for
 power series.
 
-Exercise \ref{exc:matrixIntegPoly}: write the matrix associated with integration of polynomials.
+Exercise~\ref{exc:matrixIntegPoly}: write the matrix associated with integration of polynomials.
 
 \subsubsection{Simple deterministic systems (transition systems)}
 
@@ -668,7 +668,7 @@ determine what vectors the canonical base vectors are associated with:
   }
 \]
 
-Exercise \ref{exc:NonDetExample1}: start with |e 2 + e 3| and iterate
+Exercise~\ref{exc:NonDetExample1}: start with |e 2 + e 3| and iterate
 a number of times, to get a feeling for the possible evolutions.
 %
 What do you notice?
@@ -842,14 +842,14 @@ probability of being anwhere else is |0|.
   }
 \]
 
-Exercise \ref{exc:StocExample1}: starting from state 0, how many steps
+Exercise~\ref{exc:StocExample1}: starting from state 0, how many steps
 do you need to take before the probability is concentrated in state 6?
 %
 Reverse again the arrow from 2 to 4.
 %
 What can you say about the long-term behaviour of the system now?
 
-Exercise \ref{exc:StocExample1Impl}: Implement the example.
+Exercise~\ref{exc:StocExample1Impl}: Implement the example.
 %
 You will need to define:
 

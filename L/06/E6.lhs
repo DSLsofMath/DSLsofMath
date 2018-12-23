@@ -31,10 +31,11 @@
 
 \begin{exercise} \label{exc:derivFunExp}
 
-  For each of the expressions |e :: FunExp| you found in exercise
-  \ref{exc:findFunExp}, use |derive| to find an expression |e' :: FunExp|
-  representing the derivative of the expression, and verify that |e'| is indeed
-  the derivative of |e|.
+  For each of the expressions |e :: FunExp| you found in
+  Exercise~\ref{exc:findFunExp}, use |derive| to find an expression
+  |e' :: FunExp| representing the derivative of the expression, and
+  verify that |e'| is indeed the derivative of |e|.
+
 \end{exercise}
 
 \begin{exercise}
@@ -51,11 +52,12 @@
 
   \end{enumerate}
 
-  Try using each of these methods to find the values of |f1' 2|, |f2' 2|, and
-  |f3' 2|, i.e. the derivatives of each of the functions in exercise
-  \ref{exc:findFunExp}, evaluated at the point 2. You can verify that the result
-  is correct by comparing it with the expressions |e1'|, |e2'| and |e3'| that
-  you found in \ref{exc:derivFunExp}.
+  Try using each of these methods to find the values of |f1' 2|, |f2'
+  2|, and |f3' 2|, i.e. the derivatives of each of the functions in
+  Exercise~\ref{exc:findFunExp}, evaluated at the point 2. You can
+  verify that the result is correct by comparing it with the
+  expressions |e1'|, |e2'| and |e3'| that you found in
+  \ref{exc:derivFunExp}.
 
 \end{exercise}
 
@@ -198,4 +200,3 @@
   %
   What are the first three coefficients of |fs|?
 \end{exercise}
-

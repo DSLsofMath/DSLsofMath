@@ -24,7 +24,7 @@ implIntro = u; notElim = u; notIntro = u; implElim = u; u = undefined;
 %if tupling
 \paragraph{Revisiting the tupling transform}
 %
-In exercise \ref{exc:tuplingE1}, the ``tupling transform'' was
+In Exercise~\ref{exc:tuplingE1}, the ``tupling transform'' was
 introduced, relating a pair of functions to a function returning a
 pair.
 %

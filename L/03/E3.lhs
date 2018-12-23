@@ -154,8 +154,9 @@
 \textit{From exam 2017-03}
 
 (Note that this exam question was later included as one of the
-examples in this chapter, see \ref{sec:typePartialDerivative}. It is
-kept here in case you want to check if you remember it!)
+examples in this chapter, see \refSec{sec:typePartialDerivative}.
+%
+It is kept here in case you want to check if you remember it!)
 
 Consider the following text from page 169 of Mac Lane [1968]: %\cite{maclane1986mathematics}:
 
@@ -220,11 +221,13 @@ Multiplication for matrices (from the matrix algebra DSL).
 \begin{exercise}
   (Extra material outside the course.)
   %
-  In the same direction as the Lagrangian case study in section
-  \ref{sec:Lagrangian} there are two nice blog posts about Hamiltonian
-  dynamics: one
+  In the same direction as the Lagrangian case study in
+  \refSec{sec:Lagrangian} there are two nice blog posts about
+  Hamiltonian dynamics: one
   \href{https://blog.jle.im/entry/introducing-the-hamilton-library.html}{introductory}
-  and one \href{https://blog.jle.im/entry/hamiltonian-dynamics-in-haskell.html}{more advanced}.
+  and one
+  \href{https://blog.jle.im/entry/hamiltonian-dynamics-in-haskell.html}{more
+    advanced}.
   %
   It is a good exercise to work through the examples in these posts.
 \end{exercise}

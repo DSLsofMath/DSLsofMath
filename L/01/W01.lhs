@@ -260,7 +260,7 @@ which may take a while to get used to.
 
 
 %**TODO: Perhaps more about cartesion product, etc.
-%*TODO forward pointer to exercises about cardinality \ref{exc:counting}
+%*TODO forward pointer to exercises about cardinality~\ref{exc:counting}
 %*TODO explain the e : t syntax (and mention e `elem` t)
 
 \paragraph{Variable names as type hints}
@@ -372,8 +372,8 @@ itself is not a type but a \emph{type constructor}.
 A simple example of the use of |newtype| in Haskell is to distinguish
 values which should be kept apart.
 %
-A fun example of \emph{not} keeping values apart is shown in Figure
-\ref{fig:TypeErrorSign}.
+A fun example of \emph{not} keeping values apart is shown in
+Figure~\ref{fig:TypeErrorSign}.
 %
 To avoid this class of problems Haskell provides the |newtype|
 construct as a stronger version of |type|.
@@ -444,7 +444,7 @@ The |TownData| type is an example of a \emph{product type}, where each
 value uses the same constructor |Town| and records values for the
 name, population, and year of establishment of the town modelled.
 %
-(See exercise \ref{exc:counting} for the intuition behind the terms
+(See Exercise~\ref{exc:counting} for the intuition behind the terms
 ``sum'' and ``product'' used here.)
 
 \paragraph{|Maybe| and parameterised types.}
@@ -538,7 +538,7 @@ Or we can use the Haskell prelude function |lookup = flip evalEnv|:
 lookup :: (Eq a) => a -> [(a, b)] -> Maybe b
 \end{spec}
 %
-We will use |Env| and |lookup| below (in section~\ref{sec:ArithExp})
+We will use |Env| and |lookup| below (in \refSec{sec:ArithExp})
 when we introduce abstract syntax trees containing variables.
 
 \subsection{A syntax for simple arithmetical expressions}
@@ -721,7 +721,7 @@ the keyword ``form'').
 %
 This is underlined by the presentation of \emph{two} forms, which can
 suggest that the operation of juxtaposing |i| (multiplication?) is not
-commutative\footnote{See section \ref{sec:commutative} for more about
+commutative\footnote{See \refSec{sec:commutative} for more about
   commutativity.}.
 
 A profitable way of dealing with such concrete syntax in functional
@@ -956,8 +956,8 @@ or we can build a datatype of ``syntactic'' complex numbers from the
 algebraic operations to arrive at a \emph{deep embedding} as seen in
 the next section.
 %
-Both shallow and deep embeddings will be further explained in section
-\ref{sec:evalD}.
+Both shallow and deep embeddings will be further explained in
+\refSec{sec:evalD}.
 
 
 Exercises:
@@ -978,7 +978,7 @@ that the definitions for complex number operations work fine for a
 range of underlying numeric types.
 %
 The operations for |ComplexSem| are defined in module |CSem|,
-available in appendix~\ref{app:CSem}.
+available in Appendix~\ref{app:CSem}.
 
 %
 \begin{figure}[tbph]
@@ -1085,7 +1085,8 @@ corresponding to the subtrees |c1| and |c2| of type |ComplexE|.
 %
 The only thing left is to add them up componentwise and we can assume
 there is a function |plusD :: ComplexD -> ComplexD -> ComplexD| taking
-care of this step (in fact, we implemented it earlier in section \ref{sec:complexcase}).
+care of this step (in fact, we implemented it earlier in
+\refSec{sec:complexcase}).
 %
 Continuing in this direction (by ``wishful thinking'') we arrive at
 the following implementation.
@@ -1153,8 +1154,8 @@ library QuickCheck.
 %
 
 %
-The simplest law is perhaps |square i = -1| from the start of section
-\ref{sec:complexcase},
+The simplest law is perhaps |square i = -1| from the start of
+\refSec{sec:complexcase},
 %
 \begin{code}
 propImagUnit :: Bool
@@ -1264,7 +1265,7 @@ toComplexSyn :: Num a => a -> ComplexSyn a
 toComplexSyn x = ToComplexCart x 0
 \end{code}
 
-From appendix~\ref{app:CSem} we import |newtype ComplexSem r = CS (r ,
+From Appendix~\ref{app:CSem} we import |newtype ComplexSem r = CS (r ,
 r) deriving Eq| and the semantic operations |(.+.)| and |(.*.)|
 corresponding to |plusD| and |timesD|.
 
@@ -1317,7 +1318,7 @@ Here is a diagram showing how the types and the functions fit together
 
 %TODO: Perhaps add typed quantification
 %
-Exercise \ref{exc:embedeval}: What about the opposite direction?
+Exercise~\ref{exc:embedeval}: What about the opposite direction?
 %
 When is |embed (eval e) == e|?
 
@@ -1334,7 +1335,7 @@ Some laws appear over and over again in different mathematical contexts.
 Binary operators are often associative or commutative, and
 sometimes one operator distributes over another.
 %
-We will work more formally with logic in chapter~\ref{sec:logic} but
+We will work more formally with logic in Chapter~\ref{sec:logic} but
 we introduce a few definitions already here:
 
 |Associative (+) = Forall (a, b, c) ((a+b)+c = a+(b+c))|
@@ -1384,7 +1385,7 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 \end{tikzpicture}
 %
 
-(In the language of section \ref{sec:AlgHomo}, distributivity means
+(In the language of \refSec{sec:AlgHomo}, distributivity means
 that |(*c)| is a |(+)|-homomorphism.)
 
 %**TODO: hide or give hints / method (otherwise too hard and a bit off topic)
@@ -1458,7 +1459,7 @@ liftSeq0 :: a -> Seq a
 liftSeq0 c i = c
 \end{code}
 
-Exercice \ref{exc:fmap}: what does function composition do to a sequence?
+Exercice~\ref{exc:fmap}: what does function composition do to a sequence?
   For a sequence |a| what is |a . (1+)|? What is |(1+) . a|?
 
 Another common mathematical operator on sequences is the limit.

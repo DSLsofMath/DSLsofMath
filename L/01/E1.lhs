@@ -122,7 +122,7 @@
 % \end{exercise}
 
 \begin{exercise}\label{exc:fmap}
-  From section \ref{sec:infseq}:
+  From \refSec{sec:infseq}:
   %
   \begin{itemize}
   \item What does function composition do to a sequence? (composition
