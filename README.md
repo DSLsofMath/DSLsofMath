@@ -1,8 +1,8 @@
 # Domain-Specific Languages of Mathematics
 
-Homepage for the 2019 instance of a 7.5hec BSc course at Chalmers and GU.
+[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for the 2019 instance of a 7.5hec BSc course at Chalmers and GU.
 
-Homepage: https://github.com/DSLsofMath/DSLsofMath/
+Course homepage will appear in the Canvas LMS: (https://chalmers.instructure.com/courses/3788)
 
 Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
@@ -16,7 +16,7 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170
 
 * Examiner & main lecturer: Patrik Jansson (patrikj AT)
 * Guest lecturer: Cezar Ionescu (cezar AT)
-* Teaching assistant: To be decided (was Daniel Schoepe (schoepe AT))
+* Teaching assistant: Maximilian Algehed (algehed AT)
 
 ## Objectives
 
@@ -52,7 +52,7 @@ The main references are listed below.
 
 ## Course setup
 
-* Lectures (TBD [was Tue. 13-15 and Thu 13-15 in EB. [[TimeEdit]](https://se.timeedit.net/web/chalmers/db1/public/ri157375X39Z06Q5Z46g0Y30y5096Y35Q01gQY5Q55767.html)])
+* Lectures ([[TimeEdit]](https://cloud.timeedit.net/chalmers/web/public/ri157XQQ504Z50Qv57043gZ6y6Y7109Q5Y61Y1.html)])
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
@@ -62,7 +62,7 @@ The main references are listed below.
     * Power series and differential equations, exp, sin, log, Taylor series, ...
     * Linear algebra: vectors, matrices, functions, bases, dynamical systems as matrices and graphs
     * Laplace transform: exp, powers series cont., solving PDEs with Laplace
-* Weekly exercise sessions (TBD [was Tue 15-17 and Thu 15-17 in ES52])
+* Weekly exercise sessions ([[TimeEdit]](https://cloud.timeedit.net/chalmers/web/public/ri157XQQ504Z50Qv57043gZ6y6Y7109Q5Y61Y1.html)])
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
 
