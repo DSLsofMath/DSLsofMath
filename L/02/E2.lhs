@@ -422,3 +422,31 @@ Preliminary remarks
     it.
   \end{enumerate}
 \end{exercise}
+
+\begin{exercise}
+  Propositions as polynomials.
+
+  One way to connect logic to calculus is to view propositions as
+  polynomials (in several variables).
+  %
+  The key idea is to represent the truth values by zero (False) and
+  one (True) and each named proposition |P| by a fresh variable |p|.
+  %
+  To represent operations one just has to check that normal expression
+  evaluation gives the right answer for zero and one.
+
+  The simplest operation to represent is |And| which becomes
+  multiplication: |P And Q| translates to \(p q\) as can be easily
+  checked.
+  %
+  (Note that |p+q| does not represent any proposition, because its
+  value would be |2| for |p=q=1|, but |2| does not represent any
+  boolean.)
+
+  How should |Not|, |Or|, and |Implies| be represented?
+
+% Not p = 1-p
+% Or p q = Not (And (Not p) (Not q)) = 1-(1-p)(1-q) = 1-(1-p-q+pq) = p+q-pq
+% Implies p q = Not (And p (Not q)) = 1-p(1-q) = 1-p+pq
+
+\end{exercise}
