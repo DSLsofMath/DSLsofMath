@@ -6,14 +6,17 @@ module DSLsofMath.FOLRat where
 
 %if rat
 \begin{code}
-data RatT = RV String | FromI Integer | RPlus RatT RatT | RDiv RatT RatT
+type VarT = String
+data RatT = RV VarT | FromI Integer | RPlus RatT RatT | RDiv RatT RatT
   deriving Show
 \end{code}
 %endif
 
 %if fol
+%**TODO perhaps explain the notation for the list type
 \begin{code}
-data FOL  =  P String [RatT]
+type PSym = String
+data FOL  =  PName PSym [RatT]
           |  Equal  RatT  RatT
 
           |  And      FOL   FOL
@@ -21,8 +24,8 @@ data FOL  =  P String [RatT]
           |  Implies  FOL   FOL
           |  Not      FOL
 
-          |  FORALL  String  FOL
-          |  EXISTS  String  FOL
+          |  FORALL  VarT  FOL
+          |  EXISTS  VarT  FOL
   deriving Show
 
 commPlus :: FOL

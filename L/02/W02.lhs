@@ -259,7 +259,7 @@ as a datatype.
 We keep the logical connectives |And|, |Or|, |Implies|, |Not| from the
 type |PropCalc|, add predicates over terms, and quantification.
 %
-The constructor |Equal| could be eliminated in favour of |P "Eq"| but
+The constructor |Equal| could be eliminated in favour of |PName "Eq"| but
 is often included.
 %
 %{
