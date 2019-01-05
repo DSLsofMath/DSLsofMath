@@ -144,8 +144,8 @@ so that |optim f eps x| uses Newton's method to find a zero of |f'|
 starting from |x|.
 %
 If |y| is the result (i.e. |f' y| is within |eps| of |0|), then check
-the second derivative, returning |Maximum y| if |f'' y < 0|, |Minimum
-y| if |f'' y > 0|, and |Dunno y| if |f'' = 0|.
+the second derivative, returning |Maximum y| if |f'' y < 0|, |Minimum y|
+if |f'' y > 0|, and |Dunno y| if |f'' = 0|.
 
 As before, use several starting points.
 
@@ -156,11 +156,10 @@ method at point 2.
 
 \section*{Formalities}
 \begin{description}
-\item [Submission:] Assignments are to be submitted via Fire:
-  https://dslm-lp3-18.frs.cse.chalmers.se
-\item [Deadline:] Tuesday, 2017-02-27, 23:59.
+\item [Submission:] Assignments are to be submitted via Canvas
+\item [Deadline:] 2019-03-05
 \item [Grading:] Discussions with each of the teams during one of the
-  slots 2018-03-02.
+  slots 2019-03-08.
 \end{description}
 \bibliographystyle{abbrvnat}
 \bibliography{../L/ref}

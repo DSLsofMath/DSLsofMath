@@ -28,3 +28,4 @@ cabal.sandbox.config
 Lecture*.pdf
 *.swp
 *.swo
+*.html

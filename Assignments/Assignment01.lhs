@@ -13,11 +13,11 @@
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 \providecommand{\textepsilon}{\ensuremath{\epsilon}}
 \begin{document}
-\title{DSLsofMath 2018: Assignment 1}
-\author{Patrik Jansson and Daniel Schoepe}
+\title{DSLsofMath 2019: Assignment 1}
+\author{Patrik Jansson and Daniel Schoepe and Maximilian Algehed}
 \date{}
 \maketitle
-\section{DSLsofMath 2018: Assignment 1}
+\section{DSLsofMath 2019: Assignment 1}
 \label{dslsofmath-2018-assignment-1}
 
 In this assignment the focus is on the following three learning
@@ -118,11 +118,10 @@ Neumann naturals.)
 Admin:
 
 \begin{itemize}
-\item \emph{Submission}: Assignments are to be submitted via Fire:
-  https://dslm-lp3-18.frs.cse.chalmers.se
-\item \emph{Deadline}: 2018-01-30
+\item \emph{Submission}: Assignments are to be submitted via Canvas
+\item \emph{Deadline}: 2019-02-05
 \item \emph{Grading}: Discussions with each of the teams during the
-  slot 2018-02-05, 10-12 or 15-17
+  slot 2019-02-11, 10-12 or 15-17
 \end{itemize}
 
 Note: The examination will be in English.
