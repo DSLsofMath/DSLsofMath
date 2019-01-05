@@ -8,7 +8,8 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170
 
 ## News
 
-* Re-exam in August: 2018-08-28, 14.00-18.00 at "M" (registration closes 2018-08-01)
+* 2019-01-22: First lecture of the 2019 instance
+* 2018-08-28, Re-exam in August: 14.00-18.00 at "M" (registration closes 2018-08-01)
 * 2018-03-25: (Inofficial) [exam results](Exam/2018-03/anon_results.md)
 * 2018-03-13: Added [exam + solutions](Exam/2018-03/)
 
