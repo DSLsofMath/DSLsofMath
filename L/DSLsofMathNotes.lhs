@@ -52,6 +52,7 @@
 \newtheorem{exercise}{Exercise}[section]
 % Old exercise style (until 2017-11-08): \renewcommand*{\theenumi}{\textbf{E\thesection.\arabic{enumi}}}
 \newcommand{\TODO}[1]{\todo{#1}}
+\newcommand{\refFig}[1]{Fig.~\ref{#1}}
 \newcommand{\refSec}[1]{Sec.~\ref{#1}}
 \newcommand{\refSecs}[1]{Secs.~\ref{#1}}
 \newcommand{\refSecI}[1]{Section~\ref{#1}}

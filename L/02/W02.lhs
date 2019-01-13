@@ -3,24 +3,25 @@
 
 The learning outcomes of this chapter is ``develop adequate notation
 for mathematical concepts'' and ``perform calculational proofs''
-(still in the context of ``organize areas of mathematics in DSL
+(in the context of ``organize areas of mathematics in DSL
 terms'').
 %
 There will be a fair bit of theory: introducing propositional and
 first order logic, but also ``applications'' to mathematics: prime
-numbers, (ir)rationals, limit points, limits, etc.
+numbers, (ir)rationals, limit points, limits, etc. and some
+Haskell.
 
 \begin{code}
 module DSLsofMath.W02 where
+\end{code}
+%if False
+\begin{code}
 import qualified DSLsofMath.AbstractFOL as FOL
 import DSLsofMath.AbstractFOL (andIntro, andElimR, andElimL, notIntro, notElim)
 \end{code}
-
+%endif
 \subsection{Propositional Calculus}
 %
-(Swedish: Satslogik\footnote{Some Swe-Eng translations are collected
-  here:
-  \url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}.})
 
 Now we turn to the main topic of this chapter: logic and proofs.
 %
@@ -28,19 +29,23 @@ Our first DSL for this chapter is the language of \emph{propositional
   calculus} (or logic), modelling simple propositions with the usual
 combinators for and, or, implies, etc.
 %
-The syntactic constructs are collected in Table~\ref{tab:PropCalc}.
+(The Swedish translation is ``satslogik'' and some Swe-Eng
+translations are collected here on homepage of the lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)
+%
+Some concrete syntactic constructs are collected in
+Table~\ref{tab:PropCalc} where each row lists synonyms plus a comment.
 %
 \begin{table}[htbp]
   \centering
-\begin{tabular}{lll}
-   |a|, |b|, |c|, \ldots  & \multicolumn{2}{@@{}l@@{}}{names of propositions}
-\\ |False|, |True| & \multicolumn{2}{@@{}l@@{}}{Constants}
-\\ |And|      & $\wedge$       & |&|
-\\ |Or|       & $\vee$         & |bar|
-\\ |Implies|  & $\Rightarrow$  &
-\\ |Not|      & $\neg$         &
+\begin{tabular}{lccl}
+   |False|    & $\top$         & F      & nullary
+\\ |True|     & $\bot$         & T      & nullary
+\\ |Not|      & $\neg$         & |~|    & unary
+\\ |And|      & $\wedge$       & |&|    & binary
+\\ |Or|       & $\vee$         & |bar|  & binary
+\\ |Implies|  & $\supset$      & |=>|   & binary
 \end{tabular}
-\caption{Syntax for propositions}
+\caption{Syntax for propositions. In addition, |a|, |b|, |c|, \ldots are used as names of propositions}
 \label{tab:PropCalc}
 \end{table}
 
@@ -60,11 +65,12 @@ expressions in Chapter~\ref{sec:DSLComplex}, we can model the abstract
 syntax of propositions as a datatype:
 \begin{code}
 data PropCalc  =  Con      Bool
-               |  Name     String
+               |  Not      PropCalc
                |  And      PropCalc  PropCalc
                |  Or       PropCalc  PropCalc
                |  Implies  PropCalc  PropCalc
-               |  Not      PropCalc
+               |  Name     Name
+type Name = String
 \end{code}
 %
 The example expressions can then be expressed as
@@ -76,13 +82,12 @@ p3 = Or (Name "a") (Not (Name "a"))
 p4 = Implies (And a b) (And b a) where a = Name "a"; b= Name "b"
 \end{code}
 %
-From this datatype we can write an evaluator to |Bool| which computes
-the truth value of a term given an environment:
+We can write an evaluator which, given an environment, takes
+a |PropCalc| term to its truth value:
 %
 \begin{code}
-type Name = String
-evalPC :: (Name -> Bool) -> PropCalc -> Bool
-evalPC = error "Exercise" -- see \ref{par:SETandPRED} for a similar function
+evalPC :: (Name -> Bool) -> (PropCalc -> Bool)
+evalPC env = error "Exercise" -- see \ref{par:SETandPRED} for a similar function
 \end{code}
 %
 The function |evalPC| translates from the syntactic to the semantic
@@ -94,34 +99,61 @@ domain.
 Here |PropCalc| is the (abstract) \emph{syntax} of the language of
 propositional calculus and |Bool| is the \emph{semantic
   domain}.
-
-Alternatively, we can view |(Name -> Bool) -> Bool| as the semantic
-domain.
+%
+\footnote{Alternatively, we can view |(Name -> Bool) -> Bool| as the semantic
+domain of |PropCalc|.
 %
 A value of this type is a mapping from a truth table (for the names)
-to |Bool|.
-%
-This mapping is often also tabulated as a truth table with one more
-``output'' column.
+to |Bool|.}
 
-As a first example of a truth table, consider the proposition |t =
-Implies (Con False) a|.
-%
-We will use the shorter notation with just |T| for true and |F| for
-false.
-%
-The truth table semantics of |t| is usually drawn as follows:
-%
-one column for the name |a| listing all combinations of |T| and |F|,
-and one column for the result of evaluating the expression.
+%if False
+%*TODO: perhaps show this code for those interested
+\begin{code}
+type S = (Name -> Bool) -> Bool
+impS, andS, orS  :: S -> S -> S
+notS   :: S -> S
+nameS  :: Name -> S
+nameS n env = env n
+impS f g env = f env `implies` g env
+andS f g env = f env && g env
+orS  f g env = f env || g env
+notS f = not . f
+implies :: Bool -> Bool -> Bool
+implies False  _  =  True
+implies _      p  =  p
 
-%TODO: It would look nicer with a small figure on the right and text flowing around it.
+evalPC' :: PropCalc -> S
+evalPC' (Implies p q)  = impS (evalPC' p) (evalPC' q)
+evalPC' (And p q)  = andS (evalPC' p) (evalPC' q)
+evalPC' (Or  p q)  = orS  (evalPC' p) (evalPC' q)
+evalPC' (Not p)    = notS (evalPC' p)
+evalPC' (Name n)   = nameS n
+\end{code}
+%endif
+
+%
+\begin{wrapfigure}{R}{0.17\textwidth}
+  \centering
 \begin{tabular}{||l||l||}
     \hline   a & t
   \\\hline   F & T
   \\         T & T
   \\\hline
 \end{tabular}
+\caption{|F => a|}
+\label{fig:F2a}
+\end{wrapfigure}
+%
+As a first example of a truth table, consider the proposition |F => a|
+which we call |t| here.
+%
+% We will use the shorter notation with just |T| for true and |F| for
+% false.
+%
+The truth table semantics of |t| is usually drawn as in~\refFig{fig:F2a}:
+%
+one column for the name |a| listing all combinations of |T| and |F|,
+and one column for the result of evaluating the expression.
 %
 This table shows that no matter what value assignment we try for the
 only variable |a|, the semantic value is |T = True|.
@@ -129,16 +161,8 @@ only variable |a|, the semantic value is |T = True|.
 Thus the whole expression could be simplified to just |T| without
 changing the semantics.
 
-If we continue with the example |p4| from above we have two names |a|
-and |b| which together can have any of four combinations of true and
-false.
-%
-After the name-columns are filled, we fill in the rest of the table
-one operation (column) at a time.
-%
-The |&| columns become |F F F T| and finally the |=>| column (the
-output) becomes true everywhere.
-
+\begin{wrapfigure}{R}{0.35\textwidth}
+  \centering
 \begin{tabular}{||lllllll||}
     \hline   |a| & |&| & |b| & |=>| & |b| & |&| & |a|
   \\\hline    F  &  F  &  F  &  T   &  F  &  F  &  F
@@ -147,6 +171,20 @@ output) becomes true everywhere.
   \\          T  &  T  &  T  &  T   &  T  &  T  &  T
   \\\hline
 \end{tabular}
+\caption{\(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).
+}
+\label{fig:abswap}
+\end{wrapfigure}
+%
+If we continue with the example |p4| from above we have two names |a|
+and |b| which together can have any of four combinations of true and
+false.
+%
+After the name-columns are filled, we fill in the rest of the table
+one operation (column) at a time (see \refFig{fig:abswap}).
+%
+The |&| columns become |F F F T| and finally the |=>| column (the
+output) becomes true everywhere.
 
 A proposition whose truth table output is constantly true is called a
 \emph{tautology}.
@@ -164,19 +202,27 @@ What we call ``names'' are often called ``(propositional) variables''
 but we will soon add another kind of variables (and quantification
 over them) to the calculus.
 
+%*TODO: formulate mote clearly as an exercise
+At this point is good to implement a few utility functions on
+|PropCalc|: list the names used in a term, simplify to disjunctive
+normal form, simplify to conjunctive normal form, etc.
+
+(Conjuntive normal form: allow only |And|, |Or|, |Not|, |Name| in that
+order in the term.)
+
 \subsection{First Order Logic (predicate logic)}
 %
-(Swedish: Första ordningens logik = predikatlogik)
+
 
 %TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
-Our second DSL is that of \emph{First Order Logic (FOL)}.
+Our second DSL is that of \emph{First Order Logic (FOL)\footnote{Swedish: Första ordningens logik = predikatlogik}}.
 %
-This language has two datatypes: propositions, and \emph{terms} (new).
+This language has two datatypes: \emph{propositions}, and \emph{terms} (new).
 %
 A \emph{term} is either a (term) \emph{variable} (like |x|, |y|, |z|),
 or the application of a \emph{function symbol} (like |f|, |g|) to a
 suitable number of terms.
-%
+%**TODO: explain "arity" (perhaps earlier) and also "nullary", "unary", etc.
 If we have the function symbols |f| of arity |2| and |g| of arity |3|
 we can form terms like |f(x,x)|, |g(y,z,z)|, |g(x,y,f(x,y))|, etc.
 %
