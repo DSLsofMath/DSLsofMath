@@ -125,9 +125,14 @@
   From \refSec{sec:infseq}:
   %
   \begin{itemize}
-  \item What does function composition do to a sequence? (composition
-    on the left?, on the right?)
-  \item How is |liftSeq1| related to |fmap|? |liftSeq0| to |conSeq|?
+
+  \item What does function composition do to a sequence?
+  More concretely:
+  for a sequence |a| what is |a . (1+)|? What is |(1+) . a|?
+
+%(composition on the left?, on the right?)
+
+\item How is |liftSeq1| related to |fmap|? |liftSeq0| to |conSeq|?
   \end{itemize}
 %
 

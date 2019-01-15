@@ -222,7 +222,7 @@ This language has two datatypes: \emph{propositions}, and \emph{terms} (new).
 A \emph{term} is either a (term) \emph{variable} (like |x|, |y|, |z|),
 or the application of a \emph{function symbol} (like |f|, |g|) to a
 suitable number of terms.
-%**TODO: explain "arity" (perhaps earlier) and also "nullary", "unary", etc.
+%
 If we have the function symbols |f| of arity |2| and |g| of arity |3|
 we can form terms like |f(x,x)|, |g(y,z,z)|, |g(x,y,f(x,y))|, etc.
 %
@@ -253,16 +253,18 @@ The names from the propositional calculus are generalised to
 The predicate symbols can only be applied to terms, not to other
 predicate symbols or formulas.
 %
-If we have the predicate symbols |N| of arity |0|, |P| of arity |1|
-and |Q| of arity |2| we can form \emph{formulas} like |N|, |P(x)|,
-|Q(f(x,x),y)|, etc.
+If we have the predicate symbols |New| of arity |0|, |Pos| of arity |1|
+and |Less| of arity |2| we can form \emph{formulas} like |New|, |Pos(x)|,
+|Less(f(x,x),y)|, etc.
 %
 Note that we have two separate layers:
 %
 formulas normally refer to terms, but terms cannot refer to formulas.
 
-The formulas introduced so far are all \emph{atomic formulas} but we
-will add two more concepts:
+The formulas introduced so far are all \emph{atomic formulas}:
+generalisations of the \emph{names} from |PropCalc|.
+%
+Now we will add two more concepts:
 %
 first the logical connectives from the propositional calculus:
 %
@@ -273,7 +275,7 @@ first the logical connectives from the propositional calculus:
 An example FOL formula:
 %
 \begin{spec}
-  Forall x (P(x) => (Exists y (Q(f(x,x),y))))
+  Forall x (Pos(x) => (Exists y (Less(f(x,x),y))))
 \end{spec}
 %
 Note that FOL can only quantify over \emph{term} variables, not over

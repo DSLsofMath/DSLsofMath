@@ -179,6 +179,17 @@ const x _ = x
 %
 Two-argument functions like |const| are sometimes used as binary
 operators.
+%
+
+The term ``arity'' is used to describe how many arguments a function
+has.
+%
+An |n|-argument function has arity |n|.
+%
+For small |n| special names are often used: binary means arity 2 (like
+|(+)|), unary means arity 1 (like |negate|) and nullary means arity 0
+(like |"hi!"|).
+%**TODO: perhaps add something about tupling, currying and arity
 
 As a first example of a \emph{higher-order} function we present |flip|
 which ``flips'' the two arguments of a binary operator.
