@@ -189,7 +189,7 @@ An |n|-argument function has arity |n|.
 For small |n| special names are often used: binary means arity 2 (like
 |(+)|), unary means arity 1 (like |negate|) and nullary means arity 0
 (like |"hi!"|).
-%**TODO: perhaps add something about tupling, currying and arity
+%*TODO: perhaps add something about tupling, currying and arity
 
 As a first example of a \emph{higher-order} function we present |flip|
 which ``flips'' the two arguments of a binary operator.
@@ -244,6 +244,17 @@ and functions (arrows) as directed edges:
   |QQ|   \arrow{r}{|inv|}            & |Maybe QQ|
 \end{tikzcd}
 
+\caption{Function composition diagrams: in general, and two examples}
+\end{figure}
+
+In Haskell we get the following type:
+
+\begin{spec}
+(.) :: (b->c) -> (a->b) -> (a->c)
+\end{spec}
+
+which may take a while to get used to.
+
 %TODO: perhaps reuse, but note that the functions are partial!
 %**TODO: somewhere: mention that some Haskell "functions" are actually partial and that some mathematical functions are not computable
 % \begin{tikzcd}
@@ -257,17 +268,6 @@ and functions (arrows) as directed edges:
 % \end{tikzcd}
 % \hfill{}
 %\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
-\caption{Function composition diagrams: in general, and two examples}
-\end{figure}
-
-In Haskell we get the following type:
-
-\begin{spec}
-(.) :: (b->c) -> (a->b) -> (a->c)
-\end{spec}
-
-which may take a while to get used to.
-
 
 
 %**TODO: Perhaps more about cartesion product, etc.
@@ -347,7 +347,6 @@ Now we move to introducing some of the ways types are defined in
 Haskell, the language we use for implementation (and often also
 specification) of mathematical concepts.
 
-%TODO: perhaps make the following few paragraphs flow better
 %TODO: perhaps use more from Expr.lhs
 
 \subsubsection{Types in Haskell: |type|, |newtype|, and |data|}

@@ -60,6 +60,9 @@ Prove these theorems (for arbitrary |p|, |q| and |r|):
   (p->q) -> (Not q -> Not p)      -- call it |notMap|
   Or p (Not p)                    -- Hard. Use |notElim|, |notMap|, etc.
 \end{spec}
+For the hardest example it can be good to use ``theory exploration'':
+try to combine the earlier theorems and rules to build up suitable
+term for which |notMap| or |notElim| could be used.
 
 \end{exercise}
 \begin{exercise}
@@ -74,15 +77,15 @@ Translate to Haskell and prove the De Morgan laws:
 
 \end{exercise}
 \begin{exercise}
- So far, the implementation of the datatypes has played no
-  role.
+%**TODO: perhaps remove to avoid confusion
+  So far, the implementation of the datatypes has played no role.
   %
   To make this clearer: define the types for connectives in
   |AbstractFol| in any way you wish, e.g.:
 
 \begin{spec}
-  And p q  =  A ()
-  Not p    =  B p
+  newtype And p q  =  A ()
+  newtype Not p    =  B p
 \end{spec}
 
 etc.\ as long as you still export only the data types, and not the
@@ -212,7 +215,7 @@ contraHey evE   =  case evE of {}
 prove
 
 \begin{spec}
-q ∧ ¬ q → p
+(q ∧ ¬ q) → p
 \end{spec}
 
 You will, however, not be able to prove |p ∨ ¬ p| (try it!).

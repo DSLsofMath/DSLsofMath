@@ -45,9 +45,9 @@
   \item Define a datatype |SR v| for the language of semiring
     expressions (with variables of type |v|).
     %
-    (These are expressions formed from applying the semiring
+    These are expressions formed from applying the semiring
     operations to the appropriate number of arguments, e.g., all the
-    left hand sides and right hand sides of the above equations.)
+    left hand sides and right hand sides of the above equations.
 
     % TODO (DaHe): explain that "assignment function" is the same as varVal in
     % previous exercise?

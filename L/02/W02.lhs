@@ -202,7 +202,7 @@ What we call ``names'' are often called ``(propositional) variables''
 but we will soon add another kind of variables (and quantification
 over them) to the calculus.
 
-%*TODO: formulate mote clearly as an exercise
+%*TODO: formulate more clearly as an exercise
 At this point is good to implement a few utility functions on
 |PropCalc|: list the names used in a term, simplify to disjunctive
 normal form, simplify to conjunctive normal form, etc.
@@ -333,7 +333,7 @@ The next step is to note that the formulas |Ai| can be generalised to
 symbol.
 %
 We can think of |i| ranging over an infinite collection of constant
-terms |i0|, |i1|, \ldots
+terms |i1|, |i2|, \ldots
 %
 Then the final step is to introduce the notation |Forall i A(i)| for
 |A(i1) & A(i2) & ... |.
@@ -420,6 +420,24 @@ set are again sets.
 %
 (Yes, this can make your head spin.)
 
+At this point it can be a good exercise to enumerate a few sets of
+cardinality\footnote{The \emph{cardinality} of a set is the number of
+  elements in it.} 0, 1, 2, and 3.
+%
+There is really just one set of cardinality 0: the empty set |s0 =
+{}|.
+%
+Using |S| we can then construct |s1 = S s0| of cardinality 1.
+%
+Continuing in this manner we can build |s2 = S s1|, also of
+cardinality 1, and so on.
+%
+Now we can combine different sets (like |s1| and |s2|) with |Union| to
+build sets of cardinality 2: |s3 = Union s1 s2|, |s4 = Union s2 s3|, etc..
+%
+And we can at any point apply |S| to get back a new set of cardinality
+1, like |s5 = S s3|.
+
 \paragraph{Natural numbers}
 %
 To talk about things like natural numbers in pure set theory they need
@@ -461,9 +479,11 @@ and normal, ordered pairs: |(a, b) =~= {S a, {a, b}}|.
 % |{S a, {a, b}} = Union (S (S a)) (S (Union (S a) (S b)))|
 With a bit more machinery it is possible to step by step encode |Nat|,
 |ZZ|, |QQ|, |REAL|, and |COMPLEX|.
-
+%
 A good read in this direction is ``The Haskell Road to Logic, Maths
 and Programming'' \citep{doets-haskellroadto-2004}.
+
+%*TODO: Perhaps add a bit about laws for pure set theory: x /= S x, Commutative(Union), etc.
 
 \subsection{Back to quantifiers}
 
@@ -477,8 +497,8 @@ quantifier as a generalisation of |Or|.
 
 First we generalise the binary |Or| to an |n|-ary |Orn|.
 %
-To prove |Orn A1 A2 ... An| is enough (and necessary) to find one |i|
-for which we can prove |Ai|.
+To prove |Orn A1 A2 ... An| it is enough (and necessary) to find one
+|i| for which we can prove |Ai|.
 %
 As before we then take the step from a family of formulas |Ai| to one
 unary predicate |A| expressing the formulas |A(i)| for the term
@@ -538,16 +558,15 @@ proves is the type for the program.
 \paragraph{Typed quantification}
 %
 In each instance of FOL, quantification is always over the full set of
-terms, but it is often convenient to quantify over a subset with a
-certain property (like all even numbers, or all non-empty sets).
+terms (the ``universe of discourse''), but it is often convenient to
+quantify over a subset with a certain property (like all even numbers,
+or all non-empty sets).
 %
 We will use a notation we can call ``typed quantification'' as a
 short-hand notation for the full quantification in combination with a
 restriction to the subset.
 %
-For existential and universal quantification these are the definitions
-(assuming |T| is a property of terms, that is a unary predicate on
-terms):
+For existential and universal quantification these are the definitions:
 
 % (Exists (x:T) (P x)) =~= (Exists x (And (T x) (P x)))
 \begin{spec}
@@ -555,8 +574,13 @@ terms):
 (Forall (x:T) (P x)) =~= (Forall x (T x => P x))
 \end{spec}
 % (Forall (x:T) (P x)) =~= (Forall x (Implies (T x) (P x)))
-\label{sec:TypedQuant}
+\label{sec:TypedQuant}%
+%
+Note that we silently convert between |T| seen as a type (in |x : T|
+on the left) and |T| seen as a unary predicate on terms (in |T x| on
+the right).
 
+%**TODO make it an actual exercise
 A good exercise is to work out the rules for ``pushing negation
 through'' typed quantification, from the corresponding rules for full
 quantification.
@@ -568,7 +592,6 @@ quantification.
 %   Forall x (not (T x) | not (P x))  = {- |(A => B)  ==  (not A | B)|  -}
 %   Forall x (T x => not (P x))       = {- Def. of typed quantification -}
 %   Forall (x:T) (not (P x))
-
 
 \subsection{Proof by contradiction}
 
@@ -654,6 +677,9 @@ rational.
 %
 We can prove the existence without knowing what numbers |p| and |q|
 actually are!
+%
+(The careful reader may have noted that this example also depends on
+the axiom of the Excluded Middle.)
 
 \subsection{Functions as proofs}
 
@@ -706,7 +732,6 @@ which Haskell does not provide.
 But we can still use it as a tool for understanding and working with
 logic formulas and mathematical proofs.
 %
-
 Haskell supports limited forms of dependent types and more is coming
 every year but for proper dependently typed programming I recommend
 the language Agda.
@@ -743,14 +768,17 @@ The introduction and elimination rules are explicitly left
 undefined, but we can still combine them and type check the
 results.
 %
-For example:
-
+For example\footnote{The Haskell notation ``|FOL.Add|'' means the
+  |FOL| module version of |Add|.
+  %
+  It is used here to avoid confusion with the constructor |Add|
+  defined earlier in the same chapter.}:
 \begin{code}
 example0 :: FOL.And p q -> FOL.And q p
 example0 evApq   =  andIntro (andElimR evApq) (andElimL evApq)
 \end{code}
-%TODO: perhaps explain the "FOL." prefix (module name, for disambiguation)
-(The variable name |evApq| is a mnemonic for ``evidence of |And p q|''.)
+%
+The variable name |evApq| is a mnemonic for ``\textbf{ev}idence of |And p q|''.
 
 Notice that Haskell will not accept
 %
@@ -760,12 +788,14 @@ example0 evApq   =  andIntro (andElimL evApq) (andElimR evApq)
 %
 unless we change the type.
 
-Another example:
+Another example, which is very useful, is ``ex falso quodlibet'',
+latin for ``from falsehood, anything (follows)''
 %
 \begin{code}
-example1 :: FOL.And q (FOL.Not q) -> p
-example1 evAqnq    =  notElim (notIntro (\ hyp -> evAqnq))
+exFalso :: FOL.And q (FOL.Not q) -> p
+exFalso evAqnq   =  notElim (notIntro (\ hyp -> evAqnq))
 \end{code}
+%**TODO explain in more detail
 
 To sum up the |And| case we have one introduction and two elimination rules:
 %
@@ -814,6 +844,12 @@ Often it is enough to simply swap the direction of the ``arrows''
 
 Here the implementation type can be a labelled sum type, also called
 disjoint union and in Haskell: |Either|.
+
+
+%*TODO: Perhaps add an example with (q->p) -> (Not p -> Not q)
+%*TODO: Perhaps add an example with (p->p')->(q->q')->(And p q -> And p q)
+%*TODO: Perhaps add an example with (p->p')->(q->q')->(Or  p q -> Or  p q)
+%*TODO: Explain that the values of type |And p q| can be seen as "proofs" (abstract or concrete).
 
 \subsection{Case study: there is always another prime}
 
@@ -953,7 +989,7 @@ formulas and proofs.
 %
 It is time time to apply it to some concepts in calculus.
 %
-We start we the concept of ``limit point'' which is used in the
+We start with the concept of ``limit point'' which is used in the
 formulation of different properties of limits of functions.
 
 % TODO: Perhaps start with the ``expression'' $lim_{x\to x_0} f(x)$ and

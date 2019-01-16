@@ -110,7 +110,42 @@
 % TODO: place this code in a list of solutions somewhere
 % isoR f = (f False, f True)
 % isoL (fa, tr) = \b-> case b of {False -> fa; True -> tr}
-% TODO: complete the proof
+% Proof:
+%   LHS1
+% =
+%   isoL . isoR
+% =
+%   \f -> isoL (isoR f)
+% =
+%   \f -> isoL (f False, f True)
+% =
+%   \f -> \b-> case b of {False -> f False; True -> f True}
+% Now we have two cases:
+%   LHS1 f False
+% =
+%   case False of {False -> f False; True -> f True}
+% =
+%   f False
+% =
+%   id f False
+% =
+%   RHS1 f False
+% ... and a very similar case for LHS1 f True
+
+% Next law:   |isoR . isoL = id|
+%   LHS2
+% =
+%   isoR . isoL
+% =
+%   \(x, y) -> isoR (isoL (x, y))
+% =
+%   \(x, y) -> isoR (\b-> case b of {False -> x; True -> y})
+% =
+%   \(x, y) -> let f = \b-> case b of {False -> x; True -> y} in (f False, f True)
+% =
+%   \(x, y) -> (x, y)
+% =
+%   id
 
 % TODO: example: which function represents the pair (7, 3)?
 % Answer: f False = 7; f True = 3
