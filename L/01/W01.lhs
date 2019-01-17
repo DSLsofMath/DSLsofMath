@@ -255,8 +255,44 @@ In Haskell we get the following type:
 
 which may take a while to get used to.
 
-%TODO: perhaps reuse, but note that the functions are partial!
-%**TODO: somewhere: mention that some Haskell "functions" are actually partial and that some mathematical functions are not computable
+\paragraph{Partial \& total functions}
+
+There are some differences between ``mathematical'' functions and
+Haskell functions.
+%
+Some Haskell ``functions'' are not defined for all inputs --- they are
+\emph{partial} functions.
+%
+Simple examples include |head :: [a] -> a| which is not defined for
+the empty list and |(1/) :: REAL -> REAL| which is not defined for
+zero.
+%
+A proper mathematical function is called \emph{total}: it is defined
+for all its inputs, that is, it terminates and returns a value.
+
+There are basically two ways of ``fixing'' a partial function: change
+the type of the inputs (the domain) to avoid the ``bad'' inputs, or
+change the type of the output to include ``default'' or ``error''
+values.
+%
+As an example, |sqrt|, the square root function, is partial if
+considered as a function from |REAL| to |REAL| but total if the domain
+is restricted to |RPos|.
+%
+In most programming languages the range is fixed instead; |sqrt ::
+Double -> Double| where |sqrt (-1)| returns the ``error value'' |NaN|
+(Not a Number).
+%
+Similarly, |(1/) :: Double -> Double| returns |Infinity :: Double|
+when given zero as an input.
+%
+Thus |Double| is a mix of ``normal'' numbers and ``special
+quantities'' like |NaN| and |Infinity|.
+
+There are also mathematical functions which cannot be implemented at
+all (uncomputable functions), but we will not deal with that in this
+course.
+
 % \begin{tikzcd}
 %   |[Int]| \arrow[d, "|sort|"] \arrow[rd, "|head.sort|", dashed] &  \\
 %   |[Int]| \arrow[r, "|head|"]            & |Int|
@@ -267,8 +303,29 @@ which may take a while to get used to.
 %   |(v, s)| \arrow[r, "|fst|"]            & |v|
 % \end{tikzcd}
 % \hfill{}
-%\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
+% %\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
 
+\paragraph{Pure \& impure functions}
+
+Many programming languages provide so called ``functions'' which are
+actually not functions at all, but rather procedures: computations
+depending on some hidden state or other effect.
+%
+A typical example is |rand(N)| which return a random number in the
+range |1..N|.
+%
+Treating such an ``impure function'' as a mathematical ``pure''
+function quickly leads to confusing results.
+%
+For example, we know that any pure function |f| will satisfy |x == y|
+implies |f(x) == f(y)|.
+%
+As a special case we certainly want |f(x) == f(x)| for all |x|.
+%
+But with |rand| this does not hold: |rand(6)==rand(6)| will only be
+true occasionally.
+%
+Fortunately, in mathematics and in Haskell all functions are pure.
 
 %**TODO: Perhaps more about cartesion product, etc.
 %*TODO forward pointer to exercises about cardinality~\ref{exc:counting}
@@ -414,7 +471,7 @@ It is not the same as the semantics of |Int| but it is isomorphic
 (there is a one-to-one correspondence between the sets).
 
 Later in this chapter we use a newtype for the semantics of complex
-numbers as a pair of numbers in the cartesian representation but it
+numbers as a pair of numbers in the Cartesian representation but it
 may also be useful to have another newtype for complex as a pair of
 numbers in the polar representation.
 
@@ -441,7 +498,7 @@ Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
 
 The |data| keyword will be used throughout the course to define
 datatypes of syntax trees for different kinds of expressions: simple
-arithmetic expresssions, complex number expresssions, etc.
+arithmetic expressions, complex number expressions, etc.
 %
 But it can also be used for non-recursive datatypes, like |data Bool =
 False || True|, or |data TownData = Town String Population Established|.
@@ -569,7 +626,7 @@ This declaration introduces
 
 Example values: |x = V "x"|, |e1 = P x x|, |e2 = T e1 e1|
 
-If you want a contructor to be used as an infix operator you need to use
+If you want a constructor to be used as an infix operator you need to use
 symbol characters and start with a colon:
 
 \begin{spec}
@@ -1085,7 +1142,7 @@ assume that all but one case have been implemented already.
 %
 All you need to focus on is that one remaining case, and you can
 freely call the function (that you are implementing) recursively, as
-long as you do it for subexpressions (subtrees of the abstrac syntax
+long as you do it for subexpressions (subtrees of the abstract syntax
 tree datatype).
 %
 
@@ -1469,7 +1526,7 @@ liftSeq0 :: a -> Seq a
 liftSeq0 c i = c
 \end{code}
 
-Exercice~\ref{exc:fmap}: what does function composition do to a sequence?
+Exercise~\ref{exc:fmap}: what does function composition do to a sequence?
   For a sequence |a| what is |a . (1+)|? What is |(1+) . a|?
 
 Another common mathematical operator on sequences is the limit.
