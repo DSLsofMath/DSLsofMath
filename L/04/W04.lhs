@@ -1,16 +1,46 @@
 \section{Compositional Semantics and Algebraic Structures}
 \label{sec:CompSem}
+
+By now we have seen several examples of mathematical domains where we
+have identified an abstract syntax (a datatype), a semantic domain
+(another type) and a evaluation function between them (the semantics).
+%
+This chapter will dig a bit deeper and relate the DSLs with algebraic
+structures and mappings between them (called homomorphisms).
+
+%*TODO: Sum up a few examples of Syntax and Semantics
+
+%TODO: Perhaps say something more concrete about the contents.
+% 4 Compositional Semantics and Algebraic Structures
+%
+% 4.1 Compositional semantics
+% 4.1.1 An example of a non-compositional function
+% 4.1.2 Compositional semantics in general
+% 4.1.3 Back to derivatives and evaluation .
+%
+% 4.2 Algebraic Structures and DSLs
+% 4.2.1 Algebras, homomorphisms .
+% 4.2.2 Homomorphism and compositional semantics .
+% 4.2.3 Other homomorphisms .
+%
+% 4.3 Summing up: definitions and representation .
+% 4.3.1 Some helper functions
+%
+% 4.4 Co-algebra and the Stream calculus .
+% 4.5 Exercises 82
+
+
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 module DSLsofMath.W04 where
 import Prelude hiding (Monoid)
 import DSLsofMath.FunExp
 \end{code}
-
+%
 \subsection{Compositional semantics}
 % (Based on ../../2016/Lectures/Lecture06  )
 
-\subsubsection{A simpler example of a non-compositional function}
+\subsubsection{An example of a non-compositional function}
 
 Consider a very simple datatype of integer expressions:
 %

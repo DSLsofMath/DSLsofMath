@@ -618,7 +618,7 @@ integral2 = int a b expr
 Both versions (and a few more minor variations) would be fine as exam
 solutions, but not something where the types don't match up.
 
-\subsection{Types in Mathematics (Part II)}
+\subsection{Types in Mathematics (Part II)}\label{sec:typeclasses}
 
 \subsubsection{Type classes}
 
@@ -1063,16 +1063,16 @@ functions.
 
 The DSL of expressions, whose syntax is given by the type |FunExp|,
 turns out to be almost identical to the DSL defined via type classes
-in the first part of this lecture.
+in \refSec{sec:typeclasses}.
 %
 The correspondence between them is given by the |eval| function.
-
+%
 The difference between the two implementations is that the first one
 separates more cleanly from the semantical one.
 %
 For example, |:+:| \emph{stands for} a function, while |+| \emph{is}
 that function.
-
+%
 The second approach is called ``shallow embedding'' or ``almost
 abstract syntax''.
 %
@@ -1086,7 +1086,7 @@ of |e|, then put the evaluations together without reference to the
 sub-expressions.
 %
 This is sometimes referred to as ``compositionality''.
-
+%
 We check whether the semantics of derivatives is compositional.
 %
 The evaluation function for derivatives is
@@ -1178,7 +1178,7 @@ instance Num a => Num (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
 %
 Exercise: implement the rest of the |Num| instance for |FD a|.
 
-\pagebreak[4]
+\newpage
 \subsection{Exercises}
 
 %include E3.lhs
