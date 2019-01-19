@@ -1,23 +1,40 @@
 # Domain-Specific Languages of Mathematics
 
-[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for the 2019 instance of a 7.5hec BSc course at Chalmers and GU.
+[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related to the a BSc course at Chalmers and GU.
 
-Course homepage will appear in the Canvas LMS: (https://chalmers.instructure.com/courses/3788)
+The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/3788)
 
-Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=27332) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
 ## News
 
-* 2019-01-22: First lecture of the 2019 instance
-* 2018-08-28, Re-exam in August: 14.00-18.00 at "M" (registration closes 2018-08-01)
-* 2018-03-25: (Inofficial) [exam results](Exam/2018-03/anon_results.md)
-* 2018-03-13: Added [exam + solutions](Exam/2018-03/)
+* 2019-01-22: First lecture of the 2019 course instance
 
-## Course team
+## Contributors
 
-* Examiner & main lecturer: Patrik Jansson (patrikj AT)
-* Guest lecturer: Cezar Ionescu (cezar AT)
-* Teaching assistant: Maximilian Algehed (algehed AT)
+* Main author, examiner, lecturer: Patrik Jansson (patrikj AT)
+* First version (and continued support): Cezar Ionescu (cezar AT)
+* Teaching assistants:
+** 2019: Maximilian Algehed (algehed AT) and Abhiroop Sarkar (sarkara AT)
+** 2017-2018: Daniel Schoepe (schoepe AT)
+** 2017: Frederik Hanghøj Iversen (hanghj AT student)
+** 2016: Irene Lobo Valbuena (lobo AT)
+* Project assistants: Daniel Heurlin, Sólrún Einarsdóttir, Adam Sandberg Ericsson (saadam AT)
+
+where AT = @chalmers.se
+
+## Course material
+
+This repository is mainly the home of the DSLsofMath "book" (lecture notes).
+
+[Lecture notes](L/snapshots/) + references therein cover the course but there is no
+printed course textbook.
+
+Comments and contributions are always welcome - especially in the form
+of pull requests.
+
+The main references are listed below.
+
 
 ## Objectives
 
@@ -44,16 +61,9 @@ Learning outcomes as in the
 The course is elective for both computer science and mathematics
 students at both Chalmers and GU.
 
-## Course material
-
-[Lecture notes](L/snapshots/) + references therein cover the course but there is no
-printed course textbook.
-
-The main references are listed below.
-
 ## Course setup
 
-* Lectures ([[TimeEdit]](https://cloud.timeedit.net/chalmers/web/public/ri157XQQ504Z50Qv57043gZ6y6Y7109Q5Y61Y1.html)])
+* Lectures
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
@@ -63,32 +73,9 @@ The main references are listed below.
     * Power series and differential equations, exp, sin, log, Taylor series, ...
     * Linear algebra: vectors, matrices, functions, bases, dynamical systems as matrices and graphs
     * Laplace transform: exp, powers series cont., solving PDEs with Laplace
-* Weekly exercise sessions ([[TimeEdit]](https://cloud.timeedit.net/chalmers/web/public/ri157XQQ504Z50Qv57043gZ6y6Y7109Q5Y61Y1.html)])
+* Weekly exercise sessions
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
-
-## Changes from last year
-
-The main changes for 2019 (based on the [course eval meeting](eval/2018.txt)) are
-
-* Exercise session structure: first (hour) supervised work, second (hour) demonstration
-* More stress on students solving exercises
-** Weekly hand-ins to encourage students to spend more hours on the course (not part of the formal examination)
-
-## Examination
-
-There are two compulsory course elements:
-
-* A = Assignments (written + oral examination in groups of three students)
-    * two compulsory hand-in assignments (To be decided for 2019 (was 2018-01-30, 2018-02-27))
-    * Grading: Pass or fail
-    * The assignments are to be handed in via [Fire](https://dslm-lp3-18.frs.cse.chalmers.se)
-* E Exam (individual written exam at the end of the course)
-    * Grading: **Chalmers**: U, 3, 4, 5; **GU**: U, G, VG
-    * Date: [2019-03-19, 14.00-18.00](https://www.student.chalmers.se/sp/course?course_id=27332) (registration closes 2019-02-28)
-    * Aids: One textbook of your choice
-
-To pass the course you need to pass both course elements.
 
 ## Lectures
 
@@ -106,7 +93,7 @@ Chapter 1-8 of the Lecture Notes end with weekly exercises for weeks
 In [L/RecEx.md](L/RecEx.md) you will find a list of recommended exercises
 for each chapter of the lecture notes.
 
-## Using the DSLsofMath
+## Using the DSLsofMath source code
 
 In order to do some of the exercises, you may need/want to have access to the
 DSLs introduced during the lectures and in the lecture notes.
