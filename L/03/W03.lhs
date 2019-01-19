@@ -6,11 +6,11 @@ module DSLsofMath.W03 where
 import Data.Char (toUpper)
 type REAL = Double
 \end{code}
-
+%
 % (Based on ../../2016/Lectures/Lecture05 )
 % Show "Functional Differential Geometry" p16: Lagrange_example.pdf
 
-\subsection{Types in mathematics}\label{types-in-mathematics}
+\subsection{Examples of types in mathematics}\label{types-in-mathematics}
 
 Types are sometimes mentioned explicitly in mathematical texts:
 
@@ -22,16 +22,21 @@ Types are sometimes mentioned explicitly in mathematical texts:
 \end{itemize}
 
 The types of ``higher-order'' operators are usually not given
-explicitly:
+explicitly.
+%
+Here are some examples with the types added:
 
 \begin{itemize}
 \item |lim : (ℕ → ℝ) → ℝ| for \(lim_{n → ∞} \{a_n\}\)
 \item \(d/dt : (ℝ → ℝ) → (ℝ → ℝ)\)
-\item sometimes, instead of \(df/dt\) one sees \(f'\) or \(\dot{f}\) or |D f|
+  \begin{itemize}
+  \item sometimes, instead of \(df/dt\) one sees \(f'\) or \(\dot{f}\) or |D f|
+  \end{itemize}
 \item \(∂f/∂x_i : (ℝⁿ → ℝ) → (ℝⁿ → ℝ)\)
 \item we mostly see \(∂f/∂x\), \(∂f/∂y\), \(∂f/∂z\) etc. when, in the
   context, the function \(f\) has been given a definition of the form
   \(f (x, y, z) = \ldots\)
+  \begin{itemize}
 \item a better notation (by Landau) which doesn't rely on the names
   given to the arguments was popularised in
   \cite{landau1934einfuhrung} (English edition
@@ -39,6 +44,7 @@ explicitly:
   respect to \(x₁\), etc.
 \item
   Exercise: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
+  \end{itemize}
 \end{itemize}
 
 \subsection{Typing Mathematics: derivative of a function}
@@ -73,7 +79,7 @@ Thus, the operation which maps |f| to |f'| has type |(X->REAL) ->
 Unfortunately, the only notation for this operation given (implicitly)
 in the definition is a postfix prime.
 %
-To make it easier to see we we use a prefix |D| instead and we can
+To make it easier to see we use a prefix |D| instead and we can
 thus write |D : (X->REAL) -> (Y->REAL)|.
 %
 We will often assume that |X = Y| so that we can can see |D| as
@@ -120,7 +126,7 @@ With the following definitions:
   double x  =  2*x
   c2 x      =  2
 \end{spec}
-Then we have the following equalities:
+we have the following equalities:
 \begin{spec}
   sq'   ==  D sq   == D (\x -> x^2) == D ({-"{}"-}^2) == (2*) == double
   sq''  ==  D sq'  == D double == c2 == const 2
@@ -208,16 +214,16 @@ is then taken at |0|.
 
 That function, which we can name |phi|, has the type |phi : U ->
 (ℝ-{0}) -> ℝ| and is defined by
-
+%
 \begin{spec}
 phi (x, y) h = (f (x + h, y) - f (x, y)) / h
 \end{spec}
-
+%
 The limit is then |lim (phi (x, y)) 0|.
 %
 Note that |0| is a limit point of |ℝ-{0}|, so the type of |lim| is the
 one we have discussed:
-
+%
 \begin{spec}
 lim : (X -> ℝ) -> {p | p ∈ ℝ, Limp p X } -> ℝ
 \end{spec}
@@ -274,7 +280,7 @@ To start answering the question, we start typing the elements involved:
 \begin{spec}
   L : ℝⁱ → ℝ,    i ≥ 2
 \end{spec}
-
+%
 This is consistent with the description: ``Lagrangian function of the
 system state (time, coordinates, and velocities)''.
 %
@@ -306,11 +312,11 @@ remember the different uses of |ℝ|.)
 
 \item therefore, \(∂L / ∂q\) should also be a function of the same
   triple of arguments:
-
+%
   \begin{spec}
     (∂L / ∂q) : (T, Q, V) -> ℝ
   \end{spec}
-
+%
   It follows that the equation expresses a relation between
   \emph{functions}, therefore the \(0\) on the right-hand side is
   \emph{not} the real number \(0\), but rather the constant function
@@ -324,14 +330,14 @@ remember the different uses of |ℝ|.)
 \item We now have a problem: |d / dt| can only be applied to functions
   of \emph{one} real argument |t|, and the result is a function of one
   real argument:
-
+%
 %format dotq = "\dot{q}"
 %format ddotq =  ∂ dotq
 %format juxtapose f x = f "\," x
 \begin{spec}
     juxtapose (d / dt) (∂L / ∂dotq)  :  T → ℝ
 \end{spec}
-
+%
 Since we subtract from this the function \(∂L / ∂q\), it follows that
 this, too, must be of type |T -> ℝ|.
 %
@@ -353,7 +359,7 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
   \begin{spec}
     w  :  T → Q  -- with |T = ℝ| for time and |Q = ℝ| for coordinates (|q : Q|)
   \end{spec}
-
+%
   We can now guess that the use of the plural form ``equations'' might
   have something to do with the use of ``coordinates''.
 %
@@ -612,11 +618,11 @@ integral2 = int a b expr
 Both versions (and a few more minor variations) would be fine as exam
 solutions, but not something where the types don't match up.
 
-\subsection{Type in Mathematics (Part II)}
+\subsection{Types in Mathematics (Part II)}
 
 \subsubsection{Type classes}
 
-The kind of type inference we presented in the last lecture becomes
+The kind of type inference we presented so far in this chapter becomes
 automatic with experience in a domain, but is very useful in the
 beginning.
 
@@ -633,11 +639,11 @@ programming is via \emph{type classes}.
 As a reminder, the reason \(4 + 2.5\) works is because floating point
 values are members of the class |Num|, which includes the member
 function
-
+%
 \begin{spec}
   fromInteger   ::  Integer  ->  a
 \end{spec}
-
+%
 which converts integers to the actual type |a|.
 
 Type classes are related to mathematical structures which, in turn,
@@ -660,7 +666,7 @@ pragmatic considerations.
 %
 For now, we examine the numerical type classes |Num|, |Fractional|, and
 |Floating|.
-
+%
 \begin{spec}
 class  (Eq a, Show a) => Num a  where
     (+), (-), (*)  :: a -> a -> a
@@ -668,7 +674,7 @@ class  (Eq a, Show a) => Num a  where
     abs, signum    :: a -> a
     fromInteger    :: Integer -> a
 \end{spec}
-
+%
 This is taken from the Haskell documentation\footnote{Fig. 6.2 in
   \href{https://www.haskell.org/onlinereport/haskell2010/haskellch6.html}{section
     6.4 of the Haskell 2010 report}: \cite[Sect.~6.4]{haskell2010}.}
@@ -724,15 +730,15 @@ instance |Num (x -> a)|).
 The instance declaration of the method |fromInteger| above looks
 recursive, but is not.
 %
-The same pattern appeared already in \refSec{sec:firstFromInteger}, which near the end included roughly the
-following lines:
-
+The same pattern appeared already in \refSec{sec:firstFromInteger},
+which near the end included roughly the following lines:
+%
 \begin{spec}
 instance Num r => Num (ComplexSyn r) where
   -- ... several other methods and then
   fromInteger = toComplexSyn . fromInteger
 \end{spec}
-
+%
 To see why this is not a recursive definition we need to expand the
 type and to do this I will introduce a name for the right hand side
 (RHS): |fromIntC|.
@@ -810,7 +816,7 @@ instance Fractional a => Fractional (x -> a) where
   recip  f         =  recip . f
   fromRational     =  const . fromRational
 \end{code}
-
+%
 \begin{code}
 instance Floating a => Floating (x -> a) where
   pi       =  const pi
@@ -818,7 +824,7 @@ instance Floating a => Floating (x -> a) where
   f ** g   =  \ x -> (f x)**(g x)
   -- and so on
 \end{code}
-
+%
 Exercise: complete the instance declarations.
 
 These type classes represent an abstract language of algebraic and
@@ -875,6 +881,7 @@ Instance declarations can also be parameterised:
 instance C a => C [a] where
   foo xs = map foo xs
 \end{code}
+%
 This means that for any type |a| which is already an instance of |C|
 we also make the type |[a]| an instance (recursively).
 %
@@ -965,7 +972,7 @@ data FunExp  =  Const Double
 \end{code}
 
 The intended meaning of elements of the |FunExp| type is functions:
-
+%
 \begin{code}
 type Func = REAL -> REAL
 
@@ -1031,7 +1038,7 @@ For example, let us derive the |derive| function for |Exp e|:
 
      eval (Exp e  :*:  derive e)
 \end{spec}
-
+%
 Therefore, the specification is fulfilled by taking
 %
 \begin{spec}
@@ -1047,7 +1054,7 @@ derive     (e1 :+: e2)    =  derive e1  :+:  derive e2
 derive     (e1 :*: e2)    =  (derive e1  :*:  e2)  :+:  (e1  :*:  derive e2)
 derive     (Exp e)        =  Exp e :*: derive e
 \end{code}
-
+%
 Exercise: complete the |FunExp| type and the |eval| and |derive|
 functions.
 
@@ -1083,12 +1090,12 @@ This is sometimes referred to as ``compositionality''.
 We check whether the semantics of derivatives is compositional.
 %
 The evaluation function for derivatives is
-
+%
 \begin{code}
 eval'  ::  FunExp -> Func
 eval'  =   eval . derive
 \end{code}
-
+%
 For example:
 %
 \begin{spec}
@@ -1121,7 +1128,7 @@ It is quite clear that the derivatives cannot be evaluated without, at
 the same time, being able to evaluate the functions.
 %
 So we can try to do both evaluations simultaneously:
-
+%
 \begin{code}
 type FD a = (a -> a, a -> a)
 
@@ -1129,12 +1136,12 @@ evalD ::  FunExp  ->  FD Double
 evalD     e       =   (eval e, eval' e)
 \end{code}
 %
-(Note: At this point, you are adviced to look up and solve
+Note: At this point, you are adviced to look up and solve
 Exercise~\ref{exc:tuplingE1} on the ``tupling transform'' in case you
-have not done so already.)
+have not done so already.
 
 Is |evalD| compositional?
-
+%
 We compute, for example:
 %
 \begin{spec}
@@ -1151,7 +1158,7 @@ We compute, for example:
      let (f, f') = evalD e
      in (exp f, exp f * f')
 \end{spec}
-
+%
 This semantics \emph{is} compositional and the |Exp| case is:
 %
 \begin{code}
@@ -1161,14 +1168,14 @@ evalDExp     (f, f')  =   (exp f, exp f * f')
 %
 We can now define a shallow embedding for the computation of
 derivatives, using the numerical type classes.
-
+%
 \begin{code}
 instance Num a => Num (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
   (f, f')  +  (g, g')  =  (f  +  g,  f'      +  g'      )
   (f, f')  *  (g, g')  =  (f  *  g,  f' * g  +  f * g'  )
   fromInteger n        =  (fromInteger n, const 0)
 \end{code}
-
+%
 Exercise: implement the rest of the |Num| instance for |FD a|.
 
 \pagebreak[4]

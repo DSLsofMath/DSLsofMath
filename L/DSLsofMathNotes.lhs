@@ -108,6 +108,7 @@
 %
   and, finally, to organize the resulting functions and types in
   domain-specific languages.
+
 \end{abstract}
 
 \tableofcontents

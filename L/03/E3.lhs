@@ -61,22 +61,22 @@
 \subsection{Exercises from old exams}
 
 \begin{exercise}
-    \textit{From exam 2016-Practice}
+  \textit{From exam 2016-Practice}
 
-    Consider the following text from
-    \citeauthor{maclane1986mathematics}'s \textit{Mathematics: Form
-    and Function} (page 168):
+  Consider the following text from
+  \citeauthor{maclane1986mathematics}'s \textit{Mathematics: Form and
+    Function} (page 168):
 
-    \begin{quote}
-      If $z = g(y)$ and $y = h(x)$ are two functions with continuous
-      derivatives, then in the relevant range $z = g(h(x))$ is a
-      function of $x$ and has derivative
-    \end{quote}
+  \begin{quote}
+    If $z = g(y)$ and $y = h(x)$ are two functions with continuous
+    derivatives, then in the relevant range $z = g(h(x))$ is a
+    function of $x$ and has derivative
+%
+    \[z'(x) = g'(y) * h'(x)\]
+  \end{quote}
 
-     $$z' (x) = g'(y) * h'(x)$$
-
-    Give the types of the elements involved (|x|, |y|, |z|, |g|, |h|,
-    |z'|, |g'|, |h'|, |*| and ').
+  Give the types of the elements involved (|x|, |y|, |z|, |g|, |h|,
+  |z'|, |g'|, |h'|, |*| and \('\)).
 \end{exercise}
 
 \begin{exercise}
@@ -94,14 +94,14 @@
      some expression |F| involving both |x|, values of the function |y =
      f(x)| at interest and the values of its derivatives - say an
      integral
+%
+     \[∫_a^b F(y, y', x)dx,\quad y = f(x).\]
    \end{quote}
 
-    $$∫_a^b F(y, y', x)dx,\quad y = f(x).$$
-
-    Give the types of the variables involved (|x|, |y|, |y'|, |f|, |F|,
-    |a|, |b|) and the type of the four-argument integration operator:
-
-    $$∫_.^. \cdot d\cdot$$
+   Give the types of the variables involved (|x|, |y|, |y'|, |f|, |F|,
+   |a|, |b|) and the type of the four-argument integration operator:
+%
+    \[∫_.^. \cdot d\cdot\]
 
 \end{exercise}
 
@@ -110,51 +110,54 @@
   \textit{From exam 2016-08-23}
 
   In the simplest case of probability theory, we start with a
-  \textit{finite}, non-empty set $\Omega$ of \textit{elementary events}.  \textit{Events} are
-  subsets of $\Omega$, i.e. elements of the powerset of $\Omega$, (that is,
-  $\mathcal{P} \Omega$).  a \textit{probability function} |P| associates to each
-  event a real number between 0 and 1, such that
+  \textit{finite}, non-empty set $\Omega$ of \textit{elementary
+    events}.
+  %
+  \textit{Events} are subsets of $\Omega$, i.e. elements of the
+  powerset of $\Omega$, (that is, $\mathcal{P} \Omega$).
+  %
+  A \textit{probability function} |P| associates to each event a real
+  number between 0 and 1, such that
 
   \begin{itemize}
 
-      \item |P| |∅ = 0|, |P| $\Omega = 1$
+  \item |P| |∅ = 0|, |P| $\Omega = 1$
 
-      \item |A| and |B| are disjoint (i.e., |A ∩ B = ∅|),
-      then: |P A + P B = P (A ∪ B)|.
+  \item |A| and |B| are disjoint (i.e., |A ∩ B = ∅|), then: |P A + P B
+    = P (A ∪ B)|.
   \end{itemize}
 
-    Conditional probabilities are defined as follows (\textit{Elementary
-    Probability 2nd Edition}, Stirzaker 2003):
+  Conditional probabilities are defined as follows \citep{stirzaker_2003}:
 
-    \begin{quote}
-      Let |A| and |B| be events with |P B > 0|.  given that |B|
-      occurs, the \textit{conditional probability} that |A| occurs is denoted
-      by |P(A| $\vert $ |B)| and defined by
+  \begin{quote}
+    Let |A| and |B| be events with |P B > 0|.  given that |B| occurs,
+    the \textit{conditional probability} that |A| occurs is denoted by
+    |P(A||B)| and defined by
 
-      |P(A| $\vert$ |B) = P(A ∩ B) / P B|
-    \end{quote}
+    |P(A||B) = P(A ∩ B) / P B|
+  \end{quote}
 
-\begin{enumerate}
+  \begin{enumerate}
 
-    \item What are the types of the elements involved in the definition of
-        conditional probability? \\ (|P|, ∩, /, $\vert$)
+  \item What are the types of the elements involved in the definition
+    of conditional probability? \\ (|P|, |∩|, |/|, $\vert$)
 
-    \item In the 1933 monograph that set the foundations of contemporary
-        probability theory, Kolmogorov used, instead of |P(A| $\vert$ |B)|, the expression
-        $P_A\, B$.  Type this expression.  Which notation do you prefer (provide
-        a \textit{brief} explanation).
+  \item In the 1933 monograph that set the foundations of contemporary
+    probability theory, Kolmogorov used, instead of |P(A||B)|, the
+    expression $P_B\, A$.
+    %
+    Type this expression.
+    %
+    Which notation do you prefer (provide a \textit{brief}
+    explanation).
 
 \end{enumerate}
 \end{exercise}
 
-
-
-
 \begin{exercise}
-\textit{From exam 2017-03}
-
-(Note that this exam question was later included as one of the
-examples in this chapter, see \refSec{sec:typePartialDerivative}.
+  \textit{From exam 2017-03} (Note that this exam question is now
+  included as an example in this chapter, see
+  \refSec{sec:typePartialDerivative}.
 %
 It is kept here in case you want to check if you remember it!)
 
@@ -169,12 +172,12 @@ Consider the following text from page 169 of Mac Lane [1968]: %\cite{maclane1986
   \emph{partial derivative} with respect to |x|.
 %
   Thus at a point |(x, y)| in |U| this derivative for |h ≠ 0| is
-\end{quote}
-
+%
 \[
 ∂ z / ∂ x  =  f'_{x} (x, y) =
               \lim_{h \to 0} (f (x + h, y) - f (x, y)) / h
 \]
+\end{quote}
 
 What are the types of the elements involved in the equation on the
 last line?
@@ -187,35 +190,33 @@ You are welcome to introduce functions and names to explain your reasoning.
 % in W3, so should this exercise be here or later?. It doesn't actually seem to
 % use any of the matrix DSL, so I think it should be solvable at this point
 \begin{exercise}
-\textit{From exam 2017-08-22}
-
+\textit{From exam 2017-08-22:}
+%
 Multiplication for matrices (from the matrix algebra DSL).
 
-  Consider the following definition, from ``Linear Algebra'' by Donald
-  H. Pelletier:
+Consider the following definition, from ``Linear Algebra'' by Donald
+H. Pelletier:
 
-  \textbf{Definition:} If $A$ is an $m \times n$ matrix and $B$ is an
-  $n \times p$ matrix, then the \emph{product}, $AB$, is an
-  $m \times p$ matrix; the $(i, j)^{th}$ entry of $AB$ is the sum of
-  the products of the pairs that are obtained when the entries from
-  the $i^{th}$ row of the left factor, $A$, are paired with those from
-  the $j^{th}$ column of the right factor, $B$.
-
-  \begin{enumerate}
-  \item Introduce precise types for the variables involved:
-    $A$, $m$, $n$, $B$, $p$, $i$, $j$. You can write |Fin n| for the
-    type of the values |{0, 1, ..., n-1}|.
-  \item Introduce types for the functions |mul| and |proj|
-    where $AB$ = |mul A B| and |proj i j M| = ``take the $(i, j)^{th}$
-    entry of $M$''. What class constraints (if any) are needed on the
-    type of the matrix entries in the two cases?
-  \item Implement |mul| in Haskell. You may use the functions
-    |row| and |col| specified by |row i M| = ``the $i^{th}$ row of
-    $M$'' and |col j M| = ``the $j^{th}$ column of $M$''. You don't
-    need to implement them and here you can assume they return plain
-    Haskell lists.
-  \end{enumerate}
-
+\textbf{Definition:} If $A$ is an $m \times n$ matrix and $B$ is an
+$n \times p$ matrix, then the \emph{product}, $AB$, is an $m \times p$
+matrix; the $(i, j)^{th}$ entry of $AB$ is the sum of the products of
+the pairs that are obtained when the entries from the $i^{th}$ row of
+the left factor, $A$, are paired with those from the $j^{th}$ column
+of the right factor, $B$.
+%
+\begin{enumerate}
+\item Introduce precise types for the variables involved: $A$, $m$,
+  $n$, $B$, $p$, $i$, $j$. You can write |Fin n| for the type of the
+  values |{0, 1, ..., n-1}|.
+\item Introduce types for the functions |mul| and |proj| where $AB$ =
+  |mul A B| and |proj i j M| = ``take the $(i, j)^{th}$ entry of
+  $M$''. What class constraints (if any) are needed on the type of the
+  matrix entries in the two cases?
+\item Implement |mul| in Haskell. You may use the functions |row| and
+  |col| specified by |row i M| = ``the $i^{th}$ row of $M$'' and |col
+  j M| = ``the $j^{th}$ column of $M$''. You don't need to implement
+  them and here you can assume they return plain Haskell lists.
+\end{enumerate}
 \end{exercise}
 
 \begin{exercise}

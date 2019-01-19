@@ -1,0 +1,30 @@
+2019-01-19: Debugging spacing
+
+I'd like the spacing before and after a code block to be the
+same. Currently it seems like the space below is sometimes larger.
+After some searching I found that the environment plainhscode is used
+for the code blocks:
+
+\newenvironment{plainhscode}%
+  {\hsnewpar\abovedisplayskip
+   \advance\leftskip\mathindent
+   \hscodestyle
+   \let\hspre\(\let\hspost\)%
+   \pboxed}%
+  {\endpboxed%
+   \hsnewpar\belowdisplayskip
+   \ignorespacesafterend}
+
+But the lengths
+  \the\abovedisplayskip
+  \the\belowdisplayskip
+are both the same: 8.5pt plus 3.0pt minus 4.0pt
+
+Then perhaps there is an additional "skip" after the code?
+
+Yes - that turns out to be the case if there is a "new paragraph"
+after the code. In my particular test case ("which converts integers
+to the actual type |a|." in Chapter 3) there was a paragraph break
+which I removed and thus fixed the spacing.
+
+I'll make a quick search for other cases.
