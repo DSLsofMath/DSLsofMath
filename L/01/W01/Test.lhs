@@ -2,6 +2,7 @@
 > import DSLsofMath.W01
 > import DSLsofMath.CSem
 > import Test.QuickCheck
+> import Prelude hiding (flip)
 
 We may also need the Haskell standard library version for some testing later:
 
