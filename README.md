@@ -107,8 +107,8 @@ Linux and Mac, you can do this by running `tar -zxf DSLsofMath-x.x.x.x.tar.gz
 
 If you are downloading the tar file from the CLI, download and extract using the following:
 ```
-$ curl -OL https://github.com/DSLsofMath/DSLsofMath/raw/master/L/DSLsofMath-0.1.9.1.tar.gz
-$ tar -xzf DSLsofMath-0.1.9.1.tar.gz 
+$ curl -OL https://github.com/DSLsofMath/DSLsofMath/raw/master/L/DSLsofMath-x.x.x.x.tar.gz
+$ tar -xzf DSLsofMath-x.x.x.x.tar.gz 
 ```
 
 Now go into the extracted folder `DSLsofMath-x.x.x.x/` and run `stack init`. You can now interact with
