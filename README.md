@@ -105,6 +105,12 @@ Linux and Mac, you can do this by running `tar -zxf DSLsofMath-x.x.x.x.tar.gz
 ` in the terminal. In Windows, you might have to use a tool like
 [7-Zip](http://www.7-zip.org/)).
 
+If you are downloading the tar file from the CLI, download and extract using the following:
+```
+$ curl -OL https://github.com/DSLsofMath/DSLsofMath/raw/master/L/DSLsofMath-0.1.9.1.tar.gz
+$ tar -xzf DSLsofMath-0.1.9.1.tar.gz 
+```
+
 Now go into the extracted folder `DSLsofMath-x.x.x.x/` and run `stack init`. You can now interact with
 the code from the lectures by typing `stack ghci`, which puts you in ghci with all
 DSLs loaded. You can also place your own haskell files inside this folder and import the DSLs you
