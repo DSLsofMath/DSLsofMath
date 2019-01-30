@@ -23,14 +23,14 @@ import DSLsofMath.AbstractFOL (andIntro, andElimR, andElimL, notIntro, notElim)
 \subsection{Propositional Calculus}
 %
 
-Now we turn to the main topic of this chapter: logic and proofs.
+The main topic of this chapter is logic and proofs.
 %
 Our first DSL for this chapter is the language of \emph{propositional
   calculus} (or logic), modelling simple propositions with the usual
 combinators for and, or, implies, etc.
 %
-(The Swedish translation is ``satslogik'' and some Swe-Eng
-translations are collected here on homepage of the lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)
+(The Swedish translation is ``satslogik'' and some more Swe-Eng
+translations are collected on the GitHub page of these lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)
 %
 Some concrete syntactic constructs are collected in
 Table~\ref{tab:PropCalc} where each row lists synonyms plus a comment.
@@ -203,7 +203,7 @@ but we will soon add another kind of variables (and quantification
 over them) to the calculus.
 
 %*TODO: formulate more clearly as an exercise
-At this point is good to implement a few utility functions on
+At this point it is good to implement a few utility functions on
 |PropCalc|: list the names used in a term, simplify to disjunctive
 normal form, simplify to conjunctive normal form, etc.
 
@@ -284,7 +284,7 @@ predicates.
 (Second order logic and higher order logic allow quantification over
 predicates.)
 
-Another example: a formula stating that function symbol |plus| is
+Another example: a formula stating that the function symbol |plus| is
 commutative:
 %
 \begin{spec}
@@ -308,7 +308,7 @@ We keep the logical connectives |And|, |Or|, |Implies|, |Not| from the
 type |PropCalc|, add predicates over terms, and quantification.
 %
 The constructor |Equal| could be eliminated in favour of |PName "Eq"| but
-is often included.
+is often included as a separate constructor.
 %
 %{
 %let fol = True
@@ -843,14 +843,15 @@ Often it is enough to simply swap the direction of the ``arrows''
 \end{spec}
 
 Here the implementation type can be a labelled sum type, also called
-disjoint union and in Haskell: |Either|.
-
-
+disjoint union and in Haskell:
+%
+%include Either.lhs
+%
 %*TODO: Perhaps add an example with (q->p) -> (Not p -> Not q)
 %*TODO: Perhaps add an example with (p->p')->(q->q')->(And p q -> And p q)
 %*TODO: Perhaps add an example with (p->p')->(q->q')->(Or  p q -> Or  p q)
 %*TODO: Explain that the values of type |And p q| can be seen as "proofs" (abstract or concrete).
-
+%
 \subsection{Case study: there is always another prime}
 
 As an example of combining forall, exists and implication let us turn
@@ -886,9 +887,9 @@ the theorem:
 \begin{spec}
 proof : (n : Term) -> Prime n -> ((m : Term), (Prime m, m>n))
 \end{spec}
-
+%
 Now we can start filling in the definition of |proof| as a
-two-argument function returning a nested pair:
+2-argument function returning a triple: % nested pair
 %
 \begin{spec}
 proof n np = (m, (pm, gt))
@@ -903,10 +904,10 @@ The proof |pm| is the core of the theorem.
 First, we note that for any |2<=p<=n| we have
 %
 \begin{spec}
- mod m' p                ==  {- Def. of |m'| -}
- mod (1 + n!) p          ==  {- modulo distributes of |+| -}
- mod 1 p  +  mod (n!) p  ==  {- modulo comp.: |n!| has |p| as a factor -}
- 1        +  0           ==
+ mod m' p                        ==  {- Def. of |m'| -}
+ mod (1 + n!) p                  ==  {- modulo distributes over |+| -}
+ mod (mod 1 p  +  mod (n!) p) p  ==  {- modulo comp.: |n!| has |p| as a factor -}
+ mod (1        +  0) p           ==
  1
 \end{spec}
 where |mod x y| is the remainder after integer division of |x| by |y|.
@@ -1340,7 +1341,7 @@ This means that each function |f| can have \emph{at most} one limit
 (This is not evident from the definition and proving it is a good
 exercise.)
 
-\subsection{Recap of syntax tres with variables, |Env| and |lookup|}
+\subsection{Recap of syntax trees with variables, |Env| and |lookup|}
 
 % TODO reformulate in book form (or more earlier, or remove)
 

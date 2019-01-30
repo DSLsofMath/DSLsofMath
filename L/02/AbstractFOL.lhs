@@ -40,7 +40,7 @@ transform:
 The proof of this formula closely follows the implementation of the transform.
 %
 Therefore we start with the two directions of the transform as functions:
-
+%
 \begin{code}
 test1' :: (a -> (b, c)) -> (a->b, a->c)
 test1' = \a2bc ->  ( \a -> fst (a2bc a)
@@ -49,11 +49,11 @@ test1' = \a2bc ->  ( \a -> fst (a2bc a)
 test2' :: (a->b, a->c) -> (a -> (b, c))
 test2' = \fg -> \a -> (fst fg a, snd fg a)
 \end{code}
-
+%
 Then we move on to the corresponding logic statements with proofs.
 %
 Note how the functions are ``hidden inside'' the proof.
-
+%
 \begin{code}
 test1  ::  Impl (Impl a (And b c)) (And (Impl a b) (Impl a c))
 test1  =   implIntro (\a2bc ->
@@ -63,8 +63,7 @@ test1  =   implIntro (\a2bc ->
 test2  ::  Impl (And (Impl a b) (Impl a c)) (Impl a (And b c))
 test2  =   implIntro (\fg ->
              implIntro (\a ->
-               andIntro
-                 (implElim (andElimL  fg) a)
-                 (implElim (andElimR  fg) a)))
+               andIntro  (implElim (andElimL  fg) a)
+                         (implElim (andElimR  fg) a)))
 \end{code}
 %endif

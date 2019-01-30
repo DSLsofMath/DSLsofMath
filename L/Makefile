@@ -2,13 +2,16 @@ NAME=DSLsofMathNotes
 
 default: $(NAME).pdf
 
+Small.pdf: Small.tex
+	latexmk -pdf Small.tex
+
 $(NAME).pdf: $(NAME).tex
 	latexmk -pdf $(NAME).tex
 
 $(NAME).tex: $(NAME).lhs dslm.format ref.bib \
              00/Intro.lhs                     \
-             01/W01.lhs 01/E1.lhs 01/E1_1.lhs 01/E1_2.lhs 01/E1_from_exams.lhs\
-             02/W02.lhs 02/E2.lhs 02/FOLRat.lhs 02/AbstractFOL.lhs \
+             01/W01.lhs 01/E1.lhs 01/E1_1.lhs 01/E1_2.lhs 01/E1_from_exams.lhs \
+             02/W02.lhs 02/E2.lhs 02/FOLRat.lhs 02/AbstractFOL.lhs 02/Either.lhs \
              03/W03.lhs 03/E3.lhs \
              04/W04.lhs 04/E4.lhs 04/AbstractStream.lhs 04/UnusualStream.lhs \
              05/W05.lhs 05/E5.lhs \
