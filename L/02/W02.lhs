@@ -1189,7 +1189,7 @@ of a sequence from \citet[page 498]{adams2010calculus}:
   We say that sequence ${a_n}$ converges to the limit $L$, and we
   write $\lim_{n→∞} a_n = L$, if for every positive real number |ε|
   there exists an integer $N$ (which may depend on |ε|) such that if
-  $n > N$, then $|a_n - L| < \varepsilon$.
+  $n > N$, then |absBar (an - L) < ε|.
 \end{quote}
 %
 

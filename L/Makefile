@@ -2,6 +2,10 @@ NAME=DSLsofMathNotes
 
 default: $(NAME).pdf
 
+Small.tex: DSLsofMathNotes.tex
+	cp DSLsofMathNotes.tex Small.tex
+	patch < A6_landscape.patch
+
 Small.pdf: Small.tex
 	latexmk -pdf Small.tex
 
