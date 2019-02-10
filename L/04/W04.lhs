@@ -3,7 +3,7 @@
 
 By now we have seen several examples of mathematical domains where we
 have identified an abstract syntax (a datatype), a semantic domain
-(another type) and a evaluation function between them (the semantics).
+(another type) and an evaluation function between them (the semantics).
 %
 This chapter will dig a bit deeper and relate the DSLs with algebraic
 structures and mappings between them (called homomorphisms).
@@ -33,12 +33,47 @@ structures and mappings between them (called homomorphisms).
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 module DSLsofMath.W04 where
-import Prelude hiding (Monoid)
+import Prelude hiding (Monoid, even)
 import DSLsofMath.FunExp
 \end{code}
 %
-\subsection{Compositional semantics}
+\subsection{Compositional semantics and homomorphisms}
 % (Based on ../../2016/Lectures/Lecture06  )
+
+\paragraph{Homomorphisms.}
+%
+Consider the following definition of a homomorphism predicate |H2|
+relating a function and two binary operators
+\begin{spec}
+  H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
+\end{spec}
+%
+If this holds, we say that |h : A -> B| is a homomorphism from |Op :
+A->A->A| to |op : B->B->B|.
+%
+Or that |h| is a homomorphism from |Op| to |op|.
+%
+Or, simply, that |h| is a homomorphism from |A| to |B| (if the
+operators are clear from the context).
+
+We have seen several examples in earlier chapters:
+\begin{itemize}
+\item in \refSec{sec:complexcase} we saw that |evalE : ComplexE ->
+  ComplexD| is a homomorphism from the syntactic operator |Plus| to
+  the corresponding semantic operator |plusD|.
+\item in \refSec{sec:commutative} we saw that if |(*)| distributes
+  over |(+)| for some type |A| then |(*c) : A -> A| is a homomorphism
+  from |(+)| to |(+)|.
+\item in \refSec{sec:logic} we saw de Morgan's laws which can be
+  stated as |H2(not,(&&),(||||))| and |H2(not,(||||),(&&))|.
+\item in \refSec{sec:FunExp} we saw that |eval : FunExp -> Func| is a
+  homomorphism from syntactic |(:*:)| to semantic |(*)| for functions,
+  and several more examples.
+\end{itemize}
+%
+At this point it is a good exercise to expand the definition of |H2|
+in the different cases to see if they makes sense and if you can prove
+that they hold.
 
 \subsubsection{An example of a non-compositional function}
 
@@ -51,22 +86,111 @@ e1 = Add (Con 1) (Mul (Con 2) (Con 3))  -- | 1 +(2 * 3)|
 e2 = Mul (Add (Con 1) (Con 2)) (Con 3)  -- |(1 + 2)* 3 |
 \end{code}
 %
+|e1 = |
 \begin{tikzpicture}[AbsSyn]
-\node{|Add|}
-child {node {|Con|} child {node {|1|}}}
+\begin{scope}[yshift=2ex]
+\node(root) {|Add|}
+child {node {|Con|} child {node(leftleaf) {|1|}}}
 child {node {|Mul|}
   child {node {|Con|} child {node {|2|}}}
-  child {node {|Con|} child {node {|3|}}}};
+  child {node {|Con|} child {node(rightleaf) {|3|}}}};
+\end{scope}
+\node [draw=blue, ellipse, thick, fit = (root) (leftleaf) (rightleaf)] {};
 \end{tikzpicture}
+\hspace{2em}
+|e2 = |
 \begin{tikzpicture}[AbsSyn]
-\node{|Mul|}
+\begin{scope}[yshift=2ex]
+\node(e2) {|Mul|}
 child {node {|Add|}
-  child {node {|Con|} child {node {|1|}}}
+  child {node {|Con|} child {node(leftleaf) {|1|}}}
   child {node {|Con|} child {node {|2|}}}}
-child {node {|Con|} child {node {|3|}}};
+child {node {|Con|} child {node(rightleaf) {|3|}}};
+\end{scope}
+\node [draw=blue, ellipse, thick, inner sep=-4pt, fit = (root) (leftleaf) (rightleaf)] {};
 \end{tikzpicture}
 
+As you may have guessed, the natural evaluator |eval : E -> Integer|
+(defined later) is a homorphism from |Add| to |(+)| and from |Mul| to
+|(*)|.
+%
+But to practice the definition of homorphism we will here check if
+|even| or |isPrime| is a homomorphism from |E| to |Bool|.
 
+\paragraph{Is |even| a homomorphism?} Let's try to define |even : E ->
+Bool| with the usual ``wishful thinking'' pattern:
+%
+\begin{code}
+even (Add x y)  =  evenAdd (even x) (even y)
+even (Mul x y)  =  evenMul (even x) (even y)
+even (Con c)    =  evenCon c
+
+evenAdd :: Bool -> Bool -> Bool
+evenMul :: Bool -> Bool -> Bool
+evenCon :: Integer -> Bool
+\end{code}
+%
+Note that |even| throws away lots of information: the domain is
+infinite and the range is a two-element set.
+%
+This could make it hard for the helper functions |evenAdd|,
+etc. because they only get to work on the small range.
+%
+Still, in this case we are lucky: we can use the ``parity rules''
+taught in elementary school: even plus even is even, etc.
+%
+In code we simply get:
+%
+\begin{code}
+evenAdd = (==)
+evenMul = (||)
+evenCon = (0==).(`mod` 2)
+\end{code}
+%
+Exercise: prove |H2(even,Add,evenAdd)| and |H2(even,Mul,evenMul)|.
+
+\paragraph{Is |isPrime| a homomorphism?} Let's now try to define
+|isPrime : E -> Bool| in the same way to see a simple example of a
+non-compositional function.
+%
+In this case it is enough to just focus on one of the cases to already
+see the problem:
+%
+\begin{code}
+isPrime (Add x y)  =  isPrimeAdd (isPrime x) (isPrime y)
+isPrimeAdd :: Bool -> Bool -> Bool
+\end{code}
+%
+As before, if we can define |isPrimeAdd|, we will get
+|H2(isPrime,Add,isPrimeAdd)| ``by construction''
+%
+But it is not possible for |isPrime| to both satisfy its specification
+and |H2(isPrime,Add,isPrimeAdd)|.
+%
+(To shorten the calculation we write just |n| for |Con n|.)
+%
+\begin{spec}
+  False
+= {- By spec. of |isPrime| (four is prime). -}
+  isPrime (Add 2 2)
+= {- by |H2| -}
+  isPrimeAdd (isPrime 2) (isPrime 2)
+= {- By spec. of |isPrime| (two is prime). -}
+  isPrimeAdd (isPrime 2) True
+= {- By spec. of |isPrime| (three is also prime). -}
+  isPrimeAdd (isPrime 2) (isPrime 3)
+= {- by |H2| -}
+  isPrime (Add 2 3)
+= {- By spec. of |isPrime| (five is prime). -}
+  True
+\end{spec}
+%
+But as we also know that |False /= True| we have a contradiction.
+%
+Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
+to |Bool|.
+
+\subsubsection{Compositional functions can be ``wrong''}
 %
 When working with expressions it is often useful to have a
 ``pretty-printer'' to convert the abstract syntax trees to strings
@@ -93,9 +217,14 @@ prettyAdd :: String -> String -> String
 prettyMul :: String -> String -> String
 prettyCon :: Integer -> String
 \end{code}
-%
+
+With this definition, note that |pretty : E -> String| is a
+homomorphism (from |Add| to |prettyAdd| and from |Mul| to |prettyMul|)
+regardless of what their definitions are.
+
 Now, if we try to implement the semantic constructors without thinking
 too much we would get the following:
+%
 \begin{code}
 prettyAdd xs ys  = xs ++ "+" ++ ys
 prettyMul xs ys  = xs ++ "*" ++ ys
@@ -109,14 +238,18 @@ trouble :: Bool
 trouble = p1 == p2
 \end{code}
 %
-Note that both |e1| and |e2| are different but they pretty-print to
+Note that |e1| and |e2| are not equal, but they still pretty-print to
 the same string.
 %
-This means that the parsing (the inverse of |pretty|) is not a
-homomorphism.
+This means that |pretty| is doing something wrong: the inverse,
+|parse|, is ambigous.
 %
 There are many ways to fix this, some more ``pretty'' than others, but
-the main problem is that some information is lost in the translation.
+the main problem is that some information is lost in the translation:
+|pretty| is not invertible.
+
+Thus, we can see that a function can be a homomorphism and still
+``wrong''.
 
 \paragraph{For the curious.}
 %
@@ -238,7 +371,7 @@ idE :: E -> E
 idE = foldE Add Mul Con
 \end{code}
 
-Finally, it is often useful to capture the semantic functions (the
+Finally, it is useful to capture the semantic functions (the
 parameters to the fold) in a type class:
 %
 \begin{code}
@@ -320,7 +453,7 @@ interpretations (like |Integer|, and |String|).
 % TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
 
 Review \refSec{sec:evalD} again with the definition of |eval'|
-being non-compositional (just like |pretty|) and |evalD| a more
+being non-compositional (just like |isPrime|) and |evalD| a more
 complex, but compositional, semantics.
 %
 
@@ -389,7 +522,7 @@ classes, mathematical structures, and DSLs.
 
 The matematical theory behind compositionality talks about
 homomorphisms between algebraic structures.
-
+%
 From Wikipedia:
 %
 \begin{quote}
@@ -433,7 +566,7 @@ It is a good exercise to check that the laws are satisfied.
 
 
 In mathematics, as soon as there are several examples of a structure,
-the question of what ``translation'' between them comes up.
+the question of what ``translation between them'' means comes up.
 %
 An important class of such ``translations'' are ``structure preserving
 maps'' called \emph{homomorphisms}.
@@ -503,16 +636,16 @@ and below we will stick to that tradition.
 Exercise: characterise the homomorphisms from |ANat| to |MNat|.
 
 Solution:
-
+%
 Let |h : ANat -> MNat| be a homomorphism.
 %
 Then it must satisfy the following conditions:
-
+%
 \begin{spec}
 h 0        = 1
 h (x + y)  = h x * h y  -- for all |x| and |y|
 \end{spec}
-
+%
 For example |h (x + x) = h x * h x = (h x) ^ 2| which for |x = 1|
 means that |h 2 = h (1 + 1) = (h 1) ^ 2|.
 
@@ -524,7 +657,7 @@ Therefore
 \begin{spec}
 h n = (h 1) ^ n
 \end{spec}
-
+%
 Every choice of |h 1| ``induces a homomorphism''.
 %
 This means that the value of the function |h| for any natural number,
@@ -562,9 +695,8 @@ To see this, we need to make explicit the structure of |FunExp|:
 %
 \begin{spec}
 instance Num FunExp where
-  (+)          =  (:+:)
-  (*)          =  (:*:)
-  fromInteger  =  Const . fromInteger
+  (+) = (:+:); (*) = (:*:); fromInteger  =  Const . fromInteger
+  -- ...
 
 instance Fractional FunExp where
   -- Exercise: fill in

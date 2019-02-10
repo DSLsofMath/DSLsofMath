@@ -20,7 +20,7 @@
 \RequirePackage{amsfonts}
 \usepackage{tikz}
 \usepackage{tikz-cd}
-\usetikzlibrary{trees,graphs,quotes}
+\usetikzlibrary{trees,graphs,quotes,fit,shapes}
 \usepackage{lineno}
 \usepackage{enumitem}
 \usepackage{pdfpages}
