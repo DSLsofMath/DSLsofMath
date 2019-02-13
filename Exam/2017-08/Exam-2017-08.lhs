@@ -123,7 +123,7 @@ the hand-ins, some by the written exam.
 
   \item Find two other instances of the |SemiRing| class. \label{item:inst}
 
-  \item Gice a type signature for, and define, a general evaluator for
+  \item Give a type signature for, and define, a general evaluator for
     |SR v| expressions on the basis of an assignment function.
 
   \item Specialise the evaluator to the two |SemiRing| instances
