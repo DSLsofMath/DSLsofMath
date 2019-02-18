@@ -114,6 +114,9 @@
 %format c1
 %format c2
 %format ck = c "_k"
+%format ai = a "_i"
+%format bi = b "_i"
+%format ci = c "_i"
 %format e1
 %format e2
 %format f0

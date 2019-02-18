@@ -1178,7 +1178,4 @@ instance Num a => Num (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
 %
 Exercise: implement the rest of the |Num| instance for |FD a|.
 
-\newpage
-\subsection{Exercises}
-
 %include E3.lhs

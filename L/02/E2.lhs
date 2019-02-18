@@ -1,10 +1,15 @@
+\newpage
+\subsection{Exercises}
+
+% TODO: Perhaps introduce GADT datatype notation use in some exercise solutions
+
+\subsubsection{Exercises: abstract FOL}
+\label{exercises-for-dslsofmath-week-2-2017}
 \begin{code}
 {-# LANGUAGE EmptyCase #-}
 import AbstractFOL
 \end{code}
 
-\subsubsection{Exercises}
-\label{exercises-for-dslsofmath-week-2-2017}
 
 \paragraph{Short technical note}\label{short-technical-note}
 

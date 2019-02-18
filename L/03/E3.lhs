@@ -1,3 +1,6 @@
+\newpage
+\subsection{Exercises}
+
 %
 \begin{exercise}
   To get a feeling for the Lagrange equations, let |L(t, q, v) =

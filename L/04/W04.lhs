@@ -7,7 +7,7 @@ have identified an abstract syntax (a datatype), a semantic domain
 %
 This chapter will dig a bit deeper and relate the DSLs with algebraic
 structures and mappings between them (called homomorphisms).
-
+%
 %*TODO: Sum up a few examples of Syntax and Semantics
 
 %TODO: Perhaps say something more concrete about the contents.
@@ -28,8 +28,7 @@ structures and mappings between them (called homomorphisms).
 %
 % 4.4 Co-algebra and the Stream calculus .
 % 4.5 Exercises 82
-
-
+%
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 module DSLsofMath.W04 where
@@ -44,6 +43,7 @@ import DSLsofMath.FunExp
 %
 Consider the following definition of a homomorphism predicate |H2|
 relating a function and two binary operators
+%
 \begin{spec}
   H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
 \end{spec}
@@ -57,6 +57,7 @@ Or, simply, that |h| is a homomorphism from |A| to |B| (if the
 operators are clear from the context).
 
 We have seen several examples in earlier chapters:
+%
 \begin{itemize}
 \item in \refSec{sec:complexcase} we saw that |evalE : ComplexE ->
   ComplexD| is a homomorphism from the syntactic operator |Plus| to
@@ -217,7 +218,7 @@ prettyAdd :: String -> String -> String
 prettyMul :: String -> String -> String
 prettyCon :: Integer -> String
 \end{code}
-
+%
 With this definition, note that |pretty : E -> String| is a
 homomorphism (from |Add| to |prettyAdd| and from |Mul| to |prettyMul|)
 regardless of what their definitions are.
@@ -317,7 +318,6 @@ Thus, in our datatype |E|, a compositional semantics means that |Add|
 maps to |add|, |Mul {-"\mapsto"-} mul|, and |Con {-"\mapsto"-} con|
 for some ``semantic functions'' |add|, |mul|, and |con|.
 %
-
 \begin{tikzpicture}[AbsSyn]
 \node (lhs) {|Add|}
 child {node {|Con 1|}}
@@ -350,6 +350,7 @@ Notice that |foldE| has three function arguments corresponding to the
 three constructors of |E|.
 %
 The ``natural'' evaluator to integers is then easy:
+%
 \begin{code}
 evalE1 :: E -> Integer
 evalE1 = foldE (+) (*) id
@@ -366,6 +367,7 @@ evalE2 = foldE (+) (*) fromInteger
 Another thing worth noting is that if we replace each abstract syntax
 constructor with itself we get the identity function (a ``deep
 copy''):
+%
 \begin{code}
 idE :: E -> E
 idE = foldE Add Mul Con
@@ -406,6 +408,7 @@ evalE' = foldIE
 
 To get a more concrete feeling for this, we define some concrete
 values, not just functions:
+%
 \begin{code}
 seven :: IntExp a => a
 seven = add (con 3) (con 4)
@@ -422,9 +425,9 @@ check = and  [  testI  ==  7
              ,  testP  ==  "3+4"
              ]
 \end{code}
-
+%
 We can also see |String| and |pretty| as an instance:
-
+%
 \begin{code}
 instance IntExp String where
   add = prettyAdd
@@ -530,13 +533,13 @@ From Wikipedia:
   together with a collection of operations on |A|.
 
 Example:
-
+%
 \begin{code}
 class Monoid a where
   unit  ::  a
   op    ::  a -> a -> a
 \end{code}
-
+%
 After the operations have been specified, the nature of the
 algebra can be further limited by axioms, which in universal
 algebra often take the form of identities, or \emph{equational laws}.
@@ -552,7 +555,7 @@ The laws can be formulated as the following equations:
 ∀ x : a? (unit `op` x == x  ∧  x `op` unit == x)
 ∀ x, y, z : a? (x `op` (y `op` z) == (x `op` y) `op` z)
 \end{spec}
-
+%
 \end{quote}
 
 Examples of monoids include numbers with additions, |(REAL, 0, (+))|,
@@ -589,14 +592,12 @@ logarithms are actually examples of the homomorphism conditions for
 |exp| and |log|.
 %
 Back to Wikipedia:
-
+%
 \begin{quote}
-
   More formally, a homomorphism between two algebras |A| and |B| is a
 function |h : A → B| from the set |A| to the set |B| such that, for
 every operation |fA| of |A| and corresponding |fB| of |B| (of arity,
 say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
-
 \end{quote}
 
 Our examples |exp| and |log| are homomorphisms between monoids and the
@@ -633,7 +634,7 @@ instance Monoid MNat where
 In mathematical texts the constructors |M| and |A| are usually omitted
 and below we will stick to that tradition.
 
-Exercise: characterise the homomorphisms from |ANat| to |MNat|.
+\paragraph{Exercise:} characterise the homomorphisms from |ANat| to |MNat|.
 
 Solution:
 %
@@ -663,7 +664,7 @@ Every choice of |h 1| ``induces a homomorphism''.
 This means that the value of the function |h| for any natural number,
 is fully determined by its value for |1|.
 
-Exercise: show that |const| is a homomorphism.
+\paragraph{Exercise:} show that |const| is a homomorphism .
 %
 The distribution law can be shown as follows:
 %
@@ -675,7 +676,7 @@ The distribution law can be shown as follows:
   const (a + b)                 =  {- |h = const| -}
   h (a + b)
 \end{spec}
-
+%
 We now have a homomorphism from values to functions, and you may
 wonder if there is a homomorphism in the other direction.
 %
@@ -707,8 +708,8 @@ instance Floating FunExp where
 \end{spec}
 %
 and so on.
-
-Exercise: complete the type instances for |FunExp|.
+%
+(Exercise for the reader: complete the type instances for |FunExp|.)
 
 For instance, we have
 %
@@ -716,7 +717,7 @@ For instance, we have
 eval (e1 :*: e2)  =  eval e1 * eval e2
 eval (Exp e)      =  exp (eval e)
 \end{spec}
-
+%
 These properties do not hold for |eval'|, but do hold for |evalD|.
 
 The numerical classes in Haskell do not fully do justice to the
@@ -744,6 +745,7 @@ twoexp = mulF (constF 2) (expF idF)
 \end{code}
 %
 and instantiate it to either syntax or semantics:
+%
 \begin{code}
 testFE :: FunExp
 testFE = twoexp
@@ -785,10 +787,8 @@ instance GoodClass FunExp where
 instance GoodClass (REAL->REAL) where
   addF = (+)
   -- ...
-
 \end{code}
 %
-
 We can always define a homomorphism from |FunExp| to \emph{any}
 instance of |GoodClass|, in an essentially unique way.
 %
@@ -798,33 +798,33 @@ initial algebra.
 Let us explore this in the simpler context of |Monoid|.
 %
 The language of monoids is given by
-
+%
 \begin{code}
 type Var      =  String
 
 data MExpr    =  Unit  |  Op MExpr MExpr  |  V Var
 \end{code}
-
+%
 Alternatively, we could have parametrised |MExpr| over the type of
 variables.
 
 Just as in the case of FOL terms, we can evaluate an |MExpr| in a
 monoid instance if we are given a way of interpreting variables, also
 called an assignment:
-
+%
 \begin{code}
 evalM :: Monoid a => (Var -> a) -> (MExpr -> a)
 \end{code}
-
+%
 Once given an |f :: Var -> a|, the homomorphism condition defines
 |evalM|:
-
+%
 \begin{code}
 evalM  f  Unit        =  unit
 evalM  f  (Op e1 e2)  =  op (evalM f e1) (evalM f e2)
 evalM  f  (V x)       =  f x
 \end{code}
-
+%
 (Observation: In |FunExp|, the role of variables was played by |REAL|,
 and the role of the assignment by the identity.)
 
@@ -855,14 +855,14 @@ functions with a |Num| codomain.
 %
 If we have an element of the domain of such a function, we can use it
 to obtain a homomorphism from functions to their codomains:
-
+%
 \begin{spec}
 Num a => x ->  (x -> a) -> a
 \end{spec}
 %
 As suggested by the type, the homomorphism is just function
 application:
-
+%
 \begin{spec}
 apply :: a -> (a -> b) -> b
 apply a = \f -> f a
@@ -870,7 +870,7 @@ apply a = \f -> f a
 \label{sec:apply}
 
 Indeed, writing |h = apply c| for some fixed |c|, we have
-
+%
 \begin{spec}
      h (f + g)         =  {- def. |apply| -}
 
@@ -886,7 +886,7 @@ etc.
 Can we do something similar for |FD|?
 
 The elements of |FD a| are pairs of functions, so we can take
-
+%
 \begin{spec}
 applyFD ::  a ->  FD a     ->  (a, a)
 applyFD     c     (FD (f, f'))  =   FD (f c, f' c)
@@ -900,7 +900,7 @@ In fact, we can \emph{compute} this structure from the homomorphism
 condition.
 %
 For example (we skip the constructor |FD| for brevity):
-
+%
 \begin{spec}
      h ((f, f') * (g, g'))                       =  {- def. |*| for |FD a| -}
 
@@ -914,16 +914,16 @@ For example (we skip the constructor |FD| for brevity):
 
      (f c, f' c) *? (g c, g' c)
 \end{spec}
-
+%
 The identity will hold if we take
-
+%
 \begin{code}
 type Dup a = (a, a)
 
 (*?) :: Num a =>  Dup a -> Dup a -> Dup a
 (x, x') *? (y, y')  =  (x * y, x' * y + x * y')
 \end{code}
-
+%
 Thus, if we define a ``multiplication'' on pairs of values using
 |(*?)|, we get that |(applyFD c)| is a |Num|-homomorphism for all |c|
 (or, at least for the operation |(*)|).
@@ -952,11 +952,11 @@ We defined a |Num| structure on pairs |(REAL, REAL)| by requiring
 the operations to be compatible with the interpretation |(f a, f' a)|.
 %
 For example
-
+%
 \begin{spec}
 (x, x') *? (y, y') = (x * y, x' * y + x * y')
 \end{spec}
-
+%
 There is nothing in the ``nature'' of pairs of |REAL| that forces
 this definition upon us.
 %
@@ -964,11 +964,11 @@ We chose it, because of the intended interpretation.
 
 This multiplication is obviously not the one we need for \emph{complex
   numbers}:
-
+%
 \begin{spec}
 (x, x') *. (y, y') = (x * y - x' * y', x * y' + x' * y)
 \end{spec}
-
+%
 Again, there is nothing in the nature of pairs that foists this
 operation on us.
 %
@@ -1015,7 +1015,7 @@ instance Num E where -- Some abuse of notation (no proper |negate|, etc.)
 negateE (Con c) = Con (negate c)
 negateE _ = error "negate: not supported"
 \end{code}
-
+%
 %TODO: Perhaps include the comparison of the |Num t => Num (Bool -> t)| instance (as a special case of functions as |Num|) and the |Num r => Num (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
 
 \subsection{Co-algebra and the Stream calculus}
@@ -1033,7 +1033,5 @@ important role co-algebra plays in calculus.
 %include AbstractStream.lhs
 
 %include UnusualStream.lhs
-
-\subsection{Exercises}
 
 %include E4.lhs

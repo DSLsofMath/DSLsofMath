@@ -1,3 +1,6 @@
+\newpage
+\subsection{Exercises}
+
 \begin{exercise}
 \textbf{Homomorphisms.}
 Consider the following definitions:

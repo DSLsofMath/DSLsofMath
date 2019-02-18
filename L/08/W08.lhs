@@ -584,5 +584,4 @@ Laplace Transforms''\footnote{Available from
 Fourier analysis is a common tool in courses on Transforms, Signals
 and Systems.
 
-
 %include E8.lhs

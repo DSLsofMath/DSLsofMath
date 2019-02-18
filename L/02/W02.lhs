@@ -1554,8 +1554,4 @@ data WFF n f v p =
   deriving Show
 \end{spec}
 
-\subsection{Exercises: abstract FOL}
-
-% TODO: Perhaps introduce GADT datatype notation use in some exercise solutions
-
 %include E2.lhs

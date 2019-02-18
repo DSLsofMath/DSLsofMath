@@ -1,3 +1,4 @@
+\newpage
 \subsection{Exercises}
 
 %

@@ -294,7 +294,7 @@ For example, here is addition:
   a + b = c  <=>  a n + b n = c n  --  |∀ n : ℕ|
 \end{spec}
 
-Remark:  Using functions in the definition has certain ``technical'' advantages over using finite lists.  For example, consider adding |[a0, a1, ..., an]| with |[b0, b1, ..., m]|, with |n > m|.  Then, we obtain a polynomial of degree |n|: |[c0, c1, ..., cn]|.  The formula for the |c_i| must now be given via a case distinction:
+Remark:  Using functions in the definition has certain ``technical'' advantages over using finite lists.  For example, consider adding |[a0, a1, ..., an]| and |[b0, b1, ..., bm]|, where |n > m|.  Then, we obtain a polynomial of degree |n|: |[c0, c1, ..., cn]|.  The formula for the |ci| must now be given via a case distinction:
 
 < ci = if i > m then ai else ai + bi
 

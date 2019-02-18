@@ -1,3 +1,4 @@
+\newpage
 \subsection{Exercises}
 
 Search the chapter for tasks marked ``Exercise''.

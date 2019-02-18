@@ -1,3 +1,4 @@
+\newpage
 \subsection{Exercises}
 
 The first few exercises are about filling in the gaps in the chapter
