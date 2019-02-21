@@ -292,7 +292,7 @@ So, if we let ``coordinates'' be just one coordinate, we can take |i =
 \end{spec}
 %
 The ``system state'' here is a triple (of type |S = (T, Q, V) = ℝ³|)
-and we can call the the three components |t : T| for time, |q : Q| for
+and we can call the three components |t : T| for time, |q : Q| for
 coordinate, and |v : V| for velocity.
 %
 (We use |T = Q = V = ℝ| in this example but it can help the reading to

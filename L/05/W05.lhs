@@ -226,7 +226,7 @@ The homomorphism condition will hold for every |x| if we define
 %
 This is definition looks natural (we could probably have guessed it
 early on) but it is still interesting to see that we can derive the
-definition as the the form it has to take for the proof to go through.
+definition as the form it has to take for the proof to go through.
 
 We leave the derivation of the other cases and operations as an
 exercise.

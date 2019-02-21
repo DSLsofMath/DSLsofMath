@@ -482,7 +482,7 @@ result involves not only |derive f| and |derive g|, but also |f| and
 |g|.
 %
 
-The solution is to extend the the return type of |eval'| from one
+The solution is to extend the return type of |eval'| from one
 semantic value |f| of type |Func = REAL -> REAL| to two such values
 |(f, f') :: (Func, Func)| where |f' = D f|.
 %

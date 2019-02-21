@@ -8,7 +8,7 @@ Summary of L4.1
 
 ----------------
 
-Summary of L4.2: [no line coding this time]
+Summary of L4.2: [no live coding this time]
 
 * More about homomorphisms (see definitions below)
 * show that eval' is not a homomorphism
