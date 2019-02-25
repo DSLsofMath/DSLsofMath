@@ -13,7 +13,7 @@ cos [1/1, 0/1,-1/2 , 0/1 , 1/24, ...
 
 \begin{spec}
 expx :: Fractional a => PowerSeries a
-expx = integ expx 1
+expx = integ 1 expx
 \end{spec}
 
 and approximated by

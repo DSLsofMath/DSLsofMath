@@ -13,7 +13,8 @@ import DSLsofMath.Simplify
 \subsection{Review}
 
 \begin{itemize}
-\item key notion \emph{homomorphism}: |S1 -> S2|
+\item key notion \emph{homomorphism}: |S1 -> S2| (read ``from |S1| to |S2|'')
+
 \item questions (``equations''):
 
   \begin{itemize}
@@ -33,32 +34,30 @@ import DSLsofMath.Simplify
 
         - e.g.,   |evalD : FunExp -> FD a|
   \end{itemize}
-
-\item The importance of the last two is that they offer ``automatic
-  differentiation'', i.e., any function constructed according to the
-  grammar of |FunExp|, can be ``lifted'' to a function that computes the
-  derivative (e.g., a function on pairs).
 \end{itemize}
 
-\paragraph{Example}
+The importance of |applyFD| and |evalD| is that they offer ``automatic
+differentiation'', i.e., any function constructed according to the
+grammar of |FunExp|, can be ``lifted'' to a function that computes the
+derivative (e.g., a function on pairs).
 
+\noindent
+\textbf{Example:}
+%
 \begin{code}
+f :: Floating a => a -> a
 f x = sin x + 2 * x
 \end{code}
 %
 We have: |f 0 = 0|, |f 2 = 4.909297426825682|, etc.
 
-The type of |f| is |f :: Floating a => a -> a|.
-
-How do we compute, say, |f' 2|?
-
-We have several choices.
+To compute the derivative at some point, say |2|, we have several choices.
 
 \begin{enumerate}
 \item Using |FunExp|
 
 Recall (\refSec{sec:FunExp}):
-
+%
 \begin{spec}
 data FunExp  =  Const Rational
              |  Id
@@ -71,43 +70,31 @@ data FunExp  =  Const Rational
                 -- and so on
   deriving (Eq, Show)
 \end{spec}
-
+%
 What is the expression |e| for which |f = eval e|?
 
 We have
-
+%
 \begin{spec}
-   eval e x = f x
-
-<=>
-
-   eval e x = sin x + 2 * x
-
-<=>
-
-   eval e x = eval (Sin Id) x + eval (Const 2 :*: Id) x
-
-<=>
-
-   eval e x = eval ((Sin Id) :+: (Const 2 :*: Id)) x
-
-<==
-
-   e = Sin Id :+: (Const 2 :*: Id)
+        eval e x = f x
+<=>     eval e x = sin x + 2 * x
+<=>     eval e x = eval (Sin Id) x + eval (Const 2 :*: Id) x
+<=>     eval e x = eval ((Sin Id) :+: (Const 2 :*: Id)) x
+<==     e = Sin Id :+: (Const 2 :*: Id)
 \end{spec}
-
+%
 Finally, we can apply |derive| and obtain
-
+%
 \begin{code}
 e = Sin Id :+: (Const 2 :*: Id)
 f' 2 = evalFunExp (derive e) 2
 \end{code}
-
+%
 This can hardly be called ``automatic'', look at all the work we did in
 deducing |e|!
-
+%
 However, consider this definition:
-
+%
 \begin{code}
 e2 :: FunExp
 e2 = f Id
@@ -118,85 +105,84 @@ and friends and build the syntax tree for |f| instead of computing its
 semantic value.
 %
 (Perhaps it would have been better to use, in the definition of
-|FunExp|, |X| instead of |Id|.)
+|FunExp|, the constructor name |X| instead of |Id|.)
 
-In general, to find the value of the derivative of a function |f| at a
-given |x|, we can use
-
+In general, to find the derivative of a function |f :: Floating a => a -> a|, we can use
+%
 \begin{code}
-drv f x = evalFunExp (derive (f Id)) x
+drv f = evalFunExp (derive (f Id))
 \end{code}
 
-\item Using |FD|
+\item Using |FD| (pairs of functions)
 
 Recall
-
+%
 \begin{code}
 type FD a = (a -> a, a -> a)
 
 applyFD x (f, g) = (f x, g x)
 \end{code}
-
-The operations on |FD a| are such that, if |eval e = f|, then
-
+%
+The operations (the numeric type class instances) on |FD a| are such that, if |eval e = f|, then
+%
 \begin{spec}
 (eval e, eval' e) = (f, f')
 \end{spec}
-
+%
 We are looking for |(g, g')| such that
-
+%
 \begin{spec}
 f (g, g') = (f, f')   -- (*)
 \end{spec}
-
+%
 so we can then do
-
+%
 \begin{spec}
 f' 2 = snd (applyFD 2 (f (g, g')))
 \end{spec}
-
+%
 We can fullfill (*) if we can find a |(g, g')| that is a sort of
 ``unit'' for |FD a|:
-
+%
 \begin{spec}
 sin (g, g') = (sin, cos)
 exp (g, g') = (exp, exp)
 \end{spec}
-
+%
 and so on.
 
 In general, the chain rule gives us
-
+%
 \begin{spec}
 f (g, g') = (f . g, (f' . g) * g')
 \end{spec}
-
+%
 Therefore, we need: |g = id| and |g' = const 1|.
 
 Finally
-
+%
 \begin{spec}
 f' 2 = snd (applyFD 2 (f (id, const 1)))
 \end{spec}
-
+%
 In general
-
+%
 \begin{code}
 drvFD f x = snd (applyFD x (f (id, const 1)))
 \end{code}
-
+%
 computes the derivative of |f| at |x|.
-
+%
 \begin{code}
 f1 :: FD Double -> FD Double
 f1  = f
 \end{code}
 
-\item Using pairs
+\item Using pairs.
 
-  We have |instance Floating a => Floating (a, a)|, moreover, the
-  instance declaration looks exactly the same as that for |FD a|:
-
+We have |instance Floating a => Floating (a, a)|, moreover, the
+instance declaration looks exactly the same as that for |FD a|:
+%
 \begin{spec}
 instance Floating a => Floating (FD a) where  -- pairs of functions
   exp (f, f')       =  (exp f, (exp f) * f')
@@ -208,12 +194,11 @@ instance Floating a => Floating (a, a) where  -- just pairs
   sin (f, f')       =  (sin f,   cos f  * f')
   cos (f, f')       =  (cos f, -(sin f) * f')
 \end{spec}
-
 %
-In fact, the latter represents a generalisation of the former.
+In fact, the latter (just pairs) represents a generalisation of the former (pairs of functions).
 %
 To see this, note that if we have a |Floating| instance for some |A|,
-we get a floating instance for |x->A| for all |x| from ``FunNumInst''.
+we get a floating instance for |x->A| for all |x| from the module |FunNumInst|.
 %
 Then from the instance for pairs we get an instance for any type of
 the form |(x->A, x->A)|.
@@ -221,7 +206,7 @@ the form |(x->A, x->A)|.
 As a special case when |x=A| this includes all |(A->A, A->A)| which is
 |FD A|.
 %
-Thus it is enough to have ``FunNumInst'' and the pair instance to get
+Thus it is enough to have |FunNumInst| and the pair instance to get
 the ``pairs of functions'' instance (and more).
 
 The pair instance is also the ``maximally general'' such
@@ -231,51 +216,46 @@ less-than-clean design of |Num|, |Fractional|, |Floating|).
 Still, we need to use this machinery.
 %
 We are now looking for a pair of values |(g, g')| such that
-
+%
 \begin{spec}
 f (g, g') = (f 2, f' 2)
 \end{spec}
-
+%
 In general
-
+%
 \begin{spec}
 f (g, g') = (f g, (f' g) * g')
 \end{spec}
-
+%
 Therefore
-
+%
 \begin{spec}
-  f (g, g') = (f 2, f' 2)
+      f (g, g') = (f 2, f' 2)
 
-<=>
-
-  (f g, (f' g) * g') = (f 2, f' 2)
-
-<==
-
-  g = 2, g' = 1
+<=>   (f g, (f' g) * g') = (f 2, f' 2)
+<==   g = 2, g' = 1
 \end{spec}
-
+%
 Introducing
-
+%
 \begin{code}
 var x = (x, 1)
 \end{code}
-
+%
 we can, as in the case of |FD|, simplify matters a little:
-
+%
 \begin{spec}
 f' x = snd (f (var x))
 \end{spec}
-
+%
 In general
-
+%
 \begin{code}
 drvP f x  =  snd (f (x, 1))
 \end{code}
-
+%
 computes the derivative of |f| at |x|.
-
+%
 \begin{code}
 f2 :: (Double, Double) -> (Double, Double)
 f2  = f
@@ -283,43 +263,54 @@ f2  = f
 
 \end{enumerate}
 
-TODO: some ending sentence for this part
+We have seen three different ways to use a generic |f :: Floating a =>
+a -> a| to compute |f' 2|:
+\begin{itemize}
+\item fully symbolic (using |FunExp|),
+\item using pairs of functions (|FD|),
+\item or just pairs of values.
+\end{itemize}
+
 
 \subsection{Higher-order derivatives}
 
 Consider
-
+%
 \begin{spec}
 [f, f', f'', ...]
 \end{spec}
-
-representing the evaluation of an expression and its derivatives:
-
+%
+representing the evaluation of an expression and all its derivatives:
+%
 \begin{code}
 evalAll e = (evalFunExp e) : evalAll (derive e)
 \end{code}
-
+%
 Notice that, if
-
+%
 \begin{spec}
 [f, f', f'', ...] = evalAll e
 \end{spec}
-
+%
 then
-
+%
 \begin{spec}
 [f', f'', ...] = evalAll (derive e)
 \end{spec}
+%
+Thus |evalAll (derive e) == tail (evalAll e)| which can be written
+|evalAll . derive = tail . evalAll|.
+
 
 We want to define the operations on lists of functions in such a way
 that |evalAll| is a homomorphism.
 %
 For example:
-
+%
 \begin{spec}
 evalAll (e1 :*: e2) = evalAll e1 * evalAll e2
 \end{spec}
-
+%
 where the |(*)| sign stands for the multiplication of infinite lists of
 functions, the operation we are trying to determine.
 %
@@ -328,7 +319,7 @@ lists (it is |zipWith (+)|).
 
 We have, writing |eval| for |evalFunExp| and |d| for |derive| in order
 to save ink
-
+%
 \begin{spec}
     LHS
 = {- def. -}
@@ -340,22 +331,22 @@ to save ink
 = {- def. of |derive| for |(:*:)| -}
     (eval e1 * eval e2) : evalAll (d e1 :*: e2 :+: e1 * d e2)
 = {- we assume |H2(evalAll, (:+:), (+))| -}
-    (eval e1 * eval e2) : evalAll (d e1 :*: e2) + evalAll (e1 :*: d e2)
+    (eval e1 * eval e2) : (evalAll (d e1 :*: e2) + evalAll (e1 :*: d e2))
 \end{spec}
 
 Similarly, starting from the other end we get
-
+%
 \begin{spec}
     evalAll e1 * evalAll e2
 =
     (eval e1 : evalAll (d e1)) * (eval e2 : evalAll (d e2))
 \end{spec}
-
+%
 Now, to see the pattern it is useful to give simpler names to some
 common subexpressions: let |a = eval e1|, |b = eval e2|.
-
+%
 \begin{spec}
-    (a * b) : evalAll (d e1 :*: e2) + evalAll (e1 * d e2)
+    (a * b) : (evalAll (d e1 :*: e2) + evalAll (e1 * d e2))
 =?
     (a : evalAll (d e1)) * (b : evalAll (d e2))
 \end{spec}
@@ -365,9 +356,9 @@ Now we can solve part of the problem by defining |(*)| as
 \begin{spec}
 (a : as) * (b : bs) = (a*b) : help a b as bs
 \end{spec}
-
+%
 The remaining part is then
-
+%
 \begin{spec}
     evalAll (d e1 :*: e2) + evalAll (e1 * d e2)
 =?
@@ -378,12 +369,13 @@ Informally, we can refer to (co-)induction at this point and rewrite
 |evalAll (d e1 :*: e2)| to |evalAll (d e1) * evalAll e2|.
 %
 We also have |evalAll . d = tail . evalAll| which leads to:
-
+%
 \begin{spec}
     tail (evalAll e1) * evalAll e2 + evalAll e1 * tail (evalAll e2)
 =?
     help a b (tail (evalAll e1)) (tail (evalAll e2))
 \end{spec}
+%
 Finally we rename common subexpressions:
 let |a:as = evalAll e1| and |b:bs = evalAll e2|.
 \begin{spec}
@@ -391,11 +383,15 @@ let |a:as = evalAll e1| and |b:bs = evalAll e2|.
 =?
     help a b (tail (a:as)) (tail (b:bs))
 \end{spec}
+%
 This is clearly is solved by defining |help| as follows:
+%
 \begin{code}
 help a b as bs = as * (b : bs) + (a : as) * bs
 \end{code}
+%
 Thus, we can eliminate |help| to arrive at a definition for multiplication:
+%
 \begin{code}
 mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 \end{code}
@@ -403,7 +399,6 @@ mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 As in the case of pairs, we find that we do not need any properties of
 functions, other than their |Num| structure, so the definitions apply
 to any infinite list of |Num a|:
-
 %
 \begin{code}
 type Stream a = [a]
@@ -433,20 +428,16 @@ for infinite lists, for example applying all the operations
 We used just a type synonym here to avoid cluttering the definitions
 with the newtype constructors.
 
-
 %
 Write a general derivative computation, similar to |drv| functions
 above:
-
+%
 \begin{code}
 drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 \end{code}
 
 Exercise: Compare the efficiency of different ways of computing derivatives.
 %
-
-
-
 
 \subsection{Polynomials}
 
@@ -469,28 +460,28 @@ polynomials.
 %
 Thus we can reuse that type also as ``syntax for power series'':
 potentially infinite ``polynomials''.
-
+%
 \begin{spec}
 type PowerSeries a = Poly a -- finite and infinite non-empty lists
 \end{spec}
-
+%
 Now we can divide, as well as add and multiply.
 
 We can also compute derivatives:
-
+%
 \begin{spec}
 deriv (Single a)   =  Single 0
 deriv (Cons a as)  =  deriv' as 1
   where  deriv' (Single a)   n  =  Single  (n * a)
          deriv' (Cons a as)  n  =  Cons    (n * a)  (deriv' as (n+1))
 \end{spec}
-
+%
 and integrate:
-
+%
 %TODO: Perhaps swap the order of arguments to |integ| to match the order of |Cons|. Or remove that argument and just use |a0 +| in combination with a 1-arg. |integ|.
 \begin{code}
-integ  ::  Fractional a => PowerSeries a -> a -> PowerSeries a
-integ  as a0  =  Cons a0 (integ' as 1)
+integ  ::  Fractional a => a -> PowerSeries a -> PowerSeries a
+integ  a0 as  =  Cons a0 (integ' as 1)
   where  integ' (Single a)   n  =  Single  (a / n)
          integ' (Cons a as)  n  =  Cons    (a / n)  (integ' as (n+1))
 \end{code}
@@ -503,7 +494,7 @@ the syntax of power series, often called ``formal power series''.
 %
 The intended semantics of a formal power series |a| is, as we saw in
 Chapter~\ref{sec:poly}, an infinite sum
-
+%
 \begin{spec}
 eval a : REAL -> REAL
 eval a = \x ->  lim s   where   s n = {-" \sum_{i = 0}^n a_i * x^i "-}
@@ -521,64 +512,59 @@ convergence.
 
 If the power series involved do converge, then |eval| is a morphism
 between the formal structure and that of the functions represented:
-
+%
 \begin{spec}
 eval as + eval bs    =  eval (as + bs)   -- |H2(eval,(+),(+))|
 eval as * eval bs    =  eval (as * bs)   -- |H2(eval,(*),(*))|
 
 eval (derive as)     =  D (eval as)      -- |H1(eval,derive,D)|
-eval (integ as c) x  =  {-"\int_0^x "-} (eval as t) dt  +  c
+eval (integ c as) x  =  c + {-"\int_0^x "-} (eval as t) dt
 \end{spec}
 
 \subsection{Simple differential equations}
 
 Many first-order differential equations have the structure
-
+%
 \begin{spec}
 f' x = g f x, {-"\qquad"-} f 0 = f0
 \end{spec}
-
+%
 i.e., they are defined in terms of the higher-order function |g|.
 
 The fundamental theorem of calculus gives us
-
+%
 \begin{spec}
 f x = {-"\int_0^x "-} (g f t) dt + f0
 \end{spec}
 
 If |f = eval as|
-
+%
 \begin{spec}
 eval as x = {-"\int_0^x "-} (g (eval as) t) dt + f0
 \end{spec}
 %
 Assuming that |g| is a polymorphic function defined both for the
 syntax (|PowerSeries|) and the semantics (|REAL -> REAL|), and that
+%
 \begin{spec}
 Forall as (eval (gSyn as) == gSem (eval as))
 \end{spec}
+%
 or simply |H1(eval,g,g)|.
 %
 (This particular use of |H1| is read ``|g| commutes with |eval|''.)
 %
 Then we can move |eval| outwards step by step:
-
+%
 \begin{spec}
-  eval as x = {-"\int_0^x "-} (eval (g as) t) dt + f0
-
-<=>
-
-  eval as x = eval (integ (g as) f0) x
-
-<==
-
-  as = integ (g as) f0
+      eval as x = f0 + {-"\int_0^x "-} (eval (g as) t) dt
+<=>   eval as x = eval (integ f0 (g as)) x
+<==   as = f0 integ (g as)
 \end{spec}
 %
 Finally, we have arrived at an equation expressed in only syntactic
 operations, which is implementable in Haskell (for reasonable |g|).
 %
-
 
 Which functions |g| commute with |eval|?
 %
@@ -587,11 +573,11 @@ additionally, as above, |deriv| and |integ|.
 
 Therefore, we can implement a general solver for these simple
 equations:
-
+%
 \begin{code}
-solve :: Fractional a => (PowerSeries a -> PowerSeries a) -> a -> PowerSeries a
-solve g f0 = f              -- solves |f' = g f|, |f 0 = f0|
-  where f = integ (g f) f0
+solve :: Fractional a => a -> (PowerSeries a -> PowerSeries a) -> PowerSeries a
+solve f0 g = f              -- solves |f' = g f|, |f 0 = f0|
+  where f = integ f0 (g f)
 \end{code}
 %
 To see this in action we can use |solve| on simple functions |g|,
@@ -599,12 +585,12 @@ starting with |const 1| and |id|:
 
 \begin{code}
 idx  ::  Fractional a => PowerSeries a
-idx  =   solve (\ f -> 1) 0
+idx  =   solve 0 (\f -> 1)
 idf  ::  Fractional a => a -> a
 idf  =   eval 100 idx
 
 expx :: Fractional a => PowerSeries a
-expx = solve (\ f -> f) 1
+expx = solve 1 (\f -> f)
 expf :: Fractional a => a -> a
 expf = eval 100 expx
 \end{code}
@@ -636,8 +622,8 @@ We can also use mutual recursion to define sine and cosine in terms of
 each other:
 %
 \begin{code}
-sinx = integ  cosx     0
-cosx = integ  (-sinx)  1
+sinx = integ 0 cosx
+cosx = integ 1 (-sinx)
 sinf = eval 100 sinx
 cosf = eval 100 cosx
 
@@ -722,9 +708,9 @@ Differentiating both sides, we obtain
 
 Adding the ``initial condition'' |eval (exp as) 0 = exp (head as)|, we
 obtain
-
+%**TODO: head = val
 \begin{spec}
-exp as = integ (exp as * deriv as) (exp (head as))
+exp as = integ (exp (head as)) (exp as * deriv as)
 \end{spec}
 
 Note: we cannot use |solve| here, because the |g| function uses both
@@ -738,9 +724,9 @@ instance (Eq a, Floating a) => Floating (PowerSeries a) where
   cos  =  cosPS
 
 expPS, sinPS, cosPS :: (Eq a, Floating a) => PowerSeries a -> PowerSeries a
-expPS  fs  =  integ (exp fs   * deriv fs)  (exp  (val fs))
-sinPS  fs  =  integ (cos fs   * deriv fs)  (sin  (val fs))
-cosPS  fs  =  integ (-sin fs  * deriv fs)  (cos  (val fs))
+expPS  fs  =  integ  (exp  (val fs))  (exp fs   * deriv fs)
+sinPS  fs  =  integ  (sin  (val fs))  (cos fs   * deriv fs)
+cosPS  fs  =  integ  (cos  (val fs))  (-sin fs  * deriv fs)
 
 val ::  PowerSeries a  ->  a
 val     (Single a)     =   a

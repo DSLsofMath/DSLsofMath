@@ -34,7 +34,7 @@ by the power series
 
 \begin{spec}
 expx :: Fractional a => PowerSeries a
-expx = integ expx 1
+expx = integ 1 expx
 \end{spec}
 
 and approximated by
@@ -261,8 +261,8 @@ f'' x - 3 * f' x + 2 * f x = exp (3 * x),  f 0 = 1,  f' 0 = 0
 We can solve such equations with the machinery of power series:
 
 \begin{code}
-fs = integ fs' 1
-  where fs' = integ (exp (3*x) + 3 * fs' - 2 * fs) 0
+fs = integ 1 fs'
+  where fs' = integ 0 (exp (3*x) + 3 * fs' - 2 * fs)
 \end{code}
 
 We have done this by ``zooming in'' on the function |f| and representing

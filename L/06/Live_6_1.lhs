@@ -29,6 +29,9 @@ type PS a = PowerSeries a
 der :: Fractional a => PS a -> PS a
 der cs = zipWithP (*) (numbersFrom 1) (tailP cs)
 
+
+test = takePoly 10 (1 / Cons 1 (Single (-1))^2)
+
 numbersFrom :: Num a => a -> PS a
 numbersFrom n = Cons n (numbersFrom (n+1))
 
