@@ -9,6 +9,7 @@ data FunExp  =  Const REAL         -- |Rational| does not work with |Floating|
              |  FunExp :+: FunExp
              |  FunExp :*: FunExp
              |  FunExp :/: FunExp
+             |  Negate FunExp
              |  Exp FunExp
              |  Sin FunExp
              |  Cos FunExp
@@ -34,7 +35,10 @@ eval      (Const alpha)    =  const alpha
 eval      Id               =  id
 eval      (e1 :+: e2)      =  eval e1 + eval e2
 eval      (e1 :*: e2)      =  eval e1 * eval e2
-eval      (Exp e1)         =  exp (eval e1)      -- = exp . (eval e1) !
+eval      (Negate e)       =  negate (eval e)
+eval      (Exp e)          =  exp (eval e)      -- = exp . (eval e) !
+eval      (Sin e)          =  sin (eval e)
+eval      (Cos e)          =  cos (eval e)
 \end{code}
 
 Test:

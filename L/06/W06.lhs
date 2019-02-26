@@ -534,13 +534,13 @@ i.e., they are defined in terms of the higher-order function |g|.
 The fundamental theorem of calculus gives us
 %
 \begin{spec}
-f x = {-"\int_0^x "-} (g f t) dt + f0
+f x = f0 + {-"\int_0^x "-} (g f t) dt
 \end{spec}
 
 If |f = eval as|
 %
 \begin{spec}
-eval as x = {-"\int_0^x "-} (g (eval as) t) dt + f0
+eval as x = f0 + {-"\int_0^x "-} (g (eval as) t) dt
 \end{spec}
 %
 Assuming that |g| is a polymorphic function defined both for the
@@ -559,7 +559,7 @@ Then we can move |eval| outwards step by step:
 \begin{spec}
       eval as x = f0 + {-"\int_0^x "-} (eval (g as) t) dt
 <=>   eval as x = eval (integ f0 (g as)) x
-<==   as = f0 integ (g as)
+<==   as = integ f0 (g as)
 \end{spec}
 %
 Finally, we have arrived at an equation expressed in only syntactic

@@ -31,8 +31,8 @@ testvs2 = applyL 2 testfs
 
 applyL :: a -> [a -> b] -> [b]
 applyL c = map (\f->f c)
-
 \end{code}
+
 Questions:
 
 * Is there a function |derDS| which makes |evalAll| a homomorphism from |derive| to |derDS|?
@@ -73,11 +73,11 @@ We want to show  |derDS (evalAll e) == evalAll (d e)|
 derDS :: DS Func -> DS Func
 derDS = tail
 
-plusDS :: DS Func -> DS Func -> DS Func
-plusDS = zipWith (+)
+addDS :: DS Func -> DS Func -> DS Func
+addDS = zipWith (+)
 \end{code}
-  propH1 evalAll (:+:) plusDS
-  forall x y. evalAll (x:+:y) === plusDS (evalAll x) (evalAll y)
+  propH1 evalAll (:+:) addDS
+  forall x y. evalAll (x:+:y) === addDS (evalAll x) (evalAll y)
 
    LHS
 =
@@ -101,11 +101,67 @@ plusDS = zipWith (+)
 
 --
 
-Now, you can try the multiplication case (see the lecture notes).
+Next: the multiplication case.
 
+We are looking for a function |mulDS| and we would like it to be
+"multiplication" for "derivative streams". We want |evalAll| to
+be a homomorphism from |(:*:)| to |mulDS|. Thus it should satisfy
 
+forall fe, ge. evalAll (fe :*: ge) == mulDS (evalAll fe) (evalAll ge)
+
+As |mulDS| should return a stream we need to compute its head and its tail.
+%
+To compute the head we let |fs = evalAll fe| and |gs = evalAll ge|.
+%
+Then by the definition of |evalAll| we have |head fs == eval fe| and
+|head gs == eval ge|.
+%
+Similarly, we can calculate:
+\begin{spec}
+  head (evalAll (fe :*: ge))
+== {- Def. of |evalAll| -}
+  eval (fe :*: ge)
+== {- Def. of |eval| -}
+  (eval fe) * (eval ge)
+== {- See above -}
+  (head fs) * (head gs)
+\end{spec}
+%
+Thus the ``|head|-part'' of the homomorphism condition is satisfied if:
+%
+\begin{spec}
+  head (mulDS fs gs) == (head fs) * (head gs)
+\end{spec}
+
+To come of with a definition for the tail of |mulDS fs gs| we start by
+noting that |tail| for |DS| is actually an implementation of |derDS|.
+%
+Thinking in terms of the usual law for derivative of a product we
+would like:
+%
+\begin{spec}
+  d (fs*gs) == (d fs)*gs + fs*(d gs)  where d = derDS; (*) = mulDS
+\end{spec}
+%
+which is the same as
+%
+\begin{spec}
+  tail (fs*gs) == (tail fs)*gs + fs*(tail gs)  where (*) = mulDS
+\end{spec}
+%
+Both the |head| and |tail| conditions are satisfied by the following definition:
+%
 \begin{code}
-mulDS = error "TODO"
+mulDS :: DS Func -> DS Func -> DS Func
+mulDS fs gs = h : t
+  where  h = (head fs) * (head gs)
+         t = ((derDS fs)*gs) + (fs*(derDS gs))
+           where  (*) = mulDS
+                  (+) = addDS
+
+is = evalAll Id
+t :: DS Func -> [REAL]
+t = take 6 . applyL 1
 \end{code}
 
 
