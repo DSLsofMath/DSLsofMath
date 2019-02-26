@@ -133,7 +133,7 @@ Thus the ``|head|-part'' of the homomorphism condition is satisfied if:
   head (mulDS fs gs) == (head fs) * (head gs)
 \end{spec}
 
-To come of with a definition for the tail of |mulDS fs gs| we start by
+To come up with a definition for the tail of |mulDS fs gs| we start by
 noting that |tail| for |DS| is actually an implementation of |derDS|.
 %
 Thinking in terms of the usual law for derivative of a product we
@@ -158,7 +158,10 @@ mulDS fs gs = h : t
          t = ((derDS fs)*gs) + (fs*(derDS gs))
            where  (*) = mulDS
                   (+) = addDS
+\end{code}
 
+Some test code:
+\begin{code}
 is = evalAll Id
 t :: DS Func -> [REAL]
 t = take 6 . applyL 1
