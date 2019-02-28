@@ -26,9 +26,9 @@ Learning outcomes as in the
 
 ## Schedule ([html](https://se.timeedit.net/web/chalmers/db1/public/riqQ7615X80Z06Q0Z45g0Y6Z6Z096Y35Q01vQY5Q5yo6q072oQ.html), [ics](https://se.timeedit.net/web/chalmers/db1/public/ri6Xl0gQ2560YZQQ05Z6974Y0Qy60073l1Q54Q061v555Zq8Z85Yn156.ics))
 
-* Lectures Mondays 10-12 (in EB) and Mondays 15-17 (in EF)
+* Lectures Mondays 10–12 (in EB) and Mondays 15–17 (in EF)
 
-* Exercises Wednesdays 13-15 ([ES53](http://maps.chalmers.se/#aeda8fb5-fb6b-499a-8824-5fadfa5b8371)) and Fridays 13-15 ([ED3582](http://maps.chalmers.se/#315adc60-539c-4f0a-bb4d-3088714bb881))
+* Exercises Wednesdays 13–15 ([ES53](http://maps.chalmers.se/#aeda8fb5-fb6b-499a-8824-5fadfa5b8371)) and Fridays 13–15 ([ED3582](http://maps.chalmers.se/#315adc60-539c-4f0a-bb4d-3088714bb881))
 
 * Exam: 2017-03-14 afternoon.  Re-exam: 2017-08-22 afternoon.
 

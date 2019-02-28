@@ -16,7 +16,7 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=27332
 * First version (and continued support): Cezar Ionescu (cezar AT)
 * Teaching assistants:
 ** 2019: Maximilian Algehed (algehed AT) and Abhiroop Sarkar (sarkara AT)
-** 2017-2018: Daniel Schoepe (schoepe AT)
+** 2017–2018: Daniel Schoepe (schoepe AT)
 ** 2017: Frederik Hanghøj Iversen (hanghj AT student)
 ** 2016: Irene Lobo Valbuena (lobo AT)
 * Project assistants: Daniel Heurlin, Sólrún Einarsdóttir, Adam Sandberg Ericsson (saadam AT)
@@ -87,8 +87,8 @@ L/: [L/01/](L/01), [L/02/](L/02/), etc.
 
 ## Exercises
 
-Chapter 1-8 of the Lecture Notes end with weekly exercises for weeks
-1-8.
+Chapter 1–8 of the Lecture Notes end with weekly exercises for weeks
+1–8.
 
 In [L/RecEx.md](L/RecEx.md) you will find a list of recommended exercises
 for each chapter of the lecture notes.

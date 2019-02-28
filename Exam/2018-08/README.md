@@ -7,4 +7,4 @@
     * [P3.hs](P3.hs) (importing [PS.hs](PS.hs))
     * [P4.hs](P4.hs)
 
-Exam check (granskning) is Thu. 2018-09-06 at 12.30-12.55 in EDIT 5468.
+Exam check (granskning) is Thu. 2018-09-06 at 12.30–12.55 in EDIT 5468.

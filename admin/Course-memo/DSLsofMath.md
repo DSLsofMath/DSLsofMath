@@ -44,7 +44,7 @@ therein cover the course (but there is no printed course textbook).
 
 ## Course setup
 
-* L = Lectures (Tue 13-15 and Thu 13-15 in EB)
+* L = Lectures (Tue 13–15 and Thu 13–15 in EB)
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry–Howard, ...
@@ -54,7 +54,7 @@ therein cover the course (but there is no printed course textbook).
     * Power series and differential equations, exp, sin, log, Taylor series, ...
     * Linear algebra: vectors, matrices, functions, bases, dynamical systems as matrices and graphs
     * Laplace transform: exp, powers series cont., solving PDEs with Laplace
-* E = Weekly exercise sessions (Tue 15-17 and Thu 15-17 in ES52)
+* E = Weekly exercise sessions (Tue 15–17 and Thu 15–17 in ES52)
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
 * Schedule exceptions:

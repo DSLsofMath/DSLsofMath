@@ -4,7 +4,7 @@
 
 * Patrik Jansson: forskare och lärare inom Funktionell Programmering
     * examinator och kursansvarig för kursen DSLsofMath
-    * XPA för D (2011-13), nu "inspektor" för D-sektionen
+    * XPA för D (2011–13), nu "inspektor" för D-sektionen
 * Gästföreläsare: Cezar Ionescu, docent i Data Science i Oxford.
     * gav kursen första gången 2016
 * Vi tror på er förmåga att själva kombinera kurser till en bra helhet

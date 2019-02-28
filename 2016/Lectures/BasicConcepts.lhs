@@ -564,7 +564,7 @@ This proof, while relatively simple and typical of many in analysis,
 is unsatisfactory.  It would have been much better if we had developed
 a calculus of limits of functions.  For example, we have
 
-*Theorem:* [@rudin1964principles, p. 73-74)
+*Theorem:* [@rudin1964principles, p. 73–74)
 
   > Let `f, g : X -> ℝ`, `p` a limit point of `X`, and `lim f p = α`, `lim g p = β`.
   > Then

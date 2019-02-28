@@ -22,7 +22,7 @@ News
 
 2016-06-17: Course summary [available](overview2016.md).
 
-2016-04-19: The final course evaluation meeting will by on Friday 2016-04-29 at 15.15. (Mötet äger rum fredag den 29 april kl 15.15-16.15 i mötesrum AoS Origo Koppen, Fysikhuset).
+2016-04-19: The final course evaluation meeting will by on Friday 2016-04-29 at 15.15. (Mötet äger rum fredag den 29 april kl 15.15–16.15 i mötesrum AoS Origo Koppen, Fysikhuset).
 
 2016-03-29: Exam correction almost done. The preliminary results
 [are now avaliable](Exam/2016-03/).
@@ -78,9 +78,9 @@ Course team
 Schedule
 --------
 
-- Lectures Mondays 10-12 (in ED) and Fridays 13-15 (in EB)
+- Lectures Mondays 10–12 (in ED) and Fridays 13–15 (in EB)
 
-- Exercises Wednesdays 13-15 and Thursdays 10-12 (in Ft-4011)
+- Exercises Wednesdays 13–15 and Thursdays 10–12 (in Ft-4011)
 
 - Guest lectures
 
@@ -229,7 +229,7 @@ Evaluation
 
 The final course evaluation meeting will by on Friday 2016-04-29 at 15.15.
 
-(Mötet äger rum fredag den 29 april kl 15.15-16.15 i mötesrum AoS Origo Koppen. Fysikhuset, ingången från Kemigården. I entréhallen gå in i korridoren till höger. Mötesrummet AoS Origo Koppen ligger på korridorens vänstra sida).
+(Mötet äger rum fredag den 29 april kl 15.15–16.15 i mötesrum AoS Origo Koppen. Fysikhuset, ingången från Kemigården. I entréhallen gå in i korridoren till höger. Mötesrummet AoS Origo Koppen ligger på korridorens vänstra sida).
 
 
 Invited participants:

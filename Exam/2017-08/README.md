@@ -20,4 +20,4 @@ Homepage: https://github.com/DSLsofMath/DSLsofMath/
 
 [Inofficial anonymous result list](anon_results.md)
 
-Exam check (granskning): Fri. 2017-09-01 in EDIT 5468 at 12.30-12.55.
+Exam check (granskning): Fri. 2017-09-01 in EDIT 5468 at 12.30–12.55.

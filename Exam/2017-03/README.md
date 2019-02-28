@@ -12,7 +12,7 @@
 [Inofficial anonymous result list](anon_results.md)
 
 Exam check (granskning) is Wednesday 2017-04-05 and Friday 2017-04-07.
-Both at 12.30-12.55 in EDIT 5468.
+Both at 12.30–12.55 in EDIT 5468.
 
 ## Results on the individual problems:
 

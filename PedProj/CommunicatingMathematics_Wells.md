@@ -28,6 +28,6 @@ Reference:
 
 Communicating Mathematics: Useful Ideas from Computer Science
 Author(s): Charles Wells
-Source: The American Mathematical Monthly, Vol. 102, No. 5 (May, 1995), pp. 397-408
+Source: The American Mathematical Monthly, Vol. 102, No. 5 (May, 1995), pp. 397–408
 Published by: Mathematical Association of America
 Stable URL: http://www.jstor.org/stable/2975030

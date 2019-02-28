@@ -121,7 +121,7 @@ Admin:
 \item \emph{Submission}: Assignments are to be submitted via Canvas
 \item \emph{Deadline}: 2019-02-05
 \item \emph{Grading}: Discussions with each of the teams during the
-  slot 2019-02-11, 10-12 or 15-17
+  slot 2019-02-11, 10–12 or 15–17
 \end{itemize}
 
 Note: The examination will be in English.

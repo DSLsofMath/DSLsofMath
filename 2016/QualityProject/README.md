@@ -89,7 +89,7 @@ Numbers](https://github.com/DSLsofMath/BScProj/blob/master/Tutorial/ComplexNumbe
 
 ## 2015-11-15:
 
-Time for a new status update for the pedagogical project "DSLsofMath" (funded by Chalmers' education quality money 2014-2015 via the CSE programme).
+Time for a new status update for the pedagogical project "DSLsofMath" (funded by Chalmers' education quality money 2014–2015 via the CSE programme).
 
 The resulting BSc-level elective course "Domain Specific Languages of Mathematics" will be "advertised" to prospective maths students on Monday (TM3) and to CSE students on Thursday (D2). Finally, on Friday I will give a "research talk" about some of the ideas underlying the course - see below and at this URL:
   http://www.chalmers.se/insidan/sites/cse/aktuellt/kalendarium/sok-kalendariet/dslsofmath-presenting

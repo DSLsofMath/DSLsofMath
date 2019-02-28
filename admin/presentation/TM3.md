@@ -95,7 +95,7 @@ Rekommenderat (men ej krav): Funktionell programmering
 
 Välkommen till valinformation för studenterna i Teknisk matematik åk 3 inför kursvalet till läsperiod 3 vårterminen 2016.
 
-Måndag den 16/11 klockan 11:45-12:40 i HC4
+Måndag den 16/11 klockan 11:45–12:40 i HC4
 
 Kurserna som presenteras är:
 
