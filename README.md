@@ -1,6 +1,6 @@
 # Domain-Specific Languages of Mathematics
 
-[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related to the a BSc course at Chalmers and GU.
+[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related to a BSc course at Chalmers and GU.
 
 The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/3788)
 
@@ -15,10 +15,10 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=27332
 * Main author, examiner, lecturer: Patrik Jansson (patrikj AT)
 * First version (and continued support): Cezar Ionescu (cezar AT)
 * Teaching assistants:
-** 2019: Maximilian Algehed (algehed AT) and Abhiroop Sarkar (sarkara AT)
-** 2017-2018: Daniel Schoepe (schoepe AT)
-** 2017: Frederik Hanghøj Iversen (hanghj AT student)
-** 2016: Irene Lobo Valbuena (lobo AT)
+  * 2019: Maximilian Algehed (algehed AT) and Abhiroop Sarkar (sarkara AT)
+  * 2017–2018: Daniel Schoepe (schoepe AT)
+  * 2017: Frederik Hanghøj Iversen (hanghj AT student)
+  * 2016: Irene Lobo Valbuena (lobo AT)
 * Project assistants: Daniel Heurlin, Sólrún Einarsdóttir, Adam Sandberg Ericsson (saadam AT)
 
 where AT = @chalmers.se
@@ -30,7 +30,7 @@ This repository is mainly the home of the DSLsofMath "book" (lecture notes).
 [Lecture notes](L/snapshots/) + references therein cover the course but there is no
 printed course textbook.
 
-Comments and contributions are always welcome - especially in the form
+Comments and contributions are always welcome – especially in the form
 of pull requests.
 
 The main references are listed below.
@@ -66,7 +66,7 @@ students at both Chalmers and GU.
 * Lectures
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
-    * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
+    * Types and mathematics: logic, quantifiers, proofs and programs, Curry–Howard, ...
         * Type classes, derivatives, differentiation, calculational proofs
     * Domain Specific Languages and algebraic structures, algebras, homomorphisms
     * Polynomials, series, power series
@@ -87,8 +87,8 @@ L/: [L/01/](L/01), [L/02/](L/02/), etc.
 
 ## Exercises
 
-Chapter 1-8 of the Lecture Notes end with weekly exercises for weeks
-1-8.
+Chapter 1–8 of the Lecture Notes end with weekly exercises for weeks
+1–8.
 
 In [L/RecEx.md](L/RecEx.md) you will find a list of recommended exercises
 for each chapter of the lecture notes.
@@ -112,19 +112,19 @@ $ tar -xzf DSLsofMath-x.x.x.x.tar.gz
 ```
 
 Now go into the extracted folder `DSLsofMath-x.x.x.x/` and run `stack init`. You can now interact with
-the code from the lectures by typing `stack ghci`, which puts you in ghci with all
-DSLs loaded. You can also place your own haskell files inside this folder and import the DSLs you
+the code from the lectures by typing `stack ghci`, which puts you in GHCi with all
+DSLs loaded. You can also place your own Haskell files inside this folder and import the DSLs you
 want by typing the following at the start of your file:
 
 ```haskell
 import DSLsofMath.W0X
 ```
 where X is the chapter that contains the code you want to use. You should be
-able to load your own haskell files in normal ghci.
+able to load your own Haskell files in normal GHCi.
 
-### Installing stack on the Chalmers linux machines
+### Installing stack on the Chalmers Linux machines
 
-On the linux remote machines you have a number of options to get stack to work.
+On the Linux remote machines you have a number of options to get stack to work.
 Regardless of how you do it the goal is to have a local stack executable in the directory `~/.local/bin`.
 One way to do this is to follow these steps:
 * Run `stack upgrade`, optionally download the right executable from the stack website.
@@ -150,10 +150,10 @@ Some important references:
   University Press, 2014
   [URL](http://www.cs.ox.ac.uk/publications/books/functional/)
 - **Introduction to Functional Programming Using Haskell**, Richard
-  Bird, Prentice-Hall, 1998.  A previous (but *very* different)
+  Bird, Prentice Hall, 1998.  A previous (but *very* different)
   version of the above.
 - **An Introduction to Functional Programming**, Richard Bird and Phil
-  Wadler, Prentice-Hall, 1988. A previous (but *very* different)
+  Wadler, Prentice Hall, 1988. A previous (but *very* different)
   version of *both* of the above.
 
 ### DSLs

@@ -10,7 +10,7 @@ title: Domain Specific Languages of Mathematics (DAT325)
 \begin{description}
 \item[Contact] Cezar Ionescu (0729 744 941)
 \item[Results] Announced within at most 19 days (by Monday 2016-09-16)
-\item[Re-Exam check] Thursday and Friday 2016-08-25 and 26. Both at 12.30-12.55 in EDIT 5468.
+\item[Re-Exam check] Thursday and Friday 2016-08-25 and 26. Both at 12.30–12.55 in EDIT 5468.
 \item[Aids] One textbook of your choice (e.g., Adams and Essex, or
 Rudin).  No printouts, no lecture notes, no notebooks, etc.
 \item[Grades] 3: 40p, 4: 60p, 5: 80p, max: 100p

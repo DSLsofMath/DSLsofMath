@@ -516,7 +516,7 @@ how to prove them:
 |f| is a proof of |Forall x (P(x))| if |f t| is a proof of |P(t)| for all |t|.
 \end{quote}
 
-\paragraph{Curry-Howard}
+\paragraph{Curry--Howard}
 %
 If we abbreviate ``is a proof'' as |:| and use the Haskell convention
 for function application we get
@@ -528,14 +528,14 @@ f        :  (Forall x (P x))   {-"\quad\textbf{if}\quad"-}  f t  : P t   {-"\tex
 %
 This now very much looks like type rules, and that is not a coincidence.
 %
-The \emph{Curry-Howard correspondence} says that we can think of
+The \emph{Curry--Howard correspondence} says that we can think of
 propositions as types and proofs as ``programs''.
 %
 These typing judgements are not part of FOL, but the correspondence is
 used quite a bit in this course to keep track of proofs.
 
 We can also interpret the simpler binary connectives using the
-Curry-Howard correspondence.
+Curry--Howard correspondence.
 %
 A proof of |And P Q| is a pair of a proof of |P| and a proof of |Q|.
 %

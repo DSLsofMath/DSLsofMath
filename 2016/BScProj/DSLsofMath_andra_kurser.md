@@ -5,7 +5,7 @@ Matematikens domänspecifika språk (DSLsofMath) för andra kurser
 ## Bakgrund:
 
 DSLsofMath [1,2] är namnet på ett pedagogiskt projekt som leder till
-en ny valfri kurs i årskurs 2-3 riktad till datavetare och matematiker
+en ny valfri kurs i årskurs 2–3 riktad till datavetare och matematiker
 på Chalmers och GU. Kursen presenterar klassiska matematiska ämnen
 från ett datavetenskapligt perspektiv: genom att specificera de
 introducerade begreppen, vara uppmärksam på syntax och typer, och

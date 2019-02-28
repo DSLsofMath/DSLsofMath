@@ -50,9 +50,9 @@ Would be good with more recipes = solution strategies.
 
 Patrik: I will try to extract some from the solutions. Some are already in the notes (like the "wishful thinking" principle for implementing |eval|).
 
-Like the idea of weekly hand-ins. 1-2 ex. to solve. Perhaps using a bonus system.
+Like the idea of weekly hand-ins. 1–2 ex. to solve. Perhaps using a bonus system.
 
-DONE: Patrik - check the course plan: too late to change the rules this year.
+DONE: Patrik – check the course plan: too late to change the rules this year.
 
 DONE: Perhaps use a peer-review system already this year: there is now a peer-review system in place using GitHub classroom.
 

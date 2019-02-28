@@ -28,7 +28,7 @@ roughly as follows:
     *   22h Exam construction
     *   19h Exam correction and reporting
     *   12h Oral examination of assignments
-* DSLsofMath: 10% (could be more - the border is not sharp)
+* DSLsofMath: 10% (could be more – the border is not sharp)
     *   28h Ped project
 
 ----------------

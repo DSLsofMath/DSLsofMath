@@ -139,7 +139,7 @@ också tillfälle att ställa frågor om kurserna och kursvalet.
 
 Information inför kursvalet:
 
-Torsdag den 16/11 klockan 13:15-14.00 i KC
+Torsdag den 16/11 klockan 13:15–14.00 i KC
 
 \small
 

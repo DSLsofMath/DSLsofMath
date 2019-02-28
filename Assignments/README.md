@@ -13,4 +13,4 @@ the EDIT building.
 
 ## Oral presentation
 
-2018-02-05: Times to be announced (15 minute slots during 10-12 or 15-17).
+2018-02-05: Times to be announced (15 minute slots during 10–12 or 15–17).

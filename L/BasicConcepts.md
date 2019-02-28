@@ -89,14 +89,14 @@ Then |a_n - L| < ε   ≡  a_n ∈ D L ε
 <    ∀ n ≥ N ε. a_n ∈ D L ε:
 < ≡  ImN a (N ε) ⊆ D L ε
 
-Look - one quantifier eliminated!
+Look – one quantifier eliminated!
 
 < Lim a L = ∃ N ∈ ℝ_{>0} → ℕ. ∀ ε>0. ImN a (N ε) ⊆ D L ε
 
 Example An2.1: alternating 0,1,0,1 does not converge.
   (negating quantifiers)
 
-Example An2.2: The limit is unique - TODO: include the nice calculation in BasicConcepts.lhs
+Example An2.2: The limit is unique – TODO: include the nice calculation in BasicConcepts.lhs
 
 (Perhaps use Limp in some way?)
 
@@ -167,6 +167,6 @@ Useful unicode-related packages (from elpa.gnu.org):
 Week 1: L1+2 Haskell + DSL intro
 Week 2: L3+4 DSL + Basic concepts part 1
 Week 3: Types in Maths + Basic Concepts part 2
-Week 4-5: Poly, PowerSeries, ...
+Week 4–5: Poly, PowerSeries, ...
 Week 6(CeIo): LinAlg (or ProbTheory)
 Week 7: Laplace + review

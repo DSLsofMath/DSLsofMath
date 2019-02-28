@@ -1,6 +1,6 @@
 # Anonymous codes and inofficial exam results
 
-These are inofficial results - only LADOK results are legally binding.
+These are inofficial results – only LADOK results are legally binding.
 The table is sorted by number of points.
 
 Grade point limits:

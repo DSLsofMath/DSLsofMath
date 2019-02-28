@@ -121,9 +121,9 @@ an implementation using the "pairs, ->, Either" translation of
 sentences, we can also find one using the "undefined" introduction and
 elimination rules?  The answer, perhaps surprisingly, is *yes*, as
 long as the functions we write are total.  This result is known as
-*the Curry-Howard isomorphism*.
+*the Curry–Howard isomorphism*.
 
-7.  Can we extend the Curry-Howard isomorphism to formulas with ¬?  In
+7.  Can we extend the Curry–Howard isomorphism to formulas with ¬?  In
 other words, is there a type that we could use to define Not p, which
 would work together with pairs, ->, and Either to give a full
 translation of sentential logic?

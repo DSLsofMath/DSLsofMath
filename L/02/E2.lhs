@@ -157,11 +157,11 @@ introduction and elimination rules?
 The answer, perhaps surprisingly, is \emph{yes}, as long as the
 functions we write are total.
 %
-This result is known as \emph{the Curry-Howard isomorphism}.
+This result is known as \emph{the Curry--Howard isomorphism}.
 
 \end{exercise}
 \begin{exercise}
- Can we extend the Curry-Howard isomorphism to formulas with |¬|?
+ Can we extend the Curry--Howard isomorphism to formulas with |¬|?
 %
   In other words, is there a type that we could use to define |Not p|,
   which would work together with pairs, |->|, and |Either| to give a

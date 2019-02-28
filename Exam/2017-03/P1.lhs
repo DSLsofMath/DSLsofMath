@@ -23,7 +23,7 @@ Line 1: |z : Z|, |f : U -> Z|, |x : X|, |y : Y|, |(x, y) : (X, Y)|,
 
 Line 2: |U : Powerset (X,Y)|, probably |X = Y = ℝ|, |Z = ℝ|
 
-Line 3-4: For fixed |y|, the "quantity" |z| is a function of |x|. Lets
+Line 3–4: For fixed |y|, the "quantity" |z| is a function of |x|. Lets
 name this family of functions |g y x = f (x, y)|.
 
 Line 5: For a fixed |y| the partial derivative of |f| with respect to
@@ -50,7 +50,7 @@ the only "varying variable" here is |h|. If we rewrite to use
 
 < lim : (H -> Z) -> {p | p ∈ ℝ, Limp p H} -> Z
 
-(from the lecture notes Weeks 2-3) we get the expression
+(from the lecture notes Weeks 2–3) we get the expression
 
 < lim (\h -> (f (x + h, y) - f (x, y)) / h) 0
 

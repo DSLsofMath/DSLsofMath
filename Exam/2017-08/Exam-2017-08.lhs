@@ -45,7 +45,7 @@
 \begin{description}
 \item[Contact] Patrik Jansson (x5415)
 \item[Results] Announced within 19 days
-\item[Exam check] Fri. 2017-09-01 in EDIT 5468 at 12.30-12.55
+\item[Exam check] Fri. 2017-09-01 in EDIT 5468 at 12.30–12.55
 \item[Aids] One textbook of your choice (e.g., Adams and Essex, or
   Rudin).  No printouts, no lecture notes, no notebooks, etc.
 \item[Grades] 3: 40p, 4: 60p, 5: 80p, max: 100p

@@ -8,7 +8,7 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170
 
 ## News
 
-* Re-exam in August: 2018-08-28, 14.00-18.00 at "M" (registration closes 2018-08-01)
+* Re-exam in August: 2018-08-28, 14.00–18.00 at "M" (registration closes 2018-08-01)
 * 2018-03-25: (Inofficial) [exam results](Exam/2018-03/anon_results.md)
 * 2018-03-13: Added [exam + solutions](Exam/2018-03/)
 * 2018-02-06: [Peer review of exercises using GitHub classroom](https://github.com/DSLsofMath/DSLM-peer-review)
@@ -58,17 +58,17 @@ The main references are listed below.
 
 ## Course setup
 
-* Lectures (Tue. 13-15 and Thu 13-15 in EB. [[TimeEdit]](https://se.timeedit.net/web/chalmers/db1/public/ri157375X39Z06Q5Z46g0Y30y5096Y35Q01gQY5Q55767.html))
+* Lectures (Tue. 13–15 and Thu 13–15 in EB. [[TimeEdit]](https://se.timeedit.net/web/chalmers/db1/public/ri157375X39Z06Q5Z46g0Y30y5096Y35Q01gQY5Q55767.html))
     * Introduction: Haskell, complex numbers, syntax, semantics, evaluation, approximation
     * Basic concepts of analysis: sequences, limits, convergence, ...
-    * Types and mathematics: logic, quantifiers, proofs and programs, Curry-Howard, ...
+    * Types and mathematics: logic, quantifiers, proofs and programs, Curry–Howard, ...
         * Type classes, derivatives, differentiation, calculational proofs
     * Domain Specific Languages and algebraic structures, algebras, homomorphisms
     * Polynomials, series, power series
     * Power series and differential equations, exp, sin, log, Taylor series, ...
     * Linear algebra: vectors, matrices, functions, bases, dynamical systems as matrices and graphs
     * Laplace transform: exp, powers series cont., solving PDEs with Laplace
-* Weekly exercise sessions (Tue 15-17 and Thu 15-17 in ES52)
+* Weekly exercise sessions (Tue 15–17 and Thu 15–17 in ES52)
     * Half time helping students solve problems in small groups
     * Half time joint problem solving at the whiteboard
 * Schedule exceptions:
@@ -116,8 +116,8 @@ L/: [L/01/](L/01), [L/02/](L/02/), etc.
 
 ## Exercises
 
-Chapter 1-8 of the Lecture Notes end with weekly exercises for weeks
-1-8.
+Chapter 1–8 of the Lecture Notes end with weekly exercises for weeks
+1–8.
 
 In [L/RecEx.md](L/RecEx.md) you will find a list of recommended exercises
 for each chapter of the lecture notes.

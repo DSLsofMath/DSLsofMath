@@ -4,7 +4,7 @@
 
 * Patrik Jansson: forskare och lärare inom Funktionell Programmering
     * examinator och kursansvarig för kursen DSLsofMath
-    * XPA för D (2011-13), nu "inspektor" för D-sektionen
+    * XPA för D (2011–13), nu "inspektor" för D-sektionen
 * Gästföreläsare: Cezar Ionescu, docent i Data Science i Oxford.
     * gav kursen första gången 2016
 * Vi tror på er förmåga att själva kombinera kurser till en bra helhet
@@ -138,7 +138,7 @@ Exempel:
 * polynom och potensserier:
     * Syntax/representation: ändliga och oändliga listor av koefficienter
     * Semantik: funktioner (flera semantiker att välja på för samma syntax)
-    * [Power series - power serious!](http://www.cs.dartmouth.edu/~doug/powser.html)
+    * [Power series – power serious!](http://www.cs.dartmouth.edu/~doug/powser.html)
 * komplexa tal (och transformer)
     * Algebraiskt: En "imaginär enhetet" i och några lagar (i*i == -1, etc)
     * Geometrisk: rotation och skalning av punkter i planet
