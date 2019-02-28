@@ -30,7 +30,7 @@ This repository is mainly the home of the DSLsofMath "book" (lecture notes).
 [Lecture notes](L/snapshots/) + references therein cover the course but there is no
 printed course textbook.
 
-Comments and contributions are always welcome - especially in the form
+Comments and contributions are always welcome – especially in the form
 of pull requests.
 
 The main references are listed below.

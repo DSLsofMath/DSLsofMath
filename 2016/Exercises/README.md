@@ -7,6 +7,6 @@ Keep Exercises-2016-02-04.lhs (for BasicConcepts)
 Keep: 10–11: simplify expressions
 
 Important: 2016-02-17
-Important: 2016-02-18  - typical exam exercise
+Important: 2016-02-18  – typical exam exercise
 
 Good: Exercises-2016-02-24--25.md

@@ -28,7 +28,7 @@ matematikstudenter.
 
 Under hela läsperioden alternerar kursen mellan föreläsningar och
 övningar + grupparbete.  Vi trycker på att matematik (och antagligen i
-princip alla ämnen) kräver aktiva studier - det räcker inte att bara
+princip alla ämnen) kräver aktiva studier – det räcker inte att bara
 "läsa (eller lyssna) och hålla med" utan varje student måste aktivt
 arbeta med materialet för att tränga in i det ordentligt. Vi vill
 betona att ni som TM-studenter är mycket väl rustade för att lära er

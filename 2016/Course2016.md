@@ -33,7 +33,7 @@ News
 2016-03-14: A few general [remarks](Exam/2016-Practice/MockE.hs) on the exam have
 been added (along with the solutions to the practice exam).
 
-2016-03-09: Update on a question posed today - a mathematics handbook
+2016-03-09: Update on a question posed today – a mathematics handbook
 would be acceptable as the textbook you bring to the exam.
 
 2016-03-09: Thank you all for the session today. We covered the two

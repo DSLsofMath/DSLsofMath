@@ -3,7 +3,7 @@ Student questions:
 1. I first defined a type for Ring-expressions as below. Does it
    matter if you include Const or if you skip it and instead have
    variable (with assignments)? I think it is the "designer's choice"
-   and that it doesn't match in practise - is that correct?
+   and that it doesn't match in practise – is that correct?
 
 ```haskell
 data Expr a  = Variable String

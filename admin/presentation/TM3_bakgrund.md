@@ -4,7 +4,7 @@ TM1,1, TMA970, Inledande matematisk analys,        6hp
 TM1,2, FFM516, Mekanik 1,                          7.5hp
 TM1,2, TIN212, Programmeringsteknik,               6hp
 TM1,2, MVE235, Matematisk orientering,             3hp
-TM1,2, TMA976, Matematisk analys - fortsättning,   6hp
+TM1,2, TMA976, Matematisk analys – fortsättning,   6hp
 TM1,3, FKA150, Inledande teknisk kommunikation,    1.5hp
 TM1,3, MVE035, Flervariabelanalys,                 6hp
 TM1,4, MVE300, Sannolikhet, statistik och risk,    7.5hp

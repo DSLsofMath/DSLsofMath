@@ -48,9 +48,9 @@ The "source code" for the lecture notes are in subdirectories of
 L/: [L/01/](L/01), [L/02/](L/02/), etc.
 
 I post a PDF snapshot at least once a week
-in [L/snapshots/](L/snapshots/) - just pick the most recent one.
+in [L/snapshots/](L/snapshots/) – just pick the most recent one.
 
-Updates from 2016 are ongoing work - the full collection of 2016
+Updates from 2016 are ongoing work – the full collection of 2016
 lectures are linked from the [2016 homepage](2016/Course2016.md).
 
 ## Exercises

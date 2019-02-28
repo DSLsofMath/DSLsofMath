@@ -138,7 +138,7 @@ Exempel:
 * polynom och potensserier:
     * Syntax/representation: ändliga och oändliga listor av koefficienter
     * Semantik: funktioner (flera semantiker att välja på för samma syntax)
-    * [Power series - power serious!](http://www.cs.dartmouth.edu/~doug/powser.html)
+    * [Power series – power serious!](http://www.cs.dartmouth.edu/~doug/powser.html)
 * komplexa tal (och transformer)
     * Algebraiskt: En "imaginär enhetet" i och några lagar (i*i == -1, etc)
     * Geometrisk: rotation och skalning av punkter i planet

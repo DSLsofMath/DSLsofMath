@@ -89,14 +89,14 @@ Then |a_n - L| < ε   ≡  a_n ∈ D L ε
 <    ∀ n ≥ N ε. a_n ∈ D L ε:
 < ≡  ImN a (N ε) ⊆ D L ε
 
-Look - one quantifier eliminated!
+Look – one quantifier eliminated!
 
 < Lim a L = ∃ N ∈ ℝ_{>0} → ℕ. ∀ ε>0. ImN a (N ε) ⊆ D L ε
 
 Example An2.1: alternating 0,1,0,1 does not converge.
   (negating quantifiers)
 
-Example An2.2: The limit is unique - TODO: include the nice calculation in BasicConcepts.lhs
+Example An2.2: The limit is unique – TODO: include the nice calculation in BasicConcepts.lhs
 
 (Perhaps use Limp in some way?)
 

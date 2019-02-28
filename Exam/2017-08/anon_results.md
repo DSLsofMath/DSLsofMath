@@ -1,6 +1,6 @@
 # Anonymous codes and inofficial exam results
 
-These are inofficial results - only LADOK results are legally binding.
+These are inofficial results – only LADOK results are legally binding.
 The table is sorted by number of points.
 
 | Code      | P1 | P2 | P3 | P4 | Sum | Grade |
