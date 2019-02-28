@@ -1,6 +1,6 @@
 # Domain-Specific Languages of Mathematics
 
-[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related to the a BSc course at Chalmers and GU.
+[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related to a BSc course at Chalmers and GU.
 
 The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/3788)
 
@@ -112,19 +112,19 @@ $ tar -xzf DSLsofMath-x.x.x.x.tar.gz
 ```
 
 Now go into the extracted folder `DSLsofMath-x.x.x.x/` and run `stack init`. You can now interact with
-the code from the lectures by typing `stack ghci`, which puts you in ghci with all
-DSLs loaded. You can also place your own haskell files inside this folder and import the DSLs you
+the code from the lectures by typing `stack ghci`, which puts you in GHCi with all
+DSLs loaded. You can also place your own Haskell files inside this folder and import the DSLs you
 want by typing the following at the start of your file:
 
 ```haskell
 import DSLsofMath.W0X
 ```
 where X is the chapter that contains the code you want to use. You should be
-able to load your own haskell files in normal ghci.
+able to load your own Haskell files in normal GHCi.
 
-### Installing stack on the Chalmers linux machines
+### Installing stack on the Chalmers Linux machines
 
-On the linux remote machines you have a number of options to get stack to work.
+On the Linux remote machines you have a number of options to get stack to work.
 Regardless of how you do it the goal is to have a local stack executable in the directory `~/.local/bin`.
 One way to do this is to follow these steps:
 * Run `stack upgrade`, optionally download the right executable from the stack website.
@@ -150,10 +150,10 @@ Some important references:
   University Press, 2014
   [URL](http://www.cs.ox.ac.uk/publications/books/functional/)
 - **Introduction to Functional Programming Using Haskell**, Richard
-  Bird, Prentice-Hall, 1998.  A previous (but *very* different)
+  Bird, Prentice Hall, 1998.  A previous (but *very* different)
   version of the above.
 - **An Introduction to Functional Programming**, Richard Bird and Phil
-  Wadler, Prentice-Hall, 1988. A previous (but *very* different)
+  Wadler, Prentice Hall, 1988. A previous (but *very* different)
   version of *both* of the above.
 
 ### DSLs
