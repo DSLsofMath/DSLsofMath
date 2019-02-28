@@ -38,7 +38,7 @@ Today we continue working on logic and proofs:
 * Case study: sqrt 2 is not rational [proof by contradiction]
 * Case study: p^q can be rational even when neither p nor q is
 * Case study: the limit of a function [from maths text to types and logic]
-* More Curry-Howard: |Either a b| is |Or a b|, |(a,b)| is |And a b|
+* More Curry–Howard: |Either a b| is |Or a b|, |(a,b)| is |And a b|
     * the tupling transform as example
 * typed quantification
 * pushing negation through other constructors

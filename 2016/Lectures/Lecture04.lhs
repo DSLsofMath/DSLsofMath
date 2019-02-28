@@ -1,7 +1,7 @@
 Lecture 4: Proofs and Programs in Mathematics
 =============================================
 
-1. Curry-Howard isomorphism for quantifiers
+1. Curry–Howard isomorphism for quantifiers
 -------------------------------------------
 
 In the last [exercises](Exercises/Exercises-2016-01-27--28.lhs) we
@@ -75,7 +75,7 @@ that P c holds".
 
 The types (c : Term) -> P c and (c : Term, P c) are *dependent types*,
 and cannot be implemented in Haskell.  Nevertheless, they are the
-types for which the Curry-Howard isomorphism works, and understanding
+types for which the Curry–Howard isomorphism works, and understanding
 ∀ and ∃ as dependently-typed functions and dependent pairs,
 respectively, can be of great help in proofs, as we will see.
 
