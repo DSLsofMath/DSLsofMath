@@ -6,9 +6,9 @@ chapters:
 	pdftk DSLsofMath_all.pdf cat  71-88  output DSLsofMath_Chapter_4.pdf
 	pdftk DSLsofMath_all.pdf cat  89-102 output DSLsofMath_Chapter_5.pdf
 	pdftk DSLsofMath_all.pdf cat 103-118 output DSLsofMath_Chapter_6.pdf
-	pdftk DSLsofMath_all.pdf cat 119-134 output DSLsofMath_Chapter_7.pdf
-	pdftk DSLsofMath_all.pdf cat 135-144 output DSLsofMath_Chapter_8.pdf
-	pdftk DSLsofMath_all.pdf cat 145-146 output DSLsofMath_Chapter_9.pdf
+	pdftk DSLsofMath_all.pdf cat 119-136 output DSLsofMath_Chapter_7.pdf
+	pdftk DSLsofMath_all.pdf cat 137-146 output DSLsofMath_Chapter_8.pdf
+	pdftk DSLsofMath_all.pdf cat 147-148 output DSLsofMath_Chapter_9.pdf
 	echo "Now rename and check in if the change is big enough for a new snapshot"
 
 txt: $(subst .pdf,.txt,*.pdf)

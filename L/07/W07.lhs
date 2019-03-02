@@ -1,3 +1,64 @@
+\section{Matrix algebra and linear transformations}
+\label{sec:LinAlg}
+
+Often, especially in engineering textbooks, one encounters the
+definition: a vector is an \(n+1\)-tuple of real or complex numbers,
+arranged as a column:
+%
+\[v = \colvec{v}\]
+%
+Other times, this is supplemented by the definition of a row vector:
+%
+\[v = \rowvec{v}\]
+%
+The |vi|s are real or complex numbers, or, more generally, elements of
+a \emph{field} (analogous to being an instance of |Fractional|).
+%
+Vectors can be added point-wise and multiplied with scalars, i.e.,
+elements of the field:
+%
+\[v + w = \colvec{v} + \colvec{w} = \colvecc{v_0 + w_0}{v_n + w_n}\]
+%
+\[s * v = \colvecc{s*v_0}{s*v_n}\]
+%**TODO: use a different symbol for scaling than field multiplication
+The scalar |s| scales all the components of |v|.
+
+But, as you might have guessed, the layout of the components on paper
+(in a column or row) is not the most important feature of a vector.
+%
+In fact, the most important feature of vectors is that they can be
+\emph{uniquely} expressed as a simple sort of combination of other
+vectors:
+%
+\[v = \colvec{v} = v_0 * \colveccc{1 \\ 0 \\ \vdots \\ 0} +
+                   v_1 * \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
+                   v_n * \colveccc{0 \\ 0 \\ \vdots \\ 1}
+\]
+%
+We denote by
+%
+\[e_k = \colveccc{0\\\vdots\\0\\1 \makebox[0pt][l]{\qquad $\leftarrow$ position $k$} \\0\\\vdots\\0}\]
+%
+the vector that is everywhere |0| except at position |k|, where it is
+|1|, so that |v = v0 * e0 + ... + vn * en|.
+
+We could represent a vector |v| in terms of any set of \emph{basis}
+vectors |{b0, ..., bn}| which are \emph{linearly independent}:
+%
+\begin{spec}
+  (v0 * b0 + ... + vn * bn = 0) <=> (v0 = ... = vn = 0)
+\end{spec}
+%
+The specification warrants that any vector has a unique representation
+and it is easy to see that |{e0, ..., en}| fulfils the specification.
+
+The algebraic structure that captures a set of vectors, with zero,
+addition, and scaling is called a \emph{vector space}.
+%
+For every field |S| of scalars and every set |G| of indices, the set
+|Vector S G = G -> S| can be given a vector space structure.
+
+%*TODO: Perhaps cut this "noisy" intro
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE UndecidableInstances #-}
@@ -7,74 +68,26 @@ import DSLsofMath.FunNumInst
 type REAL = Double
 \end{code}
 
-\section{Matrix algebra and linear transformations}
-\label{sec:LinAlg}
-
-Often, especially in engineering textbooks, one encounters the
-definition: a vector is an \(n+1\)-tuple of real or complex numbers,
-arranged as a column:
-
-\[v = \colvec{v}\]
-
-Other times, this is supplemented by the definition of a row vector:
-
-\[v = \rowvec{v}\]
-
-The |vi|s are real or complex numbers, or, more generally, elements of
-a \emph{field} (analogous to being an instance of |Fractional|).
-%
-Vectors can be added point-wise and multiplied with scalars, i.e.,
-elements of the field:
-
-\[v + w = \colvec{v} + \colvec{w} = \colvecc{v_0 + w_0}{v_n + w_n}\]
-
-\[s * v = \colvecc{s*v_0}{s*v_n}\]
-
-The scalar |s| scales all the components of |v|.
-
-But, as you might have guessed, the layout of the components on paper
-(in a column or row) is not the most important feature of a vector.
-%
-In fact, the most important feature of vectors is that they can be
-\emph{uniquely} expressed as a simple sort of combination of other
-vectors:
-
-\[v = \colvec{v} = v_0 * \colveccc{1 \\ 0 \\ \vdots \\ 0} +
-                   v_1 * \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
-                   v_n * \colveccc{0 \\ 0 \\ \vdots \\ 1}
-\]
-
-We denote by
-
-\[e_k = \colveccc{0\\0\\\vdots\\0\\1 \makebox[0pt][l]{\qquad $\leftarrow$ position $k$} \\0\\\vdots\\0}\]
-
-the vector that is everywhere |0| except at position |k|, where it is
-|1|, so that
-
-\begin{spec}
-v = v0 * e0 + ... + vn * en
-\end{spec}
-
-The algebraic structure that captures a set of vectors, with zero,
-addition, and scaling is called a \emph{vector space}.
-%
-For every field |S| of scalars and every set |G| of indices, the set
-|Vector G = G -> S| can be given a vector space structure.
+\subsection{Vectors as functions}
 
 There is a temptation to model vectors by lists or tuples, but a more
 general (and conceptually simpler) way is to view them as
 \emph{functions} from a set of indices |G|:
 %
-\begin{spec}
-type S           =   ... -- the scalars, forming a field (|REAL|, or |Complex|, or |Zn|, etc.)
-type Vector s g  =   g -> s
-\end{spec}
+\begin{code}
+newtype Vector s g    = V (g -> s) deriving Num
+\end{code}
+%**TODO Check and perhaps remove "deriving Num"
+
+As discussed, the |S| parameter in |Vector S| has to be a field (|REAL|,
+or |Complex|, or |Zn|, etc.) for values of type |Vector S G| to
+represent elements of a vector space.
+
 Usually, |G| is finite, i.e., |Bounded| and |Enumerable| and in the
 examples so far we have used indices from \(G = \{0, \ldots, n\}\).
 %
-We sometime use |card G| to denote the \emph{cardinality} of the set
+We sometimes use |card G| to denote the \emph{cardinality} of the set
 |G|, the number of elements (\(n+1\) in this case).
-
 
 We know from the previous lectures that if |S| is an instance of
 |Num|, |Fractional|, etc. then so is |G -> S|, with the pointwise
@@ -85,7 +98,7 @@ embedding of constants, give us exactly the structure needed for the
 vector operations.
 %
 For example
-
+%
 \begin{spec}
     s * v                      =  {- |s| is promoted to a function -}
 
@@ -96,78 +109,78 @@ For example
     \ g -> s * v g
 \end{spec}
 
-The basis vectors are then
-
+The canonical basis vectors are then
+%
 \begin{spec}
-e i  :  G -> S,    e i g = i `is` g
+    e i  :  G -> S,    e i g = i `is` g
+\end{spec}
+%
+and every
+%
+\begin{spec}
+    v : G -> S
+\end{spec}
+%
+is trivially a linear combination of vectors |e i|:
+%
+\begin{spec}
+    v =  v 0 * e 0 + ... + v n * e n
 \end{spec}
 
 Implementation:
-
+%
 \begin{code}
-is :: Num s => Int -> Int -> s
+is :: (Eq g, Num s) => g -> g -> s
 is a b = if a == b then 1 else 0
 
-e :: Num s => G -> Vector s G
-e (G g) = V (\ (G g')  ->   g `is` g')
+e :: (Eq g, Num s) => g -> Vector s g
+e g = V (is g)
 \end{code}
-
-and every
-
-\begin{spec}
-v : G -> S
-\end{spec}
-
-is trivially a linear combination of vectors |e i|:
-
-\begin{spec}
-v =  v 0 * e 0 + ... + v n * e n
-\end{spec}
-
-
-
+%
+In linear algebra textbooks, the function |is| is often referred to as
+the Kronecker-delta function and |is i j| is written $\delta_{i,j}$.
 \subsection{Functions on vectors}
 
 As we have seen in earlier chapters, morphisms between structures are often important.
 %
-Vector spaces are no different: if we have two vector spaces |Vector
-G| and |Vector G'| (for the same set of scalars |S|) we can study
-functions |f : Vector G -> Vector G'|:
-
+Vector spaces are no different: if we have two vector spaces |Vector S
+G| and |Vector S G'| for the same set of scalars |S|, we can study
+functions |f : Vector S G -> Vector S G'|:
+%
 \begin{spec}
 f v  =  f (v 0 * e 0 + ... + v n * e n)
 \end{spec}
-
+%
 For |f| to be a ``good'' function it should translate the operations
-in |Vector G| into operations in |Vector G'|, i.e., should be a
+in |Vector S G| into operations in |Vector S G'|, i.e., should be a
 homomorphism:
-
+%
 \begin{spec}
 f v =  f (v 0 * e 0 + ... + v n * e n) = v 0 * f (e 0) + ... + v n * f (e n)
 \end{spec}
-
+%
 But this means that we can determine the values of
 %
-|f : (G -> S) -> (G' -> S)|
+|f : Vector S G -> Vector S G'|
 %
 from just the values of
 %
-|f . e : G -> (G' -> S)|,
+|f . e : G -> Vector S G'|,
 %
 a much ``smaller'' function.
 %
 Let |m = f . e|.
 %
 Then
-
+%
 \begin{spec}
 f v =  v 0 * m 0 + ... + v n * m n
 \end{spec}
-
-Each of |m k| is a |Vector G'|, as is the resulting |f v|.
+%
+Each of |m k| is a |Vector S G'|, as is the resulting |f v|.
 %
 We have
-
+%
 \begin{spec}
   f v g'                                             = {- as above -}
 
@@ -179,49 +192,75 @@ We have
 \end{spec}
 
 Implementation:
-
+%
 This is almost the standard vector-matrix multiplication:
-
+%
 \begin{spec}
-M = [m 0 | ... | m n]
+M = [m 0 | ... | m n]     -- where |m : G -> Vector S G'|
 \end{spec}
-
+%
 The columns of |M| are the images of the canonical base vectors |e i|
 through |f| (or, in other words, the columns of |M| are |f (e i)|).
 %
-Every |m k| has |card G'| rows, and it has become standard to use |M i
-j| to mean the |i|th element of the |j|th column, i.e., |m j i|, so
-that
-
+Every |m k| has |card G'| elements, and it has become standard
+to use |M i j| to mean the |i|th element of the |j|th column, i.e., |M i
+j = m j i|, so that, with the usual matrix-vector multiplication
+%
 \begin{spec}
-  (M * v) i                                   = -- as above
-  sum [M i j * v j | j <- [0 .. n]]           = -- rewrite list comprehension using |map|
-  sum (map (\j -> M i j  *  v j) [0 .. n])    = -- use |(*)| from the function instance for |Num|
-  sum (map (M i * v) [0 .. n])
+  (M * v) i = sum [M i j * v j | j <- [0 .. n]]
 \end{spec}
-We can implement this matrix-vector multiplication as |mulMV|:
+%
+one has
+%
+\begin{spec}
+  (M * v) i                                   = -- by def. of matrix-vector multiplication
+  sum [M i j * v j | j <- [0 .. n]]           = -- by def. of M i j
+  sum [m j i * v j | j <- [0 .. n]]           = -- by |f v g' = sum [m j g' * v j || j <- [0 .. n]]| with |g' = i|
+  f v i
+\end{spec}
+%
+If we take |Matrix| to be just a synonym for functions of type |G -> Vector S G'|:
+%
 \begin{code}
-mulMV ::  (Finite g, Num s) =>
-          Matrix s g g'  ->  Vector s g     ->  Vector s g'
-mulMV m v  = V $ \g' -> sumV (m g' * v)
 type Matrix s g g' = g' -> Vector s g
+\end{code}
+%
+we can implement matrix-vector multiplication as:
+%
+\begin{code}
+mulMV ::  (Finite g, Num s) => Matrix s g g'  ->  Vector s g  ->  Vector s g'
+mulMV m v  = V (\g' -> sumV (m g' * v))
+
 sumV :: (Finite g, Num s) => Vector s g -> s
 sumV (V v) = sum (map v finiteDomain)
 \end{code}
 %
-Note that in the terminology of the earlier chapter we can see |Matrix s
-g g'| as a type of syntax and the linear transformation (of type
-|Vector s g -> Vector s g'|) as semantics.
+As already mentioned, here |Finite| means |Bounded| and |Enumerable|:
+%
+\begin{code}
+class (Bounded g, Enum g, Eq g) => Finite g  where
+\end{code}
+
+%*TODO:
+% I think we might end up with a mixture of definitions given in terms of
+% |sum map| and definitions given in terms of list comprehension, at the
+% end we should perhaps clean up and stick to one notation. At the
+% specification/conceptual level we should perhaps stick to the usual
+% $\sum$ notation.
+
+Note that in the terminology of the earlier chapter we can see |Matrix
+s g g'| as a type of syntax and the linear transformation (of type
+|Vector S G -> Vector S G'|) as semantics.
 %
 With this view, |mulMV| is just another |eval :: Syntax -> Semantics|.
 %
 
 Example:
-
+%
 \begin{spec}
 (M * e k) i = sum [M i j * e k j | j <- [0 .. n]] = sum [M i k] = M i k
 \end{spec}
-
+%
 i.e., |e k| extracts the |k|th column from |M| (hence the notation
 ``e'' for ``extract'').
 
@@ -230,11 +269,11 @@ of scalars, |M|.
 %
 Similarly, in the opposite direction, given an arbitrary matrix |M|,
 we can define
-
+%
 \begin{spec}
 f v = M * v
 \end{spec}
-
+%
 and obtain a linear transformation |f = (M*)|.
 %
 Moreover |((M*) . e) g g' = M g' g|, i.e., the matrix constructed as
@@ -244,15 +283,15 @@ Exercise~\ref{exc:Mstarcompose}: compute |((M*) . e ) g g'|.
 
 Therefore, every linear transformation is of the form |(M*)| and every
 |(M*)| is a linear transformation.
-
+%
 Matrix-matrix multiplication is defined in order to ensure that
-
+%
 \begin{spec}
 (M' * M) * v = M' * (M * v)
 \end{spec}
-
+%
 that is
-
+%
 \begin{spec}
 ((M' * M)*) = (M' *) . (M *)
 \end{spec}
@@ -270,45 +309,46 @@ they are often identified with |S|.
 %
 But, for any |v : G -> S|, we have a function |fv : G -> (() -> S)|,
 namely
-
+%
 \begin{spec}
 fv g () = v g
 \end{spec}
-
+%
 |fv| is similar to our |m| function above.
 %
 The associated matrix is
-
+%
 \begin{spec}
 M = [m 0 | ... | m n] = [fv 0 | ... | fv n]
 \end{spec}
-
+%
 having |n+1| columns (the dimension of |Vector G|) and one row
 (dimension of |Vector ()|).
 %
-Let |w :: Vector s G|:
-
+Let |w :: Vector S G|:
+%
 \begin{spec}
 M * w = w 0 * fv 0 + ... + w n * fv n
 \end{spec}
-
+%
 |M * v| and each of the |fv k| are ``almost scalars'': functions of
 type |() -> S|, thus, the only component of |M * w| is
-
+%
 \begin{spec}
 (M * w) () = w 0 * fv 0 () + ... + w n * fv n () = w 0 * v 0 + ... + w n * v n
 \end{spec}
-
+%
 i.e., the scalar product of the vectors |v| and |w|.
 
-
-\textbf{Remark:} I have not discussed the geometrical point of view.
+\textbf{Remark:} We have not discussed the geometrical point of view.
 %
 For the connection between matrices, linear transformations, and
 geometry, I warmly recommend binge-watching the ``Essence of linear
 algebra'' videos on youtube (start here:
 \url{https://www.youtube.com/watch?v=kjBOesZCoqc}).
 
+%*TODO: Perhaps it would be interesting to show that linear transformations
+% can also be interpreted as changes of basis.
 
 \subsection{Examples of matrix algebra}
 
@@ -337,7 +377,6 @@ e i : {0, ..., n} -> Real, e i j = i `is` j
 \end{spec}
 %
 but how do we interpret them as polynomial functions?
-%
 
 When we represented a polynomial by its list of coefficients, we saw
 that the polynomial function |\x -> x^3| could be represented as
@@ -360,53 +399,58 @@ For example, |p x = 2+x^3| is represented by |2 * e 0 + e 3|.
 In general, the evaluator from the vector representation to polynomial
 functions is as follows:
 %
-\begin{code}
-evalM :: G -> (REAL -> REAL)
-evalM (G i) = \x -> x^i
-
-evalP :: Vector REAL G -> (REAL -> REAL)
-evalP (V v) x = sum (map (\i -> v i * evalM i x) finiteDomain)
-\end{code}
-
+% \begin{code}
+% evalM :: G -> (REAL -> REAL)
+% evalM (G i) = \x -> x^i
+%
+% evalP :: Vector REAL G -> (REAL -> REAL)
+% evalP (V v) x = sum (map (\i -> v i * evalM i x) finiteDomain)
+% \end{code}
+%
+\begin{spec}
+evalP :: Vector REAL {0, ..., n} -> (REAL -> REAL)
+evalP (V v) x = sum (map (\ i -> v i * x^i) [0..n])
+\end{spec}
+%
 The |derive| function takes polynomials of degree |n+1| to polynomials
 of degree |n|, and since |D (f + g) = D f + D g| and |D (s * f) = s *
 D f|, we expect it to be a linear transformation.
 %
 What is its associated matrix?
 
-
 The associated matrix will be
-
-\begin{spec}
-M = [ D (e 0), D (e 1), ..., D (e n) ]
-\end{spec}
-
-where each |D (e i)| has length |n|.
 %
-Vector |e (i+1)| represents |\x->x^(i+1)|, therefore
-
 \begin{spec}
-eval (D (e (i+1)))  =  {- |eval| is a homomorphism. Note that the |D| has another type. -}
-D (eval (e (i+1)))  =  {- Def. of |eval| -}
-D (powTo (i+1))     =  {- Def. of |D| for polynomial functions -}
-\x -> (i+1) * x^i   =  {- Def. of |eval| for the base vectors -}
-eval ((i+1)*e i)
+M = [ derive (e 0), derive (e 1), ..., derive (e n) ]
 \end{spec}
-
-i.e.
-
+%
+where each |derive (e i)| has length |n|.
+%
+The vector |e (i + 1)| represents |\x -> x^(i + 1)| and thus we
+want |derive (e (i + 1))| to represent the derivative of |\x -> x^(i + 1)|:
+%
 \begin{spec}
-D (e (i+1)) j  =  if i == j then i+1 else 0
+evalP (derive (e (i + 1)))  =  {- by spec. -}
+D (evalP (e (i + 1)))       =  {- by def. of |e|, |evalP| -}
+D (\x -> x^(i + 1))         =  {- properties of |D| from lecture 3 -}
+\x -> (i + 1) * x^i
 \end{spec}
-
-and
-
+%
+Thus
+%
 \begin{spec}
-D (e 0) = 0
+derive (e (i + 1)) = (i + 1) * (e i)
+\end{spec}
+%
+Also, the derivative of |evalP (e 0) = \x -> 1| is |\x -> 0| and thus
+|derive (e 0)| is the zero vector:
+%
+\begin{spec}
+derive (e 0) = 0
 \end{spec}
 
 Example: |n+1 = 3|:
-
+%
 \begin{displaymath}
 M =
   \begin{bmatrix}
@@ -420,34 +464,35 @@ Take the polynomial
 \begin{spec}
 1 + 2 * x + 3 * x^2
 \end{spec}
-
+%
 as a vector
-
+%
 \[
  v = \colveccc{1\\2\\3}
 \]
-
+%
 and we have
-
+%
 \[
    M  * v  = \rowveccc{\colveccc{0\\0} & \colveccc{1\\0} & \colveccc{0\\2}}  * \colveccc{1\\2\\3} = \colveccc{2\\6}
 \]
 % TODO: Perhaps explain this "row of columns" view of a matrix in contrast with the "column of rows" view.
 % TODO: Perhaps also (or instead) just make the matrix be a two-dimensional grid of scalars.
-
+%
 representing the polynomial |2 + 6*x|.
 
-Exercise~\ref{exc:Dmatrixpowerseries}: write the (infinite-dimensional) matrix representing |D| for
-power series.
+Exercise~\ref{exc:Dmatrixpowerseries}: write the
+(infinite-dimensional) matrix representing |D| for power series.
 
-Exercise~\ref{exc:matrixIntegPoly}: write the matrix associated with integration of polynomials.
+Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated with
+integration of polynomials.
 
 \subsubsection{Simple deterministic systems (transition systems)}
 
 Simple deterministic systems are given by endo-functions%
 \footnote{An \emph{endo-function} is a function from a set |X| to
   itself: |f : X -> X|.}%
-on a finite set |f : G -> G|.
+on a finite set |next : G -> G|.
 %
 They can often be conveniently represented as a graph, for example
 
@@ -471,10 +516,10 @@ Here, |G = {0, ..., 6}|.
 %
 A node in the graph represents a state.
 %
-A transition |i -> j| means |f i = j|.
+A transition |i -> j| means |next i = j|.
 %
-Since |f| is an endo-function, every node must be the source of
-exactly one arrow.
+Since |next| is an endo-function, every node must
+be the source of exactly one arrow.
 
 We can take as vectors the characteristic functions of subsets of |G|,
 i.e., |G -> {0, 1}|.
@@ -483,24 +528,29 @@ i.e., |G -> {0, 1}|.
 (it is not even closed w.r.t. addition), and the standard trick to
 avoid this is to extend the type of the functions to |REAL|.
 
-The canonical basis vectors are, as usual, |e i = \j -> i `is` j|.
-%
+The canonical basis vectors are, as usual,
+|e i = V (is i)|.
 Each |e i| is the characteristic function of a singleton set, |{i}|.
-%
-Thus, the inputs to |f| are canonical vectors.
 
-To make what |f| does more explicit: if |f i == j| the transition from
-state |i| goes to state |j|.
+
+We can interpret |e (next 0), ..., e (next 6)| as the images of the
+basis vectors |e 0, ..., e 6| of |Vector REAL G| under the
+transformation
+%
+\begin{spec}
+f : Vector REAL G -> Vector REAL G
+f (e i) = e (next i)
+\end{spec}
 
 To write the matrix associated to |f|, we have to compute what vector
 is associated to each canonical base vector vector:
-
+%
 \begin{spec}
 M = [ f (e 0), f (e 1), ..., f (e n) ]
 \end{spec}
 
 Therefore:
-
+%
 \[
   M =
   \bordermatrix{
@@ -515,9 +565,13 @@ Therefore:
   }
 \]
 
-Starting with a canonical base vector |e i|, we obtain |M * e i = e (f
-i)|, as we would expect.
+Notice that row 0 and row 2 contain only zero, as one would expect from
+the graph of |next|: no matter where we start from, the system will
+never reach node 0 or node 2.
 
+Starting with a canonical base vector |e i|, we obtain |M * e i = f (e
+i)|, as we would expect.
+%
 The more interesting thing is if we start with something different
 from a basis vector, say |[0, 0, 1, 0, 1, 0, 0] == e 2 + e 4|.
 %
@@ -543,7 +597,7 @@ of a subset?
 %
 In that case, we need to use other operations than the standard
 arithmetical ones, for example |min| and |max|.
-%
+
 The problem is that |({0, 1}, max, min)| is not a field, and neither is
 |(REAL, max, min)|.
 %
@@ -551,8 +605,21 @@ This is not a problem if all we want is to compute the evolutions of
 possible states, but we cannot apply most of the deeper results of
 linear algebra.
 
-In the example above, we have:
+%*TODO: (NiBo)
+% But even if we take |(REAL, max, min)|, the problem is that we
+% have introduced a transformation |f : Vector REAL G -> Vector REAL G| which
+% is more difficult to understand than just |next : G -> G|. Can we take
+% advantage of |f| for formulating and answering questions about |next|?
+% For instance, to understand how to compute the trajectories induced by
+% |next|? Or how to find subsets of |G| such that for all |g : G| there
+% exists |N : Nat| such that for all |n > N|, |next^n g)| is in that
+% subset? Perhaps there is an added value in looking at dynamical systems
+% from the perspective of vector spaces but this is not obvious (to me) at
+% this point.
 
+
+In the example above, we have:
+%
 \begin{code}
 newtype G = G Int deriving (Eq, Show)
 
@@ -569,32 +636,75 @@ instance Num G where
   -- Note that this is just for convenient notation (integer literals),
   -- G should normally not be used with
 \end{code}
-
-The transition function:
-
+%
+The transition function has type |G -> G|:
+%
 \begin{code}
-f1 0 = 1
-f1 1 = 3
-f1 2 = 5
-f1 3 = 6
-f1 4 = 6
-f1 5 = 4
-f1 6 = 5
+next1 :: G -> G
+next1 0 = 1; next1 1 = 3; next1 2 = 5; next1 3 = 6; next1 4 = 6; next1 5 = 4; next1 6 = 5
 \end{code}
-
-The associated matrix:
-
+%
+Its associated matrix is
+%
+\begin{spec}
+m g'
+  = {- |m| is the matrix associated with |f| -}
+V (\ g -> toF (f (e g)) g')
+  = {- by the spec. of |f| -}
+V (\ g -> toF (e (next g)) g')
+  = {- by def. of |e| -}
+V (\ g -> toF (V (is (next g))) g')
+  = {- by def. of |toF| -}
+V (\ g -> is (next g) g')
+\end{spec}
+%
+where
+%
 \begin{code}
-m1 (G g') = V $ \(G g) ->  g'  `is`  f1 g
+toF :: Vector s g -> g -> s
+toF (V v) = v
 \end{code}
-% $
+%
+Thus we can implement |m| as:
+%
+\begin{code}
+m1 :: Num s => G -> Vector s G
+m1 g' = V (\ g -> (next1 g) `is` g')
+\end{code}
 
 Test:
-
+%
 \begin{code}
-t1' = mulMV m1 (e 3 + e 4)
-t1 = toL t1'                  -- |[0,0,0,0,0,0,2]|
+t1'  = mulMV m1 (e 3 + e 4)
+t1   = toL t1'               -- |[0,0,0,0,0,0,2]|
 \end{code}
+
+
+%**TODO (NiBo):
+% This could go to into the file for the live sessions:
+%
+% \begin{code}
+% poss :: (Finite g, Num s) => Int -> Matrix s g g -> Vector s g -> [Vector s g]
+% poss n m v = take (n + 1) (iterate (mulMV m) v)
+% \end{code}
+%
+% *DSLsofMath.W07> |poss 6 m1 (e 3 + e 4)|
+%
+%
+%
+% Perhaps as an exercise to show how the notion of |Vector S| can
+% be applied to seamlessly treat dynamical systems (contrast the
+% implementation of |poss| with those of |poss1|, |poss2| and |poss3| for
+% different dynamical systems):
+% %
+% \begin{code}
+% poss1 :: (Eq a) => Int -> (a -> a) -> [a] -> [[a]]
+% poss1 n next xs = take (n + 1) (iterate (nub . (map next)) xs)
+% \end{code}
+%
+% *DSLsofMath.W07> |poss1 6 next1 [3, 4]|
+%
+
 
 \subsubsection{Non-deterministic systems}
 \label{sec:NonDetSys}
@@ -646,7 +756,7 @@ For example:
   };
 }
 
-Now, starting in |0| we might and up either in |1| or |2| (but not
+Now, starting in |0| we might end up either in |1| or |2| (but not
 both!).
 %
 Starting in |6|, the system breaks down: there is no successor state.
@@ -685,8 +795,9 @@ Can you prove it?
 Implementation:
 
 The transition function has type |G -> (G -> Bool)|:
-
+%
 \begin{code}
+f2 :: G -> (G -> Bool)
 f2 0 g      =   g == 1 || g == 2
 f2 1 g      =   g == 3
 f2 2 g      =   g == 4 || g == 5
@@ -695,19 +806,25 @@ f2 4 g      =   g == 1 || g == 6
 f2 5 g      =   g == 4
 f2 6 g      =   False
 \end{code}
-
+%
 The associated matrix:
-
+%
 \begin{code}
-m2 (G g') = V $ \(G g) -> f2 g g'
+m2 g' = V (\ g -> f2 g g')
 \end{code}
+
+% The original formulation was potentially very confusing: |f2| was
+% claimed to have type |G -> (G -> Bool)|. But the implementation of
+% |m2| was not consistent with this typing. It worked only because |f2|
+% was polymorphic.
+
 
 %
 % TODO (by DaHe): Should probably elaborate on why we needed a field before, and
 % now a Num instance
 %
 We need a |Num| instance for |Bool| (not a field!):
-
+%
 \begin{code}
 instance Num Bool where
   (+)  =  (||)
@@ -720,11 +837,37 @@ instance Num Bool where
 \end{code}
 
 Test:
-
+%
 \begin{code}
 t2' = mulMV m2 (e 3 + e 4)
 t2 = toL t2'  -- |[False,True,False,False,False,False,True]|
 \end{code}
+
+%**TODO (NiBo):
+% This could go to into the file for the live sessions:
+%
+% *DSLsofMath.W07> |poss 6 m2 (e 2 + e 3)|
+%
+% Perhaps as an exercise to show how the notion of |Vector S| can
+% be applied to seamlessly treat dynamical systems (contrast the
+% implementation of |poss| with those of |poss1|, |poss2| and |poss3| for
+% different dynamical systems):
+%
+% \begin{code}
+% next2 :: G -> [G]
+% next2 0 = [1,2]
+% next2 1 = [3]
+% next2 2 = [4,5]
+% next2 3 = [6]
+% next2 4 = [1,6]
+% next2 5 = [4]
+% next2 6 = []
+%
+% poss2 :: (Eq a) => Int -> (a -> [a]) -> [a] -> [[a]]
+% poss2 n next xs = take (n + 1) (iterate (nub . concat . (map next)) xs)
+% \end{code}
+%
+% *DSLsofMath.W07> |poss2 6 next2 [2,3]|
 
 \subsubsection{Stochastic systems}
 \label{sec:StocSys}
@@ -780,19 +923,19 @@ the target is not a field).
 In the case of stochastic systems, the inputs will be
 \emph{probability distributions} over |G|, that is, functions |p : G
 -> [0, 1]| with the property that
-
+%
 \begin{spec}
-sum [p g | g <- [0 .. 6]] = 1
+sum [p g | g <- G] = 1
 \end{spec}
 
 If we know the current probability distributions over states, then we
 can compute the next one by using the \emph{total probability formula},
 normally expressed as
-
+%
 \begin{spec}
-p a = sum [p (a | b) * p b | b <- [0 .. 6]]
+p a = sum [p (a | b) * p b | b <- G]
 \end{spec}
-
+%
 This formula in itself would be worth a lecture.
 %
 For one thing, the notation is extremely suspicious.
@@ -827,7 +970,7 @@ probability distribution \emph{concentrated} in |i|.
 %
 This means that the probability to be in state |i| is 100\% and the
 probability of being anwhere else is |0|.
-
+%
 \[
   M =
   \bordermatrix{
@@ -844,7 +987,7 @@ probability of being anwhere else is |0|.
 
 Exercise~\ref{exc:StocExample1}: starting from state 0, how many steps
 do you need to take before the probability is concentrated in state 6?
-%
+%*TODO: NiBo: There are many ways of reversing the arrow from 2 to 4!
 Reverse again the arrow from 2 to 4.
 %
 What can you say about the long-term behaviour of the system now?
@@ -854,19 +997,86 @@ Exercise~\ref{exc:StocExample1Impl}: Implement the example.
 You will need to define:
 
 The transition function
-
+%
 \begin{code}
-f3 :: G -> (G -> Double)  -- but we want only |G -> (G -> [0, 1])|, the unit interval
-f3 g g' = undefined       -- the probability of getting to |g'| from |g|
+f3 :: G -> Vector REAL G   -- but we want only |G -> Vector [0, 1] G|, the unit interval
+f3 g g' = error "TODO"     -- the probability of getting to |g'| from |g|
 \end{code}
 
 The associated matrix
-
+%
 \begin{code}
-m3 ::  G -> (G -> Double)
-m3 g' g   =  undefined
+m3 ::  G -> Vector REAL G
+m3 g' g = error "TODO"
 \end{code}
 
+%**TODO (NiBo):
+% This could go to into the file for the live sessions:
+
+%if False
+\begin{code}
+-- f3 :: G -> Vector REAL G
+f3 0 = V (\ g -> if g == 1 then 0.4 else if g == 2 then 0.6 else 0.0)
+f3 1 = V (\ g -> if g == 3 then 1.0 else 0.0)
+f3 2 = V (\ g -> if g == 4 then 0.7 else if g == 5 then 0.3 else 0.0)
+f3 3 = V (\ g -> if g == 6 then 1.0 else 0.0)
+f3 4 = V (\ g -> if g == 1 then 0.5 else if g == 6 then 0.5 else 0.0)
+f3 5 = V (\ g -> if g == 4 then 1.0 else 0.0)
+f3 6 = V (\ g -> if g == 6 then 1.0 else 0.0)
+
+f3' :: G -> Vector REAL G
+f3' 0 = V (\ g -> if g == 1 then 0.4 else if g == 2 then 0.6 else 0.0)
+f3' 1 = V (\ g -> if g == 3 then 1.0 else 0.0)
+f3' 2 = V (\ g -> if g == 5 then 1.0 else 0.0)
+f3' 3 = V (\ g -> if g == 6 then 1.0 else 0.0)
+f3' 4 = V (\ g -> if g == 1 then 0.4 else if g == 6 then 0.4 else if g == 2 then 0.2 else 0.0)
+f3' 5 = V (\ g -> if g == 4 then 1.0 else 0.0)
+f3' 6 = V (\ g -> if g == 6 then 1.0 else 0.0)
+
+m3 g' = V (\ g -> toF (f3 g) g')
+\end{code}
+
+*DSLsofMath.W07> |last (poss 6 m3 (e 0))|
+
+%endif
+
+
+% Perhaps as an exercise to show how the notion of |Vector S| can
+% be applied to seamlessly treat dynamical systems (contrast the
+% implementation of |poss| with those of |poss1|, |poss2| and |poss3| for
+% different dynamical systems):
+%
+% \begin{code}
+% next3 :: G -> [(G, REAL)]
+% next3 0 = [(1,0.4), (2,0.6)]
+% next3 1 = [(3,1.0)]
+% next3 2 = [(4,0.7), (5,0.3)]
+% next3 3 = [(6,1.0)]
+% next3 4 = [(1,0.5), (6,0.5)]
+% next3 5 = [(4,1.0)]
+% next3 6 = [(6,1.0)]
+%
+% step :: (Eq a) => (a -> [(a, REAL)]) -> [(a, REAL)] -> [(a, REAL)]
+% step sys aps = concat (map g (map f aps))
+%   where f (a, p) = (sys a, p)
+%         g (aps, p) = map (\ (a', p') -> (a', p' * p)) aps
+% \end{code}
+%
+% What are the types of |f| and |g|?
+%
+% \begin{code}
+% poss3 :: (Eq a) => Int -> (a -> [(a, REAL)]) -> [(a, REAL)] -> [[(a, REAL)]]
+% poss3 n next xps = take (n + 1) (iterate (step next) xps)
+%
+% prob :: (Eq a) => a -> [(a, REAL)] -> REAL
+% prob a [] = 0
+% prob a ((x,p) : xps) = if a == x
+%                        then p + prob a xps
+%                        else     prob a xps
+% \end{code}
+%
+% What does |prob| compute? Evaluate |prob 6 (last (poss3 n next3
+% [(0,1.0)]))| for n = 1, ..., 6. What do you observe?
 
 \subsection{Monadic dynamical systems}
 
@@ -881,7 +1091,7 @@ They work by taking a state (which is one of the generators) and
 return a structure of possible future states of type |G|:
 
 \begin{itemize}
-\item deterministic: there is exactly one possible future states: we
+\item deterministic: there is exactly one possible future state: we
   take an element of |G| and return an element of |G|.
   %
   The transition function has the type |f : G -> G|, the structure of
@@ -901,7 +1111,7 @@ return a structure of possible future states of type |G|:
 \end{itemize}
 
 Therefore:
-
+%
 \begin{itemize}
 \item deterministic: |f : G -> Id G|
 \item non-deterministic: |f : G -> Powerset G|, where |Powerset G = G -> {0, 1}|
@@ -916,9 +1126,9 @@ vectors |e i|.
 %
 Due to the nature of matrix-vector multiplication, what we have done
 was in effect:
-
+%
 \begin{spec}
-    M * v       -- v represents the current possible states
+    M * v       -- |v| represents the current possible states
 
 = {- |v| is a linear combination of the base vectors -}
 
@@ -932,7 +1142,7 @@ was in effect:
 
     v 0 * f 0 + ... + v n * f n
 \end{spec}
-
+%
 So, we apply |f| to every state, as if we were starting from precisely
 that state, obtaining the possible future states starting from that
 state, and then collect all these hypothetical possible future
@@ -941,24 +1151,24 @@ states in some way that takes into account the initial uncertainty
 (the specific |+| and |*|).
 
 If you examine the types of the operations involved
-
+%
 \begin{spec}
 e : G -> Possible G
 \end{spec}
-
+%
 and
-
+%
 \begin{spec}
-    Possible G -> (G -> Possible G) -> Possible G
+    flip (*) : Possible G -> (G -> Possible G) -> Possible G
 \end{spec}
-
+%
 you see that they are very similar to the monadic operations
-
+%
 \begin{spec}
     return  :  g -> m g
     (>>=)   :  m g -> (g -> m g') -> m g'
 \end{spec}
-
+%
 which suggests that the representation of possible future states might
 be monadic.
 %
@@ -971,6 +1181,7 @@ specialising the scalar type |S|)?
 
 Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|.
 
+
 \subsection{The monad of linear algebra}
 
 The answer is yes, up to a point.
@@ -981,48 +1192,139 @@ be defined for every type.
 This will not work, in general.
 %
 Our definition will work for \emph{finite types} only.
-
+%
 \begin{code}
-type S            =  Double
-newtype Vector s g  =  V (g -> s) deriving Num
-toF (V v)           =  v
-
-class     (Bounded a, Enum a, Eq a) => Finite a  where
-instance  (Bounded a, Enum a, Eq a) => Finite a  where
-
 class FinFunc f where
-  func :: (Finite a, Finite b) =>  (a -> b) -> f a -> f b
-
-instance Num s => FinFunc (Vector s) where
-  func = funcV
-
-funcV :: (Finite g, Eq g', Num s) => (g -> g') -> Vector s g -> Vector s g'
-funcV f (V v) =  V (\ g' -> sum [v g | g <- finiteDomain, g' == f g])
+  func :: (Finite a, Finite b) => (a -> b) -> f a -> f b
 
 class FinMon f where
   embed   ::  Finite a => a -> f a
   bind    ::  (Finite a, Finite b) => f a -> (a -> f b) -> f b
-
-instance Num s => FinMon (Vector s) where
-  embed a       =  V (\ a' -> if a == a' then 1 else 0)
-  bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- finiteDomain])
 \end{code}
 
-A better implementation, using associated types, is in file
-|Vector.lhs| in the repository.
+The idea is that vectors on finite types are finite functors and monads:
+%
+\begin{code}
+instance  (Bounded a, Enum a, Eq a) => Finite a  where
+
+instance Num s => FinFunc (Vector s) where
+  func f (V v) = V (\ g' -> sum [v g | g <- finiteDomain, g' == f g])
+
+instance Num s => FinMon (Vector s) where
+  embed g       =  V (is g)
+  bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- finiteDomain])
+\end{code}
+%
+Note that, if |v :: Vector S G| and |f :: G -> Vector S G'| then
+both |func f v| and |bind v f| are of type |Vector S G'|. How do
+these operations relate to LinAlg and matrix-vector multiplication?
+
+Remember that |e g| is that vector whose components are zero except for
+the |g|th one which is one. In other words
+%
+\begin{spec}
+    e g = V (is g) = embed g
+\end{spec}
+%
+and thus |embed = e|. In order to understand how matrix-vector
+multiplication relates to the monadic operations, it is useful to
+introduce the "dot" product between vectors:
+%
+\begin{code}
+dot :: (Num s, Finite g) => Vector s g -> Vector s g -> s
+dot (V v) (V w) = sum [v g * w g | g <- finiteDomain]
+\end{code}
+
+Remember that matrixes are just functions of type |G -> Vector S G'|:
+%
+\begin{spec}
+  type Matrix s g g' = g' -> Vector s g
+\end{spec}
+
+According to our earlier definition, we can rewrite matrix-vector
+multiplication in terms of dot products
+%
+\begin{spec}
+
+  mulMV m (V v)
+
+= {- earlier definition -}
+
+  V (\ g' -> sum [m g' g * v g | g <- finiteDomain])
+
+= {- def. of |dot| -}
+
+  V (\ g' -> dot (m g') (V v))
+
+\end{spec}
+%
+Now, with
+%
+\begin{code}
+toMatrix :: (g -> Vector s g') -> Matrix s g g'
+toMatrix f = \ g' -> V (\ g -> toF (f g) g')
+\end{code}
+%
+we have:
+%
+\begin{spec}
+
+  mulMV (toMatrix f) (V v)
+
+= {- def. of |mulMV| -}
+
+  V (\ g' -> dot ((toMatrix f) g') (V v))
+
+= {- def. of |toMatrix| -}
+
+  V (\ g' -> dot (V (\ g -> toF (f g) g')) (V v))
+
+= {- def. of |dot| -}
+
+  V (\ g' -> sum [toF (f g) g' * v g | g <- finiteDomain])
+
+= {- def. of |bind| -}
+
+  bind (V v) f
+
+\end{spec}
+%
+Thus we see that |bind v f| is "just" a matrix-vector
+multiplication.
+
+Perhaps for extra exercises:
+
+It is worth pointing out the role of |f| in |func f v|.
+%
+We can rewrite the |g'|th component of |func f v| in terms of the dot
+product
+%
+\begin{spec}
+dot v V (\ g -> is g' (f g))
+  =
+dot v (V (is g' . f))
+\end{spec}
+%
+This shows that the role of |f| in |func f v| is that of re-distributing
+the values of |v| onto the new vector.
+
+Exercise: show that if |w = func f v| then the sum of the components of
+|w| is equal to the sum of the components of |v|.
+
+
 
 Exercises:
-
+%
 \begin{enumerate}
 \item Prove that the functor laws hold, i.e.
-
+%
 \begin{spec}
 func id       =  id
 func (g . f)  =  func g . func f
 \end{spec}
 
 \item Prove that the monad laws hold, i.e.
-
+%
 \begin{spec}
 bind v return      =  v
 bind (return g) f  =  f g
@@ -1035,9 +1337,28 @@ bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
   only these) properties.
 \end{enumerate}
 
+% *TODO: Proving that |func| preserves composition and that |bind|
+% associates gets very messy if one directly operates with their
+% definitions.
+% %
+% It is probably simpler to go back to standard linear algebra notation
+% (with indexed |sum|, etc.) which in a sense seems to defeat the purpose
+% of focusing on the syntax.
+
 \subsection{Associated code}
 
-Conversions and |Show| functions so that we can actuall see our vectors.
+\begin{code}
+instance Num a => Num (x -> a) where
+  f + g        =  \x -> f x + g x
+  f - g        =  \x -> f x - g x
+  f * g        =  \x -> f x * g x
+  negate f     =  negate . f
+  abs f        =  abs . f
+  signum f     =  signum . f
+  fromInteger  =  const . fromInteger
+\end{code}
+
+Conversions and |Show| functions so that we can actually see our vectors.
 %
 \begin{code}
 toL :: Finite g => Vector s g -> [s]
@@ -1054,7 +1375,6 @@ showVector (V v) = showFun v
 showFun :: (Finite a, Show b) => (a->b) -> String
 showFun f = show (map f finiteDomain)
 \end{code}
-
 
 TODO: convert to using the |newtype Vector|.
 
@@ -1082,11 +1402,15 @@ Using it we can shorten the definition of |mulMV|
 = -- Def. of |dot|
   dot (m g') v
 \end{spec}
+%
 Thus, we can defined matrix-vector multiplication by
+%
 \begin{spec}
 mulMV m v g' =  dot (m g') v
 \end{spec}
+%
 We can even go one step further:
+%
 \begin{spec}
   mulMV m v
 = -- Def.
@@ -1096,7 +1420,9 @@ We can even go one step further:
 = -- Def. of |(.)|
   dot v . m
 \end{spec}
+%
 to end up at
+%
 \begin{code}
 mulMV' ::  (Finite g, Num s) =>
            Mat s g g' ->  Vec s g  ->  Vec s g'
@@ -1106,6 +1432,7 @@ type Vec s r = r -> s
 \end{code}
 
 Similarly, we can define matrix-matrix multiplication:
+%
 \begin{code}
 mulMM' ::  (Finite b, Num s) =>
            Mat s b c   ->  Mat s a b  ->  Mat s a c
