@@ -633,9 +633,9 @@ instance Enum G where
 
 instance Num G where
   fromInteger = G . fromInteger
-  -- Note that this is just for convenient notation (integer literals),
-  -- G should normally not be used with
 \end{code}
+Note that this is just for convenient notation (integer literals):
+|G| should normally not be used with the other |Num| operations.
 %
 The transition function has type |G -> G|:
 %
@@ -996,18 +996,16 @@ Exercise~\ref{exc:StocExample1Impl}: Implement the example.
 %
 You will need to define:
 
-The transition function
+The transition function (giving the probability of getting to |g'| from |g|)
 %
 \begin{code}
 f3 :: G -> Vector REAL G   -- but we want only |G -> Vector [0, 1] G|, the unit interval
-f3 g g' = error "TODO"     -- the probability of getting to |g'| from |g|
 \end{code}
-
-The associated matrix
+%
+and the associated matrix
 %
 \begin{code}
 m3 ::  G -> Vector REAL G
-m3 g' g = error "TODO"
 \end{code}
 
 %**TODO (NiBo):
@@ -1226,13 +1224,16 @@ the |g|th one which is one. In other words
     e g = V (is g) = embed g
 \end{spec}
 %
-and thus |embed = e|. In order to understand how matrix-vector
-multiplication relates to the monadic operations, it is useful to
-introduce the "dot" product between vectors:
+and thus |embed = e|.
+%
+In order to understand how matrix-vector multiplication relates to the
+monadic operations, it is useful to introduce the ``dot'' product
+between vectors:
 %
 \begin{code}
 dot :: (Num s, Finite g) => Vector s g -> Vector s g -> s
 dot (V v) (V w) = sum [v g * w g | g <- finiteDomain]
+-- or |sum (map (v * w) finiteDomain)| where |v * w :: g -> s| uses |FunNumInst|
 \end{code}
 
 Remember that matrixes are just functions of type |G -> Vector S G'|:
@@ -1289,7 +1290,7 @@ we have:
 
 \end{spec}
 %
-Thus we see that |bind v f| is "just" a matrix-vector
+Thus we see that |bind v f| is ``just'' a matrix-vector
 multiplication.
 
 Perhaps for extra exercises:
@@ -1300,7 +1301,7 @@ We can rewrite the |g'|th component of |func f v| in terms of the dot
 product
 %
 \begin{spec}
-dot v V (\ g -> is g' (f g))
+dot v (V (\ g -> is g' (f g)))
   =
 dot v (V (is g' . f))
 \end{spec}
@@ -1347,17 +1348,6 @@ bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
 
 \subsection{Associated code}
 
-\begin{code}
-instance Num a => Num (x -> a) where
-  f + g        =  \x -> f x + g x
-  f - g        =  \x -> f x - g x
-  f * g        =  \x -> f x * g x
-  negate f     =  negate . f
-  abs f        =  abs . f
-  signum f     =  signum . f
-  fromInteger  =  const . fromInteger
-\end{code}
-
 Conversions and |Show| functions so that we can actually see our vectors.
 %
 \begin{code}
@@ -1382,9 +1372,9 @@ The scalar product of two vectors is a good building block for matrix
 multiplication:
 %
 \begin{code}
-dot ::  (Finite g, Num s) =>
+dot' ::  (Finite g, Num s) =>
         (g->s) -> (g->s) -> s
-dot v w = sum (map (v * w) finiteDomain)
+dot' v w = sum (map (v * w) finiteDomain)
 \end{code}
 %
 Note that |v * w :: g -> s| is using the |FunNumInst|.
@@ -1399,14 +1389,14 @@ Using it we can shorten the definition of |mulMV|
   sum (map (\g -> m g' g * v g) finiteDomain)
 = -- use |FunNumInst| for |(*)|
   sum (map (m g' * v) finiteDomain)
-= -- Def. of |dot|
-  dot (m g') v
+= -- Def. of |dot'|
+  dot' (m g') v
 \end{spec}
 %
-Thus, we can defined matrix-vector multiplication by
+Thus, we can define matrix-vector multiplication by
 %
 \begin{spec}
-mulMV m v g' =  dot (m g') v
+mulMV m v g' =  dot' (m g') v
 \end{spec}
 %
 We can even go one step further:
@@ -1414,11 +1404,11 @@ We can even go one step further:
 \begin{spec}
   mulMV m v
 = -- Def.
-  \g' -> dot (m g') v
-= -- |dot| is commutative
-  \g' -> dot v (m g')
+  \g' -> dot' (m g') v
+= -- |dot'| is commutative
+  \g' -> dot' v (m g')
 = -- Def. of |(.)|
-  dot v . m
+  dot' v . m
 \end{spec}
 %
 to end up at
@@ -1426,7 +1416,7 @@ to end up at
 \begin{code}
 mulMV' ::  (Finite g, Num s) =>
            Mat s g g' ->  Vec s g  ->  Vec s g'
-mulMV' m v  =  dot v . m
+mulMV' m v  =  dot' v . m
 type Mat s r c = c -> r -> s
 type Vec s r = r -> s
 \end{code}
