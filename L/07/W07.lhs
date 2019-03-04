@@ -77,7 +77,7 @@ general (and conceptually simpler) way is to view them as
 \begin{code}
 newtype Vector s g    = V (g -> s) deriving Num
 \end{code}
-%**TODO Check and perhaps remove "deriving Num"
+%*TODO Perhaps explain "deriving Num"
 
 As discussed, the |S| parameter in |Vector S| has to be a field (|REAL|,
 or |Complex|, or |Zn|, etc.) for values of type |Vector S G| to
@@ -347,7 +347,7 @@ geometry, I warmly recommend binge-watching the ``Essence of linear
 algebra'' videos on youtube (start here:
 \url{https://www.youtube.com/watch?v=kjBOesZCoqc}).
 
-%*TODO: Perhaps it would be interesting to show that linear transformations
+%*TODO: Perhaps it would be interesting to show that some linear transformations
 % can also be interpreted as changes of basis.
 
 \subsection{Examples of matrix algebra}
@@ -925,7 +925,7 @@ In the case of stochastic systems, the inputs will be
 -> [0, 1]| with the property that
 %
 \begin{spec}
-sum [p g | g <- G] = 1
+    sum [p g | g <- G] = 1
 \end{spec}
 
 If we know the current probability distributions over states, then we
@@ -933,7 +933,7 @@ can compute the next one by using the \emph{total probability formula},
 normally expressed as
 %
 \begin{spec}
-p a = sum [p (a | b) * p b | b <- G]
+    p a = sum [p (a | b) * p b | b <- G]
 \end{spec}
 %
 This formula in itself would be worth a lecture.
@@ -1301,9 +1301,9 @@ We can rewrite the |g'|th component of |func f v| in terms of the dot
 product
 %
 \begin{spec}
-dot v (V (\ g -> is g' (f g)))
-  =
-dot v (V (is g' . f))
+  dot v (V (\ g -> is g' (f g)))
+=
+  dot v (V (is g' . f))
 \end{spec}
 %
 This shows that the role of |f| in |func f v| is that of re-distributing
@@ -1338,7 +1338,7 @@ bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
   only these) properties.
 \end{enumerate}
 
-% *TODO: Proving that |func| preserves composition and that |bind|
+%*TODO: Proving that |func| preserves composition and that |bind|
 % associates gets very messy if one directly operates with their
 % definitions.
 % %
@@ -1366,7 +1366,7 @@ showFun :: (Finite a, Show b) => (a->b) -> String
 showFun f = show (map f finiteDomain)
 \end{code}
 
-TODO: convert to using the |newtype Vector|.
+%*TODO: perhaps convert to using the |newtype Vector|.
 
 The scalar product of two vectors is a good building block for matrix
 multiplication:
