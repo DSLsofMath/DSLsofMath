@@ -1,13 +1,10 @@
-
 \begin{code}
-{-# LANGUAGE TypeSynonymInstances #-}
--- {-# LANGUAGE FlexibleInstances #-}
--- {-# LANGUAGE UndecidableInstances #-}
--- {-# LANGUAGE FlexibleContexts #-}
 module DSLsofMath.Live_7_1 where
 import DSLsofMath.W07 hiding (Vector)
+import qualified DSLsofMath.W07
+type V = DSLsofMath.W07.Vector
 
--- type S = Double
+type S = Double
 class Vector v where
   zero   :: v
 
@@ -15,25 +12,13 @@ class Vector v where
   scale  :: S -> (v -> v)
 
   addInv :: v -> v
-  addInv = scale (-1)
+  addInv = scale (-1)    -- Prop: forall v.   v + addInv v == zero
 \end{code}
 
 * New algebraic structure: vector space.
-  Two sets involved : S for scalars, V for vectors and
+  Two sets involved : S for scalars, v for vectors and
   Two main operations:
     addV and scaleV
-
-* See also L/03/ExerciseSolutions/E3_6_simple.lhs  (Exam/2017-08/P2.lhs)
-* Exam/2017-03/P5.lhs
-* Exam/2016-Practice/MockE.hs
-
-\begin{spec}
-instance Num s => Vector s where
-  zero = 0
-  add = (+)
-  scale = (*)
-  addInv = negate
-\end{spec}
 
 \begin{code}
 instance Vector Double where
@@ -41,26 +26,61 @@ instance Vector Double where
   add = (+)
   scale = (*)
   addInv = negate
+\end{code}
+
+Note that |Num.*  :: a -> a -> a|  -- symmetric type
+and       |scale  :: S -> v -> v|  -- assymmetric type
+but in this instance |S=v=a=Double|.
+
+\begin{code}
+v1, v2 :: Double
+v1 = add 5 7
+v2 = scale 0.5 v1
 
 instance Vector v => Vector (g->v) where
   zero = zeroF
   add  = addF
   scale = scaleF
-  addInv = addInvF
 
-type V s g = g -> s
+-- type Vec s g = g -> s   -- scalar set s and index set g
+
+w0, w1, w2 :: Vec S Bool   -- (Bool -> S)  ≃  (S, S)  ≃  2D-vector
+-- card Bool = 2
+
+convert :: (S, S) -> (Bool -> S)
+convert (f,t) = \b -> if b then t else f
+\end{code}
+Short side track: For a motivation behind convert, see the dual of the
+tupling transform from (an exercise in) Chapter 1:
+
+    s2p :: (Either b c -> a) -> (b->a, c->a)
+    p2s :: (b->a, c->a) -> (Either b c -> a)
+
+let a=b=1=() in Haskell
+
+  (Either a b  -> c) <-> (a->c, b->c)
+~=
+  (Either 1 1  -> c) <-> (1->c, 1->c)
+~=
+  (1+1         -> c) <-> (   c,    c)
+~=
+  (2           -> c) <-> (   c,    c)
+~=
+  (Bool        -> c) <-> (   c,    c)
+
+\begin{code}
+w0 = convert (38, 17)
+w1 = add w0 w0
+w2 = scale 0.5 w1
 
 zeroF :: Vector v => g->v
-zeroF = const zero
+zeroF i = zero          -- not quite 0 (but close)
 
-addF :: Vector v => V v g -> V v g -> V v g
-addF f g = \x -> add (f x) (g x)
+addF :: Vector v => Vec v g -> Vec v g -> Vec v g
+addF v w = \i -> add (v i) (w i)      -- basically the same as   v + w  (FunNumInst)
 
-scaleF :: Vector v => S -> V v g -> V v g
-scaleF s f = \x -> scale s (f x)
-
-addInvF :: Vector v => V v g -> V v g
-addInvF f = \x -> addInv (f x)
+scaleF :: Vector v => S -> Vec v g -> Vec v g
+scaleF s v = \i -> scale s (v i)
 \end{code}
 
 Note that the instance declaration for |g->v| is parametrised over
@@ -71,49 +91,58 @@ case of vectors, but more common for matrices, where it represents
 are smaller matrices.)
 
 \begin{code}
-type TwoD = Bool
-type Vect2D = Bool -> S
-
 data Day = Mon|Tue|Wed|Thu|Fri|Sat|Sun
-  deriving (Enum, Show)
+  deriving (Eq, Enum, Bounded, Show)
 type WeekVect = Day -> REAL
 \end{code}
 
-ex2 :: WeekVect
 List indexing has type |Int -> REAL|
 We need |Day -> REAL|
 Helpers from the Haskell Predude:
 * |toEnum :: Int -> Day|
 * |fromEnum :: Day -> Int|
 
+|ex2| represents website malfunctions as a vector of REALs indexed by Days.
 \begin{code}
-ex2 :: Day -> REAL
-ex2 = ([12,3,12,34,19,2,7]!!) . fromEnum
--- ex2 represents website malfunctions
+ex2 :: V REAL Day
+ex2 = V (([12,3,12,34,19,2,7]!!) . fromEnum)
 data Stat = Weekday | Weekend
+  deriving (Eq, Enum, Bounded, Show)
 \end{code}
 
 Example: compute average weekday, and average weekend
 malfunctions. (Given a vector of nuber of malfunctions per day.)
 
-It is a homomorphism between vector spaces.
+It is a homomorphism between vector spaces (a linear transformation).
 \begin{code}
-stat :: (Day->REAL) -> (Stat->REAL)
-stat = error "TODO"
-
--- base vector 0 = [1,0,0,0,0,0,0]
--- base vector 1 = [0,1,0,0,0,0,0]
--- base vector 2 = [0,0,1,0,0,0,0]
--- ...
--- base vector 6 = [0,0,0,0,0,0,1]
--- stat as a matrix (here a list of columns):
-statM = [ [1/5,0],[1/5,0],[1/5,0],[1/5,0],[1/5,0], [0,1/2],[0,1/2]]
-
-ex1 :: Vect2D
-ex1 False  = 1
-ex1 True   = 2
-
-hej :: Vect2D
-hej False  = 3
-hej True   = 7
+stat :: V REAL Day  ->  V REAL Stat
+stat = mulMV statM
 \end{code}
+
+Base vectors in (Day -> REAL):
+  e 0 ~= [1,0,0,0,0,0,0]
+  e 1 ~= [0,1,0,0,0,0,0]
+  e 2 ~= [0,0,1,0,0,0,0]
+  ...
+  e 6 ~= [0,0,0,0,0,0,1]
+
+\begin{code}
+makeMatrix :: (Enum g, Enum g') => [[s]] -> Matrix s g g'
+makeMatrix css col = map makeRow css !! fromEnum col
+-- Will crash if the list lengths don't match
+
+makeRow :: Enum g => [s] -> V s g
+makeRow cs = V (\col -> cs !! fromEnum col)
+
+statM :: Matrix REAL Day Stat
+statM = makeMatrix statM'
+
+statM' = [ [ 1/5, 1/5, 1/5, 1/5, 1/5,   0,   0],
+           [   0,   0,   0,   0,   0, 1/2, 1/2]]
+\end{code}
+
+Some other examples:
+
+* See also L/03/ExerciseSolutions/E3_6_simple.lhs  (Exam/2017-08/P2.lhs)
+* Exam/2017-03/P5.lhs
+* Exam/2016-Practice/MockE.hs
