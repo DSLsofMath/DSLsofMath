@@ -20,17 +20,16 @@ evalAll e = eval e : evalAll (d e)
 es :: DS FunExp
 es = (Id:*:Id) : map d es
 fs :: DS Func
-fs = evalAll (Id:*:Id)
+fs = evalAll (Id:*:Id)   -- x²
 
 testfs :: [Func]
 testfs = take 5 fs
 
 testvs1 :: [REAL]
-testvs1 = applyL 1 testfs
-testvs2 = applyL 2 testfs
+testvs1 = apply 1 testfs
+testvs2 = apply 2 testfs
 
-applyL :: a -> [a -> b] -> [b]
-applyL c = map (\f->f c)
+apply :: a -> [a -> b] -> [b]
 \end{code}
 
 Questions:
@@ -78,6 +77,7 @@ addDS = zipWith (+)
 \end{code}
   propH1 evalAll (:+:) addDS
   forall x y. evalAll (x:+:y) === addDS (evalAll x) (evalAll y)
+  show that addDS = zipWith (+)
 
    LHS
 =
@@ -86,16 +86,12 @@ addDS = zipWith (+)
   eval (x:+:y) : evalAll (d (x:+:y))
 = -- def. d   -- H2(d,(:+:),(:+:)) = forall x,y. d(x:+:y) = d x :+: d y
   eval (x:+:y) : evalAll (d x :+: d y)
-= sant!
-  eval (x:+:y) : evalAll (d x :+: d y)
--- H2(eval,(:+:),(+)), H2(evalAll, (:+:), zipWith (+))
-  eval (x:+:y) : evalAll (d x :+: d y)
--- H2(eval,(:+:),(+)) & (co-)inductive hypothesis
-  ((eval x) + (eval y)) : zipWith (+) (evalAll (d x)) (evalAll (d y))
+= -- H2(eval,(:+:),(+))
+  ((eval x) + (eval y))  :  zipWith (+) (evalAll (d x)) (evalAll (d y))
 = -- zipWith
-  zipWith (+) (eval x : evalAll (d x)) (eval y : evalAll (d y))
+  zipWith (+) (eval x : evalAll (d x))   (eval y : evalAll (d y))
 = -- evalAll
-  zipWith (+) (evalAll x) (evalAll y)
+  zipWith (+) (evalAll x)                (evalAll y)
 =
   RHS
 
@@ -159,13 +155,59 @@ mulDS fs gs = h : t
            where  (*) = mulDS
                   (+) = addDS
 \end{code}
+or equivalently:
+\begin{code}
+mulDS' :: Num a => DS a -> DS a -> DS a
+mulDS' fs@(f:fs') gs@(g:gs') =
+  (f*g) : addDS' (mulDS' fs' gs) (mulDS' fs gs')
+
+addDS' :: Num a => DS a -> DS a -> DS a
+addDS' = zipWith (+)
+\end{code}
 
 Some test code:
 \begin{code}
-is = evalAll Id
+e1s :: DS Func
+e1s = evalAll (Exp Id)
+e2s :: DS Func
+e2s = evalAll (Exp Id :*: Exp Id)
+e3s :: DS Func
+e3s = mulDS e1s e1s
+
+apply x = map (\f->f x)
+
 t :: DS Func -> [REAL]
-t = take 6 . applyL 1
+t = take 6 . apply 0
 \end{code}
+
+Now, we have done all of this with streams of functions, but all the
+definitions go through also after picking a particular point using
+|apply x|. The classical example is to pick |x=0| to get the
+"Maclaurin series".
+
+\begin{code}
+newtype DerStream a = DS [a]   -- could be called Maclaurin
+
+instance Num a => Num (DerStream a) where
+  (+) = addDerStream
+  (*) = mulDerStream
+  negate = negateDerStream
+  fromInteger = fromIntegerDerStream
+
+addDerStream :: Num a => DerStream a -> DerStream a -> DerStream a
+addDerStream (DS xs) (DS ys) = DS (addDS' xs ys)
+
+mulDerStream :: Num a => DerStream a -> DerStream a -> DerStream a
+mulDerStream (DS xs) (DS ys) = DS (mulDS' xs ys)
+
+fromIntegerDerStream :: Num a => Integer -> DerStream a
+fromIntegerDerStream i = DS (fromInteger i : repeat 0)
+
+negateDerStream :: Num a => DerStream a -> DerStream a
+negateDerStream (DS xs) = DS (map negate xs)
+\end{code}
+
+
 
 
 ----
@@ -211,5 +253,4 @@ semEqList xs ys i = (xs!!i) === (ys!!i)
 instance SemEq Double where
   type EQ Double = Bool
   (===) = (==)
-
 \end{code}
