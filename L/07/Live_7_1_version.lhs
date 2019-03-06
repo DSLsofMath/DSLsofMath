@@ -1,11 +1,10 @@
-
 \begin{code}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE FlexibleContexts #-}
 module DSLsofMath.Live_7_1 where
 import DSLsofMath.W07
 
--- type S = Double
+type S = Double
 class Vector v where
   zero   :: v
 
