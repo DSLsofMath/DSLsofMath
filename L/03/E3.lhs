@@ -222,6 +222,10 @@ of the right factor, $B$.
 \end{enumerate}
 \end{exercise}
 
+% TODO: Make this an exercise
+% The Exercise
+% Read the first few paragraphs of the "Overview" section on Hamiltonian Mechanics on Wikipedia (https://en.wikipedia.org/wiki/Hamiltonian_mechanics#Overview (Links to an external site.)Links to an external site.) and try to explain what is going in the equation which describes the "time evolution of the system" by giving types to all elements and introducing necessary rewrites to clarify the meaning of the equation.
+
 \begin{exercise}
   (Extra material outside the course.)
   %

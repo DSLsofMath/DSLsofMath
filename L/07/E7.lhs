@@ -44,7 +44,10 @@ With |G = Nat| for the set of indices, write the
 Write the matrix \(I_n\) associated with integration of polynomials of
 degree |n|.
 \end{exercise}
-
+%**TODO: Add this exercise (was Bonus exercise in 2019)
+% * With G = N (N for the natural numbers), implement the derivative Deriv and the integral Integ as infinite-dimensional matrices.
+% * For extra credit, prove that Deriv * Integ = Id (Where Id i j = if i == j then 1 else 0 is the identity matrix).
+%
 \begin{exercise}
 \label{exc:NonDetExample1}
 In the context of \refSec{sec:NonDetSys}: start with |v0 = e 2 +

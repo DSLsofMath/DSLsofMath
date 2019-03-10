@@ -30,7 +30,7 @@ instance Field (F v) where
 instance Field Double where
   mul = (*); add = (+); zer = 0; one = 1; neg = negate; rec = recip
 instance Field Bool where
-  mul = (&&); add = (/=); zer = False; one = True; neg = not; rec = id
+  mul = (&&); add = (/=); zer = False; one = True; neg = id; rec = id
 -- d)
 eval :: Field f => (v->f) -> F v -> f
 eval f (Mul x y) = mul (eval f x) (eval f y)
