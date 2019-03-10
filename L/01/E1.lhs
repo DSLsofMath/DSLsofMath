@@ -65,12 +65,6 @@
     s2p :: (Either b c -> a) -> (b->a, c->a)
     p2s :: (b->a, c->a) -> (Either b c -> a)
   \end{spec}
-  %
-
-  % Solutions:
-  %   s2p  =  \fg     ->  (fg . Left, fg . Right)
-  %   p2s  =  \(f,g)  ->  either f g
-
 \end{exercise}
 
 \begin{exercise}\label{exc:counting}
