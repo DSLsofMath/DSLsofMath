@@ -1,0 +1,68 @@
+Exercise 2.9:
+
+Definition:
+
+  P : Seq X -> X -> RPos -> Prop
+  P a L ε = Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (|an - L| < ε)))
+
+Consider the statement: The sequence |{an} = (0, 1, 0, 1, ...)| does not converge.
+
+a) Define the sequence |{an}| as a function |a : ℕ → ℝ|.
+
+a n = if even n then 0 else 1
+  -- basically |a = (`mod` 2)| except for a |fromInteger|
+
+b) Simplify ``the sequence |{an}| is not convergent'':
+      not Exists (L : ℝ) (Forall (ε > 0) (P a L ε))
+   using the rules
+      not (Exists x (P x)) <->  (Forall x (not (P x)))
+      not (Forall x (P x)) <->  (Exists x (not (P x)))
+              not (P -> Q) <->  P && not Q
+
+(We use "push not through typed quatification" has been proved elsewhere.)
+
+We start pushing |not| inwards:
+  not Exists L. Forall eps>0. P a L eps
+  Forall L. not Forall eps>0. P a L eps
+  Forall L. Exists eps>0. not (P a L eps)
+  Forall L. Exists eps>0. not (Exists N. Forall n>=N. |a n - L| < eps))
+  Forall L. Exists eps>0. Forall N. not (Forall n>=N. |a n - L| < eps))
+  Forall L. Exists eps>0. Forall N. Exists n>=N. not (|a n - L| < eps)
+  Forall L. Exists eps>0. Forall N. Exists n>=N.      |a n - L| >= eps
+
+c) Give a functional interpretation of the resulting formula.
+
+The "functional interpretation" of a formula is a type of proofs of
+the formula. For example, the proof of Forall - Exists is a function
+returning a (dependent) pair.
+
+  proof : (L : R) -> (eps : R,
+                      eps>0,
+                      (N : Nat) -> (n : Nat,
+		                    n >= N,
+				    |a n - L| >= eps))
+
+Here it is a function |proof| taking the (candidate) limit |L| to a
+tuple of an |eps|, a proof of |eps>0|, and another function which we
+can call |foo|. |foo| in turn takes any |N| to a tuple of an |n|, a
+proof of |n>=N|, and a proof that |a n| is at least |eps| away from
+|L|.
+
+d) Sketch an implementation of the function |proof|.
+
+proof L = (eps, trivial, foo)
+  where  eps = 1/2
+	 foo N = (n, trivial, lemma a n L)
+           where  n | L < 0.5    = find a 1 N
+	   	    | otherwise  = find a 0 N
+{-
+-- Spec: find nearest |n>=N| for which |a n == c|
+-- find may in general fail to terminate,
+-- but for our |a| and |c| this is takes at most one step up from |N|.
+find a c N | a N == c   = N
+           | otherwise  = find a c (N+1)
+
+lemma a n L : |a n - L| >= eps
+ | L < 1/2 = {- a n == 1 => |a n - L| = |1-L| = 1-L > 1-1/2 = 1/2 = eps -}
+ | L >=1/2 = {- a n == 0 => |a n - L| = |0-L| = L   >= 1/2 = eps -}
+-}
