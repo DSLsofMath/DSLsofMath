@@ -1,4 +1,4 @@
-module Ex4 where
+module E2_4 where
 type And p q = (p,q)
 
 andIntro:: p -> q -> And p q
