@@ -4,8 +4,8 @@ TODO: implement solutions for the rest
 
 Status:
 
-* 34 Yes  = solution available in the repo
-* 43 TODO
+* 38 Yes  = solution available in the repo
+* 39 TODO
 * 77 Total number of exercises (2019-03-10)
 
 Solutions of old exam question are in ../Exam/
@@ -25,14 +25,14 @@ Other solutions are in NN/ExerciseSolutions/
 | E1.09  | Yes    | 2019 | Rec.    | Tupling transform
 | E1.10  | Yes    | 2019 | Rec.    | Dual of tupling transform
 | E1.11  | TODO   | 2019 | Rec.    | Cardinality
-| E1.12  | TODO   | 2019 | Rec.    |
+| E1.12  | Yes    | 2019 | Rec.    |
 | E1.13  | TODO   | 2019 |         |
-| E1.14  | TODO   |      |         |
+| E1.14  | Yes    |      |         |
 | E2.01  | Yes    |      | Rec.    |
 | E2.02  | Yes    |      |         |
 | E2.03  | TODO   |      |         |
-| E2.04  | TODO   |      | Rec.    |
-| E2.05  | TODO   |      |         |
+| E2.04  | Yes    |      | Rec.    |
+| E2.05  | Yes    |      |         |
 | E2.06  | TODO   |      |         |
 | E2.07  | Yes    |      |         | From exam 2016-08-23
 | E2.08  | Yes    |      | Rec.    | From exam 2017-08-22
