@@ -249,7 +249,7 @@ test3 = derive (derive (derive (x^3)))
 
 main = print (eval test3 2 == 6)
 \end{code}
-Note that the the result needs simplification to be readable.
+Note that the result needs simplification to be readable.
 
 For reference: the Haskell Prelude numerical classes:
 
