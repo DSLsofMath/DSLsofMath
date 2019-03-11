@@ -8,7 +8,10 @@ type Tru = Not Fals
 idEmpty:: Empty -> Empty -- Tru
 idEmpty evE = evE
 
-notIntro:: (p -> (q, q -> Empty)) -> (p -> Empty)
+type Or = Either
+type And = (,)
+-- notIntro:: (p -> (q, q -> Empty)) -> (p -> Empty)
+notIntro:: (p -> And q (Not q)) -> Not p
 notIntro f x = y
      where (a, b) = f x
            y = b a
@@ -18,7 +21,10 @@ notIntro f x = y
 contraHey:: Empty -> p
 contraHey evE = case evE of {}
 
-ex1:: (q, q -> Empty) -> p
+ex1 :: (q, q -> Empty) -> p
 ex1 (a,b) = contraHey (b a)
 
--- TODO: Last part missing
+-- ¬ p ∨ ¬ q  → ¬ (p ∧ q)
+ex2 :: Or (Not p) (Not q) -> Not (And p q)
+ex2 (Left np)   = notIntro (\(p,_) -> (p,np))
+ex2 (Right nq)  = notIntro (\(_,q) -> (q,nq))
