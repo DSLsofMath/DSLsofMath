@@ -48,7 +48,7 @@ It is easy to see, using the definition of |integ| that the power
 series |expx| is, indeed
 
 \begin{spec}
-expx = [1, 1/2, 1/(2 * 3), ..., 1 / (2 * 3 * ... * n), ..]
+expx = [1, 1/1, 1/(1*2), 1/(1*2*3), ..., 1 / (1*2*3* ... *n), ..]
 \end{spec}
 
 We can compute the exponential for complex values if we can give an
