@@ -1,114 +1,92 @@
+-- See also exam 2017-08-22 (Semiring)
+--   ../../Exam/2017-08/P1.lhs
+
 \begin{code}
-module E1_3 where
-import Data.Maybe
-import Test.QuickCheck
+{-# LANGUAGE GADTs #-}
 \end{code}
 
-Solution for exercise 1.3:
+
+1.3a: A datatype |SR v| for semiring expressions
 
 \begin{code}
-data SR v  = Var v           -- | Variables of type |v|
-           | SR v :+: SR v   -- | Addition
-           | Zero            -- | Identity element for |:+:|
-           | SR v :*: SR v   -- | Multiplication
-           | One             -- | Identity element for |:*:|
-           deriving (Read, Show, Eq, Ord)
-
--- ^ Type synonym for environment mapping variables of type v to
--- values of type a.
-type Env v a = [(v, a)]
-
--- ^ We now define an evaluator taking an expression and environment
--- and mapping it to any numeric type (for example Integer, Double)
-evalSR :: (Eq v, Num a) => SR v -> Env v a -> a
-evalSR exp env =
-  case exp of
-    Var v      ->  fromMaybe (error "no such variable") $ lookup v env
-    Zero       ->  0
-    One        ->  1
-    e1 :+: e2  ->  evalSR e1 env  +  evalSR e2 env
-    e1 :*: e2  ->  evalSR e1 env  *  evalSR e2 env
+data SR v where
+  Add    ::  SR v -> SR v -> SR v
+  Mul    ::  SR v -> SR v -> SR v
+  Zero   ::  SR v
+  One    ::  SR v
+  Var    ::  v -> SR v
+ deriving (Eq, Show)
 \end{code}
 
-Now we can use QuickCheck to test if our evaluator respects the semiring laws:
-We use integers for simplicity and to avoid ambiguous types later on when
-running the tests.
-
-In general, any instance of |Num| should work though if they satisfy
-the type class laws for |Num|. Note that |Double| does not satisfy
-this, due to rounding issues.
+1.3b: Example expressions from the laws:
 
 \begin{code}
--- ^ Checks that :+: is commutative for integers.
-checkComm :: Integer -> Integer -> Bool
-checkComm a b =
-    evalSR (Var "a" :+: Var "b") env  ==
-    evalSR (Var "b" :+: Var "a") env
-  where env = [("a", a), ("b", b)]
+assocAdd a b c     =  [ Add (Add a b) c, Add a (Add b c) ]
+unitAdd  a         =  [ Add Zero a, Add a Zero, a ]
 
--- ^ Checks that given operation is associative
-checkAssoc ::  (SR String -> SR String -> SR String)
-               -> Integer -> Integer -> Integer -> Bool
-checkAssoc op a b c =
-    evalSR ((Var "a" `op` Var "b") `op` Var "c") env  ==
-    evalSR (Var "a" `op` (Var "b" `op` Var "c")) env
-  where env = [("a", a), ("b", b), ("c", c)]
+assocMul a b c     =  [ Mul (Mul a b) c , Mul a (Mul b c) ]
+unitMul  a         =  [ Mul One a, Mul a One, a ]
 
--- ^ Checks that given element is left identity for given operation
-checkIdentityL ::  SR String -> (SR String -> SR String -> SR String)
-                   -> Integer -> Bool
-checkIdentityL elem op a = evalSR (elem `op` Var "a") env == a
-  where env = [("a", a)]
+distMulAddL a b c  =  [ Mul a (Add b c) , Add (Mul a b) (Mul a c) ]
+distMulAddR a b c  =  [ Mul (Add a b) c , Add (Mul a c) (Mul b c) ]
+zeroMul  a         =  [ Mul Zero a , Mul a Zero, Zero ]
+\end{code}
 
--- ^ Same for right identity.
-checkIdentityR ::  SR String -> (SR String -> SR String -> SR String)
-                   -> Integer -> Bool
-checkIdentityR elem op a = evalSR (elem `op` Var "a") env == a
-  where env = [("a", a)]
+1.3c:
 
--- ^ Checks that :*: left-distributes over :+:
-checkDistribL :: Integer -> Integer -> Integer -> Bool
-checkDistribL a b c =
-    evalSR (va :*: (vb :+: vc)) env ==
-    evalSR ((va :*: vb) :+: (va :*: vc)) env
-  where  env = [("a", a), ("b", b), ("c", c)]
-         va = Var "a"
-         vb = Var "b"
-         vc = Var "c"
+Warm-up: a specific evaluator for |Integer|.
 
--- ^ Checks that :*: right-distributes over :+:
-checkDistribR :: Integer -> Integer -> Integer -> Bool
-checkDistribR a b c =
-    evalSR ((va :+: vb) :*: vc) env  ==
-    evalSR ((va :*: vc) :+: (vb :*: vc)) env
-  where  env = [("a", a), ("b", b), ("c", c)]
-         va = Var "a"
-         vb = Var "b"
-         vc = Var "c"
+\begin{code}
+evalI :: (v -> Integer) -> SR v -> Integer
+evalI f (Add  a b)  =  evalI f a  +  evalI f b
+evalI f (Mul  a b)  =  evalI f a  *  evalI f b
+evalI f (Zero)      =  0
+evalI f (One)       =  1
+evalI f (Var v)     =  f v
+\end{code}
 
--- ^ Checks that 0 is an annihilating element for :*:
-checkZeroAnnihilatesL :: Integer -> Bool
-checkZeroAnnihilatesL a = evalSR (Zero :*: Var "a") env == evalSR Zero env
-  where env = [("a", a)]
+A general evaluator: here we take semiring operations as parameters.
 
-checkZeroAnnihilatesR :: Integer -> Bool
-checkZeroAnnihilatesR a = evalSR (Var "a" :*: Zero) env == evalSR Zero env
-  where env = [("a", a)]
+\begin{code}
+eval ::  (r -> r -> r) -> (r -> r -> r) -> r -> r ->
+         (v -> r) ->
+         SR v -> r
+eval add mul zero one var = e where
+  e (Add  a b)  =  add (e a) (e b)
+  e (Mul  a b)  =  mul (e a) (e b)
+  e (Zero)      =  zero
+  e (One)       =  one
+  e (Var v)     =  var v
+\end{code}
 
-checkAll :: IO ()
-checkAll = do
-  check "* is associative" $ checkAssoc (:*:)
-  check "+ is associative" $ checkAssoc (:+:)
-  check "+ is commutative" checkComm
-  check "0 is left identity for +" $ checkIdentityL Zero (:+:)
-  check "0 is right identity for +" $ checkIdentityR Zero (:+:)
-  check "1 is left identity for *" $ checkIdentityL One (:*:)
-  check "1 is right identity for *" $ checkIdentityR One (:*:)
-  check "* left-distributes over +" checkDistribL
-  check "* right-distributes over +" checkDistribR
-  check "Multiplying by 0 annihilates (left)" checkZeroAnnihilatesL
-  check "Multiplying by 0 annihilates (right)" checkZeroAnnihilatesR
-  where check msg test = putStrLn msg >> quickCheck test
+Example: natural numbers modulo some |n > 0|:
 
-main = checkAll
+\begin{code}
+evalMod :: Int -> (v -> Int) -> SR v -> Int
+evalMod n va = eval add mul zero one var
+  where  add a b  =  mod (a+b) n
+         mul a b  =  mod (a*b) n
+         zero     =  0
+         one      =  mod 1 n
+         var v    =  mod (va v) n
+\end{code}
+
+In a later Chapter we will introduce type classes to collect all
+semiring operations in one instance. For completeness we include that
+also here to give the final type class generic evaluator:
+
+\begin{code}
+class SemiRing r where
+  add    ::  r -> r -> r
+  mul    ::  r -> r -> r
+  zero   ::  r
+  one    ::  r
+
+evalSR :: SemiRing r => (v->r) -> SR v -> r
+evalSR var = e where
+  e (Add  a b)  =  add (e a) (e b)
+  e (Mul  a b)  =  mul (e a) (e b)
+  e (Zero)      =  zero
+  e (One)       =  one
+  e (Var v)     =  var v
 \end{code}
