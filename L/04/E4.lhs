@@ -42,8 +42,8 @@ Prove or disprove the following claims:
 \end{exercise}
 
 \begin{exercise}
-  Complete the instance declarations for |(REAL, REAL)|, deriving them
-  from the homomorphism requirement for |apply| (in
+  Complete the instance declarations for |Dup REAL|, deriving them
+  from the homomorphism requirement for |applyFD| (in
   \refSec{sec:apply}).
 \end{exercise}
 

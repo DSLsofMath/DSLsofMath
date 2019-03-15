@@ -160,6 +160,7 @@ see the problem:
 \begin{code}
 isPrime (Add x y)  =  isPrimeAdd (isPrime x) (isPrime y)
 isPrimeAdd :: Bool -> Bool -> Bool
+isPrimeAdd = error "Can this be done?"
 \end{code}
 %
 As before, if we can define |isPrimeAdd|, we will get
@@ -887,14 +888,16 @@ Can we do something similar for |FD|?
 
 The elements of |FD a| are pairs of functions, so we can take
 %
-\begin{spec}
-applyFD ::  a ->  FD a     ->  (a, a)
-applyFD     c     (FD (f, f'))  =   FD (f c, f' c)
-\end{spec}
+\begin{code}
+type Dup a = (a, a)
+
+applyFD ::  a ->  FD a          ->  Dup a
+applyFD     c     (FD (f, f'))  =   (f c, f' c)
+\end{code}
 
 We now have the domain of the homomorphism |(FD a)| and the
 homomorphism itself |(applyFD c)|, but we are missing the structure on
-the codomain, which now consists of pairs |(a, a)|.
+the codomain, which now consists of pairs |Dup a = (a, a)|.
 %
 In fact, we can \emph{compute} this structure from the homomorphism
 condition.
@@ -908,18 +911,20 @@ For example (we skip the constructor |FD| for brevity):
 
      ((f * g) c, (f' * g + f * g') c)            =  {- def. |*| and |+| for functions -}
 
-     (f c * g c, f' c * g c + f c * g' c)        =  {- homomorphism condition from step 1 -}
+     (f c * g c, f' c * g c + f c * g' c)        =  {- |let x=f c; y=g c; x'=f' c; y'=g' c| -}
 
-     h (f, f') *? h (g, g')                      =  {- def. |h = applyFD c| -}
+     (  x * y  ,   x' * y   +   x * y'  )        =  {- \textbf{introduce |*?| to make the ends meet} -}
 
-     (f c, f' c) *? (g c, g' c)
+     (  x, x'  ) *? (y  , y'  )                  =  {- expand shorter names again -}
+
+     (f c, f' c) *? (g c, g' c)                  =  {- def. |h = applyFD c| -}
+
+     h (f, f') *? h (g, g')
 \end{spec}
 %
 The identity will hold if we take
 %
 \begin{code}
-type Dup a = (a, a)
-
 (*?) :: Num a =>  Dup a -> Dup a -> Dup a
 (x, x') *? (y, y')  =  (x * y, x' * y + x * y')
 \end{code}
@@ -936,7 +941,7 @@ instance Num a => Num (Dup a) where
   -- ... exercise
 \end{code}
 %
-Exercise: complete the instance declarations for |(REAL, REAL)|.
+Exercise: complete the instance declarations for |Dup REAL|.
 
 Note: As this computation goes through also for the other cases we can
 actually work with just pairs of values (at an implicit point |c ::
