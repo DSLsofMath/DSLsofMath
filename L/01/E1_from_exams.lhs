@@ -35,7 +35,7 @@
     \begin{spec}
       a⋅(b + c) = (a⋅b) + (a⋅c)
       (a + b)⋅c = (a⋅c) + (b⋅c)
-      a⋅0 = 0⋅a = 0
+      0⋅a = a⋅0 = 0
     \end{spec}
 
   \end{itemize}
@@ -44,15 +44,17 @@
 
   \item Define a datatype |SR v| for the language of semiring
     expressions (with variables of type |v|).
-    %
+%
     These are expressions formed from applying the semiring
     operations to the appropriate number of arguments, e.g., all the
     left hand sides and right hand sides of the above equations.
 
-    % TODO (DaHe): explain that "assignment function" is the same as varVal in
-    % previous exercise?
+  \item (Was not part of the exam) Implement the expressions from the laws.
+
   \item Give a type signature for, and define, a general evaluator for
     |SR v| expressions on the basis of an assignment function.
+%
+    An ``assignment function'' is a mapping from variable names to values.
   \end{enumerate}
 \end{exercise}
 
