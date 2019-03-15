@@ -16,9 +16,9 @@ Other solutions are in NN/ExerciseSolutions/
 | ------ | ------ | ---- | ------- | -----------
 | E1.01  | Yes    |      | H-intro |
 | E1.02  | Yes    |      | H-intro |
-| E1.03  | Yes    |      | Rec.    | From exam 2017-08-22 (Semiring)
-| E1.04  | Yes    |      |         | From exam 2016-03-15 (Lattice )
-| E1.05  | Yes    |      |         | From exam 2017-08-22 (AbMonoid)
+| E1.03  | Yes    |      | Rec.    | From exam 2017-08 (Semiring)
+| E1.04  | Yes    |      |         | From exam 2016-03 (Lattice )
+| E1.05  | Yes    |      |         | From exam 2016-08 (AbMonoid)
 | E1.06  | TODO   |      | H-intro |
 | E1.07  | TODO   |      | H-intro |
 | E1.08  | Yes    |      | H-intro |

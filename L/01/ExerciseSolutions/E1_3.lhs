@@ -1,5 +1,5 @@
 -- See also exam 2017-08-22 (Semiring)
---   ../../Exam/2017-08/P1.lhs
+--   ../../../Exam/2017-08/P1.lhs
 
 \begin{code}
 {-# LANGUAGE GADTs #-}
