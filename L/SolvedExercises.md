@@ -62,6 +62,10 @@ Other solutions are in NN/ExerciseSolutions/
 | E5.04  | TODO   | 2019 |         |
 | E5.05  | TODO   |      | Rec.    |
 | E5.06  | TODO   |      | Rec.    |
+| E5.07  | Yes    |      | Rec.    |
+| E5.08  | TODO   |      | Rec.    |
+| E5.09  | TODO   |      | Rec.    |
+| E5.10  | TODO   |      | Rec.    |
 | E6.01  | TODO   |      | Rec.    |
 | E6.02  | TODO   |      | Rec.    |
 | E6.03  | TODO   |      | Rec.    |
