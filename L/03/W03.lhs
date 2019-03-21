@@ -457,7 +457,7 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
     Lagrange(L, w) =  D (D₃ L ∘ expand w) == D₂ L ∘ expand w
   \end{spec}
   %
-  where we use |(==)| to avoid confusion with the equlity sign (|=|)
+  where we use |(==)| to avoid confusion with the equality sign (|=|)
   used for the definition of the predicate.
 \end{enumerate}
 

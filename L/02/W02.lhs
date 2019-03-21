@@ -207,7 +207,7 @@ At this point it is good to implement a few utility functions on
 |PropCalc|: list the names used in a term, simplify to disjunctive
 normal form, simplify to conjunctive normal form, etc.
 
-(Conjuntive normal form: allow only |And|, |Or|, |Not|, |Name| in that
+(Conjunctive normal form: allow only |And|, |Or|, |Not|, |Name| in that
 order in the term.)
 
 \subsection{First Order Logic (predicate logic)}
@@ -1065,7 +1065,7 @@ First note that |p ∉ X|, but it is ``very close'' to |X|.
 A proof needs a function |getq| which from any |ε| computes a point |q
 = getq ε| which is in both |X| and |B 1 ε|.
 %
-We need a point |q| which is in |X| and \emph{closer} than |ε| from |1|
+We need a point |q| which is in |X| and \emph{closer} than |ε| from |1|.
 %
 We can try with |q = 1-ε/2| because |absBar (1-(1-ε/2)) = absBar (ε/2) = ε/2
 < ε| which means |q ∈ B 1 ε|.
