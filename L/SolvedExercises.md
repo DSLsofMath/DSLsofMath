@@ -4,8 +4,8 @@ TODO: implement solutions for the rest
 
 Status:
 
-* 41 Yes  = solution available in the repo
-* 36 TODO
+* 42 Yes  = solution available in the repo
+* 35 TODO
 * 77 Total number of exercises (2019-03-10)
 
 Solutions of old exam question are in ../Exam/
@@ -37,7 +37,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E2.07  | Yes    |      |         | From exam 2016-08-23
 | E2.08  | Yes    |      | Rec.    | From exam 2017-08-22
 | E2.09  | Yes    | 2019 | Rec.    |
-| E2.10  | TODO   | 2019 | Rec.    |
+| E2.10  | Yes    | 2019 | Rec.    |
 | E2.11  | TODO   |      |         |
 | E3.01  | Yes    |      | Rec.    |
 | E3.02  | Yes    |      | Rec.    | From exam 2016-Practice

@@ -1,0 +1,123 @@
+E2.10: The limit of a sequence is convergent secuence is unique.
+
+  P : Seq X -> X -> RPos -> Prop
+  P a L ε = Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (abs (a n - L) < ε)))
+
+Alt1 =
+  let Q a L = Forall (ε > 0) (P a L ε)
+  in  Forall (L₁ : ℝ) (Forall (L₂ : ℝ) ( (Q a L₁ ∧ Q a L₂) → L₁ = L₂) )
+
+Alt2 =
+  Forall (L₁ : ℝ) (Forall (L₂ : ℝ) ( Q a L₁ ∧ L₁ ≠ L₂  →  ¬ Q a L₂) )
+
+Task A: Simplify Alt2 to eliminate the negation.
+    ¬ Q a L₂
+  = -- expand Q
+    ¬ Forall (ε > 0) (P a L₂ ε)
+  = -- not-forall
+    Exists (ε > 0) ¬ (P a L₂ ε)
+  = -- Expand P
+    Exists (ε > 0) ¬ (Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (abs (a n - L₂) < ε))))
+  = -- not-exists, twice
+    Exists (ε > 0) (Forall (N : ℕ) (Exists (n : ℕ) ( ¬ ((n ≥ N) → (abs (a n - L₂) < ε)))))
+  = -- ¬(P -> Q) = ¬(¬P | Q)= ¬¬P & ¬Q = P & ¬Q
+    Exists (ε > 0) (Forall (N : ℕ) (Exists (n : ℕ) ( (n ≥ N)  &  (abs (a n - L₂) >= ε) )
+  = -- give it a name
+    nQ a L₂
+
+Thus without negation we get
+
+Alt3 =
+  Forall (L₁ : ℝ) (Forall (L₂ : ℝ) ( Q a L₁ ∧ L₁ ≠ L₂  →  nQ a L₂))
+    where nQ a L₂ = Exists (ε > 0) (Forall (N : ℕ) (Exists (n : ℕ)
+                      ( (n ≥ N)  &  (abs (a n - L₂) >= ε) )))
+
+Task B: give functional representations of both Alt1 and Alt3.
+
+Alt1 is a theorem but it can also be read as a type. The functional interpretation
+  alt1 : Alt1
+means that a proof of Alt1 is
+* a function from (ε > 0) to
+* a function from (L₁ : ℝ) to
+* a function from (L₂ : ℝ) to
+* a function from a pair (q1, q2) to
+* a proof of L₁ = L₂
+
+Thus
+  alt1 ε L₁ L₂ (q1, q2) = -- a proof of |L₁ = L₂|
+
+At this stage it can also be instructive to carry out the proof as well.
+
+let  d = L₂ - L₁   -- so that |L₂ = L₁ + d| and |((L₁ = L₂) <=> (d=0))|
+
+Note that |q1 a L₁| is a function from an |ε| to a pair ((N : ℕ), ...)
+for which |abs (a n - L₁) < ε| for |n>=N| and similarly for |L₂|. Thus
+we can construct a function
+  q ε = max (fst (q1 a L₁ (ε/2))
+            (fst (q2 a L₂ (ε/2))
+such as for all |n >= q ε| both
+  |abs (a n - L₁) < ε/2|
+and
+  |abs (a n - L₂) < ε/2|
+But then
+  abs d = abs (L₂ - L₁) = abs ((L₂ - a n)) - (a n - L₁)) <=
+  abs (L₂ - a n) + abs (a n - L₁)) < ε/2 + ε/2 = ε
+or simply
+  abs d < ε
+
+We can thus prove
+  Forall (ε > 0) (abs d < ε)
+which only allows one possible value for d:
+  d = 0
+
+----------------
+A functional interpretation of Alt3:
+
+  alt3 : Alt3
+
+is
+  alt3 : (L₁ : ℝ) -> (L₂ : ℝ) -> (q1 : Q a L₁) -> (ne : L₁ ≠ L₂) -> nQ a L₂
+where
+  nQ a L₂ = (ε > 0, (N : ℕ) -> (n : ℕ, ( (n ≥ N), (abs (a n - L₂) >= ε) )))
+
+Also here we can attempt a proof:
+
+alt3 L₁ L₂ q1 ne = (ε, foo)
+  where
+    d = abs (L₂ - L₁)  -- which we know is not zero
+    foo : (N : ℕ) -> (n : ℕ, ( (n ≥ N), (abs (a n - L₂) >= ε)))
+
+Here we think about what we need and what we have in scope:
+* For each |N| foo needs to provide |n>=N| for which |abs (a n - L₂) >= ε|
+* For any |ε > 0| we can get an |N| such that |abs (a N - L₁) < ε|
+
+let  ε = d/2
+     N1 = fst (q1 a L₁ ε)
+
+then we know that for all |n>=N1|
+
+  abs (a n - L₁) < d/2
+
+Thus
+
+    abs (a n - L₂)
+  =  -- add and subtract |L₁|
+    abs (a n - L₂ + L₁ - L₁)
+  =  -- reorder terms
+    abs ((L₁ - L₂) + (a n - L₁))
+  >= -- one of the triangle inequalities
+    abs (L₁ - L₂) - abs (a n - L₁)
+  >= -- def. of |d|
+    d - abs (a n - L₁)
+  >  -- by |q1|
+    d - d/2
+  =  -- simplify
+    d/2
+
+Thus |foo| can be defined as follows
+
+  foo N = ( max N N1
+          , ( -- max N N1 >= N
+	    , -- proof above
+	    )
+          )
