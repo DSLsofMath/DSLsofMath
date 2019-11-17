@@ -1,4 +1,4 @@
-E2.10: The limit of a sequence is convergent secuence is unique.
+E2.10: The limit of a convergent sequence is unique.
 
   P : Seq X -> X -> RPos -> Prop
   P a L ε = Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (abs (a n - L) < ε)))
