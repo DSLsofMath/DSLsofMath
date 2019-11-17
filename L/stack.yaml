@@ -1,9 +1,10 @@
-resolver: lts-8.17
+resolver: lts-14.1
 packages:
 - '.'
 extra-deps:
-  - equational-reasoning-0.5.0.0
-  - ghc-typelits-presburger-0.1.1.1
-  - monomorphic-0.0.3.3
-  - type-natural-0.7.1.4
+#  - equational-reasoning-0.6.0.0
+#  - ghc-typelits-presburger-0.2.0.5
+#  - monomorphic-0.0.3.3
+#  - type-natural-0.8.2.0
+#  - equational-reasoning-0.5.0.0
 flags: {}
