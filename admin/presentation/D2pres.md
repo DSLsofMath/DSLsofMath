@@ -1,15 +1,16 @@
-# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
-(Presentation för D2, Fr 2018-11-16 av Patrik Jansson.)
+(Presentation för D2, Må 2019-11-18 av Patrik Jansson.)
 
 * Patrik Jansson: forskare och lärare inom Funktionell Programmering
     * examinator och kursansvarig för kursen DSLsofMath
     * XPA för D (2011–13), nu "inspektor" för D-sektionen
-* Gästföreläsare: Cezar Ionescu, docent i Data Science i Oxford.
-    * gav kursen första gången 2016
-* Vi tror på er förmåga att själva kombinera kurser till en bra helhet
 * LP3 i D2: ett första smakprov på programmets valfrihet
+    * Vi tror på er förmåga att själva kombinera kurser till en bra helhet
     * Budskap: *Välj både DSLsofMath (i LP3) och ConcProg (i LP1)*
+* Gästföreläsare:
+    * Nicola Botta, adjungerad docent i Tyskland
+    * Cezar Ionescu, AI professor i Tyskland (tidigare Oxford)
 
 # Kursidé för "Matematikens domänspecifika språk"
 
@@ -24,9 +25,8 @@ Kursen är tänkt att ge en fördjupad matematisk förståelse för
 datastudenter och en fördjupad datavetenskaplig förståelse för
 matematikstudenter.
 
-
 \begin{align*}
-   f(x) &= x^2
+   f(x) &= 3*x^2
 \\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
 \end{align*}
 
@@ -46,8 +46,8 @@ på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
 * Resultat på DSLsofMath:
     * 2016: 28 reg., godkända: 68%
     * 2017: 43 reg., godkända: 58%
-    * 2018: 39 reg., godkända: **89%**
-
+    * 2018: 39 reg., godkända: 89%
+    * 2019: 59 reg., godkända: 73%
 
 * Resultat i D3 (Transformer samt Regler)
 
@@ -58,14 +58,31 @@ på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
 
 Dvs. de som tar DSL-kursen får mycket bättre resultat hösten i D3.
 
-(Totalt 145 varav Valde inte DSL=92, Valde=53, Godk.=34, .)
+\small (Totalt 145 varav 'Valde inte DSL'=92, Valde=53, Godk.=34.)
+
+# Student-citat
+
+* "I feel like I have gotten a better understanding of mathematics, and how to make use of domain specific languages."
+* "The teachers (and assistants) were very engaging."
+* "I found the 'alternative' perspective on common mathematical subjects in general to be very good. The part about logic and the part about linear algebra were my personal favorites."
+* "Patrik is an excellent lecturer for the course."
+
+"Jag läste DSLofMath för ett par år sedan och hade lite svårt att förstå syftet med kursen. Jag tyckte att den var lite luddig.
+
+Nu har jag läst ... "Advanced Functional Programming", "Programming Language Technology", och "Types for Programs and Proofs", och nu förstår jag.
+
+Kursen har verkligen varit till hjälp, även om jag inte var mogen att förstå det när det begav sig."
+
+
+
+
 
 
 # Aktiva studier
 
 * föreläsningar växlat med övningar + grupparbete.
 * Aktiva studier: det räcker inte att bara "läsa (eller lyssna) och hålla med"
-* *D är en bra bakgrund*: programmering och datavetenskap ~= mat. problemlösning & logik
+* *D är en bra bakgrund*: programmering och datavetenskap ~= matematisk problemlösning & logik
 * plocka isär & reda ut begrepp -> källkod (funktioner och *typer*)
 * datorn (kompilatorn) ger direkt återkoppling när något inte stämmer.
 
@@ -126,10 +143,6 @@ Exempel:
 * integraler: [Behöver ritas!]
     * (notera var variablerna binds)
 
-# Linjär algebra: vektorer, matriser, egenvärden, ...
-
-![Upper triangular](UpperTriangularChocolateTwitter.png)
-
 # Matematikens domänspecifika språk (DSLsofMath)
 
 * linjär algebra:
@@ -140,8 +153,8 @@ Exempel:
     * Semantik: funktioner (flera semantiker att välja på för samma syntax)
     * [Power series – power serious!](http://www.cs.dartmouth.edu/~doug/powser.html)
 * komplexa tal (och transformer)
-    * Algebraiskt: En "imaginär enhetet" i och några lagar (i*i == -1, etc)
-    * Geometrisk: rotation och skalning av punkter i planet
+    * Algebra: En "imaginär enhet" i och några lagar (i^2 = -1, etc)
+    * Geometri: rotation och skalning av punkter i planet
     * Två helt olika språk med samma semantik: de komplexa talen.
 
 # Sammanfattning
@@ -154,7 +167,7 @@ chanser att segla igenom D3 utan att gå på grund.
 
 Välkomna i januari önskar lärarlaget
 
-  Patrik, Cezar, Maximilian
+  Patrik, Solrun, Victor
 
 
 \begin{align*}
@@ -163,6 +176,10 @@ Välkomna i januari önskar lärarlaget
 \end{align*}
 
 ----------------
+
+# Exempel på tillämpning: LinAlg, matris, maskininlärning
+
+![Upper triangular](UpperTriangularChocolateTwitter.png)
 
 # Extra: Domänspecifika språk (DSL) i fo.&utv.
 
