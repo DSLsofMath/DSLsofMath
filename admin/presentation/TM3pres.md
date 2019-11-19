@@ -1,5 +1,5 @@
-# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=26170) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
-(Pres. for TM3, To 2017-11-16 av Patrik Jansson.)
+# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+(Pres. for TM3, To 2019-11-19 av Patrik Jansson.)
 
 * Patrik Jansson, forskare & lärare i funktionell programmering
     * i gränsområdet mellan matematik och datavetenskap
@@ -14,6 +14,19 @@ Presentera klassiska matematiska ämnen från ett datavetenskapligt perspektiv:
 Kursen är tänkt att ge en fördjupad matematisk förståelse för
 datastudenter och en fördjupad datavetenskaplig förståelse för
 matematikstudenter.
+
+# Student-citat
+
+* "I feel like I have gotten a better understanding of mathematics, and how to make use of domain specific languages."
+* "The teachers (and assistants) were very engaging."
+* "I found the 'alternative' perspective on common mathematical subjects in general to be very good. The part about logic and the part about linear algebra were my personal favorites."
+* "Patrik is an excellent lecturer for the course."
+
+"Jag läste DSLofMath för ett par år sedan och hade lite svårt att förstå syftet med kursen. Jag tyckte att den var lite luddig.
+
+Nu har jag läst ... "Advanced Functional Programming", "Programming Language Technology", och "Types for Programs and Proofs", och nu förstår jag.
+
+Kursen har verkligen varit till hjälp, även om jag inte var mogen att förstå det när det begav sig."
 
 # Funktionell programmering (FP)
 
@@ -57,18 +70,6 @@ list         :: Num a =>  [a -> a]
 list         =  [(1+), (2*), kvadrat, upphöjtFyra]
 ```
 
-# Andra kurser
-
-Relation till de övriga kurserna som presenteras + kandidatarbete:
-
-| Kurs                               | Relation    |
-| ---------------------------------- | ----------- |
-| Kommunikationssystem               | DSL: [Feldspar](http://feldspar.github.io/) |
-| Partiella differentialekvationer   | DSL: [FEniCS](http://fenicsproject.org/) (Anders Logg) |
-| Algebra                            | [Algebra of Programming](http://wiki.portal.chalmers.se/agda/pmwiki.php?n=Libraries.AOPA) |
-| Databaser                          | SQL, relationsalgebra |
-| Kandidatarbete om DSLsofMath       | [Jag handleder!](https://github.com/DSLsofMath/BScProj2017/blob/master/DSLsofMath_andra_kurser.md) |
-
 # Matematikens domänspecifika språk
 
 * finslipad förmåga att formalisera
@@ -81,7 +82,7 @@ Välkomna!
 /Patrik
 
 \begin{align*}
-   f(x) &= x^2
+   f(x) &= 3*x^2
 \\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(t) dt
 \end{align*}
 
@@ -128,32 +129,3 @@ Studenten ska ha klarat (+TM-exempel):
     * TM1: LinAlg&NumAn, Flervariabel + TM2: Komplex, ...
 
 Rekommenderat (men ej krav): Funktionell programmering
-
-# Inbjudan från TM
-
-Kursvalsinformation TM3
-
-Nu är det snart dags att välja kurser inför läsperiod 3, VT 2018. De
-kurser du kan välja presenteras på torsdag den 16 november. Du får då
-också tillfälle att ställa frågor om kurserna och kursvalet.
-
-Information inför kursvalet:
-
-Torsdag den 16/11 klockan 13:15–14.00 i KC
-
-\small
-
-| Tid   | Kurskod | Kurs                              | Presentatör |
-| ----- | ------ | ---------------------------------- | -----------        |
-| 13.15 |        | Information                        | Johan Jonasson     |
-| 13.20 | SSY305 | Kommunikationssystem               | Katharina Hausmair |
-| 13.25 | DAT326 | Matematikens domänspecifika språk  | Patrik Jansson     |
-| 13.30 | TMA372 | Partiella differentialekvationer   | Mohammad Asadzadeh |
-| 13.35 | MVE150 | Algebra                            | Jiacheng Xia       |
-| 13.40 | TDA357 | Databaser                          | Aarne Ranta        |
-
-Valmodulen är öppen i Studentportalen från den 14 november till den 5 december.
-
-Mvh,
-Bengt-Erik Mellander
-Utbildningssekreterare F&TM
