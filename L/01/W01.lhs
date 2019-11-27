@@ -778,7 +778,7 @@ Next, we have the following definition:
   \textbf{Definition:} A \textbf{complex number} is an expression of
   the form
 
-<  a + bi {-"\qquad \mathrm{or} \qquad"-} a + ib,
+<  {-"a + bi \qquad \mathrm{or} \qquad a + ib,"-}
 
   where |a| and |b| are real numbers, and |i| is the imaginary unit.
 \end{quote}
@@ -796,8 +796,8 @@ programming is to introduce an abstract representation of it in the
 form of a datatype:
 
 \begin{code}
-data ComplexA  =  CPlus1 REAL REAL ImagUnits  -- the form |a + bi|
-               |  CPlus2 REAL ImagUnits REAL  -- the form |a + ib|
+data ComplexA  =  CPlus1 REAL REAL ImagUnits  -- the form $a + bi$
+               |  CPlus2 REAL ImagUnits REAL  -- the form $a + ib$
 \end{code}
 
 We can give the translation from the abstract syntax to the concrete
@@ -829,11 +829,11 @@ The text continues with examples:
 \end{quote}
 
 The second example is somewhat problematic: it does not seem to be of
-the form |a + bi|.
+the form $a + bi$.
 %
 Given that the last two examples seem to introduce shorthand for
 various complex numbers, let us assume that this one does as well, and
-that |a - bi| can be understood as an abbreviation of |a + (-b)i|.
+that $a - bi$ can be understood as an abbreviation of $a + (-b)i$.
 %
 With this provision, in our notation the examples are written as in
 Table~\ref{tab:CompleSyntaxExamplesMathHaskell}.
@@ -885,15 +885,15 @@ that $i$ abbreviates $i 1$ and therefore |CPlus2 0 I 1|.
 %
 But what about, say, $2 i$?
 %
-Abbreviations with |i| have only been introduced for the |ib| form,
-and not for the |bi| one!
+Abbreviations with $i$ have only been introduced for the $ib$ form,
+and not for the $bi$ one!
 
 The text then continues with a parenthetical remark which helps us
 dispel these doubts:
 
 \begin{quote}
-  (We will normally use |a + bi| unless |b| is a complicated
-  expression, in which case we will write |a + ib| instead.
+  (We will normally use $a + bi$ unless $b$ is a complicated
+  expression, in which case we will write $a + ib$ instead.
 %
   Either form is acceptable.)
 \end{quote}
@@ -904,7 +904,7 @@ say ``either form is acceptable''.
 %
 After all, they are acceptable by definition.
 
-Given that |a + ib| is only ``syntactic sugar'' for |a + bi|, we can
+Given that $a + ib$ is only ``syntactic sugar'' for $a + bi$, we can
 simplify our representation for the abstract syntax, eliminating one
 of the constructors:
 
@@ -931,8 +931,8 @@ We read further:
 %
   |w| and |z| are frequently used for this purpose.
 %
-  If |a|, |b|, |x|, and |y| are real numbers, and |w = a + bi| and |z
-  = x + yi|, then we can refer to the complex numbers |w| and |z|.
+  If |a|, |b|, |x|, and |y| are real numbers, and $w = a + bi$ and $z
+  = x + yi$, then we can refer to the complex numbers |w| and |z|.
 %
   Note that |w = z| if and only if |a = x| and |b = y|.
 \end{quote}
@@ -998,7 +998,7 @@ complex numbers:
 \begin{quote}
   \textbf{The sum and difference of complex numbers}
 
-  If |w = a + bi| and |z = x + yi|, where |a|, |b|, |x|, and |y| are real numbers,
+  If $w = a + bi$ and $z = x + yi$, where |a|, |b|, |x|, and |y| are real numbers,
   then
 
 < w  +  z  =  (a + x)  +  (b + y)i
