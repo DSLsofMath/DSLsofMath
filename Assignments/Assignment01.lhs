@@ -13,11 +13,11 @@
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 \providecommand{\textepsilon}{\ensuremath{\epsilon}}
 \begin{document}
-\title{DSLsofMath 2019: Assignment 1}
+\title{DSLsofMath 2020: Assignment 1}
 \author{Patrik Jansson and Daniel Schoepe and Maximilian Algehed}
 \date{}
 \maketitle
-\section{DSLsofMath 2019: Assignment 1}
+\section{DSLsofMath 2020: Assignment 1}
 \label{dslsofmath-2018-assignment-1}
 
 In this assignment the focus is on the following three learning
@@ -119,9 +119,9 @@ Admin:
 
 \begin{itemize}
 \item \emph{Submission}: Assignments are to be submitted via Canvas
-\item \emph{Deadline}: 2019-02-05
+\item \emph{Deadline}: Tueday 2020-02-04
 \item \emph{Grading}: Discussions with each of the teams during the
-  slot 2019-02-11, 10–12 or 15–17
+  slot 2020-02-10, 8.30–12 or 13.30–17
 \end{itemize}
 
 Note: The examination will be in English.

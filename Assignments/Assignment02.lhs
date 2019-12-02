@@ -157,9 +157,9 @@ method at point 2.
 \section*{Formalities}
 \begin{description}
 \item [Submission:] Assignments are to be submitted via Canvas
-\item [Deadline:] 2019-03-05
+\item [Deadline:] 2020-03-03
 \item [Grading:] Discussions with each of the teams during one of the
-  slots 2019-03-08.
+  slots 2020-03-09.
 \end{description}
 \bibliographystyle{abbrvnat}
 \bibliography{../L/ref}
