@@ -1,4 +1,9 @@
 Some live coding from the second half of lecture 1 (week 1).
+(DSLsofMath course, 2019).
+
+This file is an example of a "literate Haskell file" where the
+default (like this intro text) is comment and code blocks are
+enclosed in "\begin{code}" and "\end{code}."
 
 Starting with a simple function
 \begin{code}
@@ -16,8 +21,8 @@ f3 :: Num a =>    a -> a
 f3 = f
 \end{code}
 
-Num has the operations +,*,-,fromInteger  (ask ghci with ":i" to get the full list)
-but not /.
+Num has the operations (+), (*), (-), fromInteger (ask ghci
+with ":i" to get the full list) but not (/).
 
 Fractional has the operations from Num and also division (/).
 
@@ -27,44 +32,54 @@ g x = x / x
 \end{code}
 
 Float and Double have
-  * finite precision (most real numbers are missing)
-  * but also extra values: NaN, Infinity, -Infinity, and a few more
+* finite precision (most real numbers are missing)
+* but also extra values: NaN, Infinity, -Infinity, and a few more
+
+\begin{code}
+inf :: Double
+inf = 1/0
+\end{code}
 
 Associative(+) = forall x,y,z. (x+y)+z == x+(y+z)
-Note: Float and Double are _not_ associative
+Note: Float and Double are _not_ associative (but almost)
 
 \begin{code}
 lhs x y z =  (x+y)+z
 rhs x y z =  x+(y+z)
 
-båda x y z = (l, r , l-r)
+checkAssoc x y z = (l, r, l-r, l == r)
   where
     l = lhs x y z
     r = rhs x y z
 
-fakultet :: (Num a, Enum a) => a -> a
-fakultet n = product [1..n]
+factorial :: (Num a, Enum a) => a -> a
+factorial n = product [1..n]
 \end{code}
 
+Sv: Fakultet, En: factorial
 
+Some type synonyms:
 \begin{code}
 type Tal = Integer
 type Ålder = Integer
 type Skostorlek = Integer
-
-newtype Åld      -- namnet på den nya type
-      = Ålde     -- namnet på konstrueraren
-        Integer  -- den typ som lagras internt
 \end{code}
 
-Ålde :: Integer -> Åld
+Creating new types:
+\begin{code}
+newtype Age      -- name of the new type
+      = Age2     -- function (constructor) to build Age values
+        Integer  -- inner type
+\end{code}
+
+Age2 :: Integer -> Age
 
 \begin{code}
 e :: Tal
 e = 5
 
-å :: Åld
-å = Ålde 5
+å :: Age
+å = Age2 5
 \end{code}
 
 ----------------
