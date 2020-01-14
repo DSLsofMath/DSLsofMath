@@ -15,7 +15,20 @@
 
 > instance Floating a => Floating (x -> a) where
 >   pi       =  const pi
->   exp f    =  exp . f
 >   f ** g   =  \ x -> (f x)**(g x)
+>   exp f    =  exp . f
+>   log f    =  log . f
+
+>   sin f    =  sin . f
 >   cos f    =  cos . f
->   -- and so on
+>   tan f    =  tan . f
+>   sinh f   =  sinh . f
+>   cosh f   =  cosh . f
+>   tanh f   =  tanh . f
+
+>   asin f   =  asin . f
+>   acos f   =  acos . f
+>   atan f   =  atan . f
+>   asinh f  =  asinh . f
+>   acosh f  =  acosh . f
+>   atanh f  =  atanh . f

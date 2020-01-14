@@ -3,8 +3,8 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 module DSLsofMath.W06 where
 import DSLsofMath.FunExp hiding (eval, f)
-import DSLsofMath.W05
 import DSLsofMath.Simplify
+import DSLsofMath.W05
 \end{code}
 
 \section{Higher-order Derivatives and their Applications}
