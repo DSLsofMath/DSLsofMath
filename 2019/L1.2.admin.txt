@@ -1,0 +1,28 @@
+Compulsory:
++ E = Exam
++ A = Assignments (in groups of 3)
+Elective:
++ W = Weekly Exercises (individual) => bonus points
+
+----------------
+
+Assignment 1:
+
+Please form groups by Monday 2019-01-28.
+
+Lab group status (2019-01-24, 09.36)
+* A1.01-12 and A1.18 are full  (39 students)
+
+* Some groups have only one or two members: (13 students => could be 3*3 + 2*2 = five groups)
+A1.13: 2
+A1.14: 2
+A1.15: 2
+A1.16: 1
+A1.17: 2
+A1.19: 2
+A1.20: 2
+
+* Some Canvas-listed students are not in any group yet: (26 students => could be nine groups))
+
+
+* And (probably) a few students are not even yet in Canvas (due to reg. system delays, etc.)
