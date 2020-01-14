@@ -1,0 +1,40 @@
+What is a "Domain-specific language" (DSL)?
+
+Examples:
+
+* dates:
+    * Syntax: "2015-11-18", "third Wednesday in October", "next Saturday"
+    * Semantic type: |Date|, or perhaps a function type |Date -> Date|
+
+* excel-formulas:
+    * Syntax: "SUM(A1:A9)", "RIGHT(LEFT(C7,4),2)", ...
+    * Semantic type: |[ [ Cell ] ] -> Value|
+
+* integrals: [drawing needed]
+    * (note where variables are bound)
+
+* Heraldry:
+    https://pyvideo.org/pycon-us-2019/a-medieval-dsl-parsing-heraldic-blazons-with-python.html
+  Syntax example: "Sable, on a fesse or three lions gules"
+  Semantics: the resulting drawing?
+
+----------------------------------------------------------------
+
+Surface syntax (mostly ignored in this course)
+Abstract syntax (usually a recursive Haskell datatype)
+Semantic type (a type of values)
+Semantics: a function from AbsSyn -> Sem
+
+eval : AbsSyn -> Sem
+
+Example:
+
+  Plus : Syn -> Syn -> Syn  -- syntactic constr.
+
+smart constructors:
+
+  plus : Sem -> Sem -> Sem  -- semantic constr.
+
+-- later on
+
+  MySem s => s -> s -> s
