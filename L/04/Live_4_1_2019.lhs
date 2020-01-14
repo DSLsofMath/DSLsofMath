@@ -24,9 +24,9 @@ which expands into
  eval (Union x y) == unionSem (eval x) (eval y)
 
 and similarly
-  prop_h2_I = h2 eval Intersection interSem
+  prop_h2_I x y = h2 eval Intersection interSem x y
 which expands into
-  \x y -> eval (Inter x y) == interSem (eval x) (eval y)
+  eval (Inter x y) == interSem (eval x) (eval y)
 
 As you may note, this property is fulfilled "by definition" when we
 define a recursive evaluator using our usual recursion pattern.
