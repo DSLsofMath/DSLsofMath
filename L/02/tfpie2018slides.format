@@ -1,0 +1,214 @@
+\def\commentbegin{\{{-}~}
+
+%format =~=			= "\stackrel{\text{def}}{=}"
+% %format ComplexA                =  Complex "_A"
+%format REAL                    =  "\mathbb{R}"
+%format COMPLEX                 =  "\mathbb{C}"
+%format ZZ                      =  "\mathbb{Z}"
+%format Zn                      =  ZZ "_n"
+%format QQ                      =  "\mathbb{Q}"
+%format Nat                     =  "\mathbb{N}"
+%format Pos                     =  "\mathbb{N}_{> 0}"
+%format RPos                    =  "\mathbb{R}_{> 0}"
+%format RPosz                   =  "\mathbb{R}_{\ge 0}"
+%format PS                      =  "\mathcal{P}"
+% %format PS+                     =  PS "^+"
+%format elemOf                  =  "\in"
+%format ifandonlyif             =  "\iff"
+%format notElemOf               =  "\notin"
+%format noteq                   =  "\neq"
+%format empty                   =  "\emptyset"
+%format eps                     =  "\epsilon"
+%format included                =  "\subseteq"
+%format intersect               =  "\cap"
+%format bar			=  "\mathbin{\mid}"
+%format (absBar (x))               =  "\lvert{}" x "\rvert{}"
+%format (Clopen(x))             =  "[" x ")"
+%format infinity                =  "\infty"
+%format (pi)                    =  "\pi"
+%format (div (x) (y))           =  "\frac{" x "}{" y "}"
+%format (frac (x) (y))          =  "\frac{" x "}{" y "}"
+% %format (∃(x)(y))               =  "\exists\ " x ".\ \ " y
+% %format (Exists(x)(y))          =  "\exists\ " x ".\ \ " y
+%format Exists(x)(y)          =  "\exists\ " x ".\ \ " y
+% %format (Forall(x)(y))          =  "\forall\ " x ".\ \ " y
+%format Forall(x)(y)          =  "\forall\ " x ".\ \ " y
+%format ExistsAlone          =  "\exists"
+%format ForallAlone          =  "\forall"
+
+%format (modulus (x) (y))       =  "\sqrt{" x "^2 + " y "^2}"
+%format (pow x (y))             =  x "^{" y "}"
+%format Theta                   =  "\theta"
+%format (Opclosed(x))           =  "(" x "]"
+% %format newtype                 =  "\Keyword{newtype}"
+% %format ,                       =  ",\ "
+%format square x                =  x "^2"
+%format (sqrt (x))              =  "\sqrt{" x "}"
+%format CPlus1                   =  CPlus "_1"
+%format CPlus2                   =  CPlus "_2"
+%format Lap                     =  "\mathcal{L}"
+%format CC                      =  "\mathbb{C}"
+%format Sigma                   =  "\Sigma"
+%format @                       =  "\!@\!"
+% %format where                   =  "\ \Keyword{where}\ "
+
+% %format +N                      =  "+"
+
+% %format :+: = "\mathbin{\vcentcolon\kern-0.4em+\kern-0.4em\vcentcolon}"
+%format :+:                    = "\tyconsym{+}"
+%format :*:                    = "\tyconsym{*}"
+%format :/:                    = "\tyconsym{/}"
+%format :+                     = "\mathbin{{:}\!" + "}"
+%format :*                     = "\mathbin{{:}" * "}"
+%format :++                    = "\mathbin{{:}\!" ++ "}"
+%format :**                    = "\mathbin{{:}" ** "}"
+
+%format powTo n = "{}" ^ n
+%format ^ = "\mathbin{\hat{}}"
+%format undefined = "\Varid{undefined}"
+%format == = "\doubleequals"
+%format /= = "\not\doubleequals"
+%format === = "\tripleequals"
+%format phi = "\varphi"
+%format psi = "\psi"
+%format phix = phi "_x"
+%format cross x y = x "\times" y
+%format ε = "\epsilon"
+%format δ = "\delta"
+%format getδ = "get\delta"
+%format newδ = "new\delta"
+%%% Use ? to end the variable binding part of forall and exists to avoid clash with . for composition
+%format ? = ".~"
+%format ?? = "?"
+%format *? = "\circledast"
+% %format *? = "\otimes"
+%format <=> = "\Leftrightarrow"
+%format <== = "\Leftarrow"
+%format ->? = "\stackrel{?}{\leftarrow}"
+%format -=> = "\mathrel{{-}\!{=}\!{>}}"
+
+%format Integ = "\int_0^{\infty} "
+%format alpha = "\alpha"
+%format beta  = "\beta"
+%format delta = "\delta"
+%format epsilon  = "\epsilon"
+
+%%% Indexed variable names
+%format a0
+%format a1
+%format a2
+%format a3
+%format ak = a "_k"
+%format an = a "_n"
+%format b0
+%format b1
+%format b2
+%format b3
+%format bk = b "_k"
+%format bn = b "_n"
+%format bm = b "_m"
+%format c0
+%format c1
+%format c2
+%format ck = c "_k"
+%format e1
+%format e2
+%format f0
+%format f1
+%format f2
+%format f3
+%format e1' = "e''_1"
+%format e2' = "e''_2"
+%format e3' = "e''_3"
+%format f1' = "f''_1"
+%format f2' = "f''_2"
+%format f3' = "f''_3"
+%format m1
+%format m2
+%format m3
+%format ps0
+%format ps1
+%format ps2
+%format p0
+%format p1
+%format p2
+%format p3
+%format p4
+%format r1
+%format r2
+%format s1
+%format s2
+%format s3
+%format s4
+%format s5
+%format t0
+%format t1
+%format t2
+%format t3
+%format v0
+%format vn = v "_n"
+%format w0
+%format wn = w "_n"
+%format x0
+%format x0
+%format x1
+%format x2
+%format x3
+%format xn = x "_n"
+%format Tn = T "_n"
+%format H0
+%format H1
+%format H2
+%format y1
+%format y2
+%format y3
+%format w1
+%format w2
+%format w3
+
+
+%format Andn = And "_{n}"
+%format A1 = A "_{1}"
+%format A2 = A "_{2}"
+%format Ai = A "_{i}"
+%format An = A "_{n}"
+%format L1 = L "_{1}"
+%format L2 = L "_{2}"
+%format i0
+%format i1
+%format i2
+%format bt = b "_{t}"
+%format di = d "_{i}"
+%format xi = x "_{i}"
+%format vi = v "_{i}"
+%format e0
+%format en = e "_n"
+%format Orn = Or "_{n}"
+
+%format AllIntro    = ∀ "\!\text{-}" Intro
+%format	AllElim     = ∀ "\!\text{-}" Elim
+
+%format ExistsIntro = ∃ "\!\text{-}" Intro
+%format	ExistsElim  = ∃ "\!\text{-}" Elim
+
+%format mini = min "_i"
+
+%format mod x y = x "\%" y
+
+%format liftSeq1 = liftSeq "_1"
+
+
+%format CSem.+. = "\mathbin{\stackrel{\scriptscriptstyle" CSem "}{" +. "}}"
+%format CSem.*. = "\mathbin{\stackrel{\scriptscriptstyle" CSem "}{" *. "}}"
+
+%format eval'Exp = eval' "_{\!" Exp "}"
+
+%format fA = f "_" A
+%format fB = f "_" B
+%format opA = op "_{\!" A "}"
+%format opB = op "_{\!" B "}"
+%format unitA = unit "_{\!" A "}"
+%format unitB = unit "_{\!" B "}"
+
+%format gSyn = g "_{" syn "}"
+%format gSem = g "_{" sem "}"
