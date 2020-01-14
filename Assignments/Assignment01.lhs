@@ -14,7 +14,7 @@
 \providecommand{\textepsilon}{\ensuremath{\epsilon}}
 \begin{document}
 \title{DSLsofMath 2020: Assignment 1}
-\author{Patrik Jansson and Daniel Schoepe and Maximilian Algehed}
+\author{Patrik Jansson and Sólrún Einardóttir and Víctor López Juan}
 \date{}
 \maketitle
 \section{DSLsofMath 2020: Assignment 1}

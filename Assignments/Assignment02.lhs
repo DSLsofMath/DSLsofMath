@@ -19,7 +19,7 @@
     \put(7,14){\line(1,0){25}} \put(45,14){\line(1,0){25}}
   \end{picture}}}
 \begin{document}
-\title{DSLsofMath 2017: Assignment 2}
+\title{DSLsofMath 2020: Assignment 2}
 \date{}
 \maketitle
 \section*{Optimisation using Newton's method}
