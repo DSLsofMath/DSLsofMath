@@ -1,0 +1,27 @@
+* Admin:
+** Mid-course evaluation meeting and course representatives
+https://chalmers.instructure.com/courses/3788/pages/course-evaluation
+
+The mid-course evaluation meeting will take place TODO [2019-02-08 at 12.30 in EDIT-5128].
+TODO student participants
+
+** Weekly exercises:
++ Week 1 grading ongoing
++ Week 2 online
+** Assignment 1:     Group formation
++ Random completion tomorrow.
+** Assignment 2:     New groups (assigned)
+New "Group set" in canvas to handle potential group changes.
+* Parameterised datatypes
+** Maybe a
+** Both a b
+** Either a b
+* Polymorphic evaluator
+** What is a Monoid? (X, unit, op)
+** A simple datatype for monoid expressions
+** Assignment function
+** Polymorphic (generic) evaluator
+* PropCalc = Propositional Calculus
+* Pure set theory
+* FOL = First Order Logic
+* Proof examples
