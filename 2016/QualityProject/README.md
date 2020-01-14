@@ -91,7 +91,7 @@ Numbers](https://github.com/DSLsofMath/BScProj/blob/master/Tutorial/ComplexNumbe
 
 Time for a new status update for the pedagogical project "DSLsofMath" (funded by Chalmers' education quality money 2014–2015 via the CSE programme).
 
-The resulting BSc-level elective course "Domain Specific Languages of Mathematics" will be "advertised" to prospective maths students on Monday (TM3) and to CSE students on Thursday (D2). Finally, on Friday I will give a "research talk" about some of the ideas underlying the course – see below and at this URL:
+The resulting BSc-level elective course "Domain-Specific Languages of Mathematics" will be "advertised" to prospective maths students on Monday (TM3) and to CSE students on Thursday (D2). Finally, on Friday I will give a "research talk" about some of the ideas underlying the course – see below and at this URL:
   http://www.chalmers.se/insidan/sites/cse/aktuellt/kalendarium/sok-kalendariet/dslsofmath-presenting
 
 The teaching team of the new course consists of
@@ -166,7 +166,7 @@ Mvh,
 
 Source: https://github.com/DSLsofMath/tfpie2015
 
-Domain Specific Languages of Mathematics: Presenting Mathematical Analysis using Functional Programming
+Domain-Specific Languages of Mathematics: Presenting Mathematical Analysis using Functional Programming
 2015-04-27: Paper submission: "Domain-Specific Languages of Mathematics: Presenting Mathematical Analysis using Functional Programming" to Trends in Functional Programming in Education (TFPIE 2015). If accepted the paper will be submitted to ENTCS (RoMEO green)
 
 Authors: Cezar Ionescu and Patrik Jansson, Chalmers

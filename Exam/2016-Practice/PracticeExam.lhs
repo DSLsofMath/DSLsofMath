@@ -1,5 +1,5 @@
 ---
-title: Domain Specific Languages of Mathematics
+title: Domain-Specific Languages of Mathematics
 subtitle: Practice Exam
 ---
 

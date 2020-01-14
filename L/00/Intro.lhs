@@ -3,7 +3,7 @@
 \label{sec:intro}
 
 These lecture notes aim to cover the lectures and exercises of the
-recently introduced BSc-level course ``Domain Specific Languages of
+recently introduced BSc-level course ``Domain-Specific Languages of
 Mathematics'' (at Chalmers Univeristy of Technology and University of
 Gothenburg).
 %
@@ -144,7 +144,7 @@ computer science perspective.
 \begin{itemize}
 \item Knowledge and understanding
   \begin{itemize}
-  \item design and implement a DSL (Domain Specific Language) for a new domain
+  \item design and implement a DSL (Domain-Specific Language) for a new domain
   \item organize areas of mathematics in DSL terms
   \item explain main concepts of elementary real and complex analysis,
         algebra, and linear algebra

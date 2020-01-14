@@ -115,7 +115,7 @@ To compile them, you can use a suitably modified form of this
 - [Lecture 04, Proofs and Programs in Mathematics](Lectures/Lecture04.lhs).
 - [Lecture 05, Types in Mathematics](Lectures/Lecture05.lhs).
 - [Lecture 06, Types in Mathematics, Part II](Lectures/Lecture06.lhs).
-- [Lecture 07, Domain Specific Languages: Signal Shape](Lectures/07/README.md).
+- [Lecture 07, Domain-Specific Languages: Signal Shape](Lectures/07/README.md).
 - [Lecture 08, An embedded DSL for Chebyshev interpolation](Lectures/Lecture08.pdf).
 - [Lecture 09, Algebraic Structures and DSLs](Lectures/Lecture09.lhs). Some associated code is also [available](code/).
 - [Lecture 10, Polynomials and Power Series](Lectures/Lecture10.lhs).
@@ -190,7 +190,7 @@ Some important references:
   understanding the design and implementation of embedded DSLs.
   [URL](http://spivey.oriel.ox.ac.uk/corner/Programming_Languages)
 
-- **Domain Specific Languages**, Martin Fowler, 2011.
+- **Domain-Specific Languages**, Martin Fowler, 2011.
   [URL](http://martinfowler.com/books/dsl.html)
 
   The view from the object-oriented programming perspective.

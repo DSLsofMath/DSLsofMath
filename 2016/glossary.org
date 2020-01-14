@@ -3,7 +3,7 @@
 
 * DSL
 
-  - Domain specific language -- domänspecifikt språk
+  - Domain-specific language -- domänspecifikt språk
 
     Ett programmeringsspråk specifikt för en domän (t.ex. linjär
     algebra).

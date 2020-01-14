@@ -62,7 +62,7 @@ Dvs. de som tar DSL-kursen får mycket bättre resultat hösten i D3.
 
 # Student-citat
 
-* "I feel like I have gotten a better understanding of mathematics, and how to make use of domain specific languages."
+* "I feel like I have gotten a better understanding of mathematics, and how to make use of domain-specific languages."
 * "The teachers (and assistants) were very engaging."
 * "I found the 'alternative' perspective on common mathematical subjects in general to be very good. The part about logic and the part about linear algebra were my personal favorites."
 * "Patrik is an excellent lecturer for the course."

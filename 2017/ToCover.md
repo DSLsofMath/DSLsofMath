@@ -3,7 +3,7 @@
 ## Notation for learning outcomes
 
 * KU = Knowledge and understanding
-    * KU.DSL      = design and implement a DSL (Domain Specific Language) for a new domain
+    * KU.DSL      = design and implement a DSL (Domain-Specific Language) for a new domain
     * KU.Org      = organize areas of mathematics in DSL terms
     * KU.Explain  = explain main concepts of elementary real and complex analysis, algebra, and linear algebra
 * SA = Skills and abilities
@@ -60,10 +60,10 @@ Lectures:
 | SA.Calc:         | L6:  | calculate a program (`derive`)
 | KU.Org:          | L6:  | mathematical DSLs with Haskell typeclasses
 | JA:              | L6:  | shallow embeddings
-| KU.DSL:          | L7:  | domain specific languages
-| KU.Org:          | L7:  | domain specific languages
-| SA.Notation:     | L7:  | domain specific languages
-| JA:              | L7:  | domain specific languages
+| KU.DSL:          | L7:  | domain-specific languages
+| KU.Org:          | L7:  | domain-specific languages
+| SA.Notation:     | L7:  | domain-specific languages
+| JA:              | L7:  | domain-specific languages
 | KU.DSL:          | L8:  | EDSL for Chebyshev interpolation (guest lecture)
 | KU.Explain:      | L8:  | explain interpolation in terms of a Haskell library
 | KU.DSL:          | L9:  | Haskell typeclasses and DSLs
@@ -84,7 +84,7 @@ What is covered where in 2017:
 ## Notation for learning outcomes
 
 * KU = Knowledge and understanding
-    * KU.DSL     = design and implement a DSL (Domain Specific Language) for a new domain
+    * KU.DSL     = design and implement a DSL (Domain-Specific Language) for a new domain
     * KU.Org     = organize areas of mathematics in DSL terms
     * KU.Explain = explain main concepts of elementary real and complex analysis, algebra, and linear algebra
 * SA = Skills and abilities
@@ -105,10 +105,10 @@ Lectures:
 | SA.Calc:         | L6:  | calculate a program (`derive`)
 | KU.Org:          | L6:  | mathematical DSLs with Haskell typeclasses
 | JA:              | L6:  | shallow embeddings
-| KU.DSL:          | L7:  | domain specific languages
-| KU.Org:          | L7:  | domain specific languages
-| SA.Notation:     | L7:  | domain specific languages
-| JA:              | L7:  | domain specific languages
+| KU.DSL:          | L7:  | domain-specific languages
+| KU.Org:          | L7:  | domain-specific languages
+| SA.Notation:     | L7:  | domain-specific languages
+| JA:              | L7:  | domain-specific languages
 | KU.DSL:          | L9:  | Haskell typeclasses and DSLs
 | KU.Org:          | L9:  | mathematical DSLs with Haskell typeclasses
 | KU.Org:          | L10: | DSL for power series

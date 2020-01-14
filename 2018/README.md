@@ -35,7 +35,7 @@ Learning outcomes as in the
 [course syllabus](https://www.student.chalmers.se/sp/course?course_id=26170).
 
 * Knowledge and understanding
-    * design and implement a DSL (Domain Specific Language) for a new domain
+    * design and implement a DSL (Domain-Specific Language) for a new domain
     * organize areas of mathematics in DSL terms
     * explain main concepts of elementary real and complex analysis, algebra, and linear algebra
 * Skills and abilities
@@ -63,7 +63,7 @@ The main references are listed below.
     * Basic concepts of analysis: sequences, limits, convergence, ...
     * Types and mathematics: logic, quantifiers, proofs and programs, Curry–Howard, ...
         * Type classes, derivatives, differentiation, calculational proofs
-    * Domain Specific Languages and algebraic structures, algebras, homomorphisms
+    * Domain-Specific Languages and algebraic structures, algebras, homomorphisms
     * Polynomials, series, power series
     * Power series and differential equations, exp, sin, log, Taylor series, ...
     * Linear algebra: vectors, matrices, functions, bases, dynamical systems as matrices and graphs
@@ -197,7 +197,7 @@ Some important references:
   understanding the design and implementation of embedded DSLs.
   [URL](http://spivey.oriel.ox.ac.uk/corner/Programming_languages)
 
-- **Domain Specific Languages**, Martin Fowler, 2011.
+- **Domain-Specific Languages**, Martin Fowler, 2011.
   [URL](http://martinfowler.com/books/dsl.html)
 
   The view from the object-oriented programming perspective.

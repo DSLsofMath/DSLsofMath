@@ -102,7 +102,7 @@ Some important references:
   understanding the design and implementation of embedded DSLs.
   [URL](http://spivey.oriel.ox.ac.uk/corner/Programming_languages)
 
-- **Domain Specific Languages**, Martin Fowler, 2011.
+- **Domain-Specific Languages**, Martin Fowler, 2011.
   [URL](http://martinfowler.com/books/dsl.html)
 
   The view from the object-oriented programming perspective.

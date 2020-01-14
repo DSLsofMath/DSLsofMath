@@ -4,7 +4,7 @@ Annotated learning outcomes
 Learning outcomes:
 
 -   Knowledge and understanding
-    -   design and implement a DSL (Domain Specific Language) for a new
+    -   design and implement a DSL (Domain-Specific Language) for a new
         domain
     -   organize areas of mathematics in DSL terms
     -   explain main concepts of elementary real and complex analysis,
@@ -44,12 +44,12 @@ Notation:
 Knowledge and understanding
 ---------------------------
 
-### design and implement a DSL (Domain Specific Language) for a new domain
+### design and implement a DSL (Domain-Specific Language) for a new domain
 
 -   X1: implement DSL for lattices
 -   L1, L2, L3, L4: first order languages and logic
 -   L6, L9: Haskell typeclasses and DSLs
--   L7: domain specific languages
+-   L7: domain-specific languages
 -   L8: EDSL for Chebyshev interpolation (guest lecture)
 
 ### organize areas of mathematics in DSL terms
@@ -61,7 +61,7 @@ Knowledge and understanding
 -   L5: types of operators, type an equation to make sense of it
     (Lagrange equations)
 -   L6, L9: mathematical DSLs with Haskell typeclasses
--   L7: domain specific languages
+-   L7: domain-specific languages
 -   L10: DSL for power series
 
 ### explain main concepts of elementary real and complex analysis, algebra, and linear algebra
@@ -81,7 +81,7 @@ Skills and abilities
 -   X2, X4: type a mathematical text, write down definition formally
 -   A1: a language for finite set theory
 -   L1, L2, L3, L4, L5: logic, first order languages, types
--   L7: domain specific languages
+-   L7: domain-specific languages
 
 ### perform calculational proofs
 
@@ -111,7 +111,7 @@ Judgement and approach
     during grading)
 -   A2: working in groups => discussion
 -   L6: shallow embeddings
--   L7: domain specific languages
+-   L7: domain-specific languages
 
 ----------------------------------------------------------------
 
@@ -120,7 +120,7 @@ Judgement and approach
 ## Notation for learning outcomes
 
 * KU = Knowledge and understanding
-    * KU.DSL = design and implement a DSL (Domain Specific Language) for a new domain
+    * KU.DSL = design and implement a DSL (Domain-Specific Language) for a new domain
     * KU.Org = organize areas of mathematics in DSL terms
     * KU.Explain = explain main concepts of elementary real and complex analysis, algebra, and linear algebra
 * SA = Skills and abilities
@@ -177,10 +177,10 @@ Lectures:
 | SA.Calc:         | L6:  | calculate a program (`derive`)
 | KU.Org:          | L6:  | mathematical DSLs with Haskell typeclasses
 | JA:              | L6:  | shallow embeddings
-| KU.DSL:          | L7:  | domain specific languages
-| KU.Org:          | L7:  | domain specific languages
-| SA.Notation:     | L7:  | domain specific languages
-| JA:              | L7:  | domain specific languages
+| KU.DSL:          | L7:  | domain-specific languages
+| KU.Org:          | L7:  | domain-specific languages
+| SA.Notation:     | L7:  | domain-specific languages
+| JA:              | L7:  | domain-specific languages
 | KU.DSL:          | L8:  | EDSL for Chebyshev interpolation (guest lecture)
 | KU.Explain:      | L8:  | explain interpolation in terms of a Haskell library
 | KU.DSL:          | L9:  | Haskell typeclasses and DSLs

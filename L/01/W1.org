@@ -1,6 +1,13 @@
 DSLsofMath week 1: a short summary
 
 * L1.1 learning outcomes:
+** What is a Domain-Specific Language (DSL)
+A DSL has four components:
++ Surface syntax (mostly ignored in this course): a set of strings defined by a grammar
++ Abstract syntax: usually a recursive Haskell datatype of syntax trees
++ Semantic type: a type of values (meanings) for the syntax
++ Semantics: a function from AbsSyn to Sem
+https://en.wikipedia.org/wiki/Domain-specific_language
 ** variable scope and binding in mathematical expressions [integral, fun.def.]
 ** Haskell type system:
 *** |type|, |newtype|, |data|
@@ -28,7 +35,7 @@ DSLsofMath week 1: a short summary
 *** JA = discuss and compare different software implementations of mathematical concepts
 * Reminder about spending time on the course:
 ** Advice from last years' students: spending time on the course pays off. It is not enough to just focus on the labs.
-** Patrik's advice: please try to solve all the exercises, and hand in E1.N (where N = 4 + the last digit of your "personnummer") by Monday.
+** Patrik's advice: please try to solve all the exercises
 * L1.2 learning outcomes:
 ** Active reading of mathematical text [Complex number case study]
 ** Modelling (different versions of) Complex in Haskell

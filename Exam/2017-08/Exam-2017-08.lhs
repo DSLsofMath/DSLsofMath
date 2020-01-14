@@ -35,7 +35,7 @@
 %include polycode.fmt
 %include forall.fmt
 %format == = "\doubleequals"
-\title{Domain Specific Languages of Mathematics\\Course codes: DAT326 / DIT982}
+\title{Domain-Specific Languages of Mathematics\\Course codes: DAT326 / DIT982}
 \author{Patrik Jansson}
 \date{2017-08-22}
 
@@ -61,7 +61,7 @@ the hand-ins, some by the written exam.
 \begin{itemize}
 \item Knowledge and understanding
   \begin{itemize}
-  \item design and implement a DSL (Domain Specific Language) for a
+  \item design and implement a DSL (Domain-Specific Language) for a
     new domain
   \item organize areas of mathematics in DSL terms
   \item explain main concepts of elementary real and complex analysis,

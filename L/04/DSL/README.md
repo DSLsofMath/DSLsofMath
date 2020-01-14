@@ -1,4 +1,4 @@
-# Lecture 7: (Embedded) Domain Specific Languages
+# Lecture 7: (Embedded) Domain-Specific Languages
 
 [Lecture slides](https://rawgit.com/DSLsofMath/DSLsofMath/master/Lectures/07/slides.html)
 
@@ -37,7 +37,7 @@ type Signal a = Time -> a
 type Set e    = e -> Bool
 ```
 
-Embedded Domain Specific Languages:
+Embedded Domain-Specific Languages:
 
 * Different kinds of operations
     * constructor functions, combinators, run functions

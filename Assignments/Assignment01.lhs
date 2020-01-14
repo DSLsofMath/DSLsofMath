@@ -34,7 +34,7 @@ outcomes:
 \subsection{DSLs, sets and von Neumann}
 \label{dsls-sets-and-von-neumann}
 
-In this assignment you will build up a domain specific language (a DSL)
+In this assignment you will build up a domain-specific language (a DSL)
 for finite sets. The domain you should model is pure set theory where
 all members are sets.
 

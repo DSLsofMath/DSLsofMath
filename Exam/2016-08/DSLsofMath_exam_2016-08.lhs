@@ -1,5 +1,5 @@
 ---
-title: Domain Specific Languages of Mathematics (DAT325)
+title: Domain-Specific Languages of Mathematics (DAT325)
 ---
 
 \vspace{-2cm}

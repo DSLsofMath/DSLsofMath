@@ -79,7 +79,7 @@
 \newcommand{\rowvecc}[2]{\rowveccc{#1 &  \cdots &  #2}}
 \newcommand{\rowveccc}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 
-\title{Domain Specific Languages of Mathematics: Lecture Notes}
+\title{Domain-Specific Languages of Mathematics: Lecture Notes}
 \author{Patrik Jansson \and Cezar Ionescu}
 %           {Chalmers Univeristy of Technology, Sweden}
 %           {\texttt{patrikj@@chalmers.se}}
