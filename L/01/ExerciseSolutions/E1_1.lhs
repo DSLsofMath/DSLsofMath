@@ -40,10 +40,26 @@ a3 = (c 8 * (c 2 + c 11)) - ((c 3 + c 7)*(a1 + a2))
 
 \begin{code}
 eval :: Exp -> Integer
-eval (Con i)        =  i
-eval (Plus   a  b)  =  eval a  +  eval b
-eval (Minus  a  b)  =  eval a  -  eval b
-eval (Times  a  b)  =  eval a  *  eval b
+eval (Con i)        =  evalCon i
+eval (Plus   a  b)  =  evalPlus   (eval a) (eval b)
+eval (Minus  a  b)  =  evalMinus  (eval a) (eval b)
+eval (Times  a  b)  =  evalTimes  (eval a) (eval b)
+
+evalCon :: Integer -> Integer
+evalCon i = i
+-- evalCon    = id
+
+evalPlus, evalMinus, evalTimes :: Integer -> Integer -> Integer
+evalPlus   = (+)
+evalMinus  = (-)
+evalTimes  = (*)
+
+eval' :: Exp -> Integer
+eval' (Con i)        =  i
+eval' (Plus   a  b)  =  eval' a  +  eval' b
+eval' (Minus  a  b)  =  eval' a  -  eval' b
+eval' (Times  a  b)  =  eval' a  *  eval' b
+
 
 test0 =  eval ((Con 3) `Plus` (Con 3)) == 6
 test1 =  eval a1 == 4

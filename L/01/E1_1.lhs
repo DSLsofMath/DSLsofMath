@@ -1,13 +1,13 @@
 \begin{exercise}
   Consider the following data type for simple arithmetic expressions:
   %
-  \begin{code}
-   data Exp  =  Con Integer
-             |  Exp  `Plus`   Exp
-             |  Exp  `Minus`  Exp
-             |  Exp  `Times`  Exp
-     deriving(Eq, Show)
-  \end{code}
+\begin{code}
+data Exp  =  Con Integer
+          |  Exp  `Plus`   Exp
+          |  Exp  `Minus`  Exp
+          |  Exp  `Times`  Exp
+  deriving (Eq, Show)
+\end{code}
   %
   Note the use of ``backticks'' around |Plus| etc. which makes it
   possible to use a name as an infix operator.
