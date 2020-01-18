@@ -1,39 +1,92 @@
--- Exercise 1.14
+-- See also exam 2017-08-22 (Semiring)
+--   ../../../Exam/2017-08/P1.lhs
 
-When is embed (eval e) == e
-
-
-Step 0: type the quantification, what is the type of e?
-
-eval  :: Syn -> Sem
-embed :: Sem -> Syn
-e :: Syn
+\begin{code}
+{-# LANGUAGE GADTs #-}
+\end{code}
 
 
-Step 1: what equality is suitable for this type?
+1.3a: A datatype |SR v| for semiring expressions
 
-Simplifications are not taken into account in the syntax. Same semantics can have different syntaxes. For example 3 + 7 != 10 in syntax. Thus the equality holds if e is already simplified.
+\begin{code}
+data SR v where
+  Add    ::  SR v -> SR v -> SR v
+  Mul    ::  SR v -> SR v -> SR v
+  Zero   ::  SR v
+  One    ::  SR v
+  Var    ::  v -> SR v
+ deriving (Eq, Show)
+\end{code}
 
+1.3b: Example expressions from the laws:
 
-Step 2: if you use "equality up to eval" - how is the resulting property related to the first round-trip property?
+\begin{code}
+assocAdd a b c     =  [ Add (Add a b) c, Add a (Add b c) ]
+unitAdd  a         =  [ Add Zero a, Add a Zero, a ]
 
-equalityUpTo f x y =   (f x) == (f y)
-Typical example: equality up to (mod n) means equality modulo n
-9 and 5 are equal modulo 4 but are not equal numbers
+assocMul a b c     =  [ Mul (Mul a b) c , Mul a (Mul b c) ]
+unitMul  a         =  [ Mul One a, Mul a One, a ]
 
-equalityUpTo eval a b = (eval a) == (eval b)
-a and b can be equal up to eval even if they are not equal as syntactic expressions
+distMulAddL a b c  =  [ Mul a (Add b c) , Add (Mul a b) (Mul a c) ]
+distMulAddR a b c  =  [ Mul (Add a b) c , Add (Mul a c) (Mul b c) ]
+zeroMul  a         =  [ Mul Zero a , Mul a Zero, Zero ]
+\end{code}
 
-Calculation:
+1.3c:
 
-  let (===) = equalityUpTo eval in  embed (eval e) === e
-= {- Def. of (===) -}
-  equalityUpTo eval (embed (eval e)) e
-= {- Def. of equalityUpTo -}
-  eval (embed (eval e)) == eval e
-= {- First round-trip property: eval (embed s) = s -}
-  eval e == eval e
-= {- Simplify -}
-  True
+Warm-up: a specific evaluator for |Integer|.
 
-Thus, if we look at "equality up to eval", embed (eval e) is "equal" to e.
+\begin{code}
+evalI :: (v -> Integer) -> SR v -> Integer
+evalI f (Add  a b)  =  evalI f a  +  evalI f b
+evalI f (Mul  a b)  =  evalI f a  *  evalI f b
+evalI f (Zero)      =  0
+evalI f (One)       =  1
+evalI f (Var v)     =  f v
+\end{code}
+
+A general evaluator: here we take semiring operations as parameters.
+
+\begin{code}
+eval ::  (r -> r -> r) -> (r -> r -> r) -> r -> r ->
+         (v -> r) ->
+         SR v -> r
+eval add mul zero one var = e where
+  e (Add  a b)  =  add (e a) (e b)
+  e (Mul  a b)  =  mul (e a) (e b)
+  e (Zero)      =  zero
+  e (One)       =  one
+  e (Var v)     =  var v
+\end{code}
+
+Example: natural numbers modulo some |n > 0|:
+
+\begin{code}
+evalMod :: Int -> (v -> Int) -> SR v -> Int
+evalMod n va = eval add mul zero one var
+  where  add a b  =  mod (a+b) n
+         mul a b  =  mod (a*b) n
+         zero     =  0
+         one      =  mod 1 n
+         var v    =  mod (va v) n
+\end{code}
+
+In a later Chapter we will introduce type classes to collect all
+semiring operations in one instance. For completeness we include that
+also here to give the final type class generic evaluator:
+
+\begin{code}
+class SemiRing r where
+  add    ::  r -> r -> r
+  mul    ::  r -> r -> r
+  zero   ::  r
+  one    ::  r
+
+evalSR :: SemiRing r => (v->r) -> SR v -> r
+evalSR var = e where
+  e (Add  a b)  =  add (e a) (e b)
+  e (Mul  a b)  =  mul (e a) (e b)
+  e (Zero)      =  zero
+  e (One)       =  one
+  e (Var v)     =  var v
+\end{code}

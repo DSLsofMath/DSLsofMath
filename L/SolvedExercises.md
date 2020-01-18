@@ -4,9 +4,9 @@ TODO: implement solutions for the rest
 
 Status:
 
-* 42 Yes  = solution available in the repo
-* 35 TODO
-* 77 Total number of exercises (2019-03-10)
+* 43 Yes  = solution available in the repo
+* 40 TODO
+* 83 Total number of exercises (2029-01-18)
 
 Solutions of old exam question are in ../Exam/
 
@@ -16,18 +16,20 @@ Other solutions are in NN/ExerciseSolutions/
 | ------ | ------ | ---- | ------- | -----------
 | E1.01  | Yes    |      | H-intro |
 | E1.02  | Yes    |      | H-intro |
-| E1.03  | Yes    |      | Rec.    | From exam 2017-08 (Semiring)
-| E1.04  | Yes    |      |         | From exam 2016-03 (Lattice )
-| E1.05  | Yes    |      |         | From exam 2016-08 (AbMonoid)
-| E1.06  | TODO   |      | H-intro |
-| E1.07  | TODO   |      | H-intro |
-| E1.08  | Yes    |      | H-intro |
-| E1.09  | Yes    | 2019 | Rec.    | Tupling transform
-| E1.10  | Yes    | 2019 | Rec.    | Dual of tupling transform
-| E1.11  | TODO   | 2019 | Rec.    | Cardinality
-| E1.12  | Yes    | 2019 | Rec.    |
-| E1.13  | TODO   | 2019 |         |
-| E1.14  | Yes    |      |         |
+| E1.03  | TODO   | 2019 | Rec.    | Counting values (cardinality)
+| E1.04  | TODO   | 2019 |         | Counting Maybes
+| E1.05  | Yes    | 2019 | Rec.    | FunTup
+| E1.06  | Yes    | 2019 | Rec.    | Tupling transform
+| E1.07  | Yes    | 2019 | Rec.    | Dual of tupling transform
+| E1.08  | TODO   | 2019 |         | Comp Seq.
+| E1.09  | TODO   | 2019 |         | Operator sections
+| E1.10  | Yes    |      |         | embed.eval
+| E1.11  | TODO   |      | H-intro | NumComplexSyn
+| E1.12  | TODO   |      | H-intro | ComplexPolar
+| E1.13  | Yes    |      | H-intro | Simplify
+| E1.14  | Yes    |      | Rec.    | From exam 2017-08 (Semiring)
+| E1.15  | Yes    |      |         | From exam 2016-03 (Lattice )
+| E1.16  | Yes    |      |         | From exam 2016-08 (AbMonoid)
 | E2.01  | Yes    |      | Rec.    |
 | E2.02  | Yes    |      |         |
 | E2.03  | TODO   |      |         |

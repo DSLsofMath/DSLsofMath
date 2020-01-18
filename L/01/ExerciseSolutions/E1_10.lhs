@@ -1,29 +1,39 @@
-\begin{code}
-{-# LANGUAGE GADTs #-}
-module DSLsofMath.E1_10 where
-import Prelude hiding (Either(..), either)
-\end{code}
+-- Exercise 1.14
 
-Exercise 1.10  There is also a ``dual'' to the tupling transform: to show this,
-implement these functions:
+When is embed (eval e) == e
 
-\begin{code}
-s2p :: (Either b c -> a) -> (b->a, c->a)
-s2p  =  \fg     ->  (fg . Left, fg . Right)
 
-p2s :: (b->a, c->a) -> (Either b c -> a)
-p2s  =  \(f,g)  ->  either f g
-\end{code}
+Step 0: type the quantification, what is the type of e?
 
-Note that |Either|, |Left|, |Right|, and |either| are from Haskell's
-Prelude and are repeated here just for easy reference.
+eval  :: Syn -> Sem
+embed :: Sem -> Syn
+e :: Syn
 
-\begin{code}
-data Either a b where
-  Left   :: a -> Either a b
-  Right  :: b -> Either a b
 
-either :: (b->a) -> (c->a) -> (Either b c -> a)
-either f g (Left x)   = f x
-either f g (Right y)  = g y
-\end{code}
+Step 1: what equality is suitable for this type?
+
+Simplifications are not taken into account in the syntax. Same semantics can have different syntaxes. For example 3 + 7 != 10 in syntax. Thus the equality holds if e is already simplified.
+
+
+Step 2: if you use "equality up to eval" - how is the resulting property related to the first round-trip property?
+
+equalityUpTo f x y =   (f x) == (f y)
+Typical example: equality up to (mod n) means equality modulo n
+9 and 5 are equal modulo 4 but are not equal numbers
+
+equalityUpTo eval a b = (eval a) == (eval b)
+a and b can be equal up to eval even if they are not equal as syntactic expressions
+
+Calculation:
+
+  let (===) = equalityUpTo eval in  embed (eval e) === e
+= {- Def. of (===) -}
+  equalityUpTo eval (embed (eval e)) e
+= {- Def. of equalityUpTo -}
+  eval (embed (eval e)) == eval e
+= {- First round-trip property: eval (embed s) = s -}
+  eval e == eval e
+= {- Simplify -}
+  True
+
+Thus, if we look at "equality up to eval", embed (eval e) is "equal" to e.

@@ -1,0 +1,38 @@
+git mv  1  1
+git mv  2  2
+git mv 11  3  # Counting values
+git mv 15  4  # counting Maybes
+git mv 12  5  # FunTup
+git mv  9  6  # Tupling
+git mv 10  7  # DualTupling
+git mv 13  8  # CompSeq
+git mv 16  9  # OpSecs
+git mv 14 10  # embed.eval
+git mv  6 11  # NumComplexSyn
+git mv  7 12  # ComplexPolar
+git mv  8 13  # Simplify
+git mv  3 14  # Exam SemiRing
+git mv  4 15  # Exam Lattice
+git mv  5 16  # Exam AbMon
+
+----------------------------------------------------------------
+
+git mv E1_12.hs      qqE1_05.hs
+git mv  E1_9.lhs     qqE1_06.lhs
+git mv E1_10.lhs     qqE1_07.lhs
+git mv E1_14.lhs     qqE1_10.lhs
+git mv  E1_8.hs	     qqE1_13.hs
+git mv  E1_3.lhs     qqE1_14.lhs
+git mv  E1_3alt.lhs  qqE1_14alt.lhs
+git mv  E1_4.txt     qqE1_15.txt
+git mv  E1_5.txt     qqE1_16.txt
+
+git mv qqE1_05.hs     E1_05.hs
+git mv qqE1_06.lhs    E1_06.lhs
+git mv qqE1_07.lhs    E1_07.lhs
+git mv qqE1_10.lhs    E1_10.lhs
+git mv qqE1_13.hs     E1_13.hs
+git mv qqE1_14.lhs    E1_14.lhs
+git mv qqE1_14alt.lhs E1_14alt.lhs
+git mv qqE1_15.txt    E1_15.txt
+git mv qqE1_16.txt    E1_16.txt
