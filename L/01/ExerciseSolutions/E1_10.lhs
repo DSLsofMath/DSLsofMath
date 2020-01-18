@@ -1,4 +1,4 @@
--- Exercise 1.14
+-- Exercise 1_EmbedEval
 
 When is embed (eval e) == e
 

@@ -1,2 +1,2 @@
-E1.05
+E1_AbMonoid.05
  see ../../../Exam/2016-08/Ex1.hs

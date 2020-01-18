@@ -1,10 +1,10 @@
 \begin{code}
-module E1_3 where
+module E1_SemiRing where
 import Data.Maybe
 import Test.QuickCheck
 \end{code}
 
-Solution for exercise 1.3:
+Solution for exercise E1_SemiRing:
 
 \begin{code}
 data SR v  = Var v           -- | Variables of type |v|

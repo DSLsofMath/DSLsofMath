@@ -2,19 +2,20 @@
 
 [GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related to a BSc course at Chalmers and GU.
 
-The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/3788)
+The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/8975)
 
-Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=27332) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
 ## News
 
-* 2019-01-22: First lecture of the 2019 course instance
+* Tuesday 2020-01-21: First lecture of the 2020 course instance
 
 ## Contributors
 
 * Main author, examiner, lecturer: Patrik Jansson (patrikj AT)
 * First version (and continued support): Cezar Ionescu (cezar AT)
 * Teaching assistants:
+  * 2020: Sólrún Einarsdóttir (slrn AT) and Víctor López Juan (opezv AT)
   * 2019: Maximilian Algehed (algehed AT) and Abhiroop Sarkar (sarkara AT)
   * 2017–2018: Daniel Schoepe (schoepe AT)
   * 2017: Frederik Hanghøj Iversen (hanghj AT student)

@@ -1,4 +1,4 @@
-Exercise 1.9: The tupling transform and type driven development
+Exercise: The tupling transform and type driven development
 
 When trying to implement the tupling transform function |f2p|
 

@@ -1,5 +1,5 @@
--- Exercise 1.12
-module Ex_1_12 where
+-- Exercise 1_FunTup
+module Ex_1_FunTup where
 -- Function from Bool to integer, for testing
 tf :: Bool -> Integer
 tf True  = 1
@@ -19,9 +19,9 @@ isoL (a,b) = func
 test0,test1,test2 :: Bool
 test0 = isoL(isoR tf) True == fst(isoR(isoL (1,0))) && isoL(isoR tf) False == snd(isoR(isoL (1,0)))
 
--- "isoL◦isoR = id and isoR◦isoL = id" 
+-- "isoL◦isoR = id and isoR◦isoL = id"
 test1 = fst (1,0) == fst (isoR (isoL (1,0)))
         && snd (1,0) == snd (isoR (isoL (1,0)))
 
-test2 = tf True == isoL (isoR tf) True 
+test2 = tf True == isoL (isoR tf) True
         && tf False == isoL (isoR tf) False

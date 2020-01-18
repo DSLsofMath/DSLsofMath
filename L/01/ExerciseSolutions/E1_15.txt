@@ -1,2 +1,2 @@
-E1.04: See exam 2016-03-15 (Lattice)
+E1_Lattice: See exam 2016-03-15 (Lattice)
   ../../../Exam/2016-03/Ex1.lhs

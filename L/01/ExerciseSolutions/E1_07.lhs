@@ -1,10 +1,10 @@
 \begin{code}
 {-# LANGUAGE GADTs #-}
-module DSLsofMath.E1_10 where
+module DSLsofMath.E1_DualTupling where
 import Prelude hiding (Either(..), either)
 \end{code}
 
-Exercise 1.10  There is also a ``dual'' to the tupling transform: to show this,
+Exercise 1_DualTupling  There is also a ``dual'' to the tupling transform: to show this,
 implement these functions:
 
 \begin{code}
