@@ -17,12 +17,12 @@ Other solutions are in NN/ExerciseSolutions/
 | E1.01  | Yes    |      | H-intro |
 | E1.02  | Yes    |      | H-intro |
 | E1.03  | TODO   | 2019 | Rec.    | Counting values (cardinality)
-| E1.04  | TODO   | 2019 |         | Counting Maybes
+| E1.04  | TODO   |      |         | Counting Maybes
 | E1.05  | Yes    | 2019 | Rec.    | FunTup
 | E1.06  | Yes    | 2019 | Rec.    | Tupling transform
 | E1.07  | Yes    | 2019 | Rec.    | Dual of tupling transform
 | E1.08  | TODO   | 2019 |         | Comp Seq.
-| E1.09  | TODO   | 2019 |         | Operator sections
+| E1.09  | TODO   |      |         | Operator sections
 | E1.10  | Yes    |      |         | embed.eval
 | E1.11  | TODO   |      | H-intro | NumComplexSyn
 | E1.12  | TODO   |      | H-intro | ComplexPolar
