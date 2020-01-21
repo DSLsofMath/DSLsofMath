@@ -16,11 +16,19 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 *** datatype of syntax trees of simple arith. expr.
 ** Haskell interpreter use and interp. of error messages [interactive live coding]
 ** Syntax trees
-** First evaluator: |eval :: E -> Integer|
-* E1.1 learning outcomes:
-** syntax trees with constructor for variables
-** definition and use of |Env|
-** laws, properties, and testing
+** First evaluator: |eval :: E -> (String -> Int) -> Int|
+* Lärmål (efter fullgjord kurs ska studenten kunna)
+** Kunskap och förståelse
++ designa och implementera ett domänspecifikt språk (DSL) för en ny domän
++ strukturera delområden inom matematik i termer av DSL
++ förklara de centrala begreppen i grudläggande reell och komplex analys, algebra och linjär algebra
+** Färdighet och förmåga
++ utveckla lämplig notation för matematiska koncept
++ genomföra och kalkylera bevis
++ använda potensserier för att lösa differentialekvationer
++ använda Laplace-transformer för att lösa differentialekvationer
+** Värderingsförmåga och förhållningssätt
++ diskutera och jämföra olika implementationer av matematiska begrepp
 * Reminder about learning outcomes (for the whole course)
 ** KU = Knowledge and understanding
 *** KU.DSL      = design and implement a DSL for a new domain
@@ -33,6 +41,10 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 *** SA.Laplace  = use Laplace transforms for solving differential equations
 ** JA = Judgement and approach
 *** JA = discuss and compare different software implementations of mathematical concepts
+* E1.1 learning outcomes:
+** syntax trees with constructor for variables
+** definition and use of |Env|
+** laws, properties, and testing
 * Reminder about spending time on the course:
 ** Advice from last years' students: spending time on the course pays off. It is not enough to just focus on the labs.
 ** Patrik's advice: please try to solve all the exercises
