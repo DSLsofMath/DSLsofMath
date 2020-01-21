@@ -368,7 +368,7 @@ Preliminary remarks
 
 \renewcommand{\labelenumi}{\alph{enumi}.}
 
-\begin{exercise}
+\begin{exercise}\label{exc:NotConv}
   Consider the statement:
 
   The sequence |{an} = (0, 1, 0, 1, ...)| does not converge.
@@ -402,6 +402,11 @@ Preliminary remarks
   \item Sketch an implementation of the function, considering two
     cases: |L ≠ 0| and |L = 0|.
   \end{enumerate}
+\end{exercise}
+
+
+\begin{exercise}
+Same as Exercise \ref{exc:NotConv} but for |a = id|.
 \end{exercise}
 
 \begin{exercise}
