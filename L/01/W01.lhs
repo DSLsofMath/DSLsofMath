@@ -1,3 +1,5 @@
+%{
+%format bi = "\Varid{bi}"
 \section{Types, DSLs, and complex numbers}
 \label{sec:DSLComplex}
 
@@ -490,7 +492,7 @@ This declaration introduces
 \item a constructor |Z :: N| to represent zero, and
 \item a constructor |S :: N -> N| to represent the successor.
 \end{itemize}
-The semantics of |N| is the set infinite |{Z, S Z, S (S Z), ...}|
+The semantics of |N| is the infinite set |{Z, S Z, S (S Z), ...}|
 which is isomorphic to |Nat|.
 %
 Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
@@ -669,7 +671,7 @@ We have already seen one example: the function |evalEnv| which
 translates from a list of key-value-pairs (the abstract syntax of the
 environment) to a function (the semantics).
 
-In the evaluator for |AE' v| we take this one step further: given an
+In the evaluator for |AE| we take this one step further: given an
 environment |env| and the syntax of an arithmetic expression |e| we
 compute the semantics of that expression.
 %
@@ -1026,14 +1028,6 @@ the next section.
 Both shallow and deep embeddings will be further explained in
 \refSec{sec:evalD}.
 
-
-Exercises:
-\begin{itemize}
-%*TODO: make this one of the numbered exercises
-\item implement |(*.)| for |ComplexD|
-\end{itemize}
-
-
 At this point we can sum up the ``evolution'' of the datatypes introduced so far.
 %
 Starting from |ComplexA|, the type has evolved by successive
@@ -1091,6 +1085,7 @@ the symbol |i|, an embedding from |REAL|, plus and times.
 We make these four \emph{constructors} in one recursive datatype as
 follows:
 
+%**TODO rename |ImagUnit| to just |I| (and adapt explanation)
 \begin{code}
 data ComplexE  =  ImagUnit  -- syntax for |i|, not to be confused with the type |ImagUnits|
                |  ToComplex REAL
@@ -1129,12 +1124,12 @@ child {node {|Times|}
 \end{tikzpicture}
 
 We can implement the evaluator |evalE| by pattern matching on the
-syntax tree and recursion.
+constructors of the syntax tree and by recursion.
 %
 To write a recursive function requires a small leap of faith.
 %
 It can be difficult to get started implementing a function (like
-|eval|) that should handle all the cases and all the levels of a
+|evalE|) that should handle all the cases and all the levels of a
 recursive datatype (like |ComplexE|).
 %
 One way to overcome this difficulty is through ``wishful thinking'':
@@ -1269,7 +1264,7 @@ propAssocA (+?) x y z =  (x +? y) +? z == x +? (y +? z)
 \end{code}
 
 Note that |propAssocA| is a higher order function: it takes a function
-(a binary operator name |(+?)|) as its first parameter.
+(a binary operator named |(+?)|) as its first parameter.
 %
 It is also polymorphic: it works for many different types |a| (all
 types which have an |==| operator).
@@ -1304,7 +1299,7 @@ For completeness: these are the values:
 \begin{spec}
   (  2.3333333333333335     -- Notice the five at the end
   ,  2.333333333333333,     -- which is not present here.
-  ,  4.440892098500626e-16  -- The difference
+  ,  4.440892098500626e-16  -- The (very small) difference
   ,  False)
 \end{spec}
 
@@ -1356,6 +1351,9 @@ fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
 fromIntegerCS = toComplexSyn . fromInteger
 \end{code}
 %endif
+
+With this parameterised type we can test the code for "complex rationals" to avoid rounding errors.
+%**TODO: add concrete example
 
 \paragraph{From syntax to semantics and back}
 %**TODO: Duplication? why here in Ch.1? To stress difference between syntax (big type with many "synonyms") and semantics (small type with "just what is needed").
@@ -1613,7 +1611,7 @@ definition
 %
 \[f'(x) = \lim_{h\to0} \frac{f(x+h)-f(x)}{h}\]
 
-To sum up this subsection, we have defined a small Domain Specific
+To sum up this subsection, we have defined a small Domain-Specific
 Language (DSL) for infinite sequences by defining a type (|Seq a|),
 some operations (|conSeq|, |addSeq|, |liftSeq1|, |sums|, |scan|, \ldots) and some
 ``run functions'' or predicates (like |lim| and |sum|).
@@ -1640,5 +1638,8 @@ showCD :: ComplexD -> String
 showCD (CD (x, y)) = show x ++ " + " ++ show y ++ "i"
 \end{code}
 %endif
+
+% end of formatting "bi" as just that (and not as \(b_i\)).
+%}
 
 %include E1.lhs

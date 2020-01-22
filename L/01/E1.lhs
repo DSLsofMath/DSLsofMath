@@ -210,4 +210,11 @@ property related to the first round-trip property?
   What class context do you need to add to the type of |simp|?
 \end{exercise}
 
+%**TODO: include as an early exercise
+% Exercises:
+% \begin{itemize}
+% %*TODO: make this one of the numbered exercises
+% \item implement |(*.)| for |ComplexD|
+% \end{itemize}
+
 %include E1_from_exams.lhs

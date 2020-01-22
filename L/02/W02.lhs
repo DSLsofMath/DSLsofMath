@@ -226,7 +226,7 @@ suitable number of terms.
 If we have the function symbols |f| of arity |2| and |g| of arity |3|
 we can form terms like |f(x,x)|, |g(y,z,z)|, |g(x,y,f(x,y))|, etc.
 %
-The actual function symbols are usually domain specific --- we can use
+The actual function symbols are usually domain-specific --- we can use
 rational number expressions as an example.
 %
 In this case we can model the terms as a datatype:
