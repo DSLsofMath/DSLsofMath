@@ -49,9 +49,9 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** Advice from last years' students: spending time on the course pays off. It is not enough to just focus on the labs.
 ** Patrik's advice: please try to solve all the exercises
 * L1.2 learning outcomes:
+** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
 ** Active reading of mathematical text [Complex number case study]
 ** Modelling (different versions of) Complex in Haskell
-** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
 ** More examples of |data| and |newtype|
 *** |Nat|, |ImagUnits|, |CA|, |CB|, |CE|
 ** Syntax and semantics
