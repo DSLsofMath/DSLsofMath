@@ -38,8 +38,8 @@ Table~\ref{tab:PropCalc} where each row lists synonyms plus a comment.
 \begin{table}[htbp]
   \centering
 \begin{tabular}{lccl}
-   |False|    & $\top$         & F      & nullary
-\\ |True|     & $\bot$         & T      & nullary
+   |False|    & $\bot$         & F      & nullary
+\\ |True|     & $\top$         & T      & nullary
 \\ |Not|      & $\neg$         & |~|    & unary
 \\ |And|      & $\wedge$       & |&|    & binary
 \\ |Or|       & $\vee$         & |bar|  & binary
