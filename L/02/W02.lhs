@@ -608,7 +608,7 @@ The formula ``x is irrational'' is just |not(R x)| where |R| is the
 predicate ``is rational''.
 %
 \begin{spec}
-  R x = Exists (a:Nat) (Exists (b:Pos) (b*x==a & GCD(a,b)==1))
+  R x = Exists (a:ZZ) (Exists (b:Pos) (b*x==a & GCD(a,b)==1))
 \end{spec}
 
 The classical way to prove a negation |not P| is to assume |P| and
