@@ -10,7 +10,7 @@ Exam question 2 from 2016-03:
 
 From exam 2016-03-16:
 
-    Consider the following text from Max Lane's "Mathematics: Form and
+    Consider the following text from Mac Lane's "Mathematics, Form and
     Function" (page 182):
 
    \begin{quote}
