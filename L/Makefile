@@ -26,6 +26,13 @@ $(NAME).tex: $(NAME).lhs dslm.format ref.bib \
              01/CSem.lhs
 	lhs2TeX --poly $(NAME).lhs > $(NAME).tex
 
+DSLMtalk.pdf: DSLMtalk.tex
+	latexmk -pdf $<
+
+DSLMtalk.tex: DSLMtalk.lhs
+	lhs2TeX --poly $< > $@
+
+
 build:
 	stack build
 
