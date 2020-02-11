@@ -112,10 +112,10 @@ child {node {|Con|} child {node(rightleaf) {|3|}}};
 \end{tikzpicture}
 
 As you may have guessed, the natural evaluator |eval : E -> Integer|
-(defined later) is a homorphism from |Add| to |(+)| and from |Mul| to
+(defined later) is a homomorphism from |Add| to |(+)| and from |Mul| to
 |(*)|.
 %
-But to practice the definition of homorphism we will here check if
+But to practice the definition of homomorphism we will here check if
 |even| or |isPrime| is a homomorphism from |E| to |Bool|.
 
 \paragraph{Is |even| a homomorphism?} Let's try to define |even : E ->

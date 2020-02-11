@@ -1,0 +1,38 @@
+* Admin:
+** Assignment 1: most presentations done - deadline for fixes: Fri lunch (at 12:00)
+** New "group set" for [[https://chalmers.instructure.com/courses/8975/assignments/10399][Assignment 2:]]
++ You have been assigned [[https://chalmers.instructure.com/courses/8975/pages/groups-for-assignments][new groups]] for A2
++ The reason for having two separate "group sets" is that we want you to practice your "math communication and collaboration skills" in different teams.
++ During this week you can still swap provided you preserve the invariant
++ Invariant: no two student who worked together in A1 work together in A2
+    (Forall x, Forall y. not (SameGroup(A1,x,y)&&SameGroup(A2,x,y)))
+      where SameGroup(X,x,y) = (x/=y) && Exists G \in X. (x \in G)&&(y \in G)
+* Week 4, lecture 1: Compositional semantics (Homomorphisms)
+** Homomorphism: H2(f,(+),(*)) = forall x, y. f(x+y) == f x * f y
+
+In general, we have seen many examples of H2
+
+  H2(f,(+),(*)) = forall x, y. f(x+y) == f x * f y
+
+with
+  f = eval
+  a = Syntax type     and (+) = a syntactic constructor
+  b = Semantic domain and (*) = semantic operator (function)
+
+** To cover:
+DONE (blackboard): Homomorphisms (exp, log, f:a->{0}, even)
+DONE (blackboard): non-homomorphism (isPrime, -- not done: countWords)
+
+** [[file:Live_4_1_2020.lhs::data%20IE%20where][Live coding]]
+DONE: |data IE| for integer expressions
+DONE: eva :: ... -> IE->I
+DONE: eva :: (I->I->I)->(I->I->I)->(I->I)->IE->I
+DONE: eva :: (a->a->a)->(a->a->a)->(I->a)->IE->a
+DONE: Num instance version
+DONE: |class IntExp|
+DONE: instance S
+DONE: instance I
+DONE: instance IntExt
+
+
+TODO: from |eval| to |foldE|
