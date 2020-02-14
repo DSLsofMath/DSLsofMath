@@ -73,7 +73,7 @@ We have seen several examples in earlier chapters:
 \end{itemize}
 %
 At this point it is a good exercise to expand the definition of |H2|
-in the different cases to see if they makes sense and if you can prove
+in the different cases to see if they make sense and if you can prove
 that they hold.
 
 \subsubsection{An example of a non-compositional function}
