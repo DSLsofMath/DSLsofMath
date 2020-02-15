@@ -100,8 +100,6 @@
 
 \end{exercise}
 
-%% TODO: Try solving the one below and make sure it is not unsolvable for some reason
-
 \begin{exercise}
 
   Consider the following differential equation:
@@ -112,7 +110,7 @@
   series |fs|, and finding the three first coefficients of |fs|.
 
   \begin{enumerate}
-    \item Implement |expx3 :: PowerSeries|, a power series representation of
+    \item Implement |expx3 :: PowerSeries REAL|, a power series representation of
       $e^{3 * t}$
 
     \item Find an expression for |fs''|, the second derivative of |fs|, in terms
