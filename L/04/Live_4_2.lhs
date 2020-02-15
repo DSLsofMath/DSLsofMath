@@ -44,3 +44,54 @@ Homomorphism1(eval,Exp,exp) = forall e. eval(Exp e) == exp (eval e)
   where  eval  :: FunExp -> FunSem
          Exp   :: FunExp -> FunExp
          exp   :: FunSem -> FunSem
+
+
+\begin{code}
+import DSLsofMath.FunNumInst
+newtype Bi a = Bi (a, a) deriving Show
+
+newtype FD a = FD (a->a, a->a)
+applyFD c (FD (f, f')) = (Bi (f c, f' c))
+
+instance Num a => Num (FD a) where
+  (*) = mulD
+  (+) = addD
+  negate = negateD
+  fromInteger = fromIntegerD
+
+mulD :: Num a => FD a -> FD a -> FD a
+mulD (FD (f,f')) (FD (g,g')) = FD (f*g, f*g' + f'*g)
+
+addD :: Num a => FD a -> FD a -> FD a
+addD (FD (f,f')) (FD (g,g')) = FD (f+g, f'+g')
+
+negateD :: Num a => FD a -> FD a
+negateD (FD (f,f')) = FD (negate f, negate f')
+
+fromIntegerD :: Num a => Integer -> FD a
+fromIntegerD i = FD (fromInteger i, fromInteger 0)
+
+xD = FD (id, const 1)
+
+instance Num a => Num (Bi a) where
+  (*) = mulBi
+  (+) = addBi
+  negate = negateBi
+  fromInteger = fromIntegerBi
+
+mulBi :: Num a => Bi a -> Bi a -> Bi a
+mulBi (Bi (f,f')) (Bi (g,g')) = Bi (f*g, f*g' + f'*g)
+
+addBi :: Num a => Bi a -> Bi a -> Bi a
+addBi (Bi (f,f')) (Bi (g,g')) = Bi (f+g, f'+g')
+
+negateBi :: Num a => Bi a -> Bi a
+negateBi (Bi (f,f')) = Bi (negate f, negate f')
+
+fromIntegerBi :: Num a => Integer -> Bi a
+fromIntegerBi i = Bi (fromInteger i, fromInteger 0)
+
+xBi x = Bi (x, 1)
+
+
+\end{code}

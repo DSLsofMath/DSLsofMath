@@ -33,6 +33,93 @@ DONE: |class IntExp|
 DONE: instance S
 DONE: instance I
 DONE: instance IntExt
-
+DONE: Final note: compositional semantics means we can work without syntax trees.
 
 TODO: from |eval| to |foldE|
+* Week 4, lecture 2: Homomorphisms and derivatives
+** black-board: def. of eval' (specified as D . eval)
+type FunSem = REAL -> REAL
+** More about homomorphisms (see definitions below)
+*** H2
+ Homomorphism2(h,op1,op2) = forall x, y. h(op1 x y) == op2 (h x) (h y)
+   where  h   :: A1 -> A2
+          op1 :: A1 -> A1 -> A1
+          op2 :: A2 -> A2 -> A2
+
+*** H1
+ Homomorphism1(h,op1,op2) = forall x. h(op1 x) == op2 (h x)
+   where  h   :: A1 -> A2
+          op1 :: A1 -> A1
+          op2 :: A2 -> A2
+
+*** Examples:
+
+ Homomorphism2(eval,(:+:),( + )) = forall x, y. eval (x:+:y) == (eval x) + (eval y)
+   where  eval  :: FunExp -> FunSem
+          (:+:) :: FunExp -> FunExp -> FunExp
+          (+)   :: FunSem -> FunSem -> FunSem
+
+ Homomorphism1(eval,Exp,exp) = forall e. eval (Exp e) == exp (eval e)
+   where  eval  :: FunExp -> FunSem
+          Exp   :: FunExp -> FunExp
+          exp   :: FunSem -> FunSem
+
+** show that eval' is *not* a homomorphism from (:*:) to (*)
+*** not H2(eval',(:*:),(*))
+ + push not through foralls -> exists
+ + find example values (evidence for the exists proof)
+** show that evalD *is* a homomorphism
+*** exists mul. H2(evalD,(:*:),mul)
+ type FD a = (a -> a, a -> a)
+
+ -- Specification of evalD:
+ evalD e = (eval e, eval' e) where eval' = D . eval
+ -- can be rewritten to (still a specification)
+ evalD e = let f = eval e in (f, D f)
+
+ -- Typing
+ evalD :: FunExp -> FD Double
+ (:*:) :: FunExp    -> FunExp    -> FunExp   -- Mul
+ mulD  :: FD Double -> FD Double -> FD Double
+
+ Def.: H2(h,op1,op2) = forall x, y. h(op1 x y) == op2 (h x) (h y)
+   H2(evalD,(:*:),mulD)
+ =
+   forall x, y. evalD (x :*: y) == mulD (evalD x) (evalD y)
+
+ We can simplify the lhs
+   evalD (x :*: y)
+ = {- Spec. evalD e = let f = eval e in (f, D f) -}
+   let f = eval (x :*: y) in (f, D f)
+ = {- Def. of eval -}
+   let f = eval x * eval y in (f, D f)
+ = {- Derivative of a product -}
+   let f = eval x * eval y
+   in (f, eval x * D (eval y) + D (eval x) * eval y)
+ = {- name terms for readability -}
+   let g = eval x; h = eval y;
+       f = g * h
+   in (f, g * D h + D g * h)
+ = {- name terms for readability, substitute f -}
+   let g = eval x; g' = D g; h = eval y; h' = D h
+   in (g * h, g * h' + g' * h)
+ = {- package in pairs, use spec. of evalD -}
+   let  (g, g') = evalD x;   (h, h') = evalD y
+   in (g * h, g * h' + g' * h)
+ = {- Invent the operator mulD -}
+   let mulD (g, g') (h, h') = (g * h, g * h' + g' * h)
+   in  mulD (evalD x) (evalD y)
+ =
+   rhs
+
+ Thus we have calculated a definition for mulD which satisfies
+   H2(evalD,(:*:),mulD)
+
+mulD (g, g') (h, h') = (g * h, g * h' + g' * h)
+
+ This means that we can work directly with pairs of functions (f, D f).
+
+** Perhaps the tupling transform: a->(b,c) ~ (a->b, a->c)
+** Teaser: an unusual stream & the fundamental theorem of (integral) calculus
+** TODO: |apply c| is a |Num|-homomorphism
+** TODO: |applyFD c| as well
