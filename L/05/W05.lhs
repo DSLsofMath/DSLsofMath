@@ -378,7 +378,7 @@ This justifies the standard notation
 
 Recall the fundamental property of division we learned in high school:
 
-For all natural numbers |a|, |b|, with |b ≠ 0|, there there exist *unique* integers |q| and |r|, such that
+For all natural numbers |a|, |b|, with |b ≠ 0|, there exist \emph{unique} integers |q| and |r|, such that
 
 < a = b * q + r, with r < b
 
@@ -386,7 +386,7 @@ When |r = 0|, |a| is divisible by |b|.  Questions of divisibility are essential 
 
 A similar theorem holds for polynomials (see, for example, \cite{adams2010calculus} page 40):
 
-For all polynomials |as|, |bs|, with |bs ≠ Single 0|, there there exist *unique* polynomials |qs| and |rs|, such that
+For all polynomials |as|, |bs|, with |bs ≠ Single 0|, there exist \emph{unique} polynomials |qs| and |rs|, such that
 
 < as = bs * qs + rs, with degree rs < degree bs
 
