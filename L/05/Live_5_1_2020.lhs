@@ -1,5 +1,3 @@
-
-
 \begin{code}
 module Live_5_1_2020 where
 import Data.Complex
