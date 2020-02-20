@@ -1,0 +1,69 @@
+Week 5: Polynomials and Power Series
+* Recap of homomorphisms
+** H2
+Homomorphism2(h,op1,op2) = forall x, y. h (op1 x y) == op2 (h x) (h y)
+  where  h   :: A1 -> A2
+         op1 :: A1 -> A1 -> A1
+         op2 :: A2 -> A2 -> A2
+** H1
+Homomorphism1(h,op1,op2) = forall x. h (op1 x) == op2 (h x)
+  where  h   :: A1 -> A2
+         op1 :: A1 -> A1
+         op2 :: A2 -> A2
+** H0
+Homomorphism0(h,op1,op2) = h op1 == op2
+  where  h   :: A1 -> A2
+         op1 :: A1
+         op2 :: A2
+** Examples:
+
+Homomorphism2(eval,Add,(+)) = forall x, y. eval(Add x y) == (eval x)+(eval y)
+  where  eval  :: FunExp -> FunSem
+         Add   :: FunExp -> FunExp -> FunExp
+         (+)   :: FunSem -> FunSem -> FunSem
+
+Homomorphism1(eval,Exp,exp) = forall e. eval(Exp e) == exp (eval e)
+  where  eval  :: FunExp -> FunSem
+         Exp   :: FunExp -> FunExp
+         exp   :: FunSem -> FunSem
+
+* Homomorphism examples related to A2 (Apply.hs)
+** apply   :: a -> (a->b) -> b
+** applyFD :: a -> FD a -> Bi a
+* Polynomials (Live_5_1_2020.lhs)
+
+\begin{quote}
+P is a polynomial function if
+
+  P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0
+
+where $a_n$, $a_{n-1}$, \ldots, $a_1$, and $a_0$, called the
+\textbf{coefficients} of the polymonial [misspelled in the book], are
+constants and, if $n > 0$, then $a_n ≠ 0$.
+%
+The number $n$, the degree of the highest power of $x$ in the
+polynomial, is called the \textbf{degree} of the polynomial.
+%
+(The degree of the zero polynomial is not defined.)
+\end{quote}
+* Power Series
+** Polynomial degree
+https://chalmers.instructure.com/courses/8975/files/folder/Blackboard/Week5?preview=392737
+** degree as "almost a homomorphism"
+** lifting to Maybe
+https://chalmers.instructure.com/courses/8975/files/folder/Blackboard/Week5?preview=392736
+** derivative
+https://chalmers.instructure.com/courses/8975/files/folder/Blackboard/Week5?preview=392733
+** integration
+** Polynomial division with remainder
+** Power series example: 1/(1-x)
+https://chalmers.instructure.com/courses/8975/files/folder/Blackboard/Week5?preview=392735
+** Radius of convergence
+** Live coding (Live_5_2_2020.lhs)
++ evalPS
++ instance Num (Poly a)
++ scale, negate, fromInteger, x
++ degree :: Poly a -> Maybe Int
++ Examples: hej=1:hej
++ derP, intP
++ Using intP to define expP, sinP, cosP
