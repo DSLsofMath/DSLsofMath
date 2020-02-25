@@ -1,13 +1,14 @@
 Higher-order Derivatives and their Applications
 
-Yet another type for representing functions
+Yet another type for representing functions.
 
 \begin{code}
-{-# LANGUAGE TypeFamilies #-}
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.Live_6_2 where
-import DSLsofMath.FunExp
-import DSLsofMath.Derive
-import DSLsofMath.Simplify
+import DSLsofMath.FunExp    -- Syntax for functions
+import DSLsofMath.Derive    -- Syntactic computation of derivatives
+import DSLsofMath.Simplify  -- Algebraic simplification
 
 d :: FunExp -> FunExp
 d = simplify . derive
@@ -17,19 +18,8 @@ type DS = []
 evalAll :: FunExp -> DS Func
 evalAll e = eval e : evalAll (d e)
 
-es :: DS FunExp
-es = (Id:*:Id) : map d es
-fs :: DS Func
-fs = evalAll (Id:*:Id)   -- x²
-
-testfs :: [Func]
-testfs = take 5 fs
-
-testvs1 :: [REAL]
-testvs1 = apply 1 testfs
-testvs2 = apply 2 testfs
-
-apply :: a -> [a -> b] -> [b]
+-- testing
+si = evalAll (Sin Id)
 \end{code}
 
 Questions:
@@ -46,6 +36,87 @@ Conveniently, by the definition of |evalAll e| the RHS is
 which means we can pick |derDS = tail| to get to the LHS!
 
 So, yes, there is a (very simple) function that implements |derDS|.
+
+----------------
+
+Question:
+  Exists mul. H2(evalAll, (:*:), mul)  ?
+
+Expand the definition:
+  H2(evalAll, (:*:), mul) =
+    forall fe, ge. evalAll (fe :*: ge) = mul (evalAll fe) (evalAll ge)
+
+Start simplifying the expression(s)
+
+  evalAll (fe :*: ge)
+= -- def. of evalAll
+  eval (fe :*: ge)    : evalAll (d (fe:*:ge))
+= -- H2(eval,(:*:),(*)) on the left; derive of product on the right
+  (eval fe * eval ge) : evalAll ( (fe:*:(d ge)) :+: ((d fe):*:ge))
+= -- naming + Lemma1 below
+  --   f = eval fe == head (evalAll fe)
+  --   g = eval ge == head (evalAll ge)
+  (f * g) : add (mul (evalAll fe)  (tail (evalAll ge))
+                (mul (tail (evalAll fe)  (evalAll ge))
+= -- naming continued:
+  --   f:fs = evalAll fe;
+  --   g:gs = evalAll ge;
+  (f * g) : add (mul (f:fs)  (tail (g:gs))
+                (mul (tail (f:fs)  (g:gs))
+= -- def. of tail
+  (f*g) : add (mul (f:fs) gs) (mul fs (g:gs))
+= -- TODO make this true
+  mul (f:fs) (g:gs)
+= -- naming
+  mul (evalAll fe) (evalAll ge)
+
+
+Lemma1:
+
+  evalAll (d (fe:*:ge))
+= -- def. derivative of product
+  evalAll ((fe :*: d ge) :+: (d fe :*: ge))
+= -- H2(evalAll, (:+:), add)
+  add (evalAll (fe :*: d ge)) (evalAll (d fe :*: ge))
+= -- H2(evalAll,(:*:),mul) -- "co-induction"
+  add (mul (evalAll    fe)  (evalAll (d ge))
+      (mul (evalAll (d fe)  (evalAll    ge))
+= -- H1(evalAll,d,tail)
+  add (mul (evalAll    fe)  (tail (evalAll ge))
+      (mul (tail (evalAll fe)  (evalAll    ge))
+
+Thus, if we just make the "TODO" step true by definition of mul we
+  have (informally) proved H2(evalAll,(:*:),mul).
+
+\begin{code}
+type MulFun = DS Func
+mul :: MulFun->MulFun->MulFun
+mul (f:fs) (g:gs) = (f*g) :  addDS  (mul (f:fs)  gs)
+                                    (mul fs  (g:gs))
+
+fromIntegerDS :: Integer -> MulFun
+fromIntegerDS i = fromInteger i : repeat 0
+\end{code}
+
+
+Some testing code
+\begin{code}
+e1 :: FunExp -- 1 + 2x + x²
+e1 = Const 1 :+: (Const 2 :*: Id) :+: (Id:*:Id)
+es :: DS FunExp
+es = e1 : map d es
+fs :: DS Func
+fs = evalAll e1
+
+testfs :: [Func]
+testfs = take 5 fs
+
+testvs1 :: [REAL]
+testvs1 = apply 1 testfs
+testvs2 = apply 2 testfs
+
+apply :: a -> [a -> b] -> [b]
+\end{code}
 
 ----------------
 
@@ -75,6 +146,7 @@ derDS = tail
 addDS :: DS Func -> DS Func -> DS Func
 addDS = zipWith (+)
 \end{code}
+
   propH1 evalAll (:+:) addDS
   forall x y. evalAll (x:+:y) === addDS (evalAll x) (evalAll y)
   show that addDS = zipWith (+)
@@ -97,7 +169,7 @@ addDS = zipWith (+)
 
 --
 
-Next: the multiplication case.
+Next: the multiplication case (a longer argument for what we did above).
 
 We are looking for a function |mulDS| and we would like it to be
 "multiplication" for "derivative streams". We want |evalAll| to
@@ -205,52 +277,4 @@ fromIntegerDerStream i = DS (fromInteger i : repeat 0)
 
 negateDerStream :: Num a => DerStream a -> DerStream a
 negateDerStream (DS xs) = DS (map negate xs)
-\end{code}
-
-
-
-
-----
-
-Below is supporting code, not part of the learning outcomes.
-
-propH2 h op1 op2 x y = h (op1 x y) === op2 (h x) (h y)
-
-\begin{code}
-propH1 ::  SemEq b =>
-           (a->b) -> (a->a) -> (b->b) ->
-           a -> EQ b
-propH1 h fa fb = (h . fa) === (fb . h)
--- same as
--- propH1 h fa fb = (\x -> h (fa x)) === (\x -> fb (h x))
-
-propH2 ::  SemEq b =>
-           (a->b) -> (a->a->a) -> (b->b->b) ->
-           a -> a -> EQ b
-propH2 h op1 op2 = (\x y -> h (op1 x y)) === (\x y -> op2 (h x) (h y))
-
-
-class SemEq s where
-  type EQ s
-  (===) :: s -> s -> EQ s
-
-instance SemEq b => SemEq (a->b) where
-  type EQ (a->b) = a -> EQ b
-  (===) = semEqFun
-
-semEqFun :: SemEq b => (a->b) -> (a->b) -> a -> EQ b
-semEqFun = error "TODO"
-
-type Nat = Int
-
-instance SemEq a => SemEq [a] where
-  type EQ [a] = Nat -> EQ a
-  (===) = semEqList
-
-semEqList :: SemEq a => [a] -> [a] -> Nat -> EQ a
-semEqList xs ys i = (xs!!i) === (ys!!i)
-
-instance SemEq Double where
-  type EQ Double = Bool
-  (===) = (==)
 \end{code}

@@ -1,0 +1,18 @@
+Learning outcomes:
+
+* Power Series:
+** (last week) "polynomial" division
+** definitions of deriv and integ
+** transformation from semantics (ODE) to syntax (coefficient equations)
++ f x = f 0 + \int_0^x f'   -- semantics
++ fs = integ (f 0) fs'      -- syntax, with f = eval fs
+** solving differential equations "by hand"
++ expx,
++ sinx, cosx
+  si = [0,  1,  0  ,-1/6, 0   , ...]
+  co = [1,  0, -1/2,  0 , 1/24, ...]
++ f' + 2f = sin, f 0 = 1
+  fs' = si - 2*fs
+  fs  = integ 1 fs'
+* evalAll: a stream of all derivatives
+see Live_6_1_2020.lhs
