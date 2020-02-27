@@ -3,8 +3,6 @@ Higher-order Derivatives and their Applications
 Yet another type for representing functions.
 
 \begin{code}
-{-# LANGUAGE TypeSynonymInstances #-}
-{-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.Live_6_2 where
 import DSLsofMath.FunExp    -- Syntax for functions
 import DSLsofMath.Derive    -- Syntactic computation of derivatives
@@ -116,6 +114,7 @@ testvs1 = apply 1 testfs
 testvs2 = apply 2 testfs
 
 apply :: a -> [a -> b] -> [b]
+apply c = map (\f->f c)
 \end{code}
 
 ----------------
@@ -235,46 +234,4 @@ mulDS' fs@(f:fs') gs@(g:gs') =
 
 addDS' :: Num a => DS a -> DS a -> DS a
 addDS' = zipWith (+)
-\end{code}
-
-Some test code:
-\begin{code}
-e1s :: DS Func
-e1s = evalAll (Exp Id)
-e2s :: DS Func
-e2s = evalAll (Exp Id :*: Exp Id)
-e3s :: DS Func
-e3s = mulDS e1s e1s
-
-apply x = map (\f->f x)
-
-t :: DS Func -> [REAL]
-t = take 6 . apply 0
-\end{code}
-
-Now, we have done all of this with streams of functions, but all the
-definitions go through also after picking a particular point using
-|apply x|. The classical example is to pick |x=0| to get the
-"Maclaurin series".
-
-\begin{code}
-newtype DerStream a = DS [a]   -- could be called Maclaurin
-
-instance Num a => Num (DerStream a) where
-  (+) = addDerStream
-  (*) = mulDerStream
-  negate = negateDerStream
-  fromInteger = fromIntegerDerStream
-
-addDerStream :: Num a => DerStream a -> DerStream a -> DerStream a
-addDerStream (DS xs) (DS ys) = DS (addDS' xs ys)
-
-mulDerStream :: Num a => DerStream a -> DerStream a -> DerStream a
-mulDerStream (DS xs) (DS ys) = DS (mulDS' xs ys)
-
-fromIntegerDerStream :: Num a => Integer -> DerStream a
-fromIntegerDerStream i = DS (fromInteger i : repeat 0)
-
-negateDerStream :: Num a => DerStream a -> DerStream a
-negateDerStream (DS xs) = DS (map negate xs)
 \end{code}

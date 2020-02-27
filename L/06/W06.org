@@ -16,3 +16,16 @@ Learning outcomes:
   fs  = integ 1 fs'
 * evalAll: a stream of all derivatives
 see Live_6_1_2020.lhs
+* Week 6 Lecture 2: Maclaurin series
+
+Big picture: a transformation in three stages
+
+  f
+-> compute all derivatives
+  [f, f', f'', ...]
+-> apply 0
+  [f 0, f' 0, f'' 0, ...]
+-> divide by factorials
+  [f 0/0!, f' 0/1!, f'' 0/2!, ...]
+
+In the lecture we worked through the different steps with examples and motivation / explanation.
