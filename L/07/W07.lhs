@@ -19,7 +19,7 @@ elements of the field:
 %
 \[v + w = \colvec{v} + \colvec{w} = \colvecc{v_0 + w_0}{v_n + w_n}\]
 %
-\[s * v = \colvecc{s*v_0}{s*v_n}\]
+\[ |s *^ v| = \colvecc{s*v_0}{s*v_n}\]
 %**TODO: use a different symbol for scaling than field multiplication
 The scalar |s| scales all the components of |v|.
 
@@ -30,9 +30,9 @@ In fact, the most important feature of vectors is that they can be
 \emph{uniquely} expressed as a simple sort of combination of other
 vectors:
 %
-\[v = \colvec{v} = v_0 * \colveccc{1 \\ 0 \\ \vdots \\ 0} +
-                   v_1 * \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
-                   v_n * \colveccc{0 \\ 0 \\ \vdots \\ 1}
+\[v = \colvec{v} = |v0 *^| \colveccc{1 \\ 0 \\ \vdots \\ 0} +
+                   |v1 *^| \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
+                   |vn *^| \colveccc{0 \\ 0 \\ \vdots \\ 1}
 \]
 %
 We denote by
@@ -40,13 +40,13 @@ We denote by
 \[e_k = \colveccc{0\\\vdots\\0\\1 \makebox[0pt][l]{\qquad $\leftarrow$ position $k$} \\0\\\vdots\\0}\]
 %
 the vector that is everywhere |0| except at position |k|, where it is
-|1|, so that |v = v0 * e0 + ... + vn * en|.
+|1|, so that |v = v0 *^ e0 + ... + vn *^ en|.
 
 We could represent a vector |v| in terms of any set of \emph{basis}
 vectors |{b0, ..., bn}| which are \emph{linearly independent}:
 %
 \begin{spec}
-  (v0 * b0 + ... + vn * bn = 0) <=> (v0 = ... = vn = 0)
+  (v0 *^ b0 + ... + vn *^ bn = 0) <=> (v0 = ... = vn = 0)
 \end{spec}
 %
 The specification warrants that any vector has a unique representation
@@ -94,37 +94,40 @@ We know from the previous lectures that if |S| is an instance of
 definitions.
 %
 In particular, the instance declarations for |+|, multiplication, and
-embedding of constants, give us exactly the structure needed for the
+embedding of constants, give us much of the structure needed for the
 vector operations.
 %
 For example
-%
+%**TODO rewrite - the first step only works for literals. Use scale instead for the general case.
 \begin{spec}
-    s * v                      =  {- |s| is promoted to a function -}
+    2 * v                      =  {- |2| is promoted to a function -}
 
-    const s * v                =  {- |Num| instance definition -}
+    (const 2) * v              =  {- |Num| instance definition -}
 
-    \ g -> (const s) g * v g   =  {- definition of |const| -}
+    \ g -> (const 2) g * v g   =  {- definition of |const| -}
 
-    \ g -> s * v g
+    \ g -> 2 * v g
 \end{spec}
+%
+The ``promotion'' by |fromInteger| works for literals (like |2|, |-7|, etc.) but not for general expressions.
+%
+The function instance for the |Num| class gives a homogenous
+multiplication operator |(*) :: v -> v -> v| but the type of the
+general scaling operator |(*^) :: s -> v -> v| is inhomogenous: the first argument is
+a scalar and the second a vector.
 
 The canonical basis vectors are then
 %
 \begin{spec}
-    e i  :  G -> S,    e i g = i `is` g
+    e i  :  G -> S;    e i g = i `is` g
 \end{spec}
 %
-and every
-%
-\begin{spec}
-    v : G -> S
-\end{spec}
+and every |v : G -> S|
 %
 is trivially a linear combination of vectors |e i|:
 %
 \begin{spec}
-    v =  v 0 * e 0 + ... + v n * e n
+    v =  v 0 *^ e 0 + ... + v n *^ e n
 \end{spec}
 
 Implementation:
@@ -148,7 +151,7 @@ G| and |Vector S G'| for the same set of scalars |S|, we can study
 functions |f : Vector S G -> Vector S G'|:
 %
 \begin{spec}
-f v  =  f (v 0 * e 0 + ... + v n * e n)
+f v  =  f (v 0 *^ e 0 + ... + v n *^ e n)
 \end{spec}
 %
 For |f| to be a ``good'' function it should translate the operations
@@ -156,7 +159,7 @@ in |Vector S G| into operations in |Vector S G'|, i.e., should be a
 homomorphism:
 %
 \begin{spec}
-f v =  f (v 0 * e 0 + ... + v n * e n) = v 0 * f (e 0) + ... + v n * f (e n)
+f v =  f (v 0 *^ e 0 + ... + v n *^ e n) = v 0 *^ f (e 0) + ... + v n *^ f (e n)
 \end{spec}
 %
 But this means that we can determine the values of
@@ -174,7 +177,7 @@ Let |m = f . e|.
 Then
 %
 \begin{spec}
-f v =  v 0 * m 0 + ... + v n * m n
+f v =  v 0 *^ m 0 + ... + v n *^ m n
 \end{spec}
 %
 Each of |m k| is a |Vector S G'|, as is the resulting |f v|.
@@ -184,7 +187,7 @@ We have
 \begin{spec}
   f v g'                                             = {- as above -}
 
-  (v 0 * m 0 + ... + v n * m n) g'                   = {- |*| and |+| for functions are def. pointwise -}
+  (v 0 *^ m 0 + ... + v n *^ m n) g'                 = {- Def. of |(*^)| and |(+)| -}
 
   v 0 * m 0 g' + ... + v n * m n g'                  = {- using |sum|, and |(*)| commutative -}
 
@@ -328,7 +331,7 @@ having |n+1| columns (the dimension of |Vector G|) and one row
 Let |w :: Vector S G|:
 %
 \begin{spec}
-M * w = w 0 * fv 0 + ... + w n * fv n
+M * w = w 0 *^ fv 0 + ... + w n *^ fv n
 \end{spec}
 %
 |M * v| and each of the |fv k| are ``almost scalars'': functions of
@@ -364,7 +367,7 @@ This suggests that polynomials of degree |n+1| form a vector space,
 and we could interpret that as |{0, ..., n} -> REAL| (or, more
 generally, |Field a => {0, ..., n} -> a|).
 %
-The operations |+| (vector addition) and |*| (vector scaling) are
+The operations, |(+)| for vector addition and |(*^)| for vector scaling, are
 defined in the same way as they are for functions.
 %
 
@@ -373,7 +376,7 @@ To explain the vector space it is useful to start by defining the canonical base
 As for geometrical vectors, they are
 %
 \begin{spec}
-e i : {0, ..., n} -> Real, e i j = i `is` j
+e i : {0, ..., n} -> REAL, e i j = i `is` j
 \end{spec}
 %
 but how do we interpret them as polynomial functions?
@@ -393,7 +396,7 @@ Any other polynomial function |p| equals the linear combination of
 monomials, and can therefore be represented as a linear combination of
 our base vectors |e i|.
 %
-For example, |p x = 2+x^3| is represented by |2 * e 0 + e 3|.
+For example, |p x = 2+x^3| is represented by |2 *^ e 0 + e 3|.
 %
 
 In general, the evaluator from the vector representation to polynomial
@@ -413,7 +416,7 @@ evalP (V v) x = sum (map (\ i -> v i * x^i) [0..n])
 \end{spec}
 %
 The |derive| function takes polynomials of degree |n+1| to polynomials
-of degree |n|, and since |D (f + g) = D f + D g| and |D (s * f) = s *
+of degree |n|, and since |D (f + g) = D f + D g| and |D (s *^ f) = s *^
 D f|, we expect it to be a linear transformation.
 %
 What is its associated matrix?
@@ -433,13 +436,14 @@ want |derive (e (i + 1))| to represent the derivative of |\x -> x^(i + 1)|:
 evalP (derive (e (i + 1)))  =  {- by spec. -}
 D (evalP (e (i + 1)))       =  {- by def. of |e|, |evalP| -}
 D (\x -> x^(i + 1))         =  {- properties of |D| from lecture 3 -}
-\x -> (i + 1) * x^i
+\x -> (i + 1) * x^i         =  {- by def. of |e|, |evalP|, |(*^)| -}
+evalP ((i + 1) *^ (e i))
 \end{spec}
 %
 Thus
 %
 \begin{spec}
-derive (e (i + 1)) = (i + 1) * (e i)
+derive (e (i + 1)) = (i + 1) *^ (e i)
 \end{spec}
 %
 Also, the derivative of |evalP (e 0) = \x -> 1| is |\x -> 0| and thus
@@ -459,11 +463,7 @@ M =
   \end{bmatrix}
 \end{displaymath}
 
-Take the polynomial
-%
-\begin{spec}
-1 + 2 * x + 3 * x^2
-\end{spec}
+Take the polynomial function |p x = 1 + 2 * x + 3 * x^2|
 %
 as a vector
 %
@@ -479,7 +479,7 @@ and we have
 % TODO: Perhaps explain this "row of columns" view of a matrix in contrast with the "column of rows" view.
 % TODO: Perhaps also (or instead) just make the matrix be a two-dimensional grid of scalars.
 %
-representing the polynomial |2 + 6*x|.
+representing the polynomial function |p' x = 2 + 6*x|.
 
 Exercise~\ref{exc:Dmatrixpowerseries}: write the
 (infinite-dimensional) matrix representing |D| for power series.
@@ -583,13 +583,13 @@ parallel.
 But that is not quite accurate: if start with |{3, 4}|, we no longer
 get the characteristic function of |{f 3, f 4} = {6}|, instead, we get
 a vector that does not represent a characteristic function at all:
-|[0, 0, 0, 0, 0, 0, 2]|.
+|[0, 0, 0, 0, 0, 0, 2] = 2 *^ e 6|.
 %
 In general, if we start with an arbitrary vector, we can interpret
 this as starting with various quantities of some unspecified material
 in each state, simultaneously.
 %
-If |f| were injective, the respective quantities would just gets
+If |f| were injective, the respective quantities would just get
 shifted around, but in our case, we get a more interesting behaviour.
 
 What if we do want to obtain the characteristic function of the image
@@ -784,7 +784,7 @@ a number of times, to get a feeling for the possible evolutions.
 What do you notice?
 %
 What is the largest number of steps you can make before the result is
-the origin vector?
+the zero vector?
 %
 Now invert the arrow from |2| to |4| and repeat the exercise.
 %
@@ -794,7 +794,7 @@ Can you prove it?
 
 Implementation:
 
-The transition function has type |G -> (G -> Bool)|:
+The transition relation has type |G -> (G -> Bool)|:
 %
 \begin{code}
 f2 :: G -> (G -> Bool)
@@ -1130,15 +1130,15 @@ was in effect:
 
 = {- |v| is a linear combination of the base vectors -}
 
-    M * (v 0 * e 0 + ... + v n * e n)
+    M * (v 0 *^ e 0 + ... + v n *^ e n)
 
 = {- homomorphism -}
 
-    v 0 * (M * e 0) + ... + v n * (M * e n)
+    v 0 *^ (M * e 0) + ... + v n *^ (M * e n)
 
 = {- |e i| represents the perfectly known current state |i|, therefore |M * e i = f i| -}
 
-    v 0 * f 0 + ... + v n * f n
+    v 0 *^ f 0 + ... + v n *^ f n
 \end{spec}
 %
 So, we apply |f| to every state, as if we were starting from precisely
@@ -1146,7 +1146,7 @@ that state, obtaining the possible future states starting from that
 state, and then collect all these hypothetical possible future
 states in some way that takes into account the initial uncertainty
 (represented by |v 0|, ..., |v n|) and the nature of the uncertainty
-(the specific |+| and |*|).
+(the specific |(+)| and |(*^)|).
 
 If you examine the types of the operations involved
 %
