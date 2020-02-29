@@ -1,0 +1,133 @@
+* Week 6:
+** Power series
+** Taylor expansion (stream of derivatives)
+
+* Week 7:
+** Tue: Linear algebra 1 [Patrik]
+Lecture Notes: [[file:W07.lhs::\label{sec:LinAlg}][sec:LinAlg]]
+*** [maybe] H2(eval, opA, opB) generally
+*** [maybe] H1 similarly
+*** scale as a homomorphism from A=S to B=(v->v)
+*** multiplikation till funktionskomposition! [warm-up for later matrices]
+*** newtype Vect s g = V (g->s)
++ exempel: f2 : Vect REAL Bool
++ type D2=Bool
++ type D3=Maybe D2
++ newtype G = G Int -- {0..6}
+*** class Vector s v where
+ + zero  :: v          -- 0
+ + add   :: v->v->v    -- +
+ + scale :: s->(v->v)
+ laws:  0+v==v==v+0
+       (a+b)+c==a+(b+c)
+       H2(scale,(*),(.)) -- epand and explain
+*** Exempel på vektorer och enkla operationer
+*** Back to the representation: G -> S (index to scalars)
++ zero = const 0
++ Base vectors e_i = \j -> if i==j then 1 else 0
+*** some example vectors
++ ones = \i -> 1              -- represents 1/(1-x) as formal power series
++ exps = \i -> 1/factorial i  -- represents exp
+*** Base for vector space
+ + v=sum_{i=0}^n scale a_i b_i
+ + b_i are "base vectors"
+*** Example: 2D kartesiskt, ortogonalt rum.
+*** Example generell funktion [skip]
+ + h : Vect s g1 -> Vect s g2
+ + h (x, y) = (x², y²+x, 0) -- homomorfism?
+*** Önskade egenskaper: (structure preserving)
+ + H2(h,(+A),(+B)) -- skriv ut
+ + forall r. H1(h,scaleA r, scaleB r) -- skriv ut
+ + H0(h, zeroA, zeroB) -- skriv ut
+*** Homom. på bas-summa förenklas steg för steg
+*** h b_i räcker att känna till - bara några få vektorer i B
+*** Kalla samlingen av h b_i för en matris
+*** "Syntax" för en linjär transformation
+*** semantik: homomorfism från A til B (vektorrum)
+*** Kan läsas som "matris-vektor-multiplikation"
+*** exempel med 2D och 3D, mulMV : Mat -> (A->B)
+*** Matrix = Syntax; LinTrans = Semantics
+*** 2D->3D example:2018/W7/20180227_150820.jpg
+ (class Vector står kvar orörd på halv tavla)
+**** Exempel på LinTrans från 2D till 3D
++ h (x,y) = (x, y, x+y)
++ b0 = (1, 0) |-> (1,0,1)
++ b1 = (0, 1) |-> (0,1,1)
+ (nästan inget nytt)
++ linear transformation
++ H2(h,add_2,add_3)
++ H1(h,scale_2 c, scale_3 c)
+**** show how h can be computed by just knowing what it does on base vectors
+**** show the matrix representation
+*** [perhaps W8] der : P3->P2   (derivative of polynomials represented as vectors)
+**** type P3 = [R] -- polynomials of degree at most 3
+**** including example polynomial
+**** show matrix: four columns = der e_i for i in [0..3]
+ | 0 1 0 0 |
+ | 0 0 2 0 |
+ | 0 0 0 3 |
+ + including test multiplication
+*** Show the (backwards arrow) diagram for function composition and matrix mult.
+
+*** Linear(D) from (R->R) -> (R->R) using H2 and friends
+ + Linear(h:V->W) = H2(h,(+_V),(+_W)&forall c.H1(h,scale_V c,scale_W c)
+   (&H0(h,0_v,0_w) but that follows from scale 0)
+ + Linear(D): checking the H's => Yes.
+*** Linear(D) in the classical form
+ + Linear(h) = forall alfa, beta : S. forall f, g : V.
+                 h(scale_V alfa f +_V scale beta g) ==
+                 scale_W alfa (h f) +_W scale_W beta (h g)
+ + AlterLinear(h:V->W)
+** Thu: Laplace 1 (partly as an example of linear algebra) [Víctor]
+* Week 8:
+** Linear algebra 2 [Patrik]
+*** [[file:2018/W8/20180305_104808.jpg][2018/W8/20180305_104808.jpg]]
+**** type V s g = g -> s
+**** Example: derivative of 2-deg polynomials
+ + pick a base: semantics: eval e_i = (^i)
+ + syntax: e_0=[1,0,0];e_1=[0,1,0];e_2=[0,0,1]
+ + images of base vectors collected in a matrix
+ + examples - also evalP is a LinTrans
+**** Commuting square
+             evalP
+ Poly2 R    ------> (R->R)
+   |                  |
+   | hD               | D
+   v         evalP    v
+ Poly1 R    ------> (R->R)
+
+ + Note that
+
+ hD : Poly2 R -> Poly1 R
+ hD = mulMV mD
+
+**** More examples
+   Vec R Bool -- 2D space
+   Vec R Nat  -- Power Series
+   Vec R R    -- Laplace
+*** 2018/W8/20180305_104816.jpg
+**** matrix multiplication as LinTran composition
+     g      f
+ V3 <-- V2 <-- V1
+     N      M
+
+ composition
+
+    g.f
+ V3 <-- V1
+    N*M
+**** evalMat : Mat s a b -> (Vec s a -> Vec s b)
+ + evalMat M = f
+ + evalMat N = g
+ + evalMat (N*M) = g.f
+ + H2(evalMat, (*), (.))
+*** More complex matrix example:
+ + Deterministic transitions system
+ + e_j = \i-> if i==j then 1 else 0
+ + G = {0..6}
+ + V = G -> R = Vect R G
+ + f : V -> V
+ + f x = y omm det finns en pil från x till y
+ + Stor matris som har ettor vid transitioner
+
+** Laplace 2 / Course highlights

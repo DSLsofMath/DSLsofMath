@@ -20,7 +20,7 @@ elements of the field:
 \[v + w = \colvec{v} + \colvec{w} = \colvecc{v_0 + w_0}{v_n + w_n}\]
 %
 \[ |s *^ v| = \colvecc{s*v_0}{s*v_n}\]
-%**TODO: use a different symbol for scaling than field multiplication
+%
 The scalar |s| scales all the components of |v|.
 
 But, as you might have guessed, the layout of the components on paper
@@ -60,11 +60,11 @@ For every field |S| of scalars and every set |G| of indices, the set
 
 %*TODO: Perhaps cut this "noisy" intro
 \begin{code}
-{-# LANGUAGE FlexibleInstances #-}
-{-# LANGUAGE UndecidableInstances #-}
+{-# LANGUAGE GADTs, FlexibleInstances, UndecidableInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 module DSLsofMath.W07 where
 import DSLsofMath.FunNumInst
+import Data.List(nub)
 type REAL = Double
 \end{code}
 
@@ -98,7 +98,7 @@ embedding of constants, give us much of the structure needed for the
 vector operations.
 %
 For example
-%**TODO rewrite - the first step only works for literals. Use scale instead for the general case.
+%
 \begin{spec}
     2 * v                      =  {- |2| is promoted to a function -}
 
@@ -680,15 +680,17 @@ t1   = toL t1'               -- |[0,0,0,0,0,0,2]|
 \end{code}
 
 
+
 %**TODO (NiBo):
+%if False
 % This could go to into the file for the live sessions:
 %
-% \begin{code}
-% poss :: (Finite g, Num s) => Int -> Matrix s g g -> Vector s g -> [Vector s g]
-% poss n m v = take (n + 1) (iterate (mulMV m) v)
-% \end{code}
-%
-% *DSLsofMath.W07> |poss 6 m1 (e 3 + e 4)|
+\begin{code}
+poss :: (Finite g, Num s) => Int -> Matrix s g g -> Vector s g -> [Vector s g]
+poss n m v = take (n + 1) (iterate (mulMV m) v)
+
+testPoss0 = poss 6 m1 (e 3 + e 4)
+\end{code}
 %
 %
 %
@@ -697,13 +699,21 @@ t1   = toL t1'               -- |[0,0,0,0,0,0,2]|
 % implementation of |poss| with those of |poss1|, |poss2| and |poss3| for
 % different dynamical systems):
 % %
-% \begin{code}
-% poss1 :: (Eq a) => Int -> (a -> a) -> [a] -> [[a]]
-% poss1 n next xs = take (n + 1) (iterate (nub . (map next)) xs)
-% \end{code}
+\begin{code}
+poss1 :: Int -> (a -> a) -> [a] -> [[a]]
+poss1 n next xs  = take (n + 1) (iterate (map next) xs)
+
+testPoss1 = poss1 6 next1 [3, 4]
+
+poss1' :: (Eq a) => Int -> (a -> a) -> [a] -> [[a]]
+poss1' n next xs = take (n + 1) (iterate (nub . map next) xs)
+
+testPoss1' = poss1' 6 next1 [3, 4]
+\end{code}
 %
 % *DSLsofMath.W07> |poss1 6 next1 [3, 4]|
 %
+%endif False
 
 
 \subsubsection{Non-deterministic systems}

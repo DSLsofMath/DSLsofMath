@@ -24,14 +24,14 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
 \begin{exercise}  \leavevmode
   \begin{enumerate}
    %
-    \item Show that:
-      \begin{enumerate}
+    \item Show that: \label{exc:sincosexp}
+      \begin{itemize}
         \item $\sin t = \frac{1}{2*i} \left(  e^{i*t} - e^{-i*t}\right)$
         \item $\cos t = \frac{1}{2} \left(  e^{i*t} + e^{-i*t}\right)$
-      \end{enumerate}
+      \end{itemize}
 
-    \item Find the Laplace transforms
-      $\mathcal{L}\, (\lambda t. \, \sin t)$ and $\mathcal{L}\,  (\lambda t.  \, \cos t)$
+    \item Find the Laplace transforms |ℒ sin| and |ℒ cos| using the
+     transform for the exponentials and the result from \ref{exc:sincosexp}.
 
   \end{enumerate}
 \end{exercise}

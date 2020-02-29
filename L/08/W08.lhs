@@ -8,6 +8,7 @@
 module DSLsofMath.W08 where
 import DSLsofMath.W05
 import DSLsofMath.W06
+import Data.Ratio
 \end{code}
 
 One of the classical analysis textbooks, Rudin's \cite{rudin1987real}
@@ -102,29 +103,40 @@ We obtain
 ex2   ::  Fractional a => PowerSeries (Complex a)
 ex2    =  takePoly 10 (terms expx i)
 \end{code}
+As the code is polymorphic in the underlying number type, we can use rationals here to be able to test for equality without rounding problems.
 
-\begin{spec}
-ex2 =  [  C (1.0,                     0.0), {-"\qquad"-} C (0.0,  1.0                     )
-       ,  C (-0.5,                    0.0), {-"\qquad"-} C (0.0,  -0.16666666666666666    )
-       ,  C (4.1666666666666664e-2,   0.0), {-"\qquad"-} C (0.0,  8.333333333333333e-3    )
-       ,  C (-1.3888888888888887e-3,  0.0), {-"\qquad"-} C (0.0,  -1.9841269841269839e-4  )
-       ,  C (2.4801587301587298e-5,   0.0), {-"\qquad"-} C (0.0,  2.7557319223985884e-6   )
-       ]
-\end{spec}
+\begin{code}
+ex2' :: [Complex Rational]
+ex2' =  [  C (     1  ,          0), {-"\qquad"-}    C (0,     1     ),
+           C (  -  1  /  2,      0), {-"\qquad"-}    C (0,  -  1  /  6),
+           C (     1  /  24,     0), {-"\qquad"-}    C (0,     1  /  120),
+           C (  -  1  /  720,    0), {-"\qquad"-}    C (0,  -  1  /  5040),
+           C (     1  /  40320,  0), {-"\qquad"-}    C (0,     1  /  362880)]
+
+check = toList ex2 == ex2'
+\end{code}
+
+% [  C (1.0,                     0.0), {-"\qquad"-} C (0.0,  1.0                     )
+% ,  C (-0.5,                    0.0), {-"\qquad"-} C (0.0,  -0.16666666666666666    )
+% ,  C (4.1666666666666664e-2,   0.0), {-"\qquad"-} C (0.0,  8.333333333333333e-3    )
+% ,  C (-1.3888888888888887e-3,  0.0), {-"\qquad"-} C (0.0,  -1.9841269841269839e-4  )
+% ,  C (2.4801587301587298e-5,   0.0), {-"\qquad"-} C (0.0,  2.7557319223985884e-6   )
+% ]
 
 We can see that the real part of this series is the same as
 
 \begin{code}
+ex2R :: Poly Rational
 ex2R = takePoly 10 (terms cosx 1)
 \end{code}
 
 and the imaginary part is the same as
 
 \begin{code}
+ex2I :: Poly Rational
 ex2I = takePoly 10 (terms sinx 1)
 \end{code}
 
-(within approx 20 decimals).
 %
 But the terms of a series evaluated at |1| are the coefficients of the
 series.
@@ -135,9 +147,7 @@ Therefore, the coefficients of |cosx| are
 [1, 0, -1/2!, 0, 1/4!, 0, -1/6!, ...]
 \end{spec}
 
-i.e.
-%
-The function representation of the coefficients for |cos| is
+In other words, the function representation of the coefficients for |cos| is
 %
 \begin{spec}
 cosa (2 * n)  = (-1)^n / (2 * n)!
@@ -179,31 +189,31 @@ f x = f (x + T)  --  |∀ x ∈ A|
 |A|; in fact we normally assume at least group structure, i.e.,
 addition and subtraction).
 
-Since |sin| and |cos| are periodic, with period |2 * pi|, we have,
+Since |sin| and |cos| are periodic, with period |tau = 2 * pi|, we have,
 using the standard notation |a+i*b| for some |z = C (a, b)|:
 
 \begin{spec}
-  e^(z + 2*pi*i)                              = {- Def. of |z| -}
+  exp(z + i*tau)                              = {- Def. of |z| -}
 
-  e^((a + i * b) + 2*pi*i)                    = {- Rearranging -}
+  exp((a + i * b) + i*tau)                    = {- Rearranging -}
 
-  e^(a + i * (b + 2*pi))                      = {- |exp| is a homomorphism from |(+)| to |(*)| -}
+  exp(a + i * (b + tau))                      = {- |exp| is a homomorphism from |(+)| to |(*)| -}
 
-  e^a * e^(i * (b + 2*pi)  )                  = {- Euler's formula -}
+  exp a * exp (i * (b + tau)  )               = {- Euler's formula -}
 
-  e^a * (cos (b+2*pi) + i * sin (b+2*pi))     = {- |cos| and |sin| are |2*pi|-periodic -}
+  exp a * (cos (b+tau) + i * sin (b+tau))     = {- |cos| and |sin| are |tau|-periodic -}
 
-  e^a * (cos b + i * sin b)                   = {- Euler's formula -}
+  exp a * (cos b + i * sin b)                 = {- Euler's formula -}
 
-  e^a * e^(i*b)                               = {- |exp| is a homomorphism -}
+  exp a * exp (i*b)                           = {- |exp| is a homomorphism -}
 
-  e^(a + i * b)                               = {- Def. of |z| -}
+  exp (a + i * b)                             = {- Def. of |z| -}
 
-  e^z
+  exp z
 \end{spec}
 
 Thus, we see that |exp| is periodic, because |exp z = exp (z + T)|
-with |T = 2*pi*i|, for all |z|.
+with |T = i*tau|, for all |z|.
 
 \subsubsection{Exponential function: Associated code}
 
@@ -440,7 +450,7 @@ that, for any |f| and |g| for which the transformation is defined, and
 for any constants |alpha| and |beta|
 
 \begin{spec}
-ℒ (alpha * f + beta * g)  =  alpha * ℒ f  + beta * ℒ g
+ℒ (alpha *^ f + beta *^g)  =  alpha *^ ℒ f  + beta *^ ℒ g
 \end{spec}
 
 Note that this is an equality between functions.

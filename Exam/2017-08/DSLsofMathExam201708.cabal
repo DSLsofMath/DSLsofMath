@@ -13,13 +13,13 @@ maintainer:          patrik.ja@gmail.com
 -- copyright:
 category:            Math
 build-type:          Simple
-extra-source-files:  ChangeLog.md, README.md
+extra-source-files:  README.md
 cabal-version:       >=1.10
 
 library
   exposed-modules:     P1, P2, P3, PS
   -- other-modules:
   other-extensions:    GADTs
-  build-depends:       base >=4.9 && <4.10, QuickCheck >=2.9 && <2.10
+  build-depends:       base >=4.9 && <4.10, QuickCheck >=2.9
   -- hs-source-dirs:
   default-language:    Haskell2010

@@ -29,6 +29,7 @@
 %format (Clopen(x))             =  "[" x ")"
 %format infinity                =  "\infty"
 %format (pi)                    =  "\pi"
+%format (tau)                    = "\tau"
 %format (div (x) (y))           =  "\frac{" x "}{" y "}"
 %format (frac (x) (y))          =  "\frac{" x "}{" y "}"
 % %format (∃(x)(y))               =  "\exists\ " x ".\ \ " y
@@ -152,6 +153,7 @@
 %format t2
 %format t3
 %format v0
+%format v1
 %format vn = v "_n"
 %format w0
 %format wn = w "_n"
@@ -224,3 +226,5 @@
 
 %format gSyn = g "_{" syn "}"
 %format gSem = g "_{" sem "}"
+
+%format *^ = "\mathbin{\circledast}"
