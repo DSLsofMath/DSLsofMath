@@ -84,7 +84,7 @@ scaleF s v = \i -> scale s (v i)
 \end{code}
 
 Note that the instance declaration for |g->v| is parametrised over
-another vector field. That means we can use it several times to get
+another vector space. That means we can use it several times to get
 "vectors of vectors of ... of scalars". This is not widely used in the
 case of vectors, but more common for matrices, where it represents
 (regular) block matrices. (A block matrix is a matrix whose "elements"

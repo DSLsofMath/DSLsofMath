@@ -138,6 +138,24 @@ showVec v = unwords $ map (show.v) allVals
 
 "Poor man's proof" of the main theorem
 
+  H2(eval,mulMatMat,(.))  where eval=mulMatVec
+or equivalently:
+  forall m1, m2. eval (mulMatMat m1 m2) =L= eval m1 . eval m2
+
+Both the LHS and RHS are linear transformations (from a vector space V to W), thus to compare them we need to apply them to vectors in V. In general
+  h1 =L= h2 iff forall v. h1 v =V= h2 v
+It is enough to check this for the base vectors (is r).
+The resulting vectors then need to be compared:
+  v1 =V= v2 iff forall i. v1 i == v2 i
+
+This can be combined to
+  h1 =L= h2 iff forall r, c.  h1 (is r) c == h2 (is r) c
+or in our specific case:
+  forall m1, m2, r, c.
+    eval (mulMatMat m1 m2) (is r) c == (eval m1 . eval m2) (is r) c
+
+
+
 \begin{code}
 main_proof m1 m2 r c =
   [ eval (mulMatMat m1 m2) (is r) c
@@ -156,4 +174,8 @@ main_proof m1 m2 r c =
   , -- def. (.), eval
     (eval m1 . eval m2) (is r) c
   ]
+
+test0 = main_proof testm2 testm1
+test0' = \i j -> map toRational (test0 i j)
+test0'' = \i j -> map round (test0 i j)
 \end{code}
