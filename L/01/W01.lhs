@@ -272,16 +272,16 @@ zero.
 A proper mathematical function is called \emph{total}: it is defined
 for all its inputs, that is, it terminates and returns a value.
 
-There are basically two ways of ``fixing'' a partial function: change
+There are basically two ways of ``fixing'' a partial function: limit
 the type of the inputs (the domain) to avoid the ``bad'' inputs, or
-change the type of the output to include ``default'' or ``error''
+extend the type of the output (the range) to include ``default'' or ``error''
 values.
 %
 As an example, |sqrt|, the square root function, is partial if
 considered as a function from |REAL| to |REAL| but total if the domain
 is restricted to |RPos|.
 %
-In most programming languages the range is fixed instead; |sqrt ::
+In most programming languages the range is extended instead; |sqrt ::
 Double -> Double| where |sqrt (-1)| returns the ``error value'' |NaN|
 (Not a Number).
 %
