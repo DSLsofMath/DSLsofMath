@@ -112,7 +112,7 @@ theories, languages, programs and proofs.
 
 As mentioned in the introduction, we emphasise the dividing line
 between syntax (what mathematical expressions look like) and semantics
-(what they mean).
+(what they mean)\pedantic{The only way to be precise about semantics is to use a formal language, and so semantics end up being presented in the form of a syntax. In this textbook, we'll tend to be rather imprecise about the semantics, and the division should be clear.}.
 %
 As an example we start with \emph{type expressions} --- first in
 mathematics and then in Haskell.
@@ -415,7 +415,7 @@ There are three keywords in Haskell involved in naming types: |type|,
 
 \paragraph{|type| -- abbreviating type expressions}
 
-The |type| keyword is used to create a type synonym - just another name
+The |type| keyword is used to create a type synonym -- just another name
 for a type expression.
 %
 The semantics is unchanged: the set of values of type |Heltal| is
@@ -471,6 +471,12 @@ for every value |i :: Int|.
 %
 It is not the same as the semantics of |Int| but it is isomorphic
 (there is a one-to-one correspondence between the sets).
+%
+\pedantic{Usually an isomorphism cares not only about the elements of
+  the sets, but some structure involving operations defined on this
+  set (otherwise the term ``bijection'' is more typical). Here we have
+  not talked about these operations (yet). If we were to, we'd be able
+  to establish a more useful isomorphism.}
 
 Later in this chapter we use a newtype for the semantics of complex
 numbers as a pair of numbers in the Cartesian representation but it

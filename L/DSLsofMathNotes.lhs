@@ -26,6 +26,8 @@
 \usepackage{pdfpages}
 \usepackage{tabu}
 \newtheorem{theorem}{Theorem}
+\newcommand\jp[1]{\todo{JP: #1}}
+\newcommand\pedantic[1]{\footnote{Pedantic remark: #1}}
 
 \providecommand\mathbbm{\mathbb}
 
