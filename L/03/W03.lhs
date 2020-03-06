@@ -296,7 +296,7 @@ and we can call the three components |t : T| for time, |q : Q| for
 coordinate, and |v : V| for velocity.
 %
 (We use |T = Q = V = ℝ| in this example but it can help the reading to
-remember the different uses of |ℝ|.)
+remember the different uses of |ℝ|.\jp{In fact the text suggests that there are several coordinates (and corresponding velocities); but here we simplify and assume only one of each.})
 
 \item Looking again at the same derivative, \(∂L / ∂q\) suggests that
   \(q\) is the name of a real variable, one of the three arguments to
@@ -468,7 +468,7 @@ If we zoom out slightly we see that the quoted text means something
 like:
 %
 If we can describe the mechanical system in terms of ``a Lagrangian''
-(|L : S -> ℝ|), then we can use the equation to check if a particular
+(|L : S -> ℝ|)\jp{what is S?}, then we can use the equation to check if a particular
 candidate path |w : T → ℝ| qualifies as a ``motion of the system'' or
 not.
 %

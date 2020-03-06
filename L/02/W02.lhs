@@ -212,7 +212,7 @@ order in the term.)
 
 \subsection{First Order Logic (predicate logic)}
 %
-
+\jp{Why predicate logic in parentheses?}
 
 %TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
 Our second DSL is that of \emph{First Order Logic (FOL)\footnote{Swedish: Första ordningens logik = predikatlogik}}.
@@ -329,7 +329,7 @@ Thus we could define |Andn(A1,A2, ..., An) = A1 & A2 & ... & An| where
 |&| is the infix version of binary |And|.
 %
 The next step is to note that the formulas |Ai| can be generalised to
-|A(i)| where |i| is a term variable and |A| is a unary predicate
+|A(i)|\jp{lhs2tex typesets this strangely. Perhaps simple math mode works better?} where |i| is a term variable and |A| is a unary predicate
 symbol.
 %
 We can think of |i| ranging over an infinite collection of constant
@@ -352,7 +352,7 @@ Intuitively, if we can show |A(a)| without knowing anything about |a|,
 we have proved |Forall x A(x)|.
 %
 Another way to view this is to say that a proof of |Forall x (P x)| is
-a function |f| from terms to proofs such that |f t| is a proof of |P
+a function |f| from terms \jp{of type |RatT|?} to proofs such that |f t| is a proof of |P
 t| for each term |t|.
 
 % TODO: A simple example might also be a good idea, where we end up
@@ -529,7 +529,7 @@ f        :  (Forall x (P x))   {-"\quad\textbf{if}\quad"-}  f t  : P t   {-"\tex
 This now very much looks like type rules, and that is not a coincidence.
 %
 The \emph{Curry--Howard correspondence} says that we can think of
-propositions as types and proofs as ``programs''.
+propositions as types and proofs as ``programs''\jp{Why the scare quotes? Is it meant that programs have a limited expressivity?}.
 %
 These typing judgements are not part of FOL, but the correspondence is
 used quite a bit in this course to keep track of proofs.
@@ -635,6 +635,7 @@ But then |GCD(a,b)>=2| which implies |not Q|.
 To sum up: by assuming |P| we can prove both |Q| and |not Q|.
 %
 Thus, by contradiction |not P| must hold.
+\jp{With the build of proof terms, I was fully expecting to see the above formalised as such.}
 
 \subsection{Proof by cases}
 %
