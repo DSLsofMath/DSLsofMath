@@ -1,28 +1,10 @@
 
-- Variables; AGAIN!
-
-  Wikipedia:
-
-  Variable may refer to:
-    Variable (computer science), a symbolic name associated with a value and whose associated value may be changed
-    Variable (mathematics), a symbol that represents a quantity in a mathematical expression, as used in many sciences
-
-
-  By now we have a pretty good grip on 1. and we saw in ch. 3. a way
-  to reduce mathematical variables (q and v in lagrangian mechanics)
-  to computer science variables, by making expressing variables in
-  terms of a symbolic, truly free variable (t).
-
-- A random vari-able is simply an expression whose value is the outcome of a particular experiment (Introduction to Probability, Chales M. Grinstead and J. Laurie Snell)
-- A random variable is a variable associated with a probabilistic distribution.
-
-- What is a distribution?
 
 
 
-- Language for probabilistic problems
 
-- Spaces.
+\section{Spaces}
+
 
 We have four basic
 space constructions.
@@ -69,6 +51,23 @@ instance Monad Space where
   (>>=) = Bind
 \end{code}
 
+we could try to define the probabilities or densities of possible
+ values of a space: |spaceDensity :: Space a -> (a -> Real)|, and from
+ there define the expected values (or other statistical moments), but
+ it's simpler to directly give a generalized version of the
+ integration of a function for spaces:
+
+\begin{code}
+integrate :: Space a -> (a -> Real) -> Real
+integrate (Sigma a f) g = integrate a $ \x -> integrate (f x) $ \y -> g (x,y)
+integrate (Factor f) g = f * g ()
+integrate (Discrete a p) g = bigsum a $ \x -> p x * g x
+integrate (Continuous p) g = integral $ \x -> p x * g x
+
+integrate (Bind a f) g = integrate (Sigma a f) (g . snd)
+integrate (Project x) g = g x
+\end{code}
+
 (perhaps) familiar distributions can be embedded using the "discrete" and "continuous" constructors:
 
 \begin{code}
@@ -89,20 +88,27 @@ integral = undefined
 
 \end{code}
 
-we could try to define the expected value (or other statistical
-moments) of the distributions, but it's simpler to directly give a
-generalized version of the integration of a function for spaces:
+\section{Random Variables}
+- Variables; AGAIN!
 
-\begin{code}
-integrate :: Space a -> (a -> Real) -> Real
-integrate (Sigma a f) g = integrate a $ \x -> integrate (f x) $ \y -> g (x,y)
-integrate (Factor f) g = f * g ()
-integrate (Discrete a p) g = bigsum a $ \x -> p x * g x
-integrate (Continuous p) g = integral $ \x -> p x * g x
+  Wikipedia:
 
-integrate (Bind a f) g = integrate (Sigma a f) (g . snd)
-integrate (Project x) g = g x
-\end{code}
+  Variable may refer to:
+    Variable (computer science), a symbolic name associated with a value and whose associated value may be changed
+    Variable (mathematics), a symbol that represents a quantity in a mathematical expression, as used in many sciences
+
+
+  By now we have a pretty good grip on 1. and we saw in ch. 3. a way
+  to reduce mathematical variables (q and v in lagrangian mechanics)
+  to computer science variables, by making expressing variables in
+  terms of a symbolic, truly free variable (t).
+
+- A random variable is simply an expression whose value is the outcome
+   of a particular experiment (Introduction to Probability, Charles
+   M. Grinstead and J. Laurie Snell)
+
+Spaces represent the "experiments" that Grinstead and Snell mention
+
 
 Then, we can define the expected value, and other statistical
 moments. The first, most simple quantity that we need is the measure
