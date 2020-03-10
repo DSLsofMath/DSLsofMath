@@ -5,14 +5,32 @@
 
 \section{Spaces}
 
+Generally textbook problems involving probability involve the
+description of some situation, with an explicit uncertainty, including
+the outcome of certain measures, then the student is asked to compute
+the probability of some event.
 
-We have four basic
-space constructions.
+It is common to refer to a sample space by the labels \(S\), $\Omega$,
+or \(U\). While this space of events underpins modern understandings
+of probability theory, textbooks sometimes give a couple of examples
+involving coin tosses and promptly forget this concept in the body of
+the text. Here we will instead develop this concept using our DSL
+methodology.  Once this is done, we'll see that it'll become our basic
+tool to solve probability problems.
+
+Our first task is to describe the possible structure of sample space,
+and model them as a DSL.
 
 \paragraph{Discrete distributions}
+
+
 \paragraph{Continuous distributions}
 
+
 \paragraph{Scaling}
+
+We can scale the density of a space by an arbitrary non-negative
+ factor. This may appear useless, but...
 
 \paragraph{(Dependent) product of distributions}
 - New binder. Similar to forall in Ch. 3, but be also give the
@@ -51,7 +69,7 @@ instance Monad Space where
   (>>=) = Bind
 \end{code}
 
-we could try to define the probabilities or densities of possible
+We could try to define the probabilities or densities of possible
  values of a space: |spaceDensity :: Space a -> (a -> Real)|, and from
  there define the expected values (or other statistical moments), but
  it's simpler to directly give a generalized version of the
@@ -109,21 +127,22 @@ integral = undefined
 
 Spaces represent the "experiments" that Grinstead and Snell mention
 
-
 Then, we can define the expected value, and other statistical
 moments. The first, most simple quantity that we need is the measure
 of the space. Indeed, summing the probabilities should be 1, but a
 space can have a different value, and thus we must re-normalise a
 space to get a distribution.
 
-To compute the measure of a space, we can simply integrate the constant 1.
+To compute the measure of a space, we can simply integrate the
+constant 1.
 
 \begin{code}
 measure :: Space a -> Real
 measure d = integrate d (const 1)
 \end{code}
 
-A random variable can now be defined as a function from the space of situations. A real-valued random variable is of type 
+A random variable can now be defined as a function from the space of
+situations.
 
 For example, the expected value of real-valued random variable is then:
 \begin{code}
@@ -131,11 +150,17 @@ expectedValue :: Space a -> (a -> Real) -> Real
 expectedValue d f = integrate d f / measure d
 \end{code}
 
-exercise: define the variance; etc.
+exercise: define the variance, skew, curtosis, etc.
 
-An event can be defined as a boolean-valued function over a space. If
- the space accurately represents all possible situations with a correct density,
-then the expected value of the event is its probability. (However we need to map booleans to reals:)
+
+\subsection{Events and probability}
+
+Events are boolean-valued random variables.
+
+Thus an event can be defined as a boolean-valued function over a
+space. If the space accurately represents all possible situations with
+a density, then the expected value of the event is its
+probability. (However we need to map booleans to reals.)
 
 \begin{code}
 indicator :: Num p => Bool -> p
@@ -179,9 +204,14 @@ users. Suppose that 0.5% of people are users of the drug. What is the
 probability that a randomly selected individual with a positive test
 is a drug user?
 
-
+The above problem is often used as an illustration for the bayes
+theorem.  We won't be needing the bayes theorm here!
+In fact, through this example, we will see that it is a (computable)
+consequence of our definitions.
 
 Solution
+We begin by describing the space of situations:
+
 \begin{code}
 drugSpace :: Space (Bool, (Bool, ()))
 drugSpace = Sigma (bernoulli 0.005) $ \isUser ->
@@ -195,10 +225,11 @@ userProb = probability drugSpace (\ (isUser,_) -> isUser)
 -- 0.33221476510067116
 
 space' :: Space Bool
-space' = Bind (bernoulli 0.005) $ \isUser ->
-         Bind (bernoulli (if isUser then 0.99 else 0.01)) $ \testPositive ->
-         Bind (isTrue testPositive) $ \() -> -- we have ``a positive test'' by assumption
-         Project isUser
+space' =
+  do isUser <- bernoulli 0.005
+     testPositive <- bernoulli (if isUser then 0.99 else 0.01)
+     isTrue testPositive  -- we have ``a positive test'' by assumption
+     return isUser
 
 solution' :: Real
 solution' = probability' space'
