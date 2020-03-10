@@ -27,11 +27,106 @@ New binder. Similar to forall in Ch. 3, but be also give the distribution of the
 
 We have:
 
-example:
+\begin{code}
+{-# LANGUAGE GADTs #-}
+import Prelude hiding (Real)
+
+type Real = Double -- pretend...
+
+data Space a where
+  Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
+  Factor :: Real -> Space ()
+  Discrete :: [a] -> (a -> Real) -> Space a
+  Continuous :: (Real -> Real) -> Space Real
+
+  Bind :: (Space a) -> (a -> Space b) -> Space b
+  Project :: a -> Space a
+\end{code}
+
+(perhaps) familiar distributions can be embedded using the "discrete" and "continuous" constructors:
+
+\begin{code}
+bernoulli :: Real -> Space Bool
+bernoulli p = Discrete [False,True] (\x -> if x then p else 1-p)
+
+
+-- sum of some terms (finite so we can compute this)
+bigsum :: [a] -> (a -> Real) -> Real
+bigsum xs f = foldl (+) 0 [f x | x <- xs]
+
+-- indefinite integral over the whole real line
+integral :: (Real -> Real) -> Real
+integral = undefined
+
+\end{code}
+
+we could try to define the expected value (or other statistical
+moments) of the distributions, but it's simpler to directly give a
+generalized version of the integration of a function for spaces:
+
+\begin{code}
+integrate :: Space a -> (a -> Real) -> Real
+integrate (Sigma a f) g = integrate a $ \x -> integrate (f x) $ \y -> g (x,y)
+integrate (Factor f) g = f * g ()
+integrate (Discrete a p) g = bigsum a $ \x -> p x * g x
+integrate (Continuous p) g = integral $ \x -> p x * g x
+
+integrate (Bind a f) g = integrate (Sigma a f) (g . snd)
+integrate (Project x) g = g x
+\end{code}
+
+Then, we can define the expected value, and other statistical
+moments. The first, most simple quantity that we need is the measure
+of the space. Indeed, summing the probabilities should be 1, but a
+space can have a different value, and thus we must re-normalise a
+space to get a distribution.
+
+To compute the measure of a space, we can simply integrate the constant 1.
+
+\begin{code}
+measure :: Space a -> Real
+measure d = integrate d (const 1)
+\end{code}
+
+The expected value is then:
+\begin{code}
+expectedValue :: Space a -> (a -> Real) -> Real
+expectedValue d f = integrate d f / measure d
+\end{code}
+
+exercise: define the variance; etc.
+
+An event can be defined as a boolean-valued function over a space. If
+ the space accurately represents all possible situations with a correct density,
+then the expected value of the event is its probability. (However we need to map booleans to reals:)
+
+\begin{code}
+indicator :: Num p => Bool -> p
+indicator True = 1
+indicator False = 0
+\end{code}
+
+\begin{code}
+dirac :: Real -> Real
+dirac = undefined
+
+isTrue :: Bool -> Space ()
+isTrue c = Factor (indicator c)
+
+equal :: Real -> Real -> Space ()
+equal x y = Factor (dirac (x-y))
 
 
 
-(maybe) we're making some error in case |measure d| is 0.
+probability :: Space a -> (a -> Bool) -> Real
+probability d f = expectedValue d (indicator . f)
+
+probability' :: Space Bool -> Real
+probability' d = expectedValue d indicator
+
+-- (maybe) we're making some error in case |measure d| is 0.
+
+\end{code}
 
 Example: drug test (wikipedia; bayes theorem)
 
@@ -45,74 +140,7 @@ is a drug user?
 
 
 Solution
-
 \begin{code}
-{-# LANGUAGE GADTs #-}
-import Prelude hiding (Real)
-
-type Real = Double -- pretend...
-
--- instance Num Real
--- instance Fractional Real
-
-data Space a where
-  Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
-  Factor :: Real -> Space ()
-  Discrete :: [a] -> (a -> Real) -> Space a
-  Continuous :: (Real -> Real) -> Space Real
-
-  Bind :: (Space a) -> (a -> Space b) -> Space b
-  Project :: a -> Space a
-
-
-bernoulli :: Real -> Space Bool
-bernoulli p = Discrete [False,True] (\x -> if x then p else 1-p)
-
-
--- sum of some terms (finite so we can compute this)
-bigsum :: [a] -> (a -> Real) -> Real
-bigsum xs f = foldl (+) 0 [f x | x <- xs]
-
--- indefinite integral over the whole real line
-integral :: (Real -> Real) -> Real
-integral = undefined
- 
-integrate :: Space a -> (a -> Real) -> Real
-integrate (Sigma a f) g = integrate a $ \x -> integrate (f x) $ \y -> g (x,y)
-integrate (Factor f) g = f * g ()
-integrate (Discrete a p) g = bigsum a $ \x -> p x * g x
-integrate (Continuous p) g = integral $ \x -> p x * g x
-
-integrate (Bind a f) g = integrate (Sigma a f) (g . snd)
-integrate (Project x) g = g x
-\end{code}
-
-indicator :: Num p => Bool -> p
-indicator True = 1
-indicator False = 0
-
-dirac :: Real -> Real
-dirac = undefined
-
-isTrue :: Bool -> Space ()
-isTrue c = Factor (indicator c)
-
-equal :: Real -> Real -> Space ()
-equal x y = Factor (dirac (x-y))
-
--- The measure of a space
-measure :: Space a -> Real
-measure d = integrate d (const 1)
-
-expectedValue :: Space a -> (a -> Real) -> Real
-expectedValue d f = integrate d f / measure d
-
-probability :: Space a -> (a -> Bool) -> Real
-probability d f = expectedValue d (indicator . f)
-
-probability' :: Space Bool -> Real
-probability' d = expectedValue d indicator
-
 
 space :: Space (Bool, (Bool, ()))
 space = Sigma (bernoulli 0.005) $ \isUser ->
