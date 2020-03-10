@@ -20,25 +20,39 @@ instance Finite G where
 Define vectors and matrices as functions:
 
 \begin{code}
+fromL :: [a] -> Vec a Int
+fromL xs = \g -> xs!!g
+fromList :: [a] -> Vec a G
+fromList xs = \(G g) -> xs!!g
+
+v1 :: Vec REAL G   -- G -> REAL
+v1 = fromList [1,7,3,8,0,0,0]
+
 type Vec s c = c -> s
-type Mat s c r = r -> Vec s c -- = r -> c -> s
+type Mat s c r = r -> Vec s c     -- = r -> c -> s
 
 dot ::  (Finite g, Num s) =>
         Vec s g -> Vec s g -> s
-dot v w = sum (map (v * w) finiteDomain)
+dot v w = sum (map (v*w) finiteDomain)
   -- (*) :: Vec s c -> Vec s c -> Vec s c
   -- v * w = \i -> v i * w i   -- using the Num (x->s) instance
 
 mulMatVec ::  (Finite c, Finite r, Num s) =>
               Mat s c r -> Vec s c -> Vec s r
+--            [[s]] -> [s] -> [s]
+-- h = mulMatVec m
+-- Mat s c r = r -> Vec s c
+-- Vec s r   = r -> s
 mulMatVec m v = \r -> dot (m r) v
   -- m r :: Vec s c
   -- v   :: Vec s c
 
 eval ::  (Finite g, Finite g', Num s) =>
          Mat s g g'  ->  (Vec s g -> Vec s g')
+--       Syntax      ->  Semantik (en linjär transformation)
 eval = mulMatVec
 \end{code}
+
 
 Matrix multiplication specification
 
@@ -64,7 +78,7 @@ Matrix multiplication definition:
 mulMatMat ::
   (Num s, Finite a, Finite b, Finite c) =>
   Mat s b c -> Mat s a b -> Mat s a c
-mulMatMat m1 m2 = \r c -> mulMatVec m1 (getCol m2 c) r
+mulMatMat m1 m2 = \r c -> (mulMatVec m1 (getCol m2 c)) r
 \end{code}
 
 
