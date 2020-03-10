@@ -8,13 +8,13 @@ import DSLsofMath.FunNumInst
 type REAL = Double
 
 class Finite a where
-  allVals :: [a]
+  finiteDomain :: [a]
 
 newtype G = G Int  -- Here used to represent the set {0..6}
   deriving Show
 
 instance Finite G where
-  allVals = map G [0..6]
+  finiteDomain = map G [0..6]
 \end{code}
 
 Define vectors and matrices as functions:
@@ -23,13 +23,17 @@ Define vectors and matrices as functions:
 type Vec s c = c -> s
 type Mat s c r = r -> Vec s c -- = r -> c -> s
 
+dot ::  (Finite g, Num s) =>
+        Vec s g -> Vec s g -> s
+dot v w = sum (map (v * w) finiteDomain)
+  -- (*) :: Vec s c -> Vec s c -> Vec s c
+  -- v * w = \i -> v i * w i   -- using the Num (x->s) instance
+
 mulMatVec ::  (Finite c, Finite r, Num s) =>
               Mat s c r -> Vec s c -> Vec s r
-mulMatVec m v = \r -> sum (map (m r * v) allVals)
+mulMatVec m v = \r -> dot (m r) v
   -- m r :: Vec s c
   -- v   :: Vec s c
-  -- (*) :: Vec s c -> Vec s c -> Vec s c
-  -- m r * v = \g -> m r g * v g   -- using the Num (x->s) instance
 
 eval ::  (Finite g, Finite g', Num s) =>
          Mat s g g'  ->  (Vec s g -> Vec s g')
@@ -99,7 +103,7 @@ getRow = id
 
 type D2 = Bool
 type D3 = Maybe Bool
-instance Finite Bool where allVals = [False,True]
+instance Finite Bool where finiteDomain = [False,True]
 instance Enum a => Enum (Maybe a) where
   fromEnum Nothing = 0
   fromEnum (Just a) = 1+fromEnum a
@@ -107,13 +111,13 @@ instance Enum a => Enum (Maybe a) where
   toEnum n = Just (toEnum (n-1))
 
 instance Finite a => Finite (Maybe a) where
-  allVals = Nothing : map Just allVals
+  finiteDomain = Nothing : map Just finiteDomain
 
 fromLL :: (Enum i, Enum j) => [[s]] -> Mat s i j
 fromLL xss r c = (xss!!fromEnum c)!!fromEnum r
 
 toLL :: (Finite i, Finite j) => Mat s i j -> [[s]]
-toLL m = [[m i j | i<- allVals] | j <- allVals]
+toLL m = [[m i j | i<- finiteDomain] | j <- finiteDomain]
 
 testm1 :: Mat REAL D2 D3
 testm1 = fromLL [ [1,0,1], [2,1,0] ]
@@ -128,10 +132,10 @@ instance (Finite a, Finite b, Show s) => Show (Mat s a b) where
   show = showMat
 
 showMat :: (Finite a, Finite b, Show s) => Mat s a b -> String
-showMat m = unlines $ map (showVec.m) allVals
+showMat m = unlines $ map (showVec.m) finiteDomain
 
 showVec :: (Finite a, Show s) => Vec s a -> String
-showVec v = unwords $ map (show.v) allVals
+showVec v = unwords $ map (show.v) finiteDomain
 
 \end{code}
 ----------------------------------------------------------------

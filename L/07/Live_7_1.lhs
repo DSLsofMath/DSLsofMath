@@ -44,6 +44,10 @@ instance Vector v => Vector (g->v) where
 
 -- type Vec s g = g -> s   -- scalar set s and index set g
 
+b2i b = if b then 1 else 0
+e i = V (b2i . (i==))
+
+
 w0, w1, w2 :: Vec S Bool   -- (Bool -> S)  ≃  (S, S)  ≃  2D-vector
 -- card Bool = 2
 
