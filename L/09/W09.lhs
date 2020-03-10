@@ -13,6 +13,7 @@
   to computer science variables, by making expressing variables in
   terms of a symbolic, truly free variable (t).
 
+- A random vari-able is simply an expression whose value is the outcome of a particular experiment (Introduction to Probability, Chales M. Grinstead and J. Laurie Snell)
 - A random variable is a variable associated with a probabilistic distribution.
 
 - What is a distribution?
@@ -21,7 +22,22 @@
 
 - Language for probabilistic problems
 
-New binder. Similar to forall in Ch. 3, but be also give the distribution of the bound variable; thus giving a precise meaning to "random" variable.
+- Spaces.
+
+We have four basic
+space constructions.
+
+\paragraph{Discrete distributions}
+\paragraph{Continuous distributions}
+
+\paragraph{Scaling}
+
+\paragraph{(Dependent) product of distributions}
+- New binder. Similar to forall in Ch. 3, but be also give the
+ distribution of the bound variable; thus giving a precise meaning to
+ "random" variable.
+
+
 
 (TODO: explain HOAS somewhere)
 
@@ -30,6 +46,8 @@ We have:
 \begin{code}
 {-# LANGUAGE GADTs #-}
 import Prelude hiding (Real)
+import Control.Monad (ap)
+import Data.List ((\\))
 
 type Real = Double -- pretend...
 
@@ -41,11 +59,22 @@ data Space a where
 
   Bind :: (Space a) -> (a -> Space b) -> Space b
   Project :: a -> Space a
+
+instance Functor Space where
+  fmap f = (pure f <*>)
+instance Applicative Space where
+  pure = Project
+  (<*>) = ap
+instance Monad Space where
+  (>>=) = Bind
 \end{code}
 
 (perhaps) familiar distributions can be embedded using the "discrete" and "continuous" constructors:
 
 \begin{code}
+uniformDiscrete :: [a] -> Space a
+uniformDiscrete xs = Discrete xs (\_ -> 1.0 / fromIntegral (length xs))
+
 bernoulli :: Real -> Space Bool
 bernoulli p = Discrete [False,True] (\x -> if x then p else 1-p)
 
@@ -88,7 +117,9 @@ measure :: Space a -> Real
 measure d = integrate d (const 1)
 \end{code}
 
-The expected value is then:
+A random variable can now be defined as a function from the space of situations. A real-valued random variable is of type 
+
+For example, the expected value of real-valued random variable is then:
 \begin{code}
 expectedValue :: Space a -> (a -> Real) -> Real
 expectedValue d f = integrate d f / measure d
@@ -104,6 +135,16 @@ then the expected value of the event is its probability. (However we need to map
 indicator :: Num p => Bool -> p
 indicator True = 1
 indicator False = 0
+
+probability :: Space a -> (a -> Bool) -> Real
+probability d f = expectedValue d (indicator . f)
+\end{code}
+
+Conditional probability:
+
+\begin{code}
+condProb :: Space a -> (a -> Bool) -> (a -> Bool) -> Real
+condProb s g f = probability (Sigma s (isTrue . g)) (f . fst)
 \end{code}
 
 \begin{code}
@@ -115,11 +156,6 @@ isTrue c = Factor (indicator c)
 
 equal :: Real -> Real -> Space ()
 equal x y = Factor (dirac (x-y))
-
-
-
-probability :: Space a -> (a -> Bool) -> Real
-probability d f = expectedValue d (indicator . f)
 
 probability' :: Space Bool -> Real
 probability' d = expectedValue d indicator
@@ -141,14 +177,13 @@ is a drug user?
 
 Solution
 \begin{code}
+drugSpace :: Space (Bool, (Bool, ()))
+drugSpace = Sigma (bernoulli 0.005) $ \isUser ->
+            Sigma (bernoulli (if isUser then 0.99 else 0.01)) $ \testPositive ->
+            isTrue testPositive -- we have ``a positive test'' by assumption
 
-space :: Space (Bool, (Bool, ()))
-space = Sigma (bernoulli 0.005) $ \isUser ->
-        Sigma (bernoulli (if isUser then 0.99 else 0.01)) $ \testPositive ->
-        isTrue testPositive -- we have ``a positive test'' by assumption
-
-solution :: Real
-solution = probability space (\ (isUser,_) -> isUser)
+userProb :: Real
+userProb = probability drugSpace (\ (isUser,_) -> isUser)
 
 -- >>> solution
 -- 0.33221476510067116
@@ -212,6 +247,56 @@ if testPositive then 1 else 0
 0.00495
 
 -}
+
+\end{code}
+
+Suppose you’re on Monty Hall’s \emph{Let’s Make a Deal!} You are given
+ the choice of three doors, behind one door is a car, the others,
+ goats. You pick a door, say 1, Monty opens another door, say 3, which
+ has a goat. Monty says to you “Do you want to pick door 2?” Is it to
+ your advantage to switch your choice of doors?
+
+(Remember that, at the time of writing, cars were a highly prized
+ item.)
+
+\begin{code}
+montySpace1 :: Bool -> Space Bool
+montySpace1 changing = do
+  winningDoor <- uniformDiscrete [1::Int,2,3] -- any door can be the winning one
+  let montyPickedDoor = 3
+  isTrue (montyPickedDoor /= winningDoor)
+  let newPickedDoor = if changing then 2 else 1
+  return (newPickedDoor == winningDoor)
+
+-- >>> probability' (montySpace1 False)
+-- 0.5
+
+-- >>> probability' (montySpace True)
+-- 0.6666666666666666
+\end{code}
+
+\begin{code}
+montySpace :: Bool -> Space Bool
+montySpace changing = do
+  winningDoor <- uniformDiscrete [1::Int,2,3] -- any door can be the winning one
+  pickedDoor <-  uniformDiscrete [1,2,3] -- player picks door blindly
+  montyPickedDoor <-
+    uniformDiscrete ([1,2,3] \\ [pickedDoor, winningDoor]) -- monty cannot pick the same door, nor a winning door.
+  let newPickedDoor =
+        if changing
+        then head ([1,2,3] \\ [pickedDoor, montyPickedDoor])
+        -- player takes a door which is NOT the previously picked, nor the showed door.
+        else pickedDoor
+  return (newPickedDoor == winningDoor)
+
+-- >>> probability' (montySpace False)
+-- 0.3333333333333333
+
+-- >>> probability' (montySpace True)
+-- 0.6666666666666666
+\end{code}
+
+
 
 % Local Variables:
 % dante-methods : (bare-ghci)
