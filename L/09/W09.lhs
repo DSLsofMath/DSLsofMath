@@ -189,19 +189,64 @@ probability :: Space a -> (a -> Bool) -> Real
 probability d f = expectedValue d (indicator . f)
 \end{code}
 
-Conditional probability:
+An alternative way to define probability is as the ratio the measures of the subspace where f holds and the complete space.
+First we need the following helper, corresponding to a subspace which has measure 1 if c is true and 0 otherwise.
+
+\begin{code}
+isTrue :: Bool -> Space ()
+isTrue c = Factor (indicator c)
+\end{code}
+
+The subspace of s where f holds is then  |Sigma s (isTrue f)|, and we can state:
+
+Lemma: measure s * probability s f = measure (Sigma s (isTrue f))
+Proof:
+
+probability s f
+  = expectedValue s (indicator . f)
+  = expectedValue s (indicator . f)
+  = integrate s (indicator . f) / measure s
+  = integrate s (indicator . f) / measure s
+  = integrate s (\x -> indicator (f x)) / measure s
+  = integrate s (\x -> indicator (f x) * constant 1 (x,())) / measure s
+  = integrate s (\x -> integrate (isTrue f) $ \y -> constant 1 (x,y)) / measure s
+  = measure (Sigma s (isTrue f)) / measure s
+
+
+\section{Conditional probability}
+
+
+
+We can define the conditional probability of f wrt. g by taking the
+probability of f in the sub space where g is guaranteed to hold:
 
 \begin{code}
 condProb :: Space a -> (a -> Bool) -> (a -> Bool) -> Real
 condProb s g f = probability (Sigma s (isTrue . g)) (f . fst)
 \end{code}
 
+We find the above defintion more intuitive than the more usual P(F∣G)
+ = P(F∩G ∣ G). However, this last equality can be recovered by calculation:
+
+Lemma:  condProb s g f = probability s (\y -> f y && g y) / probability s g
+Proof:
+\begin{spec}
+condProb s g f
+  = probability (Sigma s (isTrue . g)) (f . fst)
+  = expectedValue (Sigma s (isTrue . g)) (indicator . f . fst)
+  = (1/measure(Sigma s (isTrue . g))) * (integrate (Sigma s (isTrue . g)) (indicator . f . fst))
+  = (1/measure s/probability s g) * (integrate s $ \x -> integrate (isTrue . g) $ \y -> indicator . f . fst $ (x,y))
+  = (1/measure s/probability s g) * (integrate s $ \x -> integrate (isTrue . g) $ \y -> indicator . f $ x)
+  = (1/measure s/probability s g) * (integrate s $ \x -> indicator (g x) * indicator (f x))
+  = (1/measure s/probability s g) * (integrate s $ \x -> indicator (\y -> g y &&  f y))
+  = (1/probability s g) * (integrate s $ \x -> indicator (\y -> g y &&  f y)) / measure s
+  = (1/probability s g) * probability s (\y -> g y &&  f y)
+\end{spec}
+
+
 \begin{code}
 dirac :: Real -> Real
 dirac = undefined
-
-isTrue :: Bool -> Space ()
-isTrue c = Factor (indicator c)
 
 equal :: Real -> Real -> Space ()
 equal x y = Factor (dirac (x-y))
@@ -350,6 +395,19 @@ montySpace changing = do
 -- >>> probability' (montySpace True)
 -- 0.6666666666666666
 \end{code}
+
+\section{Independent events}
+
+\begin{code}
+independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
+independentEvents s e f = probability s e == condProb s f e
+\end{code}
+
+According to Grinstead and Snell:
+
+Theorem: Two events are independent iff. P(E ∩ F) = P(E) · P(F)
+
+
 
 
 
