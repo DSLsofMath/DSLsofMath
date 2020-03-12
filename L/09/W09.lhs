@@ -21,10 +21,10 @@ tool to solve probability problems.
 Our first task is to describe the possible structure of sample space,
 and model them as a DSL.
 
-\paragraph{Discrete distributions}
+\paragraph{Finite space}
 
 
-\paragraph{Continuous distributions}
+\paragraph{Real line}
 
 
 \paragraph{Scaling}
@@ -54,8 +54,8 @@ type Real = Double -- pretend...
 data Space a where
   Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
   Factor :: Real -> Space ()
-  Discrete :: [a] -> (a -> Real) -> Space a
-  Continuous :: (Real -> Real) -> Space Real
+  Finite :: [a] -> Space a
+  RealLine :: Space Real
 
   Bind :: (Space a) -> (a -> Space b) -> Space b
   Project :: a -> Space a
@@ -69,6 +69,32 @@ instance Monad Space where
   (>>=) = Bind
 \end{code}
 
+\subsection{Simple spaces}
+
+\begin{code}
+uniformDiscrete :: [a] -> Space a
+uniformDiscrete xs = do
+  x <- Finite xs
+  Factor (1.0 / fromIntegral (length xs))
+  return x
+\end{code}
+
+\begin{code}
+bernoulli :: Real -> Space Bool
+bernoulli p = do
+  x <- Finite [False,True]
+  Factor (if x then p else 1-p)
+  return x
+\end{code}
+
+\begin{code}
+normal :: Real -> Real -> Space Real
+normal μ σ = do
+  x <- RealLine
+  Factor (1 / exp(- ( (x - μ)**2 / (2 * σ**2)) ))
+  return x
+\end{code}
+
 We could try to define the probabilities or densities of possible
  values of a space: |spaceDensity :: Space a -> (a -> Real)|, and from
  there define the expected values (or other statistical moments), but
@@ -79,22 +105,11 @@ We could try to define the probabilities or densities of possible
 integrate :: Space a -> (a -> Real) -> Real
 integrate (Sigma a f) g = integrate a $ \x -> integrate (f x) $ \y -> g (x,y)
 integrate (Factor f) g = f * g ()
-integrate (Discrete a p) g = bigsum a $ \x -> p x * g x
-integrate (Continuous p) g = integral $ \x -> p x * g x
+integrate (Finite a) g = bigsum a g
+integrate (RealLine) g = integral g
 
 integrate (Bind a f) g = integrate (Sigma a f) (g . snd)
 integrate (Project x) g = g x
-\end{code}
-
-(perhaps) familiar distributions can be embedded using the "discrete" and "continuous" constructors:
-
-\begin{code}
-uniformDiscrete :: [a] -> Space a
-uniformDiscrete xs = Discrete xs (\_ -> 1.0 / fromIntegral (length xs))
-
-bernoulli :: Real -> Space Bool
-bernoulli p = Discrete [False,True] (\x -> if x then p else 1-p)
-
 
 -- sum of some terms (finite so we can compute this)
 bigsum :: [a] -> (a -> Real) -> Real
@@ -103,8 +118,21 @@ bigsum xs f = foldl (+) 0 [f x | x <- xs]
 -- indefinite integral over the whole real line
 integral :: (Real -> Real) -> Real
 integral = undefined
-
 \end{code}
+
+The first, most simple quantity that we need is the measure
+of the space. Indeed, summing the probabilities should be 1, but a
+space can have a different value, and thus we must re-normalise a
+space to get a distribution.
+
+To compute the measure of a space, we can simply integrate the
+constant 1.
+
+\begin{code}
+measure :: Space a -> Real
+measure d = integrate d (const 1)
+\end{code}
+
 
 \section{Random Variables}
 - Variables; AGAIN!
@@ -127,22 +155,12 @@ integral = undefined
 
 Spaces represent the "experiments" that Grinstead and Snell mention
 
-Then, we can define the expected value, and other statistical
-moments. The first, most simple quantity that we need is the measure
-of the space. Indeed, summing the probabilities should be 1, but a
-space can have a different value, and thus we must re-normalise a
-space to get a distribution.
-
-To compute the measure of a space, we can simply integrate the
-constant 1.
-
-\begin{code}
-measure :: Space a -> Real
-measure d = integrate d (const 1)
-\end{code}
-
 A random variable can now be defined as a function from the space of
 situations.
+
+
+Then, we can define the expected value, and other statistical
+moments.
 
 For example, the expected value of real-valued random variable is then:
 \begin{code}
@@ -221,7 +239,7 @@ drugSpace = Sigma (bernoulli 0.005) $ \isUser ->
 userProb :: Real
 userProb = probability drugSpace (\ (isUser,_) -> isUser)
 
--- >>> solution
+-- >>> userProb
 -- 0.33221476510067116
 
 space' :: Space Bool
