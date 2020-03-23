@@ -127,9 +127,9 @@ problem1Situations' = Sigma twoDice sumAbove7
 \paragraph{Projections}
 In the end we may not be interested in all values and hide some of the
 generated values. For this we use the following combinator:
-\begin{code}
+\begin{spec}
 Project :: (a -> b) -> Space a -> Space b
-\end{code}
+\end{spec}
 
 \paragraph{Real line}
 Before we continue, we may also add a way to represent for real-valued
@@ -165,10 +165,17 @@ instance Monad Space where
 \subsection{Distributions}
 
 Another important notion in probability theory is that of a
-distribution. A distribution is a space whose total mass is equal to
+distribution. A distribution is a space whose total mass (or measure) is equal to
 1.
+\begin{code}
+isDistribution :: Space a -> Bool
+isDistribution s = measure s == 1
+\end{code}
+We may use the following type synonym to indicate distributions:
+  
 
 \begin{code}
+type Distr a = Space a
 uniformDiscrete :: [a] -> Space a
 uniformDiscrete xs = do
   x <- Finite xs
@@ -226,7 +233,7 @@ space can have a different value, and thus we must re-normalise a
 space to get a distribution.
 
 To compute the measure of a space, we can simply integrate the
-constant 1.
+constant 1 (so only mass matters).
 
 \begin{code}
 measure :: Space a -> Real
@@ -236,7 +243,7 @@ measure d = integrate d (const 1)
 Integration over a real-valued distribution yields its expected value:
 \begin{code}
 expectedValueOfDistr :: Distr Real -> Real
-expectedValueOfDistr d f = integrate d f
+expectedValueOfDistr d = integrate d id
 \end{code}
 
 \section{Random Variables}
@@ -335,7 +342,7 @@ the subspace where |e| holds and the complete space.
 
 \begin{code}
 probability2 :: Space a -> (a -> Bool) -> Real
-probability2 d f = measure (Sigma s (isTrue f)) / measure s
+probability2 s f = measure (Sigma s (isTrue . f)) / measure s
 
 isTrue :: Bool -> Space ()
 isTrue c = Factor (indicator c)
@@ -356,8 +363,8 @@ probability s f
   = integrate s (indicator . f) / measure s
   = integrate s (\x -> indicator (f x)) / measure s
   = integrate s (\x -> indicator (f x) * constant 1 (x,())) / measure s
-  = integrate s (\x -> integrate (isTrue f) (\y -> constant 1 (x,y)) / measure s)
-  = measure (Sigma s (isTrue f)) / measure s
+  = integrate s (\x -> integrate (isTrue . f) (\y -> constant 1 (x,y)) / measure s)
+  = measure (Sigma s (isTrue . f)) / measure s
 \end{spec}
 
 Sometimes one even finds in the literature and folklore the notation
