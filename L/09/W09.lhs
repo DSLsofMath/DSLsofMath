@@ -1,9 +1,38 @@
 
+Define a DSL to describe, reason about, problems such as the
+following (sometimes compute the probabilites involved)
 
+\begin{enumerate}
+\item Assume you throw two 6-face dice, what is the probability that
+  the product is greater than 10 if their sum is greater than 7.
+\label{ex:dice}
+\item Suppose that a test for using a particular drug is 99\% sensitive and
+99\% specific. That is, the test will produce 99\% true positive results
+for drug users and 99\% true negative results for non-drug
+users. Suppose that 0.5\% of people are users of the drug. What is the
+probability that a randomly selected individual with a positive test
+is a drug user?
+\footnote(found in Wikipedia article on bayes theorem)
+\label{ex:drugtest}
 
+\item Suppose you’re on Monty Hall’s \emph{Let’s Make a Deal!} You are given
+ the choice of three doors, behind one door is a car, the others,
+ goats. You pick a door, say 1, Monty opens another door, say 3, which
+ has a goat. Monty says to you “Do you want to pick door 2?” Is it to
+ your advantage to switch your choice of doors?
+% (Remember that, at the time of writing, cars were a highly prized item.)
+\label{ex:monty}
+\end{enumerate}
 
+Our method will be to:
+\begin{itemize}
+\item Describe the space of possible situations
+\item Define the events whose probabilities we will consider
+\item Evaluate such probabilities.
+\end{itemize}
 
 \section{Spaces}
+
 
 Generally textbook problems involving probability involve the
 description of some situation, with an explicit uncertainty, including
@@ -21,27 +50,79 @@ tool to solve probability problems.
 Our first task is to describe the possible structure of sample space,
 and model them as a DSL.
 
-\paragraph{Finite space}
+We will use a type to represent spaces. This type is indexed by the
+underlying Haskell type of possible situtations.
+\begin{spec}
+Space :: Type -> Type
+\end{spec}
 
+\paragraph{Finite space}
+In Example~\ref{ex:dice}, we consider dice with 6 faces. For such a
+purpose we define a constructor |Finite| embedding a list of possible outcomes into a space:
+\begin{spec}
+Finite :: [a] -> Space a
+\end{spec}
+Our die is then:
+\begin{code}
+die = Finite [1..6]
+\end{code}
+
+\paragraph{Scaling space}
+If the die is well-balanced, then all cases will have the same
+probability (or probability mass) in the space. But this is not always
+the case.  Hence we'll need a way to represent this. We use the
+following combinator:
+\begin{spec}
+Factor :: Real -> Space ()
+\end{spec}
+It underlying type is the unit type |()|, but its mass (or
+density) is given by the a real number, which must be
+non-negative\footnote{should we use a type for that}?
+
+On its own, it may appear useless, but we can setup the |Space| type
+so that this mass or density can depend on (previously introduced)
+spaces.
+\paragraph{Product of distributions}
+Indeed, we can construct the product of two spaces as
+\begin{spec}
+product :: Space a -> Space b -> Space (a,b)
+\end{spec}
+For example two dice are represented as follows:
+
+\begin{code}
+twoDice :: Space (Int,Int)
+twoDice = product die die
+\end{code}
+%
+But let's say now that we need the sum is greater than 7. We
+can define the following space, which has a mass 1 if the condition is satisfied and 0 otherwise:
+\begin{code}
+sumAbove7 :: (Real,Real) -> Space Real
+sumAbove7 (x,y) = Factor (if x+y > 7 then 1 else 0)
+\end{code}
+We want to take the product of the |twoDice| space and the |sumAbove7|
+space; but the issue is that |sumAbove7| \emph{depends} on the outcome
+of |twoDice|. To support this we need a generalisation of the
+product\footnote{convensionally called $Σ$ because of its mathematical
+  similarity with the summation operation.}
+\begin{spec}
+Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
+\end{spec}
+Hence:
+\begin{code}
+problem1Situations = Sigma twoDice sumAbove7
+\end{code}
 
 \paragraph{Real line}
+Before we continue, we may also add a way to represent for real-valued
+variables:
+\begin{spec}
+RealLine :: Space Real
+\end{spec}
 
 
-\paragraph{Scaling}
-
-We can scale the density of a space by an arbitrary non-negative
- factor. This may appear useless, but...
-
-\paragraph{(Dependent) product of distributions}
-- New binder. Similar to forall in Ch. 3, but be also give the
- distribution of the bound variable; thus giving a precise meaning to
- "random" variable.
-
-
-
-(TODO: explain HOAS somewhere)
-
-We have:
+\paragraph{Summary}
+In sum, we have:
 
 \begin{code}
 {-# LANGUAGE GADTs #-}
@@ -69,7 +150,11 @@ instance Monad Space where
   (>>=) = Bind
 \end{code}
 
-\subsection{Simple spaces}
+\subsection{Distributions}
+
+Another important notion in probability theory is that of a
+distribution. A distribution is a space whose total mass is equal to
+1.
 
 \begin{code}
 uniformDiscrete :: [a] -> Space a
@@ -95,11 +180,15 @@ normal μ σ = do
   return x
 \end{code}
 
+In some textbooks, distributions are sometimes called ``random
+variables''. However we consider this terminology to be misguided ---
+random variables will be defined precisely later on.
+
 We could try to define the probabilities or densities of possible
- values of a space: |spaceDensity :: Space a -> (a -> Real)|, and from
- there define the expected values (or other statistical moments), but
- it's simpler to directly give a generalized version of the
- integration of a function for spaces:
+values of a space: |spaceDensity :: Space a -> (a -> Real)|, and from
+there define the expected values (or other statistical moments), but
+it's simpler to directly give a generalized version of the
+integration of a function for spaces:
 
 \begin{code}
 integrate :: Space a -> (a -> Real) -> Real
@@ -202,6 +291,7 @@ The subspace of s where f holds is then  |Sigma s (isTrue f)|, and we can state:
 Lemma: measure s * probability s f = measure (Sigma s (isTrue f))
 Proof:
 
+\begin{spec}
 probability s f
   = expectedValue s (indicator . f)
   = expectedValue s (indicator . f)
@@ -209,13 +299,13 @@ probability s f
   = integrate s (indicator . f) / measure s
   = integrate s (\x -> indicator (f x)) / measure s
   = integrate s (\x -> indicator (f x) * constant 1 (x,())) / measure s
-  = integrate s (\x -> integrate (isTrue f) $ \y -> constant 1 (x,y)) / measure s
+  = integrate s (\x -> integrate (isTrue f) (\y -> constant 1 (x,y)) / measure s)
   = measure (Sigma s (isTrue f)) / measure s
-
+\end{spec}
 
 \section{Conditional probability}
 
-
+$P(F ∣ G)$
 
 We can define the conditional probability of f wrt. g by taking the
 probability of f in the sub space where g is guaranteed to hold:
@@ -241,8 +331,8 @@ condProb s g f
   = (1/measure s/probability s g) * (integrate s $ \x -> indicator (\y -> g y &&  f y))
   = (1/probability s g) * (integrate s $ \x -> indicator (\y -> g y &&  f y)) / measure s
   = (1/probability s g) * probability s (\y -> g y &&  f y)
+% emacs wakeup $
 \end{spec}
-
 
 \begin{code}
 dirac :: Real -> Real
@@ -258,16 +348,7 @@ probability' d = expectedValue d indicator
 
 \end{code}
 
-Example: drug test (wikipedia; bayes theorem)
-
-Suppose that a test for using a particular drug is 99% sensitive and
-99% specific. That is, the test will produce 99% true positive results
-for drug users and 99% true negative results for non-drug
-users. Suppose that 0.5% of people are users of the drug. What is the
-probability that a randomly selected individual with a positive test
-is a drug user?
-
-The above problem is often used as an illustration for the bayes
+The above drug test problem is often used as an illustration for the bayes
 theorem.  We won't be needing the bayes theorm here!
 In fact, through this example, we will see that it is a (computable)
 consequence of our definitions.
@@ -300,7 +381,6 @@ solution' = probability' space'
 -- >>> solution'
 -- 0.33221476510067116
 
-{-
 Doing it manually:
 
 measure space
@@ -345,19 +425,10 @@ if testPositive then 1 else 0
 1
 =
 0.00495
-
--}
+-- emacs $
 
 \end{code}
 
-Suppose you’re on Monty Hall’s \emph{Let’s Make a Deal!} You are given
- the choice of three doors, behind one door is a car, the others,
- goats. You pick a door, say 1, Monty opens another door, say 3, which
- has a goat. Monty says to you “Do you want to pick door 2?” Is it to
- your advantage to switch your choice of doors?
-
-(Remember that, at the time of writing, cars were a highly prized
- item.)
 
 \begin{code}
 montySpace1 :: Bool -> Space Bool
