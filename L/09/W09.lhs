@@ -76,6 +76,7 @@ die :: Space Int
 die = Finite [1..6]
 \end{code}
 
+
 \paragraph{Scaling space}
 If the die is well-balanced, then all cases will have the same
 probability (or probability mass) in the space. But this is not always
@@ -149,8 +150,6 @@ data Space a where
   Factor :: Real -> Space ()
   Finite :: [a] -> Space a
   RealLine :: Space Real
-
-  -- Bind :: (Space a) -> (a -> Space b) -> Space b
   Project :: (a -> b) -> Space a -> Space b
 
 instance Functor Space where
@@ -162,6 +161,7 @@ instance Monad Space where
   a >>= f = Project snd (Sigma a f)
 \end{code}
 
+TODO: somehow explain the monadic interface.
 \subsection{Distributions}
 
 Another important notion in probability theory is that of a
@@ -441,10 +441,8 @@ diceSpace = do
 \end{code}
 
 \subsection{Drug test}
-The above drug test problem \ref{ex:drugtest} is often used as an illustration for the Bayes
-theorem.  We won't be needing the bayes theorm here!
-In fact, through this example, we will see that it is a (computable)
-consequence of our definitions.
+The above drug test problem \ref{ex:drugtest} is often used as an
+illustration for the Bayes theorem.
 
 Solution
 We begin by describing the space of situations:
@@ -474,6 +472,9 @@ solution' = probability' space'
 -- >>> solution'
 -- 0.33221476510067116
 \end{code}
+
+
+
 Doing it manually:
 
 \begin{spec}
@@ -524,25 +525,30 @@ if testPositive then 1 else 0
 
 \end{spec}
 
+Perhaps surprisingly, we never needed the Bayes theorem to solve the
+problem.
+
+
 \subsection{Monty Hall}
 
 
 \begin{code}
-montySpace1 :: Bool -> Space Bool
-montySpace1 changing = do
+montySpaceIncorrect :: Bool -> Space Bool
+montySpaceIncorrect changing = do
   winningDoor <- uniformDiscrete [1::Int,2,3] -- any door can be the winning one
   let montyPickedDoor = 3
   isTrue (montyPickedDoor /= winningDoor)
   let newPickedDoor = if changing then 2 else 1
   return (newPickedDoor == winningDoor)
 
--- >>> probability' (montySpace1 False)
+-- >>> probability (montySpace1 False)
 -- 0.5
 
--- >>> probability' (montySpace True)
--- 0.6666666666666666
+-- >>> probability (montySpace1 True)
+-- 0.5
 \end{code}
 
+Generalisation to picking any door:
 \begin{code}
 montySpace :: Bool -> Space Bool
 montySpace changing = do
@@ -557,10 +563,10 @@ montySpace changing = do
         else pickedDoor
   return (newPickedDoor == winningDoor)
 
--- >>> probability' (montySpace False)
+-- >>> probability (montySpace False)
 -- 0.3333333333333333
 
--- >>> probability' (montySpace True)
+-- >>> probability (montySpace True)
 -- 0.6666666666666666
 \end{code}
 
@@ -573,9 +579,9 @@ independentEvents s e f = probability1 s e == condProb s f e
 
 According to Grinstead and Snell:
 
-Theorem: Two events are independent iff. P(E ∩ F) = P(E) · P(F)
+Theorem: Two events are independent iff. $P(E ∩ F) = P(E) · P(F)$
 
-\section{Equality}
+\section{Continuous spaces and equality}
 
 \begin{itemize}
 \item dirac :: Real -> Real
