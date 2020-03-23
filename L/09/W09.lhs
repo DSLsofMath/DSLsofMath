@@ -1,3 +1,11 @@
+\begin{code}
+{-# LANGUAGE GADTs #-}
+import Prelude hiding (Real)
+import Control.Monad (ap)
+import Data.List ((\\))
+
+type Real = Double -- pretend...
+\end{code}
 
 Define a DSL to describe, reason about, problems such as the
 following (sometimes compute the probabilites involved)
@@ -64,6 +72,7 @@ Finite :: [a] -> Space a
 \end{spec}
 Our die is then:
 \begin{code}
+die :: Space Int
 die = Finite [1..6]
 \end{code}
 
@@ -84,20 +93,21 @@ so that this mass or density can depend on (previously introduced)
 spaces.
 \paragraph{Product of distributions}
 Indeed, we can construct the product of two spaces as
-\begin{spec}
-product :: Space a -> Space b -> Space (a,b)
-\end{spec}
+\begin{code}
+prod :: Space a -> Space b -> Space (a,b)
+prod a b = Sigma a (const b) -- TODO: hide definition
+\end{code}
 For example two dice are represented as follows:
 
 \begin{code}
 twoDice :: Space (Int,Int)
-twoDice = product die die
+twoDice = prod die die
 \end{code}
 %
 But let's say now that we need the sum is greater than 7. We
 can define the following space, which has a mass 1 if the condition is satisfied and 0 otherwise:
 \begin{code}
-sumAbove7 :: (Real,Real) -> Space Real
+sumAbove7 :: (Int,Int) -> Space ()
 sumAbove7 (x,y) = Factor (if x+y > 7 then 1 else 0)
 \end{code}
 We want to take the product of the |twoDice| space and the |sumAbove7|
@@ -110,6 +120,7 @@ Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
 \end{spec}
 Hence:
 \begin{code}
+problem1Situations :: Space ((Int, Int), ())
 problem1Situations = Sigma twoDice sumAbove7
 \end{code}
 
@@ -125,12 +136,6 @@ RealLine :: Space Real
 In sum, we have:
 
 \begin{code}
-{-# LANGUAGE GADTs #-}
-import Prelude hiding (Real)
-import Control.Monad (ap)
-import Data.List ((\\))
-
-type Real = Double -- pretend...
 
 data Space a where
   Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
@@ -138,16 +143,16 @@ data Space a where
   Finite :: [a] -> Space a
   RealLine :: Space Real
 
-  Bind :: (Space a) -> (a -> Space b) -> Space b
-  Project :: a -> Space a
+  -- Bind :: (Space a) -> (a -> Space b) -> Space b
+  Project :: (a -> b) -> Space a -> Space b
 
 instance Functor Space where
   fmap f = (pure f <*>)
 instance Applicative Space where
-  pure = Project
+  pure x = Finite [x]
   (<*>) = ap
 instance Monad Space where
-  (>>=) = Bind
+  a >>= f = Project snd (Sigma a f)
 \end{code}
 
 \subsection{Distributions}
@@ -197,8 +202,7 @@ integrate (Factor f) g = f * g ()
 integrate (Finite a) g = bigsum a g
 integrate (RealLine) g = integral g
 
-integrate (Bind a f) g = integrate (Sigma a f) (g . snd)
-integrate (Project x) g = g x
+integrate (Project f a) g = integrate a (g . f)
 
 -- sum of some terms (finite so we can compute this)
 bigsum :: [a] -> (a -> Real) -> Real
@@ -380,9 +384,10 @@ solution' = probability' space'
 
 -- >>> solution'
 -- 0.33221476510067116
-
+\end{code}
 Doing it manually:
 
+\begin{spec}
 measure space
 =
 integrate (bernoulli 0.005) $ \isUser ->
@@ -406,8 +411,9 @@ sum [False,True] $ \isUser -> (if isUser then 0.005 else 9.995) *
 0.99 * 0.005  + 0.995 * 0.01
 = 
 0.0149
-
+\end{spec}
 Numerator:
+\begin{spec}
 integrate (bernoulli 0.005) $ \isUser ->
 integrate (bernoulli(if isUser then 0.99 else 0.01)) $ \testPositive ->
 integrate (isTrue testPositive) (\ () -> if isUser then 1 else 0)
@@ -427,7 +433,7 @@ if testPositive then 1 else 0
 0.00495
 -- emacs $
 
-\end{code}
+\end{spec}
 
 
 \begin{code}
