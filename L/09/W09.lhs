@@ -120,8 +120,15 @@ Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
 \end{spec}
 Hence:
 \begin{code}
-problem1Situations :: Space ((Int, Int), ())
-problem1Situations = Sigma twoDice sumAbove7
+problem1Situations' :: Space ((Int, Int), ())
+problem1Situations' = Sigma twoDice sumAbove7
+\end{code}
+
+\paragraph{Projections}
+In the end we may not be interested in all values and hide some of the
+generated values. For this we use the following combinator:
+\begin{code}
+Project :: (a -> b) -> Space a -> Space b
 \end{code}
 
 \paragraph{Real line}
@@ -190,10 +197,10 @@ variables''. However we consider this terminology to be misguided ---
 random variables will be defined precisely later on.
 
 We could try to define the probabilities or densities of possible
-values of a space: |spaceDensity :: Space a -> (a -> Real)|, and from
+values of a distribution: |distributionDensity :: Space a -> (a -> Real)|, and from
 there define the expected values (or other statistical moments), but
 it's simpler to directly give a generalized version of the
-integration of a function for spaces:
+integration of a function for \emph{spaces}:
 
 \begin{code}
 integrate :: Space a -> (a -> Real) -> Real
@@ -226,36 +233,71 @@ measure :: Space a -> Real
 measure d = integrate d (const 1)
 \end{code}
 
+Integration over a real-valued distribution yields its expected value:
+\begin{code}
+expectedValueOfDistr :: Distr Real -> Real
+expectedValueOfDistr d f = integrate d f
+\end{code}
 
 \section{Random Variables}
-- Variables; AGAIN!
+Even though we have already \ref{ch:3} studied variables in detail, it
+is good to come back to them for a moment before returning to
+\emph{random} variables proper.
 
-  Wikipedia:
-
+According to Wikipedia, a variable has a different meaning in computer
+science and in mathematics:
+\begin{quote}
   Variable may refer to:
-    Variable (computer science), a symbolic name associated with a value and whose associated value may be changed
-    Variable (mathematics), a symbol that represents a quantity in a mathematical expression, as used in many sciences
+  \begin{itemize}
+  \item [Variable (computer science)], a symbolic name associated with a
+    value and whose associated value may be changed
+  \item[Variable (mathematics)], a symbol that represents a quantity in a
+    mathematical expression, as used in many sciences
+  \end{itemize}
+\end{quote}
 
 
-  By now we have a pretty good grip on 1. and we saw in ch. 3. a way
-  to reduce mathematical variables (q and v in lagrangian mechanics)
-  to computer science variables, by making expressing variables in
-  terms of a symbolic, truly free variable (t).
+By now we have a pretty good grip on 1. In ch. 3. we have described a
+way to reduce mathematical variables (position \(q\) and velocity
+\(v\) in lagrangian mechanics) to computer science variables. This was
+done by expressing variables as \emph{functions} of a truly free
+variable, time (\(t\)). Time is a ``computer science'' variable in
+this context: it can be substituted by any value without ``side
+effects'' on other variables (unlike \(q\) and \(v\))
 
-- A random variable is simply an expression whose value is the outcome
-   of a particular experiment (Introduction to Probability, Charles
-   M. Grinstead and J. Laurie Snell)
+In this light, let us return to random variables. Wikipedia is not very helpful here, so
+we can turn ourselves to \citet{(Introduction to Probability, Charles
+  M. Grinstead and J. Laurie Snell)}
+\begin{quote}
+  A random variable is simply an expression whose value is the outcome
+  of a particular experiment.
+\end{quote}
 
-Spaces represent the "experiments" that Grinstead and Snell mention
+We will be using spaces to represent the "experiments" that Grinstead
+and Snell mention. More specifically, if |s : Space a|, each possible
+situation is representable in |a| and the space will specify the mass
+of each of them (via the integrator).
 
-A random variable can now be defined as a function from the space of
-situations.
+Then, a |b|-valued random variable |f| related to an experiment
+represented by a space |s : Space a| is a function |f| of type |a
+-> b|.
 
 
-Then, we can define the expected value, and other statistical
-moments.
+\footnote{|Project| correspond to having hidden
+  variables.}
 
-For example, the expected value of real-valued random variable is then:
+Then, we can define the expected value (and other statistical
+moments).
+
+In textbooks, one will often find the notation $E[t]$ for the expected
+value of a real-valued random variable |t|. From our point of view,
+this can be quite confusing because this leaves the space of
+situations, completely implicit. In particular, it is not clear how
+|t| even depends on the outcome of experiments.
+
+With our DSL approach, we make all that completely explicit. For
+example, the expected value of real-valued random variable is as
+follows:
 \begin{code}
 expectedValue :: Space a -> (a -> Real) -> Real
 expectedValue d f = integrate d f / measure d
@@ -266,15 +308,21 @@ exercise: define the variance, skew, curtosis, etc.
 
 \subsection{Events and probability}
 
-Events are boolean-valued random variables.
+In textbooks, one typically find the notation |P(e)| for the
+probability of an \emph{event} |e|. Again, the space of situations |s|
+is implicit as well as the dependence between |e| and |s|.
 
-Thus an event can be defined as a boolean-valued function over a
-space. If the space accurately represents all possible situations with
-a density, then the expected value of the event is its
-probability. (However we need to map booleans to reals.)
+Here, we can define events as boolean-valued random variables.
 
+Thus an event |e| can be defined as a boolean-valued function |e : a
+-> Bool| over a space |s : Space a|. Assuming that the space |s|
+accurately represents the relative mass of all possible situations,
+there are two ways to define the probability of |e|.
+
+The first defintion is as the expected value of |indicator . e|,
+where |indicator| maps boolean to reals as follows:
 \begin{code}
-indicator :: Num p => Bool -> p
+indicator :: Bool -> Real
 indicator True = 1
 indicator False = 0
 
@@ -282,19 +330,24 @@ probability :: Space a -> (a -> Bool) -> Real
 probability d f = expectedValue d (indicator . f)
 \end{code}
 
-An alternative way to define probability is as the ratio the measures of the subspace where f holds and the complete space.
-First we need the following helper, corresponding to a subspace which has measure 1 if c is true and 0 otherwise.
+The second definition of probability is as the ratio the measures of
+the subspace where |e| holds and the complete space.
 
 \begin{code}
+probability2 :: Space a -> (a -> Bool) -> Real
+probability2 d f = measure (Sigma s (isTrue f)) / measure s
+
 isTrue :: Bool -> Space ()
 isTrue c = Factor (indicator c)
 \end{code}
+where |isTrue c| is the subspace subspace which has measure 1 if |c|
+is true and 0 otherwise --- 
+The subspace of |s| where |f| holds is then |Sigma s (isTrue f)|.
 
-The subspace of s where f holds is then  |Sigma s (isTrue f)|, and we can state:
+We can show that if |s| has a non-zero measure, then the two definitions are equivalent:
 
-Lemma: measure s * probability s f = measure (Sigma s (isTrue f))
+Lemma: |measure s * probability s f = measure (Sigma s (isTrue f))|
 Proof:
-
 \begin{spec}
 probability s f
   = expectedValue s (indicator . f)
@@ -307,20 +360,26 @@ probability s f
   = measure (Sigma s (isTrue f)) / measure s
 \end{spec}
 
+Sometimes one even finds in the literature and folklore the notation
+|P(v)|, which stands for |P(t=v)|, for an implicit random variable
+|t|. Here even more creativity is required from the reader, who must
+also infer which random variable the author means.
+
 \section{Conditional probability}
 
-$P(F ∣ G)$
+Another important notion is conditional probability, written
+$P(F ∣ G)$ and read ``probability of |f| given |g|''.
 
-We can define the conditional probability of f wrt. g by taking the
-probability of f in the sub space where g is guaranteed to hold:
+We can define the conditional probability of |f| given |g| by taking
+the probability of |f| in the sub space where |g| holds:
 
 \begin{code}
 condProb :: Space a -> (a -> Bool) -> (a -> Bool) -> Real
 condProb s g f = probability (Sigma s (isTrue . g)) (f . fst)
 \end{code}
 
-We find the above defintion more intuitive than the more usual P(F∣G)
- = P(F∩G ∣ G). However, this last equality can be recovered by calculation:
+We find the above defintion more intuitive than the more usual $P(F∣G)
+ = P(F∩G ∣ G)$. However, this last equality can be proven, by calculation:
 
 Lemma:  condProb s g f = probability s (\y -> f y && g y) / probability s g
 Proof:
@@ -352,7 +411,7 @@ probability' d = expectedValue d indicator
 
 \end{code}
 
-The above drug test problem is often used as an illustration for the bayes
+The above drug test problem is often used as an illustration for the Bayes
 theorem.  We won't be needing the bayes theorm here!
 In fact, through this example, we will see that it is a (computable)
 consequence of our definitions.
