@@ -172,19 +172,21 @@ isDistribution :: Space a -> Bool
 isDistribution s = measure s == 1
 \end{code}
 We may use the following type synonym to indicate distributions:
-  
 
 \begin{code}
 type Distr a = Space a
-uniformDiscrete :: [a] -> Space a
+uniformDiscrete :: [a] -> Distr a
 uniformDiscrete xs = do
   x <- Finite xs
   Factor (1.0 / fromIntegral (length xs))
   return x
+
+dieDistr :: Distr Integer
+dieDistr = (uniformDiscrete [1..6])  
 \end{code}
 
 \begin{code}
-bernoulli :: Real -> Space Bool
+bernoulli :: Real -> Distr Bool
 bernoulli p = do
   x <- Finite [False,True]
   Factor (if x then p else 1-p)
@@ -192,10 +194,10 @@ bernoulli p = do
 \end{code}
 
 \begin{code}
-normal :: Real -> Real -> Space Real
+normal :: Real -> Real -> Distr Real
 normal μ σ = do
   x <- RealLine
-  Factor (1 / exp(- ( (x - μ)**2 / (2 * σ**2)) ))
+  Factor (exp(- ( (x - μ)**2 / (2 * σ**2)) ) / (σ * sqrt (2*pi)))
   return x
 \end{code}
 
@@ -215,7 +217,6 @@ integrate (Sigma a f) g = integrate a $ \x -> integrate (f x) $ \y -> g (x,y)
 integrate (Factor f) g = f * g ()
 integrate (Finite a) g = bigsum a g
 integrate (RealLine) g = integral g
-
 integrate (Project f a) g = integrate a (g . f)
 
 -- sum of some terms (finite so we can compute this)
@@ -238,12 +239,18 @@ constant 1 (so only mass matters).
 \begin{code}
 measure :: Space a -> Real
 measure d = integrate d (const 1)
+
+-- >>> measure (bernoulli 0.2)
+-- 1.0
 \end{code}
 
 Integration over a real-valued distribution yields its expected value:
 \begin{code}
 expectedValueOfDistr :: Distr Real -> Real
 expectedValueOfDistr d = integrate d id
+
+-- >>> expectedValueOfDistr dieDistr
+-- 3.5
 \end{code}
 
 \section{Random Variables}
@@ -307,8 +314,14 @@ example, the expected value of real-valued random variable is as
 follows:
 \begin{code}
 expectedValue :: Space a -> (a -> Real) -> Real
-expectedValue d f = integrate d f / measure d
+expectedValue s f = integrate s f / measure s
+
+-- >>> expectedValue twoDice (\(x,y) -> fromIntegral (x+y))
+-- 7.0
 \end{code}
+
+TODO: (maybe) we're making some error in case |measure d| is 0.
+
 
 exercise: define the variance, skew, curtosis, etc.
 
@@ -333,8 +346,8 @@ indicator :: Bool -> Real
 indicator True = 1
 indicator False = 0
 
-probability :: Space a -> (a -> Bool) -> Real
-probability d f = expectedValue d (indicator . f)
+probability1 :: Space a -> (a -> Bool) -> Real
+probability1 d f = expectedValue d (indicator . f)
 \end{code}
 
 The second definition of probability is as the ratio the measures of
@@ -356,7 +369,7 @@ We can show that if |s| has a non-zero measure, then the two definitions are equ
 Lemma: |measure s * probability s f = measure (Sigma s (isTrue f))|
 Proof:
 \begin{spec}
-probability s f
+probability1 s f
   = expectedValue s (indicator . f)
   = expectedValue s (indicator . f)
   = integrate s (indicator . f) / measure s
@@ -366,6 +379,12 @@ probability s f
   = integrate s (\x -> integrate (isTrue . f) (\y -> constant 1 (x,y)) / measure s)
   = measure (Sigma s (isTrue . f)) / measure s
 \end{spec}
+
+TODO: other variant
+\begin{code}
+probability :: Space Bool -> Real
+probability d = expectedValue d indicator
+\end{code}
 
 Sometimes one even finds in the literature and folklore the notation
 |P(v)|, which stands for |P(t=v)|, for an implicit random variable
@@ -382,7 +401,7 @@ the probability of |f| in the sub space where |g| holds:
 
 \begin{code}
 condProb :: Space a -> (a -> Bool) -> (a -> Bool) -> Real
-condProb s g f = probability (Sigma s (isTrue . g)) (f . fst)
+condProb s g f = probability1 (Sigma s (isTrue . g)) (f . fst)
 \end{code}
 
 We find the above defintion more intuitive than the more usual $P(F∣G)
@@ -404,21 +423,25 @@ condProb s g f
 % emacs wakeup $
 \end{spec}
 
+\section{Examples}
+
+\subsection{Dice}
 \begin{code}
-dirac :: Real -> Real
-dirac = undefined
+diceProblem :: Real
+diceProblem = probability diceSpace
 
-equal :: Real -> Real -> Space ()
-equal x y = Factor (dirac (x-y))
+diceSpace = do
+  die1 <- dieDistr
+  die2 <- dieDistr
+  isTrue (die1 + die2 >= 7)
+  return (die1 * die2 >= 10)
 
-probability' :: Space Bool -> Real
-probability' d = expectedValue d indicator
-
--- (maybe) we're making some error in case |measure d| is 0.
-
+-- >>> dieProblem
+-- 0.9047619047619047
 \end{code}
 
-The above drug test problem is often used as an illustration for the Bayes
+\subsection{Drug test}
+The above drug test problem \ref{ex:drugtest} is often used as an illustration for the Bayes
 theorem.  We won't be needing the bayes theorm here!
 In fact, through this example, we will see that it is a (computable)
 consequence of our definitions.
@@ -433,7 +456,7 @@ drugSpace = Sigma (bernoulli 0.005) $ \isUser ->
             isTrue testPositive -- we have ``a positive test'' by assumption
 
 userProb :: Real
-userProb = probability drugSpace (\ (isUser,_) -> isUser)
+userProb = probability1 drugSpace (\ (isUser,_) -> isUser)
 
 -- >>> userProb
 -- 0.33221476510067116
@@ -501,6 +524,8 @@ if testPositive then 1 else 0
 
 \end{spec}
 
+\subsection{Monty Hall}
+
 
 \begin{code}
 montySpace1 :: Bool -> Space Bool
@@ -543,14 +568,23 @@ montySpace changing = do
 
 \begin{code}
 independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
-independentEvents s e f = probability s e == condProb s f e
+independentEvents s e f = probability1 s e == condProb s f e
 \end{code}
 
 According to Grinstead and Snell:
 
 Theorem: Two events are independent iff. P(E ∩ F) = P(E) · P(F)
 
+\section{Equality}
 
+\begin{itemize}
+\item dirac :: Real -> Real
+dirac = undefined
+
+equal :: Real -> Real -> Space ()
+equal x y = Factor (dirac (x-y))
+
+\end{itemize}
 
 
 
