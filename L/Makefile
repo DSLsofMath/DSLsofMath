@@ -22,6 +22,7 @@ $(NAME).tex: $(NAME).lhs dslm.format ref.bib \
              06/W06.lhs 06/E6.lhs \
              07/W07.lhs 07/E7.lhs \
              08/W08.lhs 08/E8.lhs \
+             09/W09.lhs \
              End.lhs \
              01/CSem.lhs
 	lhs2TeX --poly $(NAME).lhs > $(NAME).tex

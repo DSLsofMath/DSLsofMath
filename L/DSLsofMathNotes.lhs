@@ -135,6 +135,8 @@
 \cleardoublepage
 %include 08/W08.lhs
 \cleardoublepage
+%include 09/W09.lhs
+\cleardoublepage
 %include End.lhs
 
 \clearpage

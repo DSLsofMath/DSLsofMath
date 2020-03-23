@@ -1,3 +1,5 @@
+\section{Probability Theory}
+
 \begin{code}
 {-# LANGUAGE GADTs #-}
 import Prelude hiding (Real)
@@ -7,7 +9,7 @@ import Data.List ((\\))
 type Real = Double -- pretend...
 \end{code}
 
-Define a DSL to describe, reason about, problems such as the
+In this chapter, we will define a DSL to describe, reason about, problems such as the
 following (sometimes compute the probabilites involved)
 
 \begin{enumerate}
@@ -39,7 +41,7 @@ Our method will be to:
 \item Evaluate such probabilities.
 \end{itemize}
 
-\section{Spaces}
+\subsection{Spaces}
 
 
 Generally textbook problems involving probability involve the
@@ -114,7 +116,7 @@ sumAbove7 (x,y) = Factor (if x+y > 7 then 1 else 0)
 We want to take the product of the |twoDice| space and the |sumAbove7|
 space; but the issue is that |sumAbove7| \emph{depends} on the outcome
 of |twoDice|. To support this we need a generalisation of the
-product\footnote{convensionally called $Σ$ because of its mathematical
+product\footnote{convensionally called $\Sigma$ because of its mathematical
   similarity with the summation operation.}
 \begin{spec}
 Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
@@ -195,9 +197,9 @@ bernoulli p = do
 
 \begin{code}
 normal :: Real -> Real -> Distr Real
-normal μ σ = do
+normal mu sigma = do
   x <- RealLine
-  Factor (exp(- ( (x - μ)**2 / (2 * σ**2)) ) / (σ * sqrt (2*pi)))
+  Factor (exp(- ( (x - mu)**2 / (2 * sigma**2)) ) / (sigma * sqrt (2*pi)))
   return x
 \end{code}
 
@@ -253,7 +255,7 @@ expectedValueOfDistr d = integrate d id
 -- 3.5
 \end{code}
 
-\section{Random Variables}
+\subsection{Random Variables}
 Even though we have already \ref{ch:3} studied variables in detail, it
 is good to come back to them for a moment before returning to
 \emph{random} variables proper.
@@ -316,7 +318,7 @@ follows:
 expectedValue :: Space a -> (a -> Real) -> Real
 expectedValue s f = integrate s f / measure s
 
--- >>> expectedValue twoDice (\(x,y) -> fromIntegral (x+y))
+-- >>> expectedValue twoDice (\ (x,y) -> fromIntegral (x+y))
 -- 7.0
 \end{code}
 
@@ -391,7 +393,7 @@ Sometimes one even finds in the literature and folklore the notation
 |t|. Here even more creativity is required from the reader, who must
 also infer which random variable the author means.
 
-\section{Conditional probability}
+\subsection{Conditional probability}
 
 Another important notion is conditional probability, written
 $P(F ∣ G)$ and read ``probability of |f| given |g|''.
@@ -407,7 +409,7 @@ condProb s g f = probability1 (Sigma s (isTrue . g)) (f . fst)
 We find the above defintion more intuitive than the more usual $P(F∣G)
  = P(F∩G ∣ G)$. However, this last equality can be proven, by calculation:
 
-Lemma:  condProb s g f = probability s (\y -> f y && g y) / probability s g
+Lemma:  |condProb s g f == probability s (\y -> f y && g y) / probability s g|
 Proof:
 \begin{spec}
 condProb s g f
@@ -423,7 +425,7 @@ condProb s g f
 % emacs wakeup $
 \end{spec}
 
-\section{Examples}
+\subsection{Examples}
 
 \subsection{Dice}
 \begin{code}
@@ -475,55 +477,6 @@ solution' = probability' space'
 
 
 
-Doing it manually:
-
-\begin{spec}
-measure space
-=
-integrate (bernoulli 0.005) $ \isUser ->
-integrate (bernoulli(if isUser then 0.99 else 0.01)) · $ \testPositive ->
-integrate (isTrue testPositive) (constant 1)
-=
-integrate (bernoulli 0.005) $ \isUser ->
-integrate (bernoulli(if isUser then 0.99 else 0.01)) · $ \testPositive ->
-integrate (Factor (if testPositive then 1 else 0)) (constant 1)
-= 
-sum [False,True] $ \isUser -> (if isUser then 0.005 else 9.995) *
-sum [False,True] $ \testPositive -> if testPositive then (if isUser then 0.99 else 0.01) else (if isUser then 0.01 lese 0.99) · $ \testPositive ->
-(if testPositive then 1 else 0)) * 1
-=
-sum [False,True] $ \isUser -> (if isUser then 0.005 else 9.995) *
-sum [True] $ (if isUser then 0.99 else 0.01) $ \testPositive -> 1
-=
-sum [False,True] $ \isUser -> (if isUser then 0.005 else 9.995) *
-(if isUser then 0.99 else 0.01)
-=
-0.99 * 0.005  + 0.995 * 0.01
-= 
-0.0149
-\end{spec}
-Numerator:
-\begin{spec}
-integrate (bernoulli 0.005) $ \isUser ->
-integrate (bernoulli(if isUser then 0.99 else 0.01)) $ \testPositive ->
-integrate (isTrue testPositive) (\ () -> if isUser then 1 else 0)
-=
-0.005 *
-integrate (bernoulli(0.99)) $ \testPositive ->
-integrate (isTrue testPositive) (\ _ -> 1)
-=
-0.005 *
-integrate (bernoulli(0.99)) $ \testPositive ->
-if testPositive then 1 else 0
-=
-0.005 *
-0.99 *
-1
-=
-0.00495
--- emacs $
-
-\end{spec}
 
 Perhaps surprisingly, we never needed the Bayes theorem to solve the
 problem.
@@ -570,7 +523,7 @@ montySpace changing = do
 -- 0.6666666666666666
 \end{code}
 
-\section{Independent events}
+\subsection{Independent events}
 
 \begin{code}
 independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
@@ -581,7 +534,7 @@ According to Grinstead and Snell:
 
 Theorem: Two events are independent iff. $P(E ∩ F) = P(E) · P(F)$
 
-\section{Continuous spaces and equality}
+\subsection{Continuous spaces and equality}
 
 \begin{itemize}
 \item dirac :: Real -> Real
