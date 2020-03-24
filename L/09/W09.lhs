@@ -79,6 +79,7 @@ die = Finite [1..6]
 \end{code}
 In particular the space |point x| is the space with a single point:
 \begin{code}
+point :: a -> Space a
 point x = Finite [x]
 \end{code}
 
@@ -101,7 +102,6 @@ spaces.
 Indeed, we can construct the product of two spaces as
 \begin{code}
 prod :: Space a -> Space b -> Space (a,b)
-prod a b = Sigma a (const b) -- TODO: hide definition
 \end{code}
 For example two dice are represented as follows:
 
@@ -130,6 +130,12 @@ problem1Situations' :: Space ((Int, Int), ())
 problem1Situations' = Sigma twoDice sumAbove7
 \end{code}
 
+We can check that the product of spaces is a special case of |Sigma|:
+\begin{code}
+prod a b = Sigma a (const b)
+\end{code}
+
+ 
 \paragraph{Projections}
 In the end we may not be interested in all values and hide some of the
 generated values. For this we use the following combinator:
@@ -181,7 +187,8 @@ instance Applicative Space where
 instance Monad Space where
   (>>=) = bind
 \end{code}
-\subsection{Distributions}
+
+ \subsection{Distributions}
 
 Another important notion in probability theory is that of a
 distribution. A distribution is a space whose total mass (or measure) is equal to
@@ -504,8 +511,8 @@ depending on whether we have a user or not. Finally, we project out
 all variables, caring only about |isUser|.
 
 \begin{code}
-space' :: Space Bool
-space' =
+drugSpace :: Space Bool
+drugSpace =
   do isUser <- bernoulli 0.005  -- model distribution of drug users
      testPositive <- bernoulli (if isUser then 0.99 else 0.01)
      isTrue testPositive  -- we have ``a positive test'' by assumption
@@ -513,7 +520,8 @@ space' =
 \end{code}
 The probability is computed as usual:
 \begin{code}
-userProb = probability space
+userProb :: Real
+userProb = probability drugSpace
 
 -- >>> userProb
 -- 0.33221476510067116
