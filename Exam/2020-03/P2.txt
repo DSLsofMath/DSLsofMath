@@ -1,0 +1,39 @@
+2a) [8p]
+
+S     : (T->Q)->R     where T=R; Q=R^n; -- and here n=2
+q     : T->Q
+qdot  : T->V          where V=Q
+L     : (Q,V,T) -> R
+t     : T
+
+Variants:
+  L : Q -> V -> T -> R
+
+{-
+Some examples of type errors:
+  S : T -> Q -> R                  -- S should take a function as arg., not a time and a coord.
+  q : R -> R                       -- clash with def. of q
+  L : (T->Q) -> (T->V) -> T -> R   -- clash with def. of L
+-}
+
+----------------
+
+2b) [7p]
+
+S q = int t1 t2 (L . ext q)
+  -- where int = definiteIntegral
+
+ext : (T->Q) -> (T->(Q,V,R))
+ext q t = (q t, dot q t, t)
+
+
+dot q t = (D (fst . q) t, D (snd . q) t)
+
+----------------
+
+2c) [5p]
+
+MinAction(p : T -> Q) =
+  Forall (q : T -> Q) .
+    p(t1)==q(t1) && p(t2)==q(t2) &&   -- this part is not required for the exam
+    calS p <= calS q                  -- but this part is required
