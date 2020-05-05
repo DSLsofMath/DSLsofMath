@@ -1,5 +1,6 @@
 Some notes whith no natural place in the current notes.
 
+* limAt can be defined using just lim0
 
 limAt a f = limAt 0 (\h->f(a+h)) = limAt 0 (f.(a+)) = lim0 (f.(a+))
 
@@ -18,3 +19,42 @@ psi2 f x (x+h) =  (f(x+h)-f(x))/(x+h-x)  = (f(x+h)-f(x))/h = psi f x h
 Thus, using the lim0 lemma,
 
 D f x = lim0 (psi f x) = lim0 ((psi2 f x) . (x+)) = limAt x (psi2 f x)
+
+----------------
+
+Example: let f = (^2)
+
+psi (^2) x h = ((x+h)^2 - x^2)/h = (x^2+2*x*h+h^2 - x^2)/h = (2*x*h+h^2)/h = 2*x+h
+
+thus
+
+psi (^2) x = (2*x+) = (+) ((2*) x) = ((+).(2*)) x
+
+thus
+
+psi (^2) = (+) . (2*)
+
+----------------
+
+Lemma:
+  lim0 . (+) = \x -> lim0 (x+) = \x -> x+0 = \x->x = id
+
+D (^2) = lim0 . psi (^2) = lim0 . (+) . (2*) = id . (2*) = (2*)
+
+----------------
+
+Properties (TODO: prove them)
+
+  Linear(psi)
+  Linear((q.))
+
+Using these:
+  D(f+g)
+= -- def.
+  lim0 . psi (f+g)
+= --  Linear(psi)
+  lim0 . (psi f + psi g)
+= -- Linear((q.))
+  (lim0 . psi f) + (lim+ . psi g)
+= -- def.
+  D f + D g
