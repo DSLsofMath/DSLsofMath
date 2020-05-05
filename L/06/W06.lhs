@@ -300,9 +300,10 @@ then
 %
 Thus |evalAll (derive e) == tail (evalAll e)| which can be written
 |evalAll . derive = tail . evalAll|.
+%
+Thus |evalAll| is a homomorphism from |derive| to |tail|, or in other words, |H1(evalAll,derive,tail)|.
 
-
-We want to define the operations on lists of functions in such a way
+We want to define the other operations on lists of functions in such a way
 that |evalAll| is a homomorphism.
 %
 For example:

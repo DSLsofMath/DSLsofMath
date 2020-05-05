@@ -22,7 +22,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E1.06  | Yes    | 2019 | Rec.    | Tupling transform
 | E1.07  | Yes    | 2019 | Rec.    | Dual of tupling transform
 | E1.08  | TODO   | 2020 |         | Comp Seq.
-| E1.09  | TODO   | 2020 |         | Operator sections
+| E1.09  | Yes    | 2020 |         | Operator sections
 | E1.10  | Yes    |      |         | embed.eval
 | E1.11  | TODO   |      | H-intro | NumComplexSyn
 | E1.12  | TODO   |      | H-intro | ComplexPolar
@@ -41,12 +41,13 @@ Other solutions are in NN/ExerciseSolutions/
 | E2.09  | Yes    | 2019 | Rec.    |
 | E2.10  | Yes    | 2019 | Rec.    |
 | E2.11  | TODO   |      |         |
-| E3.01  | Yes    |      | Rec.    |
-| E3.02  | Yes    |      | Rec.    | From exam 2016-Practice
-| E3.03  | Yes    |      |         | From exam 2016-03-15
-| E3.04  | Yes    |      | Rec.    | From exam 2016-08-23
-| E3.05  | Yes    |      |         | From exam 2017-03
-| E3.06  | Yes    |      | Rec.    | From exam 2017-08-22
+| E3.01  | No     |      | Rec.    |
+| E3.02  | Yes    |      | Rec.    |
+| E3.03  | Yes    |      | Rec.    | From exam 2016-Practice
+| E3.04  | Yes    |      |         | From exam 2016-03-15
+| E3.05  | Yes    |      | Rec.    | From exam 2016-08-23
+| E3.06  | Yes    |      |         | From exam 2017-03
+| E3.07  | Yes    |      | Rec.    | From exam 2017-08-22
 | E4.01  | Yes    |      | Rec.    |
 | E4.02  | TODO   |      | Rec.    |
 | E4.03  | Yes    |      | Rec.    |

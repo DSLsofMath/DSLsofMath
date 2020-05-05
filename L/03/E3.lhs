@@ -1,6 +1,18 @@
 \newpage
 \subsection{Exercises}
 
+\begin{exercise}
+  \label{exc:D1usingD}
+  For \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
+%
+  In more detail: let the type \(F2 = ℝ² → ℝ\) and \(F1 = ℝ → ℝ\).
+%
+  Then \(D₁ : F2 → F2\) and |D : F1 -> F1|.
+%
+  Start by defining helper functions: |fstFixed : a -> (b -> (a, b))| and |sndFixed : b -> (a -> (a, b))|.
+%
+  Then use |D| and the helpers in the definitions of \(D₁\) and \(D₂\).
+\end{exercise}
 %
 \begin{exercise}
   To get a feeling for the Lagrange equations, let |L(t, q, v) =

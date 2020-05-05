@@ -3,7 +3,6 @@
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.W03 where
-import Data.Char (toUpper)
 type REAL = Double
 \end{code}
 %
@@ -37,13 +36,13 @@ Here are some examples with the types added:
   context, the function \(f\) has been given a definition of the form
   \(f (x, y, z) = \ldots\)
   \begin{itemize}
-\item a better notation (by Landau) which doesn't rely on the names
-  given to the arguments was popularised in
-  \cite{landau1934einfuhrung} (English edition
-  \cite{landau2001differential}): \(D₁\) for the partial derivative with
-  respect to \(x₁\), etc.
-\item
-  Exercise: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
+  \item a better notation (by Landau) which doesn't rely on the names
+    given to the arguments was popularised in
+    \cite{landau1934einfuhrung} (English edition
+    \cite{landau2001differential}): \(D₁\) for the partial derivative with
+    respect to \(x₁\), etc.
+  \item
+    Exercise \ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
   \end{itemize}
 \end{itemize}
 
@@ -304,7 +303,7 @@ remember the different uses of |ℝ|.\jp{In fact the text suggests that there ar
 %
   In the context, which we do not have, we would expect to find
   somewhere the definition of the Lagrangian as
-  %
+  %**TODO: Perhaps write T x Q x V on the type level instead of (T, Q, V) to avoid confusion. If so there needs to be an explanation of the relation to Haskell syntax somewhere and several places need changes below for consistency.
   \begin{spec}
     L  :  (T, Q, V)  ->  ℝ
     L     (t, q, v)  =   ...
@@ -499,7 +498,7 @@ It is often useful to collect the known (or assumed) facts about types
 in a Haskell file and regularly check if the type checker agrees.
 %
 Consider the following text from \citeauthor{maclane1986mathematics}'s
-\textit{Mathematics: Form and Function} (page 182):
+\textit{Mathematics Form and Function} (page 182):
 %
 
 \begin{linenumbers}
@@ -547,7 +546,7 @@ are not implementing any of them right now, we can just make one
 \end{code}
 %
 We write |ff| for the capital |F| (to fit with Haskell's rules for
-variable names), |deriv| for the postix prime, and |int| for the
+variable names), |deriv| for the postfix prime, and |int| for the
 integral operator.
 %
 On line~\ref{line:exam1603_x} ``values of |x|'' hints at the type |X|
@@ -616,7 +615,7 @@ integral2 = int a b expr
 \end{code}
 %
 Both versions (and a few more minor variations) would be fine as exam
-solutions, but not something where the types don't match up.
+solutions, but something where the types don't match up would not be OK.
 
 \subsection{Types in Mathematics (Part II)}\label{sec:typeclasses}
 
@@ -858,9 +857,9 @@ Here is an example of a class with just two instances:
 class C a where
   foo :: a -> a
 instance C Integer where
-  foo = (1+)
+  foo = (2+)
 instance C Char where
-  foo = toUpper
+  foo = succ . succ
 \end{code}
 %
 Here we see the second view of a type class: as a collection of
@@ -889,8 +888,8 @@ Thus, we now have an infinite collection of instances of |C|: |Char|,
 |[Char]|, |[[Char]]|, etc.
 %
 Similarly, with the function instance for |Num| above, we immediately
-make the types |x->Double|, |x->(y->Double)|, etc.\ into instances
-(for all |x|, |y|, \ldots).
+make the types |a->Double|, |a->(b->Double)|, etc.\ into instances
+(for all types |a|, |b|, \ldots).
 
 %TODO: parhaps make the ``looks recursive'' |fromInteger| example talk
 % about |foo| instead? (And then just mention |fromInteger| shortly.)
@@ -907,17 +906,16 @@ examples which can be followed to compute derivatives of many
 functions:
 %
 \begin{spec}
-    D (f + g)         =  D f + D g
-    D (f * g)         =  D f * g + f * D g
+    D (f + g)        =  D f + D g
+    D (f * g)        =  D f * g + f * D g
+    D id             =  const 1
+    D (const a)      =  const 0
 
-    D (f ∘ g) x       =  D f (g x) * D g x     -- the chain rule
-
-    D (const a)       =  const 0
-    D id              =  const 1
-    D (powTo n)  x    =  n * (x^(n-1))
-    D sin   x         =  cos x
-    D cos   x         =  - (sin x)
-    D exp   x         =  exp x
+    D (f . g)        =  (D f . g) * D g     -- the chain rule
+    D (powTo n)      =  (n*) . (powTo (n-1))
+    D sin            =  cos
+    D cos            =  - sin
+    D exp            =  exp
 \end{spec}
 %
 and so on.
