@@ -31,6 +31,13 @@
   \item |Maybe Bool -> Bool|
   \item |Maybe (Bool, Maybe (Bool, Maybe Bool))|
   \end{enumerate}
+%
+  This is an opportunity to practice the learning outcome ``develop
+  adequate notation for mathematical concepts'': what is a suitable
+  notation for values of type |Bool|, |Maybe a|, |a->b|, |(a,b)|, etc.?
+%
+
+
 \end{exercise}
 
 \begin{exercise}\label{exc:funtupE1}
