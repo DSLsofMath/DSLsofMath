@@ -135,7 +135,7 @@ We can check that the product of spaces is a special case of |Sigma|:
 prod a b = Sigma a (const b)
 \end{code}
 
- 
+
 \paragraph{Projections}
 In the end we may not be interested in all values and hide some of the
 generated values. For this we use the following combinator:
@@ -218,7 +218,7 @@ The distribution of the balanced die can then be represented as
 follows:
 \begin{code}
 dieDistr :: Distr Integer
-dieDistr = uniformDiscrete [1..6] 
+dieDistr = uniformDiscrete [1..6]
 \end{code}
 
 Another useful discrete distribution is the Bernoulli distribution of
@@ -329,9 +329,8 @@ by any value without ``side effects'' on other variables (unlike \(q\)
 and \(v\))
 
 In this light, let us return to random variables. Wikipedia is not
-very helpful here, so we can turn ourselves to \citet{(Introduction to
-  Probability, Charles M. Grinstead and J. Laurie Snell)}, who give
-the following definition:
+very helpful here, so we can turn ourselves to
+\citet{IntroProb_Grinstead_Snell_2003}, who give the following definition:
 \begin{quote}
   A random variable is simply an expression whose value is the outcome
   of a particular experiment.
@@ -413,7 +412,7 @@ isTrue :: Bool -> Space ()
 isTrue c = Factor (indicator c)
 \end{code}
 where |isTrue c| is the subspace subspace which has measure 1 if |c|
-is true and 0 otherwise --- 
+is true and 0 otherwise ---
 The subspace of |s| where |f| holds is then |Sigma s (isTrue f)|.
 
 We can show that if |s| has a non-zero measure, then the two definitions are equivalent:
@@ -529,7 +528,7 @@ userProb = probability drugSpace
 
 Perhaps surprisingly, we never needed the Bayes theorem to solve the
 problem. Indeed, the Bayes theorem is already incorporated in our
-defintion of |integrator|. 
+defintion of |integrator|.
 
 \subsection{Monty Hall}
 
