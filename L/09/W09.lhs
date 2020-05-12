@@ -2,6 +2,8 @@
 
 \begin{code}
 {-# LANGUAGE GADTs #-}
+module DSLsofMath.W09 where
+
 import Prelude hiding (Real)
 import Control.Monad (ap)
 import Data.List ((\\))
@@ -14,7 +16,7 @@ following (sometimes compute the probabilites involved)
 
 \begin{enumerate}
 \item Assume you throw two 6-face dice, what is the probability that
-  the product is greater than 10 if their sum is greater than 7.
+  the product is greater than 10 if their sum is greater than 7?
 \label{ex:dice}
 \item Suppose that a test for using a particular drug is 99\% sensitive and
 99\% specific. That is, the test will produce 99\% true positive results
@@ -22,7 +24,7 @@ for drug users and 99\% true negative results for non-drug
 users. Suppose that 0.5\% of people are users of the drug. What is the
 probability that a randomly selected individual with a positive test
 is a drug user?
-\footnote(found in Wikipedia article on bayes theorem)
+\footnote{Example found in \href{https://en.wikipedia.org/wiki/Bayes'_theorem}{Wikipedia article on Bayes' theorem}}
 \label{ex:drugtest}
 
 \item Suppose you’re on Monty Hall’s \emph{Let’s Make a Deal!} You are given
@@ -37,6 +39,7 @@ is a drug user?
 Our method will be to:
 \begin{itemize}
 \item Describe the space of possible situations
+\TODO{How is a ``situation'' related to an ``outcome''?}
 \item Define the events whose probabilities we will consider
 \item Evaluate such probabilities.
 \end{itemize}
@@ -54,19 +57,22 @@ or \(U\). While this space of events underpins modern understandings
 of probability theory, textbooks sometimes give a couple of examples
 involving coin tosses and promptly forget this concept in the body of
 the text. Here we will instead develop this concept using our DSL
-methodology.  Once this is done, we'll see that it'll become our basic
+methodology.  Once this is done, we'll see that it will become our basic
 tool to solve probability problems.
 
-Our first task is to describe the possible structure of sample space,
+Our first task is to describe the possible structure of sample spaces,
 and model them as a DSL.
 
 We will use a type to represent spaces. This type is indexed by the
 underlying Haskell type of possible situtations.
+%
+\TODO{From the use it looks like ``situtation'' here should be ``outcome''.}
 \begin{spec}
 Space :: Type -> Type
 \end{spec}
 
 \paragraph{Finite space}
+\TODO{For some reason the example ``numbering'' is numeric here, but alphabetic in the list above.}
 In Example~\ref{ex:dice}, we consider dice with 6 faces. For such a
 purpose we define a constructor |Finite| embedding a list of possible outcomes into a space:
 \begin{spec}
@@ -77,6 +83,8 @@ Our die is then:
 die :: Space Int
 die = Finite [1..6]
 \end{code}
+\TODO{Perhaps parametrise |die| on the number of sides. (That is very common.)}
+%
 In particular the space |point x| is the space with a single point:
 \begin{code}
 point :: a -> Space a
@@ -88,6 +96,7 @@ If the die is well-balanced, then all cases will have the same
 probability (or probability mass) in the space. But this is not always
 the case.  Hence we'll need a way to represent this. We use the
 following combinator:
+\TODO{It sounds like the intended use is scaling: |scale r s| would multiply each probability in the space |s| by the factor |r|. Scaling is talked about in the LinAlg Chapter.}
 \begin{spec}
 Factor :: Real -> Space ()
 \end{spec}
@@ -129,12 +138,13 @@ Hence:
 problem1Situations' :: Space ((Int, Int), ())
 problem1Situations' = Sigma twoDice sumAbove7
 \end{code}
+\TODO{Again the word ``Situation'' is a bit confusing: how are outcomes and situations related?}
 
 We can check that the product of spaces is a special case of |Sigma|:
 \begin{code}
 prod a b = Sigma a (const b)
 \end{code}
-
+If we compare to the usual sum notation the right hans side would be \(\sum_{i\in a} b\) which is the sum of |card a| copies of |b|, thus a kind of ``product'' of |a| and |b|.
 
 \paragraph{Projections}
 In the end we may not be interested in all values and hide some of the
@@ -144,25 +154,24 @@ Project :: (a -> b) -> Space a -> Space b
 \end{spec}
 
 \paragraph{Real line}
-Before we continue, we may also add a way to represent for real-valued
+Before we continue, we may also add a way to represent real-valued
 variables:
+\TODO{Variables have not been used yet. Perhaps just ``real-valued spaces'', or explain the term ``variable'' carefully.}
 \begin{spec}
 RealLine :: Space Real
 \end{spec}
 
 
 \paragraph{Summary}
-In sum, we have:
+In sum, we have a datatype for the abstract syntax of ``space expressions'':
 
 \begin{code}
-
 data Space a where
-  Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
-  Factor :: Real -> Space ()
-  Finite :: [a] -> Space a
-  RealLine :: Space Real
-  Project :: (a -> b) -> Space a -> Space b
-
+  Sigma     :: Space a -> (a -> Space b) -> Space (a,b)
+  Factor    :: Real -> Space ()
+  Finite    :: [a] -> Space a
+  RealLine  :: Space Real
+  Project   :: (a -> b) -> Space a -> Space b
 \end{code}
 
 \subsection{Bind and return}
