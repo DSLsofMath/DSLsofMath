@@ -215,12 +215,18 @@ Let us define a few useful distributions. First, we present the
 uniform distribution among a finite set of elements. It is essentially
 the same as the |Finite| space, but we scale every element so that the
 total measure comes down to 1.
+%
+\begin{code}
+scaleWith :: (a -> Real) -> Space a -> Space a
+scaleWith f s = do {x <- s; Factor (f x); return x}
+scale :: Real -> Space a -> Space a
+scale c = scaleWith (const c)
+\end{code}
+\TODO{The pattern |s >>= \x -> Factor (f x) >> return x| deserves a name. Perhaps |scaleWith f s|?}
 \begin{code}
 uniformDiscrete :: [a] -> Distr a
-uniformDiscrete xs = do
-  x <- Finite xs
-  Factor (1.0 / fromIntegral (length xs))
-  return x
+uniformDiscrete xs = scale  (1.0 / fromIntegral (length xs))
+                            (Finite xs)
 \end{code}
 
 The distribution of the balanced die can then be represented as
@@ -235,19 +241,19 @@ parameter |p|. It is a distribution whose value is |True| with
 probability |p| and and |False| with probability |1-p|.
 \begin{code}
 bernoulli :: Real -> Distr Bool
-bernoulli p = do
-  x <- Finite [False,True]
-  Factor (if x then p else 1-p)
-  return x
+bernoulli p = scaleWith  (\b -> if b then p else 1-p)
+                         (Finite [False,True])
 \end{code}
 
+%format mu = "\mu"
+%format sigma = "\sigma"
 Finally we can show the normal distribution with average |mu| and standard deviation |sigma|.
 \begin{code}
 normal :: Real -> Real -> Distr Real
-normal mu sigma = do
-  x <- RealLine
-  Factor (exp(- ( (x - mu)**2 / (2 * sigma**2)) ) / (sigma * sqrt (2*pi)))
-  return x
+normal mu sigma = scaleWith (normalMass mu sigma) RealLine
+
+normalMass :: Floating r =>  r -> r -> r -> r
+normalMass mu sigma x = exp(- ( ((x - mu)/sigma)^2 / 2)) / (sigma * sqrt (2*pi))
 \end{code}
 
 In some textbooks, distributions are sometimes called ``random
@@ -269,18 +275,22 @@ we will adjust the weights. The integrator of a product (in general
 
 \begin{code}
 integrator :: Space a -> (a -> Real) -> Real
-integrator (Finite a) g = bigsum a g
-integrator (RealLine) g = integral g
-integrator (Factor f) g = f * g ()
-integrator (Sigma a f) g = integrator a $ \x -> integrator (f x) $ \y -> g (x,y)
-integrator (Project f a) g = integrator a (g . f)
+integrator (Finite a)     g = bigsum a g
+integrator (RealLine)     g = integral g
+integrator (Factor f)     g = f * g ()
+integrator (Sigma a f)    g = integrator a $ \x -> integrator (f x) $ \y -> g (x,y)
+integrator (Project f a)  g = integrator a (g . f)
+\end{code}
 
--- sum of some terms (finite so we can compute this)
+Sum of some terms (finite list so we can compute this).
+\begin{code}
 bigsum :: [a] -> (a -> Real) -> Real
-bigsum xs f = foldl (+) 0 [f x | x <- xs]
+bigsum xs f = sum (map f xs)
+\end{code}
 
--- indefinite integral over the whole real line.
--- We will leave this undefined; to use in symbolic computations only.
+Indefinite integral over the whole real line.
+We will leave this undefined; to use in symbolic computations only.
+\begin{code}
 integral :: (Real -> Real) -> Real
 integral = undefined
 \end{code}
@@ -290,21 +300,24 @@ of the space --- the total mass.
 %
 To compute the measure of a space, we can simply integrate the
 constant 1 (so only mass matters).
+\TODO{Explain the |>>> some expr| syntax.}
 \begin{code}
 measure :: Space a -> Real
 measure d = integrator d (const 1)
 
--- >>> measure (bernoulli 0.2)
+-- |>>> measure (bernoulli 0.2)|
 -- 1.0
 \end{code}
 
 The integration of |id| over a real-valued distribution yields its
 expected value.
+%
+\TODO{Later (in the evant probability lemma) the name used is |expectedValue|.}
 \begin{code}
 expectedValueOfDistr :: Distr Real -> Real
 expectedValueOfDistr d = integrator d id
 
--- >>> expectedValueOfDistr dieDistr
+-- |>>> expectedValueOfDistr dieDistr|
 -- 3.5
 \end{code}
 
@@ -372,11 +385,11 @@ follows:
 expectedValue :: Space a -> (a -> Real) -> Real
 expectedValue s f = integrator s f / measure s
 
--- >>> expectedValue twoDice (\ (x,y) -> fromIntegral (x+y))
+-- |>>> expectedValue twoDice (\ (x,y) -> fromIntegral (x+y))|
 -- 7.0
 \end{code}
 
-TODO: (maybe) we're making some error in case |measure d| is 0.
+TODO: (maybe) we're making some error in case |measure s| is 0.
 
 Essentially, what the above does is computing the weighted
 sum/integral of |f(x)| for every point |x| in the space.  Because |s|
@@ -384,7 +397,6 @@ is a space (not a distribution), we must normalise the result by
 dividing by its measure.
 
 Exercise: define the variance, skew, curtosis, etc.
-
 
 \subsection{Events and probability}
 
@@ -403,11 +415,11 @@ The first defintion is as the expected value of |indicator . e|,
 where |indicator| maps boolean to reals as follows:
 \begin{code}
 indicator :: Bool -> Real
-indicator True = 1
-indicator False = 0
+indicator True   = 1
+indicator False  = 0
 
 probability1 :: Space a -> (a -> Bool) -> Real
-probability1 d f = expectedValue d (indicator . f)
+probability1 d e = expectedValue d (indicator . e)
 \end{code}
 
 The second definition of probability is as the ratio the measures of
@@ -415,29 +427,41 @@ the subspace where |e| holds and the complete space.
 
 \begin{code}
 probability2 :: Space a -> (a -> Bool) -> Real
-probability2 s f = measure (Sigma s (isTrue . f)) / measure s
+probability2 s e = measure (Sigma s (isTrue . e)) / measure s
 
 isTrue :: Bool -> Space ()
 isTrue c = Factor (indicator c)
 \end{code}
-where |isTrue c| is the subspace subspace which has measure 1 if |c|
-is true and 0 otherwise ---
-The subspace of |s| where |f| holds is then |Sigma s (isTrue f)|.
+where |isTrue c| is the subspace which has measure 1 if |c|
+is true and 0 otherwise.
+%
+The subspace of |s| where |e| holds is then |Sigma s (isTrue . e)|.
+%
+\TODO{This construction also needs a name. Perhaps |subspace|? Or something with filter?}
+\begin{code}
+subspace :: (a->Bool) -> Space a -> Space a
+subspace e s = Project fst (Sigma s (isTrue . e))
+\end{code}
 
 We can show that if |s| has a non-zero measure, then the two definitions are equivalent:
 
-Lemma: |measure s * probability s f = measure (Sigma s (isTrue f))|
+Lemma: |measure s * probability s e = measure (Sigma s (isTrue . e))|
 Proof:
+\TODO{Fill in step explanations.}
 \begin{spec}
-probability1 s f
-  = expectedValue s (indicator . f)
-  = expectedValue s (indicator . f)
-  = integrator s (indicator . f) / measure s
-  = integrator s (indicator . f) / measure s
-  = integrator s (\x -> indicator (f x)) / measure s
-  = integrator s (\x -> indicator (f x) * constant 1 (x,())) / measure s
-  = integrator s (\x -> integrator (isTrue . f) (\y -> constant 1 (x,y)) / measure s)
-  = measure (Sigma s (isTrue . f)) / measure s
+  probability1 s e
+= {- Def. of |probability1| -}
+  expectedValue s (indicator . e)
+= {- Def. of |expectedValue| -}
+  integrator s (indicator . e) / measure s
+= {- Def. of |(.)| -}
+  integrator s (\x -> indicator (e x)) / measure s
+=
+  integrator s (\x -> indicator (e x) * constant 1 (x,())) / measure s
+=
+  integrator s (\x -> integrator (isTrue . e) (\y -> constant 1 (x,y)) / measure s)
+=
+  measure (Sigma s (isTrue . e)) / measure s
 \end{spec}
 
 It will be often convienent to define a space whose underlying set is
@@ -462,27 +486,37 @@ the probability of |f| in the sub space where |g| holds:
 
 \begin{code}
 condProb :: Space a -> (a -> Bool) -> (a -> Bool) -> Real
-condProb s g f = probability1 (Sigma s (isTrue . g)) (f . fst)
+condProb s f g = probability1 (subspace g s) f
 \end{code}
 
 We find the above defintion more intuitive than the more usual $P(F∣G)
- = P(F∩G ∣ G)$. However, this last equality can be proven, by calculation:
+ = P(F∩G) / P(G)$. However, this last equality can be proven, by calculation:
 
-Lemma:  |condProb s g f == probability s (\y -> f y && g y) / probability s g|
+Lemma:  |condProb s f g == probability s (\y -> f y && g y) / probability s g|
 Proof:
+\TODO{Redo with step explanations. Probably split into helper lemma(s) to avoid diving ``too deep''.}
 \begin{spec}
-condProb s g f
-  = probability (Sigma s (isTrue . g)) (f . fst)
-  = expectedValue (Sigma s (isTrue . g)) (indicator . f . fst)
-  = (1/measure(Sigma s (isTrue . g))) * (integrator (Sigma s (isTrue . g)) (indicator . f . fst))
-  = (1/measure s/probability s g) * (integrator s $ \x -> integrator (isTrue . g) $ \y -> indicator . f . fst $ (x,y))
-  = (1/measure s/probability s g) * (integrator s $ \x -> integrator (isTrue . g) $ \y -> indicator . f $ x)
-  = (1/measure s/probability s g) * (integrator s $ \x -> indicator (g x) * indicator (f x))
-  = (1/measure s/probability s g) * (integrator s $ \x -> indicator (\y -> g y &&  f y))
-  = (1/probability s g) * (integrator s $ \x -> indicator (\y -> g y &&  f y)) / measure s
-  = (1/probability s g) * probability s (\y -> g y &&  f y)
-% emacs wakeup $
+  condProb s f g
+=
+  probability (Sigma s (isTrue . g)) (f . fst)
+=
+  expectedValue (Sigma s (isTrue . g)) (indicator . f . fst)
+=
+  (1/measure(Sigma s (isTrue . g))) * (integrator (Sigma s (isTrue . g)) (indicator . f . fst))
+=
+  (1/measure s/probability s g) * (integrator s $ \x -> integrator (isTrue . g) $ \y -> indicator . f . fst $ (x,y))
+=
+  (1/measure s/probability s g) * (integrator s $ \x -> integrator (isTrue . g) $ \y -> indicator . f $ x)
+=
+  (1/measure s/probability s g) * (integrator s $ \x -> indicator (g x) * indicator (f x))
+=
+  (1/measure s/probability s g) * (integrator s $ \x -> indicator (\y -> g y &&  f y))
+=
+  (1/probability s g) * (integrator s $ \x -> indicator (\y -> g y &&  f y)) / measure s
+=
+  (1/probability s g) * probability s (\y -> g y &&  f y)
 \end{spec}
+% emacs wakeup $
 
 \subsection{Examples}
 
@@ -493,18 +527,28 @@ random variables except the outcome that we care about (is the product greater t
 \begin{code}
 diceSpace :: Space Bool
 diceSpace = do
-  die1 <- dieDistr  -- balanced die 1
-  die2 <- dieDistr  -- balanced die 1
-  isTrue (die1 + die2 >= 7)  -- observe that the sum is >= 7
-  return (die1 * die2 >= 10) -- consider only the event ``product >= 10''
+  x <- die  -- balanced die 1
+  y <- die  -- balanced die 2
+  isTrue (x + y >= 7)  -- observe that the sum is >= 7
+  return (x * y >= 10) -- consider only the event ``product >= 10''
 \end{code}
 Then we can compute is probability:
 \begin{code}
 diceProblem :: Real
 diceProblem = probability diceSpace
 
--- >>> diceProblem
+-- |>>> diceProblem|
 -- 0.9047619047619047
+\end{code}
+
+Some helpers: \TODO{Merge with text above to explain more}
+\begin{code}
+p1 (x,y) = x+y >= 7
+p2 (x,y) = x*y >= 10
+test1     = measure (prod die die >>= isTrue . p1)                       -- 21
+test2     = measure (prod die die >>= isTrue . p2)                       -- 19
+testBoth  = measure (prod die die >>= isTrue . \xy -> p1 xy && p2 xy)    -- 19
+prob21    = condProb (prod die die) p2 p1                                -- 19/21
 \end{code}
 
 \subsection{Drug test}
@@ -520,18 +564,18 @@ all variables, caring only about |isUser|.
 
 \begin{code}
 drugSpace :: Space Bool
-drugSpace =
-  do isUser <- bernoulli 0.005  -- model distribution of drug users
-     testPositive <- bernoulli (if isUser then 0.99 else 0.01)
-     isTrue testPositive  -- we have ``a positive test'' by assumption
-     return isUser  -- we're interested in |isUser| only.
+drugSpace = do
+  isUser <- bernoulli 0.005  -- model distribution of drug users
+  testPositive <- bernoulli (if isUser then 0.99 else 0.01)
+  isTrue testPositive        -- we have ``a positive test'' by assumption
+  return isUser              -- we're interested in |isUser| only.
 \end{code}
 The probability is computed as usual:
 \begin{code}
 userProb :: Real
 userProb = probability drugSpace
 
--- >>> userProb
+-- |>>> userProb|
 -- 0.33221476510067116
 \end{code}
 
@@ -547,40 +591,42 @@ describing an \emph{incorrect} way to model the Monty Hall problem.
 \begin{code}
 montySpaceIncorrect :: Bool -> Space Bool
 montySpaceIncorrect changing = do
-  winningDoor <- uniformDiscrete [1::Int,2,3]  -- any door can be the winning one
-  let pickedDoor = 1 -- player picks door 1.
-  let montyPickedDoor = 3 -- monty opens door 3.
-  isTrue (montyPickedDoor /= winningDoor) -- door 3 is not winning
-  let newPickedDoor = if changing then 2 else 1 -- we can change or not
-  return (newPickedDoor == winningDoor) -- has the player won?
+  winningDoor <- uniformDiscrete [1::Int,2,3]    -- any door can be the winning one
+  let pickedDoor = 1                             -- player picks door 1.
+  let montyPickedDoor = 3                        -- monty opens door 3.
+  isTrue (montyPickedDoor /= winningDoor)        -- door 3 is not winning
+  let newPickedDoor = if changing then 2 else 1  -- we can change or not
+  return (newPickedDoor == winningDoor)          -- has the player won?
 
--- >>> probability (montySpace1 False)
+-- |>>> probability (montySpace1 False)|
 -- 0.5
 
--- >>> probability (montySpace1 True)
+-- |>>> probability (montySpace1 True)|
 -- 0.5
 \end{code}
-The above is incorrect, because everything happens as if Monty choses
+The above is incorrect, because everything happens as if Monty chooses
 a door before the player made its first choice. A correct model is
 the following:
 \begin{code}
+doors :: [Int]
+doors = [1,2,3]
 montySpace :: Bool -> Space Bool
 montySpace changing = do
-  winningDoor <- uniformDiscrete [1::Int,2,3] -- any door can be the winning one
-  pickedDoor <-  uniformDiscrete [1,2,3] -- player picks door blindly
-  montyPickedDoor <-
-    uniformDiscrete ([1,2,3] \\ [pickedDoor, winningDoor]) -- monty cannot pick the same door, nor a winning door.
+  winningDoor      <-  uniformDiscrete doors  -- any door can be the winning one
+  pickedDoor       <-  uniformDiscrete doors  -- player picks door blindly
+  montyPickedDoor  <-  uniformDiscrete        -- Monty cannot pick the same door, nor a winning door.
+                         (doors \\ [pickedDoor, winningDoor])
   let newPickedDoor =
         if changing
-        then head ([1,2,3] \\ [pickedDoor, montyPickedDoor])
+        then head (doors \\ [pickedDoor, montyPickedDoor])
         -- player takes a door which is NOT the previously picked, nor the showed door.
         else pickedDoor
   return (newPickedDoor == winningDoor)
 
--- >>> probability (montySpace False)
+-- |>>> probability (montySpace False)|
 -- 0.3333333333333333
 
--- >>> probability (montySpace True)
+-- |>>> probability (montySpace True)|
 -- 0.6666666666666666
 \end{code}
 
@@ -588,7 +634,7 @@ montySpace changing = do
 
 \begin{code}
 independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
-independentEvents s e f = probability1 s e == condProb s f e
+independentEvents s e f = probability1 s e == condProb s e f
 \end{code}
 
 According to Grinstead and Snell:
@@ -603,10 +649,7 @@ dirac = undefined
 
 equal :: Real -> Real -> Space ()
 equal x y = Factor (dirac (x-y))
-
 \end{itemize}
-
-
 
 % Local Variables:
 % dante-methods : (bare-ghci)

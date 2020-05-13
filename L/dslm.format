@@ -1,5 +1,6 @@
 \def\commentbegin{\{{-}~}
 
+%format >>>                     = ">\!\!>\!\!>"
 %format =~=			= "\stackrel{\text{def}}{=}"
 % %format ComplexA                =  Complex "_A"
 %format REAL                    =  "\mathbb{R}"

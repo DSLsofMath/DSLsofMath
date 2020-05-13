@@ -22,7 +22,7 @@ library
                    DSLsofMath.FunNumInst, DSLsofMath.FunExp, DSLsofMath.Derive,
                    DSLsofMath.EvalD, DSLsofMath.ShallowD,
                    DSLsofMath.W04, DSLsofMath.W05, DSLsofMath.W06,
-                   DSLsofMath.W07, DSLsofMath.W08
+                   DSLsofMath.W07, DSLsofMath.W08, DSLsofMath.W09
                    TestAll
 
   -- other-modules:
