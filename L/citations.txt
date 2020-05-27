@@ -1,0 +1,28 @@
+LinckeJanssonetalDSLWC2009; 00;
+TFPIE18_DSLMResults_JanssonEinarsdottirIonescu; 00;
+boute2009decibel; 00;
+gries1993logical; 00;
+gries1995teaching; 00;
+kraft2004functions; 00;
+tolvanen2011industrial; 00;
+wells1995communicating; 00;
+
+Calc; adams2010calculus: 01*2, 02*2, 03, 05*4
+Calc; landau2001differential; 03*2;
+Calc; maclane1986mathematics; 03*5
+Calc; quinn2008discovering; 08;
+Calc; rudin1964principles; 02;
+Calc; rudin1987real; 08;
+
+Disc; doets-haskellroadto-2004; 02;
+Disc; rotman2006first; 05;
+
+PDE;  edwards2008elementary; 01;
+
+Prob; stirzaker_2003; 03;
+
+Prog; Pavlovic:1998:CCF:788020.788885; 04;
+Prog; TFPIE15_DSLsofMath_IonescuJansson; 00, 01
+Prog; claessen_quickcheck_2000; 01;
+Prog; haskell2010; 03;
+Prog; mcilroy1999functional; 05;
