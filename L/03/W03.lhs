@@ -1099,13 +1099,13 @@ For example:
 \begin{spec}
      eval' (Exp e)                      =  {- def. |eval'|, function composition -}
 
-     eval (derive (Exp e))		=  {- def. |derive| for |Exp| -}
+     eval (derive (Exp e))              =  {- def. |derive| for |Exp| -}
 
-     eval (Exp e :*: derive e)		=  {- def. |eval| for |:*:| -}
+     eval (Exp e :*: derive e)          =  {- def. |eval| for |:*:| -}
 
-     eval (Exp e) * eval (derive e)	=  {- def. |eval| for |Exp| -}
+     eval (Exp e) * eval (derive e)     =  {- def. |eval| for |Exp| -}
 
-     exp (eval e) * eval (derive e)	=  {- def. |eval'| -}
+     exp (eval e) * eval (derive e)     =  {- def. |eval'| -}
 
      exp (eval e) * eval' e             =  {- let |f = eval e|, |f' = eval' e| -}
 
@@ -1145,13 +1145,13 @@ We compute, for example:
 \begin{spec}
      evalD (Exp e)                           =  {- specification of |evalD| -}
 
-     (eval (Exp e), eval' (Exp e))	     =  {- def. |eval| for |Exp| and reusing the computation above -}
+     (eval (Exp e), eval' (Exp e))           =  {- def. |eval| for |Exp| and reusing the computation above -}
 
      (exp (eval e), exp (eval e) * eval' e)  =  {- introduce names for subexpressions -}
 
      let  f   = eval e
           f'  = eval' e
-     in (exp f, exp f * f')		     =  {- def. |evalD| -}
+     in (exp f, exp f * f')                  =  {- def. |evalD| -}
 
      let (f, f') = evalD e
      in (exp f, exp f * f')

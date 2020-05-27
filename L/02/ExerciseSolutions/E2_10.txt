@@ -118,6 +118,6 @@ Thus |foo| can be defined as follows
 
   foo N = ( max N N1
           , ( -- max N N1 >= N
-	    , -- proof above
-	    )
+            , -- proof above
+            )
           )

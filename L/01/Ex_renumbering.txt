@@ -21,7 +21,7 @@ git mv E1_12.hs      qqE1_05.hs
 git mv  E1_9.lhs     qqE1_06.lhs
 git mv E1_10.lhs     qqE1_07.lhs
 git mv E1_14.lhs     qqE1_10.lhs
-git mv  E1_8.hs	     qqE1_13.hs
+git mv  E1_8.hs      qqE1_13.hs
 git mv  E1_3.lhs     qqE1_14.lhs
 git mv  E1_3alt.lhs  qqE1_14alt.lhs
 git mv  E1_4.txt     qqE1_15.txt

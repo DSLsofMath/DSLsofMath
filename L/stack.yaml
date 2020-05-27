@@ -2,6 +2,11 @@ resolver: lts-14.1
 packages:
 - '.'
 extra-deps:
+- github: DSLsofMath/Hatlab
+  commit: 8a842849a7f492c430afb2d648d8ff0e95628d35
+
+
+#  extra-dep: true
 #  - equational-reasoning-0.6.0.0
 #  - ghc-typelits-presburger-0.2.0.5
 #  - monomorphic-0.0.3.3
