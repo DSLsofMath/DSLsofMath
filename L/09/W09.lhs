@@ -525,27 +525,29 @@ We find the above defintion more intuitive than the more usual $P(F∣G)
 
 Lemma:  |condProb s f g == probability s (\y -> f y && g y) / probability s g|
 Proof:
-\TODO{Redo with step explanations. Probably split into helper lemma(s) to avoid diving ``too deep''.}
+\TODO{Possibly split into helper lemma(s) to avoid diving ``too deep''.}
 \begin{spec}
   condProb s f g
-=
-  probability (Sigma s (isTrue . g)) (f . fst)
-=
+= {- Def of condProb -}
+  probability1 (subspace g s) f
+= {- Def of subspace -}
+  probability1 (Sigma s (isTrue . g)) (f . fst)
+= {- Def of probability1 -}
   expectedValue (Sigma s (isTrue . g)) (indicator . f . fst)
-=
+= {- Def of expectedValue -}
   (1/measure(Sigma s (isTrue . g))) * (integrator (Sigma s (isTrue . g)) (indicator . f . fst))
-=
+= {- Def of integrator (Sigma) -}
   (1/measure s/probability s g) * (integrator s $ \x -> integrator (isTrue . g) $ \y -> indicator . f . fst $ (x,y))
-=
+= {- Def fst -}
   (1/measure s/probability s g) * (integrator s $ \x -> integrator (isTrue . g) $ \y -> indicator . f $ x)
-=
+= {- Def of isTrue -}
   (1/measure s/probability s g) * (integrator s $ \x -> indicator (g x) * indicator (f x))
-=
+= {- Property of indicator -}
   (1/measure s/probability s g) * (integrator s $ \x -> indicator (\y -> g y &&  f y))
-=
+= {- associativity of multiplication -}
   (1/probability s g) * (integrator s $ \x -> indicator (\y -> g y &&  f y)) / measure s
-=
-  (1/probability s g) * probability s (\y -> g y &&  f y)
+= {- Definition of probability1 -}
+  (1/probability s g) * probability1 s (\y -> g y &&  f y)
 \end{spec}
 % emacs wakeup $
 
