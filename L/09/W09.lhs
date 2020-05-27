@@ -38,11 +38,20 @@ is a drug user?
 
 Our method will be to:
 \begin{itemize}
-\item Describe the space of possible situations
-\TODO{How is a ``situation'' related to an ``outcome''?}
+\item Describe the space of possible situations, or outcomes.
 \item Define the events whose probabilities we will consider
 \item Evaluate such probabilities.
 \end{itemize}
+
+Depending on the context, we use the word ``situation'' or ``outcome''
+for the same mathematical objects. The word ``outcome'' evokes
+that some experiment is explicitly performed, and we then
+consider its outcome. When we use the word ``situation'' there
+is not explict experiment, but still something happened and we
+consider the situation at given moment.
+
+\TODO{Improve this text}
+
 
 \subsection{Spaces}
 
@@ -96,7 +105,8 @@ If the die is well-balanced, then all cases will have the same
 probability (or probability mass) in the space. But this is not always
 the case.  Hence we'll need a way to represent this. We use the
 following combinator:
-\TODO{It sounds like the intended use is scaling: |scale r s| would multiply each probability in the space |s| by the factor |r|. Scaling is talked about in the LinAlg Chapter.}
+\footnote{This is in fact scaling, as defined in the LinAlg Chapter --- the spaces over a given domain form a vector space. However, we choose not to use this point of view, because we are generally not interested in the vector space structure of probability spaces. Furthermore, doing so risks adding more confusion than anything. In particular, the word "scale" can be misunderstood as scaling the \emph{value} of a numerical variable. Instead here we scale densites, and use |Factor| for this purpose.  }
+\TODO{Consider the alternative at some point: |scale r s| would multiply each probability in the space |s| by the factor |r|. Scaling is talked about in the LinAlg Chapter.}
 \begin{spec}
 Factor :: Real -> Space ()
 \end{spec}
@@ -112,19 +122,22 @@ Indeed, we can construct the product of two spaces as
 \begin{code}
 prod :: Space a -> Space b -> Space (a,b)
 \end{code}
-For example two dice are represented as follows:
+
+For example, the possible outcomes of the ``experiment'' of throwing two 6-faced
+dice are represented as follows:
 
 \begin{code}
 twoDice :: Space (Int,Int)
 twoDice = prod die die
 \end{code}
 %
-But let's say now that we need the sum is greater than 7. We
-can define the following space, which has a mass 1 if the condition is satisfied and 0 otherwise:
+But let's say now that we need the sum to be greater than 7. We
+can define the following parametric space, which has a mass 1 if the condition is satisfied and 0 otherwise.
 \begin{code}
 sumAbove7 :: (Int,Int) -> Space ()
 sumAbove7 (x,y) = Factor (if x+y > 7 then 1 else 0)
 \end{code}
+\TODO{Phrase this in terms of experiment again}
 We want to take the product of the |twoDice| space and the |sumAbove7|
 space; but the issue is that |sumAbove7| \emph{depends} on the outcome
 of |twoDice|. To support this we need a generalisation of the
@@ -135,8 +148,8 @@ Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
 \end{spec}
 Hence:
 \begin{code}
-problem1Situations' :: Space ((Int, Int), ())
-problem1Situations' = Sigma twoDice sumAbove7
+problem1 :: Space ((Int, Int), ())
+problem1 = Sigma twoDice sumAbove7
 \end{code}
 \TODO{Again the word ``Situation'' is a bit confusing: how are outcomes and situations related?}
 
@@ -155,8 +168,7 @@ Project :: (a -> b) -> Space a -> Space b
 
 \paragraph{Real line}
 Before we continue, we may also add a way to represent real-valued
-variables:
-\TODO{Variables have not been used yet. Perhaps just ``real-valued spaces'', or explain the term ``variable'' carefully.}
+spaces:
 \begin{spec}
 RealLine :: Space Real
 \end{spec}
@@ -186,7 +198,7 @@ bind a f = Project snd (Sigma a f)
 \end{code}
 
 This means that |Space| has a monadic structure:
-(TODO: is this explained anywhere in the book?)
+\TODO{explain this somewhere in the book}
 \begin{code}
 instance Functor Space where
   fmap f = (pure f <*>)
@@ -312,7 +324,7 @@ measure d = integrator d (const 1)
 The integration of |id| over a real-valued distribution yields its
 expected value.
 %
-\TODO{Later (in the evant probability lemma) the name used is |expectedValue|.}
+\TODO{Later (in the event probability lemma) the name used is |expectedValue|.}
 \begin{code}
 expectedValueOfDistr :: Distr Real -> Real
 expectedValueOfDistr d = integrator d id
@@ -456,15 +468,15 @@ Proof:
   integrator s (indicator . e) / measure s
 = {- Def. of |(.)| -}
   integrator s (\x -> indicator (e x)) / measure s
+= {- mutiplication by 1 -}
+  integrator s (\x -> indicator (e x) * const 1 (x,())) / measure s
 =
-  integrator s (\x -> indicator (e x) * constant 1 (x,())) / measure s
-=
-  integrator s (\x -> integrator (isTrue . e) (\y -> constant 1 (x,y)) / measure s)
+  integrator s (\x -> integrator (isTrue . e) (\y -> const 1 (x,y)) / measure s)
 =
   measure (Sigma s (isTrue . e)) / measure s
 \end{spec}
 
-It will be often convienent to define a space whose underlying set is
+It will be often convenient to define a space whose underlying set is
 a boolean value and compute the probability of the identity event:
 \begin{code}
 probability :: Space Bool -> Real
@@ -650,6 +662,47 @@ dirac = undefined
 equal :: Real -> Real -> Space ()
 equal x y = Factor (dirac (x-y))
 \end{itemize}
+
+Number of times we need to throw a coin to get 3 heads in a row.
+\begin{code}
+coin = bernoulli 0.5
+
+example = helper 3
+
+helper 0 = return 0
+helper n = do
+  h <- coin
+  (1 +) <$> if h
+    then helper (n-1)
+    else helper 3 -- when we have a tail, we start from scratch
+
+-- >>> probability1 example (< 5)
+-- Does not terminate (the "else" case must always be run.)
+
+
+coins = do
+  x <- coin
+  xs <- coins
+  return (x:xs)
+
+threeHeads :: [Bool] -> Int
+threeHeads (True:True:True:_) = 3
+threeHeads (_:xs) = 1 + threeHeads xs
+
+example' = threeHeads <$> coins
+
+
+
+
+\end{code}
+
+\begin{spec}
+=  probability1 example (= n)
+ {- Def. of probability1 -}
+=  integrator example (indicator (= n))
+\end{spec}
+
+Note that we have an infinite list; and so the evaluator cannot solve this problem.
 
 % Local Variables:
 % dante-methods : (bare-ghci)
