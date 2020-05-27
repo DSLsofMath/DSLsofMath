@@ -11,11 +11,12 @@ import Data.List ((\\))
 type Real = Double -- pretend...
 \end{code}
 
-In this chapter, we will define a DSL to describe, reason about, problems such as the
-following (sometimes compute the probabilites involved)
+In this chapter, we define a DSL to describe, reason about, problems
+   such as the following, and sometimes compute the probabilites
+   involved.
 
 \begin{enumerate}[label=\arabic*.]
-\item Assume you throw two 6-face dice, what is the probability that
+\item Assume you throw two 6-faced dice, what is the probability that
   the product is greater than 10 if their sum is greater than 7?
 \label{ex:dice}
 \item Suppose that a test for using a particular drug is 99\% sensitive and
@@ -39,19 +40,16 @@ is a drug user?
 Our method will be to:
 \begin{itemize}
 \item Describe the space of possible situations, or outcomes.
-\item Define the events whose probabilities we will consider
+\item Define the events whose probabilities we will consider.
 \item Evaluate such probabilities.
 \end{itemize}
 
 Depending on the context, we use the word ``situation'' or ``outcome''
-for the same mathematical objects. The word ``outcome'' evokes
-that some experiment is explicitly performed, and we then
-consider its outcome. When we use the word ``situation'' there
-is not explict experiment, but still something happened and we
-consider the situation at given moment.
-
-\TODO{Improve this text}
-
+for the same mathematical objects. The word ``outcome'' evokes some
+experiment, explicitly performed. When we use the word ``situation''
+there is no explict experiment, but something happens according to a
+specific scenario. We consider the situation at the end of the
+scenario in question.
 
 \subsection{Spaces}
 
@@ -66,16 +64,15 @@ or \(U\). While this space of events underpins modern understandings
 of probability theory, textbooks sometimes give a couple of examples
 involving coin tosses and promptly forget this concept in the body of
 the text. Here we will instead develop this concept using our DSL
-methodology.  Once this is done, we'll see that it will become our basic
-tool to solve probability problems.
+methodology.  Once this is done, we'll see that an accurate model of
+the sample space is our essential tool to solve probability problems.
 
 Our first task is to describe the possible structure of sample spaces,
 and model them as a DSL.
 
-We will use a type to represent spaces. This type is indexed by the
-underlying Haskell type of possible situtations.
+We will use a data type to represent spaces. This type is indexed by the
+underlying Haskell type of possible outcomes.
 %
-\TODO{From the use it looks like ``situtation'' here should be ``outcome''.}
 \begin{spec}
 Space :: Type -> Type
 \end{spec}
@@ -88,10 +85,9 @@ Finite :: [a] -> Space a
 \end{spec}
 Our die is then:
 \begin{code}
-die :: Space Int
-die = Finite [1..6]
+die :: Int -> Space Int
+die n = Finite [1..n]
 \end{code}
-\TODO{Perhaps parametrise |die| on the number of sides. (That is very common.)}
 %
 In particular the space |point x| is the space with a single point:
 \begin{code}
@@ -103,45 +99,56 @@ point x = Finite [x]
 If the die is well-balanced, then all cases will have the same
 probability (or probability mass) in the space. But this is not always
 the case.  Hence we'll need a way to represent this. We use the
-following combinator:
-\footnote{This is in fact scaling, as defined in the LinAlg Chapter --- the spaces over a given domain form a vector space. However, we choose not to use this point of view, because we are generally not interested in the vector space structure of probability spaces. Furthermore, doing so risks adding more confusion than anything. In particular, the word "scale" can be misunderstood as scaling the \emph{value} of a numerical variable. Instead here we scale densites, and use |Factor| for this purpose.  }
-\TODO{Consider the alternative at some point: |scale r s| would multiply each probability in the space |s| by the factor |r|. Scaling is talked about in the LinAlg Chapter.}
+following combinator: \footnote{This is in fact scaling, as defined in
+  the LinAlg Chapter --- the spaces over a given domain form a vector
+  space. However, we choose not to use this point of view, because we
+  are generally not interested in the vector space structure of
+  probability spaces. Furthermore, doing so risks adding more
+  confusion than anything. In particular, the word ``scale'' could be
+  misunderstood as scaling the \emph{value} of a numerical
+  variable. Instead here we scale densites, and use |Factor| for this
+  purpose.  } \TODO{Consider the alternative at some point: |scale r
+  s| would multiply each probability in the space |s| by the factor
+  |r|. Scaling is talked about in the LinAlg Chapter.}
 \begin{spec}
 Factor :: Real -> Space ()
 \end{spec}
-It underlying type is the unit type |()|, but its mass (or
+Its underlying type is the unit type |()|, but its mass (or
 density) is given by the a real number, which must be
-non-negative\footnote{should we use a type for that}?
+non-negative?
 
-On its own, it may appear useless, but we can setup the |Space| type
+On its own, |Factor| may appear useless, but we can setup the |Space| type
 so that this mass or density can depend on (previously introduced)
 spaces.
 \paragraph{Product of distributions}
-Indeed, we can construct the product of two spaces as
+As a first example of dependency, we introduce the product of two spaces as
 \begin{code}
 prod :: Space a -> Space b -> Space (a,b)
 \end{code}
 
-For example, the possible outcomes of the ``experiment'' of throwing two 6-faced
-dice are represented as follows:
-
+For example, the possible outcomes of the ``experiment'' of throwing
+two 6-faced dice are represented as follows:\footnote{The use of a
+  pair corresponds to the fact that the two dices can be identified individually.}
+%
 \begin{code}
 twoDice :: Space (Int,Int)
-twoDice = prod die die
+twoDice = prod (die 6) (die 6)
 \end{code}
 %
-But let's say now that we need the sum to be greater than 7. We
-can define the following parametric space, which has a mass 1 if the condition is satisfied and 0 otherwise.
+But let's say now that we need the sum to be greater than 7. We can
+define the following parametric space, which has a mass 1 if the
+condition is satisfied and 0 otherwise. (This space is trivial in the
+sense that no uncertainty is involved.)
 \begin{code}
 sumAbove7 :: (Int,Int) -> Space ()
 sumAbove7 (x,y) = Factor (if x+y > 7 then 1 else 0)
 \end{code}
-\TODO{Phrase this in terms of experiment again}
-We want to take the product of the |twoDice| space and the |sumAbove7|
+
+We now want to take the product of the |twoDice| space and the |sumAbove7|
 space; but the issue is that |sumAbove7| \emph{depends} on the outcome
 of |twoDice|. To support this we need a generalisation of the
-product\footnote{convensionally called $\Sigma$ because of its mathematical
-  similarity with the summation operation.}
+product\footnote{convensionally called $\Sigma$ because of its
+  similarity of structure with the summation operation.}
 \begin{spec}
 Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
 \end{spec}
@@ -150,17 +157,20 @@ Hence:
 problem1 :: Space ((Int, Int), ())
 problem1 = Sigma twoDice sumAbove7
 \end{code}
-\TODO{Again the word ``Situation'' is a bit confusing: how are outcomes and situations related?}
+The values of the dice are the same as in |twoDice|, but the density of
+any sum less than 7 is zero.
 
 We can check that the product of spaces is a special case of |Sigma|:
 \begin{code}
 prod a b = Sigma a (const b)
 \end{code}
-If we compare to the usual sum notation the right hans side would be \(\sum_{i\in a} b\) which is the sum of |card a| copies of |b|, thus a kind of ``product'' of |a| and |b|.
+\footnote{If we compare the above to the usual sum notation, the right-hand-side would be
+\(\sum_{i\in a} b\) which is the sum of |card a| copies of |b|, thus a
+kind of ``product'' of |a| and |b|.}
 
 \paragraph{Projections}
 In the end we may not be interested in all values and hide some of the
-generated values. For this we use the following combinator:
+generated values. For this purpose we use the following combinator:
 \begin{spec}
 Project :: (a -> b) -> Space a -> Space b
 \end{spec}
@@ -226,14 +236,14 @@ Let us define a few useful distributions. First, we present the
 uniform distribution among a finite set of elements. It is essentially
 the same as the |Finite| space, but we scale every element so that the
 total measure comes down to 1.
-%
+% 
 \begin{code}
 scaleWith :: (a -> Real) -> Space a -> Space a
 scaleWith f s = do {x <- s; Factor (f x); return x}
 scale :: Real -> Space a -> Space a
 scale c = scaleWith (const c)
 \end{code}
-\TODO{The pattern |s >>= \x -> Factor (f x) >> return x| deserves a name. Perhaps |scaleWith f s|?}
+\TODO{The pattern |s >>= \x -> Factor (f x) >> return x| deserves a name. Perhaps |scaleWith f s|? (It's used only twice though?)}
 \begin{code}
 uniformDiscrete :: [a] -> Distr a
 uniformDiscrete xs = scale  (1.0 / fromIntegral (length xs))
@@ -293,37 +303,45 @@ integrator (Sigma a f)    g = integrator a $ \x -> integrator (f x) $ \y -> g (x
 integrator (Project f a)  g = integrator a (g . f)
 \end{code}
 
-Sum of some terms (finite list so we can compute this).
+The above definition relies on the usual notions of sums and
+integrals.  We can define the sum of some terms, for finite lists, as
+follows:
 \begin{code}
 bigsum :: [a] -> (a -> Real) -> Real
 bigsum xs f = sum (map f xs)
 \end{code}
 
-Indefinite integral over the whole real line.
-We will leave this undefined; to use in symbolic computations only.
+We use also the definite integral over the whole real line.  However
+we will leave this undefined --- thus whenever using real-valued
+spaces, our defintions are not usable for numerical computations, but
+for symbolic computations only.
 \begin{code}
 integral :: (Real -> Real) -> Real
 integral = undefined
 \end{code}
 
-The simplest quantity that we can compute using the integrator is the measure
-of the space --- the total mass.
+The simplest quantity that we can compute using the integrator is the
+measure of the space --- the total mass.
 %
 To compute the measure of a space, we can simply integrate the
 constant 1 (so only mass matters).
-\TODO{Explain the |>>> some expr| syntax.}
 \begin{code}
 measure :: Space a -> Real
 measure d = integrator d (const 1)
+\end{code}
 
+As a sanity check, we can compute the measure of a bernoulli
+distribution (we use the |>>>| notation to indicate an expression
+being computed.) and find that it is indeed 1.
+\begin{code}
 -- |>>> measure (bernoulli 0.2)|
 -- 1.0
 \end{code}
 
 The integration of |id| over a real-valued distribution yields its
-expected value.
+expected value.\footnote{We reserve the name |expectedValue| for the
+  expected value of a random variable, defined later.}
 %
-\TODO{Later (in the event probability lemma) the name used is |expectedValue|.}
 \begin{code}
 expectedValueOfDistr :: Distr Real -> Real
 expectedValueOfDistr d = integrator d id
@@ -441,14 +459,14 @@ probability2 :: Space a -> (a -> Bool) -> Real
 probability2 s e = measure (Sigma s (isTrue . e)) / measure s
 
 isTrue :: Bool -> Space ()
-isTrue c = Factor (indicator c)
+isTrue = Factor . indicator
 \end{code}
 where |isTrue c| is the subspace which has measure 1 if |c|
 is true and 0 otherwise.
 %
-The subspace of |s| where |e| holds is then |Sigma s (isTrue . e)|.
+The subspace of |s| where |e| holds is then the first projection of
+|Sigma s (isTrue . e)|.
 %
-\TODO{This construction also needs a name. Perhaps |subspace|? Or something with filter?}
 \begin{code}
 subspace :: (a->Bool) -> Space a -> Space a
 subspace e s = Project fst (Sigma s (isTrue . e))
@@ -469,9 +487,11 @@ Proof:
   integrator s (\x -> indicator (e x)) / measure s
 = {- mutiplication by 1 -}
   integrator s (\x -> indicator (e x) * const 1 (x,())) / measure s
-=
-  integrator s (\x -> integrator (isTrue . e) (\y -> const 1 (x,y)) / measure s)
-=
+= {- Def. of integrator -}
+  integrator s (\x -> integrator (Factor (indicator (e x))) (\y -> const 1 (x,y))) / measure s
+= {- Def. of isTrue -}
+  integrator s (\x -> integrator (isTrue (e x)) (\y -> const 1 (x,y))) / measure s
+= {- Def. of integrator -}
   measure (Sigma s (isTrue . e)) / measure s
 \end{spec}
 
