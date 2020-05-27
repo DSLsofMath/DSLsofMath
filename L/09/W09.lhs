@@ -14,7 +14,7 @@ type Real = Double -- pretend...
 In this chapter, we will define a DSL to describe, reason about, problems such as the
 following (sometimes compute the probabilites involved)
 
-\begin{enumerate}
+\begin{enumerate}[label=\arabic*.]
 \item Assume you throw two 6-face dice, what is the probability that
   the product is greater than 10 if their sum is greater than 7?
 \label{ex:dice}
@@ -81,7 +81,6 @@ Space :: Type -> Type
 \end{spec}
 
 \paragraph{Finite space}
-\TODO{For some reason the example ``numbering'' is numeric here, but alphabetic in the list above.}
 In Example~\ref{ex:dice}, we consider dice with 6 faces. For such a
 purpose we define a constructor |Finite| embedding a list of possible outcomes into a space:
 \begin{spec}
