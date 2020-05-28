@@ -716,14 +716,38 @@ example' = threeHeads <$> coins
 
 
 \end{code}
+Note that we have an infinite list; and so the evaluator cannot solve this problem.
+We have to resort to a symbolic method.
+
+
+FIXME: normalise by measure.
+
+f m n = probability1 (helper m) (== n)
 
 \begin{spec}
-=  probability1 example (== n)
+=  probability1 (helper (m+1)) (== n)
  {- Def. of probability1 -}
-=  integrator example (indicator (== n))
+=  integrator (helper m) (indicator . (== n))
+ {- Lemma: integrator / bind -}
+=  integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) (indicator . (== n))
+ {- Lemma: integrator / fmap -}
+=  integrator coin $ \h -> integrator (if h then helper m else helper 3) (indicator . (== n) . (+1))
+ {- Lemma: integrator / if -}
+=  integrator coin $ \h -> if h then integrator (helper m) (indicator . (== n) . (+1)) else integrator (helper 3) (indicator . (== n) . (+1))
+ {- Def. coin -}
+=  integrator (bernoulli 0.5) $ \h -> if h then integrator (helper m) (indicator . (== n) . (+1)) else integrator (helper 3) (indicator . (== n) . (+1))
+ {- Lemma: integrator / bernoulli -}
+=  0.5 * integrator (helper (m-1)) (indicator . (== n) . (+1)) + 0.5 * integrator helper 3 (indicator . (== n) . (+1))
 \end{spec}
 
-Note that we have an infinite list; and so the evaluator cannot solve this problem.
+Hence:
+
+\begin{spec}
+f 0 1 = 1
+f 0 n = 0  (n ≠ 1)
+f (m+1) (n+1) = 0.5 * f m n + 0.5 * f 3 n
+\end{spec}
+
 
 % Local Variables:
 % dante-methods : (bare-ghci)
