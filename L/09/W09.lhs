@@ -718,9 +718,9 @@ example' = threeHeads <$> coins
 \end{code}
 
 \begin{spec}
-=  probability1 example (= n)
+=  probability1 example (== n)
  {- Def. of probability1 -}
-=  integrator example (indicator (= n))
+=  integrator example (indicator (== n))
 \end{spec}
 
 Note that we have an infinite list; and so the evaluator cannot solve this problem.
