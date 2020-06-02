@@ -238,12 +238,12 @@ the same as the |Finite| space, but we scale every element so that the
 total measure comes down to 1.
 % 
 \begin{code}
-scaleWith :: (a -> Real) -> Space a -> Space a
-scaleWith f s = do {x <- s; Factor (f x); return x}
+factorWith :: (a -> Real) -> Space a -> Space a
+factorWith f s = do {x <- s; Factor (f x); return x}
 scale :: Real -> Space a -> Space a
-scale c = scaleWith (const c)
+scale c = factorWith (const c)
 \end{code}
-\TODO{The pattern |s >>= \x -> Factor (f x) >> return x| deserves a name. Perhaps |scaleWith f s|? (It's used only twice though?)}
+\TODO{The pattern |s >>= \x -> Factor (f x) >> return x| deserves a name. Perhaps |factorWith f s|? (It's used only twice though?)}
 \begin{code}
 uniformDiscrete :: [a] -> Distr a
 uniformDiscrete xs = scale  (1.0 / fromIntegral (length xs))
@@ -262,8 +262,8 @@ parameter |p|. It is a distribution whose value is |True| with
 probability |p| and and |False| with probability |1-p|.
 \begin{code}
 bernoulli :: Real -> Distr Bool
-bernoulli p = scaleWith  (\b -> if b then p else 1-p)
-                         (Finite [False,True])
+bernoulli p = factorWith  (\b -> if b then p else 1-p)
+                          (Finite [False,True])
 \end{code}
 
 %format mu = "\mu"
@@ -271,7 +271,7 @@ bernoulli p = scaleWith  (\b -> if b then p else 1-p)
 Finally we can show the normal distribution with average |mu| and standard deviation |sigma|.
 \begin{code}
 normal :: Real -> Real -> Distr Real
-normal mu sigma = scaleWith (normalMass mu sigma) RealLine
+normal mu sigma = factorWith (normalMass mu sigma) RealLine
 
 normalMass :: Floating r =>  r -> r -> r -> r
 normalMass mu sigma x = exp(- ( ((x - mu)/sigma)^2 / 2)) / (sigma * sqrt (2*pi))
@@ -330,7 +330,7 @@ measure :: Space a -> Real
 measure d = integrator d (const 1)
 \end{code}
 
-As a sanity check, we can compute the measure of a bernoulli
+As a sanity check, we can compute the measure of a Bernoulli
 distribution (we use the |>>>| notation to indicate an expression
 being computed.) and find that it is indeed 1.
 \begin{code}
@@ -403,13 +403,13 @@ moments).
 
 In textbooks, one will often find the notation $E[t]$ for the expected
 value of a real-valued random variable |t|. From our point of view,
-this can be quite confusing because this leaves the space of
-situations completely implicit. In particular, it is not clear how
-|t| even depends on the outcome of experiments.
+this notation can be confusing because it leaves the space of
+situations completely implicit. That is, it is not clear how
+|t| depends on the outcome of experiments.
 
-With our DSL approach, we make all that completely explicit. For
-example, the expected value of real-valued random variable is as
-follows:
+With our DSL approach, we make this dependency completely explicit. For
+example, the expected value of real-valued random variable takes the space of outcomes as
+its first argument:
 \begin{code}
 expectedValue :: Space a -> (a -> Real) -> Real
 expectedValue s f = integrator s f / measure s
@@ -418,14 +418,12 @@ expectedValue s f = integrator s f / measure s
 -- 7.0
 \end{code}
 
-TODO: (maybe) we're making some error in case |measure s| is 0.
-
 Essentially, what the above does is computing the weighted
 sum/integral of |f(x)| for every point |x| in the space.  Because |s|
 is a space (not a distribution), we must normalise the result by
 dividing by its measure.
 
-Exercise: define the variance, skew, curtosis, etc.
+Exercise: define various statistical moments (variance, skew, curtosis, etc.)
 
 \subsection{Events and probability}
 
@@ -451,8 +449,8 @@ probability1 :: Space a -> (a -> Bool) -> Real
 probability1 d e = expectedValue d (indicator . e)
 \end{code}
 
-The second definition of probability is as the ratio the measures of
-the subspace where |e| holds and the complete space.
+The second definition of probability is as the ratio of the measure of
+the subspace where |e| holds, the measure and the complete space.
 
 \begin{code}
 probability2 :: Space a -> (a -> Bool) -> Real
@@ -476,7 +474,6 @@ We can show that if |s| has a non-zero measure, then the two definitions are equ
 
 Lemma: |measure s * probability s e = measure (Sigma s (isTrue . e))|
 Proof:
-\TODO{Fill in step explanations.}
 \begin{spec}
   probability1 s e
 = {- Def. of |probability1| -}
@@ -740,7 +737,7 @@ f m n = probability1 (helper m) (== n)
 =  0.5 * integrator (helper (m-1)) (indicator . (== n) . (+1)) + 0.5 * integrator helper 3 (indicator . (== n) . (+1))
 \end{spec}
 
-Hence:
+Hence we obtain the following system of recursive equations:
 
 \begin{spec}
 f 0 1 = 1
@@ -748,6 +745,7 @@ f 0 n = 0  (n ≠ 1)
 f (m+1) (n+1) = 0.5 * f m n + 0.5 * f 3 n
 \end{spec}
 
+Solving such a system is outside the scope of this chapter.
 
 % Local Variables:
 % dante-methods : (bare-ghci)
