@@ -103,8 +103,8 @@ following combinator: \footnote{This is in fact scaling, as defined in
   the LinAlg Chapter --- the spaces over a given domain form a vector
   space. However, we choose not to use this point of view, because we
   are generally not interested in the vector space structure of
-  probability spaces. Furthermore, doing so risks adding more
-  confusion than anything. In particular, the word ``scale'' could be
+  probability spaces. Furthermore, using this terminology risks adding more
+  confusion than otherwise. In particular, the word ``scale'' could be
   misunderstood as scaling the \emph{value} of a numerical
   variable. Instead here we scale densites, and use |Factor| for this
   purpose.  } \TODO{Consider the alternative at some point: |scale r
@@ -121,7 +121,7 @@ On its own, |Factor| may appear useless, but we can setup the |Space| type
 so that this mass or density can depend on (previously introduced)
 spaces.
 \paragraph{Product of distributions}
-As a first example of dependency, we introduce the product of two spaces as
+As a first instance of dependency, we introduce the product of two spaces as follows:
 \begin{code}
 prod :: Space a -> Space b -> Space (a,b)
 \end{code}
