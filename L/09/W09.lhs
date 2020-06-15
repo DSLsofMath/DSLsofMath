@@ -276,7 +276,7 @@ Let us define a few useful distributions. First, we present the
 uniform distribution among a finite set of elements. It is essentially
 the same as the |Finite| space, but we scale every element so that the
 total measure comes down to 1.
-% 
+%
 \begin{code}
 factorWith :: (a -> Real) -> Space a -> Space a
 factorWith f s = do {x <- s; Factor (f x); return x}
@@ -779,7 +779,6 @@ We can then evaluate the rhs symbolically;
 =  integrator (bernoulli 0.5) $ \h -> if h then integrator (helper m) (indicator . (== n) . (+1)) else integrator (helper 3) (indicator . (== n) . (+1))
  {- Lemma: integrator / bernoulli -}
 =  0.5 * integrator (helper m) (indicator . (== n) . (+1)) + 0.5 * integrator helper 3 (indicator . (== n) . (+1))
-\end{spec}
  {- Expand composition   and    n==x+1 iff. n-1==x -}
 =  0.5 * integrator (helper m) (indicator . (== (n-1))) + 0.5 * integrator helper 3 (indicator . (== (n-1))
  {- Def of |f m n| -}
@@ -887,7 +886,7 @@ integrator exampleD0 f =
   integrator uniform $ \y ->
   integrator ??? $  \x ->
   integrator (return (x <= 0.5))
-  
+
 \end{code}
 
 
