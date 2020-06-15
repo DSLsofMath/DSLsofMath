@@ -217,7 +217,40 @@ instance Monad Space where
   (>>=) = bind
 \end{code}
 
- \subsection{Distributions}
+integrator/bind lemma:
+\begin{spec}
+integrator (s >>= f) g
+= {- by Def of |>>=| -}
+integrator (Project snd (Sigma s f)) g
+= {- by Def of integrator/project -}
+integrator (Sigma s f) (g . snd)
+= {- by Def of integrator/Sigma -}
+integrator s $ \x -> integrator (f x) $ \y -> (g . snd) (x,y)
+= {- snd/pair -}
+integrator s $ \x -> integrator (f x) $ \y -> (g y)
+= {- composition -}
+integrator s $ \x -> integrator (f x) g
+\end{spec}
+
+integrator/fmap lemma:
+\begin{spec}
+integrator (fmap f s) g
+= {- by Def of fmap -}
+integrator (s >>= (return . f)) g
+= {- by integrator/bind lemma -}
+integrator s $ \x -> integrator (return . f) g
+= {- by def of return -}
+integrator s $ \x -> integrator (Finite . (\y -> [y]) . f) g
+= {- integrator/Finite -}
+integrator s $ \x -> sum (map g) [f x]
+= {- definition of sum/map -}
+integrator s $ \x -> g (f x)
+= {- definition of |.| -}
+integrator s (g . f)
+\end{spec}
+
+% $ emacs
+\subsection{Distributions}
 
 Another important notion in probability theory is that of a
 distribution. A distribution is a space whose total mass (or measure) is equal to
@@ -672,27 +705,6 @@ montySpaceIncorrect changing = do
 The above is incorrect, because everything happens as if Monty chooses
 a door before the player made its first choice.
 
-\subsection{Independent events}
-
-\begin{code}
-independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
-independentEvents s e f = probability1 s e == condProb s e f
-\end{code}
-
-According to Grinstead and Snell:
-
-Theorem: Two events are independent iff. $P(E ∩ F) = P(E) · P(F)$
-
-\subsection{Continuous spaces and equality}
-TODO
-\begin{itemize}
-\item dirac :: Real -> Real
-dirac = undefined
-
-equal :: Real -> Real -> Space ()
-equal x y = Factor (dirac (x-y))
-\end{itemize}
-
 \subsection{Advanced problem}
 Consider the following problem: how many times must one throw a coin
 before one obtains 3 heads in a row.
@@ -758,8 +770,14 @@ We can then evaluate the rhs symbolically;
  {- Def. coin -}
 =  integrator (bernoulli 0.5) $ \h -> if h then integrator (helper m) (indicator . (== n) . (+1)) else integrator (helper 3) (indicator . (== n) . (+1))
  {- Lemma: integrator / bernoulli -}
-=  0.5 * integrator (helper (m-1)) (indicator . (== n) . (+1)) + 0.5 * integrator helper 3 (indicator . (== n) . (+1))
+=  0.5 * integrator (helper m) (indicator . (== n) . (+1)) + 0.5 * integrator helper 3 (indicator . (== n) . (+1))
 \end{spec}
+ {- Expand composition   and    n==x+1 iff. n-1==x -}
+=  0.5 * integrator (helper m) (indicator . (== (n-1))) + 0.5 * integrator helper 3 (indicator . (== (n-1))
+ {- Def of |f m n| -}
+=  0.5 * f m (n-1) + 0.5 * f 3 (n-1)
+\end{spec}
+% $ emacs
 
 Hence we obtain the following system of recursive equations:
 
@@ -772,6 +790,29 @@ f (m+1) (n+1) = 0.5 * f m n + 0.5 * f 3 n
 We see now that thanks to our formalism we can obtain a system of
 recurrent equations which would yield a solution to the problem.
 Solving such a is outside the scope of this chapter.
+
+
+\subsection{Independent events}
+
+\begin{code}
+independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
+independentEvents s e f = probability1 s e == condProb s e f
+\end{code}
+
+According to Grinstead and Snell:
+
+Theorem: Two events are independent iff. $P(E ∩ F) = P(E) · P(F)$
+
+\subsection{Continuous spaces and equality}
+TODO
+\begin{itemize}
+\item dirac :: Real -> Real
+dirac = undefined
+
+equal :: Real -> Real -> Space ()
+equal x y = Factor (dirac (x-y))
+\end{itemize}
+
 
 % Local Variables:
 % dante-methods : (bare-ghci)
