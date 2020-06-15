@@ -217,7 +217,7 @@ instance Monad Space where
   (>>=) = bind
 \end{code}
 
-integrator/bind lemma:
+integrator/bind lemma: |integrator (s >>= f) g == integrator s $ \x -> integrator (f x) g|
 \begin{spec}
 integrator (s >>= f) g
 = {- by Def of |>>=| -}
@@ -231,6 +231,18 @@ integrator s $ \x -> integrator (f x) $ \y -> (g y)
 = {- composition -}
 integrator s $ \x -> integrator (f x) g
 \end{spec}
+in |do| notation: |integrator (do x <- s; t) g == integrator s $ \x -> integrator t g|
+
+integrator/return lemma: |integrator (return x) g == g x|
+\begin{code}
+  integrator (return x) g
+= {- by def of return -}
+  integrator (Finite [x]) g
+= {- integrator/Finite -}
+sum (map g) [x]
+= {- definition of sum/map -}
+g x
+\end{code}
 
 integrator/fmap lemma:
 \begin{spec}
@@ -238,12 +250,8 @@ integrator (fmap f s) g
 = {- by Def of fmap -}
 integrator (s >>= (return . f)) g
 = {- by integrator/bind lemma -}
-integrator s $ \x -> integrator (return . f) g
-= {- by def of return -}
-integrator s $ \x -> integrator (Finite . (\y -> [y]) . f) g
-= {- integrator/Finite -}
-integrator s $ \x -> sum (map g) [f x]
-= {- definition of sum/map -}
+integrator s $ \x -> integrator (return (f x)) g
+= {- by integrator/return lemma -}
 integrator s $ \x -> g (f x)
 = {- definition of |.| -}
 integrator s (g . f)
@@ -781,37 +789,64 @@ We can then evaluate the rhs symbolically;
 
 Hence we obtain the following system of recursive equations:
 
-\begin{spec}
-f 0 1 = 1
-f 0 n = 0  (n ≠ 1)
+\begin{code}
+f 0 0 = 1
+f 0 n = 0  -- n ≠ 0
 f (m+1) (n+1) = 0.5 * f m n + 0.5 * f 3 n
-\end{spec}
+\end{code}
 
-We see now that thanks to our formalism we can obtain a system of
-recurrent equations which would yield a solution to the problem.
-Solving such a is outside the scope of this chapter.
+This function will \emph{still} not terminate. However, there exist
+mathematical tools to solve such equations. (For example we could
+cut-off the evaluation once the precision gets good enough.)
 
+Regardless, the take home message is that, thanks to our formalism we
+can obtain a system of recurrent equations which would yield a
+solution to the problem.
 
 \subsection{Independent events}
+TODO ????
+
+According to Grinstead and Snell, two events independent iff.
+$P(E ∩ F) = P(E) · P(F)$.  We can express this equation in our DSL as
+follows:
 
 \begin{code}
 independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
 independentEvents s e f = probability1 s e == condProb s e f
 \end{code}
 
-According to Grinstead and Snell:
-
-Theorem: Two events are independent iff. $P(E ∩ F) = P(E) · P(F)$
 
 \subsection{Continuous spaces and equality}
 TODO
-\begin{itemize}
-\item dirac :: Real -> Real
-dirac = undefined
+\begin{code}
+Dirac :: Real -> Space
 
-equal :: Real -> Real -> Space ()
-equal x y = Factor (dirac (x-y))
-\end{itemize}
+
+integrator (Dirac x) f == f x
+
+-- Not good enough because we can't relate variables. IE; how do we do:
+
+
+uniform = do
+  x <- RealLine
+  isTrue (x >= 0 && x < 1)
+  return x
+
+exampleD0 = do
+  x <- uniform
+  y <- uniform
+  equal x (2*y)  -- Dirac ???
+  -- Dirac (x-y) does not work
+  return (x <= 0.5)
+
+
+integrator exampleD0 f =
+  integrator uniform $ \x ->
+  integrator uniform $ \y ->
+  integrator ??? $  \x ->
+  integrator (return (x <= 0.5))
+  
+\end{code}
 
 
 % Local Variables:
