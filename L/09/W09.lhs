@@ -11,9 +11,9 @@ import Data.List ((\\))
 type Real = Double -- pretend...
 \end{code}
 
-In this chapter, we define a DSL to describe, reason about, problems
-   such as the following, and sometimes compute the probabilites
-   involved.
+In this chapter, we define a DSL to describe and reason about,
+problems such as the following. Sometimes we can even compute the
+probabilites involved by evaluating the DSL expressions.
 
 \begin{enumerate}[label=\arabic*.]
 \item Assume you throw two 6-faced dice, what is the probability that
@@ -46,10 +46,11 @@ Our method will be to:
 
 Depending on the context, we use the word ``situation'' or ``outcome''
 for the same mathematical objects. The word ``outcome'' evokes some
-experiment, explicitly performed. When we use the word ``situation''
-there is no explict experiment, but something happens according to a
-specific scenario. We consider the situation at the end of the
-scenario in question.
+experiment, explicitly performed; and the ``outcome'' is the situation
+after the experiment is over. When we use the word ``situation'' there
+is not necessarily an explict experiment, but something happens
+according to a specific scenario. We consider the situation at the end
+of the scenario in question.
 
 \subsection{Spaces}
 
@@ -62,7 +63,7 @@ the probability of some event.
 It is common to refer to a sample space by the labels \(S\), $\Omega$,
 or \(U\). While this space of events underpins modern understandings
 of probability theory, textbooks sometimes give a couple of examples
-involving coin tosses and promptly forget this concept in the body of
+involving coin tosses and promptly forget the concept of sample space, in the body of
 the text. Here we will instead develop this concept using our DSL
 methodology.  Once this is done, we'll see that an accurate model of
 the sample space is our essential tool to solve probability problems.
@@ -96,9 +97,9 @@ point x = Finite [x]
 \end{code}
 
 \paragraph{Scaling space}
-If the die is well-balanced, then all cases will have the same
+If the die is well-balanced, then all cases have the same
 probability (or probability mass) in the space. But this is not always
-the case.  Hence we'll need a way to represent this. We use the
+the case.  Hence we need a way to represent this. We use the
 following combinator: \footnote{This is in fact scaling, as defined in
   the LinAlg Chapter --- the spaces over a given domain form a vector
   space. However, we choose not to use this point of view, because we
@@ -107,9 +108,7 @@ following combinator: \footnote{This is in fact scaling, as defined in
   confusion than otherwise. In particular, the word ``scale'' could be
   misunderstood as scaling the \emph{value} of a numerical
   variable. Instead here we scale densites, and use |Factor| for this
-  purpose.  } \TODO{Consider the alternative at some point: |scale r
-  s| would multiply each probability in the space |s| by the factor
-  |r|. Scaling is talked about in the LinAlg Chapter.}
+  purpose.  } \TODO{Consider the alternative presentation?}
 \begin{spec}
 Factor :: Real -> Space ()
 \end{spec}
@@ -128,14 +127,14 @@ prod :: Space a -> Space b -> Space (a,b)
 
 For example, the possible outcomes of the ``experiment'' of throwing
 two 6-faced dice are represented as follows:\footnote{The use of a
-  pair corresponds to the fact that the two dices can be identified individually.}
+  pair corresponds to the fact that the two dice can be identified individually.}
 %
 \begin{code}
 twoDice :: Space (Int,Int)
 twoDice = prod (die 6) (die 6)
 \end{code}
 %
-But let's say now that we need the sum to be greater than 7. We can
+But let's say now that we know the sum to be greater than 7. We can
 define the following parametric space, which has a mass 1 if the
 condition is satisfied and 0 otherwise. (This space is trivial in the
 sense that no uncertainty is involved.)
@@ -158,7 +157,7 @@ problem1 :: Space ((Int, Int), ())
 problem1 = Sigma twoDice sumAbove7
 \end{code}
 The values of the dice are the same as in |twoDice|, but the density of
-any sum less than 7 is zero.
+any sum less than 7 is brought down to zero.
 
 We can check that the product of spaces is a special case of |Sigma|:
 \begin{code}
@@ -177,7 +176,7 @@ Project :: (a -> b) -> Space a -> Space b
 
 \paragraph{Real line}
 Before we continue, we may also add a way to represent real-valued
-spaces:
+spaces, with the same probability for every real number.
 \begin{spec}
 RealLine :: Space Real
 \end{spec}
@@ -222,7 +221,7 @@ instance Monad Space where
 
 Another important notion in probability theory is that of a
 distribution. A distribution is a space whose total mass (or measure) is equal to
-1. (We will see how to compute the |measure| later.)
+1. (We will see how to compute the |measure| of spaces later.)
 \begin{code}
 isDistribution :: Space a -> Bool
 isDistribution s = measure s == 1
@@ -259,7 +258,8 @@ dieDistr = uniformDiscrete [1..6]
 
 Another useful discrete distribution is the Bernoulli distribution of
 parameter |p|. It is a distribution whose value is |True| with
-probability |p| and and |False| with probability |1-p|.
+probability |p| and and |False| with probability |1-p|. Hence it can
+be thought to represent a biased coin toss.
 \begin{code}
 bernoulli :: Real -> Distr Bool
 bernoulli p = factorWith  (\b -> if b then p else 1-p)
@@ -287,12 +287,14 @@ there define the expected value (and other statistical moments), but
 we'll take another route.
 
 \subsection{Semantics of spaces}
-First, we come back to general spaces. We define a function
-|integrator|, which generalises the notion of weighted sum, and
-weighted integral. When encountering |Finite| spaces, we will sum;
-when encountering |RealLine| we integrate.  When encountering |Factor|
-we will adjust the weights. The integrator of a product (in general
-|Sigma|) is the nested integration of spaces.
+First, we come back to general probability spaces --- with arbitrary
+measures. We define a function |integrator|, which generalises the
+notion of weighted sum, and weighted integral. When encountering
+|Finite| spaces, we will sum; when encountering |RealLine| we
+integrate.  When encountering |Factor| we will adjust the weights. The
+integrator of a product (in general |Sigma|) is the nested integration
+of spaces. The weight is given as a second parameter to |integrator|,
+as a function mapping elements of the space to a real value.
 
 \begin{code}
 integrator :: Space a -> (a -> Real) -> Real
@@ -312,9 +314,9 @@ bigsum xs f = sum (map f xs)
 \end{code}
 
 We use also the definite integral over the whole real line.  However
-we will leave this undefined --- thus whenever using real-valued
-spaces, our defintions are not usable for numerical computations, but
-for symbolic computations only.
+we will leave this concept undefined at the Haskell level --- thus
+whenever using real-valued spaces, our defintions are not usable for
+numerical computations, but for symbolic computations only.
 \begin{code}
 integral :: (Real -> Real) -> Real
 integral = undefined
@@ -413,7 +415,11 @@ its first argument:
 \begin{code}
 expectedValue :: Space a -> (a -> Real) -> Real
 expectedValue s f = integrator s f / measure s
+\end{code}
 
+For instance, we can use the above to compute the expected value of
+the sum of two dice throws:
+\begin{code}
 -- |>>> expectedValue twoDice (\ (x,y) -> fromIntegral (x+y))|
 -- 7.0
 \end{code}
@@ -431,7 +437,7 @@ In textbooks, one typically finds the notation |P(e)| for the
 probability of an \emph{event} |e|. Again, the space of situations |s|
 is implicit as well as the dependence between |e| and |s|.
 
-Here, we define events as boolean-valued random variables.
+Here, we define events as \emph{boolean-valued} random variables.
 
 Thus an event |e| can be defined as a boolean-valued function |e : a
 -> Bool| over a space |s : Space a|. Assuming that the space |s|
@@ -500,9 +506,10 @@ probability d = expectedValue d indicator
 \end{code}
 
 Sometimes one even finds in the literature and folklore the notation
-|P(v)|, which stands for |P(t=v)|, for an implicit random variable
-|t|. Here even more creativity is required from the reader, who must
-also infer which random variable the author means.
+|P(v)|, where |v| is a value, which stands for |P(t=v)|, for an
+implicit random variable |t|. Here even more creativity is required
+from the reader, who must also infer which random variable the author
+means.
 
 \subsection{Conditional probability}
 
@@ -521,6 +528,7 @@ We find the above defintion more intuitive than the more usual $P(F∣G)
  = P(F∩G) / P(G)$. However, this last equality can be proven, by calculation:
 
 Lemma:  |condProb s f g == probability s (\y -> f y && g y) / probability s g|
+
 Proof:
 \TODO{Possibly split into helper lemma(s) to avoid diving ``too deep''.}
 \begin{spec}
@@ -562,7 +570,7 @@ diceSpace = do
   isTrue (x + y >= 7)  -- observe that the sum is >= 7
   return (x * y >= 10) -- consider only the event ``product >= 10''
 \end{code}
-Then we can compute is probability:
+Then we can compute its probability:
 \begin{code}
 diceProblem :: Real
 diceProblem = probability diceSpace
@@ -595,10 +603,11 @@ all variables, caring only about |isUser|.
 \begin{code}
 drugSpace :: Space Bool
 drugSpace = do
-  isUser <- bernoulli 0.005  -- model distribution of drug users
+  isUser <- bernoulli 0.005  -- model the distribution of drug users
   testPositive <- bernoulli (if isUser then 0.99 else 0.01)
+    -- model test accuracy
   isTrue testPositive        -- we have ``a positive test'' by assumption
-  return isUser              -- we're interested in |isUser| only.
+  return isUser              -- we're interested in |isUser|.
 \end{code}
 The probability is computed as usual:
 \begin{code}
@@ -611,31 +620,10 @@ userProb = probability drugSpace
 
 Perhaps surprisingly, we never needed the Bayes theorem to solve the
 problem. Indeed, the Bayes theorem is already incorporated in our
-defintion of |integrator|.
+defintion of |probability|.
 
 \subsection{Monty Hall}
-
-To illustrate that defining spaces can be tricky, we begin by
-describing an \emph{incorrect} way to model the Monty Hall problem.
-
-\begin{code}
-montySpaceIncorrect :: Bool -> Space Bool
-montySpaceIncorrect changing = do
-  winningDoor <- uniformDiscrete [1::Int,2,3]    -- any door can be the winning one
-  let pickedDoor = 1                             -- player picks door 1.
-  let montyPickedDoor = 3                        -- monty opens door 3.
-  isTrue (montyPickedDoor /= winningDoor)        -- door 3 is not winning
-  let newPickedDoor = if changing then 2 else 1  -- we can change or not
-  return (newPickedDoor == winningDoor)          -- has the player won?
-
--- |>>> probability (montySpace1 False)|
--- 0.5
-
--- |>>> probability (montySpace1 True)|
--- 0.5
-\end{code}
-The above is incorrect, because everything happens as if Monty chooses
-a door before the player made its first choice. A correct model is
+We can model the Monty Hall problem as follows: A correct model is
 the following:
 \begin{code}
 doors :: [Int]
@@ -660,6 +648,30 @@ montySpace changing = do
 -- 0.6666666666666666
 \end{code}
 
+The Monty Hall is sometimes considered paradoxical: it is strange that
+changing one's mind can change the outcome. The crucial point is that
+Monty can never show a door which contains the prize. To illustrate,
+an \emph{incorrect} way to model the Monty Hall problem, which still
+appears to follow the example point by point, is the following:
+\begin{code}
+montySpaceIncorrect :: Bool -> Space Bool
+montySpaceIncorrect changing = do
+  winningDoor <- uniformDiscrete [1::Int,2,3]    -- any door can be the winning one
+  let pickedDoor = 1                             -- player picks door 1.
+  let montyPickedDoor = 3                        -- monty opens door 3.
+  isTrue (montyPickedDoor /= winningDoor)        -- door 3 is not winning
+  let newPickedDoor = if changing then 2 else 1  -- we can change or not
+  return (newPickedDoor == winningDoor)          -- has the player won?
+
+-- |>>> probability (montySpace1 False)|
+-- 0.5
+
+-- |>>> probability (montySpace1 True)|
+-- 0.5
+\end{code}
+The above is incorrect, because everything happens as if Monty chooses
+a door before the player made its first choice.
+
 \subsection{Independent events}
 
 \begin{code}
@@ -672,7 +684,7 @@ According to Grinstead and Snell:
 Theorem: Two events are independent iff. $P(E ∩ F) = P(E) · P(F)$
 
 \subsection{Continuous spaces and equality}
-
+TODO
 \begin{itemize}
 \item dirac :: Real -> Real
 dirac = undefined
@@ -681,7 +693,11 @@ equal :: Real -> Real -> Space ()
 equal x y = Factor (dirac (x-y))
 \end{itemize}
 
-Number of times we need to throw a coin to get 3 heads in a row.
+\subsection{Advanced problem}
+Consider the following problem: how many times must one throw a coin
+before one obtains 3 heads in a row.
+
+We can model the problem as follows:
 \begin{code}
 coin = bernoulli 0.5
 
@@ -709,11 +725,8 @@ threeHeads (_:xs) = 1 + threeHeads xs
 
 example' = threeHeads <$> coins
 
-
-
-
 \end{code}
-Note that we have an infinite list; and so the evaluator cannot solve this problem.
+However we have an infinite list; and so the evaluator cannot solve this problem.
 We have to resort to a symbolic method.
 
 
