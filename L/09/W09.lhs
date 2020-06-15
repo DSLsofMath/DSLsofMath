@@ -701,19 +701,6 @@ We can model the problem as follows:
 \begin{code}
 coin = bernoulli 0.5
 
-example = helper 3
-
-helper 0 = return 0
-helper n = do
-  h <- coin
-  (1 +) <$> if h
-    then helper (n-1)
-    else helper 3 -- when we have a tail, we start from scratch
-
--- >>> probability1 example (< 5)
--- Does not terminate (the "else" case must always be run.)
-
-
 coins = do
   x <- coin
   xs <- coins
@@ -726,14 +713,38 @@ threeHeads (_:xs) = 1 + threeHeads xs
 example' = threeHeads <$> coins
 
 \end{code}
-However we have an infinite list; and so the evaluator cannot solve this problem.
-We have to resort to a symbolic method.
+Attempting to evaluate |probability1 threeHeads' (< 5)| does not
+terminate. Indeed, we have an infinite list, which translates in
+infinitely many cases to consider. So the evaluator cannot solve this
+problem.  We have to resort to a symbolic method.  First, we can
+unfold the definitions of |coins| in |threeHeads|, and obtain:
+
+\begin{code}
+threeHeads' = helper 3
+
+helper 0 = return 0
+helper n = do
+  h <- coin
+  (1 +) <$> if h
+    then helper (n-1)
+    else helper 3 -- when we have a tail, we start from scratch
+\end{code}
+
+Evaluating the probability still does not terminate: we no longer have
+an infinite list, but we still have infinitely many possibilities to
+consider: however small, there is always a probability to get a
+``tail'' at the wrong moment, and the evaluation must continue.
+
+To solve such problems symbolically, we define a so-called ``generator
+function''. In our case |f m n|, equal to the probability that |helper
+m| returns |n|.
 
 
-FIXME: normalise by measure.
-
+\begin{code}
 f m n = probability1 (helper m) (== n)
+\end{code}
 
+We can then evaluate the rhs symbolically;
 \begin{spec}
 =  probability1 (helper (m+1)) (== n)
  {- Def. of probability1 -}
@@ -758,7 +769,9 @@ f 0 n = 0  (n ≠ 1)
 f (m+1) (n+1) = 0.5 * f m n + 0.5 * f 3 n
 \end{spec}
 
-Solving such a system is outside the scope of this chapter.
+We see now that thanks to our formalism we can obtain a system of
+recurrent equations which would yield a solution to the problem.
+Solving such a is outside the scope of this chapter.
 
 % Local Variables:
 % dante-methods : (bare-ghci)
