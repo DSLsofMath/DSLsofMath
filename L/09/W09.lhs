@@ -804,17 +804,36 @@ can obtain a system of recurrent equations which would yield a
 solution to the problem.
 
 \subsection{Independent events}
-TODO ????
-
-According to Grinstead and Snell, two events independent iff.
-$P(E ∩ F) = P(E) · P(F)$.  We can express this equation in our DSL as
-follows:
+One possible way to define for independent events is as follows.  $E$
+is independent from $F$ iff $P(E ∣ F) = P(E)$.  We can express this
+definition in our DSL as follows:
 
 \begin{code}
 independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
 independentEvents s e f = probability1 s e == condProb s e f
 \end{code}
 
+
+According to \citet{IntroProb_Grinstead_Snell_2003}, two events
+independent iff.  $P(E ∩ F) = P(E) · P(F)$.
+
+In the left to right direction:
+P(E ∩ F)
+{- by def. of cond. prob -}
+= P(E ∣ F) · P (F)
+{- by def. of independent events -}
+= P(E) · P (F)
+
+In the right to left direction:
+P(E ∣ F)
+{- by def. of cond. prob -}
+= P(E ∩ F) / P (F)
+{- by assumption -}
+= P(E) · P (F) / P (F)
+{- by computation -}
+= P(E)
+
+Exercise: express the above proof using our DSL
 
 \subsection{Continuous spaces and equality}
 TODO
