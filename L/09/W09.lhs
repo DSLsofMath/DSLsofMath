@@ -817,12 +817,27 @@ independentEvents s e f = probability1 s e == condProb s e f
 According to \citet{IntroProb_Grinstead_Snell_2003}, two events
 independent iff.  $P(E ∩ F) = P(E) · P(F)$.
 
+probability1 s (\x -> e x && f e) == probability1 s e * probability1 s f
+
+
+Proof.
+
 In the left to right direction:
 P(E ∩ F)
 {- by def. of cond. prob -}
 = P(E ∣ F) · P (F)
 {- by def. of independent events -}
 = P(E) · P (F)
+
+\begin{spec}
+probability1 s (\x -> e x && f e)
+= condProb s e f * probability1 s f
+= probability1 s e * probability1 s f
+\end{spec}
+
+(At this level of abstraction, the proofs follow the same structure as
+the textbook proofs --- the underlying space |s| is constant.)
+
 
 In the right to left direction:
 P(E ∣ F)
