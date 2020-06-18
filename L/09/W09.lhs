@@ -813,33 +813,40 @@ independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
 independentEvents s e f = probability1 s e == condProb s e f
 \end{code}
 
-
 According to \citet{IntroProb_Grinstead_Snell_2003}, two events
 independent iff.  $P(E ∩ F) = P(E) · P(F)$.
 
-probability1 s (\x -> e x && f e) == probability1 s e * probability1 s f
+Using our language, we would write instead:
 
+\begin{code}
+probability1 s (\x -> e x && f e) == probability1 s e * probability1 s f
+\end{code}
 
 Proof.
 
 In the left to right direction:
+\begin{code}
 P(E ∩ F)
 {- by def. of cond. prob -}
 = P(E ∣ F) · P (F)
 {- by def. of independent events -}
 = P(E) · P (F)
+\end{code}
 
+This part of the proof is written like so using our DSL:
 \begin{spec}
 probability1 s (\x -> e x && f e)
 = condProb s e f * probability1 s f
 = probability1 s e * probability1 s f
 \end{spec}
 
-(At this level of abstraction, the proofs follow the same structure as
-the textbook proofs --- the underlying space |s| is constant.)
+We note that at this level of abstraction, the proofs follow the same
+structure as the textbook proofs --- the underlying space |s| is
+constant.
 
 
 In the right to left direction:
+\begin{code}
 P(E ∣ F)
 {- by def. of cond. prob -}
 = P(E ∩ F) / P (F)
@@ -847,8 +854,9 @@ P(E ∣ F)
 = P(E) · P (F) / P (F)
 {- by computation -}
 = P(E)
+\end{code}
 
-Exercise: express the above proof using our DSL
+Exercise: express the rest of the proof using our DSL
 
 \subsection{Continuous spaces and equality}
 TODO
