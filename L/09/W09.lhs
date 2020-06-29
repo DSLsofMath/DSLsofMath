@@ -4,11 +4,10 @@
 {-# LANGUAGE GADTs #-}
 module DSLsofMath.W09 where
 
-import Prelude hiding (Real)
 import Control.Monad (ap)
 import Data.List ((\\))
 
-type Real = Double -- pretend...
+type REAL = Double -- pretend...
 \end{code}
 
 In this chapter, we define a DSL to describe and reason about,
@@ -52,7 +51,7 @@ is not necessarily an explict experiment, but something happens
 according to a specific scenario. We consider the situation at the end
 of the scenario in question.
 
-\subsection{Spaces}
+\subsection{Sample spaces}
 
 
 Generally textbook problems involving probability involve the
@@ -110,16 +109,15 @@ following combinator: \footnote{This is in fact scaling, as defined in
   variable. Instead here we scale densites, and use |Factor| for this
   purpose.  } \TODO{Consider the alternative presentation?}
 \begin{spec}
-Factor :: Real -> Space ()
+Factor :: REAL -> Space ()
 \end{spec}
 Its underlying type is the unit type |()|, but its mass (or
-density) is given by the a real number, which must be
-non-negative?
+density) is given by the a real number.
 
 On its own, |Factor| may appear useless, but we can setup the |Space| type
 so that this mass or density can depend on (previously introduced)
 spaces.
-\paragraph{Product of distributions}
+\paragraph{Product of spaces}
 As a first instance of dependency, we introduce the product of two spaces as follows:
 \begin{code}
 prod :: Space a -> Space b -> Space (a,b)
@@ -146,10 +144,10 @@ sumAbove7 (x,y) = Factor (if x+y > 7 then 1 else 0)
 We now want to take the product of the |twoDice| space and the |sumAbove7|
 space; but the issue is that |sumAbove7| \emph{depends} on the outcome
 of |twoDice|. To support this we need a generalisation of the
-product\footnote{convensionally called $\Sigma$ because of its
-  similarity of structure with the summation operation.}
+product which we call ``Sigma'' (|Sigma|) because of its
+  similarity of structure with the summation operation.
 \begin{spec}
-Sigma :: (Space a) -> (a -> Space b) -> Space (a,b)
+Sigma :: Space a -> (a -> Space b) -> Space (a,b)
 \end{spec}
 Hence:
 \begin{code}
@@ -163,35 +161,34 @@ We can check that the product of spaces is a special case of |Sigma|:
 \begin{code}
 prod a b = Sigma a (const b)
 \end{code}
-\footnote{If we compare the above to the usual sum notation, the right-hand-side would be
+If we compare the above to the usual sum notation, the right-hand-side would be
 \(\sum_{i\in a} b\) which is the sum of |card a| copies of |b|, thus a
-kind of ``product'' of |a| and |b|.}
+kind of ``product'' of |a| and |b|.
 
 \paragraph{Projections}
-In the end we may not be interested in all values and hide some of the
-generated values. For this purpose we use the following combinator:
+In the end we may not be interested in all values and hide some of them. For this purpose we use the following combinator:
 \begin{spec}
 Project :: (a -> b) -> Space a -> Space b
 \end{spec}
+A typical use is |Project fst :: Space (a,b) -> Space a|.
 
 \paragraph{Real line}
 Before we continue, we may also add a way to represent real-valued
 spaces, with the same probability for every real number.
 \begin{spec}
-RealLine :: Space Real
+RealLine :: Space REAL
 \end{spec}
-
 
 \paragraph{Summary}
 In sum, we have a datatype for the abstract syntax of ``space expressions'':
 
 \begin{code}
 data Space a where
-  Sigma     :: Space a -> (a -> Space b) -> Space (a,b)
-  Factor    :: Real -> Space ()
   Finite    :: [a] -> Space a
-  RealLine  :: Space Real
+  Factor    :: REAL -> Space ()
+  Sigma     :: Space a -> (a -> Space b) -> Space (a,b)
   Project   :: (a -> b) -> Space a -> Space b
+  RealLine  :: Space REAL
 \end{code}
 
 \subsection{Bind and return}
@@ -207,6 +204,7 @@ bind a f = Project snd (Sigma a f)
 
 This means that |Space| has a monadic structure:
 \TODO{explain this somewhere in the book}
+%format <*> = "\mathbin{" < "\!\!" * "\!\!" > "}"
 \begin{code}
 instance Functor Space where
   fmap f = (pure f <*>)
@@ -217,52 +215,13 @@ instance Monad Space where
   (>>=) = bind
 \end{code}
 
-integrator/bind lemma: |integrator (s >>= f) g == integrator s $ \x -> integrator (f x) g|
-\begin{spec}
-integrator (s >>= f) g
-= {- by Def of |>>=| -}
-integrator (Project snd (Sigma s f)) g
-= {- by Def of integrator/project -}
-integrator (Sigma s f) (g . snd)
-= {- by Def of integrator/Sigma -}
-integrator s $ \x -> integrator (f x) $ \y -> (g . snd) (x,y)
-= {- snd/pair -}
-integrator s $ \x -> integrator (f x) $ \y -> (g y)
-= {- composition -}
-integrator s $ \x -> integrator (f x) g
-\end{spec}
-in |do| notation: |integrator (do x <- s; t) g == integrator s $ \x -> integrator t g|
-
-integrator/return lemma: |integrator (return x) g == g x|
-\begin{code}
-  integrator (return x) g
-= {- by def of return -}
-  integrator (Finite [x]) g
-= {- integrator/Finite -}
-sum (map g) [x]
-= {- definition of sum/map -}
-g x
-\end{code}
-
-integrator/fmap lemma:
-\begin{spec}
-integrator (fmap f s) g
-= {- by Def of fmap -}
-integrator (s >>= (return . f)) g
-= {- by integrator/bind lemma -}
-integrator s $ \x -> integrator (return (f x)) g
-= {- by integrator/return lemma -}
-integrator s $ \x -> g (f x)
-= {- definition of |.| -}
-integrator s (g . f)
-\end{spec}
-
-% $ emacs
 \subsection{Distributions}
 
-Another important notion in probability theory is that of a
-distribution. A distribution is a space whose total mass (or measure) is equal to
-1. (We will see how to compute the |measure| of spaces later.)
+So far we have only defined spaces, not used them.
+%
+In section~\ref{sec:semanticsOfSpaces} we will see how to compute the |measure :: Space a -> REAL| of a space but before that we will talk about another important notion in probability theory: a distribution.
+%
+A distribution is a space whose total mass (or measure) is equal to 1.
 \begin{code}
 isDistribution :: Space a -> Bool
 isDistribution s = measure s == 1
@@ -272,19 +231,18 @@ We may use the following type synonym to indicate distributions:
 type Distr a = Space a
 \end{code}
 
-Let us define a few useful distributions. First, we present the
-uniform distribution among a finite set of elements. It is essentially
-the same as the |Finite| space, but we scale every element so that the
-total measure comes down to 1.
+Let us define a few useful distributions.
+%
+First, we present the uniform distribution among a finite set of elements.
+%
+It is essentially the same as the |Finite| space, but we scale every element so that the total measure comes down to |1|.
 %
 \begin{code}
-factorWith :: (a -> Real) -> Space a -> Space a
+factorWith :: (a -> REAL) -> Space a -> Space a
 factorWith f s = do {x <- s; Factor (f x); return x}
-scale :: Real -> Space a -> Space a
+scale :: REAL -> Space a -> Space a
 scale c = factorWith (const c)
-\end{code}
-\TODO{The pattern |s >>= \x -> Factor (f x) >> return x| deserves a name. Perhaps |factorWith f s|? (It's used only twice though?)}
-\begin{code}
+
 uniformDiscrete :: [a] -> Distr a
 uniformDiscrete xs = scale  (1.0 / fromIntegral (length xs))
                             (Finite xs)
@@ -297,12 +255,13 @@ dieDistr :: Distr Integer
 dieDistr = uniformDiscrete [1..6]
 \end{code}
 
-Another useful discrete distribution is the Bernoulli distribution of
-parameter |p|. It is a distribution whose value is |True| with
-probability |p| and and |False| with probability |1-p|. Hence it can
-be thought to represent a biased coin toss.
+Another useful discrete distribution is the Bernoulli distribution of parameter |p|.
+%
+It is a distribution whose value is |True| with probability |p| and and |False| with probability |1-p|.
+%
+Hence it can be used to represent a biased coin toss.
 \begin{code}
-bernoulli :: Real -> Distr Bool
+bernoulli :: REAL -> Distr Bool
 bernoulli p = factorWith  (\b -> if b then p else 1-p)
                           (Finite [False,True])
 \end{code}
@@ -311,7 +270,7 @@ bernoulli p = factorWith  (\b -> if b then p else 1-p)
 %format sigma = "\sigma"
 Finally we can show the normal distribution with average |mu| and standard deviation |sigma|.
 \begin{code}
-normal :: Real -> Real -> Distr Real
+normal :: REAL -> REAL -> Distr REAL
 normal mu sigma = factorWith (normalMass mu sigma) RealLine
 
 normalMass :: Floating r =>  r -> r -> r -> r
@@ -323,59 +282,60 @@ variables''. However we consider this terminology to be misguided ---
 random variables will be defined precisely later on.
 
 We could try to define the probabilities or densities of possible
-values of a distribution, say |distributionDensity :: Space a -> (a -> Real)|, and from
+values of a distribution, say |distributionDensity :: Space a -> (a -> REAL)|, and from
 there define the expected value (and other statistical moments), but
 we'll take another route.
 
-\subsection{Semantics of spaces}
-First, we come back to general probability spaces --- with arbitrary
-measures. We define a function |integrator|, which generalises the
-notion of weighted sum, and weighted integral. When encountering
-|Finite| spaces, we will sum; when encountering |RealLine| we
-integrate.  When encountering |Factor| we will adjust the weights. The
-integrator of a product (in general |Sigma|) is the nested integration
-of spaces. The weight is given as a second parameter to |integrator|,
-as a function mapping elements of the space to a real value.
+\subsection{Semantics of spaces}\label{sec:semanticsOfSpaces}
+First, we come back to general probability spaces without the restriction of |measure| one.
+%
+We define a function |integrator|, which generalises the notions of weighted sum, and weighted integral.
+%
+When encountering |Finite| spaces, we sum; when encountering |RealLine| we integrate.
+%
+When encountering |Factor| we will adjust the weights.
+%
+The integrator of a product (in general |Sigma|) is the nested integration of spaces.
+%
+The weight is given as a second parameter to |integrator|, as a function mapping elements of the space to a real value.
 
+\TODO{PJ: I'd prefer swapping the argument order.}
 \begin{code}
-integrator :: Space a -> (a -> Real) -> Real
+integrator :: Space a -> (a -> REAL) -> REAL
 integrator (Finite a)     g = bigsum a g
 integrator (RealLine)     g = integral g
 integrator (Factor f)     g = f * g ()
 integrator (Sigma a f)    g = integrator a $ \x -> integrator (f x) $ \y -> g (x,y)
 integrator (Project f a)  g = integrator a (g . f)
 \end{code}
-
-The above definition relies on the usual notions of sums and
-integrals.  We can define the sum of some terms, for finite lists, as
-follows:
+%
+The above definition relies on the usual notions of sums and integrals.
+%
+We can define the sum of some terms, for finite lists, as follows:
 \begin{code}
-bigsum :: [a] -> (a -> Real) -> Real
+bigsum :: [a] -> (a -> REAL) -> REAL
 bigsum xs f = sum (map f xs)
 \end{code}
 
-We use also the definite integral over the whole real line.  However
-we will leave this concept undefined at the Haskell level --- thus
-whenever using real-valued spaces, our defintions are not usable for
-numerical computations, but for symbolic computations only.
+We use also the definite integral over the whole real line.
+%
+However we will leave this concept undefined at the Haskell level --- thus whenever using real-valued spaces, our defintions are not usable for numerical computations, but for symbolic computations only.
 \begin{code}
-integral :: (Real -> Real) -> Real
+integral :: (REAL -> REAL) -> REAL
 integral = undefined
 \end{code}
 
-The simplest quantity that we can compute using the integrator is the
-measure of the space --- the total mass.
+The simplest quantity that we can compute using the integrator is the measure of the space --- the total mass.
 %
-To compute the measure of a space, we can simply integrate the
-constant 1 (so only mass matters).
+To compute the measure of a space, we can simply integrate the constant |1| (so only mass matters).
 \begin{code}
-measure :: Space a -> Real
+measure :: Space a -> REAL
 measure d = integrator d (const 1)
 \end{code}
 
 As a sanity check, we can compute the measure of a Bernoulli
 distribution (we use the |>>>| notation to indicate an expression
-being computed.) and find that it is indeed 1.
+being computed) and find that it is indeed |1|.
 \begin{code}
 -- |>>> measure (bernoulli 0.2)|
 -- 1.0
@@ -386,7 +346,7 @@ expected value.\footnote{We reserve the name |expectedValue| for the
   expected value of a random variable, defined later.}
 %
 \begin{code}
-expectedValueOfDistr :: Distr Real -> Real
+expectedValueOfDistr :: Distr REAL -> REAL
 expectedValueOfDistr d = integrator d id
 
 -- |>>> expectedValueOfDistr dieDistr|
@@ -394,6 +354,54 @@ expectedValueOfDistr d = integrator d id
 \end{code}
 
 Exercise: compute symbolically the expected value of the |bernoulli| distribution.
+
+\paragraph{Properties of spaces.} We can use the definitions to show some useful calculational properties of spaces.
+
+\TODO{Format the lemmas}
+
+\textbf{integrator/bind lemma}: |integrator (s >>= f) g == integrator s $ \x -> integrator (f x) g|
+\begin{spec}
+  integrator (s >>= f) g
+= {- by Def. of bind |(>>=)| -}
+  integrator (Project snd (Sigma s f)) g
+= {- by Def. of integrator/project -}
+  integrator (Sigma s f) (g . snd)
+= {- by Def. of integrator/Sigma -}
+  integrator s $ \x -> integrator (f x) $ \y -> (g . snd) (x,y)
+= {- snd/pair -}
+  integrator s $ \x -> integrator (f x) $ \y -> g y
+= {- composition -}
+  integrator s $ \x -> integrator (f x) g
+\end{spec}
+The same in |do| notation: |integrator (do x <- s; t) g == integrator s $ \x -> integrator t g|
+
+\textbf{integrator/return lemma}: |integrator (return x) g == g x|
+\begin{code}
+  integrator (return x) g
+= {- by Def. of |return| -}
+  integrator (Finite [x]) g
+= {- integrator/Finite -}
+  sum (map g) [x]
+= {- by Def. of sum/map -}
+  g x
+\end{code}
+
+\textbf{integrator/fmap lemma}: |integrator (fmap f s) g == integrator s (g . f)|
+
+\begin{spec}
+  integrator (fmap f s) g
+= {- by Def. of |fmap| -}
+  integrator (s >>= (return . f)) g
+= {- by integrator/bind lemma -}
+  integrator s $ \x -> integrator (return (f x)) g
+= {- by integrator/return lemma -}
+  integrator s $ \x -> g (f x)
+= {- definition of |(.)| -}
+  integrator s (g . f)
+\end{spec}
+
+% $ emacs
+
 
 \subsection{Random Variables}
 Even though we have already (in Chapter \ref{ch:3}) studied variables in detail, it
@@ -454,7 +462,7 @@ With our DSL approach, we make this dependency completely explicit. For
 example, the expected value of real-valued random variable takes the space of outcomes as
 its first argument:
 \begin{code}
-expectedValue :: Space a -> (a -> Real) -> Real
+expectedValue :: Space a -> (a -> REAL) -> REAL
 expectedValue s f = integrator s f / measure s
 \end{code}
 
@@ -488,11 +496,11 @@ there are two ways to define the probability of |e|.
 The first defintion is as the expected value of |indicator . e|,
 where |indicator| maps boolean to reals as follows:
 \begin{code}
-indicator :: Bool -> Real
+indicator :: Bool -> REAL
 indicator True   = 1
 indicator False  = 0
 
-probability1 :: Space a -> (a -> Bool) -> Real
+probability1 :: Space a -> (a -> Bool) -> REAL
 probability1 d e = expectedValue d (indicator . e)
 \end{code}
 
@@ -500,7 +508,7 @@ The second definition of probability is as the ratio of the measure of
 the subspace where |e| holds, the measure and the complete space.
 
 \begin{code}
-probability2 :: Space a -> (a -> Bool) -> Real
+probability2 :: Space a -> (a -> Bool) -> REAL
 probability2 s e = measure (Sigma s (isTrue . e)) / measure s
 
 isTrue :: Bool -> Space ()
@@ -542,7 +550,7 @@ Proof:
 It will be often convenient to define a space whose underlying set is
 a boolean value and compute the probability of the identity event:
 \begin{code}
-probability :: Space Bool -> Real
+probability :: Space Bool -> REAL
 probability d = expectedValue d indicator
 \end{code}
 
@@ -561,7 +569,7 @@ We can define the conditional probability of |f| given |g| by taking
 the probability of |f| in the sub space where |g| holds:
 
 \begin{code}
-condProb :: Space a -> (a -> Bool) -> (a -> Bool) -> Real
+condProb :: Space a -> (a -> Bool) -> (a -> Bool) -> REAL
 condProb s f g = probability1 (subspace g s) f
 \end{code}
 
@@ -613,7 +621,7 @@ diceSpace = do
 \end{code}
 Then we can compute its probability:
 \begin{code}
-diceProblem :: Real
+diceProblem :: REAL
 diceProblem = probability diceSpace
 
 -- |>>> diceProblem|
@@ -652,7 +660,7 @@ drugSpace = do
 \end{code}
 The probability is computed as usual:
 \begin{code}
-userProb :: Real
+userProb :: REAL
 userProb = probability drugSpace
 
 -- |>>> userProb|
@@ -792,7 +800,9 @@ Hence we obtain the following system of recursive equations:
 f 0 0 = 1
 f 0 n = 0  -- n ≠ 0
 f (m+1) (n+1) = 0.5 * f m n + 0.5 * f 3 n
-\end{code}
+\end{code
+% TODO: what about f (m+1) 0 ?
+
 
 This function will \emph{still} not terminate. However, there exist
 mathematical tools to solve such equations. (For example we could
@@ -860,7 +870,7 @@ Exercise: express the rest of the proof using our DSL
 \subsection{Continuous spaces and equality}
 TODO
 \begin{code}
-Dirac :: Real -> Space
+Dirac :: REAL -> Space
 
 
 integrator (Dirac x) f == f x
