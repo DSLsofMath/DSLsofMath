@@ -87,6 +87,7 @@ Our die is then:
 \begin{code}
 die :: Int -> Space Int
 die n = Finite [1..n]
+d6 = die 6
 \end{code}
 %
 In particular the space |point x| is the space with a single point:
@@ -129,7 +130,7 @@ two 6-faced dice are represented as follows:\footnote{The use of a
 %
 \begin{code}
 twoDice :: Space (Int,Int)
-twoDice = prod (die 6) (die 6)
+twoDice = prod d6 d6
 \end{code}
 %
 But let's say now that we know the sum to be greater than 7. We can
@@ -307,6 +308,15 @@ integrator (RealLine)     g = integral g
 integrator (Factor f)     g = f * g ()
 integrator (Sigma a f)    g = integrator a $ \x -> integrator (f x) $ \y -> g (x,y)
 integrator (Project f a)  g = integrator a (g . f)
+
+
+integr :: (a -> REAL) -> Space a -> REAL
+integr g (Finite a)     = bigsum a g
+integr g (RealLine)     = integral g
+integr g (Factor f)     = f * g ()
+integr g (Sigma a f)    = integr (\x -> integr (\y -> g (x,y)) (f x)) a
+integr g (Project f a)  = integr (g . f) a
+
 \end{code}
 %
 The above definition relies on the usual notions of sums and integrals.
@@ -376,7 +386,7 @@ Exercise: compute symbolically the expected value of the |bernoulli| distributio
 The same in |do| notation: |integrator (do x <- s; t) g == integrator s $ \x -> integrator t g|
 
 \textbf{integrator/return lemma}: |integrator (return x) g == g x|
-\begin{code}
+\begin{spec}
   integrator (return x) g
 = {- by Def. of |return| -}
   integrator (Finite [x]) g
@@ -384,7 +394,7 @@ The same in |do| notation: |integrator (do x <- s; t) g == integrator s $ \x -> 
   sum (map g) [x]
 = {- by Def. of sum/map -}
   g x
-\end{code}
+\end{spec}
 
 \textbf{integrator/fmap lemma}: |integrator (fmap f s) g == integrator s (g . f)|
 
@@ -614,8 +624,8 @@ random variables except the outcome that we care about (is the product greater t
 \begin{code}
 diceSpace :: Space Bool
 diceSpace = do
-  x <- die  -- balanced die 1
-  y <- die  -- balanced die 2
+  x <- d6  -- balanced die 1
+  y <- d6  -- balanced die 2
   isTrue (x + y >= 7)  -- observe that the sum is >= 7
   return (x * y >= 10) -- consider only the event ``product >= 10''
 \end{code}
@@ -632,10 +642,10 @@ Some helpers: \TODO{Merge with text above to explain more}
 \begin{code}
 p1 (x,y) = x+y >= 7
 p2 (x,y) = x*y >= 10
-test1     = measure (prod die die >>= isTrue . p1)                       -- 21
-test2     = measure (prod die die >>= isTrue . p2)                       -- 19
-testBoth  = measure (prod die die >>= isTrue . \xy -> p1 xy && p2 xy)    -- 19
-prob21    = condProb (prod die die) p2 p1                                -- 19/21
+test1     = measure (prod d6 d6 >>= isTrue . p1)                       -- 21
+test2     = measure (prod d6 d6 >>= isTrue . p2)                       -- 19
+testBoth  = measure (prod d6 d6 >>= isTrue . \xy -> p1 xy && p2 xy)    -- 19
+prob21    = condProb (prod d6 d6) p2 p1                                -- 19/21
 \end{code}
 
 \subsection{Drug test}
@@ -796,11 +806,11 @@ We can then evaluate the rhs symbolically;
 
 Hence we obtain the following system of recursive equations:
 
-\begin{code}
+\begin{spec}
 f 0 0 = 1
 f 0 n = 0  -- n ≠ 0
 f (m+1) (n+1) = 0.5 * f m n + 0.5 * f 3 n
-\end{code
+\end{spec}
 % TODO: what about f (m+1) 0 ?
 
 
@@ -827,20 +837,20 @@ independent iff.  $P(E ∩ F) = P(E) · P(F)$.
 
 Using our language, we would write instead:
 
-\begin{code}
+\begin{spec}
 probability1 s (\x -> e x && f e) == probability1 s e * probability1 s f
-\end{code}
+\end{spec}
 
 Proof.
 
 In the left to right direction:
-\begin{code}
-P(E ∩ F)
-{- by def. of cond. prob -}
-= P(E ∣ F) · P (F)
-{- by def. of independent events -}
-= P(E) · P (F)
-\end{code}
+\begin{spec}
+  P(E ∩ F)
+= {- by def. of cond. prob -}
+  P(E ∣ F) · P (F)
+= {- by def. of independent events -}
+  P(E) · P (F)
+\end{spec}
 
 This part of the proof is written like so using our DSL:
 \begin{spec}
@@ -855,21 +865,21 @@ constant.
 
 
 In the right to left direction:
-\begin{code}
-P(E ∣ F)
-{- by def. of cond. prob -}
-= P(E ∩ F) / P (F)
-{- by assumption -}
-= P(E) · P (F) / P (F)
-{- by computation -}
-= P(E)
-\end{code}
+\begin{spec}
+  P(E ∣ F)
+= {- by def. of cond. prob -}
+  P(E ∩ F) / P (F)
+= {- by assumption -}
+  P(E) · P (F) / P (F)
+= {- by computation -}
+  P(E)
+\end{spec}
 
 Exercise: express the rest of the proof using our DSL
 
 \subsection{Continuous spaces and equality}
 TODO
-\begin{code}
+\begin{spec}
 Dirac :: REAL -> Space
 
 
@@ -897,7 +907,7 @@ integrator exampleD0 f =
   integrator ??? $  \x ->
   integrator (return (x <= 0.5))
 
-\end{code}
+\end{spec}
 
 
 % Local Variables:
