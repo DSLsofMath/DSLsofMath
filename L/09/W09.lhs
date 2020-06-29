@@ -761,13 +761,13 @@ unfold the definitions of |coins| in |threeHeads|, and obtain:
 threeHeads' = helper 3
 
 helper 0 = return 0
-helper n = do
+helper m = do
   h <- coin
   (1 +) <$> if h
-    then helper (n-1)
+    then helper (m-1)
     else helper 3 -- when we have a tail, we start from scratch
 \end{code}
-
+% emacs $
 Evaluating the probability still does not terminate: we no longer have
 an infinite list, but we still have infinitely many possibilities to
 consider: however small, there is always a probability to get a
@@ -782,11 +782,45 @@ m| returns |n|.
 f m n = probability1 (helper m) (== n)
 \end{code}
 
+This corresponds to the probability to get |3| heads in a row in |n|
+steps, if we already have |3-m| heads so far. For example, if |m = 0|
+then we have 3 heads so far, and thus the probability to succeed in
+|n| steps is 1 if |n=0| and 0 otherwise. (Note that |m| can only be in
+|[0,1,2,3]|).
+
+We can start by showing that |helper m| is a distribution (its measure
+is 1).
+
+measure (helper (m+1))
+= integrator (helper (m+1)) (const 1)
+= integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) (const 1)
+= integrator coin $ \h -> integrator (if h then helper m else helper 3) (const 1 . (+1))
+ {- Property of |const| and |.| -}
+= integrator coin $ \h -> integrator (if h then helper m else helper 3) (const 1)
+ {- Lemma: integrator / if -}
+=  integrator coin $ \h -> if h then integrator (helper m) (const 1) else integrator (helper 3) (const 1)
+=  integrator coin $ \h -> if h then integrator (helper m) (const 1) else integrator (helper 3) (const 1)
+ {- Def. coin -}
+=  integrator (bernoulli 0.5) $ \h -> if h then integrator (helper m) (const 1) else integrator (helper 3) (const 1)
+=  integrator (bernoulli 0.5) $ \h -> if h then integrator (helper m) (const 1) else integrator (helper 3) (const 1)
+=  0.5 * integrator (helper m) (const 1) + 0.5 * integrator (helper 3) (const 1)
+=  0.5 * measure (helper m) + 0.5 * measure (helper 3)
+
+Base case: measure (helper 0) = 1
+
+Solve, and find measure (helper m) = 1
+
 We can then evaluate the rhs symbolically;
 \begin{spec}
 =  probability1 (helper (m+1)) (== n)
  {- Def. of probability1 -}
-=  integrator (helper m) (indicator . (== n))
+ =  expectedValue (helper (m+1)) (indicator (== n))
+ {- Def. of expectedValue -}
+=  integrator (helper (m+1)) (indicator . (== n)) / measure (helper m)
+ {- By lemma: measure (helper m) = 1 -}
+ =  integrator (helper (m+1)) (indicator . (== n))
+ {- By def of helper -}
+=  integrator (coin >>= \h -> ((1+) <$> if h then helper m else helper 3)) (indicator . (== n))
  {- Lemma: integrator / bind -}
 =  integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) (indicator . (== n))
  {- Lemma: integrator / fmap -}
@@ -807,9 +841,10 @@ We can then evaluate the rhs symbolically;
 Hence we obtain the following system of recursive equations:
 
 \begin{spec}
-f 0 0 = 1
-f 0 n = 0  -- n ≠ 0
-f (m+1) (n+1) = 0.5 * f m n + 0.5 * f 3 n
+f 0      0  =  1
+f (m+1)  0  =  0
+f 0      n  =  0  -- n ≠ 0
+f (m+1)  (n+1) = 0.5 * f m n + 0.5 * f 3 n
 \end{spec}
 % TODO: what about f (m+1) 0 ?
 
@@ -821,6 +856,10 @@ cut-off the evaluation once the precision gets good enough.)
 Regardless, the take home message is that, thanks to our formalism we
 can obtain a system of recurrent equations which would yield a
 solution to the problem.
+
+TODO: the above can be solved using a system of equations involving
+ONLY expected values of helper m for m in [0..3]. To do in one needs
+lemmas about expected values directly.
 
 \subsection{Independent events}
 One possible way to define for independent events is as follows.  $E$
@@ -877,37 +916,37 @@ In the right to left direction:
 
 Exercise: express the rest of the proof using our DSL
 
-\subsection{Continuous spaces and equality}
-TODO
-\begin{spec}
-Dirac :: REAL -> Space
+% \subsection{Continuous spaces and equality}
+% TODO
+% \begin{spec}
+% Dirac :: REAL -> Space
 
 
-integrator (Dirac x) f == f x
+% integrator (Dirac x) f == f x
 
--- Not good enough because we can't relate variables. IE; how do we do:
-
-
-uniform = do
-  x <- RealLine
-  isTrue (x >= 0 && x < 1)
-  return x
-
-exampleD0 = do
-  x <- uniform
-  y <- uniform
-  equal x (2*y)  -- Dirac ???
-  -- Dirac (x-y) does not work
-  return (x <= 0.5)
+% -- Not good enough because we can't relate variables. IE; how do we do:
 
 
-integrator exampleD0 f =
-  integrator uniform $ \x ->
-  integrator uniform $ \y ->
-  integrator ??? $  \x ->
-  integrator (return (x <= 0.5))
+% uniform = do
+%   x <- RealLine
+%   isTrue (x >= 0 && x < 1)
+%   return x
 
-\end{spec}
+% exampleD0 = do
+%   x <- uniform
+%   y <- uniform
+%   equal x (2*y)  -- Dirac ???
+%   -- Dirac (x-y) does not work
+%   return (x <= 0.5)
+
+
+% integrator exampleD0 f =
+%   integrator uniform $ \x ->
+%   integrator uniform $ \y ->
+%   integrator ??? $  \x ->
+%   integrator (return (x <= 0.5))
+
+% \end{spec}
 
 
 % Local Variables:
