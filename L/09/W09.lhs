@@ -734,7 +734,24 @@ montySpaceIncorrect changing = do
 The above is incorrect, because everything happens as if Monty chooses
 a door before the player made its first choice.
 
-\subsection{Properties of expected value}
+\subsection{Properties of measure}
+
+
+\begin{itemize}
+\item measure (pure x) == 1
+\item If |measure (f x)| does not depend on x, then |measure (Sigma s
+  f) == measure s * measure (f k)| for some |k| in the domain of |f|.
+\item measure (s >>= f) == measure s * measure (f k)|, under the same
+  condition.
+\item[|>>=|/distribution] If |s| is a distribution and |f x| is a distribution for every
+  |x|, then |s >>= f| is a distribution
+\end{itemize}
+
+measure (Sigma s f) =
+ = integrator (Sigma s f) (const 1)
+ = integrator s $ \x -> integrator (f x) (const 1)
+ = integrator s $ \x -> (measure (f x))
+ = integrator s * ()
 
 
 \subsection{Advanced problem}
@@ -795,26 +812,15 @@ then we have 3 heads so far, and thus the probability to succeed in
 |[0,1,2,3]|).
 
 We can start by showing that |helper m| is a distribution (its measure
-is 1).
+is 1). The proof is by induction on |m|:
+\begin{itemize}
+\item for the base case |measure (helper 0) = measure (pure 0) = 1|
+\item induction: assume that |helper m| is a distribution. Then |if h
+  then helper m else helper 3| for every |h|. The result is obtained
+  by using the |>>=|/distribution lemma.
+\end{itemize}
 
-measure (helper (m+1))
-= integrator (helper (m+1)) (const 1)
-= integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) (const 1)
-= integrator coin $ \h -> integrator (if h then helper m else helper 3) (const 1 . (+1))
- {- Property of |const| and |.| -}
-= integrator coin $ \h -> integrator (if h then helper m else helper 3) (const 1)
- {- Lemma: integrator / if -}
-=  integrator coin $ \h -> if h then integrator (helper m) (const 1) else integrator (helper 3) (const 1)
-=  integrator coin $ \h -> if h then integrator (helper m) (const 1) else integrator (helper 3) (const 1)
- {- Def. coin -}
-=  integrator (bernoulli 0.5) $ \h -> if h then integrator (helper m) (const 1) else integrator (helper 3) (const 1)
-=  integrator (bernoulli 0.5) $ \h -> if h then integrator (helper m) (const 1) else integrator (helper 3) (const 1)
-=  0.5 * integrator (helper m) (const 1) + 0.5 * integrator (helper 3) (const 1)
-=  0.5 * measure (helper m) + 0.5 * measure (helper 3)
 
-Base case: measure (helper 0) = 1
-
-Solve, and find measure (helper m) = 1
 
 We can then evaluate the rhs symbolically;
 \begin{spec}
