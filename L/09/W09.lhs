@@ -415,6 +415,30 @@ The same in |do| notation: |integrator (do x <- s; t) g == integrator s $ \x -> 
 
 % $ emacs
 
+Linearity of integrator:
+
+If f is a linear function (addition or multiplication by a constant), then:
+
+\begin{spec}
+integrator s (g . f) == g (integrator s f)
+\end{spec}
+
+(or, equivalently,  |integrator s (\x -> g (f x)) = g (integrator s f)|)
+
+By structural induction over s:
+
+integrator (Sigma a f) (g . h)
+=
+integrator a $ \x -> integrator (f x) $ \y -> g (h (x,y))
+= {- By induction -}
+integrator a $ \x -> g (integrator (f x) $ \y -> h (x,y)
+= {- By induction -}
+g (integrator a $ \x -> (integrator (f x) $ \y -> h (x,y))
+= {- By definition -}
+g (integrator (Sigma a f) h)
+
+Corrolary (linear fmap):
+ if |f| is linear, then |integrator (fmap f s) g = f (integrator s) g|
 
 \subsection{Random Variables}
 Even though we have already (in Chapter \ref{ch:3}) studied variables in detail, it
@@ -745,14 +769,39 @@ a door before the player made its first choice.
   condition.
 \item[|>>=|/distribution] If |s| is a distribution and |f x| is a distribution for every
   |x|, then |s >>= f| is a distribution
+\item[fmap/distribution] Corrolary: |s| is a distribution iff. |fmap f
+  s| is a distribution.
 \end{itemize}
 
 measure (Sigma s f) =
- = integrator (Sigma s f) (const 1)
- = integrator s $ \x -> integrator (f x) (const 1)
- = integrator s $ \x -> (measure (f x))
- = integrator s * ()
+= {-by definition of measure -}
+integrator (Sigma s f) (const 1)
+ = {-by definition of integrator for Sigma -}
+ integrator s $ \x -> integrator (f x) (const 1)
+ = {- by definition of of measure -}
+ integrator s $ \x -> (measure (f x))
+ = {- by assumption -}
+ integrator s $ \x -> (measure (f k)) 
+ = {- By linearity of integrator- }
+ measure (f k) * (integrator s $ \x -> 1)
+= {- By definition of measure - }
+  measure (f k) * measure s
 
+\subsection{Property of expected value}
+
+
+ expectedValue (f <$> s) g
+= 
+ integrator (f <$> s) g / measure (f <$> s)
+= 
+integrator s (g . f) / measure s
+=
+expectedValue s (g . f)
+
+
+Furthermore, if |f| is linear, then
+
+expectedValue (f <$> s) = f (expectedValue s)
 
 \subsection{Advanced problem}
 Consider the following problem: how many times must one throw a coin
@@ -796,21 +845,6 @@ an infinite list, but we still have infinitely many possibilities to
 consider: however small, there is always a probability to get a
 ``tail'' at the wrong moment, and the evaluation must continue.
 
-To solve such problems symbolically, we define a so-called ``generator
-function''. In our case |f m n|, equal to the probability that |helper
-m| returns |n|.
-
-
-\begin{code}
-f m n = probability1 (helper m) (== n)
-\end{code}
-
-This corresponds to the probability to get |3| heads in a row in |n|
-steps, if we already have |3-m| heads so far. For example, if |m = 0|
-then we have 3 heads so far, and thus the probability to succeed in
-|n| steps is 1 if |n=0| and 0 otherwise. (Note that |m| can only be in
-|[0,1,2,3]|).
-
 We can start by showing that |helper m| is a distribution (its measure
 is 1). The proof is by induction on |m|:
 \begin{itemize}
@@ -821,57 +855,102 @@ is 1). The proof is by induction on |m|:
 \end{itemize}
 
 
+Property of helper integrators:
 
-We can then evaluate the rhs symbolically;
-\begin{spec}
-=  probability1 (helper (m+1)) (== n)
- {- Def. of probability1 -}
- =  expectedValue (helper (m+1)) (indicator (== n))
- {- Def. of expectedValue -}
-=  integrator (helper (m+1)) (indicator . (== n)) / measure (helper m)
- {- By lemma: measure (helper m) = 1 -}
- =  integrator (helper (m+1)) (indicator . (== n))
- {- By def of helper -}
-=  integrator (coin >>= \h -> ((1+) <$> if h then helper m else helper 3)) (indicator . (== n))
- {- Lemma: integrator / bind -}
-=  integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) (indicator . (== n))
- {- Lemma: integrator / fmap -}
-=  integrator coin $ \h -> integrator (if h then helper m else helper 3) (indicator . (== n) . (+1))
- {- Lemma: integrator / if -}
-=  integrator coin $ \h -> if h then integrator (helper m) (indicator . (== n) . (+1)) else integrator (helper 3) (indicator . (== n) . (+1))
- {- Def. coin -}
-=  integrator (bernoulli 0.5) $ \h -> if h then integrator (helper m) (indicator . (== n) . (+1)) else integrator (helper 3) (indicator . (== n) . (+1))
- {- Lemma: integrator / bernoulli -}
-=  0.5 * integrator (helper m) (indicator . (== n) . (+1)) + 0.5 * integrator helper 3 (indicator . (== n) . (+1))
- {- Expand composition   and    n==x+1 iff. n-1==x -}
-=  0.5 * integrator (helper m) (indicator . (== (n-1))) + 0.5 * integrator helper 3 (indicator . (== (n-1))
- {- Def of |f m n| -}
-=  0.5 * f m (n-1) + 0.5 * f 3 (n-1)
-\end{spec}
-% $ emacs
+integrator (helper (m+1)) f
+=
+integrator (coin $ \h -> (1+) <$> if h then helper m else helper 3) f
+=
+integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) f
+=
+integrator coin $ \h -> 1 + integrator (if h then helper m else helper 3) f
+=
+integrator coin $ \h -> 1 + (if h then integrator (helper m) f else integrator (helper 3) f)
+=
+1 + 0.5 * integrator (helper m) f + 0.5 * integrator (helper 3) f
 
-Hence we obtain the following system of recursive equations:
+If we let h m = expectedValueOfDistr (helper m), and use the above lemma, then we find.
 
-\begin{spec}
-f 0      0  =  1
-f (m+1)  0  =  0
-f 0      n  =  0  -- n ≠ 0
-f (m+1)  (n+1) = 0.5 * f m n + 0.5 * f 3 n
-\end{spec}
-% TODO: what about f (m+1) 0 ?
+h 0 = 0
+h (m+1) = 1 + 0.5 * h m + 0.5 * h 3
+
+or
+2 * h (m+1) = 2 + h m + h 3
+
+Expanding for m = 0 to 2:
+
+2 * h 1 = 2 + h 3
+2 * h 2 = 2 + h 1 + h 3
+2 * h 3 = 2 + h 2 + h 3
+
+3 equations, 3 unknowns. Solve.
+
+% To solve such problems symbolically, we define a so-called ``generator
+% function''. In our case |f m n|, equal to the probability that |helper
+% m| returns |n|.
 
 
-This function will \emph{still} not terminate. However, there exist
-mathematical tools to solve such equations. (For example we could
-cut-off the evaluation once the precision gets good enough.)
+% \begin{code}
+% f m n = probability1 (helper m) (== n)
+% \end{code}
 
-Regardless, the take home message is that, thanks to our formalism we
-can obtain a system of recurrent equations which would yield a
-solution to the problem.
+% This corresponds to the probability to get |3| heads in a row in |n|
+% steps, if we already have |3-m| heads so far. For example, if |m = 0|
+% then we have 3 heads so far, and thus the probability to succeed in
+% |n| steps is 1 if |n=0| and 0 otherwise. (Note that |m| can only be in
+% |[0,1,2,3]|).
 
-TODO: the above can be solved using a system of equations involving
-ONLY expected values of helper m for m in [0..3]. To do in one needs
-lemmas about expected values directly.
+
+% We can then evaluate the rhs symbolically;
+% \begin{spec}
+% =  probability1 (helper (m+1)) (== n)
+%  {- Def. of probability1 -}
+%  =  expectedValue (helper (m+1)) (indicator (== n))
+%  {- Def. of expectedValue -}
+% =  integrator (helper (m+1)) (indicator . (== n)) / measure (helper m)
+%  {- By lemma: measure (helper m) = 1 -}
+%  =  integrator (helper (m+1)) (indicator . (== n))
+%  {- By def of helper -}
+% =  integrator (coin >>= \h -> ((1+) <$> if h then helper m else helper 3)) (indicator . (== n))
+%  {- Lemma: integrator / bind -}
+% =  integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) (indicator . (== n))
+%  {- Lemma: integrator / fmap -}
+% =  integrator coin $ \h -> integrator (if h then helper m else helper 3) (indicator . (== n) . (+1))
+%  {- Lemma: integrator / if -}
+% =  integrator coin $ \h -> if h then integrator (helper m) (indicator . (== n) . (+1)) else integrator (helper 3) (indicator . (== n) . (+1))
+%  {- Def. coin -}
+% =  integrator (bernoulli 0.5) $ \h -> if h then integrator (helper m) (indicator . (== n) . (+1)) else integrator (helper 3) (indicator . (== n) . (+1))
+%  {- Lemma: integrator / bernoulli -}
+% =  0.5 * integrator (helper m) (indicator . (== n) . (+1)) + 0.5 * integrator helper 3 (indicator . (== n) . (+1))
+%  {- Expand composition   and    n==x+1 iff. n-1==x -}
+% =  0.5 * integrator (helper m) (indicator . (== (n-1))) + 0.5 * integrator helper 3 (indicator . (== (n-1))
+%  {- Def of |f m n| -}
+% =  0.5 * f m (n-1) + 0.5 * f 3 (n-1)
+% \end{spec}
+% % $ emacs
+
+% Hence we obtain the following system of recursive equations:
+
+% \begin{spec}
+% f 0      0  =  1
+% f (m+1)  0  =  0
+% f 0      n  =  0  -- n ≠ 0
+% f (m+1)  (n+1) = 0.5 * f m n + 0.5 * f 3 n
+% \end{spec}
+% % TODO: what about f (m+1) 0 ?
+
+
+% This function will \emph{still} not terminate. However, there exist
+% mathematical tools to solve such equations. (For example we could
+% cut-off the evaluation once the precision gets good enough.)
+
+% Regardless, the take home message is that, thanks to our formalism we
+% can obtain a system of recurrent equations which would yield a
+% solution to the problem.
+
+% TODO: the above can be solved using a system of equations involving
+% ONLY expected values of helper m for m in [0..3]. To do in one needs
+% lemmas about expected values directly.
 
 \subsection{Independent events}
 One possible way to define for independent events is as follows.  $E$
