@@ -300,7 +300,8 @@ The integrator of a product (in general |Sigma|) is the nested integration of sp
 %
 The weight is given as a second parameter to |integrator|, as a function mapping elements of the space to a real value.
 
-\TODO{PJ: I'd prefer swapping the argument order.}
+% \TODO{PJ: I'd prefer swapping the argument order.}
+% JPB: It's generally a betted idea to put the "continuation" last, because it's usually a much longer argument.
 \begin{code}
 integrator :: Space a -> (a -> REAL) -> REAL
 integrator (Finite a)     g = bigsum a g
@@ -308,16 +309,16 @@ integrator (RealLine)     g = integral g
 integrator (Factor f)     g = f * g ()
 integrator (Sigma a f)    g = integrator a $ \x -> integrator (f x) $ \y -> g (x,y)
 integrator (Project f a)  g = integrator a (g . f)
-
-
-integr :: (a -> REAL) -> Space a -> REAL
-integr g (Finite a)     = bigsum a g
-integr g (RealLine)     = integral g
-integr g (Factor f)     = f * g ()
-integr g (Sigma a f)    = integr (\x -> integr (\y -> g (x,y)) (f x)) a
-integr g (Project f a)  = integr (g . f) a
-
 \end{code}
+
+
+% integr :: (a -> REAL) -> Space a -> REAL
+% integr g (Finite a)     = bigsum a g
+% integr g (RealLine)     = integral g
+% integr g (Factor f)     = f * g ()
+% integr g (Sigma a f)    = integr (\x -> integr (\y -> g (x,y)) (f x)) a
+% integr g (Project f a)  = integr (g . f) a
+
 %
 The above definition relies on the usual notions of sums and integrals.
 %
@@ -365,7 +366,9 @@ expectedValueOfDistr d = integrator d id
 
 Exercise: compute symbolically the expected value of the |bernoulli| distribution.
 
-\paragraph{Properties of spaces.} We can use the definitions to show some useful calculational properties of spaces.
+\paragraph{Properties of integrator}
+
+We can use the definitions to show some useful calculational properties of spaces.
 
 \TODO{Format the lemmas}
 
@@ -730,6 +733,9 @@ montySpaceIncorrect changing = do
 \end{code}
 The above is incorrect, because everything happens as if Monty chooses
 a door before the player made its first choice.
+
+\subsection{Properties of expected value}
+
 
 \subsection{Advanced problem}
 Consider the following problem: how many times must one throw a coin
