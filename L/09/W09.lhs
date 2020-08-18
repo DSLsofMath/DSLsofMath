@@ -376,7 +376,7 @@ expectedValueOfDistr d = integrator d id
 
 Exercise: compute symbolically the expected value of the |bernoulli| distribution.
 
-\paragraph{Properties of integrator}
+\paragraph{Properties of |integrator|}
 
 We can use the definitions to show some useful calculational properties of spaces.
 
@@ -454,6 +454,40 @@ g (integrator (Sigma a f) h)
 
 As a corrolary, |fmap| is linear as well:
 if |f| is linear, then |integrator (fmap f s) g = f (integrator s g)|
+
+\paragraph{Properties of |measure|}
+
+\begin{itemize}
+\item |measure (pure x) == 1|
+\item If |f| is a constant function such that |f x = t|, then |measure (Sigma s
+  f) == measure s * measure t|.
+\item |measure (s >>= f) == measure s * measure (f k)|, under the same
+  condition.
+\item[|>>=|/distribution] If |s| is a distribution and |f x| is a distribution for every
+  |x|, then |s >>= f| is a distribution
+\item[fmap/distribution] Corrolary: |s| is a distribution iff. |fmap f
+  s| is a distribution.
+\end{itemize}
+
+The proof of the second item is as follows:
+
+\begin{spec}
+   measure (Sigma s f)
+== {-by definition of measure -}
+   integrator (Sigma s f) (const 1)
+== {-by definition of integrator for Sigma -}
+   integrator s $ \x -> integrator (f x) (const 1)
+== {- by definition of of measure -}
+   integrator s $ \x -> (measure (f x))
+== {- by assumption -}
+   integrator s $ \x -> (measure (f k)) 
+== {- By linearity of integrator- }
+   measure (f k) * (integrator s $ \x -> 1)
+== {- By definition of measure - }
+   measure (f k) * measure s
+\end{spec}
+
+Exercise: using the above lemmas, prove |integrator (bernoulli p) f == p * integrator f + (1-p) * integrator f|.
 
 \subsection{Random Variables}
 Even though we have already studied variables in detail (in Chapter
@@ -536,6 +570,26 @@ dividing by its measure.
 
 Exercise: define various statistical moments (variance, skew, curtosis, etc.)
 
+
+\paragraph{Theorem: Linearity of expected value}
+
+Furthermore, if |f| is linear, then
+|expectedValue (f <$> s) = f (expectedValue s)|
+% emacs $
+
+\begin{spec}
+expectedValue (f <$> s) g
+== {- By definition of expected value - }
+ integrator (f <$> s) g / measure (f <$> s)
+== {- By linearity of integrator over fmap -}
+integrator s (g . f) / measure s
+== {- By definition of expected value - }
+expectedValue s (g . f)
+\end{spec}
+% emacs $
+
+
+
 \subsection{Events and probability}
 
 In textbooks, one typically finds the notation |P(e)| for the
@@ -613,13 +667,14 @@ probability d = expectedValue d indicator
 Sometimes one even finds in the literature and folklore the notation
 |P(v)|, where |v| is a value, which stands for |P(t=v)|, for an
 implicit random variable |t|. Here even more creativity is required
-from the reader, who must also infer which random variable the author
-means.
+from the reader, who must not only infer the space of outcomes, but
+also which random variable the author means.
 
 \subsection{Conditional probability}
 
-Another important notion is conditional probability, written
-$P(F ∣ G)$ and read ``probability of |f| given |g|''.
+Another important notion in probability theory is conditional
+probability, written $P(F ∣ G)$ and read ``probability of |f| given
+|g|''.
 
 We can define the conditional probability of |f| given |g| by taking
 the probability of |f| in the sub space where |g| holds:
@@ -629,7 +684,7 @@ condProb :: Space a -> (a -> Bool) -> (a -> Bool) -> REAL
 condProb s f g = probability1 (subspace g s) f
 \end{code}
 
-We find the above defintion more intuitive than the more usual $P(F∣G)
+We find the above defintion more intuitive than the more usual definition $P(F∣G)
  = P(F∩G) / P(G)$. However, this last equality can be proven, by calculation:
 
 Lemma:  |condProb s f g == probability s (\y -> f y && g y) / probability s g|
@@ -699,7 +754,7 @@ The above drug test problem \ref{ex:drugtest} is often used as an
 illustration for the Bayes theorem. We can solve it in exactly the
 same fashion as the Dice problem.
 
-We begin by describing the space of situations. Here we make heavy use
+We begin by describing the space of situations. To do so we make heavy use
 of the |bernoulli| distribution. First we model the distribution of
 drug users. Then we model the distribution of test outcomes ---
 depending on whether we have a user or not. Finally, we project out
@@ -777,50 +832,7 @@ montySpaceIncorrect changing = do
 The above is incorrect, because everything happens as if Monty chooses
 a door before the player made its first choice.
 
-\subsection{Properties of measure}
 
-
-\begin{itemize}
-\item measure (pure x) == 1
-\item If |measure (f x)| does not depend on x, then |measure (Sigma s
-  f) == measure s * measure (f k)| for some |k| in the domain of |f|.
-\item measure (s >>= f) == measure s * measure (f k)|, under the same
-  condition.
-\item[|>>=|/distribution] If |s| is a distribution and |f x| is a distribution for every
-  |x|, then |s >>= f| is a distribution
-\item[fmap/distribution] Corrolary: |s| is a distribution iff. |fmap f
-  s| is a distribution.
-\end{itemize}
-
-measure (Sigma s f) =
-= {-by definition of measure -}
-integrator (Sigma s f) (const 1)
- = {-by definition of integrator for Sigma -}
- integrator s $ \x -> integrator (f x) (const 1)
- = {- by definition of of measure -}
- integrator s $ \x -> (measure (f x))
- = {- by assumption -}
- integrator s $ \x -> (measure (f k)) 
- = {- By linearity of integrator- }
- measure (f k) * (integrator s $ \x -> 1)
-= {- By definition of measure - }
-  measure (f k) * measure s
-
-\subsection{Property of expected value}
-
-
- expectedValue (f <$> s) g
-= 
- integrator (f <$> s) g / measure (f <$> s)
-= 
-integrator s (g . f) / measure s
-=
-expectedValue s (g . f)
-
-
-Furthermore, if |f| is linear, then
-
-expectedValue (f <$> s) = f (expectedValue s)
 
 \subsection{Advanced problem}
 Consider the following problem: how many times must one throw a coin
@@ -840,8 +852,9 @@ threeHeads (True:True:True:_) = 3
 threeHeads (_:xs) = 1 + threeHeads xs
 
 example' = threeHeads <$> coins
-
 \end{code}
+% emacs $
+
 Attempting to evaluate |probability1 threeHeads' (< 5)| does not
 terminate. Indeed, we have an infinite list, which translates in
 infinitely many cases to consider. So the evaluator cannot solve this
@@ -866,43 +879,52 @@ consider: however small, there is always a probability to get a
 
 We can start by showing that |helper m| is a distribution (its measure
 is 1). The proof is by induction on |m|:
-\begin{itemize}
+\begin{itemize} 
 \item for the base case |measure (helper 0) = measure (pure 0) = 1|
 \item induction: assume that |helper m| is a distribution. Then |if h
   then helper m else helper 3| for every |h|. The result is obtained
   by using the |>>=|/distribution lemma.
 \end{itemize}
 
+Then, we can compute symbolically the integrator of |helper|. We won't
+be using the base case.  In the recursive case, we have:
 
-Property of helper integrators:
-
+\begin{spec}
 integrator (helper (m+1)) f
-=
+== {- By def. of helper -}
 integrator (coin $ \h -> (1+) <$> if h then helper m else helper 3) f
-=
+== {- By integrator/bind -}
 integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) f
-=
+== {- By integrator of linear function (fmap case) -}
 integrator coin $ \h -> 1 + integrator (if h then helper m else helper 3) f
-=
+== {- By case analysis -}
 integrator coin $ \h -> 1 + (if h then integrator (helper m) f else integrator (helper 3) f)
-=
+== {- By linearity of integrator -}
+1 + (integrator coin $ \h -> if h then integrator (helper m) f else integrator (helper 3) f)
+== {- By integrator/bernouilli (exercise) -}
 1 + 0.5 * integrator (helper m) f + 0.5 * integrator (helper 3) f
+\end{spec}
+% $ emacs
 
-If we let h m = expectedValueOfDistr (helper m), and use the above lemma, then we find.
+If we let |h m = expectedValueOfDistr (helper m)|, and using the above lemma, then we find:
 
-h 0 = 0
-h (m+1) = 1 + 0.5 * h m + 0.5 * h 3
-
-or
+\begin{spec}
+h (m+1)  == 1 + 0.5 * h m + 0.5 * h 3
+\end{spec}
+which we can rewrite as:
+\begin{spec}
 2 * h (m+1) = 2 + h m + h 3
-
-Expanding for m = 0 to 2:
-
+\end{spec}
+and expand for |m = 0| to |m = 2|:
+\begin{spec}
 2 * h 1 = 2 + h 3
 2 * h 2 = 2 + h 1 + h 3
 2 * h 3 = 2 + h 2 + h 3
+\end{spec} 
+This leaves us with a system of linear equations with three unknowns
+|h 1|, |h 2| and |h 3|, which admits a single solution with |h 3 =
+14|, giving the final solution to the initial problem.
 
-3 equations, 3 unknowns. Solve.
 
 % To solve such problems symbolically, we define a so-called ``generator
 % function''. In our case |f m n|, equal to the probability that |helper
