@@ -381,6 +381,7 @@ Exercise: compute symbolically the expected value of the |bernoulli| distributio
 We can use the definitions to show some useful calculational properties of spaces.
 
 \TODO{Format the lemmas}
+\TODO{Name the lemmas}
 
 \textbf{integrator/bind lemma}: |integrator (s >>= f) g == integrator s $ \x -> integrator (f x) g|
 \begin{spec}
@@ -1081,8 +1082,11 @@ Exercise: express the rest of the proof using our DSL
 
 % \end{spec}
 
+\TODO{Some related work.}
+
 
 % Local Variables:
 % dante-methods : (bare-ghci)
 % mode: literate-haskell
 % End:
+
