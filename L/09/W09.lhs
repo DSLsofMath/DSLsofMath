@@ -463,9 +463,10 @@ if |f| is linear, then |integrator (fmap f s) g = f (integrator s g)|
   f) == measure s * measure t|.
 \item |measure (s >>= f) == measure s * measure (f k)|, under the same
   condition.
+\TODO{|k| is unbound}
 \item[|>>=|/distribution] If |s| is a distribution and |f x| is a distribution for every
   |x|, then |s >>= f| is a distribution
-\item[fmap/distribution] Corrolary: |s| is a distribution iff. |fmap f
+\item[fmap/distribution] Corollary: |s| is a distribution iff.\ |fmap f
   s| is a distribution.
 \end{itemize}
 
@@ -480,10 +481,10 @@ The proof of the second item is as follows:
 == {- by definition of of measure -}
    integrator s $ \x -> (measure (f x))
 == {- by assumption -}
-   integrator s $ \x -> (measure (f k)) 
-== {- By linearity of integrator- }
+   integrator s $ \x -> (measure (f k))
+== {- By linearity of integrator -}
    measure (f k) * (integrator s $ \x -> 1)
-== {- By definition of measure - }
+== {- By definition of measure -}
    measure (f k) * measure s
 \end{spec}
 
@@ -579,11 +580,11 @@ Furthermore, if |f| is linear, then
 
 \begin{spec}
 expectedValue (f <$> s) g
-== {- By definition of expected value - }
+== {- By definition of expected value -}
  integrator (f <$> s) g / measure (f <$> s)
-== {- By linearity of integrator over fmap -}
+== {- By linearity of |integrator| over |fmap| -}
 integrator s (g . f) / measure s
-== {- By definition of expected value - }
+== {- By definition of expected value -}
 expectedValue s (g . f)
 \end{spec}
 % emacs $
@@ -649,11 +650,11 @@ Proof:
   integrator s (\x -> indicator (e x)) / measure s
 = {- mutiplication by 1 -}
   integrator s (\x -> indicator (e x) * const 1 (x,())) / measure s
-= {- Def. of integrator -}
+= {- Def. of |integrator| -}
   integrator s (\x -> integrator (Factor (indicator (e x))) (\y -> const 1 (x,y))) / measure s
-= {- Def. of isTrue -}
+= {- Def. of |isTrue| -}
   integrator s (\x -> integrator (isTrue (e x)) (\y -> const 1 (x,y))) / measure s
-= {- Def. of integrator -}
+= {- Def. of |integrator| -}
   measure (Sigma s (isTrue . e)) / measure s
 \end{spec}
 
@@ -701,17 +702,17 @@ Proof:
   expectedValue (Sigma s (isTrue . g)) (indicator . f . fst)
 = {- Def of expectedValue -}
   (1/measure(Sigma s (isTrue . g))) * (integrator (Sigma s (isTrue . g)) (indicator . f . fst))
-= {- Def of integrator (Sigma) -}
+= {- Def of |integrator| (Sigma) -}
   (1/measure s/probability s g) * (integrator s $ \x -> integrator (isTrue . g) $ \y -> indicator . f . fst $ (x,y))
-= {- Def fst -}
+= {- Def of |fst| -}
   (1/measure s/probability s g) * (integrator s $ \x -> integrator (isTrue . g) $ \y -> indicator . f $ x)
-= {- Def of isTrue -}
+= {- Def of |isTrue| -}
   (1/measure s/probability s g) * (integrator s $ \x -> indicator (g x) * indicator (f x))
-= {- Property of indicator -}
+= {- Property of |indicator| -}
   (1/measure s/probability s g) * (integrator s $ \x -> indicator (\y -> g y &&  f y))
 = {- associativity of multiplication -}
   (1/probability s g) * (integrator s $ \x -> indicator (\y -> g y &&  f y)) / measure s
-= {- Definition of probability1 -}
+= {- Definition of |probability1| -}
   (1/probability s g) * probability1 s (\y -> g y &&  f y)
 \end{spec}
 % emacs wakeup $
@@ -879,27 +880,27 @@ consider: however small, there is always a probability to get a
 
 We can start by showing that |helper m| is a distribution (its measure
 is 1). The proof is by induction on |m|:
-\begin{itemize} 
+\begin{itemize}
 \item for the base case |measure (helper 0) = measure (pure 0) = 1|
 \item induction: assume that |helper m| is a distribution. Then |if h
   then helper m else helper 3| for every |h|. The result is obtained
   by using the |>>=|/distribution lemma.
 \end{itemize}
 
-Then, we can compute symbolically the integrator of |helper|. We won't
+Then, we can symbolically compute the integrator of |helper|. We won't
 be using the base case.  In the recursive case, we have:
 
 \begin{spec}
 integrator (helper (m+1)) f
-== {- By def. of helper -}
+== {- By def. of |helper| -}
 integrator (coin $ \h -> (1+) <$> if h then helper m else helper 3) f
 == {- By integrator/bind -}
 integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) f
-== {- By integrator of linear function (fmap case) -}
+== {- By |integrator| of linear function (|fmap| case) -}
 integrator coin $ \h -> 1 + integrator (if h then helper m else helper 3) f
 == {- By case analysis -}
 integrator coin $ \h -> 1 + (if h then integrator (helper m) f else integrator (helper 3) f)
-== {- By linearity of integrator -}
+== {- By linearity of |integrator| -}
 1 + (integrator coin $ \h -> if h then integrator (helper m) f else integrator (helper 3) f)
 == {- By integrator/bernouilli (exercise) -}
 1 + 0.5 * integrator (helper m) f + 0.5 * integrator (helper 3) f
@@ -920,7 +921,7 @@ and expand for |m = 0| to |m = 2|:
 2 * h 1 = 2 + h 3
 2 * h 2 = 2 + h 1 + h 3
 2 * h 3 = 2 + h 2 + h 3
-\end{spec} 
+\end{spec}
 This leaves us with a system of linear equations with three unknowns
 |h 1|, |h 2| and |h 3|, which admits a single solution with |h 3 =
 14|, giving the final solution to the initial problem.
