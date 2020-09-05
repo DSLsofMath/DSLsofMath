@@ -1,0 +1,53 @@
+P3 [25p] Inverses and proofs
+
+  Let |n=d+2| where |d| is the last digit of your personal identity number.
+  (For example, if 19890102-3286 would sit the exam, |d| would be |6| and |n=8|.)
+
+
+a) [13p] Consider the function $f(x)=n+x^n$ on the interval $(0,1)$.
+    Check that the conditions from the quote in problem
+    \ref{prob:DerInv} are applicable to your $f$.
+    Compute $f'$ and $f^{-1}$ and state their domains and ranges.
+    Show that the last equation in problem \ref{prob:DerInv} holds for
+    your $f$.
+
+f(x) = n + x^n    has domain (0,1) and range (n,n+1)
+f'(x) = n*x^(n-1) has domain (0,1) and range (0,n)
+fInv(y) = (y-n)^(1/n) has domain (n,n+1) and range (0,1)
+
+The conditions are satisfied: f'(x) > 0 in the domain.
+
+LHS = der (inv f)
+    = der (\y->(y-n)^(1/n))
+    = \y -> (1/n)*(y-n)^(1/n - 1)
+    = \y -> (1/n)*(y-n)^((1-n)/n)
+    = \y -> 1/(n*(y-n)^((n-1)/n))
+RHS = recip . der f . inv f
+    = (1/) . (\x->n*x^(n-1)) . (\y->(y-n)^(1/n))  -- simplify
+    = \y -> 1/(n*((y-n)^(1/n))^(n-1))        -- exponent law
+    = \y -> 1/(n*(y-n)^((n-1)/n))
+
+Thus LHS = RHS. QED.
+
+b) [12p] Prove the equation for a general $f$ (satisfying the conditions).
+
+My take: we know that f . fInv = id = fInv . f
+(I assume we have a Num instance for functions in scope.)
+We now compute from the given equation:
+
+  f . fInv = id
+-- Take the derivative of both sides
+  der (f . fInv) = der id
+-- derivative of composition on the left, der id = const 1 on the right
+  (der f . fInv) * der fInv = const 1
+-- Divide to ger der fInv alone on the left
+  der fInv = const 1 / (der f . fInv)
+
+From the book [Adams, p167]:
+
+   Let $y = f^{-1}(x)$.
+   We want to find $dy/dx$.
+   Solve the equation $y = f^{-1}(x)$ for $x = f(y)$
+   and differentiate implicitly with respect to $x$ to obtain
+   $1 = f'(y) dy/dx$, so
+   $dy/dx = 1/f'(y) = 1/(f'(f^{-1}(x)))$.
