@@ -10,7 +10,7 @@ import Data.List ((\\))
 type REAL = Double -- pretend...
 \end{code}
 
-In this chapter, we define a DSL to describe and reason about,
+In this chapter, we define a DSL to describe and reason about
  problems such as those of the following list, and sometimes we can
  even compute the probabilites involved by evaluating the DSL
  expressions.
@@ -1050,6 +1050,10 @@ In the right to left direction:
 
 Exercise: express the rest of the proof using our DSL
 
+
+\TODO{In addition to a  semantics based on integrators, one can program a semantics based on monte carlo sampling}
+
+
 % \subsection{Continuous spaces and equality}
 % TODO
 % \begin{spec}
@@ -1083,6 +1087,7 @@ Exercise: express the rest of the proof using our DSL
 % \end{spec}
 
 \TODO{Some related work.}
+
 
 
 % Local Variables:

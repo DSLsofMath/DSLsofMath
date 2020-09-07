@@ -2,18 +2,19 @@
 \section{Introduction}
 \label{sec:intro}
 
-These lecture notes aim to cover the lectures and exercises of the
+
+These lecture notes\reviseForBook{This book stems from ....} aim to cover the lectures and exercises of the
 recently introduced BSc-level course ``Domain-Specific Languages of
 Mathematics'' (at Chalmers Univeristy of Technology and University of
 Gothenburg).
 %
-The immediate aim of the course is to improve the mathematical
+The immediate aim of the \course{} is to improve the mathematical
 education of computer scientists and the computer science education of
 mathematicians.
 %
-We believe the course can be the starting point for far-reaching
+We believe the \course{} can be the starting point for far-reaching
 changes, leading to a restructuring of the mathematical training
-especially for engineers, but perhaps also for mathematicians
+of engineers in particular, but perhaps also for mathematicians
 themselves.
 
 Computer science, viewed as a mathematical discipline, has certain
@@ -29,13 +30,13 @@ scientists \citep{gries1995teaching, boute2009decibel}, that the
 computer science perspective could be valuable in general mathematical
 education.
 %
-Until today, this has been convincingly demonstrated (at least since
+Until today, as far as we can judge, this perspective has been convincingly demonstrated (at least since
 the classical textbook of \citet{gries1993logical}) only in the field
 of discrete mathematics.
 %
 In fact, this demonstration has been so successful, that we
 increasingly see the discrete mathematics courses being taken over by
-computer science departments.
+computer science departments.\jp{evidence?}
 %
 This is a quite unsatisfactory state of affairs, for at least two
 reasons.
@@ -58,9 +59,9 @@ For many of them, the formal, tool-oriented style of the discrete
 mathematics course is easier to follow than the traditional
 mathematical style.
 %
-Since, moreover, discrete mathematics tends to be immediately useful
-to them, this makes the added difficulty of continuous mathematics
-even less palatable.
+Moreover, because discrete mathematics tends to be immediately useful
+to them, the added difficulty of continuous mathematics
+makes it even less palatable.
 %
 As a result, their mathematical competence tends to suffer in areas
 such as real and complex analysis, or linear algebra.
@@ -68,6 +69,7 @@ such as real and complex analysis, or linear algebra.
 This is a serious problem, because this lack of competence tends to
 infect the design of the entire curriculum.
 %
+\lnOnly{
 For example, a course in
 ``\href{https://www.student.chalmers.se/sp/course?course_id=22612}
 {Modeling of sustainable energy systems}'' for Chalmers'
@@ -75,7 +77,7 @@ CSE\footnote{CSE = Computer Science \& Engineering = Datateknik = D}
 students has to be tailored around this limitation, meaning that the
 models, methods, and tools that can be presented need to be
 drastically simplified, to the point where contact with mainstream
-research becomes impossible.
+research becomes impossible.}
 
 
 We propose that a focus on \emph{domain-specific languages} (DSLs) can
@@ -91,46 +93,48 @@ productivity, above alternative modelling approaches such as UML
 %
 Moreover, building DSLs also offers the opportunity for
 interdisciplinary activity and can assist in reaching a shared
-understanding of intuitive or vague notions (see, for example, the
+understanding of intuitive or vague notions. This is supported by our experience: an example is the
 work done at Chalmers in cooperation with the Potsdam Institute for
 Climate Impact Research in the context of
 \href{http://www.chalmers.se/en/departments/cse/news/Pages/Global-Systems-Science.aspx}{Global
   Systems Science}, \cite{LinckeJanssonetalDSLWC2009,
   ionescujansson2013DTPinSciComp, jaeger13:GSSshort,
   ionescujansson:LIPIcs:2013:3899, DBLP:journals/corr/BottaJICB16,
-  botta_jansson_ionescu_2017_avoidability}).
+  botta_jansson_ionescu_2017_avoidability}.
 
 
 Thus, a course on designing and implementing DSLs can be an important
 addition to an engineering curriculum.
 %
-Our key idea is to combine this with a rich source of domains and
+Our key idea is to apply the DSL approach to a rich source of domains and
 applications: mathematics.
 %
 Indeed, mathematics offers countless examples of DSLs: the language of
 group theory, say, or the language of probability theory, embedded in
-that of measure theory.
+that of measure theory\jp{forward references to chapters}.
 %
 The idea that the various branches of mathematics are in fact DSLs
 embedded in the ``general purpose language'' of set theory was (even
 if not expressed in these words) the driving idea of the Bourbaki
-project, which exerted an enormous influence on present day
+project\jp{citations}, which exerted an enormous influence on present day
 mathematics.
 
-The course on \emph{DSLs of Mathematics (DSLM)} allows us to present
+Hence, the topic of this \course{} is \emph{DSLs of Mathematics (DSLM)}. It presents
 classical mathematical topics in a way which builds on the experience
 of discrete mathematics: giving specifications of the concepts
 introduced, paying attention to syntax and types, and so on.
 %
-For the mathematics students, used to a more informal style, the
+For the mathematics students, the style of this \course{} will be more
+formal than usual, as least from a linguistic perspective. The
 increased formality is justified by the need to implement (fragments
 of) the language.
+\jp{There seem to be a paragraph missing about the benefits for the CS student}
 %
 We provide a wide range of applications of the DSLs introduced,
 so that the new concepts can be seen ``in action'' as soon as
 possible.
 
-The course has two major learning outcomes.
+In our view a course based this textbook should have two major learning outcomes.
 %
 First, the students should be able to design and implement a DSL in a
 new domain.
@@ -198,7 +202,7 @@ The potential students will have all taken first-year mathematics
 courses, and the only prerequisite which some of them will not satisfy
 will be familiarity with functional programming.
 %
-However, as the current data structures course (common to the Math and
+However, as some of the current data structures course (common to the Math and
 CSE programmes) shows, math students are usually able to catch up fairly
 quickly, and in any case we aim to keep to a restricted subset of
 Haskell (no ``advanced'' features are required).
@@ -209,7 +213,7 @@ require mathematical competence (in the case of engineering students)
 or software compentence (in the case of math students).
 %
 For math students, we would like to measure their performance in
-ulterior scientific computing courses, but there has been too few math
+ulterior scientific computing courses, but we have taught too few math
 students so far to make good statistics.
 %
 But for CSE students we have measured the percentage of
@@ -219,15 +223,16 @@ students who, having taken DSLM, pass the third-year courses
 \emph{\href{https://www.student.chalmers.se/sp/course?course_id=21303}{Control
     Theory (sv: Reglerteknik)}}, which are current major stumbling blocks.
 %
+\lnOnly{
 Since the course is, at least initially, an elective one, we have also
 used the possibility to compare the results with those of a control
-group (students who have not taken the course).
+group (students who have not taken the course).}
 %
 The evaluation of the student results shows improvements in the pass
 rates and grades in later courses.
 %
 This is very briefly summarised in Table~\ref{tab:res} and more
-details are explained in
+details are explained by
 \citet{TFPIE18_DSLMResults_JanssonEinarsdottirIonescu}.
 
 %% -------------------------------------------------------------------
@@ -252,7 +257,7 @@ details are explained in
 
 
 
-The work that lead up to the current course is as follows:
+The work that leads up to the current \course{} is as follows:
 
 \paragraph{2014:} in interaction with our colleagues from the various
 study programmes, we performed an assessment of the current status of
@@ -265,6 +270,7 @@ so that the first instance of the course could start in January 2016).
 We also made a survey of similar courses being offered at other
 universities, but did not find any close matches.
 
+\reviseForBook{What follows probably needs thorough revision}
 \paragraph{2015:} we developed course materials for use within the
 first instance, wrote a paper
 \citep{TFPIE15_DSLsofMath_IonescuJansson} about the course and
@@ -301,6 +307,7 @@ challenging, the more the effective aspects of the computer science
 perspective are adopted in the first-year mathematics courses.
 
 \subsection{About this course}
+\jp{The whole chapter could have this title. It seems that what follows should be folded seamlessly into the rest}
 
 Software engineering involves modelling very different domains (e.g.,
 business processes, typesetting, natural language, etc.) as software
@@ -319,7 +326,7 @@ We shall emphasise the dividing line between syntax (what mathematical
 expressions look like) and semantics (what they mean).
 %
 This emphasis leads us to naturally organise the software abstractions
-we develop in the form of domain-specific languages, and we will see
+that we develop in the form of domain-specific languages, and we will see
 how each mathematical theory gives rise to one or more such languages,
 and appreciate that many important theorems establish ``translations''
 between them.
@@ -347,10 +354,11 @@ Note that this also counts students from other programmes (mainly SE
 and Math) while Table~\ref{tab:res} only deals with the CSE
 programme students.
 
-\subsection{Who should read these lecture notes?}
+\subsection{Who should read this textbook?}
 
 The prerequisites of the underlying course may give a hint about what
 is expected of the reader.
+\jp{This was stated in different terms above, restructuring needed}
 %
 But feel free to keep going and fill in missing concepts as you go
 along.

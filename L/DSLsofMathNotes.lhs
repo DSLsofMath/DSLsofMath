@@ -53,6 +53,10 @@
 \theoremstyle{definition}
 \newtheorem{exercise}{Exercise}[section]
 % Old exercise style (until 2017-11-08): \renewcommand*{\theenumi}{\textbf{E\thesection.\arabic{enumi}}}
+\newcommand{\reviseForBook}[1]{} % don't show anything for now
+\newcommand\bookOnly[1]{#1} % show only in the book version (not the lecture notes)
+\newcommand\lnOnly[1]{} % show only in the lecture notes (not the book version)
+\newcommand\course{\lnOnly{course}\bookOnly{book}}
 \newcommand{\TODO}[1]{\todo{#1}}
 \newcommand{\refFig}[1]{Fig.~\ref{#1}}
 \newcommand{\refSec}[1]{Sec.~\ref{#1}}
