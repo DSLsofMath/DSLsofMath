@@ -268,7 +268,7 @@ and we worked out a course plan (which we submitted in February 2015,
 so that the first instance of the course could start in January 2016).
 %
 We also made a survey of similar courses being offered at other
-universities, but did not find any close matches.
+universities, but did not find any close matches.\reviseForBook{What about Doets and van Eijck ``The Haskell road to Logic Math and Programming''}
 
 \reviseForBook{What follows probably needs thorough revision}
 \paragraph{2015:} we developed course materials for use within the

@@ -2,7 +2,7 @@
 %format bi = "\Varid{bi}"
 \section{Types, DSLs, and complex numbers}
 \label{sec:DSLComplex}
-
+\reviseForBook{Put this at the end of the chapter?}
 This chapter is partly based on the paper
 \citep{TFPIE15_DSLsofMath_IonescuJansson} from the International
 Workshop on Trends in Functional Programming in Education 2015.
@@ -12,6 +12,7 @@ language Haskell and
 %
 the code for this lecture is placed in a module called
 |DSLsofMath.W01| that starts here:
+\jp{have a reference to the code in a git repo? Perhaps already in the introductory chapter?}
 
 \begin{code}
 module DSLsofMath.W01 where
@@ -48,7 +49,7 @@ Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
 Then it is clear that the value of $t$ is the constant $15$.
 %
 But if we let $s = 5*f(x)$ it is not clear if $s$ should be seen as a
-constant or as a function of $x$.
+constant (for some fixed value $x$) or as a function of $x$.
 
 Paying attention to types and variable scope often helps to sort out
 these ambiguities.
@@ -67,11 +68,11 @@ integrated.
 Comparing the part after the integral sign to the syntax of a function
 definition \(f(x) = x^2\) reveals a rather odd rule: instead of
 \emph{starting} with declaring the variable \(x\), the integral syntax
-\emph{ends} with the variable name, and also uses the letter ``d''.
+\emph{ends} with the variable name, and also uses the letter ``d''. 
 %
 (There are historical explanations for this notation, and it is
 motivated by computation rules in the differential calculus, but we
-will not go there now.)
+will not go there now.\jp{We are also aware that the notation $\int dx f(x)$ is sometimes used, especially by physicists, but it is the exception rather than the rule.})
 %
 It seems like the scope of the variable ``bound'' by |d| is from the
 integral sign to the final |dx|, but does it also extend to the
@@ -88,7 +89,7 @@ The variable |x| bound on the left is independent of the variable |x|
 ``bound under the integral sign''.
 %
 Mathematics text books usually avoid the risk of confusion by
-(silently) renaming variables when needed, but we believe this
+(silently) renaming variables when needed, but we believe that this
 renaming is a sufficiently important operation to be more explicitly
 mentioned.
 %*TODO: Perhaps add simple exercises on renaming and variable capture
@@ -96,7 +97,7 @@ mentioned.
 \subsection{Types of |data|}
 
 Dividing up the world (or problem domain) into values of different
-types is one of the guiding principles of this course.
+types is one of the guiding principles of this \course{}.
 %
 \begin{figure}
   \centering
@@ -112,7 +113,7 @@ theories, languages, programs and proofs.
 
 As mentioned in the introduction, we emphasise the dividing line
 between syntax (what mathematical expressions look like) and semantics
-(what they mean)\pedantic{The only way to be precise about semantics is to use a formal language, and so semantics end up being presented in the form of a syntax. In this textbook, we'll tend to be rather imprecise about the semantics, and the division should be clear.}.
+(what they mean)\pedantic{The only way to be precise about semantics is to use a formal language, and so semantics end up being presented in the form of a syntax. In this textbook, we'll tend to be rather imprecise about the semantics, and so the division should be, paradoxically, clear.}.
 %
 As an example we start with \emph{type expressions} --- first in
 mathematics and then in Haskell.
@@ -145,7 +146,9 @@ The semantics is the set of ``functions from |A| to
 %
 As an example, the semantics of |BB -> BB| is a set of four functions:
 |{const False, id, not, const True}| where |not : BB -> BB| is boolean
-negation.
+negation.\pedantic{Additionally in Haskell one has to deal with
+  diverging computations. These induce very subtle difficulties which
+  we mention later.}
 %
 The function type construction is very powerful, and can be used to
 model a wide range of concepts in mathematics (and the real world).
@@ -193,7 +196,8 @@ For small |n| special names are often used: binary means arity 2 (like
 (like |"hi!"|).
 %*TODO: perhaps add something about tupling, currying and arity
 
-As a first example of a \emph{higher-order} function we present |flip|
+We can also construct functions which manipulate functions.
+They are called \emph{higher-order} functions and as a first example we present |flip|
 which ``flips'' the two arguments of a binary operator.
 %
 \begin{code}
@@ -254,7 +258,7 @@ In Haskell we get the following type:
 \begin{spec}
 (.) :: (b->c) -> (a->b) -> (a->c)
 \end{spec}
-
+%
 which may take a while to get used to.
 
 \paragraph{Partial \& total functions}
@@ -275,7 +279,7 @@ for all its inputs, that is, it terminates and returns a value.
 There are basically two ways of ``fixing'' a partial function: limit
 the type of the inputs (the domain) to avoid the ``bad'' inputs, or
 extend the type of the output (the range) to include ``default'' or ``error''
-values.
+values\footnote{or better yet, meaningful values, as we shall see later}.
 %
 As an example, |sqrt|, the square root function, is partial if
 considered as a function from |REAL| to |REAL| but total if the domain
@@ -311,9 +315,9 @@ course.
 
 Many programming languages provide so called ``functions'' which are
 actually not functions at all, but rather procedures: computations
-depending on some hidden state or other effect.
+depending on some hidden state or exhibiting some other effect.
 %
-A typical example is |rand(N)| which return a random number in the
+A typical example is |rand(N)| which returns a random number in the
 range |1..N|.
 %
 Treating such an ``impure function'' as a mathematical ``pure''
@@ -322,7 +326,7 @@ function quickly leads to confusing results.
 For example, we know that any pure function |f| will satisfy |x == y|
 implies |f(x) == f(y)|.
 %
-As a special case we certainly want |f(x) == f(x)| for all |x|.
+As a special case we certainly want |f(x) == f(x)| for every |x|.
 %
 But with |rand| this does not hold: |rand(6)==rand(6)| will only be
 true occasionally.
@@ -394,6 +398,7 @@ Lap : (T -> CC) -> (S -> CC)
 \end{spec}
 %
 where |T = REAL| and |S = CC|
+\jp{But we use the variable name as a type name. This is perhaps also confusing?}
 %
 Note that the function type constructor |(->)| is used three times
 here: once in |T -> CC|, once in |S -> CC| and finally at the top
@@ -403,7 +408,7 @@ This means that |Lap| is an example of a higher-order function,
 and we will see many uses of this idea in this book.
 
 Now we move to introducing some of the ways types are defined in
-Haskell, the language we use for implementation (and often also
+Haskell, our language of choice for the implementation (and often also
 specification) of mathematical concepts.
 
 %TODO: perhaps use more from Expr.lhs
