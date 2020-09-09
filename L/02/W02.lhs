@@ -1,13 +1,15 @@
 \section{Logic and calculational proofs}
 \label{sec:logic}
 
-The learning outcomes of this chapter is ``develop adequate notation
+The learning outcomes of this chapter are ``develop adequate notation
 for mathematical concepts'' and ``perform calculational proofs''
 (in the context of ``organize areas of mathematics in DSL
 terms'').
 %
+\jp{Is the bullet-list style necessary?}
+%
 There will be a fair bit of theory: introducing propositional and
-first order logic, but also ``applications'' to mathematics: prime
+first order logic, but also applications to mathematics: prime
 numbers, (ir)rationals, limit points, limits, etc. and some
 Haskell.
 
@@ -22,6 +24,7 @@ import DSLsofMath.AbstractFOL (andIntro, andElimR, andElimL, notIntro, notElim)
 %endif
 \subsection{Propositional Calculus}
 %
+\jp{Can we simply call this propositional logic?}
 
 The main topic of this chapter is logic and proofs.
 %
@@ -29,8 +32,8 @@ Our first DSL for this chapter is the language of \emph{propositional
   calculus} (or logic), modelling simple propositions with the usual
 combinators for and, or, implies, etc.
 %
-(The Swedish translation is ``satslogik'' and some more Swe-Eng
-translations are collected on the GitHub page of these lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)
+\lnOnly{(The Swedish translation is ``satslogik'' and some more Swe-Eng
+translations are collected on the GitHub page of these lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)}
 %
 Some concrete syntactic constructs are collected in
 Table~\ref{tab:PropCalc} where each row lists synonyms plus a comment.
@@ -79,7 +82,8 @@ The example expressions can then be expressed as
 p1 = And (Name "a") (Not (Name "a"))
 p2 = Implies (Name "a") (Name "b")
 p3 = Or (Name "a") (Not (Name "a"))
-p4 = Implies (And a b) (And b a) where a = Name "a"; b= Name "b"
+p4 = Implies (And a b) (And b a)
+  where a = Name "a"; b = Name "b"
 \end{code}
 %
 We can write an evaluator which, given an environment, takes
@@ -195,7 +199,7 @@ Truth table verification is only viable for propositions with few
 names because of the exponential growth in the number of cases to
 check: we get $2^n$ cases for |n| names.
 %
-(There are very good heuristic algorithms to look for tautologies even
+(There are very good heuristic\jp{and even exact, depending on what ``very good'' means} algorithms to look for tautologies even
 for thousands of names --- but that is not part of this course.)
 
 What we call ``names'' are often called ``(propositional) variables''
@@ -210,12 +214,12 @@ normal form, simplify to conjunctive normal form, etc.
 (Conjunctive normal form: allow only |And|, |Or|, |Not|, |Name| in that
 order in the term.)
 
-\subsection{First Order Logic (predicate logic)}
+\subsection{First Order Logic}
 %
-\jp{Why predicate logic in parentheses?}
 
 %TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
-Our second DSL is that of \emph{First Order Logic (FOL)\footnote{Swedish: Första ordningens logik = predikatlogik}}.
+Our second DSL is that of \emph{First Order Logic\lnOnly{\footnote{Swedish: Första ordningens logik = predikatlogik}}},
+or FOL for short, and also known as Predicate Logic.
 %
 This language has two datatypes: \emph{propositions}, and \emph{terms} (new).
 %
@@ -237,7 +241,7 @@ In this case we can model the terms as a datatype:
 %let rat = False
 %}
 %
-This introduces variables %(with the constructor |RV|)
+The above introduces variables %(with the constructor |RV|)
 and three function symbols:
 %
 |FromI| of arity |1|, |RPlus|, |RDiv| of arity |2|.
@@ -320,7 +324,7 @@ is often included as a separate constructor.
 %
 ``Forall''-quantification can be seen as a generalisation of |And|.
 %
-First we can generalise the binary operator to an |n|-ary version:
+To see this, we can begin by generalising the binary operator |And| to an |n|-ary version:
 |Andn|.
 %
 To prove |Andn(A1,A2, ..., An)| we need a proof of each |Ai|.
@@ -345,7 +349,7 @@ Now, a proof of |Forall x A(x)| should in some way contain a proof of
 For the binary |And| we simply provide the two proofs, but in the
 infinite case, we need an infinite collection of proofs.
 %
-The standard procedure is to introduce a fresh constant term |a| and
+To do so, the standard procedure is to introduce a fresh constant term |a| and
 prove |A(a)|.
 %
 Intuitively, if we can show |A(a)| without knowing anything about |a|,
@@ -372,7 +376,7 @@ The scoping of |x| in |Exists x b| is the same as in |Forall x b|.
 One common source of confusion in mathematical (and other semi-formal)
 texts is that variable binding sometimes is implicit.
 %
-A typical example is equations: |x^2 + 2*x + 1 == 0| usually means
+A typical example is the notation for equations: for instance |x^2 + 2*x + 1 == 0| usually means
 roughly |Exists x (x^2 + 2*x + 1 == 0)|.
 %
 We write ``roughly'' here because the scope of |x| very often extends
@@ -380,12 +384,13 @@ to some text after the equation where something more is said about the
 solution |x|.
 
 \subsection{An aside: Pure set theory}
+\jp{If this is an aside then it's an alternative to FOL? What is the purpose of this aside?}
 
 One way to build mathematics from the ground up is to start from pure
 set theory and define all concepts by translation to sets.
 %
 We will only work with this as a mathematical domain to study, not as
-``the right way'' of doing mathematics (there are other ways).
+``the right way'' of doing mathematics (there are other ways\jp{In fact the DSL approach that we advocate for is not quite fitting that model.}).
 %
 In this section we keep the predicate part of the version of |FOL|
 from the previous section, but we replace the term language |RatT|
@@ -418,7 +423,7 @@ quite a large part of mathematics can still be expressed.
 Every term in pure set theory denotes a set, and the elements of each
 set are again sets.
 %
-(Yes, this can make your head spin.)
+\lnOnly{(Yes, this can make your head spin.)}
 
 At this point it can be a good exercise to enumerate a few sets of
 cardinality\footnote{The \emph{cardinality} of a set is the number of
@@ -526,7 +531,7 @@ for function application we get
 f        :  (Forall x (P x))   {-"\quad\textbf{if}\quad"-}  f t  : P t   {-"\text{~for all~}"-}  t
 \end{spec}
 %
-This now very much looks like type rules, and that is not a coincidence.
+This now very much looks like type rules\jp{Is this something that the reader should know?}, and that is not a coincidence.
 %
 The \emph{Curry--Howard correspondence} says that we can think of
 propositions as types and proofs as ``programs''\jp{Why the scare quotes? Is it meant that programs have a limited expressivity?}.

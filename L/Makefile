@@ -2,6 +2,9 @@ NAME=DSLsofMathNotes
 
 default: $(NAME).pdf
 
+nix::
+	nix-shell --run "make"
+
 Small.tex: DSLsofMathNotes.tex
 	cp DSLsofMathNotes.tex Small.tex
 	patch < A6_landscape.patch
