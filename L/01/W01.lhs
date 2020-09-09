@@ -684,7 +684,7 @@ environment) to a function (the semantics).
 
 In the evaluator for |AE| we take this one step further: given an
 environment |env| and the syntax of an arithmetic expression |e| we
-compute the semantics of that expression.
+compute the semantics of that expression\jp{Or more accurately the semantics is a function |Env String Integer -> Maybe Integer|}.
 %
 %*TODO: perhaps swith Times to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
 %**TODO explain more for those not used to Haskell
@@ -722,15 +722,16 @@ liftM _op  _         _         =  Nothing
 \label{sec:complexcase}
 
 We now turn to our first case study: an analytic reading of the
-introduction of complex numbers in \cite{adams2010calculus}.
+introduction of complex numbers by \citet{adams2010calculus}.
 %
 We choose a simple domain to allow the reader to concentrate on the
 essential elements of our approach without the distraction of
 potentially unfamiliar mathematical concepts.
 %
-For this section, we bracket our previous knowledge and approach the
-text as we would a completely new domain, even if that leads to a
-somewhat exaggerated attention to detail.
+For this section, we temporarily pretend to forget any previous
+knowledge of complex numbers, and study the textbook of Adams and
+Essex as we would approach a completely new domain, even if that leads
+to a somewhat exaggerated attention to detail.
 
 Adams and Essex introduce complex numbers in Appendix A.
 %
@@ -823,7 +824,7 @@ showCA     (CPlus2 x i y)  =  show x ++ " + " ++ showIU i ++ show y
 \end{code}
 
 Notice that the type |REAL| is not implemented yet and it is not
-really even exactly implementable but we want to focus on complex
+really even clearly implementable but we want to focus on complex
 numbers so we will approximate |REAL| by double precision floating
 point numbers for now.
 
@@ -915,7 +916,7 @@ This remark suggests strongly that the two syntactic forms are meant
 to denote the same elements, since otherwise it would be strange to
 say ``either form is acceptable''.
 %
-After all, they are acceptable by definition.
+After all, they are acceptable according to the definition provided earlier.
 
 Given that |a + ib| is only ``syntactic sugar'' for |a + bi|, we can
 simplify our representation for the abstract syntax, eliminating one
@@ -959,8 +960,16 @@ of the components (the arguments to the constructor |CPlusC|).
 %
 Another way of saying this is that |CPlusC| is injective.
 %
-The equality on complex numbers is what we would obtain in Haskell by
-using |deriving Eq|.
+In Haskell we could define this equality as:
+\begin{code}
+  instance Eq ComplexC where
+    ComplexC a b == ComplexC x y = a == x && b == y
+\end{code}
+%
+The line |instance Eq ComplexC| is there because the specify that
+|ComplexC| supports the |(==)| operator.  (The cognoscenti would
+prefer to obtain an equivalent definition using the shorter |deriving
+Eq| clause upon defining the type.)
 %*TODO: explain more about deriving - perhaps in a \footnote{}
 
 This shows that the set of complex numbers is, in fact, isomorphic
@@ -971,9 +980,15 @@ explicit by re-formulating the definition in terms of a |newtype|:
 newtype ComplexD = CD (REAL, REAL)   deriving Eq
 \end{code}
 
-The point of the somewhat confusing discussion of using ``letters'' to
-stand for complex numbers is to introduce a substitute for
-\emph{pattern matching}, as in the following definition:
+As we see it, the somewhat confusing discussion of using ``letters''
+to stand for complex numbers serves several purposes. First, it hints
+at the implicit typing rule that the symbols |z| and |w| should be
+complex numbers. Second, it shows that, in mathematical arguments, one
+needs not abstract over two real variables: one can instead abstract
+over a single complex variable. We already know that we have an
+isomorphism between pair of reals and complex numbers. But
+additionally, we have a notion of \emph{pattern matching}, as in the
+following definition:
 
 \begin{quote}
   \textbf{Definition:} If |z = x + yi| is a complex number (where |x|
@@ -1143,13 +1158,13 @@ It can be difficult to get started implementing a function (like
 |evalE|) that should handle all the cases and all the levels of a
 recursive datatype (like |ComplexE|).
 %
-One way to overcome this difficulty is through ``wishful thinking'':
+One way to overcome this difficulty is through what may seem at first glance ``wishful thinking'':
 assume that all but one case have been implemented already.
 %
-All you need to focus on is that one remaining case, and you can
+All you need is to focus on that one remaining case, and you can
 freely call the function (that you are implementing) recursively, as
 long as you do it for subexpressions (subtrees of the abstract syntax
-tree datatype).
+tree datatype).\footnote{This pattern is called structural induction.}
 %
 
 For example, when implementing the |evalE (Plus c1 c2)| case, you can
@@ -1172,10 +1187,10 @@ evalE (Times c1 c2)    = timesD  (evalE c1)  (evalE c2)
 \end{code}
 %
 Note the pattern here: for each constructor of the syntax datatype we
-assume there exists a corresponding semantic function.
+assume that there exists a corresponding semantic function.
 %
 The next step is to implement these functions, but let us first list
-their types and compare with the types of the syntactic constructors:
+their types and compare them with the types of the syntactic constructors:
 \begin{code}
 imagUnitD :: ComplexD                        -- |ComplexE|
 toComplexD :: REAL -> ComplexD               -- |REAL -> ComplexE|
@@ -1211,7 +1226,7 @@ This function is injective.
 
 
 \subsection{Laws, properties and testing}
-There are certain laws we would like to hold for operations on complex
+There are certain laws that we would like to hold for operations on complex
 numbers.
 %
 To specify these laws, in a way which can be easily testable in
@@ -1234,11 +1249,12 @@ The simplest law is perhaps |square i = -1| from the start of
 propImagUnit :: Bool
 propImagUnit =  Times ImagUnit ImagUnit === ToComplex (-1)
 \end{code}
-Note the we use a new operator here, |(===)|, because the left hand
-side (LHS) is clearly not syntactically equal to the right hand side
-(RHS).
+Note the we use a new operator here, |(===)|. Indeed, we reserve the
+usual equality |(==)| for syntactic equality (and here the left hand
+side (LHS) is clearly not syntactically equal to the right hand side).
 %
-The new operator is used to test for equality \emph{after evaluation}:
+The new operator corresponds to |(===)| semantic equality, that is,
+for equality \emph{after evaluation}:
 %
 \begin{code}
 (===) :: ComplexE -> ComplexE -> Bool
@@ -1246,7 +1262,7 @@ z === w  =  evalE z == evalE w
 \end{code}
 
 Another law is that |fromCD| is an embedding: if we start from a
-semantic value, translate it to syntax, and evaluate that syntax we
+semantic value, embed it back into syntax, and evaluate that syntax we
 get back to the value we started from.
 %
 \begin{code}
@@ -1263,10 +1279,10 @@ propAssocTimes x y z     =  Times (Times x y) z  ===  Times x (Times y z)
 propDistTimesPlus x y z  =  Times x (Plus y z)   ===  Plus (Times x y) (Times x z)
 \end{code}
 
-These three laws actually fail, but not because of the implementation
-of |evalE|.
+These three laws actually fail, but due to any mistake in the implementation
+of |evalE| in itself.
 %
-We will get back to that later but let us first generalise the
+We will get back to that issue later but let us first generalise the
 properties a bit by making the operator a parameter:
 
 \begin{code}
@@ -1275,7 +1291,7 @@ propAssocA (+?) x y z =  (x +? y) +? z == x +? (y +? z)
 \end{code}
 
 Note that |propAssocA| is a higher order function: it takes a function
-(a binary operator named |(+?)|) as its first parameter.
+(a binary operator named |(+?)|) as its first parameter, and tests if it is associative.
 %
 It is also polymorphic: it works for many different types |a| (all
 types which have an |==| operator).
@@ -1317,12 +1333,14 @@ For completeness: these are the values:
 This is actually the underlying reason why some of the laws failed for
 complex numbers: the approximative nature of |Double|.
 %
-But to be sure there is no other bug hiding we need to make one more
-version of the complex number type: parameterise on the underlying
+Therefore, to ascertain that there is no other bug hiding, we need to move away from the
+implementation of |REAL| as |Double|.
+We do this by abstraction: we make one more
+version of the complex number type, which is parameterised on the underlying
 type for |REAL|.
 %
 At the same time we combine |ImagUnit| and |ToComplex| to
-|ToComplexCart|:
+|ToComplexCart|, which corresponds to the primitive from |a + bi| discussed above:
 %*TODO: perhaps explain more about the generalisation step.
 
 %TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
@@ -1364,15 +1382,16 @@ fromIntegerCS = toComplexSyn . fromInteger
 %endif
 
 With this parameterised type we can test the code for "complex rationals" to avoid rounding errors.
-%**TODO: add concrete example
-
+% **TODO: add concrete example
+\jp{What follows seem to be a very long detour. Some signposts may be in order.}
+\jp{But in fact it seems that we never got to the goal? Or I got lost}
 \paragraph{From syntax to semantics and back}
 %**TODO: Duplication? why here in Ch.1? To stress difference between syntax (big type with many "synonyms") and semantics (small type with "just what is needed").
 
 We have seen evaluation functions from abstract syntax to semantics
 (|eval :: Syn -> Sem|).
 %
-Often an inverse is also available: |embed :: Sem -> Syn|.
+Often an inverse is also available: |embed :: Sem -> Syn|.\jp{We have seen this before too?}
 %
 For our complex numbers we have
 %
@@ -1383,7 +1402,7 @@ embed (CS (x, y)) = ToComplexCart x y
 
 The embedding should satisfy a round-trip property:
 %
-|eval (embed s) == s| for all semantic complex numbers |s|.
+|eval (embed s) == s| for all semantic complex numbers |s|.\jp{And even this?}
 %
 Here is a diagram showing how the types and the functions fit together
 
@@ -1475,6 +1494,7 @@ Exercise: Find other pairs of operators satisfying a distributive law.
 \label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
+\jp{This looks like a detour inside the detour?}
 As a bit of preparation for the language of sequences and limits in
 later lectures we here spend a few lines on the notation and abstract
 syntax of sequences.
@@ -1578,7 +1598,7 @@ We will return to limits and their proofs in
 
 Here we just define one more common operation: the sum of a sequence
 (like \(\sigma = \sum_{i=0}^{\infty} 1/i!\)\footnote{Here |n! =
-  1*2* ... *n| is the factorial (sv: fakultet).}).
+  1*2* ... *n| is the factorial \lnOnly{(sv: fakultet)}.}).
 %
 Just as not all sequences have a limit, not all have a sum either.
 %
@@ -1630,9 +1650,11 @@ some operations (|conSeq|, |addSeq|, |liftSeq1|, |sums|, |scan|, \ldots) and som
 
 % ----------------------------------------------------------------
 
+
+
 %if False
 \subsection{Some helper functions (can be skipped)}
-
+\jp{Can this be tidied up?}
 \begin{code}
 type QQ     =  Ratio Integer
 
