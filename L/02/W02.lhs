@@ -523,6 +523,7 @@ how to prove them:
 
 \paragraph{Curry--Howard}
 %
+\jp{What follows seems to assume intuitionistic FOL only (?)}
 If we abbreviate ``is a proof'' as |:| and use the Haskell convention
 for function application we get
 %
@@ -583,7 +584,7 @@ For existential and universal quantification these are the definitions:
 %
 Note that we silently convert between |T| seen as a type (in |x : T|
 on the left) and |T| seen as a unary predicate on terms (in |T x| on
-the right).
+the right)\jp{But have we ever defined what a FOL type is? We also have Haskell-level types and so there is a big potential for confusion here. There is also the extremely tempting prospect of representing formulas as Haskell types and proofs as Haskell terms, directly.}.
 
 %**TODO make it an actual exercise
 A good exercise is to work out the rules for ``pushing negation
@@ -600,7 +601,7 @@ quantification.
 
 \subsection{Proof by contradiction}
 
-Let's try to express and prove the irrationality of the square
+Let's try\jp{are we going to fail?} to express and prove the irrationality of the square
 root of 2.
 %
 We have two main concepts involved: the predicate ``irrational'' and the
@@ -615,11 +616,11 @@ predicate ``is rational''.
 \begin{spec}
   R x = Exists (a:ZZ) (Exists (b:Pos) (b*x==a & GCD(a,b)==1))
 \end{spec}
-
+\jp{Why the GCD bit? This is strong version of rational which is easier to negate, but it should be justified at least a bit.}
 The classical way to prove a negation |not P| is to assume |P| and
 derive something absurd (some |Q| and |not Q|, for example).
 %
-Lets take |P = R r| and |Q = GCD(a,b)==1|.
+Lets take |P = R r| and |Q = GCD(a,b)==1|.\jp{Do we have r=2 at this point? From which point?}
 %
 Assuming |P| we immediately get |Q| so what we need is to prove |not
 Q|, that is |GCD(a,b)/=1|.
@@ -640,7 +641,7 @@ But then |GCD(a,b)>=2| which implies |not Q|.
 To sum up: by assuming |P| we can prove both |Q| and |not Q|.
 %
 Thus, by contradiction |not P| must hold.
-\jp{With the build of proof terms, I was fully expecting to see the above formalised as such.}
+\jp{With the build of proof terms, I was fully expecting to see the above formalised as such. We probably need quite a bit of stuff about GCD.}
 
 \subsection{Proof by cases}
 %
@@ -688,6 +689,7 @@ actually are!
 the axiom of the Excluded Middle.)
 
 \subsection{Functions as proofs}
+\jp{It seems that we're resetting (again) and we are going to use Haskell as a proof assisstant. At the very least signposting is necessary. }
 
 To prove a formula |P => Q| we assume a proof |p : P| and derive a
 proof |q : Q|.
@@ -739,8 +741,9 @@ But we can still use it as a tool for understanding and working with
 logic formulas and mathematical proofs.
 %
 Haskell supports limited forms of dependent types and more is coming
-every year but for proper dependently typed programming I recommend
-the language Agda.
+every year but for proper dependently typed programming we recommend
+the language Agda.\jp{make this a footnote?}
+
 
 %TODO: find the right place for the a note that the type of tuples is isomorphic to the (dependent) function type |{i : 1..n} -> Ai|.
 
@@ -752,7 +755,7 @@ and elimination rules.
 The propositional fragment of FOL is given by the rules for ∧, →, ⟷, ¬,
 ∨.
 %
-We can use the Haskell type checker to check proofs in this fragment,
+We can use the Haskell type-checker to check proofs in this fragment,
 using the functional models for introduction and elimination rules.
 %
 \begin{figure*}[tbp]
@@ -766,12 +769,12 @@ using the functional models for introduction and elimination rules.
 \end{figure*}
 %
 Examine Fig.~\ref{fig:AbstractFOL} (also available in the file
-\url{AbstractFOL.lhs}), which introduces an empty datatype for every
+\url{AbstractFOL.lhs}), which introduces an empty\jp{an abstract type would be much better} datatype for every
 connective (except ⟷), and corresponding types for the introduction
 and elimination rules.
 %
 The introduction and elimination rules are explicitly left
-undefined, but we can still combine them and type check the
+undefined\jp{also, abstract would be better.}, but we can still combine them and type check the
 results.
 %
 For example\footnote{The Haskell notation ``|FOL.Add|'' means the
@@ -796,6 +799,7 @@ unless we change the type.
 
 Another example, which is very useful, is ``ex falso quodlibet'',
 latin for ``from falsehood, anything (follows)''
+\jp{Why this stranglely complicated version instead of forall r. BOT -> r}
 %
 \begin{code}
 exFalso :: FOL.And q (FOL.Not q) -> p
@@ -860,10 +864,10 @@ disjoint union and in Haskell:
 %
 \subsection{Case study: there is always another prime}
 
-As an example of combining forall, exists and implication let us turn
+As an example of combining quantification (forall, exists) and implication let us turn
 to one statement of the fact that there are infinitely many primes.
 %
-If we assume we have a unary predicate expressing that a number is prime
+If we assume that we have a unary predicate expressing that a number is prime
 and a binary (infix) predicate ordering the natural numbers we can
 define a formula |IP| for ``Infinitely many Primes'' as follows:
 %
@@ -1139,7 +1143,7 @@ Exercise: prove that |0| is the \emph{only} limit point of |X|.
 This is a good exercises in quantifier negation!
 %
 \begin{spec}
-  not (Limp p X)                                  = {- Def. of |Limp| -}
+  not (Limp p X)                                   = {- Def. of |Limp| -}
   not (∃ getq : Q? ∀ ε > 0? getq ε ∈ B p ε)       = {- Negation of existential -}
   ∀ getq : Q? not (∀ ε > 0? getq ε ∈ B p ε)       = {- Negation of universal -}
   ∀ getq : Q? ∃ ε > 0? not (getq ε ∈ B p ε)       = {- Simplification -}
@@ -1187,7 +1191,7 @@ Infinite X|.
 Now we can move from limit points to the more familiar limit of a
 sequence.
 %
-At the core of DSLsofMath is the ability to analyse definitions from
+At the core of DSLsofMath\jp{should this be a macro?} is the ability to analyse definitions from
 mathematical texts, and here we will use the definition of the limit
 of a sequence from \citet[page 498]{adams2010calculus}:
 
