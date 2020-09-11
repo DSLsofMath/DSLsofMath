@@ -493,7 +493,7 @@ Exercise: using the above lemmas, prove |integrator (bernoulli p) f == p * integ
 
 \subsection{Random Variables}
 Even though we have already studied variables in detail (in Chapter
-\ref{ch:3}), it is good to come back to them for a moment before
+\ref{sec:types}), it is good to come back to them for a moment before
 returning to \emph{random} variables proper.
 
 According to Wikipedia, a variable has a different meaning in computer
@@ -509,7 +509,7 @@ science and in mathematics:
 \end{quote}
 
 By now we have a pretty good grip on variables in computer science. In
-Chapter \ref{ch:3}. we have described a way to reduce mathematical
+Chapter \ref{sec:types}. we have described a way to reduce mathematical
 variables (position \(q\) and velocity \(v\) in lagrangian mechanics)
 to computer science variables. This was done by expressing variables
 as \emph{functions} of a truly free variable, time (\(t\)). Time is a
@@ -1094,4 +1094,3 @@ Exercise: express the rest of the proof using our DSL
 % dante-methods : (bare-ghci)
 % mode: literate-haskell
 % End:
-
