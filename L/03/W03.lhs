@@ -11,7 +11,7 @@ type REAL = Double
 
 \subsection{Examples of types in mathematics}\label{types-in-mathematics}
 
-Types are sometimes mentioned explicitly in mathematical texts:
+Simple types and are sometimes mentioned explicitly in mathematical texts:
 
 \begin{itemize}
 \item \(x ∈ ℝ\)
@@ -20,10 +20,10 @@ Types are sometimes mentioned explicitly in mathematical texts:
 \item \((\_)² : ℝ → ℝ_{≥0}\)
 \end{itemize}
 
-The types of ``higher-order'' operators are usually not given
+However the types of ``higher-order'' operators are usually not given
 explicitly.
 %
-Here are some examples with the types added:
+Here are some examples with a possible assignment of types:
 
 \begin{itemize}
 \item |lim : (ℕ → ℝ) → ℝ| for \(lim_{n → ∞} \{a_n\}\)
@@ -45,6 +45,16 @@ Here are some examples with the types added:
     Exercise \ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
   \end{itemize}
 \end{itemize}
+
+The chief difficulty to overcome when assigning types for mathematical
+operators is that they often introduce (bind) variable names (see
+also \label{sec:pitfalls}). For example, in the above, $\lim_{n → ∞}$
+binds $n$ in $a_n$. In this book our stance is to make this binding
+obvious by letting the body of the limit ($a_n$ in the example) be a
+function. Thus we assign it the type $ℕ → ℝ$. Therefore the limit
+operator has a higher order type. A similar line of reasoning
+justifies the types of derivatives.
+
 
 \subsection{Typing Mathematics: derivative of a function}
 \label{sec:typeDerivative}

@@ -34,6 +34,7 @@ numbers and the infix operator |(%)| used to construct ratios
 (|1%7| is Haskell notation for $\frac{1}{7}$, etc.).
 
 \subsection{Intro: Pitfalls with traditional mathematical notation}
+\label{sec:pitfalls}
 
 \paragraph{A function or the value at a point?}
 
@@ -55,7 +56,7 @@ Paying attention to types and variable scope often helps to sort out
 these ambiguities.
 
 \paragraph{Scoping}
-
+\label{sec:scoping}
 The syntax and scoping rules for the integral sign are rarely
 explicitly mentioned, but looking at it from a software perspective
 can help.
