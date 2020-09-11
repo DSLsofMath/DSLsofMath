@@ -216,7 +216,7 @@ order in the term.)
 
 \subsection{First Order Logic}
 %
-
+\jp{The fact that this is no longer decidable (no ``eval'') should be said at some point.}
 %TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
 Our second DSL is that of \emph{First Order Logic\lnOnly{\footnote{Swedish: Första ordningens logik = predikatlogik}}},
 or FOL for short, and also known as Predicate Logic.
@@ -563,7 +563,8 @@ proves is the type for the program.
 
 \paragraph{Typed quantification}
 %
-In each instance of FOL, quantification is always over the full set of
+\jp{What is the purpose of this paragraph?}
+In each instance of FOL\jp{Have we talked about several instances of FOL?}, quantification is always over the full set of
 terms (the ``universe of discourse''), but it is often convenient to
 quantify over a subset with a certain property (like all even numbers,
 or all non-empty sets).
@@ -717,6 +718,7 @@ A proof of this is a two-argument function |p| which takes a term |t|
 and a proof of |T t| to a proof of |P t|.
 
 In pseudo-Haskell we can express the implication laws as follows:
+\jp{But this only makes sense \emph{after} one has accepted Haskell as a proof assistant. And then one may wonder if anything is gained by this exercise.}
 %
 \begin{spec}
   impIntro  : (A -> B) -> (A=>B)
@@ -994,9 +996,10 @@ The datatype corresponding to |Exists x (P x)| is a pair of a witness
 We sometimes write this type |(a:Term, P a)|.
 
 \subsection{Basic concepts of calculus}
+\jp{This is marked as a subjection but after reading the text it feels more like a new chapter is starting.}
 
 Now we have built up quite a bit of machinery to express logic
-formulas and proofs.
+formulas and proofs.\jp{But are we using it here? Except writing down formulas?}
 %
 It is time time to apply it to some concepts in calculus.
 %
@@ -1353,7 +1356,7 @@ exercise.)
 
 \subsection{Recap of syntax trees with variables, |Env| and |lookup|}
 
-% TODO reformulate in book form (or more earlier, or remove)
+% TODO reformulate in book form (or move earlier, or remove)
 
 This was frequently a source of confusion already the first week so
 there is already a question + answers earlier in this text.
