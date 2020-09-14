@@ -1306,9 +1306,9 @@ limit of a function of type |REAL -> REAL| from
 \end{quote}
 %
 The |lim| notation has four components: a variable name |x|, a point
-|a| an expression \(f(x)\) and the limit |L|.
+|a|, an expression \(f(x)\) and the limit |L|.
 %
-The variable name + the expression can be combined into just the
+The variable name and the expression can be combined into just the
 function |f| and this leaves us with three essential components: |f|,
 |a|, and |L|.
 %
@@ -1321,7 +1321,8 @@ If we apply our logic toolbox we can define |lim| starting something like this:
 lim f a L  =  Forall (epsilon > 0) (Exists (delta > 0) (P epsilon delta))
 \end{spec}
 %
-It is often useful to introduce a local name (like |P| here) to help
+when |P| is a predicate yet to define.
+Indeed, it is often useful to introduce a local name (like |P| here) to help
 break the definition down into more manageable parts.
 %
 If we now naively translate the last part we get this ``definition''
@@ -1353,6 +1354,7 @@ This means that each function |f| can have \emph{at most} one limit
 %
 (This is not evident from the definition and proving it is a good
 exercise.)
+\jp{Exercise: what does Adams means by ``delta possibly depends on epsilon''? How did we express that in our formal defintion? Hint: how whould you express that delta cannot depend on epsilon?}
 
 \subsection{Recap of syntax trees with variables, |Env| and |lookup|}
 

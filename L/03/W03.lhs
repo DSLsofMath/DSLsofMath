@@ -53,14 +53,15 @@ binds $n$ in $a_n$. In this book our stance is to make this binding
 obvious by letting the body of the limit ($a_n$ in the example) be a
 function. Thus we assign it the type $ℕ → ℝ$. Therefore the limit
 operator has a higher order type. A similar line of reasoning
-justifies the types of derivatives.
+justifies the types of derivatives, we study in detail how these play
+out first.
 
 
 \subsection{Typing Mathematics: derivative of a function}
 \label{sec:typeDerivative}
 
 Let's start simple with the classical definition of the derivative
-from \citet{adams2010calculus}:
+of \citet{adams2010calculus}:
 %
 \begin{quote}
   The \textbf{derivative} of a function |f| is another function |f'| defined by
@@ -99,7 +100,7 @@ definition of the function |D f|.
 %
 The definition is given for a fixed (but arbitrary) |x|.
 %
-(At this point it is useful to briefly look back to the definition of
+(At this point the reader may want to check the definition of
 ``limit of a function'' in \refSec{sec:LimitOfFunction}.)
 %
 The |lim| expression is using the (anonymous) function |g h = frac
@@ -122,7 +123,7 @@ With this notation, and |limAt x f = lim f x|, we obtain a point-free
 definition that can come in handy:
 %
 |D f = limAt 0 . psi f|.}
-
+\jp{But in chapter 2 lim was a predicate? Check.}
 The key here is that we name, type, and specify the operation of
 computing the derivative (of a one-argument function).
 %
@@ -145,23 +146,24 @@ What we cannot do at this stage is to actually \emph{implement} |D| in
 Haskell.
 %
 If we only have a function |f : REAL -> REAL| as a ``black box'' we
-cannot really compute the actual derivative |f' : REAL -> REAL|, only
+cannot really compute the actual derivative |f' : REAL -> REAL|, but only
 numerical approximations.
 %
-But if we also have access to the ``source code'' of |f|, then we can
+However if we also have access to the ``source code'' of |f|, then we can
 apply the usual rules we have learnt in calculus.
 %
 We will get get back to this question in \refSec{sec:computingDerivatives}.
 
 \subsection{Typing Mathematics: partial derivative}
 \label{sec:typePartialDerivative}
-
-Continuing on our quest of typing the elements of mathematical
-textbook definitions we now turn to a functions of more than one
+% https://books.google.com/ngrams/graph?year_end=2019&year_start=1800&corpus=26&content=quest+of%2C+quest+to&smoothing=3&direct_url=t1%3B%2Cquest%20of%3B%2Cc0%3B.t1%3B%2Cquest%20to%3B%2Cc0
+% "quest of" is archaic?
+Continuing on our quest to type the elements of mathematical
+textbook definitions, we now turn to a functions of more than one
 argument.
 %
-Our example here will is from page 169 of
-\cite{maclane1986mathematics}, where we read
+Our example here is from
+\citet[page~169]{maclane1986mathematics}, where we read
 
 \begin{linenumbers}
 \begin{quote}
@@ -199,7 +201,7 @@ f'x  :  U -> ℝ
 \end{spec}
 %
 The |x| in the subscript of |f'| is \emph{not} a real number, but a symbol
-(a |Char|).
+(a |Char|)\jp{Sounds overly naive. Haven't we cleared this up by now?}.
 
 The expression |(x, y)| has six occurrences.
 %
@@ -237,7 +239,7 @@ one we have discussed:
 lim : (X -> ℝ) -> {p | p ∈ ℝ, Limp p X } -> ℝ
 \end{spec}
 
-On line 1, |z = f (x, y)| probably does not mean that |z ∈ ℝ|,
+On line 1, |z = f (x, y)| probably does not mean that |z ∈ ℝ|,\jp{Why not? We have anyway |f(x,y) ∈ ℝ| ?}
 although the phrase ``the quantity |z|'' (on line 2) suggests this.
 %
 A possible interpretation is that |z| is used to abbreviate the
@@ -259,7 +261,7 @@ just a symbol.
 \subsection{Type inference and understanding: Lagrangian case study}
 \label{sec:Lagrangian}
 
-From (Sussman and Wisdom 2013):
+From (Sussman and Wisdom 2013):\jp{fix citation}
 
 \begin{quote}
   A mechanical system is described by a Lagrangian function of the
@@ -276,10 +278,10 @@ From (Sussman and Wisdom 2013):
 \[
   \frac{d}{dt} \frac{∂L}{∂\dot{q}} - \frac{∂L}{∂q} = 0
 \]
-
+%
 What could this expression possibly mean?
-
 \end{quote}
+\jp{Is the question in the quote?}
 
 To start answering the question, we start typing the elements involved:
 
@@ -293,8 +295,9 @@ To start answering the question, we start typing the elements involved:
 This is consistent with the description: ``Lagrangian function of the
 system state (time, coordinates, and velocities)''.
 %
-So, if we let ``coordinates'' be just one coordinate, we can take |i =
-3|:
+So, if we let ``coordinates'' be just one coordinate, then there is
+also a single velocity\footnote{A bit of domain knowledge is necessary
+  here} and so we can take |i = 3|:
 %
 \begin{spec}
   L : ℝ³ → ℝ
@@ -305,7 +308,8 @@ and we can call the three components |t : T| for time, |q : Q| for
 coordinate, and |v : V| for velocity.
 %
 (We use |T = Q = V = ℝ| in this example but it can help the reading to
-remember the different uses of |ℝ|.\jp{In fact the text suggests that there are several coordinates (and corresponding velocities); but here we simplify and assume only one of each.})
+remember the different uses of |ℝ| --- this would help for example to
+generalise to more than one coordinate.)
 
 \item Looking again at the same derivative, \(∂L / ∂q\) suggests that
   \(q\) is the name of a real variable, one of the three arguments to
@@ -327,7 +331,7 @@ remember the different uses of |ℝ|.\jp{In fact the text suggests that there ar
   \end{spec}
 %
   It follows that the equation expresses a relation between
-  \emph{functions}, therefore the \(0\) on the right-hand side is
+  \emph{functions}, therefore the \(0\) on the right-hand side of the Lagrange equation(s) is
   \emph{not} the real number \(0\), but rather the constant function
   |const 0|:
 
@@ -370,7 +374,7 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
   \end{spec}
 %
   We can now guess that the use of the plural form ``equations'' might
-  have something to do with the use of ``coordinates''.
+  have something to do with the use of ``coordinates'' in the plural.
 %
   In an |n|-dimensional space, a position is given by |n|
   coordinates.
@@ -386,12 +390,12 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
 %
   We would then have an equation for each of them.
 %
-  We will use |n=1| for the rest of this example.
+  But we will come back to use |n=1| for the rest of this example.
 
 \item Now that we have a path, the coordinates at any time are given
   by the path.
   %
-  And as the time derivative of a coordinate is a velocity, we can
+  And because the time derivative of a coordinate is a velocity, we can
   actually compute the trajectory of the full system state |(T, Q, V)|
   starting from just the path.
 %
@@ -471,14 +475,14 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
 \end{enumerate}
 
 So, we have figured out what the equation ``means'', in terms of
-operators we recognise.
+operators that we recognise.
 %
 If we zoom out slightly we see that the quoted text means something
 like:
 %
 If we can describe the mechanical system in terms of ``a Lagrangian''
 (|L : S -> ℝ|)\jp{what is S?}, then we can use the equation to check if a particular
-candidate path |w : T → ℝ| qualifies as a ``motion of the system'' or
+candidate path |w : T → ℝ| qualifies as a possible ``motion of the system'' or
 not.
 %
 The unknown of the equation is the path |w|, and as the equation
@@ -487,16 +491,6 @@ differential equation (a PDE).
 %
 We will not dig into how to solve such PDEs, but they are widely used
 in physics.
-
-%TODO (by DaHe) There's two more things I think should be added in this
-% chapter:
-% * Typing the conditional probability notation. The notation P(A | B) is
-%   something that I and others were confused during the statistics course. In one
-%   assignment during that course, my solution claimed something along the
-%   lines of that {P | A} was an event, that had a certain probability. So I
-%   think many would agree that this is indeed a very confusing notation, so it
-%   is a great idea to cover it in this book. Cezar had a very good rant about
-%   this during his guest lecture last year.
 
 \subsection{Playing with types}
 
@@ -527,8 +521,10 @@ Consider the following text from \citeauthor{maclane1986mathematics}'s
   \end{linenomath*}
 \end{linenumbers}
 %
-Typing the variables and the integration operators in this text was an
-exam question in 2016 and we will use it here as an example of getting
+\lnOnly{Typing the variables and the integration operators in this text was an
+  exam question in 2016.}
+%
+We will use the above example as an example of getting
 feedback from a type checker.
 %
 We start by declaring two types, |X| and |Y|, and a function |f|
@@ -542,12 +538,14 @@ f :: X -> Y
 f = undefined
 \end{code}
 %
-These ``empty'' |data|-declarations mean that Haskell now knows the
-types exist, but nothing about any values of those types.
+To the Haskell interpreter, such empty |data|-declarations mean that
+there is no way to construct any element for them. But at this stage
+of the specfication, we will use this notation to indicate that we do
+not know anything about values of those types.
 %
 Similarly, |f| has a type, but no proper implementation.
 %
-We will declare types of the rest of the variables as well, and as we
+We will declare types for the rest of the variables as well, and as we
 are not implementing any of them right now, we can just make one
 ``dummy'' implementation of a few of them in one go:
 %
@@ -555,7 +553,7 @@ are not implementing any of them right now, we can just make one
 (x, deriv, ff, a, b, int) = undefined
 \end{code}
 %
-We write |ff| for the capital |F| (to fit with Haskell's rules for
+We write |ff| for the capital |F| (to satisfy Haskell rules for
 variable names), |deriv| for the postfix prime, and |int| for the
 integral operator.
 %

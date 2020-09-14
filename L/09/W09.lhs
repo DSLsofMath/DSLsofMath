@@ -1,3 +1,14 @@
+
+%TODO (by DaHe) There's two more things I think should be added in this
+% chapter:
+% * Typing the conditional probability notation. The notation P(A | B) is
+%   something that I and others were confused during the statistics course. In one
+%   assignment during that course, my solution claimed something along the
+%   lines of that {P | A} was an event, that had a certain probability. So I
+%   think many would agree that this is indeed a very confusing notation, so it
+%   is a great idea to cover it in this book. Cezar had a very good rant about
+%   this during his guest lecture last year.
+
 \section{Probability Theory}
 
 \begin{code}
