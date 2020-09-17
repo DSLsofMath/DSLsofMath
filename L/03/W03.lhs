@@ -42,7 +42,7 @@ Here are some examples with a possible assignment of types:
     \cite{landau2001differential}): \(D₁\) for the partial derivative with
     respect to \(x₁\), etc.
   \item
-    Exercise \ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
+    Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
   \end{itemize}
 \end{itemize}
 
@@ -53,7 +53,7 @@ binds $n$ in $a_n$. In this book our stance is to make this binding
 obvious by letting the body of the limit ($a_n$ in the example) be a
 function. Thus we assign it the type $ℕ → ℝ$. Therefore the limit
 operator has a higher order type. A similar line of reasoning
-justifies the types of derivatives, we study in detail how these play
+justifies the types of derivatives. We study in detail how these play
 out first.
 
 
@@ -637,15 +637,15 @@ The ``trick'' of looking for an appropriate combinator with which to
 pre- or post-compose a function in order to makes types match is often
 useful.
 %
-It is similar to the casts one does automatically in expressions such
+It is similar to the type-casts one does automatically in expressions such
 as \(4 + 2.5\).
 
 One way to understand such casts from the point of view of functional
 programming is via \emph{type classes}.
 %
-As a reminder, the reason \(4 + 2.5\) works is because floating point
-values are members of the class |Num|, which includes the member
-function
+As a reminder, the reason that the expression \(4 + 2.5\) typechecks
+is because floating point values are members of the class |Num|, which
+includes the member function
 %
 \begin{spec}
   fromInteger   ::  Integer  ->  a
@@ -667,9 +667,10 @@ For example, in group theory, one starts by exploring the consequences
 of just the group structure, before one introduces, say, an order
 structure and monotonicity.
 
-The type classes of Haskell seem to have been introduced without
-relation to their mathematical counterparts, perhaps because of
-pragmatic considerations.
+The type classes of the Haskell standard libary (also known as the
+``Haskell prelude'') seem to have been introduced without much regard to
+standard mathematical structure, perhaps because of pragmatic
+considerations.
 %
 For now, we examine the numerical type classes |Num|, |Fractional|, and
 |Floating|.
@@ -686,7 +687,7 @@ This is taken from the Haskell documentation\footnote{Fig. 6.2 in
   \href{https://www.haskell.org/onlinereport/haskell2010/haskellch6.html}{section
     6.4 of the Haskell 2010 report}: \cite[Sect.~6.4]{haskell2010}.}
 but it appears that |Eq| and |Show| are not necessary, because there
-are meaningful instances of |Num| which don't support them:
+are meaningful instances of |Num| which don't support them, for example:
 %
 \label{sec:FunNumInst}
 \begin{code}
@@ -701,31 +702,35 @@ instance Num a => Num (x -> a) where
 \end{code}
 
 This instance for functions allows us to write expressions like |sin +
-cos :: Double -> Double| or |sq * double :: Integer -> Integer|.
+cos :: Double -> Double| or |sq * double :: Integer -> Integer|, with
+the meaning that an implicit argument is passed to all functions in an
+expression.
 %
-As another example:
+As another example, we can write |sin^2|, which the above instance assigns the following meaning:
 \begin{spec}
   sin^2 = \x -> (sin x)^(const 2 x) = \x -> (sin x)^2
 \end{spec}
 %
-thus the typical math notation \(\sin^2\) works fine in Haskell.
+thus the typical math notation \(\sin^2\) can work fine in Haskell, provided the above instance for functions of a fixed argument.
 %
-(Note that there is a clash with another use of superscript for functions: sometimes |f^n| means \emph{composition} of |f| with itself |n| times.
+(Note that there is a clash with another common use of superscript for functions in mathematical texts: sometimes |f^n| means \emph{composition} of |f| with itself |n| times.
 %
 With that reading \(sin^2\) would mean |\x->sin (sin x)|.)
 
 %
-Exercise: play around with this a bit in ghci.
-
+\begin{exercise}
+Play around with this a bit in ghci.
+\end{exercise}
+\jp{Can this be made more precise?}
 
 \subsubsection{Overloaded integers literals}
-
+\jp{Perhaps such ``haskell asides'' should be clearly marked as such.}
 As an aside, we will spend some time explaining a convenient syntactic
 shorthand which is very useful but which can be confusing: overloaded
 integers.
 %
 In Haskell, every use of an integer literal like |2|, |1738|, etc., is
-actually implicitly an application of |fromInteger| to the literal.
+actually implicitly an application of |fromInteger| to the literal typed as an |Integer|.
 %
 This means that the same program text can have different meaning
 depending on the type of the context.
@@ -735,7 +740,9 @@ number, a complex number, or even as a (constant) function (by the
 instance |Num (x -> a)|).
 
 The instance declaration of the method |fromInteger| above looks
-recursive, but is not.
+recursive, but is not: |fromInteger| is used at a different type on
+the left- and right-hand-side of the equal sign, and thus refers to
+two different functions.
 %
 The same pattern appeared already in \refSec{sec:firstFromInteger},
 which near the end included roughly the following lines:
@@ -750,13 +757,14 @@ To see why this is not a recursive definition we need to expand the
 type and to do this I will introduce a name for the right hand side
 (RHS): |fromIntC|.
 
+\jp{Tikz-ify this}
 \begin{verbatim}
 --          ComplexSyn r <---------- r <---------- Integer
 fromIntC =              toComplexSyn . fromInteger
 \end{verbatim}
 
-I have placed the types in the comment, with ``backwards-pointing''
-arrows indicating that
+I have placed the types in the comment, but with left-pointing function types
+arrows, indicating that
 %
 |fromInteger :: Integer -> r| and
 %
@@ -832,7 +840,9 @@ instance Floating a => Floating (x -> a) where
   -- and so on
 \end{code}
 %
-Exercise: complete the instance declarations.
+\begin{exercise}
+Complete the instance declarations.
+\end{exercise}
 
 These type classes represent an abstract language of algebraic and
 standard operations, abstract in the sense that the exact nature of
@@ -842,8 +852,8 @@ type class, only from that of its implementation.
 
 \subsection{Type classes in Haskell}
 
-We now abstract from |Num| and look at what a type class is and how it
-is used.
+We now abstract from the specific |Num| class and look at what a type
+class is in general, and how it is used.
 %
 One view of a type class is as a set of types.
 %
@@ -859,7 +869,7 @@ instances).
 In each Haskell module where |C| is in scope there is a certain
 collection of instance declarations.
 %
-Here is an example of a class with just two instances:
+Here is an example of a class with two instances:
 %
 \begin{code}
 class C a where
@@ -873,30 +883,30 @@ instance C Char where
 Here we see the second view of a type class: as a collection of
 overloaded methods (here just |foo|).
 %
-Overloaded here means that the same symbol can be used with different
+In this context, ``overloaded'' means that the same symbol can be used with different
 meaning at different types.
 %
 If we use |foo| with an integer it will add one, but if we use it with
 a character it will convert it to upper case.
 %
-The full type of |foo| is |C a => a -> a| and this means that it can
+The full type of |foo| is |C a => a -> a| and it means that it can
 be used at any type |a| for which there is an instance of |C| in
 scope.
 
-Instance declarations can also be parameterised:
+Instance declarations can also be parameterised on another instance. Consider for example:
 \begin{code}
 instance C a => C [a] where
   foo xs = map foo xs
 \end{code}
 %
-This means that for any type |a| which is already an instance of |C|
-we also make the type |[a]| an instance (recursively).
+In the above, the expression |C a => C [a]| means that for any type |a| which is already an instance of |C|
+we also make the type |[a]| an instance.
 %
-Thus, we now have an infinite collection of instances of |C|: |Char|,
+Thus, for example, by recursion we now have an infinite collection of instances of |C|: |Char|,
 |[Char]|, |[[Char]]|, etc.
 %
 Similarly, with the function instance for |Num| above, we immediately
-make the types |a->Double|, |a->(b->Double)|, etc.\ into instances
+make the types |a->Double|, |a->(b->Double)|, etc.\ into instances of |Num|
 (for all types |a|, |b|, \ldots).
 
 %TODO: parhaps make the ``looks recursive'' |fromInteger| example talk
@@ -931,13 +941,13 @@ and so on.
 
 If we want to get a bit closer to actually implementing |D| we quickly
 notice a problem: if |D| has type |(REAL -> REAL) -> (REAL -> REAL)|
-we have no way of telling which of these rules we should apply.
+have no way of telling which of these rules we should apply.
 %
-Given a real (semantic) function |f| as an argument, |D| cannot know
+That is, given an extensional (semantic) function |f|, the only thing that we can ever do is to evaluate |f| at given points, and thus we cannot know
 if this function was written using a |+|, or |sin| or |exp| as
-outermost operation.
+outermost operation.  
 %
-The only thing |D| could do would be to numerically approximate the
+The only thing that a derivative operator could do would be to numerically approximate the
 derivative, and that is not what we are exploring in this course.
 %
 Thus we need to take a step back and change the type that we work on.
@@ -946,15 +956,15 @@ All the rules in the table seem to work on \emph{syntactic} functions:
 abstract syntax trees \emph{representing} the real (semantic)
 functions.
 
-We observe that we can compute derivatives for any expressions made
+We observe that we can compute derivatives for any expression made
 out of arithmetical functions, standard functions, and their
 compositions.
 %
 In other words, the computation of derivatives is based on a domain
-specific langauge (a DSL) of expressions (representing functions in
+specific language (a DSL) of expressions (representing functions in
 one variable).
 %
-Here is the start of a grammar for this little language:
+Here is the start of a grammar for such a language:\jp{Is there any point in showing a grammar? Do we do it ever before or again?}
 %
 \begin{spec}
    expression  ∷=  const ℝ
@@ -999,7 +1009,7 @@ e1 :: FunExp
 e1 = Exp (Id :*: Id)
 \end{code}
 
-We can implement the derivative of |FunExp| expressions using the
+We can then implement the derivative of |FunExp| expressions using the
 rules of derivatives.
 %
 We want to implement a function |derive :: FunExp -> FunExp| which
@@ -1011,13 +1021,13 @@ makes the following diagram commute:
   |FunExp| \arrow[r, "|eval|"]                        & |Func|
 \end{tikzcd}
 
-As a formula we want
+That is, we want the following equality to hold:
 %
 \begin{spec}
      eval . derive  =  D . eval
 \end{spec}
 %
-or, in other words, for any expression |e :: FunExp|, we want
+in turn this means that any expression |e :: FunExp|, we want
 %
 \begin{spec}
      eval (derive e)  =  D (eval e)
@@ -1061,9 +1071,10 @@ derive     (e1 :*: e2)    =  (derive e1  :*:  e2)  :+:  (e1  :*:  derive e2)
 derive     (Exp e)        =  Exp e :*: derive e
 \end{code}
 %
-Exercise: complete the |FunExp| type and the |eval| and |derive|
+\begin{exercise}
+complete the |FunExp| type and the |eval| and |derive|
 functions.
-
+\end{exercise}
 \subsection{Shallow embeddings}
 \label{sec:evalD}
 
@@ -1086,7 +1097,7 @@ It can be more economical, since it needs no |eval|.
 %
 The question is: can we implement |derive| in the shallow embedding?
 
-Note that the reason the shallow embedding is possible is that the
+The reason that the shallow embedding is feasible is that the
 |eval| function is a \emph{fold}: first evaluate the sub-expressions
 of |e|, then put the evaluations together without reference to the
 sub-expressions.
@@ -1125,7 +1136,7 @@ compute |eval' (Exp e)|.
 %
 (There is no way to implement |eval'Exp :: Func -> Func|.)
 %
-Thus, it is not possible to directly implement |derive| using shallow
+Thus, it is not possible to directly implement |derive| using a shallow
 embedding; the semantics of derivatives is not compositional.
 %
 Or rather, \emph{this} semantics is not compositional.
@@ -1142,7 +1153,7 @@ evalD ::  FunExp  ->  FD Double
 evalD     e       =   (eval e, eval' e)
 \end{code}
 %
-Note: At this point, you are adviced to look up and solve
+Note: At this point, you are advised to look up and solve
 Exercise~\ref{exc:tuplingE1} on the ``tupling transform'' in case you
 have not done so already.
 
@@ -1165,7 +1176,7 @@ We compute, for example:
      in (exp f, exp f * f')
 \end{spec}
 %
-This semantics \emph{is} compositional and the |Exp| case is:
+This semantics \emph{is} compositional and the |Exp| case is as follows:
 %
 \begin{code}
 evalDExp ::  FD Double  ->  FD Double
@@ -1182,6 +1193,7 @@ instance Num a => Num (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
   fromInteger n        =  (fromInteger n, const 0)
 \end{code}
 %
-Exercise: implement the rest of the |Num| instance for |FD a|.
-
+\begin{exercise}
+Implement the rest of the |Num| instance for |FD a|.
+\end{exercise}
 %include E3.lhs

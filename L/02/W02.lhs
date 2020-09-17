@@ -1135,8 +1135,9 @@ getq ε = 1/getn ε
 getn ε = 1 + ceiling (1/ε)
 \end{spec}
 %
-Exercise: prove that |0| is the \emph{only} limit point of |X|.
-
+\begin{exercise}
+prove that |0| is the \emph{only} limit point of |X|.
+\end{exercise}
 \emph{Proposition}: If |X| is finite, then it has no limit points.
 
 \begin{spec}
@@ -1179,7 +1180,9 @@ Now, if we let |ε = minimum ds| we can be certain that
 |absBar (getq ε - p) >= ε| just as required (and |ε /= 0| because |p
 `notElem` xs|).
 
-Exercise: If |Limp p X| we now know that |X| is infinite.
+\begin{exercise}
+If |Limp p X| we now know that |X| is infinite.
+\end{exercise}
 %
 Show how to construct an infinite sequence |a : Nat -> REAL| of points
 in |X - {p}| which gets arbitrarily close to |p|.
@@ -1264,12 +1267,16 @@ The core evidence of |a haslim L| is the existence of such a function
 % TODO: perhaps swap the argument order in the definition of |Limp| to
 % make it fit better with |haslim|.
 
-Exercise: Prove that the limit of a sequence is unique.
+\begin{exercise}
+Prove that the limit of a sequence is unique.
+\end{exercise}
 
 %TODO: add the proof from file:~/src/DSLM/DSLsofMath/2016/Lectures/BasicConcepts.lhs
 
-Exercise: prove that |(a1 haslim L1) & (a2 haslim L2)| implies
+\begin{exercise}
+prove that |(a1 haslim L1) & (a2 haslim L2)| implies
 |(a1+a2) haslim (L1+L2)|.
+\end{exercise}
 
 % TODO: Perhaps include something about the relation between |haslim| and |Limp|
 

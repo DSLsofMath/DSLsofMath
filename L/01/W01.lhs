@@ -1374,13 +1374,15 @@ instance Num a => Num (ComplexSyn a) where
    (+)  = (:+:)
    (*)  = (:*:)
    fromInteger = fromIntegerCS
-   -- Exercise: add a few more operations (hint: extend |ComplexSyn| as well)
-   -- Exercise: also extend |eval|
 
 fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
 fromIntegerCS = toComplexSyn . fromInteger
 \end{code}
 %endif
+
+\begin{exercise}
+  Add a few more operations (hint: extend |ComplexSyn| as well) and extend |eval| appropriately.
+\end{exercise}
 
 With this parameterised type we can test the code for "complex rationals" to avoid rounding errors.
 % **TODO: add concrete example
@@ -1489,8 +1491,10 @@ that |(*c)| is a |(+)|-homomorphism.)
 % Answer: |max|
 
 %*TODO: numbering in the exercise
-Exercise: Find other pairs of operators satisfying a distributive law.
 
+\begin{exercise}
+Find other pairs of operators satisfying a distributive law.
+\end{exercise}
 \subsection{Notation and abstract syntax for (infinite) sequences}
 \label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
