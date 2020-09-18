@@ -134,7 +134,7 @@ We provide a wide range of applications of the DSLs introduced,
 so that the new concepts can be seen ``in action'' as soon as
 possible.
 
-In our view a course based this textbook should have two major learning outcomes.
+In our view a course based on this textbook should have two major learning outcomes.
 %
 First, the students should be able to design and implement a DSL in a
 new domain.
