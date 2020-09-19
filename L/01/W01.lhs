@@ -13,6 +13,7 @@ language Haskell and
 the code for this lecture is placed in a module called
 |DSLsofMath.W01| that starts here:
 \jp{have a reference to the code in a git repo? Perhaps already in the introductory chapter?}
+\TODO{It would also be useful to split up these imports into those needed early and those only needed in subsection \label{sec:complexcase} (to be introduced later).}
 
 \begin{code}
 module DSLsofMath.W01 where
@@ -22,7 +23,7 @@ import Data.Ratio (Rational, Ratio, (%))
 import Data.List (find)
 \end{code}
 
-These lines constitute the module header which usually start a Haskell
+These lines constitute the module header which usually starts a Haskell
 file.
 %
 We will not go into details of the module header syntax here but the
@@ -69,7 +70,7 @@ integrated.
 Comparing the part after the integral sign to the syntax of a function
 definition \(f(x) = x^2\) reveals a rather odd rule: instead of
 \emph{starting} with declaring the variable \(x\), the integral syntax
-\emph{ends} with the variable name, and also uses the letter ``d''. 
+\emph{ends} with the variable name, and also uses the letter ``d''.
 %
 (There are historical explanations for this notation, and it is
 motivated by computation rules in the differential calculus, but we
@@ -214,7 +215,7 @@ const y x == y|.
 The infix operator \verb+.+ (period) in Haskell is an implementation
 of the mathematical operation of function composition.
 %
-The period is an ASCII approximation of the composition symbol
+The period is a crude ASCII approximation of the composition symbol
 $\circ{}$ typically used in mathematics.
 %
 (The symbol $\circ{}$ is encoded as \verb"U+2218" and called \textsc{ring
@@ -252,7 +253,9 @@ and functions (arrows) as directed edges:
 \end{tikzcd}
 
 \caption{Function composition diagrams: in general, and two examples}
+\label{fig:funcomp}
 \end{figure}
+\TODO{Explain operator section somewhere: it is used as |(%1)| in Fig.~\ref{fig:funcomp}.}
 
 In Haskell we get the following type:
 
@@ -284,7 +287,7 @@ values\footnote{or better yet, meaningful values, as we shall see later}.
 %
 As an example, |sqrt|, the square root function, is partial if
 considered as a function from |REAL| to |REAL| but total if the domain
-is restricted to |RPos|.
+is restricted to |RPosz|.
 %
 In most programming languages the range is extended instead; |sqrt ::
 Double -> Double| where |sqrt (-1)| returns the ``error value'' |NaN|
@@ -317,22 +320,25 @@ course.
 Many programming languages provide so called ``functions'' which are
 actually not functions at all, but rather procedures: computations
 depending on some hidden state or exhibiting some other effect.
-%
+%{
+%format rand (x) = rand "(" x ")"
+%format fApp (x) = f "(" x ")"
 A typical example is |rand(N)| which returns a random number in the
 range |1..N|.
 %
 Treating such an ``impure function'' as a mathematical ``pure''
 function quickly leads to confusing results.
 %
-For example, we know that any pure function |f| will satisfy |x == y|
-implies |f(x) == f(y)|.
+For example, we know that any pure function |f| will satisfy `|x == y|
+implies |fApp(x) == fApp(y)|'.
 %
-As a special case we certainly want |f(x) == f(x)| for every |x|.
+As a special case we certainly want |fApp(x) == fApp(x)| for every |x|.
 %
 But with |rand| this does not hold: |rand(6)==rand(6)| will only be
 true occasionally.
 %
 Fortunately, in mathematics and in Haskell all functions are pure.
+%}
 
 %**TODO: Perhaps more about cartesion product, etc.
 %*TODO forward pointer to exercises about cardinality~\ref{exc:counting}
@@ -398,8 +404,8 @@ In the example of the Laplace transformation, this leads to
 Lap : (T -> CC) -> (S -> CC)
 \end{spec}
 %
-where |T = REAL| and |S = CC|
-\jp{But we use the variable name as a type name. This is perhaps also confusing?}
+where |T = REAL| and |S = CC|.
+\jp{But we use the variable name as a type name. This is perhaps also confusing? PJ: I don't understand. Which variable?}
 %
 Note that the function type constructor |(->)| is used three times
 here: once in |T -> CC|, once in |S -> CC| and finally at the top
@@ -530,7 +536,7 @@ name, population, and year of establishment of the town modelled.
 
 \paragraph{|Maybe| and parameterised types.}
 %
-It is very often possible describe a family of types using a type parameter.
+It is very often possible to describe a family of types using a type parameter.
 %
 One simple example is the type constructor |Maybe|:
 %
@@ -572,7 +578,7 @@ The type synonym
 type Env v s = [(v,s)]
 \end{spec}
 %
-is one way of expressing a partial function from |v| to |s|.
+is one way of expressing the type of partial functions from |v| to |s|.
 %
 As an example value of this type we can take:
 %
@@ -616,7 +622,7 @@ evalEnv vss var  =  findFst vss
 Or we can use the Haskell prelude function |lookup = flip evalEnv|:
 %
 \begin{spec}
-lookup :: (Eq a) => a -> [(a, b)] -> Maybe b
+lookup :: Eq a => a -> [(a, b)] -> Maybe b
 \end{spec}
 %
 We will use |Env| and |lookup| below (in \refSec{sec:ArithExp})
@@ -736,7 +742,7 @@ to a somewhat exaggerated attention to detail.
 
 Adams and Essex introduce complex numbers in Appendix A.
 %
-The section \emph{Definition of Complex Numbers} begins with:
+The section \emph{Definition of Complex Numbers} starts with:
 
 \begin{quote}
   We begin by defining the symbol |i|, called \textbf{the imaginary
@@ -764,19 +770,19 @@ far for numerical types such as |Nat| or |REAL|, and not for
 
 For the moment, we introduce a type for the symbol |i|, and, since we
 know nothing about other symbols, we make |i| the only member of this
-type:
-
+type.
+%
+We use a capital |I| in the |data| declaration because a lowercase
+constructor name would cause a syntax error in Haskell.
+%
+For convenience we add a synonym |i == I|.
+%
 \begin{code}
 data ImagUnits = I
 
 i :: ImagUnits
 i = I
 \end{code}
-%
-We use a capital |I| in the |data| declaration because a lowercase
-constructor name would cause a syntax error in Haskell.
-%
-For convenience we add a synonym |i == I|.
 %
 We can give the translation from the abstract syntax to the concrete
 syntax as a function |showIU|:
@@ -787,8 +793,8 @@ showIU     I               =   "i"
 \end{code}
 
 
-Next, we have the following definition:
-
+Next, in the book, we find the following definition:
+%
 \begin{quote}
   \textbf{Definition:} A \textbf{complex number} is an expression of
   the form
@@ -797,7 +803,7 @@ Next, we have the following definition:
 
   where |a| and |b| are real numbers, and |i| is the imaginary unit.
 \end{quote}
-
+%
 This definition clearly points to the introduction of a syntax (notice
 the keyword ``form'').
 %
@@ -809,32 +815,32 @@ commutative\footnote{See \refSec{sec:commutative} for more about
 A profitable way of dealing with such concrete syntax in functional
 programming is to introduce an abstract representation of it in the
 form of a datatype:
-
+%
 \begin{code}
 data ComplexA  =  CPlus1 REAL REAL ImagUnits  -- the form |a + bi|
                |  CPlus2 REAL ImagUnits REAL  -- the form |a + ib|
 \end{code}
-
+%
 We can give the translation from the abstract syntax to the concrete
 syntax as a function |showCA|:
-
+%
 \begin{code}
 showCA ::  ComplexA       ->  String
 showCA     (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ showIU i
 showCA     (CPlus2 x i y)  =  show x ++ " + " ++ showIU i ++ show y
 \end{code}
-
+%
 Notice that the type |REAL| is not implemented yet and it is not
 really even clearly implementable but we want to focus on complex
 numbers so we will approximate |REAL| by double precision floating
 point numbers for now.
-
+%
 \begin{code}
 type REAL = Double
 \end{code}
-
+%
 The text continues with examples:
-
+%
 \begin{quote}
   For example, $3 + 2i$, $\frac{7}{2} - \frac{2}{3}i$,
   $i\pi = 0 + i\pi$ and $-3 = -3 + 0i$ are all complex numbers.
@@ -842,7 +848,7 @@ The text continues with examples:
   The last of these examples shows that every real number can be
   regarded as a complex number.
 \end{quote}
-
+%
 The second example is somewhat problematic: it does not seem to be of
 the form |a + bi|.
 %
@@ -867,7 +873,7 @@ Table~\ref{tab:CompleSyntaxExamplesMathHaskell}.
   \caption{Examples of notation and abstract syntax for some complex numbers.}
   \label{tab:CompleSyntaxExamplesMathHaskell}
 \end{table}
-
+%
 %if False
 % This is just for testing.
 \begin{code}
@@ -878,16 +884,16 @@ testC1 =  [  CPlus1 3 2 I  ,    CPlus1 (7/2) (-2/3) I
 testS1 = map showCA testC1
 \end{code}
 %endif
-
+%
 We interpret the sentence ``The last of these examples \ldots'' to
 mean that there is an embedding of the real numbers in |ComplexA|,
 which we introduce explicitly:
-
+%
 \begin{code}
 toComplex :: REAL -> ComplexA
 toComplex x = CPlus1 x 0 I
 \end{code}
-
+%
 Again, at this stage there are many open questions.
 %
 For example, we can assume that the mathematical expression $i 1$
@@ -905,14 +911,14 @@ and not for the |bi| one!
 
 The text then continues with a parenthetical remark which helps us
 dispel these doubts:
-
+%
 \begin{quote}
   (We will normally use |a + bi| unless |b| is a complicated
   expression, in which case we will write |a + ib| instead.
 %
   Either form is acceptable.)
 \end{quote}
-
+%
 This remark suggests strongly that the two syntactic forms are meant
 to denote the same elements, since otherwise it would be strange to
 say ``either form is acceptable''.
@@ -922,24 +928,24 @@ After all, they are acceptable according to the definition provided earlier.
 Given that |a + ib| is only ``syntactic sugar'' for |a + bi|, we can
 simplify our representation for the abstract syntax, eliminating one
 of the constructors:
-
+%
 \begin{code}
 data ComplexB = CPlusB REAL REAL ImagUnits
 \end{code}
-
+%
 In fact, since it doesn't look as though the type |ImagUnits| will
 receive more elements, we can dispense with it altogether:
-
+%
 \begin{code}
 data ComplexC = CPlusC REAL REAL
 \end{code}
-
+%
 \noindent
 (The renaming of the constructor to |CPlusC| serves as a guard against
 the case that we have suppressed potentially semantically relevant syntax.)
 
 We read further:
-
+%
 \begin{quote}
   It is often convenient to represent a complex number by a single
   letter;
@@ -951,8 +957,7 @@ We read further:
 %
   Note that |w = z| if and only if |a = x| and |b = y|.
 \end{quote}
-
-
+%
 First, let us notice that we are given an important semantic
 information:
 %
@@ -962,6 +967,7 @@ of the components (the arguments to the constructor |CPlusC|).
 Another way of saying this is that |CPlusC| is injective.
 %
 In Haskell we could define this equality as:
+%
 \begin{code}
   instance Eq ComplexC where
     ComplexC a b == ComplexC x y = a == x && b == y
@@ -980,17 +986,23 @@ explicit by re-formulating the definition in terms of a |newtype|:
 \begin{code}
 newtype ComplexD = CD (REAL, REAL)   deriving Eq
 \end{code}
-
+%
 As we see it, the somewhat confusing discussion of using ``letters''
-to stand for complex numbers serves several purposes. First, it hints
-at the implicit typing rule that the symbols |z| and |w| should be
-complex numbers. Second, it shows that, in mathematical arguments, one
-needs not abstract over two real variables: one can instead abstract
-over a single complex variable. We already know that we have an
-isomorphism between pair of reals and complex numbers. But
-additionally, we have a notion of \emph{pattern matching}, as in the
-following definition:
-
+to stand for complex numbers serves several purposes.
+%
+First, it hints at the implicit typing rule that the symbols |z| and
+|w| should be complex numbers.
+%
+Second, it shows that, in mathematical arguments, one needs not
+abstract over two real variables: one can instead abstract over a
+single complex variable.
+%
+We already know that we have an isomorphism between pair of reals and
+complex numbers.
+%
+But additionally, we have a notion of \emph{pattern matching}, as in
+the following definition:
+%
 \begin{quote}
   \textbf{Definition:} If |z = x + yi| is a complex number (where |x|
   and |y| are real), we call |x| the \textbf{real part} of |z| and
@@ -1003,10 +1015,9 @@ following definition:
 < Im(z)  =  Im (x + yi)  =  y
 
 \end{quote}
-
 %
 This is rather similar to Haskell's \emph{as-patterns}:
-
+%
 \begin{code}
 re :: ComplexD        ->  REAL
 re z @ (CD (x , y))   =   x
@@ -1014,7 +1025,7 @@ re z @ (CD (x , y))   =   x
 im :: ComplexD        ->  REAL
 im z @ (CD (x , y))   =   y
 \end{code}
-
+%
 \noindent
 a potential source of confusion being that the symbol |z| introduced
 by the as-pattern is not actually used on the right-hand side of the
@@ -1023,7 +1034,7 @@ equations (although it could be).
 The use of as-patterns such as ``|z = x + yi|'' is repeated throughout
 the text, for example in the definition of the algebraic operations on
 complex numbers:
-
+%
 \begin{quote}
   \textbf{The sum and difference of complex numbers}
 
@@ -1035,18 +1046,18 @@ complex numbers:
 < w  -  z  =  (a - x)  +  (b - y)i
 
 \end{quote}
-
+%
 With the introduction of algebraic operations, the language of complex
 numbers becomes much richer.
 %
 We can describe these operations in a \emph{shallow embedding} in
 terms of the concrete datatype |ComplexD|, for example:
-
+%
 \begin{code}
 plusD :: ComplexD -> ComplexD -> ComplexD
 plusD (CD (a , b)) (CD (x , y))  =  CD ((a + x) , (b + y))
 \end{code}
-
+%
 \noindent
 or we can build a datatype of ``syntactic'' complex numbers from the
 algebraic operations to arrive at a \emph{deep embedding} as seen in
@@ -1067,7 +1078,6 @@ range of underlying numeric types.
 %
 The operations for |ComplexSem| are defined in module |CSem|,
 available in Appendix~\ref{app:CSem}.
-
 %
 \begin{figure}[tbph]
 \begin{spec}
@@ -1099,19 +1109,19 @@ We want a datatype |ComplexE| for the abstract syntax tree of
 expressions.
 %
 The syntactic expressions can later be evaluated to semantic values:
-
+%
 \begin{code}
 evalE :: ComplexE -> ComplexD
 \end{code}
-
+%
 The datatype |ComplexE| should collect ways of building syntactic
-expression representing complex numbers and we have so far seen
+expressions representing complex numbers and we have so far seen
 %
 the symbol |i|, an embedding from |REAL|, plus and times.
 %
 We make these four \emph{constructors} in one recursive datatype as
 follows:
-
+%
 %**TODO rename |ImagUnit| to just |I| (and adapt explanation)
 \begin{code}
 data ComplexE  =  ImagUnit  -- syntax for |i|, not to be confused with the type |ImagUnits|
@@ -1192,6 +1202,7 @@ assume that there exists a corresponding semantic function.
 %
 The next step is to implement these functions, but let us first list
 their types and compare them with the types of the syntactic constructors:
+%
 \begin{code}
 imagUnitD :: ComplexD                        -- |ComplexE|
 toComplexD :: REAL -> ComplexD               -- |REAL -> ComplexE|
@@ -1201,10 +1212,12 @@ timesD  :: ComplexD -> ComplexD -> ComplexD  -- |ComplexE -> ComplexE -> Complex
 As we can see, each use of |ComplexE| has been replaced be a use of |ComplexD|.
 %
 Finally, we can start filling in the implementations:
+%
 \begin{code}
 imagUnitD     = CD (0 ,  1)
 toComplexD r  = CD (r ,  0)
 \end{code}
+%
 The function |plusD| was defined earlier and |timesD| is left as an
 exercise for the reader.
 %
@@ -1223,8 +1236,7 @@ fromCD :: ComplexD -> ComplexE
 fromCD (CD (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 \end{code}
 %
-This function is injective.
-
+This function is injective: different complex numbers map to different syntactic expressions.
 
 \subsection{Laws, properties and testing}
 There are certain laws that we would like to hold for operations on complex
@@ -1250,9 +1262,12 @@ The simplest law is perhaps |square i = -1| from the start of
 propImagUnit :: Bool
 propImagUnit =  Times ImagUnit ImagUnit === ToComplex (-1)
 \end{code}
-Note the we use a new operator here, |(===)|. Indeed, we reserve the
-usual equality |(==)| for syntactic equality (and here the left hand
-side (LHS) is clearly not syntactically equal to the right hand side).
+%
+Note the we use a new operator here, |(===)|.
+%
+Indeed, we reserve the usual equality |(==)| for syntactic equality
+(and here the left hand side (LHS) is clearly not syntactically equal
+to the right hand side).
 %
 The new operator corresponds to |(===)| semantic equality, that is,
 for equality \emph{after evaluation}:
@@ -1273,7 +1288,7 @@ propFromCD s =  evalE (fromCD s) == s
 
 Other desirable laws are that |Plus| and |Times| should be associative
 and commutative and |Times| should distribute over |Plus|:
-
+%
 \begin{code}
 propAssocPlus  x y z     =  Plus (Plus x y) z    ===  Plus x (Plus y z)
 propAssocTimes x y z     =  Times (Times x y) z  ===  Times x (Times y z)
@@ -1285,12 +1300,12 @@ of |evalE| in itself.
 %
 We will get back to that issue later but let us first generalise the
 properties a bit by making the operator a parameter:
-
+%
 \begin{code}
 propAssocA :: Eq a => (a -> a -> a) -> a -> a -> a -> Bool
 propAssocA (+?) x y z =  (x +? y) +? z == x +? (y +? z)
 \end{code}
-
+%
 Note that |propAssocA| is a higher order function: it takes a function
 (a binary operator named |(+?)|) as its first parameter, and tests if it is associative.
 %
@@ -1305,23 +1320,23 @@ In Haskell there is a type class |Num| for different types of
 %
 We can try out |propAssocA| for a few of them.
 %
-
+%
 \begin{code}
 propAssocAInt     = propAssocA (+) ::  Int     -> Int     -> Int     -> Bool
 propAssocADouble  = propAssocA (+) ::  Double  -> Double  -> Double  -> Bool
 \end{code}
-
+%
 The first is fine, but the second fails due to rounding errors.
 %
 QuickCheck can be used to find small examples --- I like this one best:
-
+%
 \begin{code}
 notAssocEvidence :: (Double , Double , Double , Bool)
 notAssocEvidence = (lhs , rhs , lhs-rhs , lhs==rhs)
   where  lhs = (1+1)+1/3
          rhs =  1+(1+1/3)
 \end{code}
-
+%
 For completeness: these are the values:
 %
 \begin{spec}
@@ -1330,7 +1345,7 @@ For completeness: these are the values:
   ,  4.440892098500626e-16  -- The (very small) difference
   ,  False)
 \end{spec}
-
+%
 This is actually the underlying reason why some of the laws failed for
 complex numbers: the approximative nature of |Double|.
 %
@@ -1356,18 +1371,18 @@ data ComplexSyn r  =  ToComplexCart r r
 toComplexSyn :: Num a => a -> ComplexSyn a
 toComplexSyn x = ToComplexCart x 0
 \end{code}
-
+%
 From Appendix~\ref{app:CSem} we import |newtype ComplexSem r = CS (r ,
 r) deriving Eq| and the semantic operations |(.+.)| and |(.*.)|
 corresponding to |plusD| and |timesD|.
-
+%
 \begin{code}
 evalCSyn :: Num r => ComplexSyn r -> ComplexSem r
 evalCSyn (ToComplexCart x y) = CS (x , y)
 evalCSyn (l :+: r)  = evalCSyn l  .+.  evalCSyn r
 evalCSyn (l :*: r)  = evalCSyn l  .*.  evalCSyn r
 \end{code}
-
+%
 %if False
 \begin{code}
 instance Num a => Num (ComplexSyn a) where
@@ -1384,7 +1399,7 @@ fromIntegerCS = toComplexSyn . fromInteger
   Add a few more operations (hint: extend |ComplexSyn| as well) and extend |eval| appropriately.
 \end{exercise}
 
-With this parameterised type we can test the code for "complex rationals" to avoid rounding errors.
+With this parameterised type we can test the code for ``complex rationals'' to avoid rounding errors.
 % **TODO: add concrete example
 \jp{What follows seem to be a very long detour. Some signposts may be in order.}
 \jp{But in fact it seems that we never got to the goal? Or I got lost}
