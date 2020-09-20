@@ -1,10 +1,10 @@
 --- DSLsofMathNotes.tex	2019-01-30 22:59:03.340934864 +0100
-+++ DSLM_A6.tex	2019-01-29 22:59:47.513617701 +0100
++++ DSLM_A5.tex	2019-01-29 22:59:47.513617701 +0100
 @@ -1,5 +1,6 @@
  \documentclass[twoside]{article}
 -\usepackage{a4wide}
 +%\usepackage{a4wide}
-+\usepackage[a6paper,margin=5mm,landscape]{geometry}
++\usepackage[a5paper,margin=50pt,landscape]{geometry}
  \usepackage{amsmath}
  \usepackage{amsthm}
  \usepackage{mathrsfs}

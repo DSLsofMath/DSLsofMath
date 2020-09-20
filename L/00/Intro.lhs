@@ -5,7 +5,7 @@
 
 These lecture notes\reviseForBook{This book stems from ....} aim to cover the lectures and exercises of the
 recently introduced BSc-level course ``Domain-Specific Languages of
-Mathematics'' (at Chalmers Univeristy of Technology and University of
+Mathematics'' (at Chalmers University of Technology and University of
 Gothenburg).
 %
 The immediate aim of the \course{} is to improve the mathematical

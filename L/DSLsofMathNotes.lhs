@@ -92,7 +92,7 @@
 
 \title{Domain-Specific Languages of Mathematics: Lecture Notes}
 \author{Patrik Jansson \and Cezar Ionescu}
-%           {Chalmers Univeristy of Technology, Sweden}
+%           {Chalmers University of Technology, Sweden}
 %           {\texttt{patrikj@@chalmers.se}}
 %           {\texttt{cezar@@chalmers.se}}
 \begin{document}

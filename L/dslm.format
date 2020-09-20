@@ -211,8 +211,8 @@
 %format liftSeq2 = liftSeq "_2"
 
 
-%format .+. = "\mathbin{.\!+\!.}"
-%format .*. = "\mathbin{.\!*\!.}"
+%format .+. = "\mathbin{.\!\!+\!\!.}"
+%format .*. = "\mathbin{.\!\!*\!\!.}"
 %format CSem.+. = "\mathbin{\stackrel{\scriptscriptstyle" CSem "}{" +. "}}"
 %format CSem.*. = "\mathbin{\stackrel{\scriptscriptstyle" CSem "}{" *. "}}"
 

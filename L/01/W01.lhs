@@ -1273,7 +1273,7 @@ for equality \emph{after evaluation}:
 %
 \begin{code}
 (===) :: ComplexE -> ComplexE -> Bool
-z === w  =  evalE z == evalE w
+z === w {-"\quad"-} = {-"\quad"-} evalE z == evalE w
 \end{code}
 
 Another law is that |fromCD| is an embedding: if we start from a
@@ -1288,13 +1288,15 @@ propFromCD s =  evalE (fromCD s) == s
 Other desirable laws are that |Plus| and |Times| should be associative
 and commutative and |Times| should distribute over |Plus|:
 %
+\TODO{Commutative laws missing (but mentioned in the text).}
+%
 \begin{code}
-propAssocPlus  x y z     =  Plus (Plus x y) z    ===  Plus x (Plus y z)
-propAssocTimes x y z     =  Times (Times x y) z  ===  Times x (Times y z)
-propDistTimesPlus x y z  =  Times x (Plus y z)   ===  Plus (Times x y) (Times x z)
+propAssocPlus  x y z                 = {-"\quad"-}  Plus (Plus x y) z    ===  Plus x (Plus y z)
+propAssocTimes x y z                 =              Times (Times x y) z  ===  Times x (Times y z)
+propDistTimesPlus x y z {-"\quad"-}  =              Times x (Plus y z)   ===  Plus (Times x y) (Times x z)
 \end{code}
 
-These three laws actually fail, but due to any mistake in the implementation
+These three laws actually fail, but not due to any mistake in the implementation
 of |evalE| in itself.
 %
 We will get back to that issue later but let us first generalise the
@@ -1308,7 +1310,7 @@ propAssocA (+?) x y z =  (x +? y) +? z == x +? (y +? z)
 Note that |propAssocA| is a higher order function: it takes a function
 (a binary operator named |(+?)|) as its first parameter, and tests if it is associative.
 %
-It is also polymorphic: it works for many different types |a| (all
+It property is also polymorphic: it works for many different types |a| (all
 types which have an |==| operator).
 
 Thus we can specialise it to |Plus|, |Times| and other binary
@@ -1352,7 +1354,7 @@ Therefore, to ascertain that there is no other bug hiding, we need to move away 
 implementation of |REAL| as |Double|.
 We do this by abstraction: we make one more
 version of the complex number type, which is parameterised on the underlying
-type for |REAL|.
+type for~|REAL|.
 %
 At the same time we combine |ImagUnit| and |ToComplex| to
 |ToComplexCart|, which corresponds to the primitive from |a + bi| discussed above:
@@ -1377,9 +1379,9 @@ corresponding to |plusD| and |timesD|.
 %
 \begin{code}
 evalCSyn :: Num r => ComplexSyn r -> ComplexSem r
-evalCSyn (ToComplexCart x y) = CS (x , y)
-evalCSyn (l :+: r)  = evalCSyn l  .+.  evalCSyn r
-evalCSyn (l :*: r)  = evalCSyn l  .*.  evalCSyn r
+evalCSyn (ToComplexCart x y)  = CS (x , y)
+evalCSyn (l  :+:  r)          = evalCSyn l  .+.  evalCSyn r
+evalCSyn (l  :*:  r)          = evalCSyn l  .*.  evalCSyn r
 \end{code}
 %
 %if False
@@ -1525,7 +1527,7 @@ We can also add sequences componentwise (also called ``pointwise''):
 addSeq :: Num a => Seq a -> Seq a -> Seq a
 addSeq f g i = f i + g i
 \end{code}
-and in general lift any binary operation |op :: a -> b -> c| to the
+and in general we can lift any binary operation |op :: a -> b -> c| to the
 corresponding, pointwise, operation of sequences:
 \begin{code}
 liftSeq2 :: (a->b->c) -> Seq a -> Seq b -> Seq c
@@ -1602,18 +1604,18 @@ The general pattern is to start at zero and accumulate the sum of
 initial prefixes of the input sequence.
 %
 The definition of |sums| uses |scan| which is a generalisation which
-``sums'' with a user-supplied operator |(+)| starting from an
+``sums'' with a user-supplied operator |(+?)| starting from an
 arbitrary |z| (instead of zero).
 %
 \begin{code}
 scan :: (b->a->b) -> b -> Seq a -> Seq b
-scan (+) z a = s
+scan (+?) z a = s
   where  s 0 = z
-         s i = s (i-1)  +  a i
+         s i = s (i-1)  +?  a i
 \end{code}
 %
 And by combining this with limits we can state formally that the sum
-of a sequence |a| exists and is |S| iff the limit of |sums a| exists
+of an infinite sequence |a| exists and is |S| iff the limit of |sums a| exists
 and is |S|.
 %
 As a formula we get |Just S = lim (sums a)|, and for our example it
@@ -1621,7 +1623,7 @@ turns out that it converges and that
 \(\sigma = \sum_{i=0}^{\infty} 1/i! = e\) but we will not get to that
 until \refSec{sec:exp}.
 
-We will also return to limits in \refSec{sec:typePartialDerivative}
+We will also return to (another type of) limits in \refSec{sec:typePartialDerivative}
 about derivatives where we explore variants of the classical
 definition
 %

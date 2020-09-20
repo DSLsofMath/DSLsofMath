@@ -5,12 +5,20 @@ default: $(NAME).pdf
 nix::
 	nix-shell --run "make"
 
-Small.tex: DSLsofMathNotes.tex
-	cp DSLsofMathNotes.tex Small.tex
+DSLM_A6.tex: DSLsofMathNotes.tex
+	cp DSLsofMathNotes.tex DSLM_A6.tex
 	patch < A6_landscape.patch
 
-Small.pdf: Small.tex
-	latexmk -pdf Small.tex
+DSLM_A6.pdf: DSLM_A6.tex
+	latexmk -pdf DSLM_A6.tex
+
+DSLM_A5.tex: DSLsofMathNotes.tex
+	cp DSLsofMathNotes.tex DSLM_A5.tex
+	patch < A5_landscape.patch
+
+DSLM_A5.pdf: DSLM_A5.tex
+	latexmk -pdf DSLM_A5.tex
+
 
 $(NAME).pdf: $(NAME).tex
 	latexmk -pdf $(NAME).tex
