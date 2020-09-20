@@ -386,6 +386,13 @@ be possible to pick up quite a bit of Haskell along the way.
 
 \subsection{Notation and code convention}
 
+The source code of the book, including all the Haskell code, is
+available on GitHub in the repository
+\url{https://github.com/DSLsofMath/DSLsofMath}.
+%
+The reader is encouraged to play with the examples to get a feeling for
+how they work.
+
 Each chapter ends with exercises to help the reader practice the
 concepts just taught.
 %

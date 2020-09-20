@@ -11,8 +11,7 @@ We will implement certain concepts in the functional programming
 language Haskell and
 %
 the code for this lecture is placed in a module called
-|DSLsofMath.W01| that starts here:
-\jp{have a reference to the code in a git repo? Perhaps already in the introductory chapter?}
+|DSLsofMath.W01| that starts here\footnote{As mentioned already in the introduction, the code is available on \href{https://github.com/DSLsofMath/DSLsofMath}{GitHub}.}:
 \TODO{It would also be useful to split up these imports into those needed early and those only needed in subsection \label{sec:complexcase} (to be introduced later).}
 
 \begin{code}
