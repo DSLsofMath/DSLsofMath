@@ -1400,46 +1400,12 @@ fromIntegerCS = toComplexSyn . fromInteger
 \end{exercise}
 
 With this parameterised type we can test the code for ``complex rationals'' to avoid rounding errors.
-% **TODO: add concrete example
-\jp{What follows seem to be a very long detour. Some signposts may be in order.}
-\jp{But in fact it seems that we never got to the goal? Or I got lost}
-\paragraph{From syntax to semantics and back}
-%**TODO: Duplication? why here in Ch.1? To stress difference between syntax (big type with many "synonyms") and semantics (small type with "just what is needed").
-
-We have seen evaluation functions from abstract syntax to semantics
-(|eval :: Syn -> Sem|).
-%
-Often an inverse is also available: |embed :: Sem -> Syn|.\jp{We have seen this before too?}
-%
-For our complex numbers we have
-%
-\begin{code}
-embed :: ComplexSem r -> ComplexSyn r
-embed (CS (x, y)) = ToComplexCart x y
-\end{code}
-
-The embedding should satisfy a round-trip property:
-%
-|eval (embed s) == s| for all semantic complex numbers |s|.\jp{And even this?}
-%
-Here is a diagram showing how the types and the functions fit together
-
-\begin{tikzcd}
-  |ComplexSyn r| \arrow[d, bend left, "|eval|"]  \arrow[loop right, "|embed . eval|"] \\
-  |ComplexSem r| \arrow[u, bend left, "|embed|"] \arrow[loop right, "|eval . embed|"]
-\end{tikzcd}
-
-%TODO: Perhaps add typed quantification
-%
-Exercise~\ref{exc:embedeval}: What about the opposite direction?
-%
-When is |embed (eval e) == e|?
+%**TODO: add concrete example
 
 %TODO: perhaps include
 % We can also state and check properties relating the semantic and the syntactic operations:
-
+%
 % |a + b = eval (Plus (embed a) (embed b))| for all |a| and |b|.
-
 \paragraph{More about laws}%
 \label{sec:commutative}
 
@@ -1514,7 +1480,7 @@ Find other pairs of operators satisfying a distributive law.
 \label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
-\jp{This looks like a detour inside the detour?}
+\jp{This looks like a detour?}
 As a bit of preparation for the language of sequences and limits in
 later lectures we here spend a few lines on the notation and abstract
 syntax of sequences.

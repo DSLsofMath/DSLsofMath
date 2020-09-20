@@ -190,7 +190,25 @@
 \begin{exercise}
   \label{exc:embedeval}
 
-  When is |embed (eval e) == e|?
+We can embed semantic complex numbers in the syntax:
+%
+\begin{code}
+embed :: ComplexSem r -> ComplexSyn r
+embed (CS (x, y)) = ToComplexCart x y
+\end{code}
+%
+The embedding should satisfy a round-trip property:
+%
+|eval (embed s) == s| for all semantic complex numbers |s|.
+%
+Here is a diagram showing how the types and the functions fit together
+
+\begin{tikzcd}
+  |ComplexSyn r| \arrow[d, bend left, "|eval|"]  \arrow[loop right, "|embed . eval|"] \\
+  |ComplexSem r| \arrow[u, bend left, "|embed|"] \arrow[loop right, "|eval . embed|"]
+\end{tikzcd}
+
+What about the opposite direction: when is |embed (eval e) == e|?
 
 Step 0: type the quantification: what is the type of |e|?
 
