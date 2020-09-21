@@ -26,11 +26,16 @@
 \usepackage{pdfpages}
 \usepackage{tabu}
 \newtheorem{theorem}{Theorem}
-% \newenvironment{exercise}% environment name
-% {% begin code
-%   \textbf{Exercise}\begin{itshape}%
-% }%
-% {\end{itshape}}% end code
+\newenvironment{exercise}% environment name
+{% begin code
+  \textbf{Exercise}\begin{itshape}%
+}%
+{\end{itshape}}% end code
+\newenvironment{solution}% environment name
+{% begin code
+  \textbf{Solution:}%
+}%
+{}% end code
 \newcommand\jp[1]{\todo{JP: #1}}
 \newcommand\pedantic[1]{\footnote{Pedantic remark: #1}}
 

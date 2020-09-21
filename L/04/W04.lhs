@@ -39,10 +39,14 @@ import DSLsofMath.FunExp
 \subsection{Compositional semantics and homomorphisms}
 % (Based on ../../2016/Lectures/Lecture06  )
 
-\paragraph{Homomorphisms.}
+\paragraph{Homomorphisms}
 %
-Consider the following definition of a homomorphism predicate |H2|
-relating a function and two binary operators
+According to Wikipedia: ``A homomorphism is a structure-preserving map
+between two algebraic structures of the same type''. To capture this,
+in a first instance\footnote{a generalisation will come later in the
+  chapter}, we can define a ternary predicate |H2|. The first argument
+|h|, is the ``map''. The second (|Op|) and third (|op|) arguments
+represent the algebraic structures.
 %
 \begin{spec}
   H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
@@ -78,7 +82,7 @@ that they hold.
 
 \subsubsection{An example of a non-compositional function}
 
-Consider a very simple datatype of integer expressions:
+Consider a datatype of very simple integer expressions:
 %
 \begin{code}
 data E = Add E E | Mul E E | Con Integer deriving Eq
@@ -119,7 +123,7 @@ But to practice the definition of homomorphism we will here check if
 |even| or |isPrime| is a homomorphism from |E| to |Bool|.
 
 \paragraph{Is |even| a homomorphism?} Let's try to define |even : E ->
-Bool| with the usual ``wishful thinking'' pattern:
+Bool| with the usual induction pattern (``wishful thinking''):
 %
 \begin{code}
 even (Add x y)  =  evenAdd (even x) (even y)
@@ -147,6 +151,7 @@ evenAdd = (==)
 evenMul = (||)
 evenCon = (0==).(`mod` 2)
 \end{code}
+\footnote{The definition would have been easier if we had taken odd instead of even. You can try it out as an exercise.}
 %
 Exercise: prove |H2(even,Add,evenAdd)| and |H2(even,Mul,evenMul)|.
 
@@ -190,7 +195,7 @@ and |H2(isPrime,Add,isPrimeAdd)|.
 But as we also know that |False /= True| we have a contradiction.
 %
 Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
-to |Bool|.
+to |Bool|, regardless of the choice of the operator corresponding to addition.
 
 \subsubsection{Compositional functions can be ``wrong''}
 %
@@ -206,7 +211,7 @@ We can view |pretty| as an alternative |eval| function for a semantics
 using |String| as the semantic domain instead of the more natural
 |Integer|.
 %
-We can implement |pretty| in the usual way as a ``fold'' over the
+We can implement |pretty| in the usual way as a ``fold''\jp{Fold is defined only informally below} over the
 syntax tree using one ``semantic constructor'' for each syntactic
 constructor:
 %
@@ -250,10 +255,10 @@ There are many ways to fix this, some more ``pretty'' than others, but
 the main problem is that some information is lost in the translation:
 |pretty| is not invertible.
 
-Thus, we can see that a function can be a homomorphism and still
+Thus, we can see that a function can be a homomorphism and still be
 ``wrong''.
 
-\paragraph{For the curious.}
+\paragraph{For the curious}
 %
 One solution to the problem with parentheses is to create three
 (slightly) different functions intended for printing in different
@@ -309,7 +314,7 @@ In our case a three-element |Precedence| would be enough.
 
 In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
 and an |eval| function of type |Syn -> Sem|), we call the semantics
-\emph{compositional} if we can implement |eval| as a fold.
+\emph{compositional} if we can implement |eval| as a fold\jp{So is every homomorphism a fold?}.
 %
 Informally a ``fold'' is a recursive function which replaces each
 abstract syntax constructor |Ci| of |Syn| with a ``semantic
@@ -446,7 +451,7 @@ To sum up, by defining a class |IntExp| (and some instances) we can
 use the metods (|add|, |mul|, |con|) of the class as ``smart
 constructors'' which adapt to the context.
 %
-An overloaded expression, like |seven :: Num a => a|, which only uses
+An overloaded expression, like |seven :: IntExp a => a|, which only uses
 these smart constructors can be instantiated to different types,
 ranging from the syntax tree type |E| to different semantic
 interpretations (like |Integer|, and |String|).
@@ -565,12 +570,12 @@ with composition |(a->a,id, (.))|.
 %
 It is a good exercise to check that the laws are satisfied.
 %
-(An ``endofunction'' is simply a function of type |X->X| for some set
+(An ``endofunction'', also known as ``endomorphism'' is a function of type |X->X| for some set
 |X|.)
 
 
 In mathematics, as soon as there are several examples of a structure,
-the question of what ``translation between them'' means comes up.
+the question of what a ``translation between them'' means comes up.
 %
 An important class of such ``translations'' are ``structure preserving
 maps'' called \emph{homomorphisms}.
@@ -590,7 +595,7 @@ as follows:
 %
 What we recognize as the familiar laws of exponentiation and
 logarithms are actually examples of the homomorphism conditions for
-|exp| and |log|.
+|exp| and |log|, which relate the additive and multiplicative structures of reals and positive reals.
 %
 Back to Wikipedia:
 %
@@ -601,7 +606,7 @@ every operation |fA| of |A| and corresponding |fB| of |B| (of arity,
 say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
 \end{quote}
 
-Our examples |exp| and |log| are homomorphisms between monoids and the
+Our examples |exp| and |log| are homomorphisms between monoids (either the additive monoid or the mutiplicative monoid). The
 general monoid homomorphism conditions for |h : A -> B| are:
 %
 \begin{spec}
@@ -635,10 +640,11 @@ instance Monoid MNat where
 In mathematical texts the constructors |M| and |A| are usually omitted
 and below we will stick to that tradition.
 
-\paragraph{Exercise:} characterise the homomorphisms from |ANat| to |MNat|.
-
-Solution:
+\begin{exercise}
+Characterise the homomorphisms from |ANat| to |MNat|.
+\end{exercise}
 %
+\begin{solution}
 Let |h : ANat -> MNat| be a homomorphism.
 %
 Then it must satisfy the following conditions:
@@ -652,7 +658,7 @@ For example |h (x + x) = h x * h x = (h x) ^ 2| which for |x = 1|
 means that |h 2 = h (1 + 1) = (h 1) ^ 2|.
 
 More generally, every |n| in |ANat| is equal to the sum of |n| ones:
-|1 + 1 + ... + 1|.
+|1 + 1 + ... + 1|.\jp{Here you have to talk about associativity and unit laws, otherwise it's too much to assume.}
 %
 Therefore
 %
@@ -662,12 +668,19 @@ h n = (h 1) ^ n
 %
 Every choice of |h 1| ``induces a homomorphism''.
 %
-This means that the value of the function |h| for any natural number,
+This means that the value of the function |h|, for any natural number,
 is fully determined by its value for |1|.
+\end{solution}
 
-\paragraph{Exercise:} show that |const| is a homomorphism .
+\begin{exercise}
+  Show that |const| is a homomorphism\jp{What structure are we talking
+    about here? Also, if the additive one (minus zero), is it
+    reasonable to expect that we remember that instance for functions
+    here?}
+\end{exercise}
 %
-The distribution law can be shown as follows:
+The distribution law\jp{This is the first time that this name is used. Also, isn't it simply the homomorphism law?}
+can be shown as follows:
 %
 \begin{spec}
   h a + h b                     =  {- |h = const| in this case -}
@@ -683,11 +696,14 @@ wonder if there is a homomorphism in the other direction.
 %
 The answer is ``Yes, many''.
 %
-Exercise: Show that |apply c| is a homomorphism for all |c|, where
+\begin{exercise}
+Show that |apply c| is a homomorphism for all |c|, where
 |apply x f = f x|.
+\end{exercise}
+
 
 \subsubsection{Homomorphism and compositional semantics}
-
+\jp{Seems like a repeat, what is new in this subsection.}
 Earlier, we saw that |eval| is compositional, while |eval'| is not.
 %
 Another way of phrasing that is to say that |eval| is a homomorphism,
@@ -710,8 +726,10 @@ instance Floating FunExp where
 %
 and so on.
 %
-(Exercise for the reader: complete the type instances for |FunExp|.)
 
+\begin{exercise}
+Complete the type instances for |FunExp|.
+\end{exercise}
 For instance, we have
 %
 \begin{spec}
@@ -722,7 +740,7 @@ eval (Exp e)      =  exp (eval e)
 These properties do not hold for |eval'|, but do hold for |evalD|.
 
 The numerical classes in Haskell do not fully do justice to the
-structure of expressions, for example, they do not contain an identity
+structure of expressions.\jp{Here you are taking about the language of functions of one variable, but this is very hard to infer from the context.} For example, they do not contain an identity
 operation, which is needed to translate |Id|, nor an embedding of
 doubles, etc.
 %
@@ -732,7 +750,7 @@ If they did, then we could have evaluated expressions more abstractly:
 eval :: GoodClass a  =>  FunExp -> a
 \end{spec}
 %
-where |GoodClass| gives exactly the structure we need for the
+where |GoodClass| gives exactly the structure needed for the
 translation.
 %
 With this class in place we can define generic expressions using smart
@@ -755,10 +773,13 @@ testFu :: Func
 testFu = twoexp
 \end{code}
 
-Exercise: define the class |GoodClass| and instances for |FunExp| and
+\begin{exercise}
+Define the class |GoodClass| and instances for |FunExp| and
 |Func = REAL -> REAL| to make the example work.
+\end{exercise}
 %
 Find another instance of |GoodClass|.
+\jp{I am lost here.}
 %
 \begin{code}
 class GoodClass t where
@@ -794,7 +815,7 @@ We can always define a homomorphism from |FunExp| to \emph{any}
 instance of |GoodClass|, in an essentially unique way.
 %
 In the language of category theory, the datatype |FunExp| is an
-initial algebra.
+initial algebra\jp{Probably should be a footnote. Or should we define an explain this term properly and use it below?}.
 
 Let us explore this in the simpler context of |Monoid|.
 %
