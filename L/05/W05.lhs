@@ -16,7 +16,7 @@ A \textbf{polynomial} is a function $P$ whose value at $x$ is
 \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
 
 where $a_n$, $a_{n-1}$, \ldots, $a_1$, and $a_0$, called the
-\textbf{coefficients} of the polymonial [misspelled in the book], are
+\textbf{coefficients} of the polymonial [\textit{sic}], are
 constants and, if $n > 0$, then $a_n ≠ 0$.
 %
 The number $n$, the degree of the highest power of $x$ in the
@@ -46,7 +46,7 @@ function.
 Thus, what is meant is
 
 \begin{quote}
-  A \textbf{polynomial} is a function $P : ℝ → ℝ$ which is either
+  A \textbf{polynomial} is a function $P : ℝ → ℝ$ which either is the
   constant zero, or there exist $a_0$, \ldots, $a_n$ ∈ ℝ with $a_n ≠ 0$
   such that, for any $x ∈ ℝ$
 
@@ -55,7 +55,7 @@ Thus, what is meant is
 
 Given the coefficients $a_i$ we can evaluate $P$ at any given $x$.
 %
-Assuming the coefficients are given as
+Ignoring the condition on coefficients for now, we can assume that the coefficients are given as a list
 
 \begin{spec}
 as = [a0, a1, ..., an]
@@ -74,7 +74,9 @@ and thus identify |[REAL]| as the type for the (abstract) syntax (for
 polynomials) and |(REAL -> REAL)| as the type of the semantics (for
 polynomial functions).
 %
-Exercise: Show that this evaluation function gives the same result as the formula above.
+\begin{exercise}
+Show that this evaluation function gives the same result as the formula above.
+\end{exercise}
 
 Using the |Num| instance for functions we can rewrite |eval| into
 a one-argument function (returning a polynomial function):
@@ -101,7 +103,7 @@ This semantic definition only requires that the function |P|
 (Has the same value for all |x|.)
 %
 This may seem pedantic, but here is an interesting example of a family
-of functions which syntactically looks very trigonometric:
+of functions which syntactically looks very\jp{what is the subtext here?} trigonometric:
 %
 \[T_n(x) = \cos (n*\arccos(x))\ .\]
 %
@@ -126,7 +128,8 @@ The valid lists are those \emph{finite} lists in the set
   {[0]} ∪ {(a : as) | last (a : as) ≠ 0}
 \end{spec}
 
-We cannot express the |last (a : as) ≠ 0| in Haskell, but we can
+The fact that the element should be non-zero is easy to express as a Haskell expression (|last (a : as) ≠ 0|), but not so easy
+to express in the \emph{types}. But we can easily
 express the condition that the list should not be empty:
 
 \begin{code}
@@ -140,6 +143,7 @@ list of coefficients we can use |[a]| instead of |Poly a|.
 Basically, we then use |[]| as the syntax for the ``zero polynomial''
 and |(c:cs)| for all non-zero polynomials.
 
+\jp{But it appears that this ``validity'' is there only to define the degree. Terrible.}
 The relationship between |Poly a| and |[a]| is given by the following
 functions:
 
@@ -158,7 +162,7 @@ instance Show a => Show (Poly a) where
 \end{code}
 
 Since we only use the arithmetical operations, we can generalise our
-evaluator:
+evaluator to an arbitrary |Num| type.
 
 \begin{code}
 evalPoly :: Num a => Poly a -> (a -> a)
@@ -178,7 +182,7 @@ For example, the homomorphism condition gives for |(+)|
 evalPoly as + evalPoly bs = evalPoly (as + bs)
 \end{spec}
 
-Both sides are functions, they are equal iff they are equal for every
+Both sides are functions, they are equal iff. they are equal for every
 argument.
 %
 For an arbitrary |x|
@@ -224,9 +228,9 @@ The homomorphism condition will hold for every |x| if we define
   (a : as) + (b : bs)  = (a + b) : (as + bs)
 \end{spec}
 %
-This is definition looks natural (we could probably have guessed it
-early on) but it is still interesting to see that we can derive the
-definition as the form it has to take for the proof to go through.
+This definition looks natural (we could probably have guessed it
+early on) but it is still interesting to see that we can derive
+it as the form that it has to take for the proof to go through.
 
 We leave the derivation of the other cases and operations as an
 exercise.
@@ -262,7 +266,7 @@ mapPoly f (Single a)   = Single (f a)
 mapPoly f (Cons a as)  = Cons (f a) (mapPoly f as)
 \end{code}
 %
-Therefore, we \emph{can} define a ring structure (the mathematical
+Therefore, we \emph{can} define a ring structure (roughly the mathematical
 counterpart of |Num|) on |Poly a|, and we have arrived at the
 canonical definition of polynomials, as found in any algebra book
 (see, for example, \cite{rotman2006first} for a very readable text):
@@ -274,7 +278,7 @@ canonical definition of polynomials, as found in any algebra book
 \end{quote}
 
 %
-The functions |evalPoly as| are known as \emph{polynomial functions}.
+The family of functions |evalPoly as| for every possible |as| are known as \emph{polynomial functions}.
 
 \textbf{Caveat:} The canonical representation of polynomials in
 algebra does not use finite lists, but the equivalent
@@ -285,7 +289,9 @@ algebra does not use finite lists, but the equivalent
   \end{spec}
 \end{quote}
 
-Exercise: what are the ring operations on |Poly' A|?  Note: they are different from the operation induced by the ring operations on |A|.
+\begin{exercise}
+What are the ring operations on |Poly' A|?  Hint: they are different from the operation induced by the ring operations on |A|.
+\end{exercise}
 
 %
 For example, here is addition:
@@ -294,21 +300,27 @@ For example, here is addition:
   a + b = c  <=>  a n + b n = c n  --  |∀ n : ℕ|
 \end{spec}
 
-Remark:  Using functions in the definition has certain ``technical'' advantages over using finite lists.  For example, consider adding |[a0, a1, ..., an]| and |[b0, b1, ..., bm]|, where |n > m|.  Then, we obtain a polynomial of degree |n|: |[c0, c1, ..., cn]|.  The formula for the |ci| must now be given via a case distinction:
+Remark: Using functions from |ℕ| in the definition has certain technical
+advantages over using finite lists.  For example, consider adding
+|[a0, a1, ..., an]| and |[b0, b1, ..., bm]|, where |n > m|.  Then, we
+obtain a polynomial of degree |n|: |[c0, c1, ..., cn]|.  The formula
+for the |ci| must now be given via a case distinction:
 
 < ci = if i > m then ai else ai + bi
 
 \noindent
 since |bi| does not exist for values greater than |m|.
 
-Compare this with the above formula for functions: no case distinction necessary.  The advantage is even clearer in the case of multiplication.
+Compare this with the above formula for functions, where no case
+distinction necessary.  The advantage is even clearer in the case of
+multiplication.
 
 \textbf{Observations:}
 
 \label{sec:polynotpolyfun}
 \begin{enumerate}
-\item Polynomials are not, in general, isomorphic (in one-to-one
-  correspondence) with polynomial functions.
+\item If one considers arbitrary rings, polynomials are not isomorphic (in one-to-one
+  correspondence) to polynomial functions.
   %
   For any finite ring |A|, there is a finite number of functions |A ->
   A|, but there is a countable number of polynomials.
@@ -335,10 +347,10 @@ Compare this with the above formula for functions: no case distinction necessary
     [0, 1, 1] ≠ [0]  {- in |Poly ℤ₂| -}
   \end{spec}
 
-  Therefore, it is not generally a good idea to confuse polynomials
-  with polynomial functions.
+  Therefore, it is not generally a good idea to conflate polynomials
+  and polynomial functions.
 
-\item In keeping with the DSL terminology, we can say that the
+\item Following the DSL terminology, we can say that the
   polynomial functions are the semantics of the language of
   polynomials.
   %
@@ -366,9 +378,11 @@ Then (again, using the list notation for brevity) for any polynomial
 as = a0 + a1 * x + a2 * x^2 + ... + an * x^n
 \end{spec}
 
-Exercise: check this.
+\begin{exercise}
+Prove the above equality.
+\end{exercise}
 
-This justifies the standard notation
+This equality justifies the standard notation
 
 \[as = \sum_{i = 0}^n a_i * x^i\]
 
@@ -376,7 +390,7 @@ This justifies the standard notation
 
 \subsection{Aside: division and the degree of the zero polynomial}
 
-Recall the fundamental property of division we learned in high school:
+Recall the fundamental property of division that we learned in high school:
 
 For all natural numbers |a|, |b|, with |b ≠ 0|, there exist \emph{unique} integers |q| and |r|, such that
 
@@ -390,7 +404,15 @@ For all polynomials |as|, |bs|, with |bs ≠ Single 0|, there exist \emph{unique
 
 < as = bs * qs + rs, with degree rs < degree bs
 
-The condition |r < b| is replaced by |degree rs < degree bs|.  However, we now have a problem.  Every polynomial is divisible by any non-zero constant polynomial, resulting in a zero polynomial remainder.  But the degree of a constant polynomial is zero.  If the degree of the zero polynomial were a natural number, it would have to be smaller than zero.  For this reason, it is either considered undefined (as in \cite{adams2010calculus}), or it is defined as |-∞|.  The next section examines this question from a different point of view, that of homomorphisms.
+The condition |r < b| is replaced by |degree rs < degree bs|.
+However, we now have a problem.  Every polynomial is divisible by any
+non-zero constant polynomial, resulting in a zero polynomial
+remainder.  But the degree of a constant polynomial is zero.  If the
+degree of the zero polynomial were a natural number, it would have to
+be smaller than zero.  For this reason, it is either considered
+undefined (as in \cite{adams2010calculus}), or it is defined as |-∞|.
+The next section examines this question from a different point of
+view, that of homomorphisms.
 
 
 \subsection{Polynomial degree as a homomorphism}
@@ -432,8 +454,8 @@ it says that the degree of the zero polynomial is not defined.
 %
 Let's see why that is the case and how we might ``fix'' it.
 %
-Assume there is a |z| such that |degree 0 = z| and that we have some
-polynomial |p| with |degree p = n|.
+Assume that there exists a natural number |z| such that |degree 0 = z|.
+Assume additionally a polynomial |p| with |degree p = n|.
 %
 Then we get
 %
@@ -455,7 +477,7 @@ numbers |n|!
 At this stage we could either give up, or think out of the box.
 %
 Intuitively we could try to use |z = -Infinity|, which would seem to
-satisfy the law but which is not a natural number (not even an integer).
+satisfy the law but is not a natural number (not even an integer).
 %
 More formally what we need to do is to extend the monoid |(Nat,0,+)|
 by one more element.
@@ -493,18 +515,22 @@ opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
 Thus, to sum up, |degree| is a monoid homomorphism from |(Poly a, 1,
 *)| to |(Maybe Nat, Just 0, opMaybe)|.
 
-Exercise: check all the Monoid and homomorphism properties.
+\begin{exercise}
+Check all the Monoid and homomorphism properties.
+\end{exercise}
 
 \subsection{Power Series}
 
 Consider the following ``pseudo proof'':
 
+\jp{Proposition?}
 \begin{theorem}[Fake theorem]
 Let |m, n ∈ ℕ| and let |cs| and |as| be any polynomials of degree |m + n| and |n|, respectively, and with |a0 /= 0|.
 %
 Then |cs| is divisible by |as|.
 \end{theorem}
 
+\jp{Proof attempt?}
 \begin{proof}
 We need to find |bs = [b0, ..., bm]| such that |cs = as * bs|.
 %
@@ -594,11 +620,11 @@ not exist).
 We will consider, as is usual, only the case in which |A = ℝ| or |A =
 ℂ|.
 
-The term \emph{formal} refers to the independence of the definition of
+The term \emph{formal}\jp{What formal? Formal power series have never been introduced.} refers to the independence of the definition of
 power series from the ideas of convergence and evaluation.
 %
 In particular, two power series represented by |a| and |b|, respectively,
-are equal only if |a = b| (as functions).
+are equal only if |a = b| (as infinite series of numbers).
 %
 If |a ≠ b|, then the power series are different, even if |eval a =
 eval b|.
@@ -652,7 +678,7 @@ Power series have a richer structure than polynomials.
 For example, we also have division (this is similar to the move from |ℤ|
 to |ℚ|).
 %
-We start with a special case: trying to compute |p = frac 1 (1-x)| as a
+\jp{Wasn't this explained just above in the ``fake proof''?}We start with a special case: trying to compute |p = frac 1 (1-x)| as a
 power series.
 %
 The specification of |a/b = c| is |a=c*b|, thus in our case we need to
@@ -708,7 +734,7 @@ series |(c : cs)| satisfying
 
   (a : as) = (c : cs) * (b : bs)                     <=> {- def. of |*| for |Cons| -}
 
-  (a : as) = (c * b)  :  (cs * (b : bs)  +  [c]*bs)  <=> {- equality on compnents, def. of division -}
+  (a : as) = (c * b)  :  (cs * (b : bs)  +  [c]*bs)  <=> {- equality on components, def. of division -}
 
   c   = a / b                          {- and -}
   as  = cs * (b : bs) + [c] * bs       {-" "-}       <=> {- arithmetics -}
@@ -807,7 +833,7 @@ deriv (Cons a as)  =  deriv' as 1
          deriv' (Cons a as)  n  =  Cons    (n * a)  (deriv' as (n+1))
 \end{code}
 
-Side note: we cannot in general implement a Boolean equality test for
+Side note: we cannot in general implement a decidable (Boolean) equality test for
 |PowerSeries|.
 %
 For example, we know that |deriv ps0| equals |ps1| but we cannot
