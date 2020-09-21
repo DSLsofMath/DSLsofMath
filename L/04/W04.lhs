@@ -819,7 +819,7 @@ initial algebra\jp{Probably should be a footnote. Or should we define an explain
 
 Let us explore this in the simpler context of |Monoid|.
 %
-The language of monoids is given by
+Ignoring its laws, the language of monoid expressions is given by
 %
 \begin{code}
 type Var      =  String
@@ -850,6 +850,9 @@ evalM  f  (V x)       =  f x
 (Observation: In |FunExp|, the role of variables was played by |REAL|,
 and the role of the assignment by the identity.)
 
+%include InitialMonoid.lhs
+
+
 The following correspondence summarises the discussion so far:
 
 \begin{tabular}{ll}
@@ -869,6 +872,7 @@ See
   Theory and Functional Programming} for a whole course around this
 (lecture notes are available on
 \href{https://github.com/DSLsofMath/ctfp2014}{github}).
+
 
 \subsubsection{Other homomorphisms}
 
@@ -989,7 +993,7 @@ this definition upon us.
 We chose it, because of the intended interpretation.
 
 This multiplication is obviously not the one we need for \emph{complex
-  numbers}:
+  numbers}. It would be instead:
 %
 \begin{spec}
 (x, x') *. (y, y') = (x * y - x' * y', x * y' + x' * y)

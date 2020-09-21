@@ -51,7 +51,8 @@ law2c a f  =
   f  ==  tail (cons a f)
      ==  deriv (const a + integ f)
      ==  deriv (integ f)
-\end{spec}
+   \end{spec}
+\jp{The last line is actually obscuring what the law is saying. IMO no calculus-dependent rewriting should take place here.}
 %
 \begin{spec}
 law3c a f  =
@@ -61,3 +62,4 @@ law3c a f  =
   a  ==  a + (integ f) 0
   0  ==  integ f 0
 \end{spec}
+\jp{Likewise}
