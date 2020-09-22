@@ -3,7 +3,6 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 module DSLsofMath.W06 where
 import DSLsofMath.FunExp hiding (eval, f)
-import DSLsofMath.Simplify
 import DSLsofMath.W05
 \end{code}
 
@@ -11,7 +10,12 @@ import DSLsofMath.W05
 \label{sec:deriv}
 
 \subsection{Review}
-
+\jp{I don't get it. More words are needed in the itemize. Is this
+  connected with what follows? It seems that the review ends before
+  the end of the subsection. It seems that the flow goes all over the
+  place. Using an example or generalising, using several methods,
+  etc. I have a really hard time following where one is going, perhaps
+  the whole sub section should be rewritten.}
 \begin{itemize}
 \item key notion \emph{homomorphism}: |S1 -> S2| (read ``from |S1| to |S2|'')
 
@@ -36,14 +40,15 @@ import DSLsofMath.W05
   \end{itemize}
 \end{itemize}
 
-The importance of |applyFD| and |evalD| is that they offer ``automatic
+The importance of |applyFD| (from \cref{sec:applyFD}) and |evalD| (\refSec{sec:evalD}) lies in that they offer ``automatic
 differentiation'', i.e., any function constructed according to the
 grammar of |FunExp|, can be ``lifted'' to a function that computes the
 derivative (e.g., a function on pairs).
 
-\noindent
-\textbf{Example:}
-%
+
+
+
+\begin{example}
 \begin{code}
 f :: Floating a => a -> a
 f x = sin x + 2 * x
@@ -100,8 +105,8 @@ e2 :: FunExp
 e2 = f Id
 \end{code}
 %
-As |Id :: FunExp|, Haskell will look for |FunExp| instances of |Num|
-and friends and build the syntax tree for |f| instead of computing its
+As |Id :: FunExp|, the Haskell interpreter will look for |FunExp| instances of |Num|
+and other numeric classes and build the syntax tree for |f| instead of computing its
 semantic value.
 %
 (Perhaps it would have been better to use, in the definition of
@@ -141,7 +146,7 @@ so we can then do
 f' 2 = snd (applyFD 2 (f (g, g')))
 \end{spec}
 %
-We can fullfill (*) if we can find a |(g, g')| that is a sort of
+We can fullfill (*) if we can find a pair |(g, g')| that is a sort of
 ``unit'' for |FD a|:
 %
 \begin{spec}
@@ -194,11 +199,12 @@ instance Floating a => Floating (a, a) where  -- just pairs
   sin (f, f')       =  (sin f,   cos f  * f')
   cos (f, f')       =  (cos f, -(sin f) * f')
 \end{spec}
+\end{example}
 %
 In fact, the latter (just pairs) represents a generalisation of the former (pairs of functions).
 %
 To see this, note that if we have a |Floating| instance for some |A|,
-we get a floating instance for |x->A| for all |x| from the module |FunNumInst|.
+we get a floating instance for |x->A| for all |x| from the module |FunNumInst|\jp{What is this module? Was it ever introduced?}.
 %
 Then from the instance for pairs we get an instance for any type of
 the form |(x->A, x->A)|.
@@ -273,14 +279,13 @@ a -> a| to compute |f' 2|:
 
 
 \subsection{Higher-order derivatives}
-
 Consider
 %
 \begin{spec}
-[f, f', f'', ...]
+[f, f', f'', ...] :: [a -> a]
 \end{spec}
 %
-representing the evaluation of an expression and all its derivatives:
+representing the evaluation of an expression (of one variable $x$) as a function, and all its derivatives:
 %
 \begin{code}
 evalAll e = (evalFunExp e) : evalAll (derive e)
@@ -301,7 +306,7 @@ then
 Thus |evalAll (derive e) == tail (evalAll e)| which can be written
 |evalAll . derive = tail . evalAll|.
 %
-Thus |evalAll| is a homomorphism from |derive| to |tail|, or in other words, |H1(evalAll,derive,tail)|.
+Thus |evalAll| is a homomorphism from |derive| to |tail|, or in other words, |H1(evalAll,derive,tail)| (defined in \cref{exc:homomorphisms}).
 
 We want to define the other operations on lists of functions in such a way
 that |evalAll| is a homomorphism.
@@ -316,10 +321,10 @@ where the |(*)| sign stands for the multiplication of infinite lists of
 functions, the operation we are trying to determine.
 %
 We assume that we have already derived the definition of |+| for these
-lists (it is |zipWith (+)|).
+lists (it is |zipWith (+)| --- and because the lists are infinite one needs not worry about differing lengths).
 
-We have, writing |eval| for |evalFunExp| and |d| for |derive| in order
-to save ink
+We have the following (writing |eval| for |evalFunExp| and |d| for |derive| in order
+to save ink):
 %
 \begin{spec}
     LHS
@@ -344,7 +349,7 @@ Similarly, starting from the other end we get
 \end{spec}
 %
 Now, to see the pattern it is useful to give simpler names to some
-common subexpressions: let |a = eval e1|, |b = eval e2|.
+common subexpressions: let |a = eval e1| and |b = eval e2|.
 %
 \begin{spec}
     (a * b) : (evalAll (d e1 :*: e2) + evalAll (e1 * d e2))
@@ -366,7 +371,7 @@ The remaining part is then
     help a b (evalAll (d e1)) (evalAll (d e2))
 \end{spec}
 
-Informally, we can refer to (co-)induction at this point and rewrite
+Informally, we can refer to (co-)induction at this point\jp{what does this mean here?} and rewrite
 |evalAll (d e1 :*: e2)| to |evalAll (d e1) * evalAll e2|.
 %
 We also have |evalAll . d = tail . evalAll| which leads to:
@@ -385,7 +390,7 @@ let |a:as = evalAll e1| and |b:bs = evalAll e2|.
     help a b (tail (a:as)) (tail (b:bs))
 \end{spec}
 %
-This is clearly is solved by defining |help| as follows:
+This equality is clearly solved by defining |help| as follows:
 %
 \begin{code}
 help a b as bs = as * (b : bs) + (a : as) * bs
@@ -396,7 +401,7 @@ Thus, we can eliminate |help| to arrive at a definition for multiplication:
 \begin{code}
 mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 \end{code}
-
+\jp{Are we going to compare this with |polyMul|?}
 As in the case of pairs, we find that we do not need any properties of
 functions, other than their |Num| structure, so the definitions apply
 to any infinite list of |Num a|:
@@ -413,8 +418,10 @@ addStream (a : as)  (b : bs)  =  (a + b)  :  (as + bs)
 mulStream :: Num a => Stream a -> Stream a -> Stream a
 \end{code}
 
-Exercise: complete the instance declarations for |Fractional| and
+\begin{exercise}
+Complete the instance declarations for |Fractional| and
 |Floating|.
+\end{exercise}
 %
 Note that it may make more sense to declare a |newtype| for |Stream a|
 first, for at least two reasons.
@@ -437,11 +444,14 @@ above:
 drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 \end{code}
 
-Exercise: Compare the efficiency of different ways of computing derivatives.
+\begin{exercise}
+  Compare the efficiency of different ways of computing derivatives.
+  \jp{This is a pretty tough exercise...}
+\end{exercise}
 %
 
 \subsection{Polynomials}
-
+\jp{What is this doing here? and not in the relevant chapter?}
 \begin{spec}
 data Poly a  =  Single a  |  Cons a (Poly a)
                 deriving (Eq, Ord)
@@ -452,7 +462,7 @@ evalPoly (Cons a as)    x   =  a + x * evalPoly as x
 \end{spec}
 
 \subsection{Formal power series}
-
+\jp{Are we saying anything non-trivial and new in this section? If so indicate what it is right away.}
 As we mentioned above, the Haskell list type contains both finite and
 infinite lists.
 %
@@ -564,7 +574,7 @@ Then we can move |eval| outwards step by step:
 \end{spec}
 %
 Finally, we have arrived at an equation expressed in only syntactic
-operations, which is implementable in Haskell (for reasonable |g|).
+operations, which is implementable in Haskell (for a reasonable |g|).
 %
 
 Which functions |g| commute with |eval|?
@@ -580,10 +590,11 @@ solve :: Fractional a => a -> (PowerSeries a -> PowerSeries a) -> PowerSeries a
 solve f0 g = f              -- solves |f' = g f|, |f 0 = f0|
   where f = integ f0 (g f)
 \end{code}
+On the face of it, the solution |f| appears not well defined, because its definition depends on itself. 
 %
-To see this in action we can use |solve| on simple functions |g|,
+We come back to this point soon, but first we observe |solve| in action on simple instances of |g|,
 starting with |const 1| and |id|:
-
+\jp{It'd be helpful to restate what the differential equation looks like using usual mathematical notation.}
 \begin{code}
 idx  ::  Fractional a => PowerSeries a
 idx  =   solve 0 (\f -> 1)
@@ -595,31 +606,37 @@ expx = solve 1 (\f -> f)
 expf :: Fractional a => a -> a
 expf = eval 100 expx
 \end{code}
+\begin{exercise}
+  Write |expx| as a recursive equation (inline |solve| in the definition above).
+\end{exercise}
+\jp{|eval| was declared |REAL -> REAL| above. Which eval is this referring to?}
 %
-The first solution, |idx| is just the polynomial |[0,1]|.
+The first solution, |idx| is just the polynomial |[0,1]| --- i.e. just $x$ in usual mathematical notation.
 %
 We can easily check that its derivative is constantly |1| and its
 value at |0| is |0|.
 %
 The function |idf| is just there to check that the semantics behaves
-as expected.
+as expected.\jp{So what should we check? Is this meant to be a sanity check? Then we should print something?}
 
 The second solution |expx| is a formal power series representing the
 exponential function.
 %
 It is equal to its derivative and it starts at |1|.
 %
-The function |expf| is a very good approximation of the semantics.
+The function |expf| is a good approximation of the semantics for small values of its argument.
 
 \begin{code}
+testExp :: Double
 testExp = maximum $ map diff [0,0.001..1::Double]
   where diff = abs (expf - exp)  -- using the function instances for |abs| and |exp|
+testExpUnits :: Double
 testExpUnits =  testExp / epsilon
 epsilon :: Double  -- one bit of |Double| precision
 epsilon = last $ takeWhile (\x -> 1 + x /= 1) (iterate (/2) 1)
 \end{code}
 
-We can also use mutual recursion to define sine and cosine in terms of
+We can also\jp{why ``also''?} use mutual recursion to define sine and cosine in terms of
 each other:
 %
 \begin{code}
@@ -631,8 +648,12 @@ cosf = eval 100 cosx
 sinx, cosx :: Fractional a =>  PowerSeries a
 sinf, cosf :: Fractional a =>  a -> a
 \end{code}
+\begin{exercise}
+  Write the differential equations characterising sine and cosine,
+  using usual mathematical notation.
+\end{exercise}
 %
-The reason why these definitions ``work'' (in the sense of not
+The reason that these definitions ``work'' (in the sense of not
 looping) is because |integ| immediately returns the first element of
 the stream before requesting any information about its first input.
 %
@@ -685,15 +706,14 @@ frac = (/)     -- |frac| is used to typeset a fraction (more compactly than |x /
 
 \subsection{The |Floating| structure of |PowerSeries|}
 
-Can we compute |exp as|?
+Can we compute |exp as|?\jp{Compute in what sense? We already have |expx| in the above section. Does this mean using the differential rather than the integral? I don't get the point.}
 
 Specification:
 
 \begin{spec}
 eval (exp as) = exp (eval as)
 \end{spec}
-
-Differentiating both sides, we obtain
+Differentiating both sides, we obtain\jp{What definition of |D| are we using?}
 
 \begin{spec}
   D (eval (exp as)) = exp (eval as) * D (eval as)
@@ -708,7 +728,7 @@ Differentiating both sides, we obtain
 \end{spec}
 
 Adding the ``initial condition'' |eval (exp as) 0 = exp (head as)|, we
-obtain
+obtain\jp{What is this coming from? Why suddenly using |head|? I am lost.}
 %**TODO: head = val
 \begin{spec}
 exp as = integ (exp (head as)) (exp as * deriv as)
@@ -717,6 +737,8 @@ exp as = integ (exp (head as)) (exp as * deriv as)
 Note: we cannot use |solve| here, because the |g| function uses both
 |exp as| and |as| (it ``looks inside'' its argument).
 
+
+\jp{So what's happening now? Why this code suddenly?}
 \begin{code}
 instance (Eq a, Floating a) => Floating (PowerSeries a) where
   pi   =  Single pi
@@ -735,7 +757,7 @@ val     (Cons a as)    =   a
 \end{code}
 
 In fact, we can implement \emph{all} the operations needed for
-evaluating |FunExp| functions as power series!
+evaluating |FunExp| functions as power series! \jp{Wasn't it done already when first talking about power series? There does not seem to be anything pertaining derivatives here.}
 
 \begin{code}
 evalP :: (Eq r, Floating r) => FunExp -> PowerSeries r
@@ -751,7 +773,7 @@ evalP (Cos e)      =  cos (evalP e)
 
 \subsection{Taylor series}
 
-If |f = eval [a0, a1, ..., an, ...]|, then
+If |f = eval [a0, a1, ..., an, ...]|, then\jp{Which eval is that, and what is the meaning of the list here? polynomial? power series? derivatives?}
 
 \begin{spec}
    f 0    =  a0
@@ -777,11 +799,12 @@ Therefore
    f      =  eval [f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]
 \end{spec}
 
-The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
-called the Taylor series centred in |0|, or the Maclaurin series.
+That is, there is a simple mapping between the representation of |f|
+as a power series (the coefficients |a_k|), and the value of all
+derivatives of |f| at |0| (our |Stream a| type above).
 
-Therefore, if we can represent |f| as a power series, we can find the
-value of all derivatives of |f| at |0|!
+The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
+called the Taylor series centred in |0|, or the Maclaurin series. 
 
 \begin{code}
 derivs :: Num a => PowerSeries a -> PowerSeries a
@@ -862,6 +885,8 @@ dP f a = takePoly 10 (derivs (f (idx + Single a)))
 \end{code}
 
 \subsection{Associated code}
+
+\jp{Feels like this should be moved upwards as the concepts are introduced}
 
 \begin{code}
 evalFunExp  ::  Floating a => FunExp -> a -> a

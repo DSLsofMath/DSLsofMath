@@ -265,6 +265,7 @@ mapPoly :: (a->b) -> (Poly a -> Poly b)
 mapPoly f (Single a)   = Single (f a)
 mapPoly f (Cons a as)  = Cons (f a) (mapPoly f as)
 \end{code}
+\jp{Last case of polyMul is very suspicious}
 %
 Therefore, we \emph{can} define a ring structure (roughly the mathematical
 counterpart of |Num|) on |Poly a|, and we have arrived at the

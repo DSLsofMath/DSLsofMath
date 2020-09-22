@@ -910,9 +910,9 @@ Indeed, writing |h = apply c| for some fixed |c|, we have
 etc.
 
 Can we do something similar for |FD|?
-
 The elements of |FD a| are pairs of functions, so we can take
 %
+\label{sec:applyFD}
 \begin{code}
 type Dup a = (a, a)
 
@@ -1059,9 +1059,10 @@ We will not build up a general theory of co-algebras in these notes,
 but I could not resist to introduce a few examples which hint at the
 important role co-algebra plays in calculus.
 
-%
+
 %include AbstractStream.lhs
 
+\jp{This does not belong here. Should be folded into higher-order derivatives.}
 %include UnusualStream.lhs
 
 %include E4.lhs

@@ -487,7 +487,7 @@ It is not the same as the semantics of |Int| but it is isomorphic
   the sets, but some structure involving operations defined on this
   set (otherwise the term ``bijection'' is more typical). Here we have
   not talked about these operations (yet). If we were to, we'd be able
-  to establish a more useful isomorphism.}
+  to establish a more useful isomorphism. (And we only introduce algebraic structures in \cref{sec:CompSem}.)}
 
 Later in this chapter we use a newtype for the semantics of complex
 numbers as a pair of numbers in the Cartesian representation but it

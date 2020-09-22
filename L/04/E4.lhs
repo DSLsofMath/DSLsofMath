@@ -1,7 +1,7 @@
 \newpage
 \subsection{Exercises}
 
-\begin{exercise}
+\begin{exercise}\label{exc:homomorphisms}
 \textbf{Homomorphisms.}
 Consider the following definitions:
 \begin{spec}
