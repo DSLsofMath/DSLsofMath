@@ -18,6 +18,7 @@
 \RequirePackage[utf8x]{inputenc}
 \RequirePackage{ucs}
 \RequirePackage{amsfonts}
+\usepackage[capitalize]{cleveref} % \cref
 \usepackage{tikz}
 \usepackage{tikz-cd}
 \usetikzlibrary{trees,graphs,quotes,fit,shapes}
@@ -26,16 +27,6 @@
 \usepackage{pdfpages}
 \usepackage{tabu}
 \newtheorem{theorem}{Theorem}
-\newenvironment{exercise}% environment name
-{% begin code
-  \textbf{Exercise}\begin{itshape}%
-}%
-{\end{itshape}}% end code
-\newenvironment{solution}% environment name
-{% begin code
-  \textbf{Solution:}%
-}%
-{}% end code
 \newcommand\jp[1]{\todo{JP: #1}}
 \newcommand\pedantic[1]{\footnote{Pedantic remark: #1}}
 
@@ -63,6 +54,16 @@
 \theoremstyle{definition}
 \newtheorem{exercise}{Exercise}[section]
 % Old exercise style (until 2017-11-08): \renewcommand*{\theenumi}{\textbf{E\thesection.\arabic{enumi}}}
+\newenvironment{solution}% environment name
+{% begin code
+  \textbf{Solution:}%
+}%
+{}% end code
+\newenvironment{Example}% environment name
+{% begin code
+  \paragraph{Example}%
+}%
+{}% end code
 \newcommand{\reviseForBook}[1]{} % don't show anything for now
 \newcommand\bookOnly[1]{#1} % show only in the book version (not the lecture notes)
 \newcommand\lnOnly[1]{} % show only in the lecture notes (not the book version)
