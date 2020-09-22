@@ -968,8 +968,8 @@ Another way of saying this is that |CPlusC| is injective.
 In Haskell we could define this equality as:
 %
 \begin{code}
-  instance Eq ComplexC where
-    ComplexC a b == ComplexC x y = a == x && b == y
+instance Eq ComplexC where
+    CPlusC a b == CPlusC x y = a == x && b == y
 \end{code}
 %
 The line |instance Eq ComplexC| is there because the specify that
