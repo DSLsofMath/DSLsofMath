@@ -65,7 +65,7 @@ For every field |S| of scalars and every set |G| of indices, the set
 {-# LANGUAGE GADTs, FlexibleInstances, UndecidableInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 module DSLsofMath.W07 where
-import DSLsofMath.FunNumInst
+import DSLsofMath.FunNumInst ()
 import Data.List(nub)
 type REAL = Double
 \end{code}
@@ -364,6 +364,9 @@ algebra'' videos on youtube (start here:
 %*TODO: Perhaps it would be interesting to show that some linear transformations
 % can also be interpreted as changes of basis.
 
+\jp{Define dot product here and observe some of their properties. (It's way down below ATM)}
+\jp{There is also something to say about orthogonal maps --- which preserve dot products. As another kind of homomorphism, they fit well the theme of the book.}
+
 \subsection{Examples of matrix algebra}
 
 \subsubsection{Polynomials and their derivatives}
@@ -497,7 +500,10 @@ Exercise~\ref{exc:Dmatrixpowerseries}: write the
 
 Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated with
 integration of polynomials.
-\jp{There is also something to say about orthogonal maps --- which preserve dot products. As another kind of homomorphism, they fit well the theme of the book.}
+
+\jp{Also: consider dot product for polynomials. What's a reasonable definition for what we have seen so far?}
+\jp{Also: can do a change of base of (infinite) polynomials, say to exp.ix. Is it preserving dot products? Actually we can go back to Chebyshev polynomials here. Also throw in Legendre or Bernstein polynomials? See Chebyshev.hs}
+
 \subsubsection{Simple deterministic systems (transition systems)}
 
 Simple deterministic systems are given by endo-functions%
@@ -1254,7 +1260,7 @@ and thus |embed = e|.
 %
 In order to understand how matrix-vector multiplication relates to the
 monadic operations, it is useful to introduce the ``dot'' product
-between vectors:
+between vectors:\jp{This is only true if the basis vectors are orthonormal}
 %
 \begin{code}
 dot :: (Num s, Finite g) => Vector s g -> Vector s g -> s
