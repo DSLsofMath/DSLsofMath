@@ -1,8 +1,8 @@
-\section{Matrix algebra and linear transformations}
+\section{Elements of Linear Algebra}
 \label{sec:LinAlg}
 
 Often, especially in engineering textbooks, one encounters the
-definition: a vector is an \(n+1\)-tuple of real or complex numbers,
+following definition: a vector is an \(n+1\)-tuple of real or complex numbers,
 arranged as a column:
 %
 \[v = \colvec{v}\]
@@ -24,7 +24,9 @@ elements of the field:
 The scalar |s| scales all the components of |v|.
 
 But, as you might have guessed, the layout of the components on paper
-(in a column or row) is not the most important feature of a vector.
+(in a column or row) is not the most important feature of a vector ---
+even though this typographical feature is grounded in mathematical
+structures.
 %
 In fact, the most important feature of vectors is that they can be
 \emph{uniquely} expressed as a simple sort of combination of other
@@ -68,7 +70,7 @@ import Data.List(nub)
 type REAL = Double
 \end{code}
 
-\subsection{Vectors as functions}
+\subsection{Representing vectors as functions}
 
 There is a temptation to model vectors by lists or tuples, but a more
 general (and conceptually simpler) way is to view them as
@@ -83,21 +85,22 @@ As discussed, the |S| parameter in |Vector S| has to be a field (|REAL|,
 or |Complex|, or |Zn|, etc.) for values of type |Vector S G| to
 represent elements of a vector space.
 
-Usually, |G| is finite, i.e., |Bounded| and |Enumerable| and in the
+The cardinality of |G|, which we sometimes denote |card G|, is the dimension of the vector space.
+Often |G| is finite, i.e., |Bounded| and |Enum|erable\jp{I don't think that these classes were ever introduced} and in the
 examples so far we have used indices from \(G = \{0, \ldots, n\}\).
 %
-We sometimes use |card G| to denote the \emph{cardinality} of the set
-|G|, the number of elements (\(n+1\) in this case).
+Thus the dimension of the space
+would be \(n+1\).
 
 We know from the previous lectures that if |S| is an instance of
 |Num|, |Fractional|, etc. then so is |G -> S|, with the pointwise
 definitions.
 %
-In particular, the instance declarations for |+|, multiplication, and
-embedding of constants, give us much of the structure needed for the
+In particular, the instance declarations for addition  and the
+embedding of constants, give us part of the structure needed for the
 vector operations.
 %
-For example
+For example:
 %
 \begin{spec}
     2 * v                      =  {- |2| is promoted to a function -}
@@ -109,40 +112,40 @@ For example
     \ g -> 2 * v g
 \end{spec}
 %
-The ``promotion'' by |fromInteger| works for literals (like |2|, |-7|, etc.) but not for general expressions.
+However, the ``promotion'' by |fromInteger| works for literals (like
+|2|, |-7|, etc.) but not for general expressions. That is, vector
+spaces are \emph{not} rings.\jp{revisit num/ring presentation}
 %
-The function instance for the |Num| class gives a homogenous
-multiplication operator |(*) :: v -> v -> v| but the type of the
-general scaling operator |(*^) :: s -> v -> v| is inhomogenous: the first argument is
-a scalar and the second a vector.
+Indeed, the function instance for the |Num| class gives a homogenous
+multiplication operator |(*) :: v -> v -> v|, but such an operator is
+not part of the definition of vector spaces.  Rather one has a general
+scaling operator |(*^) :: s -> v -> v|, which is inhomogenous: the
+first argument is a scalar and the second a vector.
 
-The canonical basis vectors are then
+The canonical basis vectors are given by
 %
-\begin{spec}
-    e i  :  G -> S;    e i g = i `is` g
-\end{spec}
+\begin{code}
+e :: (Eq g, Num s) => g -> Vector s g
+e i = V (\j -> i `is` j)
+\end{code}
 %
-and every |v : G -> S|
-%
-is trivially a linear combination of vectors |e i|:
+In linear algebra textbooks, the function |is| is often referred to as
+the Kronecker-delta function and |is i j| is written $\delta_{i,j}$.
+\begin{code}
+is :: (Eq g, Num s) => g -> g -> s
+is a b = if a == b then 1 else 0
+\end{code}
+It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
+zeros everywhere, except at position |j| where it has a 1.
+
+This way, every |v : G -> S|
+is a linear combination of vectors |e i|:
 %
 \begin{spec}
     v =  v 0 *^ e 0 + ... + v n *^ e n
 \end{spec}
 
-Implementation:
-%
-\begin{code}
-is :: (Eq g, Num s) => g -> g -> s
-is a b = if a == b then 1 else 0
-
-e :: (Eq g, Num s) => g -> Vector s g
-e g = V (is g)
-\end{code}
-%
-In linear algebra textbooks, the function |is| is often referred to as
-the Kronecker-delta function and |is i j| is written $\delta_{i,j}$.
-\subsection{Functions on vectors}
+\subsection{Linear transformations}
 
 As we have seen in earlier chapters, morphisms between structures are often important.
 %
@@ -153,10 +156,13 @@ functions |f : Vector S G -> Vector S G'|:
 \begin{spec}
 f v  =  f (v 0 *^ e 0 + ... + v n *^ e n)
 \end{spec}
-%
-For |f| to be a ``good'' function it should translate the operations
-in |Vector S G| into operations in |Vector S G'|, i.e., should be a
-homomorphism:
+% that 
+It is particularly interesting to study vector-space homomorphisms,
+which more commonly called ``linear maps'' (to avoid unnecessary
+confusion with the Haskell |map| function we will refer to them by the
+slightly less common name ``linear transformation''.).  The function
+|f| is a linear transformation if it maps the operations in |Vector S
+G| into operations in |Vector S G'| as follows:
 %
 \begin{spec}
 f v =  f (v 0 *^ e 0 + ... + v n *^ e n) = v 0 *^ f (e 0) + ... + v n *^ f (e n)
@@ -170,7 +176,7 @@ from just the values of
 %
 |f . e : G -> Vector S G'|,
 %
-a much ``smaller'' function.
+which has a much smaller domain.
 %
 Let |m = f . e|.
 %
@@ -180,7 +186,7 @@ Then
 f v =  v 0 *^ m 0 + ... + v n *^ m n
 \end{spec}
 %
-Each of |m k| is a |Vector S G'|, as is the resulting |f v|.
+Each of the |m k| is a |Vector S G'|, as is the resulting |f v|.
 %
 We have
 %
@@ -193,10 +199,12 @@ We have
 
   sum [m j g' * v j | j <- [0 .. n]]
 \end{spec}
+That is, it suffices to know the behaviour of |f| on the basis vectors
+to know its behaviour on the whole vector space.
 
-Implementation:
 %
-This is almost the standard vector-matrix multiplication:
+It may be enlightening to compare the above sum with the standard vector-matrix multiplication.
+Let us define |M| as follows:
 %
 \begin{spec}
 M = [m 0 | ... | m n]     -- where |m : G -> Vector S G'|
@@ -228,7 +236,7 @@ If we take |Matrix| to be just a synonym for functions of type |G -> Vector S G'
 type Matrix s g g' = g' -> Vector s g
 \end{code}
 %
-we can implement matrix-vector multiplication as:
+then we can implement matrix-vector multiplication as:
 %
 \begin{code}
 mulMV ::  (Finite g, Num s) => Matrix s g g'  ->  Vector s g  ->  Vector s g'
@@ -243,6 +251,7 @@ As already mentioned, here |Finite| means |Bounded| and |Enumerable|:
 \begin{code}
 class (Bounded g, Enum g, Eq g) => Finite g  where
 \end{code}
+\jp{In modern haskell you'd write type Finite g = (Bounded g, Enum g, Eq g)}
 
 %*TODO:
 % I think we might end up with a mixture of definitions given in terms of
@@ -251,23 +260,25 @@ class (Bounded g, Enum g, Eq g) => Finite g  where
 % specification/conceptual level we should perhaps stick to the usual
 % $\sum$ notation.
 
-Note that in the terminology of the earlier chapter we can see |Matrix
+Note that in the terminology of the earlier chapters we can see |Matrix
 s g g'| as a type of syntax and the linear transformation (of type
 |Vector S G -> Vector S G'|) as semantics.
 %
 With this view, |mulMV| is just another |eval :: Syntax -> Semantics|.
 %
 
-Example:
 %
+\begin{example}
+  Consider the multiplication of a matrix with a basis vector:
 \begin{spec}
 (M * e k) i = sum [M i j * e k j | j <- [0 .. n]] = sum [M i k] = M i k
 \end{spec}
+\end{example}
 %
 i.e., |e k| extracts the |k|th column from |M| (hence the notation
 ``e'' for ``extract'').
 
-We have seen how a homomorphism |f| can be fully described by a matrix
+We have seen how a linear transformation |f| can be fully described by a matrix
 of scalars, |M|.
 %
 Similarly, in the opposite direction, given an arbitrary matrix |M|,
@@ -285,9 +296,9 @@ above for |f| is precisely |M|.
 Exercise~\ref{exc:Mstarcompose}: compute |((M*) . e ) g g'|.
 
 Therefore, every linear transformation is of the form |(M*)| and every
-|(M*)| is a linear transformation.
+|(M*)| is a linear transformation. There is a bijection between these two sets.
 %
-Matrix-matrix multiplication is defined in order to ensure that
+Matrix-matrix multiplication is defined in order to ensure associativity:
 %
 \begin{spec}
 (M' * M) * v = M' * (M * v)
@@ -303,12 +314,12 @@ Exercise~\ref{exc:Mstarhomomorphismcompose}: work this out in detail.
 
 Exercise~\ref{exc:MMmultAssoc}: show that matrix-matrix multiplication is associative.
 
-Perhaps the simplest vector space is obtained for |G = ()|, the
+A simple vector space is obtained for |G = ()|, the
 singleton index set.
 %
 In this case, the vectors |s : () -> S| are functions that can take
 exactly one argument, therefore have exactly one value: |s ()|, so
-they are often identified with |S|.
+they are isomorphic with |S|.
 %
 But, for any |v : G -> S|, we have a function |fv : G -> (() -> S)|,
 namely
@@ -360,8 +371,8 @@ algebra'' videos on youtube (start here:
 We have represented polynomials of degree |n+1| by the list of their
 coefficients.
 %
-This is quite similar to standard geometrical vectors represented
-by |n+1| coordinates.
+This is the same representation as the vectors represented
+by |n+1| coordinates which we referred to in the introduction to this chapter.
 %
 This suggests that polynomials of degree |n+1| form a vector space,
 and we could interpret that as |{0, ..., n} -> REAL| (or, more
@@ -371,7 +382,7 @@ The operations, |(+)| for vector addition and |(*^)| for vector scaling, are
 defined in the same way as they are for functions.
 %
 
-To explain the vector space it is useful to start by defining the canonical base vectors.
+To give an intuition for the vector space it is useful to start by defining the canonical base vectors.
 %
 As for geometrical vectors, they are
 %
@@ -417,11 +428,11 @@ evalP (V v) x = sum (map (\ i -> v i * x^i) [0..n])
 %
 The |derive| function takes polynomials of degree |n+1| to polynomials
 of degree |n|, and since |D (f + g) = D f + D g| and |D (s *^ f) = s *^
-D f|, we expect it to be a linear transformation.
+D f|, we know that it is a linear transformation.
 %
-What is its associated matrix?
+% What is its associated matrix?
 
-The associated matrix will be
+The associated matrix will be obtained by appling the linear transformation to every base vector:
 %
 \begin{spec}
 M = [ derive (e 0), derive (e 1), ..., derive (e n) ]
@@ -486,7 +497,7 @@ Exercise~\ref{exc:Dmatrixpowerseries}: write the
 
 Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated with
 integration of polynomials.
-
+\jp{There is also something to say about orthogonal maps --- which preserve dot products. As another kind of homomorphism, they fit well the theme of the book.}
 \subsubsection{Simple deterministic systems (transition systems)}
 
 Simple deterministic systems are given by endo-functions%
@@ -526,7 +537,7 @@ i.e., |G -> {0, 1}|.
 %
 |{0, 1}| is not a field w.r.t. the standard arithmetical operations
 (it is not even closed w.r.t. addition), and the standard trick to
-avoid this is to extend the type of the functions to |REAL|.
+workaround this issue is to extend the type of the functions to |REAL|.
 
 The canonical basis vectors are, as usual,
 |e i = V (is i)|.
@@ -577,7 +588,7 @@ from a basis vector, say |[0, 0, 1, 0, 1, 0, 0] == e 2 + e 4|.
 %
 We obtain |{f 2, f 4} = {5, 6}|, the image of |{2, 4}| through |f|.
 %
-In a sense, we can say that the two computations were done in
+In a sense, we can say that the two transitions happened in
 parallel.
 %
 But that is not quite accurate: if start with |{3, 4}|, we no longer
@@ -590,7 +601,7 @@ this as starting with various quantities of some unspecified material
 in each state, simultaneously.
 %
 If |f| were injective, the respective quantities would just get
-shifted around, but in our case, we get a more interesting behaviour.
+shifted around, but in our case, we get a more general behaviour.
 
 What if we do want to obtain the characteristic function of the image
 of a subset?
@@ -603,7 +614,7 @@ The problem is that |({0, 1}, max, min)| is not a field, and neither is
 %
 This is not a problem if all we want is to compute the evolutions of
 possible states, but we cannot apply most of the deeper results of
-linear algebra.
+linear algebra.\jp{But perhaps we have not defined those so far...}
 
 %*TODO: (NiBo)
 % But even if we take |(REAL, max, min)|, the problem is that we
@@ -634,10 +645,10 @@ instance Enum G where
 instance Num G where
   fromInteger = G . fromInteger
 \end{code}
-Note that this is just for convenient notation (integer literals):
-|G| should normally not be used with the other |Num| operations.
+Note that the |Num G| instance is given just for convenient notation (integer literals):
+vector spaces in general do not rely on any numeric structure on the indices (|G|).
 %
-The transition function has type |G -> G|:
+The transition function has type |G -> G| and the following implementation:
 %
 \begin{code}
 next1 :: G -> G
@@ -678,7 +689,7 @@ Test:
 t1'  = mulMV m1 (e 3 + e 4)
 t1   = toL t1'               -- |[0,0,0,0,0,0,2]|
 \end{code}
-
+\jp{Fold this implementation in the text}
 
 
 %**TODO (NiBo):
@@ -852,6 +863,7 @@ Test:
 t2' = mulMV m2 (e 3 + e 4)
 t2 = toL t2'  -- |[False,True,False,False,False,False,True]|
 \end{code}
+\jp{Fold in the text}
 
 %**TODO (NiBo):
 % This could go to into the file for the live sessions:
@@ -952,17 +964,18 @@ For one thing, the notation is extremely suspicious.
 %
 |(a || b)|, which is usually read ``|a|, given |b|'', is clearly not
 of the same type as |a| or |b|, so cannot really be an argument to
-|p|.
+|p|. We discuss this notation at length in \cref{ch:probability-theory}.
 %
 For another, the |p a| we are computing with this formula is not the
 |p a| which must eventually appear in the products on the right hand
 side.
 %
-I do not know how this notation came about: it is neither in Bayes'
+We do not know how this notation came about: it is neither in Bayes'
 memoir, nor in Kolmogorov's monograph.
 
-The conditional probability |p (a || b)| gives us the probability that
-the next state is |a|, given that the current state is |b|.
+Regardless, at this stage, what we need to know is that the
+conditional probability |p (a || b)| gives us the probability that the
+next state is |a|, given that the current state is |b|.
 %
 But this is exactly the information summarised in the graphical
 representation.
@@ -1086,6 +1099,8 @@ m3 g' = V (\ g -> toF (f3 g) g')
 % What does |prob| compute? Evaluate |prob 6 (last (poss3 n next3
 % [(0,1.0)]))| for n = 1, ..., 6. What do you observe?
 
+\jp{What about a section on quantum dynamical systems?}
+
 \subsection{Monadic dynamical systems}
 
 This section is not part of the intended learning outcomes of the
@@ -1170,6 +1185,7 @@ and
     flip (*) : Possible G -> (G -> Possible G) -> Possible G
 \end{spec}
 %
+\jp{We need a proper introduction to monads somewhere}
 you see that they are very similar to the monadic operations
 %
 \begin{spec}
@@ -1225,7 +1241,7 @@ instance Num s => FinMon (Vector s) where
 %
 Note that, if |v :: Vector S G| and |f :: G -> Vector S G'| then
 both |func f v| and |bind v f| are of type |Vector S G'|. How do
-these operations relate to LinAlg and matrix-vector multiplication?
+these operations relate to LinAlg\jp{what's that?} and matrix-vector multiplication?
 
 Remember that |e g| is that vector whose components are zero except for
 the |g|th one which is one. In other words
@@ -1303,7 +1319,7 @@ we have:
 Thus we see that |bind v f| is ``just'' a matrix-vector
 multiplication.
 
-Perhaps for extra exercises:
+Perhaps for extra exercises:\jp{clarify status}
 
 It is worth pointing out the role of |f| in |func f v|.
 %
@@ -1319,13 +1335,13 @@ product
 This shows that the role of |f| in |func f v| is that of re-distributing
 the values of |v| onto the new vector.
 
-Exercise: show that if |w = func f v| then the sum of the components of
+\begin{exercise}
+show that if |w = func f v| then the sum of the components of
 |w| is equal to the sum of the components of |v|.
+\end{exercise}
 
 
-
-Exercises:
-%
+\begin{exercise}
 \begin{enumerate}
 \item Prove that the functor laws hold, i.e.
 %
@@ -1347,6 +1363,7 @@ bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
   Define a new type class |GoodClass| that accounts for these (and
   only these) properties.
 \end{enumerate}
+\end{exercise}
 
 %*TODO: Proving that |func| preserves composition and that |bind|
 % associates gets very messy if one directly operates with their

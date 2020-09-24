@@ -10,6 +10,7 @@
 %   this during his guest lecture last year.
 
 \section{Probability Theory}
+\label{ch:probability-theory}
 
 \begin{code}
 {-# LANGUAGE GADTs #-}
