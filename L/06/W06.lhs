@@ -199,7 +199,6 @@ instance Floating a => Floating (a, a) where  -- just pairs
   sin (f, f')       =  (sin f,   cos f  * f')
   cos (f, f')       =  (cos f, -(sin f) * f')
 \end{spec}
-\end{example}
 %
 In fact, the latter (just pairs) represents a generalisation of the former (pairs of functions).
 %
@@ -268,6 +267,7 @@ f2  = f
 \end{code}
 
 \end{enumerate}
+\end{example}\jp{That's probably a bad structure: the example is very long.}
 
 We have seen three different ways to use a generic |f :: Floating a =>
 a -> a| to compute |f' 2|:

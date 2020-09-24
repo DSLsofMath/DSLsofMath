@@ -59,7 +59,7 @@
   \textbf{Solution:}%
 }%
 {}% end code
-\newenvironment{Example}% environment name
+\newenvironment{example}% environment name
 {% begin code
   \paragraph{Example}%
 }%
