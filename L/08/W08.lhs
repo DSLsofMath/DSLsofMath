@@ -11,7 +11,7 @@ import DSLsofMath.W06
 import Data.Ratio
 \end{code}
 
-One of the classical analysis textbooks, Rudin's \cite{rudin1987real}
+In one of the classical analysis textbook, \citet{rudin1987real}
 starts with a prologue on the exponential function.
 %
 The first sentence is
@@ -30,9 +30,9 @@ It is defined, for every complex number |z|, by the formula
 \end{quote}
 
 
-We have defined the exponential function as the function represented
-by the power series
-
+We, on the other hand, have defined the exponential function as the
+solution of a differential equation, which can be represented by 
+a power series:
 \begin{spec}
 expx :: Fractional a => PowerSeries a
 expx = integ 1 expx
@@ -46,7 +46,7 @@ expf = eval 100 expx
 \end{spec}
 
 It is easy to see, using the definition of |integ| that the power
-series |expx| is, indeed
+series |expx| is, indeed\jp{Why not use taylor series? It would be much easier to write and read.}
 
 \begin{spec}
 expx = [1, 1/1, 1/(1*2), 1/(1*2*3), ..., 1 / (1*2*3* ... *n), ..]
@@ -56,11 +56,11 @@ We can compute the exponential for complex values if we can give an
 instance of |Fractional| for complex numbers.
 %
 We could use the datatype |Data.Complex| from the Haskell standard
-library, but we prefer to roll our own in order to remind the basic
-operations on complex numbers.
+library, but we prefer to roll our own in order to recall the basic
+operations on complex numbers.\jp{but it does not seem that this is done anyway?}
 
-As we saw in week 1, complex values can be represented as pairs of
-real values.
+As we saw in \cref{ch:DSLComplex}, complex values can be represented
+as pairs of real values.
 
 \begin{code}
 newtype Complex r = C (r , r)    deriving (Eq, Show)
@@ -69,16 +69,16 @@ i :: Num a => Complex a
 i = C (0, 1)
 \end{code}
 
-Now, we have, for example
+Therefore we can define, for example, the exponential of the imaginary unit:
 
 \begin{code}
 ex1 :: Fractional a => Complex a
 ex1 = expf i
 \end{code}
 
-We have |ex1 = C (0.5403023058681398,0.8414709848078965)|.
+And we have |ex1 = C (0.5403023058681398,0.8414709848078965)|.
 %
-Note that
+Observe at the same time:
 
 \begin{spec}
 cosf 1  =  0.5403023058681398
@@ -87,7 +87,7 @@ sinf 1  =  0.8414709848078965
 
 and therefore |expf i == C (cosf 1, sinf 1)|.
 %
-Coincidence?
+This is not a coincidence, as we shall see.
 
 Instead of evaluating the sum of the terms |an * z^n|, let us instead
 collect the terms in a series:
@@ -147,7 +147,7 @@ Therefore, the coefficients of |cosx| are
 [1, 0, -1/2!, 0, 1/4!, 0, -1/6!, ...]
 \end{spec}
 
-In other words, the function representation of the coefficients for |cos| is
+In other words, the power series representation of the coefficients for |cos| is
 %
 \begin{spec}
 cosa (2 * n)  = (-1)^n / (2 * n)!
@@ -176,7 +176,7 @@ exp (i*x) = cos x + i*sin x
 \end{spec}
 
 One thing which comes out of Euler's formula is the fact that the
-exponential is a \emph{periodic function}.
+exponential is a \emph{periodic function} on the imaginary axis.
 %
 A function |f : A -> B| is said to be periodic if there exists |T ∈ A|
 such that
@@ -186,8 +186,8 @@ f x = f (x + T)  --  |∀ x ∈ A|
 \end{spec}
 
 (therefore, for this definition to make sense, we need addition on
-|A|; in fact we normally assume at least group structure, i.e.,
-addition and subtraction).
+|A|; in fact we normally assume at least a group structure, i.e.,
+addition and subtraction together with a zero and the appropriate laws).
 
 Since |sin| and |cos| are periodic, with period |tau = 2 * pi|, we have,
 using the standard notation |a+i*b| for some |z = C (a, b)|:
@@ -211,10 +211,10 @@ using the standard notation |a+i*b| for some |z = C (a, b)|:
 
   exp z
 \end{spec}
-
+\jp{Was it ever proven that exp is a homomorphism in this way?}
 Thus, we see that |exp| is periodic, because |exp z = exp (z + T)|
 with |T = i*tau|, for all |z|.
-
+\jp{Question: are all periodic functions also periodic in the tayor series space?}
 \subsubsection{Exponential function: Associated code}
 
 %TODO: Perhaps import from W01 - but it also useful to remind the reader. Alternatively, back-port this code to W01.
@@ -259,8 +259,8 @@ divC x y = scaleC (1/modSq) (x * conj y)
 
 \subsection{The Laplace transform}
 
-This material was inspired by \cite{quinn2008discovering}, which is
-highly recommended reading.
+This material was inspired by \citet{quinn2008discovering}, which is
+a highly recommended reading.
 
 Consider the differential equation
 
@@ -272,15 +272,18 @@ We can solve such equations with the machinery of power series:
 
 \begin{code}
 fs = integ 1 fs'
-  where fs' = integ 0 (exp (3*x) + 3 * fs' - 2 * fs)
+   where fs' = integ 0 fs''
+         fs'' = (exp (3*x)) + 3 * fs' - 2 * fs
 \end{code}
-
+\jp{We're sweeping under the rug that we never defined |exp (k*x)|. Perhaps we should do it and simplify the exposition of exp (ix) at the same time.}
 We have done this by ``zooming in'' on the function |f| and representing
 it by a power series, |f x = Sigma an * x^n|.
 %
 This allows us to reduce the problem of finding a function |f : ℝ → ℝ|
-to that of finding a function |a : ℕ → ℝ| (or finding a list of
-sufficiently many |a|-values for a good approximation).
+to that of finding a list of coefficients |an|, or equivalently a
+function |a : ℕ → ℝ|. Or even, if one wants an approximation only,
+finding a list of sufficiently many |a|-values for a good
+approximation.
 
 Still, recursive equations are not always easy to solve (especially
 without a computer), so it's worth looking for alternatives.
@@ -299,7 +302,7 @@ We would like to go one step further
   |a : ℕ → ℝ| \arrow[r, "\sum a_n * x^n"] & |f : ℝ → ℝ| \arrow[r, "??"] & |F : ??|
 \end{tikzcd}
 
-That is, we are looking for a transformation of |f| to some |F| in a
+That is, we are looking for a transformation from |f| to some |F| in a
 way which resembles the transformation from |a| to |f|.
 %
 The analogue of ``sum of an infinite series'' for a continuous function is an integral:
@@ -309,7 +312,7 @@ The analogue of ``sum of an infinite series'' for a continuous function is an in
 \end{tikzcd}
 
 We note that, for the integral |Integ (f t) * x^t dt| to converge for
-a larger class of functions (say, bounded functions), we have to limit
+a larger class of functions (say, bounded functions\jp{We never explained what a bounded function is}), we have to limit
 ourselves to |absBar x < 1|.
 %
 Both this condition and the integral make sense for |x ∈ ℂ|, so we
@@ -338,17 +341,16 @@ We have
 ℒ f' x = Integ (f' t) * x^t dt
 \end{spec}
 
-Remember that |D (f * g) = D f * g + f * D g|, therefore
-
+Remember that |D (f * g) = D f * g + f * D g|, therefore\jp{Random remark: it's unfortunate that |*| looks like the convolution operator, especially annoying in the context of laplace transforms. Is there any way to typeset this better?}
 %
 \begin{spec}
-  ℒ f' x                                                       =  {- |g t = x^t|; |g' t = log x * x^t| -}
+  ℒ f' x                                                       =  {- |g t = x^t|; |g' t = log x * x^t| (|t| is the variable here, not |x|) -}
 
-  Integ (D (f t * x^t)) - f t * log x * x^t dt                 =
+  Integ (D (f t * x^t)) - f t * log x * x^t dt                 =  {- Linearity of integration -}
 
   Integ (D (f t * x^t)) dt  -  Integ f t * log x * x^t dt      =
 
-  {-"lim_{t \to \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt  =
+  {-"lim_{t \to \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt  = {- abs x < 1-}
 
   -f 0 - log x * Integ f t * x^t dt                           =
 
@@ -445,9 +447,9 @@ For another, it is known that changing the values of |f| for a
 countable number of its arguments does not change the value of the
 integral.
 
-For the definition of |ℒ| and the linearity of the integral, we have
-that, for any |f| and |g| for which the transformation is defined, and
-for any constants |alpha| and |beta|
+According to the definition of |ℒ| and because of the linearity of the
+integral, we have that, for any |f| and |g| for which the
+transformation is defined, and for any constants |alpha| and |beta|
 
 \begin{spec}
 ℒ (alpha *^ f + beta *^g)  =  alpha *^ ℒ f  + beta *^ ℒ g
@@ -455,10 +457,14 @@ for any constants |alpha| and |beta|
 
 Note that this is an equality between functions.
 %
-(Comparing to last week we can also see |f| and |g| as vectors and |ℒ|
-as a linear transformation.)
+Indeed, recalling \cref{sec:LinAlg}, we are working here with the
+vector space of functions (|f| and |g| are elements of it). The
+operator |(*^)| refers to scaling in a vector space --- here scaling
+functions. The above equation says that |ℒ| is a linear transformation
+in that space.\jp{So what is its ``matrix'' representation?}
 
-Applying this to the left-hand side of (1), we have for any |s|
+Applying this linearity property to the left-hand side of (1), we have
+for any |s|:
 
 \begin{spec}
   ℒ (f'' - 3 * f' + 2 * f) s
