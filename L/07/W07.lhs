@@ -156,7 +156,7 @@ functions |f : Vector S G -> Vector S G'|:
 \begin{spec}
 f v  =  f (v 0 *^ e 0 + ... + v n *^ e n)
 \end{spec}
-% that 
+% that
 It is particularly interesting to study vector-space homomorphisms,
 which more commonly called ``linear maps'' (to avoid unnecessary
 confusion with the Haskell |map| function we will refer to them by the
@@ -1247,7 +1247,7 @@ instance Num s => FinMon (Vector s) where
 %
 Note that, if |v :: Vector S G| and |f :: G -> Vector S G'| then
 both |func f v| and |bind v f| are of type |Vector S G'|. How do
-these operations relate to LinAlg\jp{what's that?} and matrix-vector multiplication?
+these operations relate to linear algebra and matrix-vector multiplication?
 
 Remember that |e g| is that vector whose components are zero except for
 the |g|th one which is one. In other words
