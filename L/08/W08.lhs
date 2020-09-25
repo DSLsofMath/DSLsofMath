@@ -11,7 +11,7 @@ import DSLsofMath.W06
 import Data.Ratio
 \end{code}
 
-In one of the classical analysis textbook, \citet{rudin1987real}
+In one of the classical analysis textbooks, \citet{rudin1987real}
 starts with a prologue on the exponential function.
 %
 The first sentence is
@@ -31,7 +31,7 @@ It is defined, for every complex number |z|, by the formula
 
 
 We, on the other hand, have defined the exponential function as the
-solution of a differential equation, which can be represented by 
+solution of a differential equation, which can be represented by
 a power series:
 \begin{spec}
 expx :: Fractional a => PowerSeries a
@@ -260,7 +260,7 @@ divC x y = scaleC (1/modSq) (x * conj y)
 \subsection{The Laplace transform}
 
 This material was inspired by \citet{quinn2008discovering}, which is
-a highly recommended reading.
+highly recommended reading.
 
 Consider the differential equation
 
