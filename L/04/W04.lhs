@@ -31,9 +31,11 @@ structures and mappings between them (called homomorphisms).
 %
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE ConstraintKinds #-}
 module DSLsofMath.W04 where
-import Prelude hiding (Monoid, even)
+import Prelude hiding (Monoid, even, Num(..))
 import DSLsofMath.FunExp
+import DSLsofMath.Algebra hiding (fromInteger)
 \end{code}
 %
 \subsection{Compositional semantics and homomorphisms}
@@ -151,7 +153,7 @@ evenAdd = (==)
 evenMul = (||)
 evenCon = (0==).(`mod` 2)
 \end{code}
-\footnote{The definition would have been easier if we had taken odd instead of even. You can try it out as an exercise.}
+\footnote{A perhaps more natural alternative would be to taken odd instead of even as the base property. You can try it out as an exercise.}
 %
 Exercise: prove |H2(even,Add,evenAdd)| and |H2(even,Mul,evenMul)|.
 
@@ -197,7 +199,7 @@ But as we also know that |False /= True| we have a contradiction.
 Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
 to |Bool|, regardless of the choice of the operator corresponding to addition.
 
-\subsubsection{Compositional functions can be ``wrong''}
+\subsubsection{Even compositional functions can be ``wrong''}
 %
 When working with expressions it is often useful to have a
 ``pretty-printer'' to convert the abstract syntax trees to strings
@@ -249,7 +251,7 @@ Note that |e1| and |e2| are not equal, but they still pretty-print to
 the same string.
 %
 This means that |pretty| is doing something wrong: the inverse,
-|parse|, is ambigous.
+|parse|, is ambiguous.
 %
 There are many ways to fix this, some more ``pretty'' than others, but
 the main problem is that some information is lost in the translation:
@@ -366,7 +368,7 @@ and with a minimal modification we can also make it work for other
 numeric types:
 %
 \begin{code}
-evalE2 :: Num a => E -> a
+evalE2 :: Ring a => E -> a
 evalE2 = foldE (+) (*) fromInteger
 \end{code}
 
@@ -535,43 +537,49 @@ homomorphisms between algebraic structures.
 From Wikipedia:
 %
 \begin{quote}
-  In universal algebra, an algebra (or algebraic structure) is a set |A|
-  together with a collection of operations on |A|.
-
-Example:
-%
-\begin{code}
-class Monoid a where
-  unit  ::  a
-  op    ::  a -> a -> a
-\end{code}
-%
-After the operations have been specified, the nature of the
-algebra can be further limited by axioms, which in universal
-algebra often take the form of identities, or \emph{equational laws}.
-
-Example: Monoid equations
-
-A monoid is an algebra which has an associative operation 'op' and a
-unit.
-%
-The laws can be formulated as the following equations:
-%
-\begin{spec}
-∀ x : a? (unit `op` x == x  ∧  x `op` unit == x)
-∀ x, y, z : a? (x `op` (y `op` z) == (x `op` y) `op` z)
-\end{spec}
-%
+  In universal algebra, an algebra (or algebraic structure) is a set
+  |A| together with a collection of operations on |A| (of finite
+  arity) and a collection of axioms which those operation must
+  satisfy.
 \end{quote}
 
-Examples of monoids include numbers with additions, |(REAL, 0, (+))|,
-numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
-with composition |(a->a,id, (.))|.
-%
-It is a good exercise to check that the laws are satisfied.
-%
-(An ``endofunction'', also known as ``endomorphism'' is a function of type |X->X| for some set
-|X|.)
+The fact that a type |a| is equipped with operations can be captured in Haskell using a type class.
+
+\begin{example}
+  A particularly pervasive structure is that of monoids.
+  %
+  A monoid is an algebra which has an associative operation 'op' and a
+  unit:
+\begin{code}
+class Monoid a where
+    unit  ::  a
+    op    ::  a -> a -> a
+\end{code}
+  % 
+  The laws can be formulated as the following equations:
+  % 
+  \begin{spec}
+    ∀ x : a? (unit `op` x == x  ∧  x `op` unit == x)
+    ∀ x, y, z : a? (x `op` (y `op` z) == (x `op` y) `op` z)
+  \end{spec}
+  % 
+\end{example}
+
+\begin{example}
+  Examples of monoids include numbers with additions, |(REAL, 0, (+))|,
+  numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
+  with composition |(a->a,id, (.))| .
+  %
+  (An ``endofunction'', also known as ``endomorphism'' is a function of type |X->X| for some set
+  |X|.)
+\end{example}
+
+\begin{exercise}
+  Define the above monoids and check that the laws are satisfied.
+\end{exercise}
+
+
+\end{example}
 
 
 In mathematics, as soon as there are several examples of a structure,
@@ -624,21 +632,38 @@ Haskell: the additive monoid |ANat| and the multiplicative monoid
 |MNat|.
 %
 \begin{code}
-newtype ANat      =  A Int          deriving (Show, Num, Eq)
+newtype ANat      =  A Int          deriving (Show, Eq)
 
 instance Monoid ANat where
   unit            =  A 0
   op (A m) (A n)  =  A (m + n)
 
-newtype MNat      =  M Int          deriving (Show, Num, Eq)
+newtype MNat      =  M Int          deriving (Show, Eq)
 
 instance Monoid MNat where
   unit            =  M 1
   op (M m) (M n)  =  M (m * n)
 \end{code}
 %
-In mathematical texts the constructors |M| and |A| are usually omitted
-and below we will stick to that tradition.
+In mathematical texts the constructors |M| and |A| are usually
+omitted, and instead the names of the operations suggest which of the
+monoids one is referring to.  We will stick to that tradition.  In
+fact, we will define the additive and multiplicative monoids, as
+follows.
+
+\begin{spec}
+class Additive a where
+  zero :: a
+  (+) :: a -> a -> a
+
+class Multiplicative a where
+  one :: a
+  (*) :: a -> a -> a
+\end{spec}
+
+The operator names clash with the |Num| class, which we will avoid
+from now one in favour |Additive| and |Multiplicative|.
+
 
 \begin{exercise}
 Characterise the homomorphisms from |ANat| to |MNat|.
@@ -701,9 +726,48 @@ Show that |apply c| is a homomorphism for all |c|, where
 |apply x f = f x|.
 \end{exercise}
 
+\begin{example}{Groups and rings}
+
+  Another important structure are groups, which are monoids augmented with an
+  inverse. To complete our mathematically-grounded |Num| replacement,
+  we will define the additive group as follows.
+
+\begin{spec}
+class Additive a => AddGroup a where
+  negate :: a -> a
+\end{spec}
+
+The inverse must act like an inverse. Namely, applying the operation to an element and its inverse should yield the unit of the group.
+Thus, for the additive group, the laws look like this:
+
+\begin{spec}
+negate a + a = zero
+a + negate a = zero
+\end{spec}
+
+And thus we can define subtraction as
+\begin{spec}
+a - b = a + negate b
+\end{spec}
+
+Finally, when the additive monoid is abelian (commutative) and
+addition distributes over multiplication, we have a |Ring|. We cannot specify laws in Haskell typeclasses  and thus define it simply as the conjuction of |Group| and |Multiplicative|:
+\begin{spec}
+type Ring a = (Group a, Multiplicative a)
+\end{spec}
+
+As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integer| is the sum of |n| ones or the negation of such a sum. Thus we can map every |Integer| to an element of a |Ring| (the multiplicative structure is used to provide |one|):
+
+\begin{code}
+fromInteger :: Ring a => Integer -> a
+fromInteger n | n < 0 = negate (fromInteger (negate n))
+              | n == 0 = zero
+              | otherwise = one + fromInteger (n - 1)
+\end{code}
+\end{example}
 
 \subsubsection{Homomorphism and compositional semantics}
-\jp{Seems like a repeat, what is new in this subsection.}
+\jp{Seems like a repeat, what is new in this subsection?}
 Earlier, we saw that |eval| is compositional, while |eval'| is not.
 %
 Another way of phrasing that is to say that |eval| is a homomorphism,
@@ -712,8 +776,13 @@ while |eval'| is not.
 To see this, we need to make explicit the structure of |FunExp|:
 %
 \begin{spec}
-instance Num FunExp where
-  (+) = (:+:); (*) = (:*:); fromInteger  =  Const . fromInteger
+instance Additive FunExp where
+  (+) = (:+:)
+  -- ...
+
+
+instance Multiplicative FunExp where
+  (*) = (:*:)
   -- ...
 
 instance Fractional FunExp where
@@ -792,7 +861,7 @@ class GoodClass t where
 
 newtype FD a = FD (a -> a, a -> a)
 
-instance Num a => GoodClass (FD a) where
+instance Ring a => GoodClass (FD a) where
   addF = evalDApp
   mulF = evalDMul
   expF = evalDExp
@@ -883,7 +952,7 @@ If we have an element of the domain of such a function, we can use it
 to obtain a homomorphism from functions to their codomains:
 %
 \begin{spec}
-Num a => x ->  (x -> a) -> a
+Ring a => x ->  (x -> a) -> a
 \end{spec}
 %
 As suggested by the type, the homomorphism is just function
@@ -950,35 +1019,37 @@ For example (we skip the constructor |FD| for brevity):
 The identity will hold if we take
 %
 \begin{code}
-(*?) :: Num a =>  Dup a -> Dup a -> Dup a
+(*?) :: Ring a =>  Dup a -> Dup a -> Dup a
 (x, x') *? (y, y')  =  (x * y, x' * y + x * y')
 \end{code}
 %
 Thus, if we define a ``multiplication'' on pairs of values using
-|(*?)|, we get that |(applyFD c)| is a |Num|-homomorphism for all |c|
-(or, at least for the operation |(*)|).
+|(*?)|, we get that |(applyFD c)| is a |Multiplicative|-homomorphism for all |c|.
 %
 We can now define an instance
 %
 \begin{code}
-instance Num a => Num (Dup a) where
+instance Ring a => Multiplicative (Dup a) where
   (*) = (*?)
   -- ... exercise
 \end{code}
 %
-Exercise: complete the instance declarations for |Dup REAL|.
+\begin{exercise}
+Complete the instance declarations for |Dup REAL|.
+\end{exercise}
 
-Note: As this computation goes through also for the other cases we can
+
+Note: because this computation goes through also for the other cases we can
 actually work with just pairs of values (at an implicit point |c ::
 a|) instead of pairs of functions.
 %
 Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|
 
-Hint: Something very similar can be used for Assignment 2.
+Hint: Something very similar can be used for Assignment 2.\jp{What's that?}
 
 \subsection{Summing up: definitions and representation}
 
-We defined a |Num| structure on pairs |(REAL, REAL)| by requiring
+We defined a |Ring| structure on pairs |(REAL, REAL)| by requiring
 the operations to be compatible with the interpretation |(f a, f' a)|.
 %
 For example
@@ -1036,17 +1107,22 @@ We will see this distinction again in
 \subsubsection{Some helper functions}
 
 \begin{code}
-instance Num E where -- Some abuse of notation (no proper |negate|, etc.)
+instance Additive E where -- Some abuse of notation (no proper |negate|, etc.)
   (+)  = Add
+  zero = Con zero
+
+instance Multiplicative E where
   (*)  = Mul
-  fromInteger = Con
+  one  = Con one
+
+instance AddGroup E where -- TODO: probably this is there to allow for fromInteger to work (with Num). But the funny implementation is no longer needed.
   negate = negateE
 
 negateE (Con c) = Con (negate c)
 negateE _ = error "negate: not supported"
 \end{code}
 %
-%TODO: Perhaps include the comparison of the |Num t => Num (Bool -> t)| instance (as a special case of functions as |Num|) and the |Num r => Num (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
+%TODO: Perhaps include the comparison of the |Ring t => Ring (Bool -> t)| instance (as a special case of functions as |Ring|) and the |Ring r => Ring (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
 
 \subsection{Co-algebra and the Stream calculus}
 
