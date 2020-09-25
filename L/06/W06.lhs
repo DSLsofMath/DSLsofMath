@@ -401,7 +401,8 @@ Thus, we can eliminate |help| to arrive at a definition for multiplication:
 \begin{code}
 mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 \end{code}
-\jp{Are we going to compare this with |polyMul|?}
+\jp{This is different from  |polyMul|, but this is because the coefficients here are "bigger". In fact,
+we compute several times the same thing here and add them together. }
 As in the case of pairs, we find that we do not need any properties of
 functions, other than their |Num| structure, so the definitions apply
 to any infinite list of |Num a|:
