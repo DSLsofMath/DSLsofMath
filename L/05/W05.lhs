@@ -1,9 +1,14 @@
 \section{Polynomials and Power Series}
 \label{sec:poly}
 \begin{code}
+{-# LANGUAGE GADTs #-}
 {-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE RebindableSyntax #-}
+{-# LANGUAGE TypeApplications #-}
 module DSLsofMath.W05 where
+import Prelude hiding (Num(..),(/),(^))
 import DSLsofMath.FunNumInst
+import DSLsofMath.Algebra
 \end{code}
 
 \subsection{Polynomials}
@@ -78,11 +83,11 @@ polynomial functions).
 Show that this evaluation function gives the same result as the formula above.
 \end{exercise}
 
-Using the |Num| instance for functions we can rewrite |eval| into
+Using the |Ring| instance for functions we can rewrite |eval| into
 a one-argument function (returning a polynomial function):
 %
 \begin{code}
-evalL :: Num a => [a] -> (a -> a)
+evalL :: Ring a => [a] -> (a -> a)
 evalL []      = const 0
 evalL (a:as)  = const a  +  id * evalL as
 \end{code}
@@ -152,7 +157,7 @@ toList :: Poly a   ->  [a]
 toList (Single a)   =  a : []
 toList (Cons a as)  =  a : toList as
 
-fromList :: Num a => [a]  ->  Poly a
+fromList :: Ring a => [a]  ->  Poly a
 fromList (a : [])         =  Single a
 fromList (a0 : a1 : as)   =  Cons a0 (fromList (a1 : as))
 fromList []               =  Single 0  -- to complete the pattern match
@@ -162,18 +167,18 @@ instance Show a => Show (Poly a) where
 \end{code}
 
 Since we only use the arithmetical operations, we can generalise our
-evaluator to an arbitrary |Num| type.
+evaluator to an arbitrary |Ring| type.
 
 \begin{code}
-evalPoly :: Num a => Poly a -> (a -> a)
+evalPoly :: Ring a => Poly a -> (a -> a)
 evalPoly (Single a)     x   =  a
 evalPoly (Cons a as)    x   =  a + x * evalPoly as x
 \end{code}
 
-Since we have |Num a|, there is a |Num| structure on |a -> a|, and
+Since we have |Ring a|, there is a |Ring| structure on |a -> a|, and
 |evalPoly| looks like a homomorphism.
 %
-Question: is there a |Num| structure on |Poly a|, such that |evalPoly|
+Question: is there a |Ring| structure on |Poly a|, such that |evalPoly|
 is a homomorphism?
 
 For example, the homomorphism condition gives for |(+)|
@@ -238,27 +243,30 @@ exercise.
 Here, we just give the corresponding definitions.
 %
 \begin{code}
-instance Num a => Num (Poly a) where
+instance Additive a => Additive (Poly a) where
   (+) = polyAdd
-  (*) = polyMul
+  zero = Single zero
 
+instance Ring a => Multiplicative (Poly a) where
+  (*) = polyMul
+  one = Single one
+
+instance AddGroup a => AddGroup (Poly a) where
   negate = polyNeg
 
-  fromInteger =  Single . fromInteger
-
-polyAdd :: Num a => Poly a -> Poly a -> Poly a
+polyAdd :: Additive a => Poly a -> Poly a -> Poly a
 polyAdd (Single a )  (Single b )  =  Single (a + b)
 polyAdd (Single a )  (Cons b bs)  =  Cons (a + b) bs
 polyAdd (Cons a as)  (Single b )  =  Cons (a + b) as
 polyAdd (Cons a as)  (Cons b bs)  =  Cons (a + b) (polyAdd as bs)
 
-polyMul :: Num a => Poly a -> Poly a -> Poly a
+polyMul :: Ring a => Poly a -> Poly a -> Poly a
 polyMul (Single a )  (Single b )  =  Single (a * b)
 polyMul (Single a )  (Cons b bs)  =  Cons (a * b) (polyMul (Single a) bs)
 polyMul (Cons a as)  (Single b )  =  Cons (a * b) (polyMul as (Single b))
 polyMul (Cons a as)  (Cons b bs)  =  Cons (a * b) (polyAdd  (polyMul as (Cons b bs))
                                                             (polyMul (Single a) bs)  )
-polyNeg :: Num a => Poly a -> Poly a
+polyNeg :: AddGroup a => Poly a -> Poly a
 polyNeg = mapPoly negate
 
 mapPoly :: (a->b) -> (Poly a -> Poly b)
@@ -267,7 +275,7 @@ mapPoly f (Cons a as)  = Cons (f a) (mapPoly f as)
 \end{code}
 %
 Therefore, we \emph{can} define a ring structure (roughly the mathematical
-counterpart of |Num|) on |Poly a|, and we have arrived at the
+counterpart of |Ring|) on |Poly a|, and we have arrived at the
 canonical definition of polynomials, as found in any algebra book
 (see, for example, \cite{rotman2006first} for a very readable text):
 
@@ -367,7 +375,7 @@ multiplication.
 Let
 
 \begin{code}
-x :: Num a => Poly a
+x :: Ring a => Poly a
 x = Cons 0 (Single 1)
 \end{code}
 
@@ -634,7 +642,7 @@ Since we cannot in general compute limits, we can use an
 an initial segment of the power series.
 
 \begin{code}
-eval :: Num a => Integer -> PowerSeries a -> (a -> a)
+eval :: Ring a => Integer -> PowerSeries a -> (a -> a)
 eval n as x = evalPoly (takePoly n as) x
 
 takePoly :: Integer -> PowerSeries a -> Poly a
@@ -746,11 +754,10 @@ series |(c : cs)| satisfying
 This leads to the implementation:
 
 \begin{code}
-instance (Eq a, Fractional a) => Fractional (PowerSeries a) where
+instance (Eq a, Field a) => MulGroup (PowerSeries a) where
   (/) = divPS
-  fromRational =  Single . fromRational
 
-divPS :: (Eq a, Fractional a) => PowerSeries a -> PowerSeries a -> PowerSeries a
+divPS :: (Eq a, Field a) => PowerSeries a -> PowerSeries a -> PowerSeries a
 divPS as           (Single b)    =  as * Single (1 / b)
 divPS (Single 0)   (Cons b bs)   =  Single 0
 divPS (Single a)   (Cons b bs)   =  divPS (Cons a (Single 0)) (Cons b bs)
@@ -769,7 +776,7 @@ that of long division.
 For example:
 
 \begin{code}
-ps0, ps1, ps2 :: (Eq a, Fractional a) => PowerSeries a
+ps0, ps1, ps2 :: (Eq a, Field a, a ~ Double) => PowerSeries a
 ps0  = 1 / (1 - x)
 ps1  = 1 / (1 - x)^2
 ps2  = (x^2 - 2 * x + 1) / (x - 1)
@@ -867,10 +874,10 @@ serious'' \cite{mcilroy1999functional}.
 instance Functor Poly where
   fmap = mapPoly
 
-po1 :: Num a => Poly a
+po1 :: (Eq a, Field a) => Poly a
 po1 = 1 + x^2 - 3*x^4
 
-instance Num a => Monoid' (Poly a) where
+instance Ring a => Monoid' (Poly a) where
   unit = Single 1
   op = (*)
 
@@ -880,7 +887,7 @@ instance Monoid' Integer where
 
 type Nat = Integer
 
-degree :: (Eq a, Num a) => Poly a -> Maybe Nat
+degree :: (Eq a, Ring a) => Poly a -> Maybe Nat
 degree (Single 0) = Nothing
 degree (Single x) = Just 0
 degree (Cons x xs) = maxd (degree (Single x)) (fmap (1+) (degree xs))
