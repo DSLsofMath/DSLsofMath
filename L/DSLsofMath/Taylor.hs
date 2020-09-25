@@ -1,5 +1,7 @@
 {-# LANGUAGE FlexibleContexts #-}
 
+module Taylor where
+
 import Data.Complex
 
 -- also this is a vector space
@@ -18,6 +20,9 @@ instance Num a => Num (Taylor a) where
   fromInteger x = integ (fromInteger x) 0
   negate (a `Integ` as) = negate a `Integ` negate as
 
+constant :: Num a => a -> Taylor a
+constant x = integ x 0
+
 integ :: a -> Taylor a -> Taylor a
 integ = Integ
 
@@ -27,13 +32,13 @@ sinx = integ 0 cosx
 cosx :: Taylor Integer
 cosx = integ 1 (-sinx)
 
-expx :: Taylor Double
+expx :: Taylor (Complex Double)
 expx = integ 1 expx
 
-expkx :: Taylor Double -> Taylor Double
-expkx k = integ 1 (k*expx)
+-- expkx :: Taylor Double -> Taylor Double
+-- expkx k = integ 1 (k*expx)
 
-varx :: Taylor Integer
+varx :: Taylor (Complex Double)
 varx = integ 0 1
 
 (*^) :: Num t => t -> Taylor t -> Taylor t
@@ -46,16 +51,32 @@ evalPart (k:ks) n y = k + evalPart (((y/n) *) <$> ks) (n+1) y
 eval :: Fractional p => Taylor p -> Int -> p -> p
 eval t n x = evalPart (take n $ toList t) 1 x
 
-test :: Double
-test = eval expx 100 1
-
 
 -- f . g
 -- integ ((f . g) 0) (D (f . g))
 -- integ (f (g 0)) (D f . g * g')
 
-compose f@(Integ _ f') g@(Integ g0 g') = Integ _ ((f' `compose` g) * g')
+compose :: (Eq a, Num a) => Taylor a -> Taylor a -> Taylor a
+compose (Integ f0 f') g@(Integ g0 g') = Integ fg0 ((f' `compose` g) * g')
+  where
+    -- fg0 is the evaluation of f at point g0. (An infinite sum in the general case, but...)
+    fg0 = if g0 == 0 then f0 else error "fg0: computation diverges"
 
--- In the whole goes an infinite series (eval of f at point g0)
+-- >>> varx
+-- [0,1,0,0,0,0,0,0,0,0]
 
+-- >>> 3 * varx
+-- [0.0,3.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]
+
+-- >>> expx `compose` ((constant (0 :+ 1) * varx))
+-- [1.0 :+ 0.0,
+--  0.0 :+ 1.0,
+--  (-1.0) :+ 0.0,
+--  0.0 :+ (-1.0),
+--  1.0 :+ 0.0,
+--  0.0 :+ 1.0,
+--  (-1.0) :+ 0.0,
+--  0.0 :+ (-1.0),
+--  1.0 :+ 0.0,
+--  0.0 :+ 1.0]
 
