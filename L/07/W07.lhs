@@ -63,9 +63,10 @@ For every field |S| of scalars and every set |G| of indices, the set
 %*TODO: Perhaps cut this "noisy" intro
 \begin{code}
 {-# LANGUAGE GADTs, FlexibleInstances, UndecidableInstances #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving, RebindableSyntax #-}
 module DSLsofMath.W07 where
-import DSLsofMath.FunNumInst ()
+import DSLsofMath.Algebra
+import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
 import Data.List(nub)
 type REAL = Double
 \end{code}
@@ -77,10 +78,9 @@ general (and conceptually simpler) way is to view them as
 \emph{functions} from a set of indices |G|:
 %
 \begin{code}
-newtype Vector s g    = V (g -> s) deriving Num
+newtype Vector s g    = V (g -> s) deriving (Additive,AddGroup)
 \end{code}
-%*TODO Perhaps explain "deriving Num"
-\jp{Fix |deriving Num|}
+%*TODO Perhaps explain "deriving ... here"
 
 As discussed, the |S| parameter in |Vector S| has to be a field (|REAL|,
 or |Complex|, or |Zn|, etc.) for values of type |Vector S G| to
@@ -93,47 +93,35 @@ examples so far we have used indices from \(G = \{0, \ldots, n\}\).
 Thus the dimension of the space
 would be \(n+1\).
 
-We know from the previous lectures that if |S| is an instance of
-|Num|, |Fractional|, etc. then so is |G -> S|, with the pointwise
+We know from the previous lectures that if |S| is an instance of a 
+|AddGroup|  then so is |G -> S|, with the pointwise
 definitions.
-%
-In particular, the instance declarations for addition  and the
-embedding of constants, give us part of the structure needed for the
-vector operations.
-%
-For example:
-%
-\begin{spec}
-    2 * v                      =  {- |2| is promoted to a function -}
 
-    (const 2) * v              =  {- |Num| instance definition -}
-
-    \ g -> (const 2) g * v g   =  {- definition of |const| -}
-
-    \ g -> 2 * v g
-\end{spec}
-%
-However, the ``promotion'' by |fromInteger| works for literals (like
-|2|, |-7|, etc.) but not for general expressions. That is, vector
-spaces are \emph{not} rings.\jp{revisit num/ring presentation}
-%
-Indeed, the function instance for the |Num| class gives a homogenous
+However, multiplication of vectors does not in general work pointwise. In fact, the |Multiplicative| class gives a homogenous
 multiplication operator |(*) :: v -> v -> v|, but such an operator is
-not part of the definition of vector spaces.  Rather one has a general
+not part of the definition of vector spaces. Consequently, vector
+spaces are \emph{not} rings.
+
+Instead,Rather one has a
 scaling operator |(*^) :: s -> v -> v|, which is inhomogenous: the
-first argument is a scalar and the second a vector.
+first argument is a scalar and the second one a vector. It can be defined as follows:
+
+\begin{code}
+(*^) :: Multiplicative s => s -> Vector s g -> Vector s g
+s *^ V f = V $ \x -> s * (f x)
+\end{code}
 
 The canonical basis vectors are given by
 %
 \begin{code}
-e :: (Eq g, Num s) => g -> Vector s g
+e :: (Eq g, Ring s) => g -> Vector s g
 e i = V (\j -> i `is` j)
 \end{code}
 %
 In linear algebra textbooks, the function |is| is often referred to as
 the Kronecker-delta function and |is i j| is written $\delta_{i,j}$.
 \begin{code}
-is :: (Eq g, Num s) => g -> g -> s
+is :: (Eq g, Ring s) => g -> g -> s
 is a b = if a == b then 1 else 0
 \end{code}
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
@@ -240,19 +228,21 @@ type Matrix s g g' = g' -> Vector s g
 then we can implement matrix-vector multiplication as:
 %
 \begin{code}
-mulMV ::  (Finite g, Num s) => Matrix s g g'  ->  Vector s g  ->  Vector s g'
+mulMV ::  (Finite g, Ring s) => Matrix s g g'  ->  Vector s g  ->  Vector s g'
 mulMV m v  = V (\g' -> sumV (m g' * v))
 
-sumV :: (Finite g, Num s) => Vector s g -> s
+sumV :: (Finite g, Ring s) => Vector s g -> s
 sumV (V v) = sum (map v finiteDomain)
 \end{code}
+ \jp{This definition is wrong, unless we define the Hadamard product. But this jumping through flaming hoops. Use the correct definition given below and restructure the text.}
+ \jp{Note that |Matrix| form a category with mulMV being the composition?}
 %
 As already mentioned, here |Finite| means |Bounded| and |Enumerable|:
 %
 \begin{code}
 class (Bounded g, Enum g, Eq g) => Finite g  where
 \end{code}
-\jp{In modern haskell you'd write type Finite g = (Bounded g, Enum g, Eq g)}
+\jp{In modern haskell you'd write |type Finite g = (Bounded g, Enum g, Eq g)|}
 
 %*TODO:
 % I think we might end up with a mixture of definitions given in terms of
@@ -639,7 +629,7 @@ linear algebra.\jp{But perhaps we have not defined those so far...}
 In the example above, we have:
 %
 \begin{code}
-newtype G = G Int deriving (Eq, Show)
+newtype G = G Int deriving (Eq, Show, Additive, Multiplicative, AddGroup)
 
 instance Bounded G where
   minBound  =  G 0
@@ -649,10 +639,8 @@ instance Enum G where
   toEnum          =  G
   fromEnum (G n)  =  n
 
-instance Num G where
-  fromInteger = G . fromInteger
 \end{code}
-Note that the |Num G| instance is given just for convenient notation (integer literals):
+Note that the |Ring G| instance is given just for convenient notation (integer literals):
 vector spaces in general do not rely on any numeric structure on the indices (|G|).
 %
 The transition function has type |G -> G| and the following implementation:
@@ -686,13 +674,14 @@ toF (V v) = v
 Thus we can implement |m| as:
 %
 \begin{code}
-m1 :: Num s => G -> Vector s G
+m1 :: Ring s => G -> Vector s G
 m1 g' = V (\ g -> (next1 g) `is` g')
 \end{code}
 
 Test:
 %
 \begin{code}
+t1' :: Vector Int G
 t1'  = mulMV m1 (e 3 + e 4)
 t1   = toL t1'               -- |[0,0,0,0,0,0,2]|
 \end{code}
@@ -704,9 +693,10 @@ t1   = toL t1'               -- |[0,0,0,0,0,0,2]|
 % This could go to into the file for the live sessions:
 %
 \begin{code}
-poss :: (Finite g, Num s) => Int -> Matrix s g g -> Vector s g -> [Vector s g]
+poss :: (Finite g, Ring s) => Int -> Matrix s g g -> Vector s g -> [Vector s g]
 poss n m v = take (n + 1) (iterate (mulMV m) v)
 
+testPoss0 :: [Vector Int G]
 testPoss0 = poss 6 m1 (e 3 + e 4)
 \end{code}
 %
@@ -849,19 +839,21 @@ m2 g' = V (\ g -> f2 g g')
 
 %
 % TODO (by DaHe): Should probably elaborate on why we needed a field before, and
-% now a Num instance
+% now a Ring instance
 %
-We need a |Num| instance for |Bool| (not a field!):
+We need a |Ring| instance for |Bool| (not a field!):
 %
 \begin{code}
-instance Num Bool where
+instance Additive Bool where
   (+)  =  (||)
-  (*)  =  (&&)
-  fromInteger 0  =  False
-  fromInteger 1  =  True
+  zero = False
+
+instance AddGroup Bool where
   negate         =  not
-  abs            =  id
-  signum         =  id
+
+instance Multiplicative Bool where
+  one = True
+  (*)  =  (&&)
 \end{code}
 
 Test:
@@ -1238,10 +1230,10 @@ The idea is that vectors on finite types are finite functors and monads:
 \begin{code}
 instance  (Bounded a, Enum a, Eq a) => Finite a  where
 
-instance Num s => FinFunc (Vector s) where
+instance Ring s => FinFunc (Vector s) where
   func f (V v) = V (\ g' -> sum [v g | g <- finiteDomain, g' == f g])
 
-instance Num s => FinMon (Vector s) where
+instance Ring s => FinMon (Vector s) where
   embed g       =  V (is g)
   bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- finiteDomain])
 \end{code}
@@ -1261,10 +1253,10 @@ and thus |embed = e|.
 %
 In order to understand how matrix-vector multiplication relates to the
 monadic operations, it is useful to introduce the ``dot'' product
-between vectors:\jp{This is only true if the basis vectors are orthonormal}
+between vectors:
 %
 \begin{code}
-dot :: (Num s, Finite g) => Vector s g -> Vector s g -> s
+dot :: (Ring s, Finite g) => Vector s g -> Vector s g -> s
 dot (V v) (V w) = sum [v g * w g | g <- finiteDomain]
 -- or |sum (map (v * w) finiteDomain)| where |v * w :: g -> s| uses |FunNumInst|
 \end{code}
@@ -1406,7 +1398,7 @@ The scalar product of two vectors is a good building block for matrix
 multiplication:
 %
 \begin{code}
-dot' ::  (Finite g, Num s) =>
+dot' ::  (Finite g, Ring s) =>
         (g->s) -> (g->s) -> s
 dot' v w = sum (map (v * w) finiteDomain)
 \end{code}
@@ -1448,7 +1440,7 @@ We can even go one step further:
 to end up at
 %
 \begin{code}
-mulMV' ::  (Finite g, Num s) =>
+mulMV' ::  (Finite g, Ring s) =>
            Mat s g g' ->  Vec s g  ->  Vec s g'
 mulMV' m v  =  dot' v . m
 type Mat s r c = c -> r -> s
@@ -1458,7 +1450,7 @@ type Vec s r = r -> s
 Similarly, we can define matrix-matrix multiplication:
 %
 \begin{code}
-mulMM' ::  (Finite b, Num s) =>
+mulMM' ::  (Finite b, Ring s) =>
            Mat s b c   ->  Mat s a b  ->  Mat s a c
 mulMM' m1 m2 = \r c -> mulMV' m1 (getCol m2 c) r
 

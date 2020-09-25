@@ -14,6 +14,8 @@ class Additive a where
   zero :: a
   (+) :: a -> a -> a
 
+sum :: (Foldable t, Additive a) => t a -> a
+sum = foldr (+) zero
 
 times :: Additive a => Integer -> a -> a
 times n0 = if n0 < 0 then Prelude.error "Algebra.Classes.times: negative number of times" else go n0
