@@ -80,6 +80,7 @@ general (and conceptually simpler) way is to view them as
 newtype Vector s g    = V (g -> s) deriving Num
 \end{code}
 %*TODO Perhaps explain "deriving Num"
+\jp{Fix |deriving Num|}
 
 As discussed, the |S| parameter in |Vector S| has to be a field (|REAL|,
 or |Complex|, or |Zn|, etc.) for values of type |Vector S G| to
@@ -1213,7 +1214,7 @@ Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|.
 
 
 \subsection{The monad of linear algebra}
-
+\jp{Todo: connect this with the monad of probability theory chapter.}
 The answer is yes, up to a point.
 %
 Haskell |Monad|s, just like |Functor|s, require |return| and |>>=| to
