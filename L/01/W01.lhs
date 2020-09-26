@@ -55,6 +55,9 @@ constant (for some fixed value $x$) or as a function of $x$.
 Paying attention to types and variable scope often helps to sort out
 these ambiguities.
 
+\jp{Representing expressions of one variable as functions (of one argument) is a recurring technique in this book.}
+\jp{And in some places we're still guilty of making this confusion. It may be worth having a margin symbol every time we do this.}
+
 \paragraph{Scoping}
 \label{sec:scoping}
 The syntax and scoping rules for the integral sign are rarely
