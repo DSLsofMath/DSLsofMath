@@ -1,66 +1,5 @@
 \section{Elements of Linear Algebra}
 \label{sec:LinAlg}
-
-Often, especially in engineering textbooks, one encounters the
-following definition: a vector is an \(n+1\)-tuple of real or complex numbers,
-arranged as a column:
-%
-\[v = \colvec{v}\]
-%
-Other times, this is supplemented by the definition of a row vector:
-%
-\[v = \rowvec{v}\]
-%
-The |vi|s are real or complex numbers, or, more generally, elements of
-a \emph{field} (analogous to being an instance of |Fractional|).
-%
-Vectors can be added point-wise and multiplied with scalars, i.e.,
-elements of the field:
-%
-\[v + w = \colvec{v} + \colvec{w} = \colvecc{v_0 + w_0}{v_n + w_n}\]
-%
-\[ |s *^ v| = \colvecc{s*v_0}{s*v_n}\]
-%
-The scalar |s| scales all the components of |v|.
-
-But, as you might have guessed, the layout of the components on paper
-(in a column or row) is not the most important feature of a vector ---
-even though this typographical feature is grounded in mathematical
-structures.
-%
-In fact, the most important feature of vectors is that they can be
-\emph{uniquely} expressed as a simple sort of combination of other
-vectors:
-%
-\[v = \colvec{v} = |v0 *^| \colveccc{1 \\ 0 \\ \vdots \\ 0} +
-                   |v1 *^| \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
-                   |vn *^| \colveccc{0 \\ 0 \\ \vdots \\ 1}
-\]
-%
-We denote by
-%
-\[e_k = \colveccc{0\\\vdots\\0\\1 \makebox[0pt][l]{\qquad $\leftarrow$ position $k$} \\0\\\vdots\\0}\]
-%
-the vector that is everywhere |0| except at position |k|, where it is
-|1|, so that |v = v0 *^ e0 + ... + vn *^ en|.
-
-We could represent a vector |v| in terms of any set of \emph{basis}
-vectors |{b0, ..., bn}| which are \emph{linearly independent}:
-%
-\begin{spec}
-  (v0 *^ b0 + ... + vn *^ bn = 0) <=> (v0 = ... = vn = 0)
-\end{spec}
-%
-The specification warrants that any vector has a unique representation
-and it is easy to see that |{e0, ..., en}| fulfils the specification.
-
-The algebraic structure that captures a set of vectors, with zero,
-addition, and scaling is called a \emph{vector space}.
-%
-For every field |S| of scalars and every set |G| of indices, the set
-|Vector S G = G -> S| can be given a vector space structure.
-
-%*TODO: Perhaps cut this "noisy" intro
 \begin{code}
 {-# LANGUAGE GADTs, FlexibleInstances, UndecidableInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving, RebindableSyntax #-}
@@ -71,11 +10,82 @@ import Data.List(nub)
 type REAL = Double
 \end{code}
 
-\subsection{Representing vectors as functions}
+Often, especially in engineering textbooks, one encounters the
+following definition: a vector is an \(n+1\)-tuple of real or complex
+numbers, arranged as a column:
+%
+\[v = \colvec{v}\]
+%
+Other times, this is supplemented by the definition of a row vector:
+%
+\[v = \rowvec{v}\]
+%
+\jp{Come back to why we have row and column vectors when talking about the dot product}.
 
-There is a temptation to model vectors by lists or tuples, but a more
-general (and conceptually simpler) way is to view them as
-\emph{functions} from a set of indices |G|:
+The |vi|s are real or complex numbers, or, more generally, elements of
+a \emph{field}.\jp{track down the first time we use fields and define |Field| there.}
+%
+
+However, following our theme, we will first characterize vectors
+algebraically.  From this perpective a \emph{vector space} is an
+algebraic structure that captures a set of vectors, with zero,
+addition, and scaling by a set of scalars (i.e., elements of the
+field). In terms of typeclasses, we can characterize this structure as
+follows:
+\begin{spec}
+class (Field s, AddGroup v) => Vector v s where
+  (*^) :: s -> v -> v
+\end{spec}
+Additionally, vector scaling must be a homomorphism over (from and to)
+the additive group structure:
+\begin{spec}
+  s *^ (a + b)     = s *^ a + s *^ b
+  s *^ zero        = zero
+  s *^ (negate a)  = negate (s ^* a)
+\end{spec}
+\footnote{The last equation fixes |negate| uniquely, which is why we
+  liberally used |AddGroup| instead of |Additive| in the definition.}
+An important consequence of the homomorphism property of |(*^)| is
+that vectors can be \emph{uniquely} expressed as a simple sort of
+combination of other special vectors.  More precisely, we can \emph{uniquely}
+represent any vector |v| in the space in terms of a fixed set of
+\emph{basis} vectors |{b0, ..., bn}| which cover the whole space and are \emph{linearly
+  independent}:
+
+\begin{spec}
+  (s0 *^ b0 + ... + sn *^ bn = 0) <=> (s0 = ... = sn = 0)
+\end{spec}
+\begin{exercise}
+  Prove the uniqueness of the representation for a fixed basis.
+\end{exercise}
+
+This representation is what justifies the introduction of vectors as
+columns (or rows) of numbers. Indeed, we can define:
+\[v = \colvec{v} = |v0 *^| \colveccc{1 \\ 0 \\ \vdots \\ 0} +
+                   |v1 *^| \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
+                   |vn *^| \colveccc{0 \\ 0 \\ \vdots \\ 1}
+\]
+
+So, for our column vectors, we can define the operations as follows:
+%
+\[v + w = \colvec{v} + \colvec{w} = \colvecc{v_0 + w_0}{v_n + w_n}\]
+%
+\[ |s *^ v| = \colvecc{s*v_0}{s*v_n}\]
+%
+In the following we denote by
+%
+\[e_k = \colveccc{0\\\vdots\\0\\1 \makebox[0pt][l]{\qquad $\leftarrow$ position $k$} \\0\\\vdots\\0}\]
+%
+the canonical base vectors, ie. the vector that is everywhere |0| except at position |k|, where it is
+|1|, so that |v = v0 *^ e0 + ... + vn *^ en|.
+
+\subsection{Representing vectors as functions}
+In what follows we will systematically use the represention of vectors
+as a linear combination of basis vectors.
+
+There is a temptation to model the corresponding set of coefficients
+as a lists or tuples, but a more general (and conceptually simpler)
+way is to view them as \emph{functions} from a set of indices |G|:
 %
 \begin{code}
 newtype Vector s g    = V (g -> s) deriving (Additive,AddGroup)
@@ -93,17 +103,15 @@ examples so far we have used indices from \(G = \{0, \ldots, n\}\).
 Thus the dimension of the space
 would be \(n+1\).
 
-We know from the previous lectures that if |S| is an instance of a 
-|AddGroup|  then so is |G -> S|, with the pointwise
-definitions.
-
-However, multiplication of vectors does not in general work pointwise. In fact, the |Multiplicative| class gives a homogenous
+We know from the previous lectures that if |S| is an instance of
+|AddGroup| then so is |G -> S|, with the pointwise definitions.
+However, multiplication of vectors does not in general work
+pointwise. In fact, attempting to lift multiplication from the |Multiplicative| class would give a homogenous
 multiplication operator |(*) :: v -> v -> v|, but such an operator is
 not part of the definition of vector spaces. Consequently, vector
 spaces are \emph{not} rings.
 
-Instead,Rather one has a
-scaling operator |(*^) :: s -> v -> v|, which is inhomogenous: the
+Instead, the scaling operator |(*^) :: s -> v -> v|, is inhomogenous: the
 first argument is a scalar and the second one a vector. It can be defined as follows:
 
 \begin{code}
@@ -147,7 +155,7 @@ f v  =  f (v 0 *^ e 0 + ... + v n *^ e n)
 \end{spec}
 % that
 It is particularly interesting to study vector-space homomorphisms,
-which more commonly called ``linear maps'' (to avoid unnecessary
+which are more commonly called ``linear maps'' (to avoid unnecessary
 confusion with the Haskell |map| function we will refer to them by the
 slightly less common name ``linear transformation''.).  The function
 |f| is a linear transformation if it maps the operations in |Vector S
