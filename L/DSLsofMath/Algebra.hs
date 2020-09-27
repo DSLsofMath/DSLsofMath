@@ -1,3 +1,5 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE ConstraintKinds #-}
 module DSLsofMath.Algebra where
 
@@ -101,6 +103,19 @@ instance Multiplicative Integer where
   (*) = (Prelude.*)
   one = 1
 
+
+instance Additive Rational where
+  (+) = (Prelude.+)
+  zero = 0
+instance AddGroup Rational where
+  negate = Prelude.negate
+instance MulGroup Rational where
+  (/) = (Prelude./)
+  recip = Prelude.recip
+instance Multiplicative Rational where
+  (*) = (Prelude.*)
+  one = 1
+
 instance Additive a => Additive (x -> a) where
    f + g        =  \x -> f x + g x
    zero = const zero
@@ -120,8 +135,6 @@ instance Transcendental a => Transcendental (x -> a) where
    sin f =  sin . f
    cos f =  cos . f
    exp f =  exp . f
-
-
 
 instance Additive Double where
   (+) = (Prelude.+)
