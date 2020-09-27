@@ -20,7 +20,7 @@ Other times, this is supplemented by the definition of a row vector:
 %
 \[v = \rowvec{v}\]
 %
-\jp{Come back to why we have row and column vectors when talking about the dot product}.
+\jp{Come back to why we have row and column vectors when talking about the dot product.}
 
 The |vi|s are real or complex numbers, or, more generally, elements of
 a \emph{field}.\jp{track down the first time we use fields and define |Field| there.}
@@ -41,7 +41,7 @@ the additive group structure:
 \begin{spec}
   s *^ (a + b)     = s *^ a + s *^ b
   s *^ zero        = zero
-  s *^ (negate a)  = negate (s ^* a)
+  s *^ (negate a)  = negate (s *^ a)
 \end{spec}
 \footnote{The last equation fixes |negate| uniquely, which is why we
   liberally used |AddGroup| instead of |Additive| in the definition.}
@@ -82,7 +82,7 @@ the canonical base vectors, ie. the vector that is everywhere |0| except at posi
 \subsection{Representing vectors as functions}
 In what follows we will systematically use the represention of vectors
 as a linear combination of basis vectors.
-
+%
 There is a temptation to model the corresponding set of coefficients
 as a lists or tuples, but a more general (and conceptually simpler)
 way is to view them as \emph{functions} from a set of indices |G|:
@@ -91,6 +91,13 @@ way is to view them as \emph{functions} from a set of indices |G|:
 newtype Vector s g    = V (g -> s) deriving (Additive,AddGroup)
 \end{code}
 %*TODO Perhaps explain "deriving ... here"
+
+We define right away the notation |a ! i| for the coefficient of base vector |e i|, as follows:
+\begin{code}
+infix 9 !
+(!) :: Vector s g -> g -> s
+V f ! i = f i
+\end{code}
 
 As discussed, the |S| parameter in |Vector S| has to be a field (|REAL|,
 or |Complex|, or |Zn|, etc.) for values of type |Vector S G| to
@@ -115,8 +122,9 @@ Instead, the scaling operator |(*^) :: s -> v -> v|, is inhomogenous: the
 first argument is a scalar and the second one a vector. It can be defined as follows:
 
 \begin{code}
+infixr 7 *^
 (*^) :: Multiplicative s => s -> Vector s g -> Vector s g
-s *^ V f = V $ \x -> s * (f x)
+s *^ V a = V $ \i -> s * (a i)
 \end{code}
 
 The canonical basis vectors are given by
@@ -130,7 +138,7 @@ In linear algebra textbooks, the function |is| is often referred to as
 the Kronecker-delta function and |is i j| is written $\delta_{i,j}$.
 \begin{code}
 is :: (Eq g, Ring s) => g -> g -> s
-is a b = if a == b then 1 else 0
+is i j = if i == j then 1 else 0
 \end{code}
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
 zeros everywhere, except at position |j| where it has a 1.
@@ -211,7 +219,7 @@ The columns of |M| are the images of the canonical base vectors |e i|
 through |f| (or, in other words, the columns of |M| are |f (e i)|).
 %
 Every |m k| has |card G'| elements, and it has become standard
-to use |M i j| to mean the |i|th element of the |j|th column, i.e., |M i
+to write |M i j| to mean the |i|th element of the |j|th column, i.e., |M i
 j = m j i|, so that, with the usual matrix-vector multiplication
 %
 \begin{spec}
@@ -237,20 +245,15 @@ then we can implement matrix-vector multiplication as:
 %
 \begin{code}
 mulMV ::  (Finite g, Ring s) => Matrix s g g'  ->  Vector s g  ->  Vector s g'
-mulMV m v  = V (\g' -> sumV (m g' * v))
-
-sumV :: (Finite g, Ring s) => Vector s g -> s
-sumV (V v) = sum (map v finiteDomain)
+mulMV m v  = V (\i -> sum [m i!j  *  v!j | j <- finiteDomain])
 \end{code}
- \jp{This definition is wrong, unless we define the Hadamard product. But this jumping through flaming hoops. Use the correct definition given below and restructure the text.}
- \jp{Note that |Matrix| form a category with mulMV being the composition?}
 %
 As already mentioned, here |Finite| means |Bounded| and |Enumerable|:
 %
 \begin{code}
 class (Bounded g, Enum g, Eq g) => Finite g  where
 \end{code}
-\jp{In modern haskell you'd write |type Finite g = (Bounded g, Enum g, Eq g)|}
+\jp{In modern haskell you'd write |type Finite g = (Bounded g, Enum g, Eq g)|. Also let's not jump back and forth.}
 
 %*TODO:
 % I think we might end up with a mixture of definitions given in terms of
@@ -310,6 +313,7 @@ that is
 \end{spec}
 
 Exercise~\ref{exc:Mstarhomomorphismcompose}: work this out in detail.
+\jp{Note that |Matrix| form a category with mulMV being the composition and |e| as the identity.}
 
 Exercise~\ref{exc:MMmultAssoc}: show that matrix-matrix multiplication is associative.
 
@@ -317,7 +321,7 @@ A simple vector space is obtained for |G = ()|, the
 singleton index set.
 %
 In this case, the vectors |s : () -> S| are functions that can take
-exactly one argument, therefore have exactly one value: |s ()|, so
+exactly one value as argument, therefore have exactly one value: |s ()|, so
 they are isomorphic with |S|.
 %
 But, for any |v : G -> S|, we have a function |fv : G -> (() -> S)|,
@@ -1265,8 +1269,7 @@ between vectors:
 %
 \begin{code}
 dot :: (Ring s, Finite g) => Vector s g -> Vector s g -> s
-dot (V v) (V w) = sum [v g * w g | g <- finiteDomain]
--- or |sum (map (v * w) finiteDomain)| where |v * w :: g -> s| uses |FunNumInst|
+dot v w = sum [v!i * w!i | i <- finiteDomain]
 \end{code}
 
 Remember that matrixes are just functions of type |G -> Vector S G'|:
@@ -1280,15 +1283,15 @@ multiplication in terms of dot products
 %
 \begin{spec}
 
-  mulMV m (V v)
+  mulMV m v
 
 = {- earlier definition -}
 
-  V (\ g' -> sum [m g' g * v g | g <- finiteDomain])
+  V (\i -> sum [(m i ! j) * (v!j) | j <- finiteDomain])
 
 = {- def. of |dot| -}
 
-  V (\ g' -> dot (m g') (V v))
+  V (\i -> dot (m i') v)
 
 \end{spec}
 %
