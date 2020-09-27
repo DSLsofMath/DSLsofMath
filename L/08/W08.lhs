@@ -5,9 +5,12 @@
 \label{sec:exp}
 
 \begin{code}
+{-# LANGUAGE RebindableSyntax #-}
 module DSLsofMath.W08 where
+import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
 import DSLsofMath.W05
 import DSLsofMath.W06
+import DSLsofMath.Algebra
 import Data.Ratio
 \end{code}
 
@@ -65,14 +68,14 @@ as pairs of real values.
 \begin{code}
 newtype Complex r = C (r , r)    deriving (Eq, Show)
 
-i :: Num a => Complex a
+i :: Ring a => Complex a
 i = C (0, 1)
 \end{code}
 
 Therefore we can define, for example, the exponential of the imaginary unit:
 
 \begin{code}
-ex1 :: Fractional a => Complex a
+ex1 :: Field a => Complex a
 ex1 = expf i
 \end{code}
 
@@ -100,7 +103,7 @@ terms as z = terms1 as z 0  where
 We obtain
 
 \begin{code}
-ex2   ::  Fractional a => PowerSeries (Complex a)
+ex2   ::  Field a => PowerSeries (Complex a)
 ex2    =  takePoly 10 (terms expx i)
 \end{code}
 As the code is polymorphic in the underlying number type, we can use rationals here to be able to test for equality without rounding problems.
@@ -221,38 +224,45 @@ with |T = i*tau|, for all |z|.
 
 
 \begin{code}
-instance Num r => Num (Complex r) where
+instance Additive r => Additive (Complex r) where
   (+) = addC
+  zero = toC zero
+
+instance AddGroup r => AddGroup (Complex r) where
+  negate (C (a , b))= C (negate a, negate b)
+
+instance Ring r => Multiplicative (Complex r) where
   (*) = mulC
-  fromInteger = toC . fromInteger
+  one = toC one
+
 --  abs = absC  -- requires Floating r as context
 
-toC :: Num r => r -> Complex r
-toC x = C (x, 0)
+toC :: Additive r => r -> Complex r
+toC x = C (x,zero)
 
-addC :: Num r =>  Complex r -> Complex r -> Complex r
+addC :: Additive r =>  Complex r -> Complex r -> Complex r
 addC (C (a , b)) (C (x , y))  =  C ((a + x) , (b + y))
 
-mulC :: Num r =>  Complex r -> Complex r -> Complex r
+mulC :: Ring r =>  Complex r -> Complex r -> Complex r
 mulC (C (ar, ai)) (C (br, bi))  =  C (ar*br - ai*bi, ar*bi + ai*br)
 
-modulusSquaredC :: Num r => Complex r -> r
-modulusSquaredC (C (x, y)) = x^2 + y^2
+modulusSquaredC :: Ring r => Complex r -> r
+modulusSquaredC (C (x, y)) = x^+2 + y^+2
 
-absC :: Floating r => Complex r -> Complex r
-absC = toC . sqrt . modulusSquaredC
+-- TODO: usually not important (at all)
+-- absC :: Floating r => Complex r -> Complex r
+-- absC = toC . sqrt . modulusSquaredC
 
-scaleC :: Num r => r -> Complex r -> Complex r
+scaleC :: Multiplicative r => r -> Complex r -> Complex r
 scaleC a (C (x, y)) = C (a * x, a * y)
 
-conj :: Num r => Complex r -> Complex r
+conj :: AddGroup r => Complex r -> Complex r
 conj (C (x, y))   = C (x, -y)
 
-instance Fractional r => Fractional (Complex r) where
+instance Field r => MulGroup (Complex r) where
   (/) = divC
-  fromRational = toC . fromRational
 
-divC :: Fractional a => Complex a -> Complex a -> Complex a
+divC :: Field a => Complex a -> Complex a -> Complex a
 divC x y = scaleC (1/modSq) (x * conj y)
   where  modSq  =  modulusSquaredC y
 \end{code}
@@ -271,6 +281,7 @@ f'' x - 3 * f' x + 2 * f x = exp (3 * x),  f 0 = 1,  f' 0 = 0
 We can solve such equations with the machinery of power series:
 
 \begin{code}
+fs :: (Eq a, Transcendental a) => PowerSeries a
 fs = integ 1 fs'
    where fs' = integ 0 fs''
          fs'' = (exp (3*x)) + 3 * fs' - 2 * fs
