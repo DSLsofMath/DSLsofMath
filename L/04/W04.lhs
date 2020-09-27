@@ -579,9 +579,6 @@ class Monoid a where
 \end{exercise}
 
 
-\end{example}
-
-
 In mathematics, as soon as there are several examples of a structure,
 the question of what a ``translation between them'' means comes up.
 %
