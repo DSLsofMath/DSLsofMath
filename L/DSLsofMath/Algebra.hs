@@ -11,6 +11,11 @@ import Prelude (Int,Integer,Float,Double, Foldable (..), (==), Monoid(..), Ord(.
 
 -------------------------------
 -- Classes
+infixl 6 -
+infixl 6 +
+
+infixl 7 *
+infixl 7 /
 
 class Additive a where
   zero :: a

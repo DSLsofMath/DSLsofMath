@@ -103,9 +103,11 @@ As discussed, the |S| parameter in |Vector S| has to be a field (|REAL|,
 or |Complex|, or |Zn|, etc.) for values of type |Vector S G| to
 represent elements of a vector space.
 
-The cardinality of |G|, which we sometimes denote |card G|, is the dimension of the vector space.
-Often |G| is finite, i.e., |Bounded| and |Enum|erable\jp{I don't think that these classes were ever introduced} and in the
-examples so far we have used indices from \(G = \{0, \ldots, n\}\).
+The cardinality of |G|, which we sometimes denote |card G|, is number
+of basis vectors, and thus the dimension of the vector space.  Often
+|G| is finite, i.e., |Bounded| and |Enum|erable\jp{I don't think that
+  these classes were ever introduced} and in the examples so far we
+have used indices from \(G = \{0, \ldots, n\}\).
 %
 Thus the dimension of the space
 would be \(n+1\).
@@ -118,14 +120,16 @@ multiplication operator |(*) :: v -> v -> v|, but such an operator is
 not part of the definition of vector spaces. Consequently, vector
 spaces are \emph{not} rings.
 
-Instead, the scaling operator |(*^) :: s -> v -> v|, is inhomogenous: the
-first argument is a scalar and the second one a vector. It can be defined as follows:
+Instead, the scaling operator |(*^) :: s -> v -> v|, is inhomogenous:
+the first argument is a scalar and the second one is a vector. For our
+representation it can be defined as follows:
 
 \begin{code}
 infixr 7 *^
 (*^) :: Multiplicative s => s -> Vector s g -> Vector s g
 s *^ V a = V $ \i -> s * (a i)
 \end{code}
+% $ emacs
 
 The canonical basis vectors are given by
 %
@@ -247,6 +251,7 @@ then we can implement matrix-vector multiplication as:
 mulMV ::  (Finite g, Ring s) => Matrix s g g'  ->  Vector s g  ->  Vector s g'
 mulMV m v  = V (\i -> sum [m i!j  *  v!j | j <- finiteDomain])
 \end{code}
+\jp{introduce finiteDomain}
 %
 As already mentioned, here |Finite| means |Bounded| and |Enumerable|:
 %
@@ -316,12 +321,13 @@ Exercise~\ref{exc:Mstarhomomorphismcompose}: work this out in detail.
 \jp{Note that |Matrix| form a category with mulMV being the composition and |e| as the identity.}
 
 Exercise~\ref{exc:MMmultAssoc}: show that matrix-matrix multiplication is associative.
+\jp{Not sure what the difference is from the previous exercise.}
 
 A simple vector space is obtained for |G = ()|, the
 singleton index set.
 %
 In this case, the vectors |s : () -> S| are functions that can take
-exactly one value as argument, therefore have exactly one value: |s ()|, so
+exactly one value as argument, therefore they have exactly one value: |s ()|, so
 they are isomorphic with |S|.
 %
 But, for any |v : G -> S|, we have a function |fv : G -> (() -> S)|,
@@ -359,16 +365,19 @@ i.e., the scalar product of the vectors |v| and |w|.
 
 \textbf{Remark:} We have not discussed the geometrical point of view.
 %
-For the connection between matrices, linear transformations, and
+\lnOnly{For the connection between matrices, linear transformations, and
 geometry, I warmly recommend binge-watching the ``Essence of linear
 algebra'' videos on youtube (start here:
 \url{https://www.youtube.com/watch?v=kjBOesZCoqc}).
+}
 
 %*TODO: Perhaps it would be interesting to show that some linear transformations
 % can also be interpreted as changes of basis.
 
 \jp{Define dot product here and observe some of their properties. (It's way down below ATM)}
+
 \jp{There is also something to say about orthogonal maps --- which preserve dot products. As another kind of homomorphism, they fit well the theme of the book.}
+
 
 \subsection{Examples of matrix algebra}
 
