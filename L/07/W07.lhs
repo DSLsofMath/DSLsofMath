@@ -20,7 +20,6 @@ Other times, this is supplemented by the definition of a row vector:
 %
 \[v = \rowvec{v}\]
 %
-\jp{Come back to why we have row and column vectors when talking about the dot product.}
 
 The |vi|s are real or complex numbers, or, more generally, elements of
 a \emph{field}.\jp{track down the first time we use fields and define |Field| there.}
@@ -378,9 +377,40 @@ algebra'' videos on youtube (start here:
 %*TODO: Perhaps it would be interesting to show that some linear transformations
 % can also be interpreted as changes of basis.
 
-\jp{Define dot product here and observe some of their properties. (It's way down below ATM)}
+\subsection{Dot products}
 
-\jp{There is also something to say about orthogonal maps --- which preserve dot products. As another kind of homomorphism, they fit well the theme of the book.}
+An important concept is the dot product between vectors.
+%
+\begin{code}
+dot :: (Ring s, Finite g) => Vector s g -> Vector s g -> s
+dot v w = sum [v!i * w!i | i <- finiteDomain]
+\end{code}
+
+Dot products serve a dual purpose. First, they yield a notion of how
+``big'' a vector is, the |norm|.
+
+\begin{code}
+sqNorm :: (Ring s, Finite g) => Vector s g -> s
+sqNorm v = dot (toRow v) v
+
+norm :: (Ring s, Finite g) => Vector s g -> s
+norm v = sqrt (sqNorm v)
+\end{code}
+
+Additionally, the dot prodect often serves as a measure of how much
+vectors are similar to (or correlated with) each other.
+
+We can define:
+\begin{code}
+similarity u v = dot u v / norm u / norm v
+\end{code}
+Dividing by the norms mean that |abs (similarity u v)| is at most 1.
+
+In fact, for Euclidean spaces |similarity u v| is the cosine of the
+angle between |u| and |v|.
+
+For this reason, one says that two vectors are orthogonal when their
+dot product is 0 --- even in non-Euclidean spaces.
 
 
 \subsection{Examples of matrix algebra}
@@ -1276,15 +1306,7 @@ the |g|th one which is one. In other words
 and thus |embed = e|.
 %
 In order to understand how matrix-vector multiplication relates to the
-monadic operations, it is useful to introduce the ``dot'' product
-between vectors:
-%
-\begin{code}
-dot :: (Ring s, Finite g) => Vector s g -> Vector s g -> s
-dot v w = sum [v!i * w!i | i <- finiteDomain]
-\end{code}
-
-Remember that matrixes are just functions of type |G -> Vector S G'|:
+monadic operations, remember that matrixes are just functions of type |G -> Vector S G'|:
 %
 \begin{spec}
   type Matrix s g g' = g' -> Vector s g
