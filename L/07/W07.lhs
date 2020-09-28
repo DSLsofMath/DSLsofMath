@@ -60,7 +60,9 @@ represent any vector |v| in the space in terms of a fixed set of
 \end{exercise}
 
 This representation is what justifies the introduction of vectors as
-columns (or rows) of numbers. Indeed, we can define:
+columns (or rows) of numbers. (According to our red thread, this
+representation is akin to the notion of ``syntax''.) Indeed, we can
+define:
 \[v = \colvec{v} = |v0 *^| \colveccc{1 \\ 0 \\ \vdots \\ 0} +
                    |v1 *^| \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
                    |vn *^| \colveccc{0 \\ 0 \\ \vdots \\ 1}
@@ -76,8 +78,10 @@ In the following we denote by
 %
 \[e_k = \colveccc{0\\\vdots\\0\\1 \makebox[0pt][l]{\qquad $\leftarrow$ position $k$} \\0\\\vdots\\0}\]
 %
-the canonical base vectors, ie. the vector that is everywhere |0| except at position |k|, where it is
-|1|, so that |v = v0 *^ e0 + ... + vn *^ en|.
+the canonical base vectors, ie. the vector that is everywhere |0|
+except at position |k|, where it is |1|, so that |v = v0 *^ e0 + ... +
+vn *^ en|. This formula maps the syntax (coefficients) to the
+semantics (a vector).
 
 \subsection{Representing vectors as functions}
 In what follows we will systematically use the represention of vectors
@@ -389,7 +393,7 @@ coefficients.
 This is the same representation as the vectors represented
 by |n+1| coordinates which we referred to in the introduction to this chapter.
 %
-This suggests that polynomials of degree |n+1| form a vector space,
+This suggests that polynomials of degree |n| form a vector space,
 and we could interpret that as |{0, ..., n} -> REAL| (or, more
 generally, |Field a => {0, ..., n} -> a|).
 %
@@ -397,9 +401,8 @@ The operations, |(+)| for vector addition and |(*^)| for vector scaling, are
 defined in the same way as they are for functions.
 %
 
-To give an intuition for the vector space it is useful to start by defining the canonical base vectors.
-%
-As for geometrical vectors, they are
+To give an intuition for the vector space it is useful to consider the
+interpretation of the canonical base vectors. Recall that they are:
 %
 \begin{spec}
 e i : {0, ..., n} -> REAL, e i j = i `is` j
@@ -416,7 +419,7 @@ function from |{0, ..., n} -> REAL|), we get the vector |\j -> if j ==
 3 then 1 else 0|, which is |\j -> 3 `is` j| or simply |e 3|.
 
 In general, |\x -> x^i| is represented by |e i|, which is another way
-of saying that |e i| should be interpreted as |\x -> x^i|.
+of saying that |e i| should be interpreted as |\x -> x^i|, a monomial.
 %
 Any other polynomial function |p| equals the linear combination of
 monomials, and can therefore be represented as a linear combination of
@@ -425,7 +428,7 @@ our base vectors |e i|.
 For example, |p x = 2+x^3| is represented by |2 *^ e 0 + e 3|.
 %
 
-In general, the evaluator from the vector representation to polynomial
+In general, the evaluator from the |Vector g s| representation to polynomial
 functions is as follows:
 %
 % \begin{code}
