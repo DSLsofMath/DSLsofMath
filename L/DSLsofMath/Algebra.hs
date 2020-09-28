@@ -79,7 +79,7 @@ fromRational x  =  fromInteger (Data.Ratio.numerator x) / fromInteger (Data.Rati
 class Field a => Algebraic a where
   sqrt :: a -> a
 
-class Algebraic a => Transcendental a where -- we skip Algebraic here (not needed for now).
+class Field a => Transcendental a where -- normally it should be "Algebraic" instead of "Field" but we're lazy like that.
   pi :: a
   exp :: a -> a
   sin :: a -> a
