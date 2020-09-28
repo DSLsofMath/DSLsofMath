@@ -624,9 +624,9 @@ As interesting as it is, this base does not cover all functions. To
 start, every |eval bi 0 == 0| for every |i|, and thus linear
 combinations can only ever be zero at the origin.
 
-But if we were to add |cos (n*x)| to the set of base vectors, then the
-space would cover all periodic functions with period $2 \pi$. Then the
-representation is the Fourrier series. Let us define a meaningful
+But if we were to include  |cos (n*x) / sqrt pi| in the set of base vectors, then the
+space would cover all periodic functions with period $2 \pi$. This 
+representation is called the Fourier series. Let us define a meaningful
 index for the basis:
 
 \begin{code}
@@ -648,8 +648,8 @@ vectors. Indeed:
 \end{spec}
 
 Thus, in our application, given a periodic function |f|, one can
-compute its Fourrier series by taking the |dotF| product of it with
-each of |sin (n*x) / sqrt pi|.
+compute its Fourier series by taking the |dotF| product of it with
+each of |sin (n*x) / sqrt pi| and |cos (n*x) / sqrt pi|.
 
 \begin{exercise}
 Derive |derive| for this representation.
