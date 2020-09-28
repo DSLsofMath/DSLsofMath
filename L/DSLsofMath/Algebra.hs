@@ -76,7 +76,10 @@ type Field a = (Ring a, MulGroup a)
 fromRational :: (Field a) => Data.Ratio.Ratio Integer -> a
 fromRational x  =  fromInteger (Data.Ratio.numerator x) / fromInteger (Data.Ratio.denominator x)
 
-class Field a => Transcendental a where -- we skip Algebraic here (not needed for now).
+class Field a => Algebraic a where
+  sqrt :: a -> a
+
+class Algebraic a => Transcendental a where -- we skip Algebraic here (not needed for now).
   pi :: a
   exp :: a -> a
   sin :: a -> a
@@ -135,6 +138,9 @@ instance AddGroup a => AddGroup (x -> a) where
 instance MulGroup a => MulGroup (x -> a) where
    recip f     =  recip . f
 
+instance Algebraic a => Algebraic (x -> a) where
+   sqrt f     =  sqrt . f
+
 instance Transcendental a => Transcendental (x -> a) where
    pi = const pi
    sin f =  sin . f
@@ -155,6 +161,9 @@ instance MulGroup Double where
 instance Multiplicative Double where
   (*) = (Prelude.*)
   one = 1
+
+instance Algebraic Double where
+   sqrt = Prelude.sqrt
 
 instance Transcendental Double where
    pi = Prelude.pi
