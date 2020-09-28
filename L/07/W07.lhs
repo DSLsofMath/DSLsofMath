@@ -546,8 +546,114 @@ Exercise~\ref{exc:Dmatrixpowerseries}: write the
 Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated with
 integration of polynomials.
 
-\jp{Also: consider dot product for polynomials. What's a reasonable definition for what we have seen so far?}
-\jp{Also: can do a change of base of (infinite) polynomials, say to exp.ix. Is it preserving dot products? Actually we can go back to Chebyshev polynomials here. Also throw in Legendre or Bernstein polynomials? See Chebyshev.hs}
+\subsubsection{Dot product for functions and Fourier series}
+
+We said before that the dot product yields a notion of norm and
+similarity. Unfortunately, the dot product (as above defined) is not
+very useful in this respect for polynomials represented as monomial
+coefficients: it is not clear what kind of similarity it corresponds
+to. To find a more useful dot product, we can return to the semantics
+of polynomials in terms of functions. But for now we consider them
+over the restricted domain $I = [-\pi,\pi]$.
+
+Assume for a moment that we would define the dot product of
+polynomials $u$ and $v$ as follows:
+\[
+  |dotF u v| = \int_I |eval u|x |eval v|x dx
+\]
+
+Then, the norm of a vector would be a measure of how far it gets from
+zero, using a quadratic mean. Likewise, the corresponding similarity
+measure corresponds to how much the polynomials ``agree'' on the
+interval.  That is, if the signs of |eval u| and |eval v| are the same
+on a sub-interval |I| then the integral is positive on |I|, and
+negative if they are different.
+
+As we suspected, using |dot = dotF|, the straightforward
+representation of polynomials as list of coefficients is not an
+orthogonal basis. There is, for example, a positive correlation
+between |x| and |x^3|.
+
+If we were using instead a set of basis polynomials |bn| which are
+orthogonal using the above semantic-oriented definition of |dot|, then
+we could compute it by multiplying pointwise and summing as before,
+and this would be a lot more efficient than to compute the integral by
+1. computing the product using |polyMul| 2. integrating using
+|integ|. 3. using |eval| on the end points of the domain.
+
+Let us consider as a base the functions |bn = sin (n*x)|. Let us prove
+that they are orthogonal.
+
+We first use trigonometry to rewrite the product of bases:
+\begin{spec}
+   2 * (bi * bj)
+=  2 * sin (i*x) * sin (j*x)
+=  cos ((i-j)*x) - cos ((i+j)*x)
+\end{spec}
+%
+Assuming |i/=j|, we can take the indefinite integral of both sides, safely
+ignoring any constant term:
+%
+\begin{spec}
+   2 \int bi bj dx
+=  sin ((i-j)*x)/(i-j) - sin ((i+j)*x) / (i+j)
+\end{spec}
+
+But |sin (k*pi) = 0| for any integer |k|, and thus the definite
+integral over |I| is also equal to zero.
+
+We can now compute |sqNorm| of |bi|. Trigonometry says:
+
+\begin{spec}
+   2 * (bi * bi)
+=  2 * sin (i*x) * sin (i*x)
+=  cos (0*x) - cos (2i*x)
+=  1 - cos (2i*x)
+\end{spec}
+
+When taking the integral on |I|, the cosine disappears using the same
+argument as before, and there remains: |2*sqNorm bi = 2 pi|. Thus to
+normalise the base vectors we need to scale them by |1 / sqrt pi|. In
+sum |b_i = sin (i*x)/sqrt pi| is an orthonormal basis:
+
+\begin{spec}
+  bj `dot` bi = is i j
+\end{spec}
+
+As interesting as it is, this base does not cover all functions. To
+start, every |eval bi 0 == 0| for every |i|, and thus linear
+combinations can only ever be zero at the origin.
+
+But if we were to add |cos (n*x)| to the set of base vectors, then the
+space would cover all periodic functions with period $2 \pi$. Then the
+representation is the Fourrier series. Let us define a meaningful
+index for the basis:
+
+\begin{code}
+data Periodic where
+  Sin :: Int -> Periodic
+  Cos :: Int -> Periodic
+\end{code}
+
+A useful property of an orthonormal basis is that its representation
+as coefficients can be obtain by taking the dot product with each base
+vectors. Indeed:
+
+\begin{spec}
+     v           = sum [vi *^ bi | i <- finiteDomain]
+=>   v `dot` bj  = sum [vi *^ bi | i <- finiteDomain] `dot` bj
+=>   v `dot` bj  = sum [vi *^ (bi `dot` bj) | i <- finiteDomain] 
+=>   v `dot` bj  = sum [vi *^ is i j | i <- finiteDomain] 
+=>   v `dot` bj  = vj
+\end{spec}
+
+Thus, in our application, given a periodic function |f|, one can
+compute its Fourrier series by taking the |dotF| product of it with
+each of |sin (n*x) / sqrt pi|.
+
+\begin{exercise}
+Derive |derive| for this representation.
+\end{exercise}
 
 \subsubsection{Simple deterministic systems (transition systems)}
 
