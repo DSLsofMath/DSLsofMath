@@ -391,9 +391,8 @@ Dot products serve a dual purpose. First, they yield a notion of how
 
 \begin{code}
 sqNorm :: (Ring s, Finite g) => Vector s g -> s
-sqNorm v = dot (toRow v) v
+sqNorm v = dot v v
 
-norm :: (Ring s, Finite g) => Vector s g -> s
 norm v = sqrt (sqNorm v)
 \end{code}
 
@@ -412,6 +411,47 @@ angle between |u| and |v|.
 For this reason, one says that two vectors are orthogonal when their
 dot product is 0 --- even in non-Euclidean spaces.
 
+\paragraph{Orthogonal transformations}
+
+An important subclass of the linear transformations are those which
+preserve the dot product.
+\begin{spec}
+  dot (f u) (f v) = dot u v
+\end{spec}
+
+Thus, in Euclidean spaces, orthogonal operators preserve angles.
+
+\begin{exercise}
+Can you express this condition as a homomorphism condition?
+\end{exercise}
+
+Such transformations necessarily preserve the dimension of the space
+(otherwise at least one base vector would be squished to nothing and
+dot products involving it become zero). (When the dimension is
+preseved, one often uses the term ``linear operator".) The
+corresponding matrices are square.
+
+\begin{exercise}
+  Prove that orthogonal operators form a monoid.
+\end{exercise}
+\jp{They also form a group but we have not talked about inverses.}
+
+If angles are preserved what about distances? An isometry |f| is a
+distance-preserving transformation:
+
+\begin{spec}
+  norm (f v) = norm v
+\end{spec}
+
+We can prove that |f| is orthogonal iff it is an isometry. The proof
+in the left-to-right direction is easy and left as an exercise. In the
+other direction one uses the equality:
+\begin{spec}
+  4 * dot u v = sqNorm (u + v) - sqNorm (u - v)
+\end{spec}
+
+In Euclidean spaces, this means that preserving angles and preserving
+distances go hand-in-hand.
 
 \subsection{Examples of matrix algebra}
 
@@ -766,12 +806,16 @@ of a subset?
 In that case, we need to use other operations than the standard
 arithmetical ones, for example |min| and |max|.
 
-The problem is that |({0, 1}, max, min)| is not a field, and neither is
+However, |({0, 1}, max, min)| is not a field, and neither is
 |(REAL, max, min)|.
 %
-This is not a problem if all we want is to compute the evolutions of
-possible states, but we cannot apply most of the deeper results of
-linear algebra.\jp{But perhaps we have not defined those so far...}
+This means that we do not have a vector space, but rather a \emph{module}.
+One can still do a lot with modules: for example the definition of multiplication only demands a |Ring| rather than a |Field|.
+Therefore, having just a module is not a problem if all we want is to compute the evolutions of
+possible states,
+but we cannot apply most of the deeper results of
+linear algebra.\jp{But perhaps we have not defined those so far... Here it begs to say that the behaviour at the limit is given by the
+                   inverted matrix. But where does it fit in the chapter?}
 
 %*TODO: (NiBo)
 % But even if we take |(REAL, max, min)|, the problem is that we
@@ -1118,9 +1162,9 @@ normally expressed as
     p a = sum [p (a | b) * p b | b <- G]
 \end{spec}
 %
-This formula in itself would be worth a lecture.
+This formula in itself is worth a lecture (see \cref{ch:probability-theory}).
 %
-For one thing, the notation is extremely suspicious.
+But for now, let's just remark that the notation is extremely suspicious.
 %
 |(a || b)|, which is usually read ``|a|, given |b|'', is clearly not
 of the same type as |a| or |b|, so cannot really be an argument to
@@ -1170,8 +1214,7 @@ probability of being anwhere else is |0|.
 
 Exercise~\ref{exc:StocExample1}: starting from state 0, how many steps
 do you need to take before the probability is concentrated in state 6?
-%*TODO: NiBo: There are many ways of reversing the arrow from 2 to 4!
-Reverse again the arrow from 2 to 4.
+Reverse again the arrow from 2 to 4.\jp{what does that mean how do we make it so that columns sum to 1? Also NiBo:There are many ways of reversing the arrow from 2 to 4.}
 %
 What can you say about the long-term behaviour of the system now?
 
@@ -1259,21 +1302,39 @@ m3 g' = V (\ g -> toF (f3 g) g')
 % What does |prob| compute? Evaluate |prob 6 (last (poss3 n next3
 % [(0,1.0)]))| for n = 1, ..., 6. What do you observe?
 
-\jp{What about a section on quantum dynamical systems? }
-% \subsubsection{Orthogonal transformations}
 
-% \begin{spec}
-%   dot (f u) (f v) = dot u v
-% \end{spec}
+\subsubsection{Quantum Mechanics}
 
-% \begin{exercise}
-% Can you express this condition as a homomorphism condition?
-% \end{exercise}
+Instead of real numbers for probabilities, we could consider using
+complex numbers --- one then speaks of ``amplitudes''. An amplitude
+represented by a complex number |z| is converted to a probability by
+taking the square of the modulus of |z|:
+\begin{spec}
+p z = conj z * z
+\end{spec}
+
+We can then rewrite the law of total probability as follows:
+\begin{spec}
+     sum [pi | i <- finiteDomain]
+=    sum [conj zi * zi | i <- finiteDomain]
+=    inner z z
+\end{spec}
+
+Where the |inner| product generalises the dot product for vector spaces
+with complex scalars (the left operand is conjugated).  Hence, rather
+conveniently, the law of total probability is replaced by conservation
+of the norm of state vectors. Thus the transition matrix is an
+isometry, and in turn, orthogonal (in the context of a complex field
+one would use the word ``unitary'' instead, but it's a straightforward
+generalisation).
+
+\jp{Example system as a graph?}  \jp{So all quantum systems have an
+  invertible dynamics, but we did not talk about invertibility ever.}
 
 \subsection{Monadic dynamical systems}
 
 This section is not part of the intended learning outcomes of the
-course, but it presents a useful unified view of the three previous
+course, but it presents a useful unified view of the previous
 sections which could help your understanding.
 
 All the examples of dynamical systems we have seen in the previous
@@ -1298,8 +1359,10 @@ return a structure of possible future states of type |G|:
 \item stochastic: given a state, we compute a probability distribution
   over possible future states.
   %
-  The transition function has the type |f : G -> (G -> [0, 1])|, the
+  The transition function has the type |f : G -> (G -> Complex)|, the
   structure of the target is the probability distributions over |G|.
+\item quantum: given an observable state, we compute a superposition
+  of possible future states.
 \end{itemize}
 
 Therefore:
@@ -1308,6 +1371,7 @@ Therefore:
 \item deterministic: |f : G -> Id G|
 \item non-deterministic: |f : G -> Powerset G|, where |Powerset G = G -> {0, 1}|
 \item stochastic: |f : G -> Prob G|, where |Prob G = G -> [0, 1]|
+\item quantum: |f : G -> State G|, where |Supp G = G -> Complex|
 \end{itemize}
 
 We have represented the elements of the various structures as vectors.
@@ -1372,7 +1436,7 @@ raises the question: is there a monad underlying matrix-vector
 multiplication, such that the above are instances of it (obtained by
 specialising the scalar type |S|)?
 
-Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|.
+Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|, |Supp|.
 
 
 \subsection{The monad of linear algebra}
