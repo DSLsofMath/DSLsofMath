@@ -337,15 +337,19 @@ evalFOL formula ratEnv predEnv = case formula of
 etc.
 
 however, as soon as we encounter quantifiers, we have a problem. To
-evaluate |FORALL x p| we need to evaluate |p| for each possible value
+evaluate |EXISTS x p| (in certain contexts at least) we may need to evaluate |p| for each possible value
 of |x|. But, unfortunately, there are infinitely many such possible
 values, and so we can never know if the formula is a
-tautology. (However if it's false we can have the hope to encounter a
-counter example in finite time.) So, if we were to try to run the
+tautology.\footnote{
+FOL experts will scoff at this view, because they routinely use much more sophisticated methods of evaluation, which handle quantifiers in completely different ways.
+Their methods are also able to identify tautologies as such. However, even such methods are not guaranteed to terminate on formulas which are not tautologies. Therefore, as long as
+an even-very-advanced FOL checker is running, there is no way to know how close it is to confirming if the formula at hand is a tautology or not. This is not a technical limitation,
+but rather a fundamental one, which boils down to the presence of quantifiers in FOL.
+} So, if we were to try to run the
 evaluator, it would not terminate. Hence, the best that we can ever
 do is, given a hand-written proof of the formula, check if the proof is valid.
 
-Hence, evalFOL would have a type such as the following:
+Hence, |evalFOL| would have a type such as the following:
 
 \begin{spec}
 evalFOL :: FOL -> FOLProof -> (VarT -> RatT) -> (PSym -> [RatT] -> Bool) -> Bool
@@ -398,7 +402,7 @@ Now, a proof of |Forall x A(x)| should in some way contain a proof of
 For the binary |And| we simply provide the two proofs, but in the
 infinite case, we need an infinite collection of proofs.
 %
-To do so, the standard procedure is to introduce a fresh constant term |a| and
+To do so, a possible procedure is to introduce a fresh constant term |a| and
 prove |A(a)|.
 %
 Intuitively, if we can show |A(a)| without knowing anything about |a|,
@@ -406,7 +410,7 @@ we have proved |Forall x A(x)|.
 %
 Another way to view this is to say that a proof of |Forall x (P x)| is
 a function |f| from terms to proofs such that |f t| is a proof of |P
-t| for each term |t|. 
+t| for each term |t|.\jp{This is actually very different, because the term structure is available to the proof. I am wondering if we're not misleading here. Perhaps not talk about FOL at all? Or much less? And focus on intuitionistic logics as early as possible.}
 %
 Continuing to build our syntax for proofs, we could write: 
 
@@ -579,11 +583,8 @@ how to prove them:
 |f| is a proof of |Forall x (P(x))| if |f t| is a proof of |P(t)| for all |t|.
 \end{quote}
 
-\paragraph{Proof-checking}
 
-At this stage we're ready to complete our defintion of the proof language and the proof checker.
-
-\jp{doit}
+%TODO At this stage we're ready to complete our defintion of the proof language and the proof checker.
 
 \paragraph{Curry--Howard}
 %
