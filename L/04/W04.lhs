@@ -1128,14 +1128,11 @@ infinite structures.
 %
 These are often captured not by algebras, but by co-algebras.
 %
-We will not build up a general theory of co-algebras in these notes,
-but I could not resist to introduce a few examples which hint at the
-important role co-algebra plays in calculus.
-
+We will not build up a general theory of co-algebras in this notes,
+but because we will be using infinite streams in the upcoming chapters
+we will expose right here their co-algebraic structure.
 
 %include AbstractStream.lhs
 
-\jp{This does not belong here. Should be folded into higher-order derivatives.}
-%include UnusualStream.lhs
 
 %include E4.lhs

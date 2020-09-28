@@ -283,6 +283,10 @@ a -> a| to compute |f' 2|:
 
 
 \subsection{Higher-order derivatives}
+\jp{Title of the section = title of the chapter? Change?}
+ \jp{Rename |Stream| to |Taylor|?}
+\jp{Fold ../04/UnusualStream.hs in here}
+
 Consider
 %
 \begin{spec}
@@ -411,7 +415,6 @@ As in the case of pairs, we find that we do not need any properties of
 functions, other than their |Num| structure, so the definitions apply
 to any infinite list of |Num a|:
 %
-\todo{Rename |Stream| to |Taylor| and include UnusualStream.hs here}
 \begin{code}
 type Stream a = [a]
 instance Additive a => Additive (Stream a) where
