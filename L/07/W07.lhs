@@ -830,6 +830,7 @@ where
 toF :: Vector s g -> g -> s
 toF (V v) = v
 \end{code}
+\jp{This is the same as indexing |(!)|}
 %
 Thus we can implement |m| as:
 %
@@ -1258,7 +1259,16 @@ m3 g' = V (\ g -> toF (f3 g) g')
 % What does |prob| compute? Evaluate |prob 6 (last (poss3 n next3
 % [(0,1.0)]))| for n = 1, ..., 6. What do you observe?
 
-\jp{What about a section on quantum dynamical systems?}
+\jp{What about a section on quantum dynamical systems? }
+% \subsubsection{Orthogonal transformations}
+
+% \begin{spec}
+%   dot (f u) (f v) = dot u v
+% \end{spec}
+
+% \begin{exercise}
+% Can you express this condition as a homomorphism condition?
+% \end{exercise}
 
 \subsection{Monadic dynamical systems}
 
