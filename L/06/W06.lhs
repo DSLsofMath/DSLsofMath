@@ -706,7 +706,7 @@ cx = 1  :  neg 0  :  frac (neg 1) 2  :  0               :  error "TODO"
 \end{code}
 %
 
-\subsection{The |Field| structure of |PowerSeries|}
+\subsection{Exponentials and trigonometric functions for |PowerSeries|}
 
 Can we compute |exp as|?\jp{Compute in what sense? We already have |expx| in the above section. Does this mean using the differential rather than the integral? I don't get the point.}
 
