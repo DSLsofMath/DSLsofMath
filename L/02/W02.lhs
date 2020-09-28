@@ -11,7 +11,7 @@ terms'').
 There will be a fair bit of theory: introducing propositional and
 first order logic, but also applications to mathematics: prime
 numbers, (ir)rationals, limit points, limits, etc. and some
-Haskell.
+Haskell concepts.
 
 \begin{code}
 module DSLsofMath.W02 where
@@ -24,19 +24,17 @@ import DSLsofMath.AbstractFOL (andIntro, andElimR, andElimL, notIntro, notElim)
 %endif
 \subsection{Propositional Calculus}
 %
-\jp{Can we simply call this propositional logic?}
-
 The main topic of this chapter is logic and proofs.
 %
 Our first DSL for this chapter is the language of \emph{propositional
-  calculus} (or logic), modelling simple propositions with the usual
+  calculus} (or propositional logic), modelling simple propositions with the usual
 combinators for and, or, implies, etc.
 %
 \lnOnly{(The Swedish translation is ``satslogik'' and some more Swe-Eng
 translations are collected on the GitHub page of these lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)}
 %
 Some concrete syntactic constructs are collected in
-Table~\ref{tab:PropCalc} where each row lists synonyms plus a comment.
+Table~\ref{tab:PropCalc} where each row lists common synonyms and their arity (number of arguments).
 %
 \begin{table}[htbp]
   \centering
@@ -56,15 +54,22 @@ Some example propositions: \(|p1| = a \wedge (\neg a)\),
 \(|p2| = a \Rightarrow b\), \(|p3| = a \vee (\neg a)\),
 \(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).
 %
-If we assign all combinations of truth values for the names, we can
-compute a truth value of the whole proposition.
+The names |a|, |b|, |c|, \ldots are ``propositional variables'':
+variables: they can be substituted for any proposition.  However we
+will soon add another kind of variables (and quantification over them)
+to the calculus --- so we keep calling them ``names'' to avoid mixing
+them up.
+
+Since names stand for propositions, if we assign all combinations of
+truth values for the names, we can compute a truth value of the whole
+proposition.
 %
 In our examples, |p1| is always false, |p2| is mixed and |p3| and |p4|
 are always true.
 
 %
 Just as we did with simple arithmetic, and with complex number
-expressions in Chapter~\ref{sec:DSLComplex}, we can model the abstract
+expressions in \cref{sec:DSLComplex}, we can model the abstract
 syntax of propositions as a datatype:
 \begin{code}
 data PropCalc  =  Con      Bool
@@ -86,7 +91,7 @@ p4 = Implies (And a b) (And b a)
   where a = Name "a"; b = Name "b"
 \end{code}
 %
-We can write an evaluator which, given an environment, takes
+We can write an evaluator which, given an environment (an assignment of names to truth values), takes
 a |PropCalc| term to its truth value:
 %
 \begin{code}
@@ -98,7 +103,7 @@ The function |evalPC| translates from the syntactic to the semantic
 domain.
 %
 (The evaluation function for a DSL describing a logic is often called
-|check| instead of |eval| but here we stick to |eval|.)
+|check| instead of |eval| but for consistency we stick to |eval|.)
 %
 Here |PropCalc| is the (abstract) \emph{syntax} of the language of
 propositional calculus and |Bool| is the \emph{semantic
@@ -107,8 +112,7 @@ propositional calculus and |Bool| is the \emph{semantic
 \footnote{Alternatively, we can view |(Name -> Bool) -> Bool| as the semantic
 domain of |PropCalc|.
 %
-A value of this type is a mapping from a truth table (for the names)
-to |Bool|.}
+A value of this type is a mapping from an environment to |Bool|.}
 
 %if False
 %*TODO: perhaps show this code for those interested
@@ -163,7 +167,7 @@ This table shows that no matter what value assignment we try for the
 only variable |a|, the semantic value is |T = True|.
 %
 Thus the whole expression could be simplified to just |T| without
-changing the semantics.
+changing its semantics.
 
 \begin{wrapfigure}{R}{0.35\textwidth}
   \centering
@@ -199,12 +203,8 @@ Truth table verification is only viable for propositions with few
 names because of the exponential growth in the number of cases to
 check: we get $2^n$ cases for |n| names.
 %
-(There are very good heuristic\jp{and even exact, depending on what ``very good'' means} algorithms to look for tautologies even
+(There are better algorithms to evaluate truth values, even
 for thousands of names --- but that is not part of this course.)
-
-What we call ``names'' are often called ``(propositional) variables''
-but we will soon add another kind of variables (and quantification
-over them) to the calculus.
 
 %*TODO: formulate more clearly as an exercise
 At this point it is good to implement a few utility functions on
@@ -216,12 +216,11 @@ order in the term.)
 
 \subsection{First Order Logic}
 %
-\jp{The fact that this is no longer decidable (no ``eval'') should be said at some point.}
 %TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
 Our second DSL is that of \emph{First Order Logic\lnOnly{\footnote{Swedish: Första ordningens logik = predikatlogik}}},
 or FOL for short, and also known as Predicate Logic.
 %
-This language has two datatypes: \emph{propositions}, and \emph{terms} (new).
+This language has two datatypes: \emph{propositions}, and \emph{terms} (which are new).
 %
 A \emph{term} is either a (term) \emph{variable} (like |x|, |y|, |z|),
 or the application of a \emph{function symbol} (like |f|, |g|) to a
@@ -312,13 +311,63 @@ We keep the logical connectives |And|, |Or|, |Implies|, |Not| from the
 type |PropCalc|, add predicates over terms, and quantification.
 %
 The constructor |Equal| could be eliminated in favour of |PName "Eq"| but
-is often included as a separate constructor.
+it is often included as a separate constructor.
 %
 %{
 %let fol = True
 %include FOLRat.lhs
 %let fol = False
 %}
+\paragraph{Undecidability and notion of proof}
+
+Setting us up for failure, let us attempt to write |eval| for FOL. We
+would use the following type:
+
+\begin{spec}
+evalFOL :: FOL -> (VarT -> RatT) -> (PSym -> [RatT] -> Bool) -> Bool
+\end{spec}
+And go our merry way for most cases:
+\begin{spec}
+evalFOL formula ratEnv predEnv = case formula of
+  (PName n args) -> predEnv n args
+  Equal a b -> a == b
+  And p q = evalFOL p ratEnv predEnv && evalFOL p ratEnv predEnv
+  Or  p q = evalFOL p ratEnv predEnv || evalFOL p ratEnv predEnv
+\end{spec}
+etc.
+
+however, as soon as we encounter quantifiers, we have a problem. To
+evaluate |FORALL x p| we need to evaluate |p| for each possible value
+of |x|. But, unfortunately, there are infinitely many such possible
+values, and so we can never know if the formula is a
+tautology. (However if it's false we can have the hope to encounter a
+counter example in finite time.) So, if we were to try to run the
+evaluator, it would not terminate. Hence, the best that we can ever
+do is, given a hand-written proof of the formula, check if the proof is valid.
+
+Hence, evalFOL would have a type such as the following:
+
+\begin{spec}
+evalFOL :: FOL -> FOLProof -> (VarT -> RatT) -> (PSym -> [RatT] -> Bool) -> Bool
+\end{spec}
+We then turn our attention to the structure of the |FOLProof| type.
+
+A proof of |And P Q| is a pair of a proof of |P| and a proof of
+|Q|. Therefore, we need a proof-term constructor:
+
+\begin{spec}
+AndProof :: FOLProof -> FOLProof -> FOLProof
+\end{spec}
+To prove |Or P Q|, we need either a proof of |P| or proof of |Q| --- but
+we need to know which side (|Left| for |p| or |Right| for |q|) we
+refer to.  Therefore, we need a proof-term constructor:
+
+\begin{spec}
+OrProof :: Either FOLProof FOLProof -> FOLProof
+\end{spec}
+To deal with negation, one approach is to push it down using de Morgan
+laws until we reach predicates (and assume that they can only be true
+or false for a given argument list.)
 
 \paragraph{Quantifiers: meaning, proof and syntax.}
 %
@@ -356,8 +405,12 @@ Intuitively, if we can show |A(a)| without knowing anything about |a|,
 we have proved |Forall x A(x)|.
 %
 Another way to view this is to say that a proof of |Forall x (P x)| is
-a function |f| from terms \jp{of type |RatT|?} to proofs such that |f t| is a proof of |P
-t| for each term |t|.
+a function |f| from terms to proofs such that |f t| is a proof of |P
+t| for each term |t|. 
+%
+Continuing to build our syntax for proofs, we could write: 
+
+|ForallProof :: (RatT -> FOLProof) -> FOLProof|
 
 % TODO: A simple example might also be a good idea, where we end up
 % with a function f where f t is a proof of P t for all terms t.
@@ -384,7 +437,7 @@ to some text after the equation where something more is said about the
 solution |x|.
 
 \subsection{An aside: Pure set theory}
-\jp{If this is an aside then it's an alternative to FOL? What is the purpose of this aside?}
+\jp{If this is an aside then it's an alternative to FOL? What is the purpose of this aside? Move it?}
 
 One way to build mathematics from the ground up is to start from pure
 set theory and define all concepts by translation to sets.
@@ -511,6 +564,11 @@ variable |i|.
 %
 Then the final step is to ``or'' all these formulas to obtain |Exists
 i (A i)|.
+%
+Continuing to build our syntax for proofs, we may write: |ExistsProof
+:: RatT -> FOLProof -> FOLProof|. In this case we'd have |i| as the
+first argument of |ExistsProof| and a proof of |A(i)| as its second
+argument.
 
 At this point it is good to sum up and compare the two quantifiers and
 how to prove them:
@@ -521,10 +579,16 @@ how to prove them:
 |f| is a proof of |Forall x (P(x))| if |f t| is a proof of |P(t)| for all |t|.
 \end{quote}
 
+\paragraph{Proof-checking}
+
+At this stage we're ready to complete our defintion of the proof language and the proof checker.
+
+\jp{doit}
+
 \paragraph{Curry--Howard}
 %
-\jp{What follows seems to assume intuitionistic FOL only (?)}
-If we abbreviate ``is a proof'' as |:| and use the Haskell convention
+\jp{Intuitionistic vs. classical}
+What if we abbreviate ``is a proof'' as ``|:|'' and use the Haskell convention
 for function application we get
 %
 \begin{spec}
@@ -535,23 +599,21 @@ f        :  (Forall x (P x))   {-"\quad\textbf{if}\quad"-}  f t  : P t   {-"\tex
 This now very much looks like type rules\jp{Is this something that the reader should know?}, and that is not a coincidence.
 %
 The \emph{Curry--Howard correspondence} says that we can think of
-propositions as types and proofs as ``programs''\jp{Why the scare quotes? Is it meant that programs have a limited expressivity?}.
+propositions as types and proofs as programs.\footnote{Such programs must terminate to prevent circular reasoning.}
 %
-These typing judgements are not part of FOL, but the correspondence is
+These typing judgements are not often presented as of FOL, but the correspondence is
 used quite a bit in this course to keep track of proofs.
 
 We can also interpret the simpler binary connectives using the
 Curry--Howard correspondence.
 %
-A proof of |And P Q| is a pair of a proof of |P| and a proof of |Q|.
 %
-Or, as terms: if |p : P| and |q : Q| then |(p,q) : And P Q|.
+Conjection becomes pairs; that is, if |p : P| and |q : Q| then |(p,q) : And P Q|.
+
+
+Similarly, disjuction becomes |Either|.
 %
-Similarly, a proof of |Or P Q| is either a proof of |P| or a proof of
-|Q|: we can pick the left (|P|) or the right (|Q|) using the Haskell
-datatype |Either|:
-%
-if |p : P| then |Left p : Or P Q| and if |q : Q| then |Right q : Or P
+If |p : P| then |Left p : Or P Q| and if |q : Q| then |Right q : Or P
 Q|.
 %
 In this way we can build up what is called ``proof terms'' for a large
