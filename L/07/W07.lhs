@@ -1371,7 +1371,7 @@ Therefore:
 \item deterministic: |f : G -> Id G|
 \item non-deterministic: |f : G -> Powerset G|, where |Powerset G = G -> {0, 1}|
 \item stochastic: |f : G -> Prob G|, where |Prob G = G -> [0, 1]|
-\item quantum: |f : G -> State G|, where |Supp G = G -> Complex|
+\item quantum: |f : G -> Super G|, where |Super G = G -> Complex|
 \end{itemize}
 
 We have represented the elements of the various structures as vectors.
