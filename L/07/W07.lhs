@@ -1340,7 +1340,7 @@ it follows that all quantum mechanical systems have an invertible dynamics.
 Furthermore, the inverted matrix is also unitary,
 and therefore the inverted system is also valid.
 
-\jp{Example system as a graph?}  
+\jp{An as a graph is daunting. One can construct an example with generator matrices $e^{i \theta}$ (one coordinate rotates in complex plane), and 2-d rotations. But there wont be "mostly zeros everywhere"}  
 
 \subsection{Monadic dynamical systems}
 
