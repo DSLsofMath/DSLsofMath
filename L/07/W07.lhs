@@ -1,6 +1,7 @@
 \section{Elements of Linear Algebra}
 \label{sec:LinAlg}
 \begin{code}
+{-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE GADTs, FlexibleInstances, UndecidableInstances #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving, RebindableSyntax #-}
 module DSLsofMath.W07 where
@@ -32,18 +33,18 @@ addition, and scaling by a set of scalars (i.e., elements of the
 field). In terms of typeclasses, we can characterize this structure as
 follows:
 \begin{spec}
-class (Field s, AddGroup v) => Vector v s where
+class (Field s, AddGroup v) => VectorSpace v s where
   (*^) :: s -> v -> v
 \end{spec}
 Additionally, vector scaling must be a homomorphism over (from and to)
 the additive group structure:
+\footnote{The last equation fixes |negate| uniquely, which is why we
+  liberally used |AddGroup| instead of |Additive| in the definition of |VectorSpace|.}
 \begin{spec}
   s *^ (a + b)     = s *^ a + s *^ b
   s *^ zero        = zero
   s *^ (negate a)  = negate (s *^ a)
 \end{spec}
-\footnote{The last equation fixes |negate| uniquely, which is why we
-  liberally used |AddGroup| instead of |Additive| in the definition.}
 An important consequence of the homomorphism property of |(*^)| is
 that vectors can be \emph{uniquely} expressed as a simple sort of
 combination of other special vectors.  More precisely, we can \emph{uniquely}
@@ -95,7 +96,7 @@ newtype Vector s g    = V (g -> s) deriving (Additive,AddGroup)
 \end{code}
 %*TODO Perhaps explain "deriving ... here"
 
-We define right away the notation |a ! i| for the coefficient of base vector |e i|, as follows:
+We define right away the notation |a ! i| for the coefficient of the base vector |e i|, as follows:
 \begin{code}
 infix 9 !
 (!) :: Vector s g -> g -> s
@@ -108,12 +109,19 @@ represent elements of a vector space.
 
 The cardinality of |G|, which we sometimes denote |card G|, is number
 of basis vectors, and thus the dimension of the vector space.  Often
-|G| is finite, i.e., |Bounded| and |Enum|erable\jp{I don't think that
-  these classes were ever introduced} and in the examples so far we
+|G| is finite and in the examples so far we
 have used indices from \(G = \{0, \ldots, n\}\).
 %
 Thus the dimension of the space
 would be \(n+1\).
+
+In Haskell finiteness of |G| can be captured by the conjunction of |Bounded| (there is a minimum and a maximum element in |G|)
+and |Enum|erable (there is a notion of enumeration from a given element of |G|) and |Eq|. Hence, the list of all elements of |G| can be extracted:
+\begin{code}
+type Finite g = (Bounded g, Enum g, Eq g)
+finiteDomain :: Finite a => [a]
+finiteDomain = [minBound..maxBound]
+\end{code}
 
 We know from the previous lectures that if |S| is an instance of
 |AddGroup| then so is |G -> S|, with the pointwise definitions.
@@ -175,6 +183,11 @@ confusion with the Haskell |map| function we will refer to them by the
 slightly less common name ``linear transformation''.).  The function
 |f| is a linear transformation if it maps the operations in |Vector S
 G| into operations in |Vector S G'| as follows:
+\begin{spec}
+f (u + v) =  f u + f v
+f (s *^ u) =  s *^ f u
+\end{spec}
+Since $v = (v 0 *^ e 0 + ... + v n *^ e n)$, we also have:
 %
 \begin{spec}
 f v =  f (v 0 *^ e 0 + ... + v n *^ e n) = v 0 *^ f (e 0) + ... + v n *^ f (e n)
@@ -215,14 +228,14 @@ That is, it suffices to know the behaviour of |f| on the basis vectors
 to know its behaviour on the whole vector space.
 
 %
-It may be enlightening to compare the above sum with the standard vector-matrix multiplication.
+It is enlightening to compare the above sum with the standard vector-matrix multiplication.
 Let us define |M| as follows:
 %
 \begin{spec}
 M = [m 0 | ... | m n]     -- where |m : G -> Vector S G'|
 \end{spec}
 %
-The columns of |M| are the images of the canonical base vectors |e i|
+That is, the columns of |M| are the images of the canonical base vectors |e i|
 through |f| (or, in other words, the columns of |M| are |f (e i)|).
 %
 Every |m k| has |card G'| elements, and it has become standard
@@ -233,7 +246,7 @@ j = m j i|, so that, with the usual matrix-vector multiplication
   (M * v) i = sum [M i j * v j | j <- [0 .. n]]
 \end{spec}
 %
-one has
+therefore, one has
 %
 \begin{spec}
   (M * v) i                                   = -- by def. of matrix-vector multiplication
@@ -254,14 +267,7 @@ then we can implement matrix-vector multiplication as:
 mulMV ::  (Finite g, Ring s) => Matrix s g g'  ->  Vector s g  ->  Vector s g'
 mulMV m v  = V (\i -> sum [m i!j  *  v!j | j <- finiteDomain])
 \end{code}
-\jp{introduce finiteDomain}
 %
-As already mentioned, here |Finite| means |Bounded| and |Enumerable|:
-%
-\begin{code}
-class (Bounded g, Enum g, Eq g) => Finite g  where
-\end{code}
-\jp{In modern haskell you'd write |type Finite g = (Bounded g, Enum g, Eq g)|. Also let's not jump back and forth.}
 
 %*TODO:
 % I think we might end up with a mixture of definitions given in terms of
@@ -1462,8 +1468,6 @@ class FinMon f where
 The idea is that vectors on finite types are finite functors and monads:
 %
 \begin{code}
-instance  (Bounded a, Enum a, Eq a) => Finite a  where
-
 instance Ring s => FinFunc (Vector s) where
   func f (V v) = V (\ g' -> sum [v g | g <- finiteDomain, g' == f g])
 
@@ -1605,8 +1609,6 @@ Conversions and |Show| functions so that we can actually see our vectors.
 toL :: Finite g => Vector s g -> [s]
 toL (V v) = map v finiteDomain
 
-finiteDomain :: Finite a => [a]
-finiteDomain = [minBound..maxBound]
 
 instance (Finite g, Show s) => Show (g->s)        where  show = showFun
 instance (Finite g, Show s) => Show (Vector s g)  where  show = showVector
