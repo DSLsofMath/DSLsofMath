@@ -261,7 +261,7 @@ If we take |Matrix| to be just a synonym for functions of type |G -> Vector S G'
 type Matrix s g g' = g' -> Vector s g
 \end{code}
 %
-then we can implement matrix-vector multiplication as:
+then we can implement matrix-vector multiplication as follows:
 %
 \begin{code}
 mulMV ::  (Finite g, Ring s) => Matrix s g g'  ->  Vector s g  ->  Vector s g'
@@ -314,7 +314,7 @@ Exercise~\ref{exc:Mstarcompose}: compute |((M*) . e ) g g'|.
 Therefore, every linear transformation is of the form |(M*)| and every
 |(M*)| is a linear transformation. There is a bijection between these two sets.
 %
-Matrix-matrix multiplication is defined in order to ensure associativity:
+Matrix-matrix multiplication is defined in order to ensure associativity (note here the overloading of the operator |*|):
 %
 \begin{spec}
 (M' * M) * v = M' * (M * v)
@@ -402,14 +402,15 @@ sqNorm v = dot v v
 norm v = sqrt (sqNorm v)
 \end{code}
 
-Additionally, the dot prodect often serves as a measure of how much
+Additionally, the dot product often serves as a measure of how much
 vectors are similar to (or correlated with) each other.
 
-We can define:
+For two non-zero vectors |u| and |v|, we can define:
 \begin{code}
 similarity u v = dot u v / norm u / norm v
 \end{code}
-Dividing by the norms mean that |abs (similarity u v)| is at most 1.
+Dividing by the norms mean that |abs (similarity u v)| is at most 1
+--- in the [-1,1] interval for real fields, and in the unit circle for complex ones.
 
 In fact, for Euclidean spaces |similarity u v| is the cosine of the
 angle between |u| and |v|.
@@ -425,7 +426,7 @@ preserve the dot product.
   dot (f u) (f v) = dot u v
 \end{spec}
 
-Thus, in Euclidean spaces, orthogonal operators preserve angles.
+In Euclidean spaces, such a transformation preserve angles. In general, they are called orthogonal transformations.
 
 \begin{exercise}
 Can you express this condition as a homomorphism condition?
@@ -440,7 +441,6 @@ corresponding matrices are square.
 \begin{exercise}
   Prove that orthogonal operators form a monoid.
 \end{exercise}
-\jp{They also form a group but we have not talked about inverses.}
 
 If angles are preserved what about distances? An isometry |f| is a
 distance-preserving transformation:
@@ -449,7 +449,7 @@ distance-preserving transformation:
   norm (f v) = norm v
 \end{spec}
 
-We can prove that |f| is orthogonal iff it is an isometry. The proof
+We can prove that |f| is orthogonal iff. it is an isometry. The proof
 in the left-to-right direction is easy and left as an exercise. In the
 other direction one uses the equality:
 \begin{spec}
@@ -458,6 +458,11 @@ other direction one uses the equality:
 
 In Euclidean spaces, this means that preserving angles and preserving
 distances go hand-in-hand.
+
+Orthogonal transformations enjoy many more useful properties: we have barely scrached the surface here.
+Among others, their rows (and columns) are orthogonal to each other.
+The are also invertible (and so they form a group), and the inverse is the (conjugate-) transpose of the matrix.
+(In the context of a complex scalar field, one would use the word ``unitary'' instead of ``orthogonal'', but it's a straightforward generalisation.)
 
 \subsection{Examples of matrix algebra}
 
@@ -595,7 +600,7 @@ integration of polynomials.
 \subsubsection{Dot product for functions and Fourier series}
 
 We said before that the dot product yields a notion of norm and
-similarity. Unfortunately, the dot product (as above defined) is not
+similarity. Unfortunately, the dot product (as defined above) is not
 very useful in this respect for polynomials represented as monomial
 coefficients: it is not clear what kind of similarity it corresponds
 to. To find a more useful dot product, we can return to the semantics
@@ -603,14 +608,14 @@ of polynomials in terms of functions. But for now we consider them
 over the restricted domain $I = [-\pi,\pi]$.
 
 Assume for a moment that we would define the dot product of
-polynomials $u$ and $v$ as follows:
+functions $u$ and $v$ as follows:
 \[
   |dotF u v| = \int_I |eval u|x |eval v|x dx
 \]
 
-Then, the norm of a vector would be a measure of how far it gets from
+Then, the norm of a function would be a measure of how far it gets from
 zero, using a quadratic mean. Likewise, the corresponding similarity
-measure corresponds to how much the polynomials ``agree'' on the
+measure corresponds to how much the functions ``agree'' on the
 interval.  That is, if the signs of |eval u| and |eval v| are the same
 on a sub-interval |I| then the integral is positive on |I|, and
 negative if they are different.
@@ -627,7 +632,7 @@ and this would be a lot more efficient than to compute the integral by
 1. computing the product using |polyMul| 2. integrating using
 |integ|. 3. using |eval| on the end points of the domain.
 
-Let us consider as a base the functions |bn = sin (n*x)|. Let us prove
+Let us consider as a base the functions |bn = sin (n*x)|, prove
 that they are orthogonal.
 
 We first use trigonometry to rewrite the product of bases:
@@ -666,14 +671,14 @@ sum |b_i = sin (i*x)/sqrt pi| is an orthonormal basis:
   bj `dot` bi = is i j
 \end{spec}
 
-As interesting as it is, this base does not cover all functions. To
-start, every |eval bi 0 == 0| for every |i|, and thus linear
+As interesting as it is, this basis does not cover all functions over I. To
+start, |eval bi 0 == 0| for every |i|, and thus linear
 combinations can only ever be zero at the origin.
 
 But if we were to include  |cos (n*x) / sqrt pi| in the set of base vectors, then the
 space would cover all periodic functions with period $2 \pi$. This 
 representation is called the Fourier series. Let us define a meaningful
-index for the basis:
+index (|G|) for the basis:
 
 \begin{code}
 data Periodic where
@@ -682,8 +687,8 @@ data Periodic where
 \end{code}
 
 A useful property of an orthonormal basis is that its representation
-as coefficients can be obtain by taking the dot product with each base
-vectors. Indeed:
+as coefficients can be obtained by taking the dot product with each base
+vectors. Indeed:\footnote{The proof is also valid for infinite sums.}
 
 \begin{spec}
      v           = sum [vi *^ bi | i <- finiteDomain]
@@ -1321,21 +1326,21 @@ p z = conj z * z
 
 We can then rewrite the law of total probability as follows:
 \begin{spec}
-     sum [pi | i <- finiteDomain]
-=    sum [conj zi * zi | i <- finiteDomain]
+     sum [p!i | i <- finiteDomain]
+=    sum [conj (z!i) * (z!i) | i <- finiteDomain]
 =    inner z z
 \end{spec}
 
 Where the |inner| product generalises the dot product for vector spaces
-with complex scalars (the left operand is conjugated).  Hence, rather
+with complex scalars (the left operand is conjugated indexwise).  Hence, rather
 conveniently, the law of total probability is replaced by conservation
 of the norm of state vectors. Thus the transition matrix is an
-isometry, and in turn, orthogonal (in the context of a complex field
-one would use the word ``unitary'' instead, but it's a straightforward
-generalisation).
+isometry, and in turn, unitary. Because all unitary matrices are invertible,
+it follows that all quantum mechanical systems have an invertible dynamics.
+Furthermore, the inverted matrix is also unitary,
+and therefore the inverted system is also valid.
 
-\jp{Example system as a graph?}  \jp{So all quantum systems have an
-  invertible dynamics, but we did not talk about invertibility ever.}
+\jp{Example system as a graph?}  
 
 \subsection{Monadic dynamical systems}
 
