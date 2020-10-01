@@ -1181,12 +1181,12 @@ But for now, let's just remark that the notation is extremely suspicious.
 of the same type as |a| or |b|, so cannot really be an argument to
 |p|. We discuss this notation at length in \cref{ch:probability-theory}.
 %
-For another, the |p a| we are computing with this formula is not the
+Additionally, the |p a| we are computing with this formula is not the
 |p a| which must eventually appear in the products on the right hand
 side.
 %
 We do not know how this notation came about: it is neither in Bayes'
-memoir, nor in Kolmogorov's monograph.
+memoir, nor in Kolmogorov's monograph.\jp{citations needed}
 
 Regardless, at this stage, what we need to know is that the
 conditional probability |p (a || b)| gives us the probability that the
@@ -1334,13 +1334,19 @@ We can then rewrite the law of total probability as follows:
 Where the |inner| product generalises the dot product for vector spaces
 with complex scalars (the left operand is conjugated indexwise).  Hence, rather
 conveniently, the law of total probability is replaced by conservation
-of the norm of state vectors. Thus the transition matrix is an
-isometry, and in turn, unitary. Because all unitary matrices are invertible,
+of the norm of state vectors.
+In particular, norms are conserved if the transition matrix is unitary.
+
+
+The unitary character of the transition matrix
+defines valid systems from the point of view of quantum mechanics.
+%
+Because all unitary matrices are invertible,
 it follows that all quantum mechanical systems have an invertible dynamics.
 Furthermore, the inverted matrix is also unitary,
-and therefore the inverted system is also valid.
+and therefore the inverted system is also valid as a quantum dynamical system.
 
-\jp{An as a graph is daunting. One can construct an example with generator matrices $e^{i \theta}$ (one coordinate rotates in complex plane), and 2-d rotations. But there wont be "mostly zeros everywhere"}  
+\jp{An example as a graph is daunting. One can construct an example by combining generator matrices $e^{i \theta}$ (one coordinate rotates in complex plane), and 2-d rotations (the "cos theta/sin thetha/-sin theta/cos theta" matrix). But there wont be "mostly zeros everywhere". The form $U = e^{iH}$ is also a possibility, but then there is a whole bunch of more theory to cover.}
 
 \subsection{Monadic dynamical systems}
 
