@@ -391,8 +391,8 @@ An important concept is the dot product between vectors.
 dot :: (Ring s, Finite g) => Vector s g -> Vector s g -> s
 dot v w = sum [v!i * w!i | i <- finiteDomain]
 \end{code}
-
-Dot products serve a dual purpose. First, they yield a notion of how
+\jp{If we take the algebraic view then this definition is only correct if the canonical basis is orthonormal.}
+Dot products have (at least) two aspects. First, they yield a notion of how
 ``big'' a vector is, the |norm|.
 
 \begin{code}
@@ -410,7 +410,7 @@ For two non-zero vectors |u| and |v|, we can define:
 similarity u v = dot u v / norm u / norm v
 \end{code}
 Dividing by the norms mean that |abs (similarity u v)| is at most 1
---- in the [-1,1] interval for real fields, and in the unit circle for complex ones.
+--- in the [-1,1] interval.\jp{For real fields. For complex ones one would use the inner product instead.}
 
 In fact, for Euclidean spaces |similarity u v| is the cosine of the
 angle between |u| and |v|.
@@ -435,7 +435,7 @@ Can you express this condition as a homomorphism condition?
 Such transformations necessarily preserve the dimension of the space
 (otherwise at least one base vector would be squished to nothing and
 dot products involving it become zero). (When the dimension is
-preseved, one often uses the term ``linear operator".) The
+preseved, one often uses the term ``linear operator''.) The
 corresponding matrices are square.
 
 \begin{exercise}
