@@ -1,12 +1,10 @@
 \section{Logic and calculational proofs}
 \label{sec:logic}
 
-The learning outcomes of this chapter are ``develop adequate notation
-for mathematical concepts'' and ``perform calculational proofs''
-(in the context of ``organize areas of mathematics in DSL
-terms'').
-%
-\jp{Is the bullet-list style necessary?}
+In this chapter, we continue to exercise our skill of organize areas
+of mathematics in DSL terms. We do so on languages of propositions and
+proofs. Thus, at the same time we will develop adequate notations for
+mathematical foundations and perform calculational proofs.
 %
 There will be a fair bit of theory: introducing propositional and
 first order logic, but also applications to mathematics: prime
@@ -24,9 +22,9 @@ import DSLsofMath.AbstractFOL (andIntro, andElimR, andElimL, notIntro, notElim)
 %endif
 \subsection{Propositional Calculus}
 %
-The main topic of this chapter is logic and proofs.
+The main topic of this chapter is logic, and proofs.
 %
-Our first DSL for this chapter is the language of \emph{propositional
+Our first DSL for this chapter is thus the language of \emph{propositional
   calculus} (or propositional logic), modelling simple propositions with the usual
 combinators for and, or, implies, etc.
 %
@@ -197,22 +195,124 @@ output) becomes true everywhere.
 A proposition whose truth table output is constantly true is called a
 \emph{tautology}.
 %
-Thus both |t| and |p4| are tautologies.
+Thus both |t| and |p4| are tautologies. So, we can write a tautology-tester as follows:
+\begin{code}
+  isTautology :: PropCalc -> Bool
+  isTautology p = and [evalPC truthTable p | t <- truthTables (freeNames p)]
+
+  truthTables (n:ns) n' = [if n == n' then b else t | b <- [True,False], t <- truthTables ns] 
+\end{code}
 %
 Truth table verification is only viable for propositions with few
 names because of the exponential growth in the number of cases to
-check: we get $2^n$ cases for |n| names.
+check: we get $2^n$ different |truthTables| for |n| names.
 %
-(There are better algorithms to evaluate truth values, even
-for thousands of names --- but that is not part of this course.)
 
-%*TODO: formulate more clearly as an exercise
+% *TODO: formulate more clearly as an exercise
+\begin{exercise}
 At this point it is good to implement a few utility functions on
-|PropCalc|: list the names used in a term, simplify to disjunctive
+|PropCalc|: list the names used in a term (|freeNames|), simplify to disjunctive
 normal form, simplify to conjunctive normal form, etc.
-
 (Conjunctive normal form: allow only |And|, |Or|, |Not|, |Name| in that
 order in the term.)
+\end{exercise}
+
+Even if there are (much) better algorithms to evaluate truth values,
+the best algorithms remain exponential in the number of variables. We
+will not go this route. Rather, we can introduce the notion of \emph{proof}
+
+\subsubsection{Proofs for Propositional Logic}
+
+Given the a |PropCalc| proposition |p| and a proof |t| (represented as
+an element of another type |PropCalcProof|), we can write a function that checks
+that |t| is a valid proof of |p|.
+
+\begin{code}
+checkProof :: Proof -> PropCalc -> Bool
+\end{code}
+
+We now have to figure out what consitutes proofs.
+
+To prove |And P Q|, one needs simultaneously of |P| and a proof of
+|Q|. (In logic texts, one will often find
+\[ \frac{P \quad Q}{P \and Q} \] to represent this rule. This is called the \emph{introduction rule for (∧)})
+(For the proof to be complete, one still needs to provide a full proof of |P| and another for |Q|.)
+
+Therefore, in Haskell, can represent this rule with the a proof-term constructor:
+\begin{spec}
+AndIntro :: Proof -> Proof -> Proof
+\end{spec}
+
+and, a case of |checkProof| will look like this:
+
+\begin{spec}
+checkProof (AndIntro t u) (And p q) = checkProof t p && checkProof u q
+\end{spec}
+
+To prove |Or P Q|, we need either a proof of |P| or proof of |Q| --- but
+we need to know which side (|Left| for |p| or |Right| for |q|) we
+refer to.  Therefore, we need a proof-term constructor:
+
+\begin{spec}
+OrIntro :: Either Proof Proof -> Proof
+\end{spec}
+
+To deal with negation, one approach is to push it down using de Morgan
+laws until we reach names. Another approach is to use the following rule:
+\[ \frac{P → Q \quad P → ¬Q}{¬P} \], which we can represent by the
+|NegIntro :: PropCalc -> Proof -> Proof -> Proof| constructor. Here, we have an additional |PropCalc| argument,
+which gives the |Q| formula. 
+
+For |Implies|, we can use the so-called material implication
+definition which we invoked earlier in truth tables, which means to define |Implies a b =
+(Not a) `Or` b|.
+
+In addition to introduction rules (where the connective appears as
+conclusion), we also have elimination rules (where the connective
+appears as premiss). For conjuction, we have both $\frac{A ∧ B}{A}$ and
+$\frac{A ∧ B}{B}$. We can represent them respectively by 
+
+TODO: complete.
+
+\begin{code}
+checkProof TruthIntro (Con True) = True
+checkProof (AndIntro t u) (And p q) = checkProof t p && checkProof u q
+checkProof (OrIntro (Left t)) (Or p q) = checkProof t p
+checkProof (OrIntro (Right t)) (Or p q) = checkProof t q
+checkProof (NotIntro t u q) (Not p) = checkProof t (p `Implies` q) (p `Implies` Not q)
+checkProof (AndElim1 t q) p = checkProof t (p `And` q)
+checkProof (AndElim2 t p) q = checkProof t (p `And` q)
+checkProof (OrElim t u v p q)  = checkProof t (p `Implies` r) && checkProof u (q `Implies` r) && checkProof v (Or p q)
+checkProof (NotElim t) p = checkProof t (Not (Not p))
+checkProof _ _ = False -- incorrect proof
+
+\end{code}
+
+
+\paragraph{Natural deduction, hypothetical derivations, contexts}
+
+\begin{code}
+checkProof Assumption p = True
+checkProof (ImplyIntro f) (p `Implies` q) = checkProof (f Assumption) q
+checkProof (ImplyElim t u p) q = checkProof t (q `Implies` p) q
+\end{code}
+
+
+Nefarious users. Sequent calculus.
+
+
+
+\begin{spec}
+checkProof' :: Context -> Proof -> PropCalc -> Bool
+checkProof' ctx (ImplyIntro' t) (p `Implies` q) = checkProof' (p:ctx) t q
+checkProof' ctx Assumption p = p `elem` ctx
+\end{spec}
+
+\paragraph{Haskell as a proof assistant}
+
+Negation as contradiction.
+
+
 
 \subsection{First Order Logic}
 %
@@ -356,22 +456,6 @@ evalFOL :: FOL -> FOLProof -> (VarT -> RatT) -> (PSym -> [RatT] -> Bool) -> Bool
 \end{spec}
 We then turn our attention to the structure of the |FOLProof| type.
 
-A proof of |And P Q| is a pair of a proof of |P| and a proof of
-|Q|. Therefore, we need a proof-term constructor:
-
-\begin{spec}
-AndProof :: FOLProof -> FOLProof -> FOLProof
-\end{spec}
-To prove |Or P Q|, we need either a proof of |P| or proof of |Q| --- but
-we need to know which side (|Left| for |p| or |Right| for |q|) we
-refer to.  Therefore, we need a proof-term constructor:
-
-\begin{spec}
-OrProof :: Either FOLProof FOLProof -> FOLProof
-\end{spec}
-To deal with negation, one approach is to push it down using de Morgan
-laws until we reach predicates (and assume that they can only be true
-or false for a given argument list.)
 
 \paragraph{Quantifiers: meaning, proof and syntax.}
 %
