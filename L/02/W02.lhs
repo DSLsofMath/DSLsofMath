@@ -289,6 +289,7 @@ checkProof (AndElimL t q) p = checkProof t (p `And` q)
 checkProof (AndElimR t p) q = checkProof t (p `And` q)
 checkProof (OrElim t u v p q) r = checkProof t (p `Implies` r) && checkProof u (q `Implies` r) && checkProof v (Or p q)
 checkProof (NotElim t) p = checkProof t (Not (Not p))
+checkProof (FalseElim t) p = checkProof t (Con False)
 \end{code}
 
 Anything else is an incorrect proof.
@@ -320,6 +321,7 @@ with the DSL for proofs being:
 \begin{code}
 data Proof  =  Assumption
             |  TruthIntro
+            |  FalseElim Proof
             |  AndIntro Proof Proof
             |  AndElimL Proof PropCalc
             |  AndElimR Proof PropCalc
@@ -395,6 +397,21 @@ falseElim :: False -> p -- ex falso quod libet
 
 
 But also, because the meaning of a proof of conjuction is exactly a pair of proofs, etc.
+
+Conjunction is represented as pairs; that is, if |p : P| and |q : Q| then |(p,q) : And P Q|.
+
+
+Similarly, disjuction becomes |Either|.
+%
+If |p : P| then |Left p : Or P Q| and if |q : Q| then |Right q : Or P
+Q|.
+%
+In this way we can build up what is called ``proof terms'' for a large
+fragment of logic.
+%
+It turns out that each such proof term is basically a program in a
+functional programming language, and that the formula a certain term
+proves is the type for the program.
 
 \begin{code}
 type Implies p q = p -> q
@@ -813,24 +830,6 @@ propositions as types and proofs as programs.\footnote{Such programs must termin
 These typing judgements are not often presented as of FOL, but the correspondence is
 used quite a bit in this course to keep track of proofs.
 
-We can also interpret the simpler binary connectives using the
-Curry--Howard correspondence.
-%
-%
-Conjection becomes pairs; that is, if |p : P| and |q : Q| then |(p,q) : And P Q|.
-
-
-Similarly, disjuction becomes |Either|.
-%
-If |p : P| then |Left p : Or P Q| and if |q : Q| then |Right q : Or P
-Q|.
-%
-In this way we can build up what is called ``proof terms'' for a large
-fragment of logic.
-%
-It turns out that each such proof term is basically a program in a
-functional programming language, and that the formula a certain term
-proves is the type for the program.
 
 \paragraph{Typed quantification}
 %
