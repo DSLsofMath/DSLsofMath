@@ -29,24 +29,35 @@ a \emph{field}.\jp{track down the first time we use fields and define |Field| th
 However, following our theme, we will first characterize vectors
 algebraically.  From this perpective a \emph{vector space} is an
 algebraic structure that captures a set of vectors, with zero,
-addition, and scaling by a set of scalars (i.e., elements of the
+a commutative addition, and scaling by a set of scalars (i.e., elements of the
 field). In terms of typeclasses, we can characterize this structure as
 follows:
 \begin{spec}
 class (Field s, AddGroup v) => VectorSpace v s where
   (*^) :: s -> v -> v
 \end{spec}
-Additionally, vector scaling must be a homomorphism over (from and to)
-the additive group structure:
-\footnote{The last equation fixes |negate| uniquely, which is why we
-  liberally used |AddGroup| instead of |Additive| in the definition of |VectorSpace|.}
+Additionally, vector scaling (|s *^|) must be a homomorphism over (from and to)
+the additive group structure of |v|:
 \begin{spec}
   s *^ (a + b)     = s *^ a + s *^ b
   s *^ zero        = zero
   s *^ (negate a)  = negate (s *^ a)
 \end{spec}
-An important consequence of the homomorphism property of |(*^)| is
-that vectors can be \emph{uniquely} expressed as a simple sort of
+And, on the other side, |(*^ a)| is a homomorphism from the additive group structure of |s| to the group structure of |v|:
+\begin{spec}
+  (s + t) *^ a     = s *^ a + t *^ a
+  zero *^ a        = zero
+  negate s *^ a    = negate (s *^ a)
+\end{spec}
+The multiplicative structure of |s| interacts with |(*^ a)| as follows:
+\begin{spec}
+  one *^ a        = a
+  (s * t) *^ a    = s *^ (t *^ a)
+\end{spec}
+\footnote{Traditionally some of the above laws are omitted because they are consequences of other laws.}
+
+An important consequence of their algebraic structure is
+that vectors can be expressed as a simple sort of
 combination of other special vectors.  More precisely, we can \emph{uniquely}
 represent any vector |v| in the space in terms of a fixed set of
 \emph{basis} vectors |{b0, ..., bn}| which cover the whole space and are \emph{linearly
@@ -55,9 +66,12 @@ represent any vector |v| in the space in terms of a fixed set of
 \begin{spec}
   (s0 *^ b0 + ... + sn *^ bn = 0) <=> (s0 = ... = sn = 0)
 \end{spec}
-\begin{exercise}
-  Prove the uniqueness of the representation for a fixed basis.
-\end{exercise}
+One can prove the uniqueness of representation as follows.
+\begin{proof}
+  Assume two representations of |v|, given by |si| and |ti|. The difference of those representations is given by |si-ti|. But because they represent the same vector,
+  they must be equal to the zero vector:  |(s0-t0) *^ b0 + ... + (sn-tn) *^ bn = 0|.
+By the basis being linearly independent, we find |si-ti=0|, and |si=ti|.
+\end{proof}
 
 This representation is what justifies the introduction of vectors as
 columns (or rows) of numbers. (According to our red thread, this
@@ -688,7 +702,7 @@ data Periodic where
 
 A useful property of an orthonormal basis is that its representation
 as coefficients can be obtained by taking the dot product with each base
-vectors. Indeed:\footnote{The proof is also valid for infinite sums.}
+vectors. Indeed:\footnote{The proof can be easily adapted to infinite sums.}
 
 \begin{spec}
      v           = sum [vi *^ bi | i <- finiteDomain]
@@ -1378,7 +1392,7 @@ return a structure of possible future states of type |G|:
   %
   The transition function has the type |f : G -> (G -> Complex)|, the
   structure of the target is the probability distributions over |G|.
-\item quantum: given an observable state, we compute a superposition
+\item quantum: given an observable state, we compute an (orthogonal) superposition
   of possible future states.
 \end{itemize}
 
