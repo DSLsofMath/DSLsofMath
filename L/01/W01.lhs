@@ -117,7 +117,8 @@ theories, languages, programs and proofs.
 
 As mentioned in the introduction, we emphasise the dividing line
 between syntax (what mathematical expressions look like) and semantics
-(what they mean)\pedantic{The only way to be precise about semantics is to use a formal language, and so semantics end up being presented in the form of a syntax. In this textbook, we'll tend to be rather imprecise about the semantics, and so the division should be, paradoxically, clear.}.
+(what they mean)\pedantic{The only way to be precise about semantics is to use a formal language, and so semantics end up being presented in the form of a syntax.
+Thus in this textbook, we will clarify as much as possible what we intend as syntax and what we indend as semantics as we go along.}.
 %
 As an example we start with \emph{type expressions} --- first in
 mathematics and then in Haskell.
