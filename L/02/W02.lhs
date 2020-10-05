@@ -12,9 +12,12 @@ numbers, (ir)rationals, limit points, limits, etc. and some
 Haskell concepts.
 
 \begin{code}
+{-# LANGUAGE DataKinds #-}
+{-# LANGUAGE GADTs #-}
 {-# LANGUAGE EmptyCase #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE RankNTypes #-}
+{-# LANGUAGE KindSignatures #-}
 module DSLsofMath.W02 where
 \end{code}
 %if False
@@ -872,7 +875,19 @@ quantification.
 
 \subsection{Proof by contradiction}
 
-Let's try\jp{are we going to fail?} to express and prove the irrationality of the square
+%if false
+\begin{code}
+data ZZ where
+  GCD,(:*:) :: ZZ -> ZZ -> ZZ
+  One :: ZZ
+type Pos = ZZ
+data (:=:) (a::ZZ) (b::ZZ) where
+data GCD  (a::ZZ) (b::ZZ)  where
+type R x = forall (a::ZZ). forall (b::Pos). Not ((b ':*: x) :=: a `And` ('GCD a b :=: 'One))
+\end{code}
+%endif
+
+Let us express and prove the irrationality of the square
 root of 2.
 %
 We have two main concepts involved: the predicate ``irrational'' and the
