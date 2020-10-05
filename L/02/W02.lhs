@@ -196,12 +196,12 @@ A proposition whose truth table output is constantly true is called a
 \emph{tautology}.
 %
 Thus both |t| and |p4| are tautologies. So, we can write a tautology-tester as follows:
-\begin{code}
-  isTautology :: PropCalc -> Bool
-  isTautology p = and [evalPC truthTable p | t <- truthTables (freeNames p)]
+\begin{spec}
+isTautology :: PropCalc -> Bool
+isTautology p = and [evalPC truthTable p | t <- truthTables (freeNames p)]
 
-  truthTables (n:ns) n' = [if n == n' then b else t | b <- [True,False], t <- truthTables ns] 
-\end{code}
+truthTables (n:ns) n' = [if n == n' then b else t | b <- [True,False], t <- truthTables ns] 
+\end{spec}
 %
 Truth table verification is only viable for propositions with few
 names because of the exponential growth in the number of cases to
@@ -263,56 +263,88 @@ laws until we reach names. Another approach is to use the following rule:
 |NegIntro :: PropCalc -> Proof -> Proof -> Proof| constructor. Here, we have an additional |PropCalc| argument,
 which gives the |Q| formula. 
 
-For |Implies|, we can use the so-called material implication
-definition which we invoked earlier in truth tables, which means to define |Implies a b =
-(Not a) `Or` b|.
 
 In addition to introduction rules (where the connective appears as
 conclusion), we also have elimination rules (where the connective
-appears as premiss). For conjuction, we have both $\frac{A ∧ B}{A}$ and
-$\frac{A ∧ B}{B}$. We can represent them respectively by 
+appears as premiss). For conjuction, we have both $\frac{P ∧ Q}{P}$ and
+$\frac{P ∧ Q}{Q}$. Because we have inductive proofs (described from the bottom up),
+we have the additional difficulty that these rules conjure-up a new
+proposition, $Q$. So we can represent them respectively by |AndElim1 :: Proof -> PropCalc -> Proof| (and |AndElim2| symmetrically).
+\jp{rename |PropCalc| to prop?}
 
-TODO: complete.
+Our eliminator of disjunction is $\frac {P ∨ Q \quad P → R \quad Q → R} R$.\jp{finish}
+Our eliminator for negation is $\frac {¬ ¬ P} P$
+
+We can then write our proof checker as follows:
 
 \begin{code}
 checkProof TruthIntro (Con True) = True
 checkProof (AndIntro t u) (And p q) = checkProof t p && checkProof u q
 checkProof (OrIntro (Left t)) (Or p q) = checkProof t p
 checkProof (OrIntro (Right t)) (Or p q) = checkProof t q
-checkProof (NotIntro t u q) (Not p) = checkProof t (p `Implies` q) (p `Implies` Not q)
+checkProof (NotIntro t u q) (Not p) = checkProof t (p `Implies` q) && checkProof u (p `Implies` Not q)
 checkProof (AndElim1 t q) p = checkProof t (p `And` q)
 checkProof (AndElim2 t p) q = checkProof t (p `And` q)
-checkProof (OrElim t u v p q)  = checkProof t (p `Implies` r) && checkProof u (q `Implies` r) && checkProof v (Or p q)
+checkProof (OrElim t u v p q) r = checkProof t (p `Implies` r) && checkProof u (q `Implies` r) && checkProof v (Or p q)
 checkProof (NotElim t) p = checkProof t (Not (Not p))
 checkProof _ _ = False -- incorrect proof
-
 \end{code}
 
 
 \paragraph{Natural deduction, hypothetical derivations, contexts}
 
+For |Implies|, we can use the so-called material implication
+definition which we invoked earlier in truth tables. It means to define |Implies a b =
+(Not a) `Or` b|. However this choice does not bring any new insight.
+
+Another possibility is a rule which can be written like so:\[\frac{\begin{array}{c}P \\ \vdots \\ Q \end{array}}{P → Q}\].
+Such a notation can however be terribly confusing. We were used to the fact that proofs above the line had to be continued. So what can the dots possibly mean?
+The intent is that, to prove $P → Q$, it suffices to prove $Q$, but one is allowed to use $P$ as an assumption in the proof of $Q$.
+
+We can use our DSL to make this formal, by adding a constructor for implication introduction: |ImplyIntro :: (Proof -> Proof) -> Proof|.
+The fact that the premiss can depend on the assumption |Q| is represented by a function whose parameter is the proof of |Q| in question.
+
+The eliminator for implication, known as \textit{modus ponens} is \(\frac{P → Q \quad P} Q\). We formalise it as |ImplyElim :: Proof -> Proof -> PropCalc -> Proof|
+(The proposition |P| is a not given by the conclusion). We complete our proof checker as follows:
+
 \begin{code}
 checkProof Assumption p = True
 checkProof (ImplyIntro f) (p `Implies` q) = checkProof (f Assumption) q
-checkProof (ImplyElim t u p) q = checkProof t (q `Implies` p) q
+checkProof (ImplyElim t u p) q = checkProof t (q `Implies` p) && checkProof u q
+\end{code}
+with the DSL for proofs being:
+
+\begin{code}
+data Proof  =  Assumption
+            |  TruthIntro
+            |  AndIntro Proof Proof
+            |  AndElim1 Proof PropCalc
+            |  AndElim2 Proof PropCalc
+            |  OrIntro (Either Proof Proof)
+            |  OrElim Proof Proof Proof PropCalc PropCalc
+            |  NotIntro Proof Proof PropCalc
+            |  NotElim Proof
+            |  ImplyIntro (Proof -> Proof)
+            |  ImplyElim  Proof Proof PropCalc
 \end{code}
 
 
-Nefarious users. Sequent calculus.
-
-
+Aside.
+The |Assumption| constructor may make the reader somewhat uneasy: how come that we can simply assume anything? The intent is that this
+constructor is private to the |checkProof| function (or module). No user-defined proof can use it. The most worried readers
+can also define the following version of |checkProof|, which uses an extra context to check that assumption have been rightfully introduced earlier.
 
 \begin{spec}
-checkProof' :: Context -> Proof -> PropCalc -> Bool
-checkProof' ctx (ImplyIntro' t) (p `Implies` q) = checkProof' (p:ctx) t q
-checkProof' ctx Assumption p = p `elem` ctx
+checkProof :: Context -> Proof -> PropCalc -> Bool
+checkProof ctx (ImplyIntro t) (p `Implies` q) = checkProof' (p:ctx) t q
+checkProof ctx Assumption p = p `elem` ctx
 \end{spec}
 
 \paragraph{Haskell as a proof assistant}
 
 Negation as contradiction.
 
-
+TODO
 
 \subsection{First Order Logic}
 %
@@ -420,7 +452,12 @@ it is often included as a separate constructor.
 %}
 \paragraph{Undecidability and notion of proof}
 
-Setting us up for failure, let us attempt to write |eval| for FOL. We
+Setting us up for failure, let us attempt to write |eval| for FOL, as we did for propositional logic.
+
+Truth tables are replaced by truth tables for each predicate/argument
+combinations (|PSym -> [RatT] -> Bool|). (TODO: what is |VarT -> RatT|?)
+
+We
 would use the following type:
 
 \begin{spec}
@@ -1291,7 +1328,7 @@ prove that |0| is the \emph{only} limit point of |X|.
 ∀ p ∈ ℝ? not (Limp p X)
 \end{spec}
 %
-This is a good exercises in quantifier negation!
+This is a good exercise in quantifier negation!
 %
 \begin{spec}
   not (Limp p X)                                   = {- Def. of |Limp| -}
