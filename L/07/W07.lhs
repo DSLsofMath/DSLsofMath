@@ -49,10 +49,10 @@ And, on the other side, |(*^ a)| is a homomorphism from the additive group struc
   zero *^ a        = zero
   negate s *^ a    = negate (s *^ a)
 \end{spec}
-The multiplicative structure of |s| maps the monoid of endofunctions\jp{expand at the intro point of endofunctions} as follows:
+The multiplicative structure of |s| maps the monoid of endofunctions (See \cref{ex:endofunction}) as follows:
 \begin{spec}
-  one *^ a        = id                  a  =  a
-  (s * t) *^ a    = ((s *^) . (t *^))   a  =  s *^ (t *^ a)
+  one      *^ a    = id                  a  =  a
+  (s * t)  *^ a    = ((s *^) . (t *^))   a  =  s *^ (t *^ a)
 \end{spec}
 \footnote{Traditionally some of the above laws are omitted because they are consequences of other laws.}
 
@@ -201,7 +201,7 @@ G| into operations in |Vector S G'| as follows:
 f (u + v) =  f u + f v
 f (s *^ u) =  s *^ f u
 \end{spec}
-Since $v = (v 0 *^ e 0 + ... + v n *^ e n)$, we also have:
+Since |v = (v 0 *^ e 0 + ... + v n *^ e n)|, we also have:
 %
 \begin{spec}
 f v =  f (v 0 *^ e 0 + ... + v n *^ e n) = v 0 *^ f (e 0) + ... + v n *^ f (e n)

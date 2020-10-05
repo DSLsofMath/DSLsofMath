@@ -572,6 +572,7 @@ class Monoid a where
   %
   (An ``endofunction'', also known as ``endomorphism'' is a function of type |X->X| for some set
   |X|.)
+  \label{ex:endofunction}
 \end{example}
 
 \begin{exercise}
