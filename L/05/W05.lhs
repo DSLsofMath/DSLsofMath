@@ -775,7 +775,7 @@ that of long division.
 For example:
 
 \begin{code}
-ps0, ps1, ps2 :: (Eq a, Field a, a ~ Double) => PowerSeries a
+ps0, ps1, ps2 :: (Eq a, Field a) => PowerSeries a
 ps0  = 1 / (1 - x)
 ps1  = 1 / (1 - x)^2
 ps2  = (x^2 - 2 * x + 1) / (x - 1)
@@ -786,7 +786,9 @@ return power series, the third is a polynomial (almost: it has a
 trailing |0.0|).
 
 \begin{code}
+example0 :: (Eq a, Field a) => PowerSeries a 
 example0   = takePoly 10 ps0
+example01 :: (Eq a, Field a) => PowerSeries a 
 example01  = takePoly 10 (ps0 * (1-x))
 \end{code}
 
@@ -848,9 +850,8 @@ power series.
 
 \begin{code}
 checkDeriv :: Integer -> Bool
-checkDeriv n  =  takePoly n (deriv ps0) == takePoly n ps1
+checkDeriv n  =  takePoly n (deriv ps0) == takePoly n (ps1 :: Poly Rational)
 \end{code}
-
 
 Recommended reading: the Functional pearl: ``Power series, power
 serious'' \cite{mcilroy1999functional}.

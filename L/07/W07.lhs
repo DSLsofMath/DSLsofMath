@@ -49,10 +49,10 @@ And, on the other side, |(*^ a)| is a homomorphism from the additive group struc
   zero *^ a        = zero
   negate s *^ a    = negate (s *^ a)
 \end{spec}
-The multiplicative structure of |s| interacts with |(*^ a)| as follows:
+The multiplicative structure of |s| maps the monoid of endofunctions\jp{expand at the intro point of endofunctions} as follows:
 \begin{spec}
-  one *^ a        = a
-  (s * t) *^ a    = s *^ (t *^ a)
+  one *^ a        = id                  a  =  a
+  (s * t) *^ a    = ((s *^) . (t *^))   a  =  s *^ (t *^ a)
 \end{spec}
 \footnote{Traditionally some of the above laws are omitted because they are consequences of other laws.}
 

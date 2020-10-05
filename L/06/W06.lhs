@@ -28,15 +28,16 @@ import Prelude (abs)
   \begin{itemize}
   \item  |S1 ->? S2|     what is the homomorphism between two given structures
 
-        - e.g., |apply c : Num (x -> a) -> Num a|
+        - e.g., |apply c : Num (x -> a) -> Num a|\jp{Can we derive some function which is a homomorphism between those two structures? }
 
   \item |S1?? -> S2|    what is |S1| compatible with a given homomorphism
 
-        - e.g., |eval : Poly a -> (a -> a)|
+        - e.g., |eval : Poly a -> (a -> a)|\jp{If the function and the 2nd structure are given, what is the 1st structure that one has to have? }
 
   \item |S1 -> S2??|   what is |S2| compatible with a given homomorphism
 
         - e.g.,   |applyFD c : FD a -> (a, a)|
+         \jp{(Say that we have the composition fo syntactic derivative and eval. )}
 
   \item |S1 ->? S2??|   can we find a good structure on |S2| so that it becomes homomorphic w. |S1|?
 

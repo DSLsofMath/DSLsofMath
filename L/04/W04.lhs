@@ -748,9 +748,9 @@ a - b = a + negate b
 \end{spec}
 
 Finally, when the additive monoid is abelian (commutative) and
-addition distributes over multiplication, we have a |Ring|. We cannot specify laws in Haskell typeclasses  and thus define it simply as the conjuction of |Group| and |Multiplicative|:
+addition distributes over multiplication, we have a |Ring|. We cannot specify laws in Haskell typeclasses  and thus define it simply as the conjuction of |AddGroup| and |Multiplicative|:
 \begin{spec}
-type Ring a = (Group a, Multiplicative a)
+type Ring a = (AddGroup a, Multiplicative a)
 \end{spec}
 
 As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integer| is the sum of |n| ones or the negation of such a sum. Thus we can map every |Integer| to an element of a |Ring| (the multiplicative structure is used to provide |one|):
@@ -776,7 +776,6 @@ To see this, we need to make explicit the structure of |FunExp|:
 instance Additive FunExp where
   (+) = (:+:)
   -- ...
-
 
 instance Multiplicative FunExp where
   (*) = (:*:)
@@ -845,7 +844,7 @@ Define the class |GoodClass| and instances for |FunExp| and
 \end{exercise}
 %
 Find another instance of |GoodClass|.
-\jp{I am lost here.}
+\jp{I am lost here. (Perhaps we can use  |Ring t =>| here?) The only new operations appears to be |idF|. (Check if |expF| is useful.)}
 %
 \begin{code}
 class GoodClass t where
@@ -920,7 +919,7 @@ and the role of the assignment by the identity.)
 
 
 The following correspondence summarises the discussion so far:
-
+\jp{Is it really true that initial algebra are deep embeddings? (Free algebra ignore laws.)}
 \begin{tabular}{ll}
       Computer Science      &   Mathematics
 \\\hline
