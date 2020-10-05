@@ -12,12 +12,14 @@ numbers, (ir)rationals, limit points, limits, etc. and some
 Haskell concepts.
 
 \begin{code}
+{-# LANGUAGE EmptyCase #-}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE RankNTypes #-}
 module DSLsofMath.W02 where
 \end{code}
 %if False
 \begin{code}
 import qualified DSLsofMath.AbstractFOL as FOL
-import DSLsofMath.AbstractFOL (andIntro, andElimR, andElimL, notIntro, notElim)
 \end{code}
 %endif
 \subsection{Propositional Calculus}
@@ -283,15 +285,15 @@ checkProof (AndIntro t u) (And p q) = checkProof t p && checkProof u q
 checkProof (OrIntro (Left t)) (Or p q) = checkProof t p
 checkProof (OrIntro (Right t)) (Or p q) = checkProof t q
 checkProof (NotIntro t u q) (Not p) = checkProof t (p `Implies` q) && checkProof u (p `Implies` Not q)
-checkProof (AndElim1 t q) p = checkProof t (p `And` q)
-checkProof (AndElim2 t p) q = checkProof t (p `And` q)
+checkProof (AndElimL t q) p = checkProof t (p `And` q)
+checkProof (AndElimR t p) q = checkProof t (p `And` q)
 checkProof (OrElim t u v p q) r = checkProof t (p `Implies` r) && checkProof u (q `Implies` r) && checkProof v (Or p q)
 checkProof (NotElim t) p = checkProof t (Not (Not p))
-checkProof _ _ = False -- incorrect proof
 \end{code}
 
+Anything else is an incorrect proof.
 
-\paragraph{Natural deduction, hypothetical derivations, contexts}
+\paragraph{Implication, hypothetical derivations, contexts}
 
 For |Implies|, we can use the so-called material implication
 definition which we invoked earlier in truth tables. It means to define |Implies a b =
@@ -311,6 +313,7 @@ The eliminator for implication, known as \textit{modus ponens} is \(\frac{P → 
 checkProof Assumption p = True
 checkProof (ImplyIntro f) (p `Implies` q) = checkProof (f Assumption) q
 checkProof (ImplyElim t u p) q = checkProof t (q `Implies` p) && checkProof u q
+checkProof _ _ = False -- incorrect proof
 \end{code}
 with the DSL for proofs being:
 
@@ -318,8 +321,8 @@ with the DSL for proofs being:
 data Proof  =  Assumption
             |  TruthIntro
             |  AndIntro Proof Proof
-            |  AndElim1 Proof PropCalc
-            |  AndElim2 Proof PropCalc
+            |  AndElimL Proof PropCalc
+            |  AndElimR Proof PropCalc
             |  OrIntro (Either Proof Proof)
             |  OrElim Proof Proof Proof PropCalc PropCalc
             |  NotIntro Proof Proof PropCalc
@@ -333,19 +336,103 @@ Aside.
 The |Assumption| constructor may make the reader somewhat uneasy: how come that we can simply assume anything? The intent is that this
 constructor is private to the |checkProof| function (or module). No user-defined proof can use it. The most worried readers
 can also define the following version of |checkProof|, which uses an extra context to check that assumption have been rightfully introduced earlier.
-
+\footnote{This kind of presentation of the checker matches well the sequent calculus presentation of the proof system.}
+ 
 \begin{spec}
 checkProof :: Context -> Proof -> PropCalc -> Bool
 checkProof ctx (ImplyIntro t) (p `Implies` q) = checkProof' (p:ctx) t q
 checkProof ctx Assumption p = p `elem` ctx
 \end{spec}
 
+\paragraph{Example proof}
+
+\begin{code}
+conjunctionCommutative = (a `And` b ) `Implies` (b `And` a)
+  where a = Name "a"; b = Name "b"
+
+conjunctionCommutativeProof =
+  ImplyIntro (\aAndb ->
+  AndIntro  (AndElimR aAndb (Name "a"))
+            (AndElimL aAndb (Name "b")) )
+
+\end{code}
+
+checkProof conjunctionCommutativeProof conjunctionCommutative == True
+
 \paragraph{Haskell as a proof assistant}
 
-Negation as contradiction.
+What if we could do this:
 
-TODO
+\begin{code}
+type ConjunctionCommutative = forall p q. (p `And` q) `Implies` (q `And` p)
+conjunctionCommutativeProof' :: ConjunctionCommutative
+conjunctionCommutativeProof' =
+   implyIntro (\aAndb ->
+   andIntro  (andElimR aAndb)
+             (andElimL aAndb))
+\end{code}
 
+Instead of writing propositions, we write types.
+
+We would not have to run (or for that matter write) a proof checker: the haskell type-checker does the work for us.
+
+Well we can do it!
+
+First, we can use the type-checker to encode the proof rules as programs:
+\begin{code}
+implyIntro :: (p -> q) -> (p `Implies` q)
+implyElim :: p -> (p `Implies` q) -> q
+
+andIntro :: p -> q -> And p q
+andElimL :: a `And` b -> a
+andElimR :: a `And` b -> b
+
+orIntro :: Either a b -> Or a b
+orElim :: Or p q -> (p `Implies` r) -> (q `Implies` r) -> r
+
+falseElim :: False -> p -- ex falso quod libet
+\end{code}
+
+
+But also, because the meaning of a proof of conjuction is exactly a pair of proofs, etc.
+
+\begin{code}
+type Implies p q = p -> q
+implyElim a f = f a
+implyIntro f x = f x
+
+type And p q = (p,q)
+andIntro t u = (t,u)
+andElimL = fst
+andElimR = snd
+
+type Or a b = Either a b
+orIntro x = x
+orElim (Left   t) u _ = u t
+orElim (Right  t) _ v = v t
+
+type Truth = ()
+truthIntro = ()
+
+data False
+falseElim x = case x of {}
+\end{code}
+
+
+(Attn. diverging proofs!)
+
+\subsection{Intuitionistic Propositional Logic}
+
+\begin{code}
+type Not a = a `Implies` False
+
+notElim        ::  Not (Not p) -> p
+notElim = error "not possible as such in Haskell"
+
+notIntro       ::  (p -> And q (Not q)) -> Not p
+notIntro = error "TODO"
+\end{code}
+  
 \subsection{First Order Logic}
 %
 %TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
@@ -450,9 +537,9 @@ it is often included as a separate constructor.
 %include FOLRat.lhs
 %let fol = False
 %}
-\paragraph{Undecidability and notion of proof}
+\paragraph{Undecidability}
 
-Setting us up for failure, let us attempt to write |eval| for FOL, as we did for propositional logic.
+Setting us up for failure, let us attempt to write |evalPC| for FOL, as we did for propositional logic.
 
 Truth tables are replaced by truth tables for each predicate/argument
 combinations (|PSym -> [RatT] -> Bool|). (TODO: what is |VarT -> RatT|?)
@@ -969,7 +1056,7 @@ For example\footnote{The Haskell notation ``|FOL.Add|'' means the
   It is used here to avoid confusion with the constructor |Add|
   defined earlier in the same chapter.}:
 \begin{code}
-example0 :: FOL.And p q -> FOL.And q p
+example0 :: And p q -> And q p
 example0 evApq   =  andIntro (andElimR evApq) (andElimL evApq)
 \end{code}
 %
@@ -988,7 +1075,7 @@ latin for ``from falsehood, anything (follows)''
 \jp{Why this stranglely complicated version instead of forall r. BOT -> r}
 %
 \begin{code}
-exFalso :: FOL.And q (FOL.Not q) -> p
+exFalso :: And q (Not q) -> p
 exFalso evAqnq   =  notElim (notIntro (\ hyp -> evAqnq))
 \end{code}
 %**TODO explain in more detail
