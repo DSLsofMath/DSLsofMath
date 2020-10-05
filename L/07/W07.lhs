@@ -611,7 +611,7 @@ Exercise~\ref{exc:Dmatrixpowerseries}: write the
 Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated with
 integration of polynomials.
 
-\subsubsection{Dot product for functions and Fourier series}
+\subsubsection{\extraMaterial Dot product for functions and Fourier series}
 
 We said before that the dot product yields a notion of norm and
 similarity. Unfortunately, the dot product (as defined above) is not
@@ -1328,7 +1328,7 @@ m3 g' = V (\ g -> toF (f3 g) g')
 % [(0,1.0)]))| for n = 1, ..., 6. What do you observe?
 
 
-\subsubsection{Quantum Mechanics}
+\subsubsection{\extraMaterial Quantum Systems}
 
 Instead of real numbers for probabilities, we could consider using
 complex numbers --- one then speaks of ``amplitudes''. An amplitude
