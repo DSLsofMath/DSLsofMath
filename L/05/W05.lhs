@@ -274,8 +274,7 @@ mapPoly f (Single a)   = Single (f a)
 mapPoly f (Cons a as)  = Cons (f a) (mapPoly f as)
 \end{code}
 %
-Therefore, we \emph{can} define a ring structure (roughly the mathematical
-counterpart of |Ring|) on |Poly a|, and we have arrived at the
+Therefore, we \emph{can} define a |Ring| structure on |Poly a|, and we have arrived at the
 canonical definition of polynomials, as found in any algebra book
 (see, for example, \cite{rotman2006first} for a very readable text):
 
@@ -731,8 +730,8 @@ expressions for a particular |x|.
 %
 That works for |absBar x < 1| but not for |x=2|, for example.
 
-For a more general case of power series division |p/q| with |p =
-a:as|, |q = b:bs|, we assume that |a * b ≠ 0|.
+For a more general case of power series division, consider |p/q| with |p =
+a:as|, |q = b:bs|, and assume that |a * b ≠ 0|.
 %
 Then we want to find, for any given |(a : as)| and |(b : bs)|, the
 series |(c : cs)| satisfying
