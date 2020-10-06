@@ -452,7 +452,7 @@ Another view of the above.
 
 Typing rule for function application:
 
-\frac{f : A → B \quad x : A}{f(x) : B}
+\(\frac{f : A → B \quad x : A}{f(x) : B}\)
 
 Modus ponens is a version of application typing rule with program erased.
 In general, such is the case for all logical rules.
