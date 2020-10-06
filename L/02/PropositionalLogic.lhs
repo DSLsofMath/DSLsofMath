@@ -104,7 +104,7 @@ propositional calculus and |Bool| is the \emph{semantic
 %
 Alternatively, and perhaps more elegantly, we can view |(Name -> Bool) -> Bool| as the semantic domain.
 %
-
+\subsubsection{Truth tables and tautologies}
 %
 \begin{wrapfigure}{R}{0.17\textwidth}
   \centering
@@ -257,6 +257,8 @@ Our eliminator for negation is $\frac {¬ ¬ P} P$
 
 We can then write our proof checker as follows:
 
+Truth/Falsity
+
 \begin{code}
 checkProof TruthIntro (Con True) = True
 checkProof (AndIntro t u) (And p q) = checkProof t p && checkProof u q
@@ -270,9 +272,16 @@ checkProof (NotElim t) p = checkProof t (Not (Not p))
 checkProof (FalseElim t) p = checkProof t (Con False)
 \end{code}
 
-Anything else is an incorrect proof.
+Any other combination of proof/prop else is an incorrect combination: the proof is not valid for the proposition.
 
-\paragraph{Implication, hypothetical derivations, contexts}
+
+|checkProof :: Prop -> Proof -> Bool|
+
+It can be interesting to note that, seeing |checkProof| as an evaluator,
+one can understand |Proof -> Bool|, a subset of propositions, as the semantic domain of |Prop|.
+
+
+\subsubsection{Implication, hypothetical derivations, contexts}
 
 For |Implies|, we can use the so-called material implication
 definition which we invoked earlier in truth tables. It means to define |Implies a b =
@@ -316,7 +325,7 @@ data Proof  =  Assumption
 \end{code}
 
 
-Aside.
+\paragraph{Aside}
 The |Assumption| constructor may make the reader somewhat uneasy: how come that we can simply assume anything? The intent is that this
 constructor is private to the |checkProof| function (or module). No user-defined proof can use it. The most worried readers
 can also define the following version of |checkProof|, which uses an extra context to check that assumption have been rightfully introduced earlier.
@@ -331,7 +340,7 @@ checkProof ctx Assumption p = p `elem` ctx
 \paragraph{Example proof}
 
 \begin{code}
-conjunctionCommutative = (a `And` b ) `Implies` (b `And` a)
+conjunctionCommutative = (a `And` b) `Implies` (b `And` a)
   where a = Name "a"; b = Name "b"
 
 conjunctionCommutativeProof =
@@ -341,7 +350,7 @@ conjunctionCommutativeProof =
 
 \end{code}
 
-checkProof conjunctionCommutativeProof conjunctionCommutative == True
+|checkProof conjunctionCommutativeProof conjunctionCommutative == True|
 
 \paragraph{Using the Haskell type-checker as a proof checker}
 
@@ -396,24 +405,6 @@ notIntro       ::  (p -> q) `And`  (p -> Not q) -> Not p
 
 (Attn. diverging proofs/programs!)
 
-
-\paragraph{|Or| is the dual of |And|.}
-%
-Most of the properties of |And| have corresponding properties for |Or|.
-%
-Often it is enough to simply swap the direction of the ``arrows''
-(implications) and swap the role between introduction and elimination.
-
-Here the implementation type can be a labelled sum type, also called
-disjoint union and in Haskell:
-%
-%include Either.lhs
-%
-%*TODO: Perhaps add an example with (q->p) -> (Not p -> Not q)
-%*TODO: Perhaps add an example with (p->p')->(q->q')->(And p q -> And p q)
-%*TODO: Perhaps add an example with (p->p')->(q->q')->(Or  p q -> Or  p q)
-%*TODO: Explain that the values of type |And p q| can be seen as "proofs" (abstract or concrete).
-%
 
 \subsubsection{Logic as impoverished typing rules}
 Another view of the above.
@@ -514,3 +505,23 @@ latin for ``from falsehood, anything (follows)''
 exFalso :: False -> p
 exFalso = falseElim
 \end{code}
+
+\subsubsection{|Or| is the dual of |And|.}
+Before moving on ...
+%
+Most of the properties of |And| have corresponding properties for |Or|.
+%
+Often it is enough to simply swap the direction of the ``arrows''
+(implications) and swap the role between introduction and elimination.
+
+Here the implementation type can be a labelled sum type, also called
+disjoint union and in Haskell:
+%
+%include Either.lhs
+%
+%*TODO: Perhaps add an example with (q->p) -> (Not p -> Not q)
+%*TODO: Perhaps add an example with (p->p')->(q->q')->(And p q -> And p q)
+%*TODO: Perhaps add an example with (p->p')->(q->q')->(Or  p q -> Or  p q)
+%*TODO: Explain that the values of type |And p q| can be seen as "proofs" (abstract or concrete).
+%
+
