@@ -1199,7 +1199,7 @@ Additionally, the |p a| we are computing with this formula is not the
 |p a| which must eventually appear in the products on the right hand
 side.
 %
-We do not know how this notation came about: it is neither in Bayes'
+We do not know how this notation came about\jp{According to Jaynes in "Probability Theory, The Logic of Science, p. 17. The notation A||B for "A given B" is attributable to Keynes (1921)."}: it is neither in Bayes'
 memoir, nor in Kolmogorov's monograph.\jp{citations needed}
 
 Regardless, at this stage, what we need to know is that the
