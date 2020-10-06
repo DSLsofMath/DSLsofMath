@@ -25,10 +25,15 @@ module DSLsofMath.W02 where
 import qualified DSLsofMath.AbstractFOL as FOL
 \end{code}
 %endif
-\subsection{Propositional Calculus}
+
+
+\label{sec:PropFrag} % yep, the propositional calculus is a propositional fragment.
 %
 The main topic of this chapter is logic, and proofs.
 %
+%include SetTheory.lhs
+
+\subsection{Propositional Calculus}
 Our first DSL for this chapter is thus the language of \emph{propositional
   calculus} (or propositional logic), modelling simple propositions with the usual
 combinators for and, or, implies, etc.
@@ -222,9 +227,10 @@ normal form, simplify to conjunctive normal form, etc.
 order in the term.)
 \end{exercise}
 
-Even if there are (much) better algorithms to evaluate truth values,
-the best algorithms remain exponential in the number of variables. We
-will not go this route. Rather, we can introduce the notion of \emph{proof}
+There are much better algorithms to evaluate truth values than the naive one we just showed,
+but we will not go this route.  Rather, we can introduce the notion of \emph{proof}.
+(And in fact, the best (known) algorithms remain exponential in the number of variables.)
+
 
 \subsubsection{Proofs for Propositional Logic}
 
@@ -310,6 +316,10 @@ The intent is that, to prove $P → Q$, it suffices to prove $Q$, but one is all
 We can use our DSL to make this formal, by adding a constructor for implication introduction: |ImplyIntro :: (Proof -> Proof) -> Proof|.
 The fact that the premiss can depend on the assumption |Q| is represented by a function whose parameter is the proof of |Q| in question.
 
+In other words, to prove the formula |P -> Q| we assume a proof |p :
+P| and derive a proof |q : Q|, so a proof of an implication is a
+function from proofs to proofs.
+
 The eliminator for implication, known as \textit{modus ponens} is \(\frac{P → Q \quad P} Q\). We formalise it as |ImplyElim :: Proof -> Proof -> PropCalc -> Proof|
 (The proposition |P| is a not given by the conclusion). We complete our proof checker as follows:
 
@@ -364,7 +374,7 @@ conjunctionCommutativeProof =
 
 checkProof conjunctionCommutativeProof conjunctionCommutative == True
 
-\paragraph{Haskell as a proof assistant}
+\paragraph{Using the Haskell type-checker as a proof checker}
 
 What if we could do this:
 
@@ -372,16 +382,30 @@ What if we could do this:
 type ConjunctionCommutative = forall p q. (p `And` q) `Implies` (q `And` p)
 conjunctionCommutativeProof' :: ConjunctionCommutative
 conjunctionCommutativeProof' =
-   implyIntro (\aAndb ->
-   andIntro  (andElimR aAndb)
-             (andElimL aAndb))
+   implyIntro (\evPQ ->
+   andIntro  (andElimR evPQ)
+             (andElimL evPQ))
 \end{code}
+(where |evPQ| stands for "evidence for |P| and |Q|.")
 
 Instead of writing propositions, we write types.
 
 We would not have to run (or for that matter write) a proof checker: the haskell type-checker does the work for us.
 
+Notice that Haskell will not accept
+%
+\begin{spec}
+conjunctionCommutativeProof' =
+   implyIntro (\evPQ ->
+   andIntro  (andElimL evPQ)
+             (andElimR evPQ))
+\end{spec}
+%
+unless we change the type.
+
+
 Well we can do it!
+
 
 First, we can use the type-checker to encode the proof rules as programs:
 \begin{code}
@@ -396,12 +420,87 @@ orIntro :: Either a b -> Or a b
 orElim :: Or p q -> (p `Implies` r) -> (q `Implies` r) -> r
 
 falseElim :: False -> p -- ex falso quod libet
+
+notElim        ::  Not (Not p) -> p
+
+notIntro       ::  (p -> q) `And`  (p -> Not q) -> Not p
 \end{code}
+
+(Attn. diverging proofs/programs!)
+
+
+\paragraph{|Or| is the dual of |And|.}
+%
+Most of the properties of |And| have corresponding properties for |Or|.
+%
+Often it is enough to simply swap the direction of the ``arrows''
+(implications) and swap the role between introduction and elimination.
+
+Here the implementation type can be a labelled sum type, also called
+disjoint union and in Haskell:
+%
+%include Either.lhs
+%
+%*TODO: Perhaps add an example with (q->p) -> (Not p -> Not q)
+%*TODO: Perhaps add an example with (p->p')->(q->q')->(And p q -> And p q)
+%*TODO: Perhaps add an example with (p->p')->(q->q')->(Or  p q -> Or  p q)
+%*TODO: Explain that the values of type |And p q| can be seen as "proofs" (abstract or concrete).
+%
+
+\subsection{Logic as impoverished typing rules}
+Another view of the above.
+
+Typing rule for function application:
+
+\frac{f : A → B \quad x : A}{f(x) : B}
+
+Modus ponens is a version of application typing rule with program erased.
+In general, such is the case for all logical rules.
+
+The \emph{Curry--Howard correspondence} is a general principle that
+says that we can think of propositions as types and proofs as
+programs. This principle goes beyond propositional logic (and first
+order logic, etc.): it applies to all sorts of logics and programming
+languages.
+
+
+%{
+%let tupling = True
+%include AbstractFOL.lhs
+%let tupling = False
+%}
+
+
+
+\subsection{Intuitionistic Propositional Logic and Simply Typed Lambda-Calculus, Curry-Howard isomorphism.}
+
+|Implies| is fundamental; |Not| is not.
+
+\begin{code}
+type Not a = a `Implies` False
+
+notElim = error "not possible as such in Haskell"
+
+notIntro (f,g) x = g x (f x)
+\end{code}
+
+It should come as no surprise that the ``API'' for implication can be implemented by
+|Implies = (->)|, which means that both |impIntro| and |impElim| can be
+implemented as |id|.
 
 
 But also, because the meaning of a proof of conjuction is exactly a pair of proofs, etc.
 
 Conjunction is represented as pairs; that is, if |p : P| and |q : Q| then |(p,q) : And P Q|.
+
+%
+If we see these introduction and elimination rules as an API, what
+would be a reasonable implementation of the datatype |And p q|?
+%
+A type of pairs!
+%
+Then we see that the corresponding Haskell functions would be
+%
 
 
 Similarly, disjuction becomes |Either|.
@@ -415,6 +514,7 @@ fragment of logic.
 It turns out that each such proof term is basically a program in a
 functional programming language, and that the formula a certain term
 proves is the type for the program.
+
 
 \begin{code}
 type Implies p q = p -> q
@@ -438,22 +538,24 @@ data False
 falseElim x = case x of {}
 \end{code}
 
-
-(Attn. diverging proofs!)
-
-\subsection{Intuitionistic Propositional Logic}
-
+Another example, which is very useful, is ``ex falso quodlibet'',
+latin for ``from falsehood, anything (follows)''
+\jp{Why this stranglely complicated version instead of forall r. BOT -> r}
+%
 \begin{code}
-type Not a = a `Implies` False
-
-notElim        ::  Not (Not p) -> p
-notElim = error "not possible as such in Haskell"
-
-notIntro       ::  (p -> And q (Not q)) -> Not p
-notIntro = error "TODO"
+exFalso :: False -> p
+exFalso = falseElim
 \end{code}
-  
+
+
 \subsection{First Order Logic}
+
+When formally proving properties in FOL we should use the introduction
+and elimination rules.
+%
+The propositional fragment of FOL is given by the rules for ∧, →, ⟷, ¬,
+∨.
+
 %
 %TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
 Our second DSL is that of \emph{First Order Logic\lnOnly{\footnote{Swedish: Första ordningens logik = predikatlogik}}},
@@ -668,117 +770,29 @@ We write ``roughly'' here because the scope of |x| very often extends
 to some text after the equation where something more is said about the
 solution |x|.
 
-\subsection{An aside: Pure set theory}
-\jp{If this is an aside then it's an alternative to FOL? What is the purpose of this aside? Move it?}
+TODO: Echoes:
+ 
+As we saw earlier, a similar rule holds for the ``forall'' quantifier:
+%
+a function |f| from terms |t| to proofs of |P t| is a proof of |Forall
+x (P x)|.
 
-One way to build mathematics from the ground up is to start from pure
-set theory and define all concepts by translation to sets.
+As we saw in \refSec{sec:TypedQuant}, a very common kind of
+formula is ``typed quantification'':
 %
-We will only work with this as a mathematical domain to study, not as
-``the right way'' of doing mathematics (there are other ways\jp{In fact the DSL approach that we advocate for is not quite fitting that model.}).
-%
-In this section we keep the predicate part of the version of |FOL|
-from the previous section, but we replace the term language |RatT|
-with pure (untyped) set theory.
-%
-
-The core of the language of pure set theory is captured by four
-function symbols.
-%
-We have a nullary function symbol |{}| for the empty set (sometimes
-written $\emptyset$) and a unary function symbol |S| for the function
-that builds a singleton set from an ``element''.
-%
-All non-variable terms so far are |{}|, |S {}|, |S (S {})|, \ldots
-%
-The first set is empty but all the others are (different) one-element sets.
-%
-
-Next we add two binary function symbols for union and intersection of
-sets (denoted by terms).
-%
-Using union we can build sets of more than one element, for example
-|Union (S {}) (S (S {}))| which has two ``elements'': |{}| and |S {}|.
-%
-
-In pure set theory we don't actually have any distinguished
-``elements'' to start from (other than sets), but it turns out that
-quite a large part of mathematics can still be expressed.
-%
-Every term in pure set theory denotes a set, and the elements of each
-set are again sets.
-%
-\lnOnly{(Yes, this can make your head spin.)}
-
-At this point it can be a good exercise to enumerate a few sets of
-cardinality\footnote{The \emph{cardinality} of a set is the number of
-  elements in it.} 0, 1, 2, and 3.
-%
-There is really just one set of cardinality 0: the empty set |s0 =
-{}|.
-%
-Using |S| we can then construct |s1 = S s0| of cardinality 1.
-%
-Continuing in this manner we can build |s2 = S s1|, also of
-cardinality 1, and so on.
-%
-Now we can combine different sets (like |s1| and |s2|) with |Union| to
-build sets of cardinality 2: |s3 = Union s1 s2|, |s4 = Union s2 s3|, etc..
-%
-And we can at any point apply |S| to get back a new set of cardinality
-1, like |s5 = S s3|.
-
-\paragraph{Natural numbers}
-%
-To talk about things like natural numbers in pure set theory they need
-to be encoded.
-%
-FOL does not have function definitions or recursion, but in a suitable
-meta-language (like Haskell) we can write a function that creates a
-set with |n| elements (for any natural number |n|) as a term in FOL.
-%
-Here is some pseudo-code defining the ``von Neumann'' encoding:
+if a type (a set) |S| of terms can be described as those that satisfy
+the unary predicate |T| we can introduce the short-hand notation
 %
 \begin{spec}
-  vN 0      = {}
-  vN (n+1)  = step (vN n)
-
-  step x = Union x (S x)
+  (Forall (x:T) (P x)) = (Forall x (T x => P x))
 \end{spec}
 %
-If we use conventional set notation we get |vN 0 = {}|, |vN 1 = {{}}|,
-|vN 2 = {{}, {{}}}|, |vN 3 = {{}, {{}}, {{}, {{}}}}|, etc.
-%format over x = "\overline{" x "}"
-If we use the shorthand |over n| for |vN n| we see that |over 0 = {}|,
-|over 1 = {over 0}|, |over 2 = {over 0, over 1}|, |over 3 = {over 0,
-  over 1, over 2}| and, in general, that |over n| has cardinality |n|
-(meaning it has |n| elements).
-%
-The function |vN| is explored in more detail in the first assignment
-of the DSLsofMath course.
+A proof of this is a two-argument function |p| which takes a term |t|
+and a proof of |T t| to a proof of |P t|.
 
 
-\paragraph{Pairs}
-%
-The constructions presented so far show that, even starting from no
-elements, we can embed all natural numbers in pure set theory.
-%
-We can also embed unordered pairs: |{a, b} =~= Union (S a) (S b)|
-and normal, ordered pairs: |(a, b) =~= {S a, {a, b}}|.
-%
-% |{S a, {a, b}} = Union (S (S a)) (S (Union (S a) (S b)))|
-With a bit more machinery it is possible to step by step encode |Nat|,
-|ZZ|, |QQ|, |REAL|, and |COMPLEX|.
-%
-A good read in this direction is ``The Haskell Road to Logic, Maths
-and Programming'' \citep{doets-haskellroadto-2004}.
+\subsection{Existential quantification}
 
-%*TODO: Perhaps add a bit about laws for pure set theory: x /= S x, Commutative(Union), etc.
-
-\subsection{Back to quantifiers}
-
-After this detour through untyped set land, let us get back to the
-most powerful concept of FOL: the quantifiers.
 %
 We have already seen how the ``forall'' quantifier can be seen as a
 generalisation of |And| and in the same way we can see the ``exists''
@@ -813,25 +827,6 @@ how to prove them:
 
 
 %TODO At this stage we're ready to complete our defintion of the proof language and the proof checker.
-
-\paragraph{Curry--Howard}
-%
-\jp{Intuitionistic vs. classical}
-What if we abbreviate ``is a proof'' as ``|:|'' and use the Haskell convention
-for function application we get
-%
-\begin{spec}
-(t, bt)  :  (Exists x (P x))   {-"\quad\textbf{if}\quad"-}  bt   : P t
-f        :  (Forall x (P x))   {-"\quad\textbf{if}\quad"-}  f t  : P t   {-"\text{~for all~}"-}  t
-\end{spec}
-%
-This now very much looks like type rules\jp{Is this something that the reader should know?}, and that is not a coincidence.
-%
-The \emph{Curry--Howard correspondence} says that we can think of
-propositions as types and proofs as programs.\footnote{Such programs must terminate to prevent circular reasoning.}
-%
-These typing judgements are not often presented as of FOL, but the correspondence is
-used quite a bit in this course to keep track of proofs.
 
 
 \paragraph{Typed quantification}
@@ -876,14 +871,25 @@ quantification.
 \subsection{Proof by contradiction}
 
 %if false
+What would it take to do this proof in Haskell? A sketch.
 \begin{code}
 data ZZ where
   GCD,(:*:) :: ZZ -> ZZ -> ZZ
   One :: ZZ
+  Two :: ZZ
 type Pos = ZZ
-data (:=:) (a::ZZ) (b::ZZ) where
+data (==) (a::ZZ) (b::ZZ) where
 data GCD  (a::ZZ) (b::ZZ)  where
-type R x = forall (a::ZZ). forall (b::Pos). Not ((b ':*: x) :=: a `And` ('GCD a b :=: 'One))
+data R x where
+  Decomposition :: (forall (a::ZZ). forall (b::Pos). Not ((b ':*: x) == a `And` ('GCD a b == 'One))) -> R x
+data Sqrt2Rational where
+  ConstructionS2 :: forall r. ((r ':*: r) == 'Two) `And` R r -> Sqrt2Rational
+
+-- squareEq :: a == b -> a :*: a == b :*: b
+-- squareEq = error "assumed"
+
+proof :: Sqrt2Rational -> False
+proof (ConstructionS2 (p,q)) = error "tedious"
 \end{code}
 %endif
 
@@ -971,50 +977,10 @@ rational.
 We can prove the existence without knowing what numbers |p| and |q|
 actually are!
 %
-(The careful reader may have noted that this example also depends on
-the axiom of the Excluded Middle.)
 
-\subsection{Functions as proofs}
-\jp{It seems that we're resetting (again) and we are going to use Haskell as a proof assisstant. At the very least signposting is necessary. }
+\subsection{Quantifiers as function types}
 
-To prove a formula |P => Q| we assume a proof |p : P| and derive a
-proof |q : Q|.
-%
-Such a proof can be expressed as |(\p -> q) : (P => Q)|:
-%
-a proof of an implication is a function from proofs to proofs.
-
-As we saw earlier, a similar rule holds for the ``forall'' quantifier:
-%
-a function |f| from terms |t| to proofs of |P t| is a proof of |Forall
-x (P x)|.
-
-As we saw in \refSec{sec:TypedQuant}, a very common kind of
-formula is ``typed quantification'':
-%
-if a type (a set) |S| of terms can be described as those that satisfy
-the unary predicate |T| we can introduce the short-hand notation
-%
-\begin{spec}
-  (Forall (x:T) (P x)) = (Forall x (T x => P x))
-\end{spec}
-%
-A proof of this is a two-argument function |p| which takes a term |t|
-and a proof of |T t| to a proof of |P t|.
-
-In pseudo-Haskell we can express the implication laws as follows:
-\jp{But this only makes sense \emph{after} one has accepted Haskell as a proof assistant. And then one may wonder if anything is gained by this exercise.}
-%
-\begin{spec}
-  impIntro  : (A -> B) -> (A=>B)
-  impElim   : (A=>B) -> (A -> B)
-\end{spec}
-%
-It should come as no surprise that this ``API'' can be implemented by
-|(=>) = (->)|, which means that both |impIntro| and |impElim| can be
-implemented as |id|.
-
-Similarly we can express the universal quantification laws as:
+We can express the universal quantification laws as:
 %
 \begin{spec}
   AllIntro  : ((a : Term) -> P a) -> (Forall x (P x))
@@ -1031,124 +997,6 @@ Haskell supports limited forms of dependent types and more is coming
 every year but for proper dependently typed programming we recommend
 the language Agda.\jp{make this a footnote?}
 
-
-%TODO: find the right place for the a note that the type of tuples is isomorphic to the (dependent) function type |{i : 1..n} -> Ai|.
-
-\subsection{Proofs for |And| and |Or|}
-\label{sec:PropFrag}
-When formally proving properties in FOL we should use the introduction
-and elimination rules.
-%
-The propositional fragment of FOL is given by the rules for ∧, →, ⟷, ¬,
-∨.
-%
-We can use the Haskell type-checker to check proofs in this fragment,
-using the functional models for introduction and elimination rules.
-%
-\begin{figure*}[tbp]
-%{
-%let abstractfol = True
-%include AbstractFOL.lhs
-%let abstractfol = False
-%}
-  \caption{The Haskell module |AbstractFOL|.}
-  \label{fig:AbstractFOL}
-\end{figure*}
-%
-Examine Fig.~\ref{fig:AbstractFOL} (also available in the file
-\url{AbstractFOL.lhs}), which introduces an empty\jp{an abstract type would be much better} datatype for every
-connective (except ⟷), and corresponding types for the introduction
-and elimination rules.
-%
-The introduction and elimination rules are explicitly left
-undefined\jp{also, abstract would be better.}, but we can still combine them and type check the
-results.
-%
-For example\footnote{The Haskell notation ``|FOL.Add|'' means the
-  |FOL| module version of |Add|.
-  %
-  It is used here to avoid confusion with the constructor |Add|
-  defined earlier in the same chapter.}:
-\begin{code}
-example0 :: And p q -> And q p
-example0 evApq   =  andIntro (andElimR evApq) (andElimL evApq)
-\end{code}
-%
-The variable name |evApq| is a mnemonic for ``\textbf{ev}idence of |And p q|''.
-
-Notice that Haskell will not accept
-%
-\begin{spec}
-example0 evApq   =  andIntro (andElimL evApq) (andElimR evApq)
-\end{spec}
-%
-unless we change the type.
-
-Another example, which is very useful, is ``ex falso quodlibet'',
-latin for ``from falsehood, anything (follows)''
-\jp{Why this stranglely complicated version instead of forall r. BOT -> r}
-%
-\begin{code}
-exFalso :: And q (Not q) -> p
-exFalso evAqnq   =  notElim (notIntro (\ hyp -> evAqnq))
-\end{code}
-%**TODO explain in more detail
-
-To sum up the |And| case we have one introduction and two elimination rules:
-%
-\begin{spec}
-  andIntro  ::  p -> q -> And p q
-  andElimL  ::  And p q ->  p
-  andElimR  ::  And p q ->  q
-\end{spec}
-%
-%TODO (by DaHeu):
-% The technique of using typed holes is also mentioned at the start of the
-% exercises. I think it would be a good idea to use one of the examples to
-% demonstrate a step-by-step solution using this technique.
-%
-If we see these introduction and elimination rules as an API, what
-would be a reasonable implementation of the datatype |And p q|?
-%
-A type of pairs!
-%
-Then we see that the corresponding Haskell functions would be
-%
-\begin{spec}
-  pair  :: p -> q -> (p, q)  -- |andIntro|
-  fst   :: (p, q) -> p       -- |andElimL|
-  snd   :: (p, q) -> q       -- |andElimR|
-\end{spec}
-
-%{
-%let tupling = True
-%include AbstractFOL.lhs
-%let tupling = False
-%}
-
-\paragraph{|Or| is the dual of |And|.}
-%
-Most of the properties of |And| have corresponding properties for |Or|.
-%
-Often it is enough to simply swap the direction of the ``arrows''
-(implications) and swap the role between introduction and elimination.
-
-\begin{spec}
-  orIntroL  :  P   ->  (P|Q)
-  orIntroR  :  Q   ->  (P|Q)
-  orElim    :  (P=>R)->(Q=>R) -> ((P|Q) => R)
-\end{spec}
-
-Here the implementation type can be a labelled sum type, also called
-disjoint union and in Haskell:
-%
-%include Either.lhs
-%
-%*TODO: Perhaps add an example with (q->p) -> (Not p -> Not q)
-%*TODO: Perhaps add an example with (p->p')->(q->q')->(And p q -> And p q)
-%*TODO: Perhaps add an example with (p->p')->(q->q')->(Or  p q -> Or  p q)
-%*TODO: Explain that the values of type |And p q| can be seen as "proofs" (abstract or concrete).
-%
 \subsection{Case study: there is always another prime}
 
 As an example of combining quantification (forall, exists) and implication let us turn
