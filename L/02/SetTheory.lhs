@@ -1,17 +1,11 @@
 \subsection{An aside: Pure set theory}
-\jp{If this is an aside then it's an alternative to FOL? What is the purpose of this aside? Move it?}
 
 One way to build mathematics from the ground up is to start from pure
 set theory and define all concepts by translation to sets.
 %
-We will only work with this as a mathematical domain to study, not as
-``the right way'' of doing mathematics (there are other ways\jp{In fact the DSL approach that we advocate for is not quite fitting that model.}).
+We will only work with this as a mathematical domain to study\jp{Really? Where is the DSL?}, not as
+``the right way'' of doing mathematics (there are other ways).
 %
-In this section we keep the predicate part of the version of |FOL|
-from the previous section, but we replace the term language |RatT|
-with pure (untyped) set theory.
-%
-
 The core of the language of pure set theory is captured by four
 function symbols.
 %
@@ -84,8 +78,8 @@ If we use the shorthand |over n| for |vN n| we see that |over 0 = {}|,
   over 1, over 2}| and, in general, that |over n| has cardinality |n|
 (meaning it has |n| elements).
 %
-The function |vN| is explored in more detail in the first assignment
-of the DSLsofMath course.
+\lnOnly{The function |vN| is explored in more detail in the first assignment
+of the DSLsofMath course.}
 
 
 \paragraph{Pairs}
