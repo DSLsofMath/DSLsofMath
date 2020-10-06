@@ -1,15 +1,23 @@
+%if false
+\begin{code}
+{-# LANGUAGE TypeOperators #-}
+{-# LANGUAGE EmptyCase #-}
+module DSLsofMath.PropositionalLogic where
+\end{code}
+%endif
+
 \subsection{Propositional Calculus}
 \label{sec:PropFrag} % yep, the propositional calculus is a propositional fragment of other logics, such as FOL.
 
-Our first DSL for this chapter is thus the language of \emph{propositional
+Our first DSL for this chapter is the language of \emph{propositional
   calculus} (or propositional logic), modelling simple propositions with the usual
 combinators for and, or, implies, etc.
 %
 \lnOnly{(The Swedish translation is ``satslogik'' and some more Swe-Eng
 translations are collected on the GitHub page of these lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)}
 %
-Some concrete syntactic constructs are collected in
-Table~\ref{tab:PropCalc} where each row lists common synonyms and their arity (number of arguments).
+When reading a logic book, one will encounter several concrete syntactic constructs related to propositional logic, which are collected in
+Table~\ref{tab:PropCalc}. Each row lists common synonyms and their arity (number of arguments).
 %
 \begin{table}[htbp]
   \centering
@@ -25,34 +33,28 @@ Table~\ref{tab:PropCalc} where each row lists common synonyms and their arity (n
 \label{tab:PropCalc}
 \end{table}
 
-Some example propositions: \(|p1| = a \wedge (\neg a)\),
+Some example propositions will include \(|p1| = a \wedge (\neg a)\),
 \(|p2| = a \Rightarrow b\), \(|p3| = a \vee (\neg a)\),
 \(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).
 %
-The names |a|, |b|, |c|, \ldots are ``propositional variables'':
-variables: they can be substituted for any proposition.  However we
-will soon add another kind of variables (and quantification over them)
-to the calculus --- so we keep calling them ``names'' to avoid mixing
-them up.
+The names |a|, |b|, |c|, \ldots are ``propositional variables'': they
+can be substituted for any proposition. We could call them ``variables'', but in upcoming sections we will add
+another kind of variables (and quantification over them) to the
+calculus --- so we keep calling them ``names'' to avoid mixing them
+up.
 
-Since names stand for propositions, if we assign all combinations of
-truth values for the names, we can compute a truth value of the whole
-proposition.
-%
-In our examples, |p1| is always false, |p2| is mixed and |p3| and |p4|
-are always true.
 
 %
 Just as we did with simple arithmetic, and with complex number
 expressions in \cref{sec:DSLComplex}, we can model the abstract
 syntax of propositions as a datatype:
 \begin{code}
-data PropCalc  =  Con      Bool
-               |  Not      PropCalc
-               |  And      PropCalc  PropCalc
-               |  Or       PropCalc  PropCalc
-               |  Implies  PropCalc  PropCalc
-               |  Name     Name
+data Prop  =  Con      Bool
+           |  Not      Prop
+           |  And      Prop  Prop
+           |  Or       Prop  Prop
+           |  Implies  Prop  Prop
+           |  Name     Name
 type Name = String
 \end{code}
 %
@@ -66,53 +68,42 @@ p4 = Implies (And a b) (And b a)
   where a = Name "a"; b = Name "b"
 \end{code}
 %
-We can write an evaluator which, given an environment (an assignment of names to truth values), takes
-a |PropCalc| term to its truth value:
+Because ``names'' stand for propositions, if we assign 
+truth values for the names, we can compute a truth value of the whole
+proposition for the assignment in question.
 %
-\begin{code}
-evalPC :: (Name -> Bool) -> (PropCalc -> Bool)
-evalPC env = error "Exercise" -- see \ref{par:SETandPRED} for a similar function
-\end{code}
-%
-The function |evalPC| translates from the syntactic to the semantic
-domain.
-%
+
+\subsubsection{An Evaluator for |Prop|}
+Let us formalise this in general,
+by writing an evaluator which takes
+a |Prop| term to its truth value.
+
 (The evaluation function for a DSL describing a logic is often called
 |check| instead of |eval| but for consistency we stick to |eval|.)
 %
-Here |PropCalc| is the (abstract) \emph{syntax} of the language of
-propositional calculus and |Bool| is the \emph{semantic
-  domain}.
-%
-\footnote{Alternatively, we can view |(Name -> Bool) -> Bool| as the semantic
-domain of |PropCalc|.
-%
-A value of this type is a mapping from an environment to |Bool|.}
-
-%if False
-%*TODO: perhaps show this code for those interested
 \begin{code}
-type S = (Name -> Bool) -> Bool
-impS, andS, orS  :: S -> S -> S
-notS   :: S -> S
-nameS  :: Name -> S
-nameS n env = env n
-impS f g env = f env `implies` g env
-andS f g env = f env && g env
-orS  f g env = f env || g env
-notS f = not . f
+eval :: Prop -> (Name -> Bool) -> Bool
+eval (Implies p q)  env = eval p env `implies` eval q env
+eval (And p q)      env = eval p env && eval q env
+eval (Or  p q)      env = eval p env || eval q env
+eval (Not p)        env = not (eval p env)
+eval (Name n)       env = env n
+eval (Con t)        env = t
+
 implies :: Bool -> Bool -> Bool
 implies False  _  =  True
 implies _      p  =  p
-
-evalPC' :: PropCalc -> S
-evalPC' (Implies p q)  = impS (evalPC' p) (evalPC' q)
-evalPC' (And p q)  = andS (evalPC' p) (evalPC' q)
-evalPC' (Or  p q)  = orS  (evalPC' p) (evalPC' q)
-evalPC' (Not p)    = notS (evalPC' p)
-evalPC' (Name n)   = nameS n
 \end{code}
-%endif
+%
+The function |eval| translates from the syntactic domain to the semantic
+domain, given an environment (an assignment of names to truth values), which we represent as a function from each |Name| to |Bool|.
+.
+Here |Prop| is the (abstract) \emph{syntax} of the language of
+propositional calculus and |Bool| is the \emph{semantic
+  domain}, and |Name -> Bool| is a necessary extra parameter to write the function.
+%
+Alternatively, and perhaps more elegantly, we can view |(Name -> Bool) -> Bool| as the semantic domain.
+%
 
 %
 \begin{wrapfigure}{R}{0.17\textwidth}
@@ -168,17 +159,27 @@ one operation (column) at a time (see \refFig{fig:abswap}).
 %
 The |&| columns become |F F F T| and finally the |=>| column (the
 output) becomes true everywhere.
+%
+For our other examples, |p1| is always false, |p2| is mixed and |p3| is always true.
 
 A proposition whose truth table output is constantly true is called a
 \emph{tautology}.
 %
-Thus both |t| and |p4| are tautologies. So, we can write a tautology-tester as follows:
-\begin{spec}
-isTautology :: PropCalc -> Bool
-isTautology p = and [evalPC truthTable p | t <- truthTables (freeNames p)]
-
-truthTables (n:ns) n' = [if n == n' then b else t | b <- [True,False], t <- truthTables ns] 
-\end{spec}
+Thus |t|, |p3| and |p4| are tautologies. We can formalise this idea as the following tautology-tester:
+\begin{code}
+isTautology :: Prop -> Bool
+isTautology p = and [eval p e | e <- envs (freeNames p)]
+\end{code}
+which uses the following intermediate function to generate all possible environments for a given list of names
+\begin{code}
+envs :: [Name] -> [Name -> Bool]
+envs (n:ns) = [\n' -> if n == n' then b else e n' | b <- [True,False], e <- envs ns]
+\end{code}
+and a function to find all names in a proposition:
+\begin{code}
+freeNames :: Prop -> [Name]
+freeNames = error "exercise"
+\end{code}
 %
 Truth table verification is only viable for propositions with few
 names because of the exponential growth in the number of cases to
@@ -188,7 +189,7 @@ check: we get $2^n$ different |truthTables| for |n| names.
 % *TODO: formulate more clearly as an exercise
 \begin{exercise}
 At this point it is good to implement a few utility functions on
-|PropCalc|: list the names used in a term (|freeNames|), simplify to disjunctive
+|Prop|: list the names used in a term (|freeNames|), simplify to disjunctive
 normal form, simplify to conjunctive normal form, etc.
 (Conjunctive normal form: allow only |And|, |Or|, |Not|, |Name| in that
 order in the term.)
@@ -201,27 +202,27 @@ but we will not go this route.  Rather, we can introduce the notion of \emph{pro
 
 \subsubsection{Proofs for Propositional Logic}
 
-Given the a |PropCalc| proposition |p| and a proof |t| (represented as
-an element of another type |PropCalcProof|), we can write a function that checks
-that |t| is a valid proof of |p|.
+Given a |Prop|osition |p| and a proof |t| (represented as
+an element of another type |Proof|), we can write a function that checks
+that |t| is a valid proof of |p|:
 
 \begin{code}
-checkProof :: Proof -> PropCalc -> Bool
+checkProof :: Proof -> Prop -> Bool
 \end{code}
 
-We now have to figure out what consitutes proofs.
+But we still have to figure out what consitutes proofs.
 
 To prove |And P Q|, one needs simultaneously of |P| and a proof of
 |Q|. (In logic texts, one will often find
-\[ \frac{P \quad Q}{P \and Q} \] to represent this rule. This is called the \emph{introduction rule for (∧)})
-(For the proof to be complete, one still needs to provide a full proof of |P| and another for |Q|.)
+\[ \frac{P \quad Q}{P \and Q} \] to represent this fact, which is called the \emph{introduction rule for (∧)})
+(For the proof to be complete, one still needs to provide a full proof of |P| and another for |Q| --- it is not enough to just invoke this rule.)
 
-Therefore, in Haskell, can represent this rule with the a proof-term constructor:
+Therefore, in Haskell, can represent this rule with the following proof-term constructor:
 \begin{spec}
 AndIntro :: Proof -> Proof -> Proof
 \end{spec}
 
-and, a case of |checkProof| will look like this:
+and, the corresponding case of the |checkProof| function will look like this:
 
 \begin{spec}
 checkProof (AndIntro t u) (And p q) = checkProof t p && checkProof u q
@@ -234,21 +235,22 @@ refer to.  Therefore, we need a proof-term constructor:
 \begin{spec}
 OrIntro :: Either Proof Proof -> Proof
 \end{spec}
+\jp{insert Either.lhs here?}
 
 To deal with negation, one approach is to push it down using de Morgan
-laws until we reach names. Another approach is to use the following rule:
+laws until we reach names (Exercise \jp{ref?}). Another approach is to use the following rule:
 \[ \frac{P → Q \quad P → ¬Q}{¬P} \], which we can represent by the
-|NegIntro :: PropCalc -> Proof -> Proof -> Proof| constructor. Here, we have an additional |PropCalc| argument,
-which gives the |Q| formula. 
+|NegIntro :: Prop -> Proof -> Proof -> Proof| constructor. Here, we have an additional |Prop| argument,
+which gives the |Q| formula.
 
 
 In addition to introduction rules (where the connective appears as
 conclusion), we also have elimination rules (where the connective
-appears as premiss). For conjuction, we have both $\frac{P ∧ Q}{P}$ and
+appears as premiss). For conjuction, we have two eliminations rules: $\frac{P ∧ Q}{P}$ and
 $\frac{P ∧ Q}{Q}$. Because we have inductive proofs (described from the bottom up),
 we have the additional difficulty that these rules conjure-up a new
-proposition, $Q$. So we can represent them respectively by |AndElim1 :: Proof -> PropCalc -> Proof| (and |AndElim2| symmetrically).
-\jp{rename |PropCalc| to prop?}
+proposition, $Q$. So we represent them respectively by |AndElim1 :: Proof -> Prop -> Proof| (and |AndElim2| symmetrically),
+where the extra |Prop| argument corresponds to |Q|.
 
 Our eliminator of disjunction is $\frac {P ∨ Q \quad P → R \quad Q → R} R$.\jp{finish}
 Our eliminator for negation is $\frac {¬ ¬ P} P$
@@ -287,7 +289,7 @@ In other words, to prove the formula |P -> Q| we assume a proof |p :
 P| and derive a proof |q : Q|, so a proof of an implication is a
 function from proofs to proofs.
 
-The eliminator for implication, known as \textit{modus ponens} is \(\frac{P → Q \quad P} Q\). We formalise it as |ImplyElim :: Proof -> Proof -> PropCalc -> Proof|
+The eliminator for implication, known as \textit{modus ponens} is \(\frac{P → Q \quad P} Q\). We formalise it as |ImplyElim :: Proof -> Proof -> Prop -> Proof|
 (The proposition |P| is a not given by the conclusion). We complete our proof checker as follows:
 
 \begin{code}
@@ -303,14 +305,14 @@ data Proof  =  Assumption
             |  TruthIntro
             |  FalseElim Proof
             |  AndIntro Proof Proof
-            |  AndElimL Proof PropCalc
-            |  AndElimR Proof PropCalc
+            |  AndElimL Proof Prop
+            |  AndElimR Proof Prop
             |  OrIntro (Either Proof Proof)
-            |  OrElim Proof Proof Proof PropCalc PropCalc
-            |  NotIntro Proof Proof PropCalc
+            |  OrElim Proof Proof Proof Prop Prop
+            |  NotIntro Proof Proof Prop
             |  NotElim Proof
             |  ImplyIntro (Proof -> Proof)
-            |  ImplyElim  Proof Proof PropCalc
+            |  ImplyElim  Proof Proof Prop
 \end{code}
 
 
@@ -321,7 +323,7 @@ can also define the following version of |checkProof|, which uses an extra conte
 \footnote{This kind of presentation of the checker matches well the sequent calculus presentation of the proof system.}
  
 \begin{spec}
-checkProof :: Context -> Proof -> PropCalc -> Bool
+checkProof :: Context -> Proof -> Prop -> Bool
 checkProof ctx (ImplyIntro t) (p `Implies` q) = checkProof' (p:ctx) t q
 checkProof ctx Assumption p = p `elem` ctx
 \end{spec}
@@ -346,8 +348,7 @@ checkProof conjunctionCommutativeProof conjunctionCommutative == True
 What if we could do this:
 
 \begin{code}
-type ConjunctionCommutative = forall p q. (p `And` q) `Implies` (q `And` p)
-conjunctionCommutativeProof' :: ConjunctionCommutative
+conjunctionCommutativeProof' :: (p `And` q) `Implies` (q `And` p)
 conjunctionCommutativeProof' =
    implyIntro (\evPQ ->
    andIntro  (andElimR evPQ)
@@ -414,7 +415,7 @@ disjoint union and in Haskell:
 %*TODO: Explain that the values of type |And p q| can be seen as "proofs" (abstract or concrete).
 %
 
-\subsection{Logic as impoverished typing rules}
+\subsubsection{Logic as impoverished typing rules}
 Another view of the above.
 
 Typing rule for function application:
@@ -439,7 +440,7 @@ languages.
 
 
 
-\subsection{Intuitionistic Propositional Logic and Simply Typed Lambda-Calculus, Curry-Howard isomorphism.}
+\subsubsection{Intuitionistic Propositional Logic and Simply Typed Lambda-Calculus, Curry-Howard isomorphism.}
 
 |Implies| is fundamental; |Not| is not.
 
