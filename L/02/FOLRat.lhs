@@ -1,6 +1,6 @@
 %if False
 \begin{code}
-module DSLsofMath.FOLRat where
+module FOLRat where
 \end{code}
 %endif
 
