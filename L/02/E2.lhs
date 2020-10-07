@@ -3,12 +3,27 @@
 
 % TODO: Perhaps introduce GADT datatype notation use in some exercise solutions
 
+\begin{exercise}
+  Define a function for de Morgan dualisation.
+\end{exercise}
+
+\begin{exercise}
+  Define a function to rewrite propositions into conjunctive normal form.
+\end{exercise}
+
+
+\begin{exercise}
+  Define a function to rewrite propositions into disjunctive normal form.
+\end{exercise}
+
+
 \subsubsection{Exercises: abstract FOL}
 \label{exercises-for-dslsofmath-week-2-2017}
 \begin{code}
 {-# LANGUAGE EmptyCase #-}
 import AbstractFOL
 \end{code}
+
 
 
 \paragraph{Short technical note}\label{short-technical-note}

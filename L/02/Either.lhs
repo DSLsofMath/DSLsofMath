@@ -8,10 +8,15 @@ import Prelude hiding (Either(Left,Right), either)
 
 \begin{code}
 data Either p q where
-  Left   :: p  ->  Either p q    -- |orIntroL|
-  Right  :: q  ->  Either p q    -- |orIntroR|
+  Left   :: p  ->  Either p q
+  Right  :: q  ->  Either p q
 
+\end{code}
+
+%if False
+\begin{code}
 either :: (p->r) -> (q->r) -> (Either p q -> r)
 either l r (Left x)   =  l x
 either l r (Right y)  =  r y
 \end{code}
+%endif

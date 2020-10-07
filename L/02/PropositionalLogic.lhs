@@ -1,8 +1,11 @@
 %if false
 \begin{code}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE EmptyCase #-}
 module DSLsofMath.PropositionalLogic where
+
+deriving instance Eq Prop
 \end{code}
 %endif
 
@@ -185,14 +188,8 @@ Truth table verification is only viable for propositions with few
 names because of the exponential growth in the number of cases to
 check: we get $2^n$ different |truthTables| for |n| names.
 %
-
-% *TODO: formulate more clearly as an exercise
 \begin{exercise}
-At this point it is good to implement a few utility functions on
-|Prop|: list the names used in a term (|freeNames|), simplify to disjunctive
-normal form, simplify to conjunctive normal form, etc.
-(Conjunctive normal form: allow only |And|, |Or|, |Not|, |Name| in that
-order in the term.)
+Define the function |freeNames|.
 \end{exercise}
 
 There are much better algorithms to evaluate truth values than the naive one we just showed,
@@ -217,11 +214,11 @@ To prove |And P Q|, one needs simultaneously of |P| and a proof of
 \[ \frac{P \quad Q}{P ∧ Q} \] to represent this fact, which is called the \emph{introduction rule for (∧)})
 (For the proof to be complete, one still needs to provide a full proof of |P| and another for |Q| --- it is not enough to just invoke this rule.)
 
-Therefore, in Haskell, can represent this rule with the following proof-term constructor:
+Therefore, in Haskell, can represent this rule by a proof-term constructor |AndIntro| with two |Proof| arguments:
 \begin{spec}
 AndIntro :: Proof -> Proof -> Proof
 \end{spec}
-
+%
 and, the corresponding case of the |checkProof| function will look like this:
 
 \begin{spec}
@@ -235,30 +232,50 @@ refer to.  Therefore, we need a proof-term constructor:
 \begin{spec}
 OrIntro :: Either Proof Proof -> Proof
 \end{spec}
-\jp{insert Either.lhs here?}
+For reference, the either type is defined as follows in the Haskell prelude:
+%include Either.lhs
 
-To deal with negation, one approach is to push it down using de Morgan
-laws until we reach names (Exercise \jp{ref?}). Another approach is to use the following rule:
-\[ \frac{P → Q \quad P → ¬Q}{¬P} \], which we can represent by the
-|NegIntro :: Prop -> Proof -> Proof -> Proof| constructor. Here, we have an additional |Prop| argument,
+There are a couple of possible approaches to deal with negation.
+One approach is to define it as de Morgan dualisation:
+\begin{spec}
+Not (a `Or` b) = Not a `And` Not b
+Not (a `And` b) = Not a `Or` Not b
+...
+\end{spec}
+Negation can then only apply to names, which can recieve a special treatment in proof-checking.
+
+However, we will instead apply the same treatment to negation as to other constructions, and define
+a suitable introduction rule:
+\[ \frac{P → Q \quad P → ¬Q}{¬P} \]. We can represent it by the
+|NegIntro :: Prop -> Proof -> Proof -> Proof| constructor.
+
+Because we have inductive proofs (described from the bottom up),
+we have the additional difficulty that this rule conjures-up a new
+proposition, $Q$. This is why we need an additional |Prop| argument,
 which gives the |Q| formula.
 
+There is no way to introduce Falsity (⊥), otherwise we'd have an inconsistent logic!
+Finally we can introduce "Truth", with no premiss:\(\frac{}{⊤}\). The proof has no information either |TruthIntro :: Proof|.
 
-In addition to introduction rules (where the connective appears as
-conclusion), we also have elimination rules (where the connective
+To complete the system, in addition to introduction rules (where the connective appears as
+conclusion), we also need elimination rules (where the connective
 appears as premiss). For conjuction, we have two eliminations rules: $\frac{P ∧ Q}{P}$ and
-$\frac{P ∧ Q}{Q}$. Because we have inductive proofs (described from the bottom up),
-we have the additional difficulty that these rules conjure-up a new
-proposition, $Q$. So we represent them respectively by |AndElim1 :: Proof -> Prop -> Proof| (and |AndElim2| symmetrically),
+$\frac{P ∧ Q}{Q}$.  So we represent them by |AndElim1 :: Proof -> Prop -> Proof| (and |AndElim2| symmetrically),
 where the extra |Prop| argument corresponds to |Q|.
 
-Our eliminator of disjunction is $\frac {P ∨ Q \quad P → R \quad Q → R} R$.\jp{finish}
-Our eliminator for negation is $\frac {¬ ¬ P} P$
+Our elimination rule for disjunction is $\frac {P ∨ Q \quad P → R \quad Q →
+R} R$. The idea here is that if we know that \(P ∨ Q\) holds, then we
+have two cases: either |P| holds and |Q| holds. If only we can find a
+proposition |R| which is a consequence of both |P| and |Q|, then,
+regardless of which case we are facing, we know that |R| will hold.
+
+Our elimination for negation is $\frac {¬ ¬ P} P$. It simply says that two negations cancel out.
+
+Finally we can eliminate Falsity as follows: $\frac {⊥} P$. This rule
+goes some times by its descriptive latin name \textit{ex falso
+quodlibet} --- from falsehood, anything (follows).
 
 We can then write our proof checker as follows:
-
-Truth/Falsity
-
 \begin{code}
 checkProof TruthIntro (Con True) = True
 checkProof (AndIntro t u) (And p q) = checkProof t p && checkProof u q
@@ -274,43 +291,60 @@ checkProof (FalseElim t) p = checkProof t (Con False)
 
 Any other combination of proof/prop else is an incorrect combination: the proof is not valid for the proposition.
 
+\begin{spec}
+checkProof _ _ = False -- incorrect proof
+\end{spec}
 
-|checkProof :: Prop -> Proof -> Bool|
-
-It can be interesting to note that, seeing |checkProof| as an evaluator,
-one can understand |Proof -> Bool|, a subset of propositions, as the semantic domain of |Prop|.
+At this point it can be interesting to, see |checkProof| as an
+evaluator again, by, and flipping its arguments: |flip checkProof ::
+Prop -> (Proof -> Bool)|. This way, one can understand |Proof ->
+Bool|, a subset of propositions, as the semantic domain of |Prop|.  In
+other words, a proposition can be interpreted at the subset of
+propositions which prove it.
 
 
 \subsubsection{Implication, hypothetical derivations, contexts}
 
-For |Implies|, we can use the so-called material implication
-definition which we invoked earlier in truth tables. It means to define |Implies a b =
-(Not a) `Or` b|. However this choice does not bring any new insight.
+We have so far omitted to deal with |Implies|. One reason is that we
+can use the so-called material implication definition which we invoked
+earlier in truth tables. It means to define |Implies a b = (Not a)
+`Or` b| --- and this equality means that there is no need to deal
+specially with |Implies|. However this approach does not bring any new
+insight. In particular, this view is hard to transpose to more
+complicated logics (such as second-order logic).
 
-Another possibility is a rule which can be written like so:\[\frac{\begin{array}{c}P \\ \vdots \\ Q \end{array}}{P → Q}\].
-Such a notation can however be terribly confusing. We were used to the fact that proofs above the line had to be continued. So what can the dots possibly mean?
-The intent is that, to prove $P → Q$, it suffices to prove $Q$, but one is allowed to use $P$ as an assumption in the proof of $Q$.
+Thus we take our usual approach and give rules for it. The introduction rule is sometimes written like so in logic texts: \[\frac{\begin{array}{c}P \\ \vdots \\ Q \end{array}}{P → Q}\]
+Such a notation can however be terribly confusing. We were used to the fact that proofs above the line had to be continued, so what can the dots possibly mean?
+The intended meaning of this notation is that, to prove that $P → Q$, it suffices to prove $Q$, but one is also allowed to use $P$ as an assumption in this (local) proof of $Q$.
 
-We can use our DSL to make this formal, by adding a constructor for implication introduction: |ImplyIntro :: (Proof -> Proof) -> Proof|.
-The fact that the premiss can depend on the assumption |Q| is represented by a function whose parameter is the proof of |Q| in question.
-
-In other words, to prove the formula |P -> Q| we assume a proof |p :
-P| and derive a proof |q : Q|, so a proof of an implication is a
+We can use our DSL to formalise this rule as Haskell data, by adding a
+constructor corresponding to implication introduction: |ImplyIntro ::
+(Proof -> Proof) -> Proof|.  The fact that the premiss can depend on
+the assumption |Q| is represented by a function whose parameter is the
+proof of |Q| in question.
+%
+In other words, to prove the formula |P -> Q| we assume a proof |t| of
+|P| and derive a proof |u| of |Q|. So, a proof of an implication is a
 function from proofs to proofs.
 
-The eliminator for implication, known as \textit{modus ponens} is \(\frac{P → Q \quad P} Q\). We formalise it as |ImplyElim :: Proof -> Proof -> Prop -> Proof|
-(The proposition |P| is a not given by the conclusion). We complete our proof checker as follows:
+The eliminator for implication (also known as the hard-to-translate
+phrase \textit{modus ponens}) is \(\frac{P → Q \quad P} Q\). We
+formalise it as |ImplyElim :: Proof -> Proof -> Prop -> Proof| (The
+proposition |P| is a not given by the conclusion and thus has to be
+provided as part of the proof.). 
+And we can finally complete our proof checker as follows:
 
 \begin{code}
-checkProof Assumption p = True
-checkProof (ImplyIntro f) (p `Implies` q) = checkProof (f Assumption) q
+checkProof (Assumption p') p = p == p'
+checkProof (ImplyIntro f) (p `Implies` q) = checkProof (f (Assumption p)) q
 checkProof (ImplyElim t u p) q = checkProof t (q `Implies` p) && checkProof u q
 checkProof _ _ = False -- incorrect proof
 \end{code}
-with the DSL for proofs being:
 
+And, for reference, the complete DSL for proofs is given by the
+following datatype:
 \begin{code}
-data Proof  =  Assumption
+data Proof  =  Assumption Prop
             |  TruthIntro
             |  FalseElim Proof
             |  AndIntro Proof Proof
@@ -326,10 +360,14 @@ data Proof  =  Assumption
 
 
 \paragraph{Aside}
-The |Assumption| constructor may make the reader somewhat uneasy: how come that we can simply assume anything? The intent is that this
-constructor is private to the |checkProof| function (or module). No user-defined proof can use it. The most worried readers
-can also define the following version of |checkProof|, which uses an extra context to check that assumption have been rightfully introduced earlier.
-\footnote{This kind of presentation of the checker matches well the sequent calculus presentation of the proof system.}
+The |Assumption| constructor may make the reader somewhat uneasy: how
+come that we can simply assume anything? The intent is that this
+constructor is \emph{private} to the |checkProof| function (or
+module). No user-defined proof can use it. The most worried readers
+can also define the following version of |checkProof|, which uses an
+extra context to check that assumption have been rightfully introduced
+earlier.  \footnote{This kind of presentation of the checker matches
+  well the sequent calculus presentation of the proof system.}
  
 \begin{spec}
 checkProof :: Context -> Proof -> Prop -> Bool
@@ -338,23 +376,53 @@ checkProof ctx Assumption p = p `elem` ctx
 \end{spec}
 
 \paragraph{Example proof}
+We can put our proof-checker to the test, by writing a number of
+proofs and verifying them.
 
 \begin{code}
-conjunctionCommutative = (a `And` b) `Implies` (b `And` a)
-  where a = Name "a"; b = Name "b"
+conjunctionCommutative :: Prop
+conjunctionCommutative = (p `And` q) `Implies` (q `And` p)
+  where p = Name "p"; q = Name "q"
 
+conjunctionCommutativeProof :: Proof
 conjunctionCommutativeProof =
-  ImplyIntro (\aAndb ->
-  AndIntro  (AndElimR aAndb (Name "a"))
-            (AndElimL aAndb (Name "b")) )
+  ImplyIntro (\evPQ ->
+  AndIntro  (AndElimR evPQ (Name "p"))
+            (AndElimL evPQ (Name "q")) )
 
 \end{code}
+(where |evPQ| stands for "evidence for |P| and |Q|.")
 
+We can then run the checker and verify:
 |checkProof conjunctionCommutativeProof conjunctionCommutative == True|
 
-\paragraph{Using the Haskell type-checker as a proof checker}
+-- >>> checkProof conjunctionCommutativeProof conjunctionCommutative
+-- True
 
-What if we could do this:
+\begin{exercise}
+  Try to swap |AndElimL| and |AndElimR| in the above proof. What will
+  happen and why?
+%if False
+\begin{code}
+conjunctionCommutativeProof2 :: Proof
+conjunctionCommutativeProof2 =
+  ImplyIntro (\evPQ ->
+  AndIntro  (AndElimL evPQ (Name "q"))
+            (AndElimR evPQ (Name "p")) )
+
+-- >>> checkProof conjunctionCommutativeProof2 conjunctionCommutative
+-- False
+\end{code}
+
+%endif
+\end{exercise}
+
+
+\subsubsection{The Haskell type-checker as a proof checker}
+
+Perhaps surprisingly, the proof-checker that we just wrote is already
+built-in in the Haskell compiler. Let us clarify what we mean, using
+the same example, but adapt it to let the type-checker do the work:
 
 \begin{code}
 conjunctionCommutativeProof' :: (p `And` q) `Implies` (q `And` p)
@@ -363,64 +431,122 @@ conjunctionCommutativeProof' =
    andIntro  (andElimR evPQ)
              (andElimL evPQ))
 \end{code}
-(where |evPQ| stands for "evidence for |P| and |Q|.")
 
-Instead of writing propositions, we write types.
-
-We would not have to run (or for that matter write) a proof checker: the haskell type-checker does the work for us.
-
-Notice that Haskell will not accept
+That is, instead of writing propositions, we write types (|And|, |Or|,
+|Implies|).  Instead of using |Proof| constructors, we use functions
+whose types capture rules:
 %
-\begin{spec}
-conjunctionCommutativeProof' =
-   implyIntro (\evPQ ->
-   andIntro  (andElimL evPQ)
-             (andElimR evPQ))
-\end{spec}
-%
-unless we change the type.
-
-
-Well we can do it!
-
-
-First, we can use the type-checker to encode the proof rules as programs:
 \begin{code}
-implyIntro :: (p -> q) -> (p `Implies` q)
-implyElim :: p -> (p `Implies` q) -> q
+truthIntro  :: Truth
+falseElim   :: False -> p
+andIntro    :: p -> q -> And p q
+andElimL    :: a `And` b -> a
+andElimR    :: a `And` b -> b
+orIntro     :: Either a b -> Or a b
+orElim      :: Or p q -> (p `Implies` r) -> (q `Implies` r) -> r
+notIntro    :: (p `Implies` q) `And`  (p `Implies` Not q) -> Not p
+notElim     :: Not (Not p) -> p
+implyIntro  :: (p -> q) -> (p `Implies` q)
+implyElim   :: p -> (p `Implies` q) -> q
+\end{code}
+Instead of running |checkProof|, we type-check the above program.
+Because the proof is correct, we get no type-error.
+\begin{exercise}
+  What would happen if you swap |andElimR| and |andElimL|? Why?
+\end{exercise}
+%
 
-andIntro :: p -> q -> And p q
-andElimL :: a `And` b -> a
-andElimR :: a `And` b -> b
+This style of propositional logic proof is very advantageous, because
+we not only the checker comes for free, but we additionally get all
+the engineering tools of the Haskell tool-chain.
 
-orIntro :: Either a b -> Or a b
-orElim :: Or p q -> (p `Implies` r) -> (q `Implies` r) -> r
+One should be careful however that Haskell is not design with
+theorem-proving in mind.  For this reason it is easily possible make
+the compiler accept invalid proofs. The main two sources of invalid
+proofs are 1. non-terminating programs and 2. exception-raising
+programs.
 
-falseElim :: False -> p -- ex falso quod libet
 
-notElim        ::  Not (Not p) -> p
+\subsubsection{Intuitionistic Propositional Logic and Simply Typed
+  Lambda-Calculus, Curry-Howard isomorphism.}
 
-notIntro       ::  (p -> q) `And`  (p -> Not q) -> Not p
+We can make the link beween Haskell and logic more tight if we
+restrict ourselves to \emph{intuitionistic} logic.
+
+One way to characterize intuitionistic logic is that it lacks native
+support for negation. Instead, |Not a| is represented as |a `Implies`
+False|:
+\begin{code}
+type Not a = a `Implies` False
+\end{code}
+When doing so, one gives up on |notElim|: there is no way to eliminate
+(double) negation.
+\begin{code}
+notElim = error "not possible as such in intuitionistic logic"
+\end{code}
+On the other hand the introduction for negation becomes a theorem of the logic.
+The formulation of the theorem is:
+\begin{spec}
+notIntro :: (p `Implies` q) `And` (p `Implies` (q `Implies` False)) -> p `Implies` False
+\end{spec}
+And its proof is:
+\begin{code}
+notIntro (evPimpliesQ,evPimpliesNotQ) evP =
+   (evP `implyElim`evPimpliesQ) `implyElim` (evP `implyElim` evPimpliesNotQ)
 \end{code}
 
-(Attn. diverging proofs/programs!)
+By focusing on intuitionistic logic, we can give a \emph{typed}
+representation for each of the formula constructors. Let us consider implication first.
+|impIntro| and |impElim| seem to be conversion from and to functions, and so it
+should be obvious that the representation of the implication formula is a function:
 
+\begin{code}
+type Implies p q = p -> q
+implyElim a f = f a
+implyIntro f x = f x
+\end{code}
 
-\subsubsection{Logic as impoverished typing rules}
-Another view of the above.
+Conjunction is represented as pairs; that is, if |p : P| and |q : Q|
+then the proof of |And P Q| should be a pair of |p| and |q|. The
+elimination rules are projections. In code:
+\begin{code}
+type And p q = (p,q)
+andIntro t u = (t,u)
+andElimL = fst
+andElimR = snd
+\end{code}
+Similarly, disjuction is represented as |Either|:
+if |p : P| then |Left p : Or P Q| and if |q : Q| then |Right q : Or P
+Q|.
+\begin{code}
+type Or a b = Either a b
+orIntro x = x
+orElim (Left   t) u _ = u t
+orElim (Right  t) _ v = v t
+\end{code}
+We already had characterize or-elimination as case analysis, and,
+indeed, this is how we implement it.
 
-Typing rule for function application:
+Truth is represented as the unit type:
+\begin{code}
+type Truth = ()
+truthIntro = ()
+\end{code}
 
-\(\frac{f : A → B \quad x : A}{f(x) : B}\)
+And falsehood is represented as the \emph{empty} type:
+\begin{code}
+data False
+falseElim x = case x of {}
+\end{code}
+Note that the case-analysis has nothing to take care of here.
 
-Modus ponens is a version of application typing rule with program erased.
-In general, such is the case for all logical rules.
+In this way we can build proofs (``proof terms'') for all of
+intuitionistic propositional logic (IPL). As we have seen, each such
+proof term is a program in Haskell. Conversely, every program written
+in this fragment of Haskell (functions, pairs, |Either|, no recursion
+and full coverage of cases) can be turned into a proof in IPL. This
+fragment is called the simply-typed lambda calculus (STLC).
 
-The \emph{Curry--Howard correspondence} is a general principle that
-says that we can think of propositions as types and proofs as
-programs. This principle goes beyond propositional logic (and first
-order logic, etc.): it applies to all sorts of logics and programming
-languages.
 
 
 %{
@@ -430,94 +556,35 @@ languages.
 %}
 
 
+\paragraph{Logic as impoverished typing rules}
 
-\subsubsection{Intuitionistic Propositional Logic and Simply Typed Lambda-Calculus, Curry-Howard isomorphism.}
+Another view of the same isomorphism is that the logical rules for IPL
+can be obtained by erasing programs from the typing rules for STLC.
+We will show here only the application rule, leaving the rest as
+exercise. This typing rule for function application can be written as follows:
 
-|Implies| is fundamental; |Not| is not.
+\[\frac{f : A → B \quad x : A}{f(x) : B}\]
 
-\begin{code}
-type Not a = a `Implies` False
+After erasing the colon (:) sign and what comes before it, we obtain
+\textit{modus ponens} --- implication elimination.
 
-notElim = error "not possible as such in Haskell"
-
-notIntro (f,g) x = g x (f x)
-\end{code}
-
-It should come as no surprise that the ``API'' for implication can be implemented by
-|Implies = (->)|, which means that both |impIntro| and |impElim| can be
-implemented as |id|.
-
-
-But also, because the meaning of a proof of conjuction is exactly a pair of proofs, etc.
-
-Conjunction is represented as pairs; that is, if |p : P| and |q : Q| then |(p,q) : And P Q|.
-
-%
-If we see these introduction and elimination rules as an API, what
-would be a reasonable implementation of the datatype |And p q|?
-%
-A type of pairs!
-%
-Then we see that the corresponding Haskell functions would be
-%
-
-
-Similarly, disjuction becomes |Either|.
-%
-If |p : P| then |Left p : Or P Q| and if |q : Q| then |Right q : Or P
-Q|.
-%
-In this way we can build up what is called ``proof terms'' for a large
-fragment of logic.
-%
-It turns out that each such proof term is basically a program in a
-functional programming language, and that the formula a certain term
-proves is the type for the program.
-
-
-\begin{code}
-type Implies p q = p -> q
-implyElim a f = f a
-implyIntro f x = f x
-
-type And p q = (p,q)
-andIntro t u = (t,u)
-andElimL = fst
-andElimR = snd
-
-type Or a b = Either a b
-orIntro x = x
-orElim (Left   t) u _ = u t
-orElim (Right  t) _ v = v t
-
-type Truth = ()
-truthIntro = ()
-
-data False
-falseElim x = case x of {}
-\end{code}
-
-Another example, which is very useful, is ``ex falso quodlibet'',
-latin for ``from falsehood, anything (follows)''
-\jp{Why this stranglely complicated version instead of forall r. BOT -> r}
-%
-\begin{code}
-exFalso :: False -> p
-exFalso = falseElim
-\end{code}
+The \emph{Curry--Howard correspondence} is a general principle that
+says that we can think of propositions as types and proofs as
+programs. This principle goes beyond propositional logic (and first
+order logic, etc.): it applies to all sorts of logics and programming
+languages, with various levels of expressivity and features.
 
 \subsubsection{|Or| is the dual of |And|.}
-Before moving on ...
+Before moving on to our next topic, we make a final remark on |And| and |Or|.
 %
-Most of the properties of |And| have corresponding properties for |Or|.
-%
-Often it is enough to simply swap the direction of the ``arrows''
-(implications) and swap the role between introduction and elimination.
+Most of the properties of |And| have corresponding properties for
+|Or|.  This can be explained one way by observing that they are de
+Morgan duals. Another explanatino is that one can swap the direction
+of the arrows in the types of the the role between introduction and
+elimination. (Using our presentation, doing so requires applying
+isomorphisms.)
 
-Here the implementation type can be a labelled sum type, also called
-disjoint union and in Haskell:
 %
-%include Either.lhs
 %
 %*TODO: Perhaps add an example with (q->p) -> (Not p -> Not q)
 %*TODO: Perhaps add an example with (p->p')->(q->q')->(And p q -> And p q)
