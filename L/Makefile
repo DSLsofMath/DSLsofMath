@@ -24,6 +24,7 @@ $(NAME).pdf: $(NAME).tex
 	latexmk -pdf $(NAME).tex
 
 $(NAME).tex: $(NAME).lhs dslm.format ref.bib \
+             newunicodedefs.tex \
              00/Intro.lhs                     \
              01/W01.lhs 01/E1.lhs 01/E1_1.lhs 01/E1_2.lhs 01/E1_from_exams.lhs \
              02/W02.lhs 02/E2.lhs 02/FOLRat.lhs 02/PropositionalLogic.lhs 02/FOL.lhs 02/Either.lhs \
