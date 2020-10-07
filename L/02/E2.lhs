@@ -21,7 +21,7 @@
 \label{exercises-for-dslsofmath-week-2-2017}
 \begin{code}
 {-# LANGUAGE EmptyCase #-}
-import AbstractFOL
+import PropositionalLogic
 \end{code}
 
 

@@ -3,7 +3,7 @@
 {-# LANGUAGE StandaloneDeriving #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE EmptyCase #-}
-module DSLsofMath.PropositionalLogic where
+module PropositionalLogic where
 
 deriving instance Eq Prop
 \end{code}
