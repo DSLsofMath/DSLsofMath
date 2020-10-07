@@ -558,13 +558,13 @@ There is a logic formula corresponding to the type of the tupling
 transform:
 %
 \begin{spec}
-  (a `Implies` (b `And` c)) `Iff` (a`Implies`b) `And` (a`Implies`c)
+  (a `Implies` (b `And` c)) `Iff` (a` Implies` b) `And` (a `Implies` c)
 \end{spec}
 (|Iff| refers to implication in both directions).
 The proof of this formula closely follows the implementation of the transform.
 %
 Therefore we start with the two directions of the transform as functions:
-%
+
 \begin{code}
 test1' :: (a -> (b, c)) -> (a->b, a->c)
 test1' = \a2bc ->  ( \a -> fst (a2bc a)
@@ -580,8 +580,7 @@ Note how the functions are ``hidden inside'' the proof.
 %
 \begin{code}
 test1  ::  Implies (Implies a (And b c)) (And (Implies a b) (Implies a c))
-test1  = --implyIntro $ \a2bc -> andIntro _ _
-  implyIntro (\a2bc ->
+test1  = implyIntro (\a2bc ->
              andIntro  (implyIntro (\a -> andElimL  (implyElim a2bc a)))
                        (implyIntro (\a -> andElimR  (implyElim a2bc a))))
 
