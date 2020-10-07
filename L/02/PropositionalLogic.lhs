@@ -447,7 +447,7 @@ orElim      :: Or p q -> (p `Implies` r) -> (q `Implies` r) -> r
 notIntro    :: (p `Implies` q) `And`  (p `Implies` Not q) -> Not p
 notElim     :: Not (Not p) -> p
 implyIntro  :: (p -> q) -> (p `Implies` q)
-implyElim   :: p -> (p `Implies` q) -> q
+implyElim   :: (p `Implies` q) -> p -> q
 \end{code}
 Instead of running |checkProof|, we type-check the above program.
 Because the proof is correct, we get no type-error.
@@ -492,7 +492,7 @@ notIntro :: (p `Implies` q) `And` (p `Implies` (q `Implies` False)) -> p `Implie
 And its proof is:
 \begin{code}
 notIntro (evPimpliesQ,evPimpliesNotQ) evP =
-   (evP `implyElim`evPimpliesQ) `implyElim` (evP `implyElim` evPimpliesNotQ)
+    (evPimpliesNotQ `implyElim` evP ) `implyElim` (evPimpliesQ `implyElim` evP)
 \end{code}
 
 By focusing on intuitionistic logic, we can give a \emph{typed}
@@ -502,7 +502,7 @@ should be obvious that the representation of the implication formula is a functi
 
 \begin{code}
 type Implies p q = p -> q
-implyElim a f = f a
+implyElim f x = f x
 implyIntro f x = f x
 \end{code}
 
@@ -548,12 +548,49 @@ and full coverage of cases) can be turned into a proof in IPL. This
 fragment is called the simply-typed lambda calculus (STLC).
 
 
+\paragraph{Revisiting the tupling transform}
+%
+In Exercise~\ref{exc:tuplingE1}, the ``tupling transform'' was
+introduced, relating a pair of functions to a function returning a
+pair. (Revisit that exercise if you skipped it before.)
+%
+There is a logic formula corresponding to the type of the tupling
+transform:
+%
+\begin{spec}
+  (a `Implies` (b `And` c)) `Iff` (a`Implies`b) `And` (a`Implies`c)
+\end{spec}
+(|Iff| refers to implication in both directions).
+The proof of this formula closely follows the implementation of the transform.
+%
+Therefore we start with the two directions of the transform as functions:
+%
+\begin{code}
+test1' :: (a -> (b, c)) -> (a->b, a->c)
+test1' = \a2bc ->  ( \a -> fst (a2bc a)
+                   , \a -> snd (a2bc a) )
 
-%{
-%let tupling = True
-%include AbstractFOL.lhs
-%let tupling = False
-%}
+test2' :: (a->b, a->c) -> (a -> (b, c))
+test2' = \fg -> \a -> (fst fg a, snd fg a)
+\end{code}
+%
+Then we move on to the corresponding logic statements with proofs.
+%
+Note how the functions are ``hidden inside'' the proof.
+%
+\begin{code}
+test1  ::  Implies (Implies a (And b c)) (And (Implies a b) (Implies a c))
+test1  = --implyIntro $ \a2bc -> andIntro _ _
+  implyIntro (\a2bc ->
+             andIntro  (implyIntro (\a -> andElimL  (implyElim a2bc a)))
+                       (implyIntro (\a -> andElimR  (implyElim a2bc a))))
+
+test2  ::  Implies (And (Implies a b) (Implies a c)) (Implies a (And b c))
+test2  =   implyIntro (\fg ->
+             implyIntro (\a ->
+               andIntro  (implyElim (andElimL  fg) a)
+                         (implyElim (andElimR  fg) a)))
+\end{code}
 
 
 \paragraph{Logic as impoverished typing rules}
