@@ -241,7 +241,7 @@ A proof of this is a two-argument function |p| which takes a term |t|
 and a proof of |T t| to a proof of |P t|.
 
 
-\subsection{Existential quantification}
+\subsubsection{Existential quantification}
 
 %
 We have already seen how the ``forall'' quantifier can be seen as a
@@ -318,7 +318,7 @@ quantification.
 %   Forall x (T x => not (P x))       = {- Def. of typed quantification -}
 %   Forall (x:T) (not (P x))
 
-\subsection{Quantifiers as function types}
+\subsubsection{Quantifiers as function types}
 
 We can express the universal quantification laws as:
 %
@@ -337,7 +337,7 @@ Haskell supports limited forms of dependent types and more is coming
 every year but for proper dependently typed programming we recommend
 the language Agda.\jp{make this a footnote?}
 
-\subsection{Existential quantification as a pair type}
+\subsubsection{Existential quantification as a pair type}
 
 We mentioned before that existential quantification can be seen as as
 a ``big |Or|'' of a family of formulas |P a| for all terms |a|.
@@ -378,3 +378,40 @@ The datatype corresponding to |Exists x (P x)| is a pair of a witness
 |a| and a proof of |P a|.
 %
 We sometimes write this type |(a:Term, P a)|.
+
+\subsubsection{\extraMaterial More general code for first order languages}
+
+It is possible to make one generic implementation of |FOL| which can
+be specialised to any first order language.
+%
+
+% TODO: perhaps add some explanatory text
+
+\begin{itemize}
+\item |Term| = Syntactic terms
+\item |n| = names (of atomic terms)
+\item |f| = function names
+\item |v| = variable names
+\item |WFF| = Well Formed Formulas
+\item |p| = predicate names
+\end{itemize}
+
+
+\begin{spec}
+data Term n f v  =  N n | F f [Term n f v] | V v
+  deriving Show
+
+data WFF n f v p =
+     P p    [Term n f v]
+  |  Equal  (Term n f v)   (Term n f v)
+
+  |  And    (WFF n f v p)  (WFF n f v p)
+  |  Or     (WFF n f v p)  (WFF n f v p)
+  |  Equiv  (WFF n f v p)  (WFF n f v p)
+  |  Impl   (WFF n f v p)  (WFF n f v p)
+  |  Not    (WFF n f v p)
+
+  |  FORALL  v (WFF n f v p)
+  |  EXISTS  v (WFF n f v p)
+  deriving Show
+\end{spec}

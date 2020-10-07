@@ -765,44 +765,5 @@ lessThanSem  = error "TODO"
 positiveSem  = error "TODO"
 \end{code}
 
-\subsection{More general code for first order languages}
-
-This subsection contains some extra material which is not a required
-part of the course.
-
-It is possible to make one generic implementation of |FOL| which can
-be specialised to any first order language.
-%
-
-% TODO: perhaps add some explanatory text
-
-\begin{itemize}
-\item |Term| = Syntactic terms
-\item |n| = names (of atomic terms)
-\item |f| = function names
-\item |v| = variable names
-\item |WFF| = Well Formed Formulas
-\item |p| = predicate names
-\end{itemize}
-
-
-\begin{spec}
-data Term n f v  =  N n | F f [Term n f v] | V v
-  deriving Show
-
-data WFF n f v p =
-     P p    [Term n f v]
-  |  Equal  (Term n f v)   (Term n f v)
-
-  |  And    (WFF n f v p)  (WFF n f v p)
-  |  Or     (WFF n f v p)  (WFF n f v p)
-  |  Equiv  (WFF n f v p)  (WFF n f v p)
-  |  Impl   (WFF n f v p)  (WFF n f v p)
-  |  Not    (WFF n f v p)
-
-  |  FORALL  v (WFF n f v p)
-  |  EXISTS  v (WFF n f v p)
-  deriving Show
-\end{spec}
 
 %include E2.lhs

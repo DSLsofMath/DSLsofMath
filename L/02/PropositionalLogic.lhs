@@ -214,7 +214,7 @@ But we still have to figure out what consitutes proofs.
 
 To prove |And P Q|, one needs simultaneously of |P| and a proof of
 |Q|. (In logic texts, one will often find
-\[ \frac{P \quad Q}{P \and Q} \] to represent this fact, which is called the \emph{introduction rule for (∧)})
+\[ \frac{P \quad Q}{P ∧ Q} \] to represent this fact, which is called the \emph{introduction rule for (∧)})
 (For the proof to be complete, one still needs to provide a full proof of |P| and another for |Q| --- it is not enough to just invoke this rule.)
 
 Therefore, in Haskell, can represent this rule with the following proof-term constructor:
