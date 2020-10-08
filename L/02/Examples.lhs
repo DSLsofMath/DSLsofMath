@@ -39,12 +39,11 @@ But then |b^2*2==a^2==4*c^2| which means that |b^2==2*c^2|.
 %
 By the same reasoning again we have that also |b| is even.
 %
-But then |GCD(a,b)>=2| which implies |not Q|.
+But then 2 is a factor of both |a| and |b|, which means that |GCD(a,b)>=2|, which in turn implies |not Q|.
 
 To sum up: by assuming |P| we can prove both |Q| and |not Q|.
 %
 Thus, by contradiction |not P| must hold.
-\jp{With the build of proof terms, I was fully expecting to see the above formalised as such. We probably need quite a bit of stuff about GCD.}
 
 \subsubsection{Proof by cases}
 %
@@ -61,10 +60,11 @@ attempt we could set |p=q=r|.
 Then we have satisfied two of the three clauses (|not (R p)| and |not
 (R q)|).
 %
-What about the third clause: is |x=p^q==r^r| rational?
+What about the third clause: is |x=p^q==r^r|\jp{how to parse this?} rational?
 %
-We can reason about two possible cases, one of which has to hold: |R
-x| or |not (R x)|.
+By the principle of the excluded middle (\cref{sec:excluded-middle}),
+we know that either |R x| or |not (R x)| must hold. 
+Then, we apply ∨-elimination, and thus we have to deal with the two possible cases separately.
 
 Case 1: |R x| holds.
 %
