@@ -27,7 +27,7 @@ library
 
   -- other-modules:
   -- other-extensions:
-  build-depends:       base >=4.9 && <4.13, QuickCheck
+  build-depends:       base >=4.9, QuickCheck
   -- , Hatlab
   -- , type-natural
   hs-source-dirs:
