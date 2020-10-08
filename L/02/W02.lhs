@@ -123,15 +123,6 @@ evalRat2 :: (Show v, Eq v) => (Env v RatSem) -> (Rat v -> RatSem)
 evalRat2 env e = evalRat1 (envToFun env) e
 \end{code}
 
-% \paragraph{The law of the excluded middle}
-%
-% Many had problems with implementing the ``law of the excluded middle''
-% in the exercises and it is indeed a tricky property to prove.
-% %
-% They key to implementing it lies in double negation and as that is
-% encoded with higher order functions it gets a bit hairy.
-%
-% TODO[Daniel]: more explanation
 
 \subsection{SET and PRED}
 \jp{reformulate in book form (or move earlier, or remove)}

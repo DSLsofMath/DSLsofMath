@@ -547,6 +547,32 @@ in this fragment of Haskell (functions, pairs, |Either|, no recursion
 and full coverage of cases) can be turned into a proof in IPL. This
 fragment is called the simply-typed lambda calculus (STLC).
 
+\paragraph{The law of the excluded middle}
+\label{sec:excluded-middle}
+As an example of how intuitionism twists usual law, consider the law of the excluded middle,
+which states that, for any proposition |P|, either |P| or |Not P| holds. For example, either
+it rains or it does not rain. There is no ``middle compromise''.
+If we attempt to prove |P `Or` (Not P)| in intuitionitic logic, we quickly find ourselves in a dead end.
+Clearly, we cannot prove |P| for any |P|. Likewise |Not P|, or equivalently |P -> False| cannot be deduced.
+
+What we have to do account for the fact that we cannot use negation elimination, and so
+we have to make-do with proving |Not (Not Q)| instead of |Q|. This is exactly what
+we have to do to prove  the law of excluded
+middle.
+We can then provide this Haskell-encoded proof:
+
+\begin{code}
+excludedMiddle :: Not (Not (p `Or` Not p))
+-- to prove this, we can ...
+excludedMiddle k = -- ... assume |Not (p `Or` (Not p))| and prove falsity.
+   k -- So, we can prove falsity if we can prove |p `Or` (Not p)|.
+   (Right  -- We can prove in particular the right case, |Not p|
+     (\evP ->  -- ... by assuming that |p| holds, and prove falsity.
+        k --  But again, we can prove falsity if we can prove |p `Or` (Not p)|.
+        (Left -- This time, we can prove in particular the left case, |p| ...
+          evP))) -- because we assumed it earlier!
+\end{code}
+
 
 \paragraph{Revisiting the tupling transform}
 %
