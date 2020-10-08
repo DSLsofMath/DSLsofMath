@@ -371,16 +371,25 @@ able to represent proofs of quantifiers, directly. That is:
 \end{quote}
 
 Unfortunately, in its 2010 standard, Haskell does not provide the
-equivalent of quantification over individuals.\footnote{There is
-  ongoing progress in this direction, but we find the current state
-  too clunky to be worthy of basing our development on it.}
+equivalent of quantification over individuals. Therefore, one would
+have to use a different tool than Haskell as a proof assistant for
+(intuitionistic) FOL.  the quantification that Haskell provides
+|forall a. ...| is \emph{over types} rather than individuals.
+\footnote{There is ongoing progress in this direction, but we find the
+  current state too clunky to be worthy of basing our development on
+  it.}  What we'd need is: 1. a type corresponding to universal
+quantification, the dependent function type |(a:A) → B|, and 2. a type
+corresponding to |Exists (x:A) (P x)|, the dependent pair |(x:A,
+P(x))|.
 
-Rather, one would have to use a different tool for this purpose.  We
-recommend The language Agda (which provides even more forms of
-quantification).
 
-In sum, the type corresponding to universal quantification is the dependent function type |(a:A) → B|, and
-the type corresponding to |Exists (x:A) (P x)| is the dependent pair |(x:A, P(x))|.
+We can recommend the language Agda (which provides even more forms of
+quantification), however, in order to avoid a multiplicity of tools
+and potentially an excessive emphasis on proof formalism, we will
+refrain to formalise any proof as Agda programs in the
+Remainder. Rather, in the rest of the chapter, we will illustrate the
+logical principles seen so far by examples.
+
 
 \subsubsection{\extraMaterial More general code for first order languages}
 \jp{we actually NEVER used the specialisation to rationals. Why not simply use this one directly in the main text?}
