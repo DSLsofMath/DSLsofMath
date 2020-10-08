@@ -36,9 +36,9 @@ Here are some examples with a possible assignment of types:
   context, the function \(f\) has been given a definition of the form
   \(f (x, y, z) = \ldots\)
   \begin{itemize}
-  \item a better notation (by Landau) which doesn't rely on the names
-    given to the arguments was popularised in
-    \cite{landau1934einfuhrung} (English edition
+  \item a better notation which doesn't rely on the names
+    given to the arguments was popularised by
+    \citet{landau1934einfuhrung} (English edition
     \cite{landau2001differential}): \(D₁\) for the partial derivative with
     respect to \(x₁\), etc.
   \item
@@ -92,7 +92,7 @@ in the definition is a postfix prime.
 To make it easier to see we use a prefix |D| instead and we can
 thus write |D : (X->REAL) -> (Y->REAL)|.
 %
-We will often assume that |X = Y| so that we can can see |D| as
+We will often assume that |X = Y| (|f| is differentiable everywhere) so that we can can see |D| as
 preserving the type of its argument.
 
 Now, with the type of |D| sorted out, we can turn to the actual
@@ -848,6 +848,7 @@ These type classes represent an abstract language of algebraic and
 standard operations, abstract in the sense that the exact nature of
 the elements involved is not important from the point of view of the
 type class, only from that of its implementation.
+\jp{Actually, the typeclass is an interface. It make the implementation abstract for its users, and instances can make implementation concrete.}
 
 
 \subsection{Type classes in Haskell}

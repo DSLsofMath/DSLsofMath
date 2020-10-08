@@ -1,4 +1,4 @@
-\subsection{Proof by contradiction}
+\subsection{Examples}
 
 \subsubsection{Proof by contradiction}
 
@@ -9,20 +9,21 @@ root of 2.
 We have two main concepts involved: the predicate ``irrational'' and the
 function ``square root of''.
 %
-The square root function (for positive real numbers) can be specified
-by $r = \sqrt{s}$ iff |r^2 == s| and |r : REAL|.
+The square root function can be specified by the relation between two
+positive real numbers $r$ and $s$ as $r = \sqrt{s}$ iff |r^2 == s|.
 %
 The formula ``x is irrational'' is just |not(R x)| where |R| is the
-predicate ``is rational''.
+predicate ``is rational''.\footnote{In fact we additionally require the rational to be normalised (no common factor between the denominator and numerator) to simplify the proof.}
 %
 \begin{spec}
   R x = Exists (a:ZZ) (Exists (b:Pos) (b*x==a & GCD(a,b)==1))
 \end{spec}
-\jp{Why the GCD bit? This is strong version of rational which is easier to negate, but it should be justified at least a bit.}
-The classical way to prove a negation |not P| is to assume |P| and
-derive something absurd (some |Q| and |not Q|, for example).
-%
-Lets take |P = R r| and |Q = GCD(a,b)==1|.\jp{Do we have r=2 at this point? From which point?}
+The pattern of proof by contradiction says that to prove a negation |not P| is to assume |P| and
+derive something absurd. This pattern was formalised in \cref{sec:intuitionistic-logic} as 
+|Not a = a `Implies` False|.
+In turn, to obtain |False| we could prove simultaneously some |Q| and |not Q|, for example.
+
+Let us take |P = R r| and |Q = GCD(a,b)==1|.
 %
 Assuming |P| we immediately get |Q| so what we need is to prove |not
 Q|, that is |GCD(a,b)/=1|.

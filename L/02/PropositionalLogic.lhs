@@ -469,7 +469,7 @@ programs.
 
 \subsubsection{Intuitionistic Propositional Logic and Simply Typed
   Lambda-Calculus, Curry-Howard isomorphism.}
-
+\label{sec:intuitionistic-logic}
 We can make the link beween Haskell and logic more tight if we
 restrict ourselves to \emph{intuitionistic} logic.
 

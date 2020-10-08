@@ -54,7 +54,7 @@ get more flexibility at the same time as we get better feedback from
 the type checker.
 %
 Note that this type parameter serves a different purpose from the type
-parameter in~\ref{sec:toComplexSyn}.
+parameter in~\cref{sec:toComplexSyn}.
 
 %
 To evaluate some |e :: Rat v| we need to know how to evaluate the
@@ -133,7 +133,8 @@ evalRat2 env e = evalRat1 (envToFun env) e
 %
 % TODO[Daniel]: more explanation
 
-\paragraph{SET and PRED}
+\subsection{SET and PRED}
+\jp{reformulate in book form (or move earlier, or remove)}
 %
 \label{par:SETandPRED}
 
