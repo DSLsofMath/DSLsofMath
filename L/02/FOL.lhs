@@ -106,8 +106,9 @@ it is often included as a separate constructor.
 %let fol = True
 %include FOLRat.lhs
 %let fol = False
-%}
-\subsubsection{Undecidability}
+% }
+
+\subsubsection{\extraMaterial Undecidability}
 
 Setting us up for failure, let us attempt to write an |eval| function
 for FOL, as we did for propositional logic.
