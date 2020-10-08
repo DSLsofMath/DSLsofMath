@@ -152,7 +152,7 @@ valid. Fortunately, we have already studied the notion of proof in the
 section on propositional logic, and it only needs to be extended to
 support quantifiers.
 
-\paragraph{Universal quantification}
+\subsubsection{Universal quantification}
 %
 Universal quantification (Forall or ∀) can be seen as a generalisation of |And|.
 %
@@ -193,7 +193,7 @@ t| for each term |t|.
 So we can now extend our type for proofs: the introduction rule for
 universal quantification is \(\frac{A(x) \quad \text{\(x\) fresh
   }}{∀x. A(x)}\).  The corresponding constructor can be
-|UniversalIntro :: (Rat -> FOLProof) -> FOLProof|.
+|UniversalIntro :: (Rat -> Proof) -> Proof|.
 
 % TODO: A simple example might also be a good idea, where we end up
 % with a function f where f t is a proof of P t for all terms t.
@@ -221,46 +221,36 @@ solution |x|.
 Let us now consider the elimination rule for universal
 quantification. The idea here is that if |A(x)| holds for every
 abstract individual |x|, then it also holds for any concrete
-individual |a|: \(\frac{∀x. A(x)}{A(a)}\). As for |And| we had to provide the other argument to recover |p `And` q|, here
-we have to be able reconstruct the general form |A(x)| --- indeed, it is not simply a matter of substituting |x| for |a|, because there can be several occurences of |a| in the
-formula to prove. So, in fact, the proof constructor must contain the general form |A(x)|, for example as a function from individuals:
-|UniversalElim :: (Rat -> Prop) -> Proof -> Proof|.
+individual |a|: \(\frac{∀x. A(x)}{A(a)}\). As for |And| we had to
+provide the other argument to recover |p `And` q|, here we have to be
+able reconstruct the general form |A(x)| --- indeed, it is not simply
+a matter of substituting |x| for |a|, because there can be several
+occurences of |a| in the formula to prove. So, in fact, the proof
+constructor must contain the general form |A(x)|, for example as a
+function from individuals: |UniversalElim :: (Rat -> Prop) -> Proof ->
+Proof|.
 
-Let us write the proof-checker cases corresponding to universal quantification.
-
+Let us sketch the proof-checker cases corresponding to universal
+quantification:
 \begin{spec}
+proofChecker (UniversalIntro f a) (Forall x p) = proofChecker (f a) (subst x a p)
+  where a = freshFor [a, Forall x p]
 proofChecker (UniversalElim f t) p = checkUnify (f x) p && proofChecker t (Forall x (f x))
-  where x = fresh
-proofChecker (UniversalIntro f) (Forall x p) = proofChecker (f a) (subst x a p)
-  where a = fresh
+  where x = freshFor [f x, p]
 \end{spec}
-
-TODO: Echoes:
- 
-As we saw earlier, a similar rule holds for the ``forall'' quantifier:
-%
-a function |f| from terms |t| to proofs of |P t| is a proof of |Forall
-x (P x)|.
-
-As we saw in \refSec{sec:TypedQuant}, a very common kind of
-formula is ``typed quantification'':
-%
-if a type (a set) |S| of terms can be described as those that satisfy
-the unary predicate |T| we can introduce the short-hand notation
-%
-\begin{spec}
-  (Forall (x:T) (P x)) = (Forall x (T x => P x))
-\end{spec}
-%
-A proof of this is a two-argument function |p| which takes a term |t|
-and a proof of |T t| to a proof of |P t|.
-
+The introduction rule uses a new concept: |subst x a p|, which
+replaces the variable |x| by |a| in |p|, but otherwise follows closely
+our informal explanation. The eliminator uses |checkUnify| which
+verifies that |f x| is indeed a generalisation of the formula to
+prove, |p|. Finally we need a way to introduce fresh variables
+|freshFor|, which conjures up a variable occuring nowhere (in its
+argument).
 
 \subsubsection{Existential quantification}
 
 %
-We have already seen how the ``forall'' quantifier can be seen as a
-generalisation of |And| and in the same way we can see the ``exists''
+We have already seen how the universal quantifier can be seen as a
+generalisation of |And| and in the same way we can see the existential (∃)
 quantifier as a generalisation of |Or|.
 %
 
@@ -269,106 +259,23 @@ First we generalise the binary |Or| to an |n|-ary |Orn|.
 To prove |Orn A1 A2 ... An| it is enough (and necessary) to find one
 |i| for which we can prove |Ai|.
 %
-As before we then take the step from a family of formulas |Ai| to one
-unary predicate |A| expressing the formulas |A(i)| for the term
+As before we then take the step from a family of formulas |Ai| to a single
+unary predicate |A| expressing the formulas |A(i)| for the (term)
 variable |i|.
 %
-Then the final step is to ``or'' all these formulas to obtain |Exists
-i (A i)|.
-%
-Continuing to build our syntax for proofs, we may write: |ExistsProof
-:: RatT -> FOLProof -> FOLProof|. In this case we'd have |i| as the
-first argument of |ExistsProof| and a proof of |A(i)| as its second
-argument.
+Then the final step is to take the disjunction of this infinite set of formulas
+to obtain |Exists i (A i)|.
 
-At this point it is good to sum up and compare the two quantifiers and
-how to prove them:
+The elimination and introduction rules for existential quantification are:
 
-\begin{quote}
-|(t, bt)| is a proof of |Exists x (P(x))| if |bt| is a proof of |P(t)|.
-
-|f| is a proof of |Forall x (P(x))| if |f t| is a proof of |P(t)| for all |t|.
-\end{quote}
-
-(The scoping of |x| in |Exists x b| is the same as in |Forall x b|.)
-
-
-%TODO At this stage we're ready to complete our defintion of the proof language and the proof checker.
-
-
-\paragraph{Typed quantification}
-%
-\jp{What is the purpose of this paragraph?}
-In each instance of FOL\jp{Have we talked about several instances of FOL?}, quantification is always over the full set of
-terms (the ``universe of discourse''), but it is often convenient to
-quantify over a subset with a certain property (like all even numbers,
-or all non-empty sets).
-%
-We will use a notation we can call ``typed quantification'' as a
-short-hand notation for the full quantification in combination with a
-restriction to the subset.
-%
-For existential and universal quantification these are the definitions:
-
-% (Exists (x:T) (P x)) =~= (Exists x (And (T x) (P x)))
-\begin{spec}
-(Exists (x:T) (P x)) =~= (Exists x (T x & P x))
-(Forall (x:T) (P x)) =~= (Forall x (T x => P x))
-\end{spec}
-% (Forall (x:T) (P x)) =~= (Forall x (Implies (T x) (P x)))
-\label{sec:TypedQuant}%
-%
-Note that we silently convert between |T| seen as a type (in |x : T|
-on the left) and |T| seen as a unary predicate on terms (in |T x| on
-the right)\jp{But have we ever defined what a FOL type is? We also have Haskell-level types and so there is a big potential for confusion here. There is also the extremely tempting prospect of representing formulas as Haskell types and proofs as Haskell terms, directly.}.
-
-%**TODO make it an actual exercise
-A good exercise is to work out the rules for ``pushing negation
-through'' typed quantification, from the corresponding rules for full
-quantification.
-
-%TODO: include somewhere as a solution.
-%   not (Exists (x:T) (P x))          = {- Def. of typed quantification -}
-%   not (Exists x (T x & P x))        = {- de-Morgan for existential    -}
-%   Forall x (not (T x & P x))        = {- de-Morgan for and            -}
-%   Forall x (not (T x) | not (P x))  = {- |(A => B)  ==  (not A | B)|  -}
-%   Forall x (T x => not (P x))       = {- Def. of typed quantification -}
-%   Forall (x:T) (not (P x))
-
-\subsubsection{Quantifiers as function types}
-
-We can express the universal quantification laws as:
-%
-\begin{spec}
-  AllIntro  : ((a : Term) -> P a) -> (Forall x (P x))
-  AllElim   : (Forall x (P x)) -> ((a : Term) -> P a)
-\end{spec}
-%
-To actually implement this we need a \emph{dependent} function type,
-which Haskell does not provide.
-%
-But we can still use it as a tool for understanding and working with
-logic formulas and mathematical proofs.
-%
-Haskell supports limited forms of dependent types and more is coming
-every year but for proper dependently typed programming we recommend
-the language Agda.\jp{make this a footnote?}
-
-\subsubsection{Existential quantification as a pair type}
-
-We mentioned before that existential quantification can be seen as as
-a ``big |Or|'' of a family of formulas |P a| for all terms |a|.
-%
-This means that to prove the quantification, we only need exhibit one
-witness and one proof for that member of the family.
-%
-\begin{spec}
-  ExistsIntro  :  (a : Term) -> P a -> (Exists x (P x))
-\end{spec}
-%
-For binary |Or| the ``family'' only had two members, one labelled |L|
-for |Left| and one |R| for |Right|, and we used one introduction
-rule for each.
+\[
+  \frac{P(a)}{∃i. P(i)}\hfill\frac{P(a) `Implies` R \text{for every a} \quad \quad ∃i. A(i)}{R}
+\]
+The introduction rule says that to prove the existential
+quantification, we only need exhibit one witness ($a$) and one proof
+for that member of set of individuals. For binary |Or| the ``family''
+only had two members, one labelled |Left| and |Right|, and we
+effectively had one introduction rule for each.
 %
 Here, for the generalisation of |Or|, we have unified the two rules
 into one with an added parameter |a| corresponding to the label which
@@ -379,30 +286,107 @@ we see the need for two arguments to be sure of how to prove the
 implication for any family member of the binary |Or|.
 %
 \begin{spec}
-orElim    :  (P=>R) -> (Q=>R) -> ((P|Q) => R)
+orElim      :: Or p q -> (p `Implies` r) -> (q `Implies` r) -> r
 \end{spec}
 %
 The generalisation unifies these two to one family of arguments.
 %
 If we can prove |R| for each member of the family, we can be sure to
 prove |R| when we encounter some family member:
-%
+
+The constructors for proofs can be |ExistsIntro
+:: Rat -> Proof -> Proof| and |ExistsElim :: (Rat -> Prop) -> Proof ->
+Proof|. In this case we'd have |i| as the
+first argument of |ExistsProof| and a proof of |A(i)| as its second
+argument.
+
+\begin{exercise}
+  Sketch the |proofChecker| cases for universal quantification.
+\end{exercise}
+
+\subsubsection{Typed quantification}
+\label{sec:TypedQuant}
+
+So far, we have considered quantification always as over the full set of
+individuals, but it is often convenient to
+quantify over a subset with a certain property (like all even numbers,
+or all non-empty sets).
+
+Even though it is not usually considered as strictly part of FOL, it
+does not fundamentally change its character if we extended it with
+several types (or sorts) of individuals (one speaks of
+``multi-sorted'' FOL).
+
+In such a variant, the quantifiers look like |∀(x:S). P(x)| and
+|∃(x:S). P(x)|.
+
+Indeed, if a type (a set) |S| of terms can be described as those that
+satisfy the unary predicate |T| we can understand |∀(x:T). P(x)| as a
+shorthand for |∀x. T(x) `Implies` P(x)|. Likewise we can understand
+|∃(x:T). P(x)| as a shorthand for |∃x. T(x) `And` P(x)|.
+
+As hinted at in the previous chapters, we find that writing types
+explicitly can greatly help understanding, and we won't refrain from
+writing down types in quantifiers in FOL formulas.
+
+\begin{exercise}
+  Prove that the de Morgan dual of typed universal quantification is
+  the typed existential quantification, using the above translation to
+  untyped quantification.
+
+%TODO: include somewhere as a solution.
+%   not (Exists (x:T) (P x))          = {- Def. of typed quantification -}
+%   not (Exists x (T x & P x))        = {- de-Morgan for existential    -}
+%   Forall x (not (T x & P x))        = {- de-Morgan for and            -}
+%   Forall x (not (T x) | not (P x))  = {- |(A => B)  ==  (not A | B)|  -}
+%   Forall x (T x => not (P x))       = {- Def. of typed quantification -}
+%   Forall (x:T) (not (P x))
+
+\end{exercise}
+
+\subsubsection{Curry-Howard for quantification over individuals}
+
+We can try and draw parrellels with an hypothetical programming
+lanaguage corresponding to FOL.
+
+In such a programming language, we expect to be able to encode proof rules
+as follows:
 \begin{spec}
-  ExistsElim   :  ((a:Term)-> P a => R) -> (Exists x (P x)) => R
+  allIntro   :: ((a : Individual) -> P a) -> (Forall x (P x))
+  allElim    :: (Forall x (P x)) -> ((a : Individual) -> P a)
+  existIntro :: (a : Individual) -> P a -> Exists x (P x)
+  ExistsElim :: ((a:Individual) -> P a `Implies` R) -> (Exists x (P x)) `Implies` R
 \end{spec}
-%
-The datatype corresponding to |Exists x (P x)| is a pair of a witness
-|a| and a proof of |P a|.
-%
-We sometimes write this type |(a:Term, P a)|.
+
+(We must write the above using a \emph{dependent} function type |(a:A) → B|, see below.).
+
+Taking the intuitionistic version of FOL (with the same treatment of
+negation as for propositional logic), we additionally expect to be
+able to represent proofs of quantifiers, directly. That is:
+\begin{quote}
+|(t, bt)| is a program of type |Exists x (P(x))| if |bt| is has type |P(t)|.
+
+|f| is a program of type |Forall x (P(x))| if |f t| is has type |P(t)| for all |t|.
+\end{quote}
+
+Unfortunately, in its 2010 standard, Haskell does not provide the
+equivalent of quantification over individuals.\footnote{There is
+  ongoing progress in this direction, but we find the current state
+  too clunky to be worthy of basing our development on it.}
+
+Rather, one would have to use a different tool for this purpose.  We
+recommend The language Agda (which provides even more forms of
+quantification).
+
+In sum, the type corresponding to universal quantification is the dependent function type |(a:A) → B|, and
+the type corresponding to |Exists (x:A) (P x)| is the dependent pair |(x:A, P(x))|.
 
 \subsubsection{\extraMaterial More general code for first order languages}
+\jp{we actually NEVER used the specialisation to rationals. Why not simply use this one directly in the main text?}
 
 It is possible to make one generic implementation of |FOL| which can
 be specialised to any first order language.
-%
 
-% TODO: perhaps add some explanatory text
 
 \begin{itemize}
 \item |Term| = Syntactic terms
