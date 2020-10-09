@@ -5,7 +5,8 @@ import DSLsofMath.W01
 import DSLsofMath.CSem
 
 import DSLsofMath.W02
-import DSLsofMath.FOLRat
+import FOL
+import PropositionalLogic
 
 import DSLsofMath.W03
 import DSLsofMath.Derive

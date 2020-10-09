@@ -26,23 +26,29 @@ actual function symbols are also domain-specific --- for rationals we
 will have addition, division, etc.
 %
 In this case we can model the terms as a datatype:
+
+\begin{code}
+type VarT = String
+data RatT = RV VarT | FromI Integer | RPlus RatT RatT | RDiv RatT RatT
+  deriving Show
+\end{code}
 %
-%{
-%let rat = True
-%include FOLRat.lhs
-%let rat = False
-%}
-%
-The above introduces variables %(with the constructor |RV|)
+The above introduces variables (with the constructor |RV|)
 and three function symbols:
 %
 |FromI| of arity |1|, |RPlus|, |RDiv| of arity |2|.
 \begin{exercise}
   Following the usual pattern, write the evaluator for |RatT|:
-\begin{spec}
+\begin{code}
+evalRat :: RatT -> (VarT -> RatSem) -> RatSem
 type RatSem = Rational
-evalRat :: RatT -> (VarT -> Rat) -> RatSem
-\end{spec}
+\end{code}
+
+%if False
+\begin{code}
+evalRat = error "evalRat: todo"
+\end{code}
+%endif
 
 \end{exercise}
 
@@ -109,35 +115,62 @@ type |PropCalc|, add predicates over terms, and quantification.
 %
 The constructor |Equal| could be eliminated in favour of |PName "Eq"| but
 it is often included as a separate constructor.
-%
-%{
-%let fol = True
-%include FOLRat.lhs
-%let fol = False
-% }
 
-\subsubsection{\extraMaterial Undecidability}
+\begin{code}
+type PSym = String
+data FOL  =  PName PSym [RatT]
+          |  Equal  RatT  RatT
+
+          |  And      FOL   FOL
+          |  Or       FOL   FOL
+          |  Implies  FOL   FOL
+          |  Not      FOL
+
+          |  FORALL  VarT  FOL
+          |  EXISTS  VarT  FOL
+  deriving Show
+\end{code}
+
+\subsubsection{Evaluator for Formulas and \extraMaterial Undecidability}
 
 Setting us up for failure, let us attempt to write an |eval| function
 for FOL, as we did for propositional logic.
 
-Environments mapping names to truth values are replaced by
-environments mapping each predicate/argument combinations (|PSym ->
-[RatT] -> Bool|). Additionally we have en evironment mapping (term)
-variables to individuals.
-So we would use the following type:
+In propositional logic, we allowed the interpretation of propositional variables
+to change depending on the environment. Here, we will let the interpretation of
+term variables be dependent on an environment, which will therefore map
+(term) variables
+to individuals (|VarT -> RatSem|).
+If we so wished, we could have an environment for the interpretation of predicate
+names, with an environment of type |PSym -> [RatSem] -> Bool|. Rather, with little
+loss of generality, we will fix this interpretation, via a constant function |eval0|, which
+may look like this:
 
-\begin{spec}
-eval :: FOL -> (VarT -> RatSem) -> (PSym -> [RatSem] -> Bool) -> Bool
-\end{spec}
+\begin{code}
+eval0 :: PSym -> [RatSem] -> Bool
+eval0 "Equal" [t1,t2] = t1 == t2
+eval0 "LessThan" [t1,t2] = t1 < t2
+eval0 "Positive" [t1] = t1 > 0
+\end{code}
+etc.
+
+the environment which was mapping
+names to truth values is replaced by an environment mapping each
+predicate/argument combinations to a truth value: (|PSym -> [RatSem]
+-> Bool|). Additionally we need en evironment mapping   So we would use the following
+type:
+
+\begin{code}
+eval :: FOL -> (VarT -> RatSem) -> Bool
+\end{code}
 And go our merry way for most cases:
-\begin{spec}
-eval formula ratEnv predEnv = case formula of
-  (PName n args) -> predEnv n args
-  Equal a b -> a == b
-  And p q = eval p ratEnv predEnv && eval p ratEnv predEnv
-  Or  p q = eval p ratEnv predEnv || eval p ratEnv predEnv
-\end{spec}
+\begin{code}
+eval formula ratEnv = case formula of
+  (PName n args) -> eval0 n (map (flip evalRat ratEnv) args)
+  Equal a b -> evalRat a ratEnv == evalRat b ratEnv
+  And p q -> eval p ratEnv && eval p ratEnv
+  Or  p q -> eval p ratEnv || eval p ratEnv
+\end{code}
 etc.
 
 However, as soon as we encounter quantifiers, we have a problem. To

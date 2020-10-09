@@ -1,6 +1,6 @@
 In the first part of the live coding for lecture 2.1 we looked at the
 implementation of first order logic syntax trees in Haskell and the
-intended semantics. The code is below and in FOLRat.lhs (which is also
+intended semantics. The code is below and in FOL.lhs (which is also
 included in the lecture notes).
 
 \begin{spec}
