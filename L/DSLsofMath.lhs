@@ -14,8 +14,9 @@
 \usepackage{natbib}
 \usepackage{wrapfig}
 \usepackage{graphicx}
+\usepackage[dvipsnames]{xcolor}
 %if book
-\usepackage[colorlinks=true]{hyperref}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
 %else
 \usepackage{hyperref}
 %endif
