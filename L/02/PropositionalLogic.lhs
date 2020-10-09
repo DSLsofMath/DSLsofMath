@@ -396,8 +396,12 @@ conjunctionCommutativeProof =
 We can then run the checker and verify:
 |checkProof conjunctionCommutativeProof conjunctionCommutative == True|
 
+%if False
+\begin{code}
 -- >>> checkProof conjunctionCommutativeProof conjunctionCommutative
 -- True
+\end{code}
+%endif
 
 \begin{exercise}
   Try to swap |AndElimL| and |AndElimR| in the above proof. What will
