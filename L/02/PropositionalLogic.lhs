@@ -9,7 +9,7 @@ deriving instance Eq Prop
 \end{code}
 %endif
 
-\subsection{Propositional Calculus}
+\section{Propositional Calculus}
 \label{sec:PropFrag} % yep, the propositional calculus is a propositional fragment of other logics, such as FOL.
 
 Our first DSL for this chapter is the language of \emph{propositional
@@ -76,7 +76,7 @@ truth values for the names, we can compute a truth value of the whole
 proposition for the assignment in question.
 %
 
-\subsubsection{An Evaluator for |Prop|}
+\subsection{An Evaluator for |Prop|}
 Let us formalise this in general,
 by writing an evaluator which takes
 a |Prop| term to its truth value.
@@ -107,7 +107,7 @@ propositional calculus and |Bool| is the \emph{semantic
 %
 Alternatively, and perhaps more elegantly, we can view |(Name -> Bool) -> Bool| as the semantic domain.
 %
-\subsubsection{Truth tables and tautologies}
+\subsection{Truth tables and tautologies}
 %
 \begin{wrapfigure}{R}{0.17\textwidth}
   \centering
@@ -197,7 +197,7 @@ but we will not go this route.  Rather, we can introduce the notion of \emph{pro
 (And in fact, the best (known) algorithms remain exponential in the number of variables.)
 
 
-\subsubsection{Proofs for Propositional Logic}
+\subsection{Proofs for Propositional Logic}
 
 Given a |Prop|osition |p| and a proof |t| (represented as
 an element of another type |Proof|), we can write a function that checks
@@ -303,7 +303,7 @@ other words, a proposition can be interpreted at the subset of
 propositions which prove it.
 
 
-\subsubsection{Implication, hypothetical derivations, contexts}
+\subsection{Implication, hypothetical derivations, contexts}
 
 We have so far omitted to deal with |Implies|. One reason is that we
 can use the so-called material implication definition which we invoked
@@ -422,7 +422,7 @@ conjunctionCommutativeProof2 =
 \end{exercise}
 
 
-\subsubsection{The Haskell type-checker as a proof checker}
+\subsection{The Haskell type-checker as a proof checker}
 
 Perhaps surprisingly, the proof-checker that we just wrote is already
 built-in in the Haskell compiler. Let us clarify what we mean, using
@@ -471,7 +471,7 @@ proofs are 1. non-terminating programs and 2. exception-raising
 programs.
 
 
-\subsubsection{Intuitionistic Propositional Logic and Simply Typed
+\subsection{Intuitionistic Propositional Logic and Simply Typed
   Lambda-Calculus, Curry-Howard isomorphism.}
 \label{sec:intuitionistic-logic}
 We can make the link beween Haskell and logic more tight if we
@@ -641,7 +641,7 @@ programs. This principle goes beyond propositional logic (and first
 order logic, etc.): it applies to all sorts of logics and programming
 languages, with various levels of expressivity and features.
 
-\subsubsection{|Or| is the dual of |And|.}
+\subsection{|Or| is the dual of |And|.}
 Before moving on to our next topic, we make a final remark on |And| and |Or|.
 %
 Most of the properties of |And| have corresponding properties for

@@ -215,7 +215,7 @@ We need the ``source code'' of |f| to apply rules from calculus.
 
 \end{frame}
 
-\subsection{Type inference and understanding: Lagrangian case study}
+\section{Type inference and understanding: Lagrangian case study}
 \begin{frame}{Example 3: Lagrangian}
   Lecture 3.2
 

@@ -9,7 +9,7 @@
 %   is a great idea to cover it in this book. Cezar had a very good rant about
 %   this during his guest lecture last year.
 
-\section{Probability Theory}
+\chapter{Probability Theory}
 \label{ch:probability-theory}
 
 \begin{code}
@@ -64,7 +64,7 @@ is not necessarily an explict experiment, but something happens
 according to a specific scenario. We consider the situation at the end
 of the scenario in question.
 
-\subsection{Sample spaces}
+\section{Sample spaces}
 
 
 Generally textbook problems involving probability involve the
@@ -209,7 +209,7 @@ data Space a where
   RealLine  :: Space REAL
 \end{code}
 
-\subsection{Bind and return}
+\section{Bind and return}
 
 Very often, one will be interested only in a particular projection
 only. Hence, it is useful to combine |Sigma| and |Project| in a single
@@ -233,7 +233,7 @@ instance Monad Space where
   (>>=) = bind
 \end{code}
 
-\subsection{Distributions}
+\section{Distributions}
 
 So far we have defined several spaces, not used them to compute any probability. We set out to do this in this section.
 %
@@ -306,7 +306,7 @@ values of a distribution, say |distributionDensity :: Space a -> (a -> REAL)|, a
 there define the expected value (and other statistical moments), but
 we'll take another route.
 
-\subsection{Semantics of spaces}\label{sec:semanticsOfSpaces}
+\section{Semantics of spaces}\label{sec:semanticsOfSpaces}
 First, we come back to general probability spaces without restriction one their |measure|: it does not need to be equal to one.
 %
 We define a function |integrator|, which generalises the notions of weighted sum, and weighted integral.
@@ -503,7 +503,7 @@ The proof of the second item is as follows:
 
 Exercise: using the above lemmas, prove |integrator (bernoulli p) f == p * integrator f + (1-p) * integrator f|.
 
-\subsection{Random Variables}
+\section{Random Variables}
 Even though we have already studied variables in detail (in Chapter
 \ref{sec:types}), it is good to come back to them for a moment before
 returning to \emph{random} variables proper.
@@ -604,7 +604,7 @@ expectedValue s (g . f)
 
 
 
-\subsection{Events and probability}
+\section{Events and probability}
 
 In textbooks, one typically finds the notation |P(e)| for the
 probability of an \emph{event} |e|. Again, the space of situations |s|
@@ -684,7 +684,7 @@ implicit random variable |t|. Here even more creativity is required
 from the reader, who must not only infer the space of outcomes, but
 also which random variable the author means.
 
-\subsection{Conditional probability}
+\section{Conditional probability}
 
 Another important notion in probability theory is conditional
 probability, written $P(F ∣ G)$ and read ``probability of |f| given
@@ -730,9 +730,9 @@ Proof:
 \end{spec}
 % emacs wakeup $
 
-\subsection{Examples}
+\section{Examples}
 
-\subsubsection{Dice problem}
+\subsection{Dice problem}
 
 We will use the monadic interface to define the experiment, hiding all
 random variables except the outcome that we care about (is the product greater than 10?):
@@ -763,7 +763,7 @@ testBoth  = measure (prod d6 d6 >>= isTrue . \xy -> p1 xy && p2 xy)    -- 19
 prob21    = condProb (prod d6 d6) p2 p1                                -- 19/21
 \end{code}
 
-\subsection{Drug test}
+\section{Drug test}
 The above drug test problem \ref{ex:drugtest} is often used as an
 illustration for the Bayes theorem. We can solve it in exactly the
 same fashion as the Dice problem.
@@ -796,7 +796,7 @@ Perhaps surprisingly, we never needed the Bayes theorem to solve the
 problem. Indeed, the Bayes theorem is already incorporated in our
 defintion of |probability|.
 
-\subsection{Monty Hall}
+\section{Monty Hall}
 We can model the Monty Hall problem as follows: A correct model is
 the following:
 \begin{code}
@@ -848,7 +848,7 @@ a door before the player made its first choice.
 
 
 
-\subsection{Advanced problem}
+\section{Advanced problem}
 Consider the following problem: how many times must one throw a coin
 before one obtains 3 heads in a row.
 
@@ -1007,7 +1007,7 @@ This leaves us with a system of linear equations with three unknowns
 % ONLY expected values of helper m for m in [0..3]. To do in one needs
 % lemmas about expected values directly.
 
-\subsection{Independent events}
+\section{Independent events}
 One possible way to define for independent events is as follows.  $E$
 is independent from $F$ iff $P(E ∣ F) = P(E)$.  We can express this
 definition in our DSL as follows:
@@ -1066,7 +1066,7 @@ Exercise: express the rest of the proof using our DSL
 \TODO{In addition to a  semantics based on integrators, one can program a semantics based on monte carlo sampling}
 
 
-% \subsection{Continuous spaces and equality}
+% \section{Continuous spaces and equality}
 % TODO
 % \begin{spec}
 % Dirac :: REAL -> Space

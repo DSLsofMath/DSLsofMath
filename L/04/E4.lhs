@@ -1,5 +1,5 @@
 \newpage
-\subsection{Exercises}
+\section{Exercises}
 
 \begin{exercise}\label{exc:homomorphisms}
 \textbf{Homomorphisms.}

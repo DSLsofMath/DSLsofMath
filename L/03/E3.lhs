@@ -1,5 +1,5 @@
 \newpage
-\subsection{Exercises}
+\section{Exercises}
 
 \begin{exercise}
   \label{exc:D1usingD}
@@ -73,7 +73,7 @@
 % expressions involved. Should be split into parts, similar to exam questions.
 % (This should probably come first)
 
-\subsection{Exercises from old exams}
+\section{Exercises from old exams}
 
 \begin{exercise}
   \textit{From exam 2016-Practice}

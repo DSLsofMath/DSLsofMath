@@ -1,4 +1,4 @@
-\section{Types in Mathematics}
+\chapter{Types in Mathematics}
 \label{sec:types}
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
@@ -9,7 +9,7 @@ type REAL = Double
 % (Based on ../../2016/Lectures/Lecture05 )
 % Show "Functional Differential Geometry" p16: Lagrange_example.pdf
 
-\subsection{Examples of types in mathematics}\label{types-in-mathematics}
+\section{Examples of types in mathematics}\label{types-in-mathematics}
 
 Simple types and are sometimes mentioned explicitly in mathematical texts:
 
@@ -57,7 +57,7 @@ justifies the types of derivatives. We study in detail how these play
 out first.
 
 
-\subsection{Typing Mathematics: derivative of a function}
+\section{Typing Mathematics: derivative of a function}
 \label{sec:typeDerivative}
 
 Let's start simple with the classical definition of the derivative
@@ -154,7 +154,7 @@ apply the usual rules we have learnt in calculus.
 %
 We will get get back to this question in \refSec{sec:computingDerivatives}.
 
-\subsection{Typing Mathematics: partial derivative}
+\section{Typing Mathematics: partial derivative}
 \label{sec:typePartialDerivative}
 % https://books.google.com/ngrams/graph?year_end=2019&year_start=1800&corpus=26&content=quest+of%2C+quest+to&smoothing=3&direct_url=t1%3B%2Cquest%20of%3B%2Cc0%3B.t1%3B%2Cquest%20to%3B%2Cc0
 % "quest of" is archaic?
@@ -258,7 +258,7 @@ just a symbol.
 
 %TODO: perhaps mention "total derivative" at this stage. That could serve as an intermediate step towards the Langrangian, or could be added after it.
 
-\subsection{Type inference and understanding: Lagrangian case study}
+\section{Type inference and understanding: Lagrangian case study}
 \label{sec:Lagrangian}
 
 From (Sussman and Wisdom 2013):\jp{fix citation}
@@ -492,7 +492,7 @@ differential equation (a PDE).
 We will not dig into how to solve such PDEs, but they are widely used
 in physics.
 
-\subsection{Playing with types}
+\section{Playing with types}
 
 So far we have worked on typing mathematics ``by hand'', but we can
 actually get the Haskell interpreter to help a bit even when we are
@@ -625,9 +625,9 @@ integral2 = int a b expr
 Both versions (and a few more minor variations) would be fine as exam
 solutions, but something where the types don't match up would not be OK.
 
-\subsection{Types in Mathematics (Part II)}\label{sec:typeclasses}
+\section{Types in Mathematics (Part II)}\label{sec:typeclasses}
 
-\subsubsection{Type classes}
+\subsection{Type classes}
 
 The kind of type inference we presented so far in this chapter becomes
 automatic with experience in a domain, but is very useful in the
@@ -723,7 +723,7 @@ Play around with this a bit in ghci.
 \end{exercise}
 \jp{Can this be made more precise?}
 
-\subsubsection{Overloaded integers literals}
+\subsection{Overloaded integers literals}
 \jp{Perhaps such ``haskell asides'' should be clearly marked as such.}
 As an aside, we will spend some time explaining a convenient syntactic
 shorthand which is very useful but which can be confusing: overloaded
@@ -794,7 +794,7 @@ As an example we have that
   FromCartesian  3.0  0.0
 \end{spec}
 
-\subsubsection{Back to the numeric hierarchy instances for functions}
+\subsection{Back to the numeric hierarchy instances for functions}
 
 Back to the main track: defining numeric operations on functions.
 %
@@ -851,7 +851,7 @@ type class, only from that of its implementation.
 \jp{Actually, the typeclass is an interface. It make the implementation abstract for its users, and instances can make implementation concrete.}
 
 
-\subsection{Type classes in Haskell}
+\section{Type classes in Haskell}
 
 We now abstract from the specific |Num| class and look at what a type
 class is in general, and how it is used.
@@ -913,7 +913,7 @@ make the types |a->Double|, |a->(b->Double)|, etc.\ into instances of |Num|
 %TODO: parhaps make the ``looks recursive'' |fromInteger| example talk
 % about |foo| instead? (And then just mention |fromInteger| shortly.)
 
-\subsection{Computing derivatives}
+\section{Computing derivatives}
 \label{sec:computingDerivatives}
 
 An important part of calculus is the collection of laws, or rules, for
@@ -1076,7 +1076,7 @@ derive     (Exp e)        =  Exp e :*: derive e
 complete the |FunExp| type and the |eval| and |derive|
 functions.
 \end{exercise}
-\subsection{Shallow embeddings}
+\section{Shallow embeddings}
 \label{sec:evalD}
 
 The DSL of expressions, whose syntax is given by the type |FunExp|,

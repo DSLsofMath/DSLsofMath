@@ -1,4 +1,4 @@
-\section{Elements of Linear Algebra}
+\chapter{Elements of Linear Algebra}
 \label{sec:LinAlg}
 \begin{code}
 {-# LANGUAGE ConstraintKinds #-}
@@ -97,7 +97,7 @@ except at position |k|, where it is |1|, so that |v = v0 *^ e0 + ... +
 vn *^ en|. This formula maps the syntax (coefficients) to the
 semantics (a vector).
 
-\subsection{Representing vectors as functions}
+\section{Representing vectors as functions}
 In what follows we will systematically use the represention of vectors
 as a linear combination of basis vectors.
 %
@@ -179,7 +179,7 @@ is a linear combination of vectors |e i|:
     v =  v 0 *^ e 0 + ... + v n *^ e n
 \end{spec}
 
-\subsection{Linear transformations}
+\section{Linear transformations}
 
 As we have seen in earlier chapters, morphisms between structures are often important.
 %
@@ -397,7 +397,7 @@ algebra'' videos on youtube (start here:
 %*TODO: Perhaps it would be interesting to show that some linear transformations
 % can also be interpreted as changes of basis.
 
-\subsection{Dot products}
+\section{Dot products}
 
 An important concept is the dot product between vectors.
 %
@@ -478,9 +478,9 @@ Among others, their rows (and columns) are orthogonal to each other.
 The are also invertible (and so they form a group), and the inverse is the (conjugate-) transpose of the matrix.
 (In the context of a complex scalar field, one would use the word ``unitary'' instead of ``orthogonal'', but it's a straightforward generalisation.)
 
-\subsection{Examples of matrix algebra}
+\section{Examples of matrix algebra}
 
-\subsubsection{Polynomials and their derivatives}
+\subsection{Polynomials and their derivatives}
 
 We have represented polynomials of degree |n+1| by the list of their
 coefficients.
@@ -611,7 +611,7 @@ Exercise~\ref{exc:Dmatrixpowerseries}: write the
 Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated with
 integration of polynomials.
 
-\subsubsection{\extraMaterial Dot product for functions and Fourier series}
+\subsection{\extraMaterial Dot product for functions and Fourier series}
 
 We said before that the dot product yields a notion of norm and
 similarity. Unfortunately, the dot product (as defined above) is not
@@ -720,7 +720,7 @@ each of |sin (n*x) / sqrt pi| and |cos (n*x) / sqrt pi|.
 Derive |derive| for this representation.
 \end{exercise}
 
-\subsubsection{Simple deterministic systems (transition systems)}
+\subsection{Simple deterministic systems (transition systems)}
 
 Simple deterministic systems are given by endo-functions%
 \footnote{An \emph{endo-function} is a function from a set |X| to
@@ -954,7 +954,7 @@ testPoss1' = poss1' 6 next1 [3, 4]
 %endif False
 
 
-\subsubsection{Non-deterministic systems}
+\subsection{Non-deterministic systems}
 \label{sec:NonDetSys}
 
 Another interpretation of the application of |M| to characteristic
@@ -1120,7 +1120,7 @@ t2 = toL t2'  -- |[False,True,False,False,False,False,True]|
 %
 % *DSLsofMath.W07> |poss2 6 next2 [2,3]|
 
-\subsubsection{Stochastic systems}
+\subsection{Stochastic systems}
 \label{sec:StocSys}
 
 Quite often, we have more information about the transition to possible
@@ -1328,7 +1328,7 @@ m3 g' = V (\ g -> toF (f3 g) g')
 % [(0,1.0)]))| for n = 1, ..., 6. What do you observe?
 
 
-\subsubsection{\extraMaterial Quantum Systems}
+\subsection{\extraMaterial Quantum Systems}
 
 Instead of real numbers for probabilities, we could consider using
 complex numbers --- one then speaks of ``amplitudes''. An amplitude
@@ -1362,7 +1362,7 @@ and therefore the inverted system is also valid as a quantum dynamical system.
 
 \jp{An example as a graph is daunting. One can construct an example by combining generator matrices $e^{i \theta}$ (one coordinate rotates in complex plane), and 2-d rotations (the "cos theta/sin thetha/-sin theta/cos theta" matrix). But there wont be "mostly zeros everywhere". The form $U = e^{iH}$ is also a possibility, but then there is a whole bunch of more theory to cover.}
 
-\subsection{Monadic dynamical systems}
+\section{Monadic dynamical systems}
 
 This section is not part of the intended learning outcomes of the
 course, but it presents a useful unified view of the previous
@@ -1470,7 +1470,7 @@ specialising the scalar type |S|)?
 Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|, |Supp|.
 
 
-\subsection{The monad of linear algebra}
+\section{The monad of linear algebra}
 \jp{Todo: connect this with the monad of probability theory chapter.}
 The answer is yes, up to a point.
 %
@@ -1626,7 +1626,7 @@ bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
 % (with indexed |sum|, etc.) which in a sense seems to defeat the purpose
 % of focusing on the syntax.
 
-\subsection{Associated code}
+\section{Associated code}
 
 Conversions and |Show| functions so that we can actually see our vectors.
 %

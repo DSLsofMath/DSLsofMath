@@ -1,4 +1,4 @@
-\subsection{An aside: Pure set theory}
+\section{An aside: Pure set theory}
 
 One way to build mathematics from the ground up is to start from pure
 set theory and define all concepts by translation to sets.

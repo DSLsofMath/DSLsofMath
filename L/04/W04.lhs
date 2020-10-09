@@ -1,4 +1,4 @@
-\section{Compositional Semantics and Algebraic Structures}
+\chapter{Compositional Semantics and Algebraic Structures}
 \label{sec:CompSem}
 
 By now we have seen several examples of mathematical domains where we
@@ -38,7 +38,7 @@ import DSLsofMath.FunExp
 import DSLsofMath.Algebra hiding (fromInteger)
 \end{code}
 %
-\subsection{Compositional semantics and homomorphisms}
+\section{Compositional semantics and homomorphisms}
 % (Based on ../../2016/Lectures/Lecture06  )
 
 \paragraph{Homomorphisms}
@@ -82,7 +82,7 @@ At this point it is a good exercise to expand the definition of |H2|
 in the different cases to see if they make sense and if you can prove
 that they hold.
 
-\subsubsection{An example of a non-compositional function}
+\subsection{An example of a non-compositional function}
 
 Consider a datatype of very simple integer expressions:
 %
@@ -199,7 +199,7 @@ But as we also know that |False /= True| we have a contradiction.
 Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
 to |Bool|, regardless of the choice of the operator corresponding to addition.
 
-\subsubsection{Even compositional functions can be ``wrong''}
+\subsection{Even compositional functions can be ``wrong''}
 %
 When working with expressions it is often useful to have a
 ``pretty-printer'' to convert the abstract syntax trees to strings
@@ -312,7 +312,7 @@ String| can be seen as an |n|-tuple.
 %
 In our case a three-element |Precedence| would be enough.
 
-\subsubsection{Compositional semantics in general}
+\subsection{Compositional semantics in general}
 
 In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
 and an |eval| function of type |Syn -> Sem|), we call the semantics
@@ -459,7 +459,7 @@ ranging from the syntax tree type |E| to different semantic
 interpretations (like |Integer|, and |String|).
 
 
-\subsubsection{Back to derivatives and evaluation}
+\subsection{Back to derivatives and evaluation}
 
 % TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
 
@@ -521,14 +521,14 @@ eval' = snd . evalD
 %   |FunExp| \arrow[r, "|evalD|"]                        & |(Func, Func)|
 % \end{tikzcd}
 
-\subsection{Algebraic Structures and DSLs}
+\section{Algebraic Structures and DSLs}
 
 % based on ../../2016/Lectures/Lecture09.lhs
 
 In this section, we continue exploring the relationship between type
 classes, mathematical structures, and DSLs.
 
-\subsubsection{Algebras, homomorphisms}
+\subsection{Algebras, homomorphisms}
 \label{sec:AlgHomo}
 
 The matematical theory behind compositionality talks about
@@ -764,7 +764,7 @@ fromInteger n | n < 0 = negate (fromInteger (negate n))
 \end{code}
 \end{example}
 
-\subsubsection{Homomorphism and compositional semantics}
+\subsection{Homomorphism and compositional semantics}
 \jp{Seems like a repeat, what is new in this subsection?}
 Earlier, we saw that |eval| is compositional, while |eval'| is not.
 %
@@ -940,7 +940,7 @@ See
 \href{https://github.com/DSLsofMath/ctfp2014}{github}).
 
 
-\subsubsection{Other homomorphisms}
+\subsection{Other homomorphisms}
 
 In \refSec{sec:FunNumInst}, we defined a |Num| instance for
 functions with a |Num| codomain.
@@ -1044,7 +1044,7 @@ Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|
 
 Hint: Something very similar can be used for Assignment 2.\jp{What's that?}
 
-\subsection{Summing up: definitions and representation}
+\section{Summing up: definitions and representation}
 
 We defined a |Ring| structure on pairs |(REAL, REAL)| by requiring
 the operations to be compatible with the interpretation |(f a, f' a)|.
@@ -1101,7 +1101,7 @@ We will see this distinction again in
 \refSec{sec:polynotpolyfun}.
 
 
-\subsubsection{Some helper functions}
+\subsection{Some helper functions}
 
 \begin{code}
 instance Additive E where -- Some abuse of notation (no proper |negate|, etc.)
@@ -1121,7 +1121,7 @@ negateE _ = error "negate: not supported"
 %
 %TODO: Perhaps include the comparison of the |Ring t => Ring (Bool -> t)| instance (as a special case of functions as |Ring|) and the |Ring r => Ring (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
 
-\subsection{Co-algebra and the Stream calculus}
+\section{Co-algebra and the Stream calculus}
 
 In the coming chapters there will be quite a bit of material on
 infinite structures.

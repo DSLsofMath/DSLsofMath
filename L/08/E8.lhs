@@ -1,5 +1,5 @@
 \newpage
-\subsection{Exercises}
+\section{Exercises}
 
 \begin{exercise}
 \label{exc:LaplaceDk}
@@ -39,7 +39,7 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
 % TODO (by DaHe): Add some exercises on inverse Laplace transforms and partial
 % fraction decomposition
 
-\subsubsection{Exercises from old exams}
+\subsection{Exercises from old exams}
 
 \begin{exercise}
   \textit{From exam 2016-03-15}

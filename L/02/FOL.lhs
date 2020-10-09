@@ -1,4 +1,4 @@
-\subsection{First Order Logic}
+\section{First Order Logic}
 
 %
 Our second DSL is that of \emph{First Order Logic\lnOnly{\footnote{Swedish: Första ordningens logik = predikatlogik}}},
@@ -131,7 +131,7 @@ data FOL  =  PName PSym [RatT]
   deriving Show
 \end{code}
 
-\subsubsection{Evaluator for Formulas and \extraMaterial Undecidability}
+\subsection{Evaluator for Formulas and \extraMaterial Undecidability}
 
 Setting us up for failure, let us attempt to write an |eval| function
 for FOL, as we did for propositional logic.
@@ -194,7 +194,7 @@ valid. Fortunately, we have already studied the notion of proof in the
 section on propositional logic, and it only needs to be extended to
 support quantifiers.
 
-\subsubsection{Universal quantification}
+\subsection{Universal quantification}
 %
 Universal quantification (Forall or ∀) can be seen as a generalisation of |And|.
 %
@@ -289,7 +289,7 @@ prove, |p|. Finally we need a way to introduce fresh variables
 |freshFor|, which conjures up a variable occuring nowhere (in its
 argument).
 
-\subsubsection{Existential quantification}
+\subsection{Existential quantification}
 
 %
 We have already seen how the universal quantifier can be seen as a
@@ -347,7 +347,7 @@ argument.
   Sketch the |proofChecker| cases for universal quantification.
 \end{exercise}
 
-\subsubsection{Typed quantification}
+\subsection{Typed quantification}
 \label{sec:TypedQuant}
 
 So far, we have considered quantification always as over the full set of
@@ -387,7 +387,7 @@ writing down types in quantifiers in FOL formulas.
 
 \end{exercise}
 
-\subsubsection{Curry-Howard for quantification over individuals}
+\subsection{Curry-Howard for quantification over individuals}
 
 We can try and draw parrellels with an hypothetical programming
 lanaguage corresponding to FOL.
@@ -433,7 +433,7 @@ Remainder. Rather, in the rest of the chapter, we will illustrate the
 logical principles seen so far by examples.
 
 
-\subsubsection{\extraMaterial More general code for first order languages}
+\subsection{\extraMaterial More general code for first order languages}
 \jp{we actually NEVER used the specialisation to rationals. Why not simply use this one directly in the main text?}
 
 It is possible to make one generic implementation of |FOL| which can

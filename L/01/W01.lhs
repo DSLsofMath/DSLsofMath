@@ -1,6 +1,6 @@
 %{
 %format bi = "\Varid{bi}"
-\section{Types, DSLs, and complex numbers}
+\chapter{Types, DSLs, and complex numbers}
 \label{sec:DSLComplex}
 \reviseForBook{Put this at the end of the chapter?}
 This chapter is partly based on the paper
@@ -33,7 +33,7 @@ As an example, the second to last line imports types for rational
 numbers and the infix operator |(%)| used to construct ratios
 (|1%7| is Haskell notation for $\frac{1}{7}$, etc.).
 
-\subsection{Intro: Pitfalls with traditional mathematical notation}
+\section{Intro: Pitfalls with traditional mathematical notation}
 \label{sec:pitfalls}
 
 \paragraph{A function or the value at a point?}
@@ -98,7 +98,7 @@ renaming is a sufficiently important operation to be more explicitly
 mentioned.
 %*TODO: Perhaps add simple exercises on renaming and variable capture
 
-\subsection{Types of |data|}
+\section{Types of |data|}
 
 Dividing up the world (or problem domain) into values of different
 types is one of the guiding principles of this \course{}.
@@ -113,7 +113,7 @@ types is one of the guiding principles of this \course{}.
 We will see that keeping track of types can guide the development of
 theories, languages, programs and proofs.
 
-\subsubsection{What is a type?}
+\subsection{What is a type?}
 
 As mentioned in the introduction, we emphasise the dividing line
 between syntax (what mathematical expressions look like) and semantics
@@ -423,7 +423,7 @@ specification) of mathematical concepts.
 
 %TODO: perhaps use more from Expr.lhs
 
-\subsubsection{Types in Haskell: |type|, |newtype|, and |data|}
+\subsection{Types in Haskell: |type|, |newtype|, and |data|}
 
 There are three keywords in Haskell involved in naming types: |type|,
 |newtype|, and |data|.
@@ -573,7 +573,7 @@ data Either p q = Left p | Right q
 \end{spec}
 
 
-\subsubsection{|Env| and variable |lookup|.}
+\subsection{|Env| and variable |lookup|.}
 
 The type synonym
 %
@@ -631,7 +631,7 @@ lookup :: Eq a => a -> [(a, b)] -> Maybe b
 We will use |Env| and |lookup| below (in \refSec{sec:ArithExp})
 when we introduce abstract syntax trees containing variables.
 
-\subsection{A syntax for simple arithmetical expressions}
+\section{A syntax for simple arithmetical expressions}
 \label{sec:ArithExp}
 
 \begin{code}
@@ -728,7 +728,7 @@ liftM op   (Just a)  (Just b)  =  Just (op a b)
 liftM _op  _         _         =  Nothing
 \end{code}
 
-\subsection{A case study: complex numbers}
+\section{A case study: complex numbers}
 \label{sec:complexcase}
 
 We now turn to our first case study: an analytic reading of the
@@ -1099,7 +1099,7 @@ newtype  ComplexSem r  =  CS  (r , r)        deriving Eq
 
 % ----------------------------------------------------------------
 
-\subsection{A syntax for (complex) arithmetical expressions}
+\section{A syntax for (complex) arithmetical expressions}
 
 So far we have tried to find a datatype to represent the intended
 \emph{semantics} of complex numbers.
@@ -1241,7 +1241,7 @@ fromCD (CD (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 %
 This function is injective: different complex numbers map to different syntactic expressions.
 
-\subsection{Laws, properties and testing}
+\section{Laws, properties and testing}
 There are certain laws that we would like to hold for operations on complex
 numbers.
 %
@@ -1481,7 +1481,7 @@ that |(*c)| is a |(+)|-homomorphism.)
 \begin{exercise}
 Find other pairs of operators satisfying a distributive law.
 \end{exercise}
-\subsection{Notation and abstract syntax for (infinite) sequences}
+\section{Notation and abstract syntax for (infinite) sequences}
 \label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
@@ -1644,7 +1644,7 @@ some operations (|conSeq|, |addSeq|, |liftSeq1|, |sums|, |scan|, \ldots) and som
 
 
 %if False
-\subsection{Some helper functions (can be skipped)}
+\section{Some helper functions (can be skipped)}
 \jp{Can this be tidied up?}
 \begin{code}
 type QQ     =  Ratio Integer

@@ -1,4 +1,4 @@
-\documentclass[twoside]{article}
+\documentclass[twoside]{book}
 \usepackage{a4wide}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -111,7 +111,7 @@
 \begin{document}
 \maketitle
 
-\begin{abstract}
+
   These notes aim to cover the lectures and exercises of the recently
   introduced course ``Domain-Specific Languages of Mathematics'' (at
   Chalmers and University of Gothenburg).
@@ -133,36 +133,26 @@
   and, finally, to organize the resulting functions and types in
   domain-specific languages.
 
-\end{abstract}
+
 
 \tableofcontents
 
-\cleardoublepage
 %include 00/Intro.lhs
-\cleardoublepage
 %include 01/W01.lhs
-\cleardoublepage
 %include 02/W02.lhs
-
-\cleardoublepage
 %include 03/W03.lhs
-\cleardoublepage
 %include 04/W04.lhs
-\cleardoublepage
 %include 05/W05.lhs
-\cleardoublepage
 %include 06/W06.lhs
-\cleardoublepage
 %include 07/W07.lhs
-\cleardoublepage
 %include 08/W08.lhs
-\cleardoublepage
 %include 09/W09.lhs
-\cleardoublepage
 %include End.lhs
 
 \clearpage
-\appendix
+
+%if lectureNotes
+\chapter{Appendix: Exam Practice}
 
 \newcommand{\includeexam}[1]{\includeexaminner{Exam #1}{app:Exam#1}{../Exam/#1/Exam-#1.pdf}}
 
@@ -179,7 +169,10 @@
 \includeexam{2017-03}
 \includeexam{2017-08}
 
-%include 01/CSem.lhs
+\chapter{Appendix: Non-sorted Extra material}
+% include 01/CSem.lhs
+
+%endif
 
 \cleardoublepage
 \bibliographystyle{abbrvnat}

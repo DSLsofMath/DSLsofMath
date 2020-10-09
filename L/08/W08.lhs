@@ -1,7 +1,7 @@
-\section{Exponentials and Laplace}
+\chapter{Exponentials and Laplace}
 \label{sec:Laplace}
 
-\subsection{The Exponential Function}
+\section{The Exponential Function}
 \label{sec:exp}
 
 \begin{code}
@@ -218,7 +218,7 @@ using the standard notation |a+i*b| for some |z = C (a, b)|:
 Thus, we see that |exp| is periodic, because |exp z = exp (z + T)|
 with |T = i*tau|, for all |z|.
 \jp{Question: are all periodic functions also periodic in the tayor series space?}
-\subsubsection{Exponential function: Associated code}
+\subsection{Exponential function: Associated code}
 
 %TODO: Perhaps import from W01 - but it also useful to remind the reader. Alternatively, back-port this code to W01.
 
@@ -267,7 +267,7 @@ divC x y = scaleC (1/modSq) (x * conj y)
   where  modSq  =  modulusSquaredC y
 \end{code}
 
-\subsection{The Laplace transform}
+\section{The Laplace transform}
 
 This material was inspired by \citet{quinn2008discovering}, which is
 highly recommended reading.
@@ -582,7 +582,7 @@ check that we have, indeed, a solution for the differential equation.
 %
 The verification is in this case trivial.
 
-\subsection{Laplace and other transforms}
+\section{Laplace and other transforms}
 \label{sec:LaplaceSum}
 
 To sum up, we have defined the Laplace transform and shown that it can

@@ -1,5 +1,5 @@
 \newpage
-\subsection{Exercises}
+\section{Exercises}
 
 %
 % TODO: Add some exercises to get comfortable with the stuff that is used in the

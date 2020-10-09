@@ -1,5 +1,5 @@
 
-\subsection{Basic concepts of calculus}
+\section{Basic concepts of calculus}
 
 Now we have built up quite a bit of machinery to express logic
 formulas and proofs.
@@ -193,7 +193,7 @@ in |X - {p}| which gets arbitrarily close to |p|.
 Note that this construction can be seen as a proof of |Limp p X =>
 Infinite X|.
 
-\subsubsection{The limit of a sequence}
+\subsection{The limit of a sequence}
 % TODO: transcribe more of the 2016 notes
 \label{par:LimitOfSequence}
 
@@ -288,7 +288,7 @@ prove that |(a1 haslim L1) & (a2 haslim L2)| implies
 When we are not interested in the exact limit, just that it exists, we
 say that a sequence |a| is \emph{convergent} when |∃ L ? a haslim L|.
 
-\subsubsection{Case study: The limit of a function}
+\subsection{Case study: The limit of a function}
 \label{sec:LimitOfFunction}
 %
 As our next mathematical text book quote we take the definition of the

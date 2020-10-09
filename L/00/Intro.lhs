@@ -1,6 +1,6 @@
-\setcounter{section}{-1}
-\section{Introduction}
-\label{sec:intro}
+\setcounter{chapter}{-1}
+\chapter{Introduction}
+\label{ch:intro}
 
 
 These lecture notes\reviseForBook{This book stems from ....} aim to cover the lectures and exercises of the
@@ -306,7 +306,13 @@ Ideally, the mathematical areas used in DSLM will become increasingly
 challenging, the more the effective aspects of the computer science
 perspective are adopted in the first-year mathematics courses.
 
-\subsection{About this course}
+\section{About this
+%if book
+    book
+%else
+         course
+%endif
+        }
 \jp{The whole chapter could have this title. It seems that what follows should be folded seamlessly into the rest}
 
 Software engineering involves modelling very different domains (e.g.,
@@ -354,7 +360,7 @@ Note that this also counts students from other programmes (mainly SE
 and Math) while Table~\ref{tab:res} only deals with the CSE
 programme students.
 
-\subsection{Who should read this textbook?}
+\section{Who should read this textbook?}
 
 The prerequisites of the underlying course may give a hint about what
 is expected of the reader.
@@ -378,13 +384,13 @@ Working knowledge of functional programming is helpful, but it should
 be possible to pick up quite a bit of Haskell along the way.
 
 
-% \subsection{Roadmap}
+% \section{Roadmap}
 
 %TODO: write about the lecture plan and internal dependencies
 
 
 
-\subsection{Notation and code convention}
+\section{Notation and code convention}
 
 The source code of the book, including all the Haskell code, is
 available on GitHub in the repository
@@ -416,7 +422,7 @@ and implementing mathematical text.
 
 %TODO: fill in more about notation
 
-\subsection*{Acknowledgments}
+\section*{Acknowledgments}
 
 The support from Chalmers Quality Funding 2015 (Dnr C 2014-1712, based
 on Swedish Higher Education Authority evaluation results) is

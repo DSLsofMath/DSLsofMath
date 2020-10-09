@@ -1,5 +1,5 @@
 \newpage
-\subsection{Exercises}
+\section{Exercises}
 
 Search the chapter for tasks marked ``Exercise''.
 
@@ -113,7 +113,7 @@ the associated matrix.
 % \label{exc:}
 % \end{exercise}
 
-\subsubsection{Exercises from old exams}
+\subsection{Exercises from old exams}
 
 \begin{exercise}
 

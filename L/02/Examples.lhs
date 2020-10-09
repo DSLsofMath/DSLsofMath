@@ -1,6 +1,6 @@
-\subsection{Examples}
+\section{Examples}
 
-\subsubsection{Proof by contradiction}
+\subsection{Proof by contradiction}
 
 % See also ProofByContradiction.hs
 Let us express and prove the irrationality of the square
@@ -45,7 +45,7 @@ To sum up: by assuming |P| we can prove both |Q| and |not Q|.
 %
 Thus, by contradiction |not P| must hold.
 
-\subsubsection{Proof by cases}
+\subsection{Proof by cases}
 %
 As another example, let's prove that there are two irrational numbers
 |p| and |q| such that |p^q| is rational.
@@ -91,7 +91,7 @@ The best we could do in an intuitionistic logic, which is constructive, is to sh
 then we come to a contradiction.
 %
 
-\subsubsection{There is always another prime}
+\subsection{There is always another prime}
 
 As an example of combining quantification (forall, exists) and implication let us turn
 to one statement of the fact that there are infinitely many primes.

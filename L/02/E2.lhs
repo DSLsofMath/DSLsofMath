@@ -1,5 +1,5 @@
 \newpage
-\subsection{Exercises}
+\section{Exercises}
 
 % TODO: Perhaps introduce GADT datatype notation use in some exercise solutions
 
@@ -17,7 +17,7 @@
 \end{exercise}
 
 
-\subsubsection{Exercises: abstract FOL}
+\subsection{Exercises: abstract FOL}
 \label{exercises-for-dslsofmath-week-2-2017}
 \begin{code}
 {-# LANGUAGE EmptyCase #-}
@@ -357,7 +357,7 @@ but you will not be able to prove the converse.
   \end{enumerate}
 \end{exercise}
 
-\subsubsection{More exercises}
+\subsection{More exercises}
 
 
 Preliminary remarks

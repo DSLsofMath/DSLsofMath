@@ -1,4 +1,4 @@
-\section{Polynomials and Power Series}
+\chapter{Polynomials and Power Series}
 \label{sec:poly}
 \begin{code}
 {-# LANGUAGE GADTs #-}
@@ -11,7 +11,7 @@ import DSLsofMath.FunNumInst
 import DSLsofMath.Algebra
 \end{code}
 
-\subsection{Polynomials}
+\section{Polynomials}
 
 From \cite{adams2010calculus}, page 39:
 
@@ -395,7 +395,7 @@ This equality justifies the standard notation
 
 \end{enumerate}
 
-\subsection{Aside: division and the degree of the zero polynomial}
+\section{Aside: division and the degree of the zero polynomial}
 
 Recall the fundamental property of division that we learned in high school:
 
@@ -422,7 +422,7 @@ The next section examines this question from a different point of
 view, that of homomorphisms.
 
 
-\subsection{Polynomial degree as a homomorphism}
+\section{Polynomial degree as a homomorphism}
 
 It is often the case that a certain function is \emph{almost} a
 homomorphism and the domain or range \emph{almost} a monoid.
@@ -526,7 +526,7 @@ Thus, to sum up, |degree| is a monoid homomorphism from |(Poly a, 1,
 Check all the Monoid and homomorphism properties.
 \end{exercise}
 
-\subsection{Power Series}
+\section{Power Series}
 
 Consider the following ``pseudo proof'':
 
@@ -672,7 +672,7 @@ and thus |eval 2 (x*x) 1 = 0 /= 1 = 1*1 = (eval 2 x 1) * (eval 2 x
 1)|.
 
 
-\subsection{Operations on power series}
+\section{Operations on power series}
 
 Power series have a richer structure than polynomials.
 %
@@ -814,7 +814,7 @@ coefficients and \(\frac{1}{1-x} = \sum_{i=0}^{\infty} x^i\) in the
 more traditional mathematical notation.
 
 
-\subsection{Formal derivative}
+\section{Formal derivative}
 
 Considering the analogy between power series and polynomial functions
 (via polynomials), we can arrive at a formal derivative for power
@@ -859,7 +859,7 @@ serious'' \cite{mcilroy1999functional}.
 
 % ================================================================
 
-% \subsection{Signals and Shapes}
+% \section{Signals and Shapes}
 %
 % Shallow and deep embeddings of a DSL
 %
@@ -868,7 +868,7 @@ serious'' \cite{mcilroy1999functional}.
 
 
 
-\subsection{Helpers}
+\section{Helpers}
 
 \begin{code}
 instance Functor Poly where

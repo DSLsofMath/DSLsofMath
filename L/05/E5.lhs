@@ -1,5 +1,5 @@
 \newpage
-\subsection{Exercises}
+\section{Exercises}
 
 The first few exercises are about filling in the gaps in the chapter
 above.

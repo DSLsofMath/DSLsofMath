@@ -10,10 +10,10 @@ import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..))
 import Prelude (abs)
 \end{code}
 
-\section{Higher-order Derivatives and their Applications}
+\chapter{Higher-order Derivatives and their Applications}
 \label{sec:deriv}
 
-\subsection{Review}
+\section{Review}
 \jp{I don't get it. More words are needed in the itemize. Is this
   connected with what follows? It seems that the review ends before
   the end of the subsection. It seems that the flow goes all over the
@@ -283,7 +283,7 @@ a -> a| to compute |f' 2|:
 \end{itemize}
 
 
-\subsection{Higher-order derivatives}
+\section{Higher-order derivatives}
 \jp{Title of the section = title of the chapter? Change?}
  \jp{Rename |Stream| to |Taylor|?}
 \jp{Fold ../04/UnusualStream.hs in here}
@@ -461,7 +461,7 @@ drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 \end{exercise}
 %
 
-\subsection{Polynomials}
+\section{Polynomials}
 \jp{What is this doing here? and not in the relevant chapter?}
 \begin{spec}
 data Poly a  =  Single a  |  Cons a (Poly a)
@@ -472,7 +472,7 @@ evalPoly (Single a)     x   =  a
 evalPoly (Cons a as)    x   =  a + x * evalPoly as x
 \end{spec}
 
-\subsection{Formal power series}
+\section{Formal power series}
 \jp{Are we saying anything non-trivial and new in this section? If so indicate what it is right away.}
 As we mentioned above, the Haskell list type contains both finite and
 infinite lists.
@@ -543,7 +543,7 @@ eval (derive as)     =  D (eval as)      -- |H1(eval,derive,D)|
 eval (integ c as) x  =  c + {-"\int_0^x "-} (eval as t) dt
 \end{spec}
 
-\subsection{Simple differential equations}
+\section{Simple differential equations}
 
 Many first-order differential equations have the structure
 %
@@ -710,7 +710,7 @@ cx = 1  :  neg 0  :  frac (neg 1) 2  :  0               :  error "TODO"
 \end{code}
 %
 
-\subsection{Exponentials and trigonometric functions for |PowerSeries|}
+\section{Exponentials and trigonometric functions for |PowerSeries|}
 
 Can we compute |exp as|?\jp{Compute in what sense? We already have |expx| in the above section. Does this mean using the differential rather than the integral? I don't get the point.}
 
@@ -777,7 +777,7 @@ evalP (Sin e)      =  sin (evalP e)
 evalP (Cos e)      =  cos (evalP e)
 \end{code}
 
-\subsection{Taylor series}
+\section{Taylor series}
 
 If |f = eval [a0, a1, ..., an, ...]|, then\jp{Which eval is that, and what is the meaning of the list here? polynomial? power series? derivatives?}
 
@@ -891,7 +891,7 @@ As before, we can use directly power series:
 dP f a = takePoly 10 (derivs (f (idx + Single a)))
 \end{code}
 
-\subsection{Associated code}
+\section{Associated code}
 
 \jp{Feels like this should be moved upwards as the concepts are introduced}
 
@@ -934,7 +934,7 @@ instance Transcendental FunExp where
   cos        =  Cos
 \end{code}
 
-\subsubsection{Not included to avoid overlapping instances}
+\subsection{Not included to avoid overlapping instances}
 
 \begin{spec}
 instance Num a => Num (FD a) where
@@ -954,7 +954,7 @@ instance Transcendental a => Transcendental (FD a) where
   cos (f, f')        =  (cos f, -(sin f) * f')
 \end{spec}
 
-\subsubsection{This is included instead}
+\subsection{This is included instead}
 
 
 \begin{code}
