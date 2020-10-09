@@ -546,7 +546,7 @@ intuitionistic propositional logic (IPL). As we have seen, each such
 proof term is a program in Haskell. Conversely, every program written
 in this fragment of Haskell (functions, pairs, |Either|, no recursion
 and full coverage of cases) can be turned into a proof in IPL. This
-fragment is called the simply-typed lambda calculus (STLC).
+fragment is called the simply-typed lambda calculus (STLC) with sum and products.
 
 \paragraph{The law of the excluded middle}
 \label{sec:excluded-middle}
@@ -632,7 +632,7 @@ After erasing the colon (:) sign and what comes before it, we obtain
 \textit{modus ponens} --- implication elimination.
 
 The \emph{Curry--Howard correspondence} is a general principle that
-says that we can think of propositions as types and proofs as
+says that we can think of propositions as types, and proofs as
 programs. This principle goes beyond propositional logic (and first
 order logic, etc.): it applies to all sorts of logics and programming
 languages, with various levels of expressivity and features.
