@@ -432,9 +432,10 @@ refrain to formalise any proof as Agda programs in the
 Remainder. Rather, in the rest of the chapter, we will illustrate the
 logical principles seen so far by examples.
 
-
+%if lectureNotes
 \subsection{\extraMaterial More general code for first order languages}
-\jp{we actually NEVER used the specialisation to rationals. Why not simply use this one directly in the main text?}
+\jp{We actually don't used the specialisation to rationals. But it can be useful to
+    fix ideas. Turn this into an exercise?}
 
 It is possible to make one generic implementation of |FOL| which can
 be specialised to any first order language.
@@ -468,3 +469,5 @@ data WFF n f v p =
   |  EXISTS  v (WFF n f v p)
   deriving Show
 \end{spec}
+
+%endif
