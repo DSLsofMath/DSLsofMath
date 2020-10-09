@@ -1,6 +1,4 @@
-NAME=DSLsofMathNotes
-
-default: $(NAME).pdf
+default: DSLsofMathBook.pdf DSLsofMathNotes.pdf
 
 nix::
 	nix-shell --run "make"
@@ -9,24 +7,17 @@ DSLM_A6.tex: DSLsofMathNotes.tex
 	cp DSLsofMathNotes.tex DSLM_A6.tex
 	patch < A6_landscape.patch
 
-DSLM_A6.pdf: DSLM_A6.tex
-	latexmk -pdf DSLM_A6.tex
+%.pdf: %.tex
+	latexmk -pdf $<
 
 DSLM_A5.tex: DSLsofMathNotes.tex
 	cp DSLsofMathNotes.tex DSLM_A5.tex
 	patch < A5_landscape.patch
 
-DSLM_A5.pdf: DSLM_A5.tex
-	latexmk -pdf DSLM_A5.tex
-
-
-$(NAME).pdf: $(NAME).tex
-	latexmk -pdf $(NAME).tex
-
-$(NAME).tex: $(NAME).lhs dslm.format ref.bib \
+BOOKDEPS=DSLsofMath.lhs dslm.format ref.bib \
              newunicodedefs.tex \
              00/Intro.lhs                     \
-             01/W01.lhs 01/E1.lhs 01/E1_1.lhs 01/E1_2.lhs 01/E1_from_exams.lhs \
+             01/W01.lhs 01/CSem.lhs 01/E1.lhs 01/E1_1.lhs 01/E1_2.lhs 01/E1_from_exams.lhs \
              02/W02.lhs 02/E2.lhs 02/PropositionalLogic.lhs 02/FOL.lhs  02/Examples.lhs 02/Either.lhs \
              03/W03.lhs 03/E3.lhs \
              04/W04.lhs 04/E4.lhs 04/AbstractStream.lhs 04/UnusualStream.lhs \
@@ -35,22 +26,16 @@ $(NAME).tex: $(NAME).lhs dslm.format ref.bib \
              07/W07.lhs 07/E7.lhs \
              08/W08.lhs 08/E8.lhs \
              09/W09.lhs \
-             End.lhs \
-             01/CSem.lhs
-	lhs2TeX --poly $(NAME).lhs > $(NAME).tex
+             End.lhs
 
-DSLMtalk.pdf: DSLMtalk.tex
-	latexmk -pdf $<
-
-DSLMtalk.tex: DSLMtalk.lhs
+%.tex: %.lhs $(BOOKDEPS)
 	lhs2TeX --poly $< > $@
 
-
 build:
-	stack build
+	cabal v2-build
 
 sdist:
-	stack sdist --test-tarball
+	cabal sdist
 
 # The target zip is deprecated in favour of sdist
 zip:
@@ -63,5 +48,5 @@ zip:
 
 clean:
 	- rm *.ptb *.pag *.aux *.bbl *.blg *.fdb_latexmk *.log \
-             $(NAME).tex $(NAME).pdf *.idx *.ilg *.ind *.toc *~ \
+             *.tex *.pdf *.idx *.ilg *.ind *.toc *~ \
              *.vrb *.snm *.fls *.nav *.out
