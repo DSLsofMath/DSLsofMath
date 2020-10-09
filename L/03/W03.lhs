@@ -48,7 +48,7 @@ Here are some examples with a possible assignment of types:
 
 The chief difficulty to overcome when assigning types for mathematical
 operators is that they often introduce (bind) variable names (see
-also \label{sec:pitfalls}). For example, in the above, $\lim_{n → ∞}$
+also \cref{sec:pitfalls}). For example, in the above, $\lim_{n → ∞}$
 binds $n$ in $a_n$. In this book our stance is to make this binding
 obvious by letting the body of the limit ($a_n$ in the example) be a
 function. Thus we assign it the type $ℕ → ℝ$. Therefore the limit

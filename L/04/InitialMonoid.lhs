@@ -1,5 +1,5 @@
 
-\section{\extraMaterial A generic Free construction}
+\subsection{\extraMaterial A generic Free construction}
 \jp{Integrate this with the rest more seamlessly.}
 
 

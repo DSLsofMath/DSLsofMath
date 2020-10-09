@@ -12,7 +12,7 @@ language Haskell and
 %
 the code for this lecture is placed in a module called
 |DSLsofMath.W01| that starts here\footnote{As mentioned already in the introduction, the code is available on \href{https://github.com/DSLsofMath/DSLsofMath}{GitHub}.}:
-\TODO{It would also be useful to split up these imports into those needed early and those only needed in subsection \label{sec:complexcase} (to be introduced later).}
+\TODO{It would also be useful to split up these imports into those needed early and those only needed in subsection \cref{sec:complexcase} (to be introduced later).}
 
 \begin{code}
 module DSLsofMath.W01 where
