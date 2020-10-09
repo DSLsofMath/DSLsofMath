@@ -1,4 +1,5 @@
 \documentclass[twoside]{book}
+\usepackage{mathpazo}
 \usepackage{a4wide}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -13,7 +14,11 @@
 \usepackage{natbib}
 \usepackage{wrapfig}
 \usepackage{graphicx}
+%if book
+\usepackage[colorlinks=true]{hyperref}
+%else
 \usepackage{hyperref}
+%endif
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \usepackage{newunicodechar}
@@ -108,9 +113,11 @@
 %           {Chalmers University of Technology, Sweden}
 %           {\texttt{patrikj@@chalmers.se}}
 %           {\texttt{cezar@@chalmers.se}}
+\date{WORK IN PROGRESS: DRAFT OF \today}
 \begin{document}
 \maketitle
 
+%if lectureNotes
 
   These notes aim to cover the lectures and exercises of the recently
   introduced course ``Domain-Specific Languages of Mathematics'' (at
@@ -119,9 +126,11 @@
   The course was developed in response to difficulties faced by
   third-year computer science students in learning and applying
   classical mathematics (mainly real and complex analysis).
+%endif
 %
-  The main idea is to encourage the students to approach mathematical
-  domains from a functional programming perspective:
+  The main idea behind this textbook is to encourage the students to
+  approach mathematical domains from a functional programming
+  perspective:
 %
   to identify the main functions and types involved and, when
   necessary, to introduce new abstractions;
@@ -132,6 +141,7 @@
 %
   and, finally, to organize the resulting functions and types in
   domain-specific languages.
+
 
 
 

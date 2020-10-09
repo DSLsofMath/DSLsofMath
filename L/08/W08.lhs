@@ -62,7 +62,7 @@ We could use the datatype |Data.Complex| from the Haskell standard
 library, but we prefer to roll our own in order to recall the basic
 operations on complex numbers.\jp{but it does not seem that this is done anyway?}
 
-As we saw in \cref{ch:DSLComplex}, complex values can be represented
+As we saw in \cref{sec:DSLComplex}, complex values can be represented
 as pairs of real values.
 
 \begin{code}

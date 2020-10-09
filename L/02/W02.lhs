@@ -1,9 +1,5 @@
 
 
-\section{Recap of syntax trees with variables, |Env| and |lookup|}
-
-% removed this because it's already covered in similar ways before and after, several times.
-% Alternatively: convert to exercise.
 
 \chapter{Logic and calculational proofs}
 \label{sec:logic}
