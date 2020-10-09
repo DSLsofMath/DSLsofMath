@@ -256,9 +256,10 @@ texts is that variable binding sometimes is implicit.
 A typical example is the notation for equations: for instance |x^2 + 2*x + 1 == 0| usually means
 roughly |Exists x (x^2 + 2*x + 1 == 0)|.
 %
-We write ``roughly'' here because the scope of |x| very often extends
+We write ``roughly'' here because in math texts the scope of |x| very often extends
 to some text after the equation where something more is said about the
 solution |x|.
+\footnote{This phenomena seems to be borrowed the behaviour of quantifiers in natural language. See for example \citep{bernardy_computational_2020} for a discussion.}
 
 Let us now consider the elimination rule for universal
 quantification. The idea here is that if |A(x)| holds for every
