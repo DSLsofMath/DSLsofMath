@@ -37,6 +37,14 @@ The above introduces variables %(with the constructor |RV|)
 and three function symbols:
 %
 |FromI| of arity |1|, |RPlus|, |RDiv| of arity |2|.
+\begin{exercise}
+  Following the usual pattern, write the evaluator for |RatT|:
+\begin{spec}
+type RatSem = Rational
+evalRat :: RatT -> (VarT -> Rat) -> RatSem
+\end{spec}
+
+\end{exercise}
 
 As mentioned above, the propositions (often referred to as
 \emph{formulas} in the context of FOL) are extended so that they can
@@ -120,7 +128,7 @@ variables to individuals.
 So we would use the following type:
 
 \begin{spec}
-eval :: FOL -> (VarT -> RatT) -> (PSym -> [RatT] -> Bool) -> Bool
+eval :: FOL -> (VarT -> RatSem) -> (PSym -> [RatSem] -> Bool) -> Bool
 \end{spec}
 And go our merry way for most cases:
 \begin{spec}
@@ -194,7 +202,7 @@ t| for each term |t|.
 So we can now extend our type for proofs: the introduction rule for
 universal quantification is \(\frac{A(x) \quad \text{\(x\) fresh
   }}{∀x. A(x)}\).  The corresponding constructor can be
-|UniversalIntro :: (Rat -> Proof) -> Proof|.
+|UniversalIntro :: (RatSem -> Proof) -> Proof|.
 
 % TODO: A simple example might also be a good idea, where we end up
 % with a function f where f t is a proof of P t for all terms t.
@@ -228,7 +236,7 @@ able reconstruct the general form |A(x)| --- indeed, it is not simply
 a matter of substituting |x| for |a|, because there can be several
 occurences of |a| in the formula to prove. So, in fact, the proof
 constructor must contain the general form |A(x)|, for example as a
-function from individuals: |UniversalElim :: (Rat -> Prop) -> Proof ->
+function from individuals: |UniversalElim :: (RatSem -> Prop) -> Proof ->
 Proof|.
 
 Let us sketch the proof-checker cases corresponding to universal
@@ -270,7 +278,7 @@ to obtain |Exists i (A i)|.
 The elimination and introduction rules for existential quantification are:
 
 \[
-  \frac{P(a)}{∃i. P(i)}\hfill\frac{P(a) `Implies` R \text{for every a} \quad \quad ∃i. A(i)}{R}
+  \frac{P(a)}{∃i. P(i)}\hspace{10em}\frac{\text{for every \(a\),~}{P(a) → R}  \quad \quad ∃i. A(i)}{R}
 \]
 The introduction rule says that to prove the existential
 quantification, we only need exhibit one witness ($a$) and one proof
@@ -296,7 +304,7 @@ If we can prove |R| for each member of the family, we can be sure to
 prove |R| when we encounter some family member:
 
 The constructors for proofs can be |ExistsIntro
-:: Rat -> Proof -> Proof| and |ExistsElim :: (Rat -> Prop) -> Proof ->
+:: RatSem -> Proof -> Proof| and |ExistsElim :: (RatSem -> Prop) -> Proof ->
 Proof|. In this case we'd have |i| as the
 first argument of |ExistsProof| and a proof of |A(i)| as its second
 argument.
