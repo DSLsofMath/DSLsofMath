@@ -1,6 +1,8 @@
 \newpage
 \section{Exercises}
 
+ \subsection{Representations of propositions}
+
 % TODO: Perhaps introduce GADT datatype notation use in some exercise solutions
 
 \begin{exercise}
@@ -16,20 +18,50 @@
   Define a function to rewrite propositions into disjunctive normal form.
 \end{exercise}
 
+\begin{exercise}
+  Propositions as polynomials. (This is a difficult exercise: it is a
+  good idea to come back to it after \cref{sec:CompSem} (where one
+  learns about abstract structures) and after \cref{sec:poly}).
 
-\subsection{Exercises: abstract FOL}
+  One way to connect logic to calculus is to view propositions as
+  polynomials (in several variables).
+  %
+  The key idea is to represent the truth values by zero (False) and
+  one (True) and each named proposition |P| by a fresh variable |p|.
+  
+  %
+  To represent logical operations one just has to check that the usual notion of expression
+  evaluation gives the right answer for zero and one. 
+  (Can you express this as a homomorphism --- seen in \cref{sec:CompSem}?)
+
+  The simplest operation to represent is |And| which becomes
+  multiplication: |P And Q| translates to \(p q\) as can be easily
+  checked.
+  %
+  (Note that |p+q| does not represent any proposition, because its
+  value would be |2| for |p=q=1|, but |2| does not represent any
+  boolean.)
+
+  How should |Not|, |Or|, and |Implies| be represented?
+
+% Not p = 1-p
+% Or p q = Not (And (Not p) (Not q)) = 1-(1-p)(1-q) = 1-(1-p-q+pq) = p+q-pq
+% Implies p q = Not (And p (Not q)) = 1-p(1-q) = 1-p+pq
+
+\end{exercise}
+
+\subsection{Proofs}
 \label{exercises-for-dslsofmath-week-2-2017}
 \begin{code}
 {-# LANGUAGE EmptyCase #-}
 import PropositionalLogic
 \end{code}
 
-
-
 \paragraph{Short technical note}\label{short-technical-note}
 
-For these first exercises on the propositional fragment of FOL
-(introduced in \refSec{sec:PropFrag}), you might find it useful
+For the  exercises on the abstract representation of proofs for the propositional calculus
+using Haskell,
+(see \cref{sec:haskell-as-proof checker}), you might find it useful
 to take a look at typed holes, a feature which is enabled by default
 in GHC and available (the same way as the language extension
 \texttt{EmptyCase} above) from version 7.8.1 onwards:
@@ -78,9 +110,9 @@ Prove these theorems (for arbitrary |p|, |q| and |r|):
   Impl (And p q) q
   Or p q -> Or q p
   (p->q) -> (Not q -> Not p)      -- call it |notMap|
-  Or p (Not p)                    -- Hard. Use |notElim|, |notMap|, etc.
+  Or p (Not p)                    -- recall the law of excluded middle
 \end{spec}
-For the hardest example it can be good to use ``theory exploration'':
+For the hardest examples it can be good to use ``theory exploration'':
 try to combine the earlier theorems and rules to build up suitable
 term for which |notMap| or |notElim| could be used.
 
@@ -98,13 +130,13 @@ Translate to Haskell and prove the De Morgan laws:
 \end{exercise}
 \begin{exercise}
 %**TODO: perhaps remove to avoid confusion
-  So far, the implementation of the datatypes has played no role.
+  So far, the implementation of the datatypes has played no role: we treated them as abstract.
   %
   To make this clearer: define the types for connectives in
   |AbstractFol| in any way you wish, e.g.:
 
 \begin{spec}
-  newtype And p q  =  A ()
+  newtype And p q  =  A p q
   newtype Not p    =  B p
 \end{spec}
 
@@ -116,34 +148,9 @@ type checker can indeed be used as a poor man's proof checker.
 
 \end{exercise}
 \begin{exercise}
- The introduction and elimination rules suggest that some
-  implementations of the datatypes for connectives might be more
-  reasonable than others. We have seen that the type of evidence for
-  |p → q| is very similar to the type of functions |p -> q|, so it
-  would make sense to define
-
-\begin{spec}
-  type Impl p q  =  (p -> q)
-\end{spec}
-
-Similarly, |∧-ElimL| and |∧-ElimR| behave like the functions |fst| and
-|snd| on pairs, so we can take
-
-\begin{spec}
-  type And p q  =  (p, q)
-\end{spec}
-
-while the notion of proof by cases is very similar to that of writing
-functions by pattern-matching on the various clauses, making |p ∨ q|
-similar to |Either|:
-
-\begin{spec}
-  type Or p q   =  Either p q
-\end{spec}
-
+ From now on you can assume the representation of proofs defined in \label{sec:intuitionistic-logic}.
 \begin{enumerate}
-\item Define and implement the corresponding introduction and
-  implementation rules as functions.
+\item Check your understanding by re-defining all the introduction and elimination rules as functions.
 \item Compare proving the distributivity laws
 \end{enumerate}
 
@@ -152,7 +159,7 @@ similar to |Either|:
   (p ∨ q) ∧ r ⟷  (p ∧ r) ∨ (q ∧ r)
 \end{spec}
 
-using the ``undefined'' introduction and elimination rules, with
+using only the introduction and elimination rules (no pairs, functions, etc.), with
 writing the corresponding functions with the given implementations of
 the datatypes.
 %
@@ -164,71 +171,25 @@ The first law, for example, requires a pair of functions:
   )
 \end{spec}
 
-\textbf{Moral:} The natural question is: is it true that every time we
-find an implementation using the ``pairs, |->|, |Either|'' translation
-of sentences, we can also find one using the ``undefined''
-introduction and elimination rules?
-%
-The answer, perhaps surprisingly, is \emph{yes}, as long as the
-functions we write are total.
-%
-This result is known as \emph{the Curry--Howard isomorphism}.
-
 \end{exercise}
 \begin{exercise}
- Can we extend the Curry--Howard isomorphism to formulas with |¬|?
-%
-  In other words, is there a type that we could use to define |Not p|,
-  which would work together with pairs, |->|, and |Either| to give a
-  full translation of sentential logic?
-
-  Unfortunately, we cannot.
-  %
-  The best that can be done is to define an empty type
-
-\begin{code}
-data Empty
-\end{code}
-
-and define |Not| as
+Assume
 
 \begin{spec}
-type Not p   =  p  ->  Empty
+type Not p   =  p  ->  False
 \end{spec}
 
-The reason for this definition is: when |p| is |Empty|, the type |Not
-p| is not empty: it contains the identity
-
-\begin{spec}
-idEmpty :: Empty -> Empty
-isEmpty evE = evE
-\end{spec}
-
-When |p| is not |Empty| (and therefore is true), there is no (total,
-defined) function of type |p -> Empty|, and therefore |Not p| is
-false.
-
-Moreover, mathematically, an empty set acts as a contradiction:
-%
-there is exactly one function from the empty set to any other set,
-namely the empty function.
-%
-Thus, if we had an element of the empty set, we could obtain an
-element of any other set.
-
-Now to the exercise:
-
-Implement |notIntro| using the definition of |Not| above, i.e., find a
+Implement |notIntro2| using the definition of |Not| above, i.e., find a
 function
 
 \begin{spec}
-notIntro :: (p -> (q, q -> Empty)) -> (p -> Empty)
+notIntro2 :: (p -> (q, q -> False)) -> (p -> False)
 \end{spec}
 
 Using
 
 \begin{code}
-contraHey :: Empty -> p
+contraHey :: False -> p
 contraHey evE   =  case evE of {}
 \end{code}
 
@@ -238,7 +199,7 @@ prove
 (q ∧ ¬ q) → p
 \end{spec}
 
-You will, however, not be able to prove |p ∨ ¬ p| (try it!).
+Can you prove |p ∨ ¬ p|?
 
 Prove
 
@@ -246,21 +207,12 @@ Prove
 ¬ p ∨ ¬ q  → ¬ (p ∧ q)
 \end{spec}
 
-but you will not be able to prove the converse.
+Can you prove the converse?
 
 \end{exercise}
 \begin{exercise}
-  The implementation |Not p = p -> Empty| is not adequate for
-  representing all the closed formulas in FOL, but it is adequate for
-  \emph{constructive logic} (also known as \emph{intuitionistic}).
-%
-  In constructive logic, the |¬ p| is \emph{defined} as |p -> ⊥|, and
-  the following elimination rule is given for |⊥|: |⊥-Elim : ⊥ -> a|,
-  corresponding to the principle that everything follows from a
-  contradiction (``if you believe ⊥, you believe everything'').
-
-  Every sentence provable in constructive logic is provable in
-  classical logic, but the converse, as we have seen in the previous
+  Recall that every sentence provable in constructive logic is provable in
+  classical logic. But the converse, as we have seen in the previous
   exercise, does not hold.
 %
   On the other hand, there is no sentence in classical logic which
@@ -273,16 +225,37 @@ but you will not be able to prove the converse.
   Show this by implementing the following function:
 
   \begin{spec}
-    noContra :: (Either p (p -> Empty) -> Empty) -> Empty
+    noContra :: (Either p (p -> False) -> False) -> False
   \end{spec}
 
   Hint: The key is to use the function argument to |noContra| twice.
 
 \end{exercise}
 
-%\newpage
+
+\subsection{Continuity and limits}
+
+\begin{itemize}
+\item when asked to ``sketch an implementation'' of a function, you
+  must explain how the various results might be obtained from the
+  arguments, in particular, why the evidence required as output may
+  result from the evidence given as input.
+  %
+  You may use all the facts you know (for instance, that addition is
+  monotonic) without formalisation.
+
+\item to keep things short, let us abbreviate a significant chunk of
+  the definition of |a haslim L| (see
+  \refSec{par:LimitOfSequence}) by
+  \begin{spec}
+     P : Seq X -> X -> RPos -> Prop
+     P a L ε = Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (absBar (an - L) < ε)))
+  \end{spec}
+
+\end{itemize}
+
 \begin{exercise}
-  \textit{From exam 2016-08-23}
+  \fromExam{2016-08-23}
 
   Consider the classical definition of continuity:
 
@@ -310,10 +283,9 @@ but you will not be able to prove the converse.
 
 \begin{exercise}
 
-  \textit{From exam 2017-08-22}
+  \fromExam{2017-08-22}
 
-  Adequate notation for mathematical concepts and proofs
-  (or ``50 shades of continuity'').
+  Adequate notation for mathematical concepts and proofs.
 
   A formal definition of ``$f : X \to ℝ$ is continuous'' and ``$f$ is
   continuous at $c$'' can be written as follows (using the helper
@@ -357,31 +329,6 @@ but you will not be able to prove the converse.
   \end{enumerate}
 \end{exercise}
 
-\subsection{More exercises}
-
-
-Preliminary remarks
-
-\begin{itemize}
-\item when asked to ``sketch an implementation'' of a function, you
-  must explain how the various results might be obtained from the
-  arguments, in particular, why the evidence required as output may
-  result from the evidence given as input.
-  %
-  You may use all the facts you know (for instance, that addition is
-  monotonic) without formalisation.
-
-\item to keep things short, let us abbreviate a significant chunk of
-  the definition of |a haslim L| (see
-  \refSec{par:LimitOfSequence}) by
-  \begin{spec}
-     P : Seq X -> X -> RPos -> Prop
-     P a L ε = Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (absBar (an - L) < ε)))
-  \end{spec}
-
-\end{itemize}
-
-\renewcommand{\labelenumi}{\alph{enumi}.}
 
 \begin{exercise}\label{exc:NotConv}
   Consider the statement:
@@ -451,30 +398,3 @@ Same as Exercise \ref{exc:NotConv} but for |a = id|.
   \end{enumerate}
 \end{exercise}
 
-\begin{exercise}
-  Propositions as polynomials.
-
-  One way to connect logic to calculus is to view propositions as
-  polynomials (in several variables).
-  %
-  The key idea is to represent the truth values by zero (False) and
-  one (True) and each named proposition |P| by a fresh variable |p|.
-  %
-  To represent operations one just has to check that normal expression
-  evaluation gives the right answer for zero and one.
-
-  The simplest operation to represent is |And| which becomes
-  multiplication: |P And Q| translates to \(p q\) as can be easily
-  checked.
-  %
-  (Note that |p+q| does not represent any proposition, because its
-  value would be |2| for |p=q=1|, but |2| does not represent any
-  boolean.)
-
-  How should |Not|, |Or|, and |Implies| be represented?
-
-% Not p = 1-p
-% Or p q = Not (And (Not p) (Not q)) = 1-(1-p)(1-q) = 1-(1-p-q+pq) = p+q-pq
-% Implies p q = Not (And p (Not q)) = 1-p(1-q) = 1-p+pq
-
-\end{exercise}

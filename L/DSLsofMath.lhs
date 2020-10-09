@@ -52,7 +52,7 @@
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 
 \theoremstyle{definition}
-\newtheorem{exercise}{Exercise}[section]
+\newtheorem{exercise}{Exercise}[chapter]
 % Old exercise style (until 2017-11-08): \renewcommand*{\theenumi}{\textbf{E\thesection.\arabic{enumi}}}
 \newenvironment{solution}% environment name
 {% begin code
@@ -103,6 +103,7 @@
 \newcommand{\rowvec}[1]{\rowvecc{#1_0}{#1_n}}
 \newcommand{\rowvecc}[2]{\rowveccc{#1 &  \cdots &  #2}}
 \newcommand{\rowveccc}[1]{\begin{bmatrix} #1 \end{bmatrix}}
+\newcommand{\fromExam}[1]{\lnOnly{\emph{From exam #1}}}
 
 
 \title{Domain-Specific Languages of Mathematics

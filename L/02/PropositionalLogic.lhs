@@ -423,7 +423,7 @@ conjunctionCommutativeProof2 =
 
 
 \subsection{The Haskell type-checker as a proof checker}
-
+\label{sec:haskell-as-proof checker}
 Perhaps surprisingly, the proof-checker that we just wrote is already
 built-in in the Haskell compiler. Let us clarify what we mean, using
 the same example, but adapt it to let the type-checker do the work:
@@ -478,12 +478,15 @@ We can make the link beween Haskell and logic more tight if we
 restrict ourselves to \emph{intuitionistic} logic.
 
 One way to characterize intuitionistic logic is that it lacks native
-support for negation. Instead, |Not a| is represented as |a `Implies`
+support for negation. Instead, |Not p| is represented as |p `Implies`
 False|:
 \begin{code}
-type Not a = a `Implies` False
+type Not p = p `Implies` False
 \end{code}
-When doing so, one gives up on |notElim|: there is no way to eliminate
+The intuition behind this definition is the principle of proof by contradiction: if assuming |p| leads to a contradition (|False|),
+then |p| must be false; so |Not p| should hold.
+
+When doing this kind of definition, one gives up on |notElim|: there is no way to eliminate
 (double) negation.
 \begin{code}
 notElim = error "not possible as such in intuitionistic logic"
