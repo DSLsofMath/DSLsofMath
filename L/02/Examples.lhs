@@ -86,10 +86,12 @@ To sum up: yes, there are irrational numbers such that their power is
 rational.
 %
 We can prove the existence without knowing what numbers |p| and |q|
-actually are!
+actually are: this is because negation-elimination is a \emph{non-constructive principle}.
+The best we could do in an intuitionistic logic, which is constructive, is to show that, if they were not to exist,
+then we come to a contradiction.
 %
 
-\subsubsection{Case study: there is always another prime}
+\subsubsection{There is always another prime}
 
 As an example of combining quantification (forall, exists) and implication let us turn
 to one statement of the fact that there are infinitely many primes.
@@ -107,8 +109,8 @@ Combined with the fact that there is at least one prime (like |2|) we
 can repeatedly refer to this statement to produce a never-ending
 stream of primes.
 
-To prove this formula we first translate from logic to programs as
-described above.
+To prove this formula we are going to translate from logic to programs as
+described in \cref{sec:curry-howard}.
 %
 We can translate step by step, starting from the top level.
 %
@@ -125,8 +127,10 @@ the theorem:
 proof : (n : Term) -> Prime n -> ((m : Term), (Prime m, m>n))
 \end{spec}
 %
-Now we can start filling in the definition of |proof| as a
-2-argument function returning a triple: % nested pair
+This time the proof is going to be constructive: we have to find a concrete bigger prime, |m|.
+We can start filling in the definition of |proof| as a
+2-argument function returning a triple. % nested pair
+The key idea is to consider |1+factorial n| as a canditate new prime:
 %
 \begin{spec}
 proof n np = (m, (pm, gt))
@@ -151,7 +155,10 @@ where |mod x y| is the remainder after integer division of |x| by |y|.
 %
 Thus |m'| is not divisible by any number from |2| to |n|.
 %
-But is it a prime?
+But is it a prime? Here we could, has before, use the law of excluded middle to
+progress. But we don't have to, because primality is a \emph{decidable property}:
+we can write a terminating function which checks if |m'| is prime.
+We can then proceed by case analysis again:
 %
 If |m'| is prime then |m=m'| and the proof is done (because |1+n! >= 1
 + n > n|).
@@ -162,12 +169,13 @@ Then |1 == mod m' p == (mod m p)*(mod q p)| which means that neither
 |m| nor |q| are divisible by |p| (otherwise the product would be
 zero).
 %
-Thus they must both be |>n|.
+Thus they must both be |>n|, including |m|.
 %
 QED.
 
-Note that the proof can be used to define a somewhat useful function
-which takes any prime number to some larger prime number.
+The constructive character of this proofs means that it can be used to
+define a (mildly useful) function which takes any prime number to
+some larger prime number.
 %
 We can compute a few example values:
 

@@ -495,6 +495,7 @@ notIntro (evPimpliesQ,evPimpliesNotQ) evP =
     (evPimpliesNotQ `implyElim` evP ) `implyElim` (evPimpliesQ `implyElim` evP)
 \end{code}
 
+\label{sec:curry-howard}
 By focusing on intuitionistic logic, we can give a \emph{typed}
 representation for each of the formula constructors. Let us consider implication first.
 |impIntro| and |impElim| seem to be conversion from and to functions, and so it
