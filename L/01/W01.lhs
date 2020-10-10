@@ -1,11 +1,17 @@
 %{
 %format bi = "\Varid{bi}"
-\chapter{Types, DSLs, and complex numbers}
+\chapter[Types, DSLs, and complex numbers]{Types, Arithmetic and Complex numbers
+\footnote{This chapter is partly based on material by
+\citet{TFPIE15_DSLsofMath_IonescuJansson} which appeared at the International
+Workshop on Trends in Functional Programming in Education, 2015.}}
 \label{sec:DSLComplex}
-\reviseForBook{Put this at the end of the chapter?}
-This chapter is partly based on the paper
-\citep{TFPIE15_DSLsofMath_IonescuJansson} from the International
-Workshop on Trends in Functional Programming in Education 2015.
+
+In this chapter we exemplify our method by applying our method to the
+domain of arithmetic first, and complex numbers second, which we
+assume most readers will already be familiar with. However, before
+doing so, we introduce several central concepts in the \course{}, as
+well as laying out methodological assumptions.
+
 %
 We will implement certain concepts in the functional programming
 language Haskell and
@@ -33,10 +39,12 @@ As an example, the second to last line imports types for rational
 numbers and the infix operator |(%)| used to construct ratios
 (|1%7| is Haskell notation for $\frac{1}{7}$, etc.).
 
-\section{Intro: Pitfalls with traditional mathematical notation}
+\section{Common pitfalls with traditional mathematical notation}
+\jp{Perhaps this should go in intro chapter.}
 \label{sec:pitfalls}
 
-\paragraph{A function or the value at a point?}
+\subsection{A function or the value at a point?}
+\label{sec:function-or-value-at-a-point}
 
 Mathematical texts often talk about ``the function $f(x)$'' when ``the
 function $f$'' would be more clear.
@@ -55,10 +63,12 @@ constant (for some fixed value $x$) or as a function of $x$.
 Paying attention to types and variable scope often helps to sort out
 these ambiguities.
 
-\jp{Representing expressions of one variable as functions (of one argument) is a recurring technique in this book.}
-\jp{And in some places we're still guilty of making this confusion. It may be worth having a margin symbol every time we do this.}
+\jp{Representing expressions of one variable as functions (of one argument) is a recurring technique in this \course{}.}
+\jp{Maybe we should introduce the syntax (and semantics?) for functions of one arguments already in this chapter.}
+\jp{And in some places we're still guilty of making this confusion. It may be worth having a margin symbol every time we do this.
+Or not make the confusion.}
 
-\paragraph{Scoping}
+\subsection{Scoping}
 \label{sec:scoping}
 The syntax and scoping rules for the integral sign are rarely
 explicitly mentioned, but looking at it from a software perspective
@@ -76,11 +86,14 @@ definition \(f(x) = x^2\) reveals a rather odd rule: instead of
 %
 (There are historical explanations for this notation, and it is
 motivated by computation rules in the differential calculus, but we
-will not go there now.\jp{We are also aware that the notation $\int dx f(x)$ is sometimes used, especially by physicists, but it is the exception rather than the rule.})
+will not go there now. We are also aware that the notation
+$\int dx f(x)$, which emphasises the bound variable, is sometimes
+used, especially by physicists, but it remains the exception rather
+than the rule at the time of writing.)
 %
 It seems like the scope of the variable ``bound'' by |d| is from the
 integral sign to the final |dx|, but does it also extend to the
-limits?
+limits of the domain of integration?
 %
 The answer is no, as we can see from a slightly extended example:
 %
@@ -98,7 +111,7 @@ renaming is a sufficiently important operation to be more explicitly
 mentioned.
 %*TODO: Perhaps add simple exercises on renaming and variable capture
 
-\section{Types of |data|}
+\section{Types of |data| and functions}
 
 Dividing up the world (or problem domain) into values of different
 types is one of the guiding principles of this \course{}.
@@ -106,7 +119,7 @@ types is one of the guiding principles of this \course{}.
 \begin{figure}
   \centering
   \includegraphics[width=0.5\linewidth]{New_cuyama.jpg}
-  \caption{Humorously inappropriate use of numbers on a sign in New Cuyama, California. \href{https://commons.wikimedia.org/w/index.php?curid=2513523}{By I, MikeGogulski, CC BY 2.5, Wikipedia.} }
+  \caption{Humorously inappropriate type mismatch on a sign in New Cuyama, California. \href{https://commons.wikimedia.org/w/index.php?curid=2513523}{By I, MikeGogulski, CC BY 2.5, Wikipedia.} }
   \label{fig:TypeErrorSign}
 \end{figure}
 %
@@ -117,13 +130,12 @@ theories, languages, programs and proofs.
 
 As mentioned in the introduction, we emphasise the dividing line
 between syntax (what mathematical expressions look like) and semantics
-(what they mean)\pedantic{The only way to be precise about semantics is to use a formal language, and so semantics end up being presented in the form of a syntax.
-Thus in this textbook, we will clarify as much as possible what we intend as syntax and what we indend as semantics as we go along.}.
-%
+(what they mean).
+
 As an example we start with \emph{type expressions} --- first in
 mathematics and then in Haskell.
 %
-To a first approximation you can think of types as sets.
+To a first approximation one can think of types as sets.
 %
 The type of truth values, |True| and |False|, is often called |Bool|
 or just |BB|.
@@ -139,30 +151,35 @@ of real numbers.
 %
 
 So far the syntax is trivial --- just names for certain sets --- but
-we can also combine these, and the most important construction is the
+we can also combine these, and for our purposes the most important construction is the
 function type.
 %
+\subsection{Functions}
 For any two type expressions |A| and |B| we can form the function type
 |A -> B|.
 %
-The semantics is the set of ``functions from |A| to
-|B|''\footnote{Formally the semantics is the set of functions from the
-  semantics of |A| to the semantics of |B|.}
+Its semantics is the set of (semantic) functions from the
+  semantics of |A| to the semantics of |B|.\jp{In fact we don't do this for other types. Is this really necessary?}
+\footnote{The only way to be precise about semantics
+  is to use a formal language, and so semantics sometimes does not
+  seem to be that much different from syntax, as in this example.
+  Fortunately, in the rest of this \course{}, we will be describing domains where the semantics is gives more insight than here.}
 %
 As an example, the semantics of |BB -> BB| is a set of four functions:
 |{const False, id, not, const True}| where |not : BB -> BB| is boolean
 negation.\pedantic{Additionally in Haskell one has to deal with
   diverging computations. These induce very subtle difficulties which
-  we mention later.}
+  we mention later. Fortunately, in the rest of this \course{}, we can
+  largely ignore those subtleties.}
 %
 The function type construction is very powerful, and can be used to
 model a wide range of concepts in mathematics (and the real world).
-
-\paragraph{Function building blocks.}
 %
-As function types are really important, we will now introduce a few basic
+Because function types are really important, we immediately introduce a few basic
 building blocks which are as useful for functions as zero and one are
 for numbers.
+
+\paragraph{Identity function}
 %
 For each type |A| there is an \emph{identity function} |idA : A -> A|.
 %
@@ -186,9 +203,6 @@ variables and two arguments:
 const :: a -> b -> a
 const x _ = x
 \end{code}
-%
-Two-argument functions like |const| are sometimes used as binary
-operators.
 %
 
 The term ``arity'' is used to describe how many arguments a function
@@ -259,7 +273,7 @@ In Haskell we get the following type:
 %
 which may take a while to get used to.
 
-\paragraph{Partial \& total functions}
+\paragraph{Partial and total functions}
 
 There are some differences between ``mathematical'' functions and
 Haskell functions.
@@ -309,7 +323,7 @@ course.
 % \hfill{}
 % %\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
 
-\paragraph{Pure \& impure functions}
+\paragraph{Pure and impure functions}
 
 Many programming languages provide so called ``functions'' which are
 actually not functions at all, but rather procedures: computations
@@ -334,9 +348,11 @@ true occasionally.
 Fortunately, in mathematics and in Haskell all functions are pure.
 %}
 
-%**TODO: Perhaps more about cartesion product, etc.
+%**TODO: Perhaps more about cartesian product, etc.
 %*TODO forward pointer to exercises about cardinality~\ref{exc:counting}
 %*TODO explain the e : t syntax (and mention e `elem` t)
+
+\subsection{Functions}
 
 \paragraph{Variable names as type hints}
 
@@ -373,7 +389,7 @@ functions to functions of a new type.
 To the logician or the computer scientist, the way of phrasing this
 difference in the quoted text sounds strange:
 %
-surely the \emph{name} of the independent variable does not matter:
+surely the \emph{name} of the independent variable does not matter;
 %
 the Laplace transformation could very well return a function of the
 ``old'' variable |t|.
@@ -406,7 +422,7 @@ here: once in |T -> CC|, once in |S -> CC| and finally at the top
 level to indicate that the transform maps functions to functions.
 %
 This means that |Lap| is an example of a higher-order function,
-and we will see many uses of this idea in this book.
+and we will see many uses of this idea in this \course{}.
 
 Now we move to introducing some of the ways types are defined in
 Haskell, our language of choice for the implementation (and often also
@@ -510,11 +526,11 @@ which is isomorphic to |Nat|.
 Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
 
 
-The |data| keyword will be used throughout the course to define
-datatypes of syntax trees for different kinds of expressions: simple
+The |data| keyword will be used throughout the \course{} to define
+(inductive) datatypes of syntax trees for different kinds of expressions: simple
 arithmetic expressions, complex number expressions, etc.
 %
-But it can also be used for non-recursive datatypes, like |data Bool =
+But it can also be used for non-inductive datatypes, like |data Bool =
 False || True|, or |data TownData = Town String Population Established|.
 %
 The |Bool| type is the simplest example of a \emph{sum type}, where
@@ -528,7 +544,7 @@ name, population, and year of establishment of the town modelled.
 (See Exercise~\ref{exc:counting} for the intuition behind the terms
 ``sum'' and ``product'' used here.)
 
-\paragraph{|Maybe| and parameterised types.}
+\paragraph{|Maybe| and parameterised types}
 %
 It is very often possible to describe a family of types using a type parameter.
 %
@@ -557,35 +573,38 @@ inv r  = Just (1/r)
 %*TODO: perhaps move cartesian product earlier (to math / set part)
 Two other examples of, often used, parameterised types are |(a,b)| for
 the type of pairs (a product type) and |Either a b| for either an |a|
-or a |b| (a sum type).
+or a |b| (a sum type).\jp{Why do we give the semantics of functions but not the semantics of other types?}
 %
 \begin{spec}
 data Either p q = Left p | Right q
 \end{spec}
 
 
-\subsection{|Env| and variable |lookup|.}
-
-The type synonym
+\subsection{Partial functions}
+As a warmup, and for reasons which will become obvious soon (in
+\cref{sec:ArithExp}), we begin by presenting a DSL for partial
+functions with a finite domain.  The type |Env v s| will be the
+\emph{syntax} for the type of partial functions from |v| to |s|, and
+defined as follows:
 %
 \begin{spec}
 type Env v s = [(v,s)]
 \end{spec}
 %
-is one way of expressing the type of partial functions from |v| to |s|.
 %
 As an example value of this type we can take:
 %
 \begin{code}
 env1 :: Env String Int
-env1 = [("hej", 17), ("du", 38)]
+env1 = [("hey", 17), ("you", 38)]
 \end{code}
 
-We can see the type |Env v s| as a syntactic representation of a
-partial function from |v| to |s|.
-%
-We can convert to a total function |Maybe| returning an |s| using
-|evalEnv|:
+The intended meaning is that |"hey"| is mapped to |17|, etc.  The
+semantic domain is the set of partial functions, and, as discussed
+above, we represent those as the Haskell type |v -> Maybe s|.
+
+Our evaluation function, |evalEnv|, maps the syntax to the semantics,
+and as such has the following type:
 %
 \begin{code}
 evalEnv :: Eq v =>  Env v s -> (v -> Maybe s)
@@ -603,26 +622,28 @@ taking an |Env v s| and returning a function, or as the type of a
 two-argument function taking an |Env v s| and a |v| and maybe
 returning an |s|.
 
+The implementation proceeds by searching for the first occurence of
+|x| In the list of pairs |(v,s)| such that |x==v|, and
+return |Just s| if one is found, and |Nothing| otherwise.
 %**TODO: Explain |where| clause syntax
 %**TODO: Explain boolean guards
 \begin{code}
-evalEnv vss var  =  findFst vss
+evalEnv vss x  =  findFst vss
   where  findFst ((v,s):vss)
-           | var == v         =  Just s
-           | otherwise        =  findFst vss
-         findFst []           =  Nothing
+           | x == v         =  Just s
+           | otherwise      =  findFst vss
+         findFst []         =  Nothing
 \end{code}
 %
-Or we can use the Haskell prelude function |lookup = flip evalEnv|:
+Another equivalent definition is |evalEnv = flip lookup|, where
+|lookup| is defined in the Haskell Prelude:
 %
 \begin{spec}
 lookup :: Eq a => a -> [(a, b)] -> Maybe b
 \end{spec}
-%
-We will use |Env| and |lookup| below (in \refSec{sec:ArithExp})
-when we introduce abstract syntax trees containing variables.
 
-\section{A syntax for simple arithmetical expressions}
+\section{Arithmetic expressions of several variables}
+
 \label{sec:ArithExp}
 
 \begin{code}
@@ -668,7 +689,7 @@ are clashing.
 The typical ways around this are: define the types in different
 modules, or rename one of them (often by adding primes as in |AE'|).
 %
-In this book we often take the liberty of presenting more than one
+In this \course{} we often take the liberty of presenting more than one
 version of a datatype without changing the names, to avoid multiple
 modules or too many primed names.
 
@@ -677,7 +698,7 @@ Together with a datatype for the syntax of arithmetic expressions we
 also want to define an evaluator of the expressions.
 %
 The concept of ``an evaluator'', a function from the syntax to the
-semantics, is something we will return to many times in this book.
+semantics, is something we will return to many times in this \course{}.
 %
 We have already seen one example: the function |evalEnv| which
 translates from a list of key-value-pairs (the abstract syntax of the
@@ -685,7 +706,7 @@ environment) to a function (the semantics).
 
 In the evaluator for |AE| we take this one step further: given an
 environment |env| and the syntax of an arithmetic expression |e| we
-compute the semantics of that expression\jp{Or more accurately the semantics is a function |Env String Integer -> Maybe Integer|}.
+compute the semantics of that expression\footnote{or more accurately the semantics is a function |Env String Integer -> Maybe Integer|}.
 %
 %*TODO: perhaps swith Times to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
 %**TODO explain more for those not used to Haskell
@@ -722,19 +743,20 @@ liftM _op  _         _         =  Nothing
 \section{A case study: complex numbers}
 \label{sec:complexcase}
 
-We now turn to our first case study: an analytic reading of the
-introduction of complex numbers by \citet{adams2010calculus}.
+We now turn to our first field study, an analytic reading of a piece
+of a math textbook found ``in the wild'': the introduction of complex
+numbers by \citet{adams2010calculus}.
 %
 We choose a simple domain to allow the reader to concentrate on the
 essential elements of our approach without the distraction of
 potentially unfamiliar mathematical concepts.
 %
-For this section, we temporarily pretend to forget any previous
+In fact, for this section, we temporarily pretend to forget any previous
 knowledge of complex numbers, and study the textbook of Adams and
 Essex as we would approach a completely new domain, even if that leads
 to a somewhat exaggerated attention to detail.
 
-Adams and Essex introduce complex numbers in Appendix A.
+Adams and Essex introduce complex numbers in Appendix A of their book.
 %
 The section \emph{Definition of Complex Numbers} starts with:
 

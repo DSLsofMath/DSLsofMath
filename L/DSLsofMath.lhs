@@ -84,11 +84,8 @@
 %endif
 \newcommand\course{\lnOnly{course}\bookOnly{book}}
 \newcommand{\TODO}[1]{\todo{#1}}
-\newcommand{\refFig}[1]{Fig.~\ref{#1}}
-\newcommand{\refSec}[1]{Sec.~\ref{#1}}
-\newcommand{\refSecs}[1]{Secs.~\ref{#1}}
-\newcommand{\refSecI}[1]{Section~\ref{#1}}
-\newcommand{\refSecsI}[1]{Sections~\ref{#1}}
+\newcommand\refFig{\cref}
+\newcommand\refSec{\cref}
 \newcommand{\refTab}[1]{Tab.~\ref{#1}}
 \newcommand{\tyconsym}[1]{\mathrel{{:}{#1}{:}}}
 % the `doubleequals' macro is due to Jeremy Gibbons
