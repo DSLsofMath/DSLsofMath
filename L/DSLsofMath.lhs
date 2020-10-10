@@ -168,10 +168,11 @@
 %include 09/W09.lhs
 %include End.lhs
 
-\clearpage
+
+\appendix
 
 %if lectureNotes
-\chapter{Appendix: Exam Practice}
+\chapter{Exam Practice}
 
 \newcommand{\includeexam}[1]{\includeexaminner{Exam #1}{app:Exam#1}{../Exam/#1/Exam-#1.pdf}}
 
@@ -187,13 +188,10 @@
 \includeexam{2016-08}
 \includeexam{2017-03}
 \includeexam{2017-08}
-
-\chapter{Appendix: Non-sorted Extra material}
-% include 01/CSem.lhs
-
 %endif
 
-\cleardoublepage
+%include 01/CSem.lhs
+
 \bibliographystyle{abbrvnat}
 \bibliography{ref}
 \end{document}

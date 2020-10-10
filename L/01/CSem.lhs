@@ -1,4 +1,4 @@
-\section{A parameterised type and some complex number operations on it}
+\chapter{Parameterised Complex Numbers}
 \label{app:CSem}
 
 \begin{code}
