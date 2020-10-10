@@ -213,19 +213,10 @@ flip op x y = op y x
 As an example |flip (-) 5 10 == 10 - 5| and |flip const x y ==
 const y x == y|.
 
-\paragraph{Function composition.}
+\paragraph{Function composition}
 
-The infix operator \verb+.+ (period) in Haskell is an implementation
-of the mathematical operation of function composition.
-%
-The period is a crude ASCII approximation of the composition symbol
-$\circ{}$ typically used in mathematics.
-%
-(The symbol $\circ{}$ is encoded as \verb"U+2218" and called \textsc{ring
-operator} in Unicode, \verb+&#8728+ in HTML, \verb+\circ+ in \TeX,
-etc.)
-%
-Its implementation is:
+The composition of two functions |f| and |g|, written |f . g| and
+sometimes pronounced ``|f| after |g|'' can be defined as follows:
 %
 \begin{spec}
 f . g = \x -> f (g x)

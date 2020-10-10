@@ -392,19 +392,51 @@ be possible to pick up quite a bit of Haskell along the way.
 
 \section{Notation and code convention}
 
-The source code of the book, including all the Haskell code, is
-available on GitHub in the repository
-\url{https://github.com/DSLsofMath/DSLsofMath}.
+The book is a literate program: that is, it consist of text
+interspersed with code fragments.
 %
-The reader is encouraged to play with the examples to get a feeling for
-how they work.
+The source code of the book (including in particular all the Haskell
+code) is available on GitHub in the repository
+\url{https://github.com/DSLsofMath/DSLsofMath}.
+
+Our code snippets are typeset using \texttt{lhs2tex}\todo{citation},
+to hit a compromise between fidelity to the Haskell source and
+maximize readability from the point of view of someone used to
+conventional mathematical notation.
+%
+For example, function composition is typically represented as a circle
+in mathematics texts. When typesetting, a suitable circle glyph can be
+obtained in various ways, depending on the typesetting system:
+\verb+&#8728+ in HTML, \verb+\circ+ in \TeX, or by the \textsc{ring
+  operator} unicode codepoint (\verb"U+2218"), which appears ideal for
+the purpose.
+%
+This codepoint can also be used in Haskell (recent implementations
+allow any sequence of codepoints from the unicode \textsc{symbol}
+class).  However, the Haskell Prelude uses instead the infix operator
+\verb+.+ (period), as a crude ASCII approximation, possibly chosen for
+its availability and the ease with which it can be typed.
+%
+In this book, as a compromise, we use the period in our source code,
+but our typesetting tool renders it as a circle glyph. If, when
+looking at typset pages, any doubt should remain regarding to the form
+of the Haskell source, we urge the reader to consult the github
+repository. 
+
+%
+The reader is encouraged to experiment with the examples to get a
+feeling for how they work. A more radical, but perhaps more
+instructive alternative would be to recreate all the Haskell examples
+from scratch.
 
 Each chapter ends with exercises to help the reader practice the
 concepts just taught.
 %
+%if lectureNotes
 Most exam questions from the first five exams of the DSLsofMath course
 have been included as exercises, so for those of you taking the
 course, you can check your progress towards the final examination.
+%endif
 %
 Sometimes the chapter text contains short, inlined questions, like
 ``Exercice~\ref{exc:fmap}: what does function composition do to a sequence?''.
