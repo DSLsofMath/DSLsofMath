@@ -452,7 +452,7 @@ The aim is to improve the reader's skills in understanding, modelling,
 and implementing mathematical text.
 
 
-%TODO: fill in more about notation
+\jp{Reading guide as dependency graph}
 
 \section*{Acknowledgments}
 

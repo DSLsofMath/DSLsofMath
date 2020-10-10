@@ -1,6 +1,13 @@
-\documentclass[twoside]{book}
+\documentclass[oneside]{book} % use one-side as long as we edit the book (easier to read in pdf reader).
+%if book
 \usepackage{mathpazo}
-\usepackage{a4wide}
+%endif
+%if book
+% let's use the default size to avoid luring ourselves into huge lines.
+%else
+\usepackage[margin=2cm,a4paper]{geometry}
+% \usepackage{a4wide} (the above is even more compact and easier to control)
+%endif
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{mathrsfs}
