@@ -539,7 +539,7 @@ f = undefined
 \end{code}
 %
 To the Haskell interpreter, such empty |data|-declarations mean that
-there is no way to construct any element for them. But at this stage
+there is no way to construct any element for them, as we saw in \cref{sec:curry-howard}. But at this stage
 of the specfication, we will use this notation to indicate that we do
 not know anything about values of those types.
 %

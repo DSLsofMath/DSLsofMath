@@ -541,7 +541,7 @@ type Truth = ()
 truthIntro = ()
 \end{code}
 
-And falsehood is represented as the \emph{empty} type:
+And falsehood is represented as the \emph{empty} type (with no constructor):
 \begin{code}
 data False
 falseElim x = case x of {}
