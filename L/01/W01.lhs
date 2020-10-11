@@ -1,6 +1,6 @@
 %{
 %format bi = "\Varid{bi}"
-\chapter[Types, DSLs, and complex numbers]{Types, Arithmetic and Complex numbers
+\chapter[Types, Arithmetic, Complex numbers and Sequences]{Types, Arithmetic and Complex numbers and Sequences
 \footnote{This chapter is partly based on material by
 \citet{TFPIE15_DSLsofMath_IonescuJansson} which appeared at the International
 Workshop on Trends in Functional Programming in Education, 2015.}}
@@ -643,15 +643,16 @@ lookup :: Eq a => a -> [(a, b)] -> Maybe b
 \end{spec}
 
 \section{Arithmetic expressions of several variables}
-
+\jp{Most certainly we should collect: 1. this section 2. the remark on expressions/functions 3. the definition of ``function'' instances into a section on expressions and functions of one or several variables.}
 \label{sec:ArithExp}
+Let us define the following type, describing simple arithmetic
+expressions.
 
 \begin{code}
 data AE = V String | P AE AE | T AE AE
 \end{code}
 
-This declaration introduces
-
+The above declaration introduces:
 \begin{itemize}
 \item a new type |AE| for simple arithmetic expressions,
 \item a constructor |V :: String -> AE| to represent variables,
@@ -659,7 +660,7 @@ This declaration introduces
 \item a constructor |T :: AE -> AE -> AE| to represent times.
 \end{itemize}
 
-Example values: |x = V "x"|, |e1 = P x x|, |e2 = T e1 e1|
+Example values include |x = V "x"|, |e1 = P x x|, and |e2 = T e1 e1|.
 
 If you want a constructor to be used as an infix operator you need to use
 symbol characters and start with a colon:
@@ -668,7 +669,7 @@ symbol characters and start with a colon:
 data AE' = V' String | AE' :+ AE' | AE' :* AE'
 \end{spec}
 
-Example values: |y = V' "y"|, |e1 = y :+ y|, |e2 = x :* e1|
+Example values are then |y = V' "y"|, |e1 = y :+ y| and |e2 = x :* e1|.
 
 Finally, you can add one or more type parameters to make a whole family
 of datatypes in one go:
@@ -686,7 +687,7 @@ contain both these definitions of |AE'|.
 This is because the name of the type and the names of the constructors
 are clashing.
 %
-The typical ways around this are: define the types in different
+The typical ways around this are either to define the types in different
 modules, or rename one of them (often by adding primes as in |AE'|).
 %
 In this \course{} we often take the liberty of presenting more than one
@@ -695,26 +696,27 @@ modules or too many primed names.
 
 
 Together with a datatype for the syntax of arithmetic expressions we
-also want to define an evaluator of the expressions.
+ want to define an evaluator of the expressions.
 %
 The concept of ``an evaluator'', a function from the syntax to the
 semantics, is something we will return to many times in this \course{}.
 %
 We have already seen one example: the function |evalEnv| which
 translates from a list of key-value-pairs (the abstract syntax of the
-environment) to a function (the semantics).
+environment) to a (partial) function (the semantics).
 
-In the evaluator for |AE| we take this one step further: given an
+In the evaluator for |AE| we take this idea one step further: given an
 environment |env| and the syntax of an arithmetic expression |e| we
-compute the semantics of that expression\footnote{or more accurately the semantics is a function |Env String Integer -> Maybe Integer|}.
+compute the value of that expression. Hence, the semantics of |AE| is
+a function of type |Env String Integer -> Maybe Integer|.
 %
-%*TODO: perhaps swith Times to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
+%*TODO: perhaps switch Times to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
 %**TODO explain more for those not used to Haskell
 \begin{code}
-evalAE :: Env String Integer -> (AE -> Maybe Integer)
-evalAE env (V x)      =  evalEnv env x
-evalAE env (P e1 e2)  =  mayP  (evalAE env e1)  (evalAE env e2)
-evalAE env (T e1 e2)  =  mayT  (evalAE env e1)  (evalAE env e2)
+evalAE :: AE -> (Env String Integer -> Maybe Integer)
+evalAE (V x)     env  =  evalEnv env x
+evalAE (P e1 e2) env  =  mayP  (evalAE e1 env)  (evalAE e2 env)
+evalAE (T e1 e2) env  =  mayT  (evalAE e1 env)  (evalAE e2 env)
 
 mayP :: Maybe Integer -> Maybe Integer -> Maybe Integer
 mayP (Just a) (Just b)  =  Just (a+b)
@@ -727,7 +729,7 @@ mayT _        _         =  Nothing
 
 The corresponding code for |AE'| is more general and you don't need to
 understand it at this stage, but it is left here as an example for
-those with a stronger Haskell background.
+those with a stronger Haskell background.\jp{Actually the AE/AE'  generalisation has nothing to do with the change in code.}
 %
 \begin{code}
 evalAE' :: (Eq v, Num sem) =>  (Env v sem) -> (AE' v -> Maybe sem)
@@ -743,9 +745,9 @@ liftM _op  _         _         =  Nothing
 \section{A case study: complex numbers}
 \label{sec:complexcase}
 
-We now turn to our first field study, an analytic reading of a piece
-of a math textbook found ``in the wild'': the introduction of complex
-numbers by \citet{adams2010calculus}.
+We now turn to our first study of mathematics as found ``in the
+wild'': we will do an analytic reading of a piece of the
+introduction of complex numbers by \citet{adams2010calculus}.
 %
 We choose a simple domain to allow the reader to concentrate on the
 essential elements of our approach without the distraction of
@@ -837,8 +839,8 @@ data ComplexA  =  CPlus1 REAL REAL ImagUnits  -- the form |a + bi|
                |  CPlus2 REAL ImagUnits REAL  -- the form |a + ib|
 \end{code}
 %
-We can give the translation from the abstract syntax to the concrete
-syntax as a function |showCA|:
+We can give the translation from the (abstract) syntax to its concrete
+representation as a string of characters, as the function |showCA|:
 %
 \begin{code}
 showCA ::  ComplexA       ->  String
@@ -846,16 +848,16 @@ showCA     (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ showIU i
 showCA     (CPlus2 x i y)  =  show x ++ " + " ++ showIU i ++ show y
 \end{code}
 %
-Notice that the type |REAL| is not implemented yet and it is not
-really even clearly implementable but we want to focus on complex
-numbers so we will approximate |REAL| by double precision floating
-point numbers for now.
+Notice that the type |REAL| is not implemented yet (and it is not even
+clear how to implement it with fidelity to mathematical convention at
+this stage) but we want to focus on complex numbers so we will simply
+approximate |REAL| by double precision floating point numbers for now.
 %
 \begin{code}
 type REAL = Double
 \end{code}
 %
-The text continues with examples:
+\citeauthor{adams2010calculus} continue with examples:
 %
 \begin{quote}
   For example, $3 + 2i$, $\frac{7}{2} - \frac{2}{3}i$,
@@ -873,7 +875,7 @@ various complex numbers, let us assume that this one does as well, and
 that |a - bi| can be understood as an abbreviation of |a + (-b)i|.
 %
 With this provision, in our notation the examples are written as in
-Table~\ref{tab:CompleSyntaxExamplesMathHaskell}.
+\cref{tab:CompleSyntaxExamplesMathHaskell}.
 %
 \begin{table}[tbph]
   \centering
@@ -956,7 +958,6 @@ receive more elements, we can dispense with it altogether:
 data ComplexC = CPlusC REAL REAL
 \end{code}
 %
-\noindent
 (The renaming of the constructor to |CPlusC| serves as a guard against
 the case that we have suppressed potentially semantically relevant syntax.)
 
@@ -995,7 +996,7 @@ prefer to obtain an equivalent definition using the shorter |deriving
 Eq| clause upon defining the type.)
 %*TODO: explain more about deriving - perhaps in a \footnote{}
 
-This shows that the set of complex numbers is, in fact, isomorphic
+This shows that the set of complex numbers is, in fact, isomorphic\jp{have we ever defined isomorphism?}
 with the set of pairs of real numbers, a point which we can make
 explicit by re-formulating the definition in terms of a |newtype|:
 %
@@ -1042,7 +1043,6 @@ im :: ComplexD        ->  REAL
 im z @ (CD (x , y))   =   y
 \end{code}
 %
-\noindent
 a potential source of confusion being that the symbol |z| introduced
 by the as-pattern is not actually used on the right-hand side of the
 equations (although it could be).
@@ -1498,10 +1498,9 @@ Find other pairs of operators satisfying a distributive law.
 \label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
-\jp{This looks like a detour?}
 As a bit of preparation for the language of sequences and limits in
 later lectures we here spend a few lines on the notation and abstract
-syntax of sequences.
+syntax of sequences.\jp{Forward references for where we use this.}
 
 Common math book notation: $\left\{ a_i \right\}_{i=0}^{\infty}$ or
 just $\left\{ a_i \right\}$ and (not always) an indication of the type
@@ -1510,8 +1509,8 @@ $X$ of the $a_i$.
 Note that the |a| at the center of this notation actually carries all
 of the information: an infinite family of values $a_i$ each of type |X|.
 %
-If we interpret ``subscript'' as function application we can see that
-|a : Nat -> X| is a useful typing of a sequence.
+If we interpret the subscript notation $a_i$ as function application ($a(i)$) we can see that
+|a : Nat -> X| is a useful typing of an infinite sequence.
 %
 Some examples:
 %
