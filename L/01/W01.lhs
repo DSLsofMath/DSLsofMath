@@ -1,10 +1,12 @@
 %{
 %format bi = "\Varid{bi}"
-\chapter[Types, Arithmetic, Complex numbers and Sequences]{Types, Arithmetic and Complex numbers and Sequences
+\chapter[Types, Arithmetic, Complex numbers, Testing, and Sequences]{Types, Arithmetic and Complex numbers, Testing, and Sequences
 \footnote{This chapter is partly based on material by
 \citet{TFPIE15_DSLsofMath_IonescuJansson} which appeared at the International
 Workshop on Trends in Functional Programming in Education, 2015.}}
 \label{sec:DSLComplex}
+
+\jp{this chapter has many things. Retitle it?}
 
 In this chapter we exemplify our method by applying our method to the
 domain of arithmetic first, and complex numbers second, which we
@@ -1114,12 +1116,12 @@ newtype  ComplexSem r  =  CS  (r , r)        deriving Eq
 
 \section{A syntax for (complex) arithmetical expressions}
 
-So far we have tried to find a datatype to represent the intended
+By following \citet{adams2010calculus}, we have arrived at representation which captures the
 \emph{semantics} of complex numbers.
 %
-That approach is called ``shallow embedding''.
+This kind of representation is often called a ``shallow embedding''.
 %
-Now we turn to the \emph{syntax} instead (``deep embedding'').
+Now we turn to the study of the \emph{syntax} instead (``deep embedding'').
 
 We want a datatype |ComplexE| for the abstract syntax tree of
 expressions.
@@ -1321,14 +1323,14 @@ properties a bit by making the operator a parameter:
 %
 \begin{code}
 propAssocA :: Eq a => (a -> a -> a) -> a -> a -> a -> Bool
-propAssocA (+?) x y z =  (x +? y) +? z == x +? (y +? z)
+propAssocA (+?) x y z =  (x +? y) +? z === x +? (y +? z)
 \end{code}
 %
 Note that |propAssocA| is a higher order function: it takes a function
 (a binary operator named |(+?)|) as its first parameter, and tests if it is associative.
 %
 It property is also polymorphic: it works for many different types |a| (all
-types which have an |==| operator).
+types which have an |===| operator).
 
 Thus we can specialise it to |Plus|, |Times| and other binary
 operators.
@@ -1596,7 +1598,7 @@ X|.
 Then \(L = \lim_{i\to\infty} x_i\) would mean |Just L = lim x|
 %
 We will return to limits and their proofs in
-\refSec{par:LimitOfSequence} after we have reviewed some logic.
+\cref{par:LimitOfSequence} after we have reviewed some logic.
 
 
 Here we just define one more common operation: the sum of a sequence
@@ -1637,7 +1639,7 @@ and is |S|.
 As a formula we get |Just S = lim (sums a)|, and for our example it
 turns out that it converges and that
 \(\sigma = \sum_{i=0}^{\infty} 1/i! = e\) but we will not get to that
-until \refSec{sec:exp}.
+until \cref{sec:exp}.
 
 We will also return to (another type of) limits in \refSec{sec:typePartialDerivative}
 about derivatives where we explore variants of the classical
@@ -1657,7 +1659,6 @@ some operations (|conSeq|, |addSeq|, |liftSeq1|, |sums|, |scan|, \ldots) and som
 
 %if False
 \section{Some helper functions (can be skipped)}
-\jp{Can this be tidied up?}
 \begin{code}
 type QQ     =  Ratio Integer
 
