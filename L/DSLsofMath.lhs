@@ -80,7 +80,7 @@
 %if lectureNotes
 \newcommand\lnOnly[1]{#1} % show only in the lecture notes (not the book version)
 %else
-\newcommand\lnOnly[1]{#1} % show only in the lecture notes (not the book version)
+\newcommand\lnOnly[1]{} % show only in the lecture notes (not the book version)
 %endif
 \newcommand\course{\lnOnly{course}\bookOnly{book}}
 \newcommand{\TODO}[1]{\todo{#1}}
