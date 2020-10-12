@@ -68,9 +68,9 @@ We have seen several examples in earlier chapters:
 \item in \refSec{sec:complexcase} we saw that |evalE : ComplexE ->
   ComplexD| is a homomorphism from the syntactic operator |Plus| to
   the corresponding semantic operator |plusD|.
-\item in \refSec{sec:commutative} we saw that if |(*)| distributes
+\item in \cref{sec:generalising-laws} we saw that if |(*)| distributes
   over |(+)| for some type |A| then |(*c) : A -> A| is a homomorphism
-  from |(+)| to |(+)|.
+  from |(+)| to |(+)|.\jp{we did not know what an homomorphism was back then, move it here?}
 \item in \refSec{sec:logic} we saw de Morgan's laws which can be
   stated as |H2(not,(&&),(||||))| and |H2(not,(||||),(&&))|.
 \item in \refSec{sec:FunExp} we saw that |eval : FunExp -> Func| is a

@@ -1150,11 +1150,11 @@ data ComplexE  =  ImagUnit  -- syntax for |i|, not to be confused with the type 
 \end{code}
 %
 Note that, in |ComplexA| above, we also had a constructor for
-``plus'', but it was another ``plus''.
+``plus'' (|CPlus1|), but it was playing a different role.
 %
-They are distinguished by type: |CPlus1| took (basically) two real
-numbers, while |Plus| here takes two (expressions representing)
-complex numbers as arguments.
+They are distinguished by type: |CPlus1| took two real
+numbers as arguments, while |Plus| here takes two
+complex expressions as arguments.
 
 Here are two examples of type |ComplexE| as Haskell code and as
 abstract syntax trees:
@@ -1193,7 +1193,7 @@ assume that all but one case have been implemented already.
 All you need is to focus on that one remaining case, and you can
 freely call the function (that you are implementing) recursively, as
 long as you do it for subexpressions (subtrees of the abstract syntax
-tree datatype).\footnote{This pattern is called structural induction.}
+tree datatype). This pattern is called \emph{structural induction}.
 %
 
 For example, when implementing the |evalE (Plus c1 c2)| case, you can
@@ -1205,8 +1205,8 @@ there is a function |plusD :: ComplexD -> ComplexD -> ComplexD| taking
 care of this step (in fact, we implemented it earlier in
 \refSec{sec:complexcase}).
 %
-Continuing in this direction (by ``wishful thinking'') we arrive at
-the following implementation.
+Continuing in this direction (by structural induction or ``wishful
+thinking'') we arrive at the following implementation.
 %
 \begin{code}
 evalE ImagUnit         = imagUnitD
@@ -1287,8 +1287,8 @@ Indeed, we reserve the usual equality |(==)| for syntactic equality
 (and here the left hand side (LHS) is clearly not syntactically equal
 to the right hand side).
 %
-The new operator corresponds to |(===)| semantic equality, that is,
-for equality \emph{after evaluation}:
+The new operator |(===)| corresponds to semantic equality, that is,
+equality \emph{after evaluation}:
 %
 \begin{code}
 (===) :: ComplexE -> ComplexE -> Bool
@@ -1307,48 +1307,26 @@ propFromCD s =  evalE (fromCD s) == s
 Other desirable laws are that |Plus| and |Times| should be associative
 and commutative and |Times| should distribute over |Plus|:
 %
-\TODO{Commutative laws missing (but mentioned in the text).}
-%
 \begin{code}
+propCommPlus   x y                   = {-"\quad"-}  Plus x y             ===  Plus y x
+propCommTimes  x y                   = {-"\quad"-}  Times x y            ===  Times y x
 propAssocPlus  x y z                 = {-"\quad"-}  Plus (Plus x y) z    ===  Plus x (Plus y z)
 propAssocTimes x y z                 =              Times (Times x y) z  ===  Times x (Times y z)
 propDistTimesPlus x y z {-"\quad"-}  =              Times x (Plus y z)   ===  Plus (Times x y) (Times x z)
 \end{code}
 
-These three laws actually fail, but not due to any mistake in the implementation
-of |evalE| in itself.
-%
-We will get back to that issue later but let us first generalise the
-properties a bit by making the operator a parameter:
-%
-\begin{code}
-propAssocA :: Eq a => (a -> a -> a) -> a -> a -> a -> Bool
-propAssocA (+?) x y z =  (x +? y) +? z === x +? (y +? z)
-\end{code}
-%
-Note that |propAssocA| is a higher order function: it takes a function
-(a binary operator named |(+?)|) as its first parameter, and tests if it is associative.
-%
-It property is also polymorphic: it works for many different types |a| (all
-types which have an |===| operator).
+These laws actually fail, but not due to any mistake in the
+implementation of |evalE| in itself. To see this, let us consider
+associativity at different types:
 
-Thus we can specialise it to |Plus|, |Times| and other binary
-operators.
-%
-In Haskell there is a type class |Num| for different types of
-``numbers'' (with operations |(+)|, |(*)|, etc.).
-%
-We can try out |propAssocA| for a few of them.
-%
-%
 \begin{code}
-propAssocAInt     = propAssocA (+) ::  Int     -> Int     -> Int     -> Bool
-propAssocADouble  = propAssocA (+) ::  Double  -> Double  -> Double  -> Bool
+propAssocInt     = propAssocPlus ::  Int     -> Int     -> Int     -> Bool
+propAssocDouble  = propAssocPlus ::  Double  -> Double  -> Double  -> Bool
 \end{code}
 %
-The first is fine, but the second fails due to rounding errors.
+The first property is fine, but the second fails. Why?
 %
-QuickCheck can be used to find small examples --- I like this one best:
+QuickCheck can be used to find small examples --- this one is perhaps the best one:
 %
 \begin{code}
 notAssocEvidence :: (Double , Double , Double , Bool)
@@ -1366,16 +1344,16 @@ For completeness: these are the values:
   ,  False)
 \end{spec}
 %
-This is actually the underlying reason why some of the laws failed for
+We can now see the underlying reason why some of the laws failed for
 complex numbers: the approximative nature of |Double|.
 %
 Therefore, to ascertain that there is no other bug hiding, we need to move away from the
 implementation of |REAL| as |Double|.
 We do this by abstraction: we make one more
 version of the complex number type, which is parameterised on the underlying
-type for~|REAL|.
+representation type for~|REAL|.
 %
-At the same time we combine |ImagUnit| and |ToComplex| to
+At the same time\jp{why though?} we combine |ImagUnit| and |ToComplex| to
 |ToComplexCart|, which corresponds to the primitive from |a + bi| discussed above:
 %*TODO: perhaps explain more about the generalisation step.
 
@@ -1419,44 +1397,65 @@ fromIntegerCS = toComplexSyn . fromInteger
   Add a few more operations (hint: extend |ComplexSyn| as well) and extend |eval| appropriately.
 \end{exercise}
 
-With this parameterised type we can test the code for ``complex rationals'' to avoid rounding errors.
+With this parameterised type we can test the code for ``complex
+rationals''\footnote{The reason why math textbooks never talk about
+  this version of complex numbers is because complex numbers are used
+  to handle roots of all numbers uniformly, and roots are in general
+  irrational.} to avoid rounding errors.
 %**TODO: add concrete example
 
 %TODO: perhaps include
 % We can also state and check properties relating the semantic and the syntactic operations:
 %
 % |a + b = eval (Plus (embed a) (embed b))| for all |a| and |b|.
-\paragraph{More about laws}%
-\label{sec:commutative}
-
-Some laws appear over and over again in different mathematical contexts.
+\subsection{Generalising laws}
+\label{sec:generalising-laws}
+Some laws appear over and over again in different mathematical
+contexts.
 %
-Binary operators are often associative or commutative, and
+For example, binary operators are often associative or commutative, and
 sometimes one operator distributes over another.
 %
-We will work more formally with logic in Chapter~\ref{sec:logic} but
+We will work more formally with logic in \cref{sec:logic} but
 we introduce a few definitions already here:
 
-|Associative (+) = Forall (a, b, c) ((a+b)+c = a+(b+c))|
+|Associative (⊛) = Forall (a, b, c) ((a⊛b)⊛c = a⊛(b⊛c))|
 
-|Commutative (+) = Forall (a, b) (a+b = b+a)|
+|Commutative (⊛) = Forall (a, b) (a⊛b = b⊛a)|
 
-Non-examples: division is not commutative, average is commutative but
-not associative.
+|Distributive (⊗) (⊕) = Forall (a, b, c) ((a⊕b)⊗c = (a⊗c)⊕(b⊗c))|
 
-|Distributive (*) (+) = Forall (a, b, c) ((a+b)*c = (a*c)+(b*c))|
+The above laws are \emph{parameterised} over some operators
+(|(⊛),(⊗),(⊕)|).  These laws will hold for some operators, but not for
+others.  For example, division is not commutative; taking the average
+of two quantities is commutative but not associative.
 
-We saw implementations of some of these laws as |propAssocA| and
-|propDistTimesPlus| earlier, and learnt that the underlying set
-matters: |(+)| for |REAL| has some properties, but |(+)| for |Double|
-has other.
+Such generalisation can be reflected in QuickCheck properties as well.
+
+\begin{code}
+propAssoc (⊛) x y z =  (x ⊛ y) ⊛ z === x ⊛ (y ⊛ z)
+\end{code}
 %
-When implementing, approximation is often necessary, but makes many
+Note that |propAssocA| is a higher order function: it takes a function |(⊛)|
+(written as a binary operator) as its first parameter, and tests if it is associative.
+%
+The property is also polymorphic: it works for many different types |a| (all
+types which have an |===| operator).
+
+Thus we can specialise it to |Plus|, |Times| and any other binary
+operator, and obtain some of the earlier laws (|propAssocPlus|, |propAssocTimes|).
+The same can be done with distributivity.
+Doing so we learnt that the underlying set
+matters: |(+)| for |REAL| has some properties, but |(+)| for |Double|
+has others.
+%
+When formalising math as DSLs, approximation is sometimes convenient, but makes many
 laws false.
 %
 Thus, we should attempt to do it late, and if possible, leave a
 parameter to make the degree of approximation tunable (|Int|,
 |Integer|, |Float|, |Double|, |QQ|, syntax trees, etc.).
+
 
 To get a feeling for the distribution law, it can be helpful to study
 the syntax trees of the left and right hand sides.
@@ -1500,7 +1499,7 @@ Find other pairs of operators satisfying a distributive law.
 \label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
-As a bit of preparation for the language of sequences and limits in
+As preparation for the language of sequences and limits in
 later lectures we here spend a few lines on the notation and abstract
 syntax of sequences.\jp{Forward references for where we use this.}
 
@@ -1622,14 +1621,14 @@ The general pattern is to start at zero and accumulate the sum of
 initial prefixes of the input sequence.
 %
 The definition of |sums| uses |scan| which is a generalisation which
-``sums'' with a user-supplied operator |(+?)| starting from an
+``sums'' with a user-supplied operator |(⊛)| starting from an
 arbitrary |z| (instead of zero).
 %
 \begin{code}
 scan :: (b->a->b) -> b -> Seq a -> Seq b
-scan (+?) z a = s
+scan (⊛) z a = s
   where  s 0 = z
-         s i = s (i-1)  +?  a i
+         s i = s (i-1)  ⊛  a i
 \end{code}
 %
 And by combining this with limits we can state formally that the sum
