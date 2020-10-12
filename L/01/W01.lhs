@@ -1457,35 +1457,6 @@ parameter to make the degree of approximation tunable (|Int|,
 |Integer|, |Float|, |Double|, |QQ|, syntax trees, etc.).
 
 
-To get a feeling for the distribution law, it can be helpful to study
-the syntax trees of the left and right hand sides.
-%
-Note that |(*c)| is pushed down (distributed) to both |a| and |b|:
-
-\tikzset{
-  AbsSyn/.style={%
-    baseline,
-    text height=1.5ex,text depth=.25ex,
-    level 1/.style={sibling distance=1.5cm, level distance=1cm},level 2/.style={sibling distance=1cm}
-  },
-  emph/.style={edge from parent/.style={thick,draw},font=\boldmath},
-  bold/.style={font=\boldmath}
-}
-\begin{tikzpicture}[AbsSyn]
-\node [bold] {|*|}
-child {node {|+|} child {node {|a|}} child {node {|b|}}}
-child[emph] {node {|c|}};
-\end{tikzpicture}
-\begin{tikzpicture}[AbsSyn]
-\node{|+|}
-child {node [bold] {|*|} child {node {|a|}} child[emph] {node {|c|}}}
-child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
-\end{tikzpicture}
-%
-
-(In the language of \refSec{sec:AlgHomo}, distributivity means
-that |(*c)| is a |(+)|-homomorphism.)
-
 %**TODO: hide or give hints / method (otherwise too hard and a bit off topic)
 %Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
 % Answer: |max|

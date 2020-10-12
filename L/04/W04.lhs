@@ -68,19 +68,47 @@ We have seen several examples in earlier chapters:
 \item in \refSec{sec:complexcase} we saw that |evalE : ComplexE ->
   ComplexD| is a homomorphism from the syntactic operator |Plus| to
   the corresponding semantic operator |plusD|.
-\item in \cref{sec:generalising-laws} we saw that if |(*)| distributes
-  over |(+)| for some type |A| then |(*c) : A -> A| is a homomorphism
-  from |(+)| to |(+)|.\jp{we did not know what an homomorphism was back then, move it here?}
 \item in \refSec{sec:logic} we saw de Morgan's laws which can be
   stated as |H2(not,(&&),(||||))| and |H2(not,(||||),(&&))|.
 \item in \refSec{sec:FunExp} we saw that |eval : FunExp -> Func| is a
   homomorphism from syntactic |(:*:)| to semantic |(*)| for functions,
   and several more examples.
+\item If |(*)| distributes
+  over |(+)| for some type |A| then |(*c) : A -> A| is a homomorphism
+  from |(+)| to |(+)|.\jp{we did not know what an homomorphism was back then, move it here?}
 \end{itemize}
-%
+
+
 At this point it is a good exercise to expand the definition of |H2|
 in the different cases to see if they make sense and if you can prove
 that they hold.
+
+In particular, to get a better feeling for the distribution law, it
+can be helpful to study the syntax trees of the left and right hand
+sides.
+%
+Note that |(*c)| is pushed down (distributed) to both |a| and |b|:
+
+\tikzset{
+  AbsSyn/.style={%
+    baseline,
+    text height=1.5ex,text depth=.25ex,
+    level 1/.style={sibling distance=1.5cm, level distance=1cm},level 2/.style={sibling distance=1cm}
+  },
+  emph/.style={edge from parent/.style={thick,draw},font=\boldmath},
+  bold/.style={font=\boldmath}
+}
+\begin{tikzpicture}[AbsSyn]
+\node [bold] {|*|}
+child {node {|+|} child {node {|a|}} child {node {|b|}}}
+child[emph] {node {|c|}};
+\end{tikzpicture}
+\begin{tikzpicture}[AbsSyn]
+\node{|+|}
+child {node [bold] {|*|} child {node {|a|}} child[emph] {node {|c|}}}
+child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
+\end{tikzpicture}
+%
 
 \subsection{An example of a non-compositional function}
 
