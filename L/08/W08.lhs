@@ -22,7 +22,7 @@ The first sentence is
 \begin{quote}
 This is undoubtedly the most important function in mathematics.
 \end{quote}
-
+%
 Rudin goes on
 
 \begin{quote}
@@ -31,8 +31,7 @@ It is defined, for every complex number |z|, by the formula
          exp z  =  Sigma (z^n) / n!
 \end{spec}
 \end{quote}
-
-
+%
 We, on the other hand, have defined the exponential function as the
 solution of a differential equation, which can be represented by
 a power series:
@@ -49,7 +48,7 @@ expf = eval 100 expx
 \end{spec}
 
 It is easy to see, using the definition of |integ| that the power
-series |expx| is, indeed\jp{Why not use taylor series? It would be much easier to write and read.}
+series |expx| is, indeed\jp{Why not use taylor series? It would be much easier to write and read. But first, properly include Taylor.hs in \cref{sec:deriv}}
 
 \begin{spec}
 expx = [1, 1/1, 1/(1*2), 1/(1*2*3), ..., 1 / (1*2*3* ... *n), ..]
