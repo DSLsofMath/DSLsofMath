@@ -2,6 +2,9 @@ default: DSLsofMathBook.pdf DSLsofMathNotes.pdf
 
 nix::
 	nix-shell --run "make"
+book::
+	nix-shell --run "make DSLsofMathBook.pdf"
+	gio open DSLsofMathBook.pdf
 
 DSLM_A6.tex: DSLsofMathNotes.tex
 	cp DSLsofMathNotes.tex DSLM_A6.tex
