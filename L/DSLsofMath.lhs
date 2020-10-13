@@ -1,3 +1,5 @@
+%let lectureNotes = not book
+
 \documentclass[oneside]{book} % use one-side as long as we edit the book (easier to read in pdf reader).
 %if book
 \usepackage{mathpazo}

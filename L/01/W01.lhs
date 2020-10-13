@@ -1428,7 +1428,9 @@ we introduce a few definitions already here:
 The above laws are \emph{parameterised} over some operators
 (|(⊛),(⊗),(⊕)|).  These laws will hold for some operators, but not for
 others.  For example, division is not commutative; taking the average
-of two quantities is commutative but not associative.\footnote{See also \crefatpage{distributivity-as-homomorphism} for further analysis of distributivity.}
+of two quantities is commutative but not associative.\footnote{See
+  also \crefatpage{distributivity-as-homomorphism} for further
+  analysis of distributivity.}
 
 Such generalisation can be reflected in QuickCheck properties as well.
 
@@ -1461,17 +1463,16 @@ parameter to make the degree of approximation tunable (|Int|,
 %Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
 % Answer: |max|
 
-%*TODO: numbering in the exercise
-
 \begin{exercise}
 Find other pairs of operators satisfying a distributive law.
 \end{exercise}
 \section{Notation and abstract syntax for (infinite) sequences}
 \label{sec:infseq}
+\jp{Seems like an odd place to talk about this. Why not put it together with the limits section?}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
-As preparation for the language of sequences and limits in
-later lectures we here spend a few lines on the notation and abstract
+As preparation for the language of sequences and limits 
+later (\cref{par:LimitOfSequence,sec:formal-power-series}), we spend a few lines on the notation and abstract
 syntax of sequences.\jp{Forward references for where we use this.}
 
 Common math book notation: $\left\{ a_i \right\}_{i=0}^{\infty}$ or
@@ -1535,8 +1536,8 @@ Exercise~\ref{exc:fmap}: what does function composition do to a sequence?
 
 Another common mathematical operator on sequences is the limit.
 %
-We will get back to limits in later sections (\ref{sec:LimPoint},
-\ref{sec:FunLimit}), but here we just analyse the notation and typing.
+We will get back to limits later (\cref{sec:LimPoint,sec:FunLimit}),
+but for now we just analyse the notation and typing.
 %
 This definition is slightly adapted from Wikipedia (2017-11-08):
 \begin{quote}
@@ -1555,21 +1556,22 @@ First, with this syntax, the $\lim_{i\to\infty} x_i$ expression form
 binds |i| in the expression |xi|.
 %
 We could just as well say that |lim| takes a function |x :: Nat -> X|
-as its only argument.
+as its only argument.\jp{function vs. expression of one variable tension.\cref{sec:function-or-value-at-a-point}}
 %
-Second, an arbitrary |x|, may or may not have a limit.
+Second, an arbitrary sequence |x|, may or may not have a limit.
 %
-Thus the customary use of |L =| is a bit of abuse of notation, because
+Thus the customary use of |L =| is a bit of an abuse of notation, because
 the right hand side may not be well defined.
 %
-One way to capture that is to give |lim| the type |(Nat -> X) -> Maybe
-X|.
+One way to capture that idea is to let |lim| return the type |Maybe
+X|, with |Nothing| corresponding to divergence. Then its complete type
+is |(Nat -> X) -> Maybe X| and
 %
-Then \(L = \lim_{i\to\infty} x_i\) would mean |Just L = lim x|
+\(L = \lim_{i\to\infty} x_i\) means |Just L = lim x|
 %
 We will return to limits and their proofs in
 \cref{par:LimitOfSequence} after we have reviewed some logic.
-
+\jp{Again, awkward back-and-forth}
 
 Here we just define one more common operation: the sum of a sequence
 (like \(\sigma = \sum_{i=0}^{\infty} 1/i!\)\footnote{Here |n! =
@@ -1593,7 +1595,7 @@ initial prefixes of the input sequence.
 %
 The definition of |sums| uses |scan| which is a generalisation which
 ``sums'' with a user-supplied operator |(⊛)| starting from an
-arbitrary |z| (instead of zero).
+arbitrary value |z| (instead of zero).\jp{|scan| never comes up again. Let's not generalise.}
 %
 \begin{code}
 scan :: (b->a->b) -> b -> Seq a -> Seq b
@@ -1602,12 +1604,12 @@ scan (⊛) z a = s
          s i = s (i-1)  ⊛  a i
 \end{code}
 %
-And by combining this with limits we can state formally that the sum
+And by combining the definition of |sums| with limits we can state formally that the sum
 of an infinite sequence |a| exists and is |S| iff the limit of |sums a| exists
 and is |S|.
 %
-As a formula we get |Just S = lim (sums a)|, and for our example it
-turns out that it converges and that
+We can write the above as a formula: |Just S = lim (sums a)|. For our example it
+turns out that the sum converges and that
 \(\sigma = \sum_{i=0}^{\infty} 1/i! = e\) but we will not get to that
 until \cref{sec:exp}.
 

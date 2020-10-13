@@ -463,6 +463,7 @@ drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 
 \section{Polynomials}
 \jp{What is this doing here? and not in the relevant chapter?}
+\jp{Why insisting on non-empty lists? Isn't this trivial?}
 \begin{spec}
 data Poly a  =  Single a  |  Cons a (Poly a)
                 deriving (Eq, Ord)
@@ -473,6 +474,7 @@ evalPoly (Cons a as)    x   =  a + x * evalPoly as x
 \end{spec}
 
 \section{Formal power series}
+\label{sec:formal-power-series}
 \jp{Are we saying anything non-trivial and new in this section? If so indicate what it is right away.}
 As we mentioned above, the Haskell list type contains both finite and
 infinite lists.
