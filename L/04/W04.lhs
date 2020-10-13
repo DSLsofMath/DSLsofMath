@@ -64,7 +64,7 @@ operators are clear from the context).
 
 We have seen several examples in earlier chapters:
 %
-\begin{itemize}
+\begin{enumerate}
 \item in \refSec{sec:complexcase} we saw that |evalE : ComplexE ->
   ComplexD| is a homomorphism from the syntactic operator |Plus| to
   the corresponding semantic operator |plusD|.
@@ -73,21 +73,18 @@ We have seen several examples in earlier chapters:
 \item in \refSec{sec:FunExp} we saw that |eval : FunExp -> Func| is a
   homomorphism from syntactic |(:*:)| to semantic |(*)| for functions,
   and several more examples.
-\item If |(*)| distributes
+\item
+  \label{distributivity-as-homomorphism}
+ If |(*)| distributes
   over |(+)| for some type |A| then |(*c) : A -> A| is a homomorphism
-  from |(+)| to |(+)|.\jp{we did not know what an homomorphism was back then, move it here?}
-\end{itemize}
+  from |(+)| to |(+)|.
+\end{enumerate}
 
-
-At this point it is a good exercise to expand the definition of |H2|
-in the different cases to see if they make sense and if you can prove
-that they hold.
-
-In particular, to get a better feeling for the distribution law, it
+To see how this last item plays out, it
 can be helpful to study the syntax trees of the left and right hand
-sides.
+sides of the distributive law: |((a+b)*c = (a*c)+(b*c))|.
 %
-Note that |(*c)| is pushed down (distributed) to both |a| and |b|:
+We observe that |(*c)| is ``pushed down'' to both |a| and |b|:
 
 \tikzset{
   AbsSyn/.style={%
@@ -109,6 +106,11 @@ child {node [bold] {|*|} child {node {|a|}} child[emph] {node {|c|}}}
 child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 \end{tikzpicture}
 %
+
+\begin{exercise}
+  Expand the definition of |H2| in each case and check that you can
+  prove that the obtained conditions hold.
+\end{exercise}
 
 \subsection{An example of a non-compositional function}
 

@@ -417,7 +417,7 @@ Lap : (T -> CC) -> (S -> CC)
 \end{spec}
 %
 where |T = REAL| and |S = CC|.
-\jp{But we use the variable name as a type name. This is perhaps also confusing? PJ: I don't understand. Which variable?}
+\jp{But we use the variable name ('s','t') as a type name. This is perhaps also confusing?}
 %
 Note that the function type constructor |(->)| is used three times
 here: once in |T -> CC|, once in |S -> CC| and finally at the top
@@ -444,7 +444,7 @@ for a type expression.
 %
 The semantics is unchanged: the set of values of type |Heltal| is
 exactly the same as the set of values of type |Integer|, etc.
-
+\jp{What is Heltal? Shall we say "WholeNumbers" for a less parochial approach?}
 \begin{code}
 type Heltal   =  Integer
 type Foo      =  (Maybe [String], [[Heltal]])
@@ -1428,7 +1428,7 @@ we introduce a few definitions already here:
 The above laws are \emph{parameterised} over some operators
 (|(⊛),(⊗),(⊕)|).  These laws will hold for some operators, but not for
 others.  For example, division is not commutative; taking the average
-of two quantities is commutative but not associative.
+of two quantities is commutative but not associative.\footnote{See also \crefatpage{distributivity-as-homomorphism} for further analysis of distributivity.}
 
 Such generalisation can be reflected in QuickCheck properties as well.
 

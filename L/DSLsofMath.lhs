@@ -108,7 +108,7 @@
 \newcommand{\rowvecc}[2]{\rowveccc{#1 &  \cdots &  #2}}
 \newcommand{\rowveccc}[1]{\begin{bmatrix} #1 \end{bmatrix}}
 \newcommand{\fromExam}[1]{\lnOnly{\emph{From exam #1}}}
-
+\newcommand\crefatpage[1]{\cref{#1}, on page \pageref{#1}}
 
 \title{Domain-Specific Languages of Mathematics
 %if lectureNotes
