@@ -44,9 +44,10 @@ import DSLsofMath.Algebra hiding (fromInteger)
 \paragraph{Homomorphisms}
 %
 According to Wikipedia: ``A homomorphism is a structure-preserving map
-between two algebraic structures of the same type''. To capture this,
+between two algebraic structures of the same type''. To capture this idea,
 in a first instance\footnote{a generalisation will come later in the
-  chapter}, we can define a ternary predicate |H2|. The first argument
+  chapter}\jp{Where? We should probably talk about homomorphisms over classes at some point. ie. additive-homomorphism, etc. It does not seem that the connection between H2 and the wikipedia definition is being made clearly and plainly enough.}
+, we can define a ternary predicate |H2|. The first argument
 |h|, is the ``map''. The second (|Op|) and third (|op|) arguments
 represent the algebraic structures.
 %
@@ -61,7 +62,6 @@ Or that |h| is a homomorphism from |Op| to |op|.
 %
 Or, simply, that |h| is a homomorphism from |A| to |B| (if the
 operators are clear from the context).
-
 We have seen several examples in earlier chapters:
 %
 \begin{enumerate}
@@ -108,8 +108,8 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 %
 
 \begin{exercise}
-  Expand the definition of |H2| in each case and check that you can
-  prove that the obtained conditions hold.
+  Expand the definition of |H2| in each case and check that the
+  obtained conditions hold.
 \end{exercise}
 
 \subsection{An example of a non-compositional function}
