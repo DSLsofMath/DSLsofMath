@@ -1475,7 +1475,7 @@ As preparation for the language of sequences and limits
 later (\cref{par:LimitOfSequence,sec:formal-power-series}), we spend a few lines on the notation and abstract
 syntax of sequences.\jp{Forward references for where we use this.}
 
-Common math book notation: $\left\{ a_i \right\}_{i=0}^{\infty}$ or
+In math textbooks, the following notation is commonly in use: $\left\{ a_i \right\}_{i=0}^{\infty}$ or
 just $\left\{ a_i \right\}$ and (not always) an indication of the type
 $X$ of the $a_i$.
 %
@@ -1622,7 +1622,7 @@ definition
 To sum up this subsection, we have defined a small Domain-Specific
 Language (DSL) for infinite sequences by defining a type (|Seq a|),
 some operations (|conSeq|, |addSeq|, |liftSeq1|, |sums|, |scan|, \ldots) and some
-``run functions'' or predicates (like |lim| and |sum|).
+evaluation functions or predicates (like |lim| and |sum|).
 %*TODO: the concept of "run functions" has not yet been introduced
 
 % ----------------------------------------------------------------
