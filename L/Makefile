@@ -51,5 +51,5 @@ zip:
 
 clean:
 	- rm *.ptb *.pag *.aux *.bbl *.blg *.fdb_latexmk *.log \
-             *.tex *.pdf *.idx *.ilg *.ind *.toc *~ \
+             DSLsofMath*.tex *.pdf *.idx *.ilg *.ind *.toc *~ \
              *.vrb *.snm *.fls *.nav *.out

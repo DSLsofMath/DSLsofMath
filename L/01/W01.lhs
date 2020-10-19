@@ -647,6 +647,7 @@ lookup :: Eq a => a -> [(a, b)] -> Maybe b
 
 \section{Arithmetic expressions of several variables}
 \jp{Most certainly we should collect: 1. this section 2. the remark on expressions/functions 3. the definition of ``function'' instances into a section on expressions and functions of one or several variables.}
+\jp{In fact, this should probably go after "FunExp". Indeed it is strange to work with functions of many variables a lot before talking about functions of one variable.}
 \label{sec:ArithExp}
 Let us define the following type, describing simple arithmetic
 expressions.

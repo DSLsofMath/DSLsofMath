@@ -9,7 +9,9 @@ type REAL = Double
 % (Based on ../../2016/Lectures/Lecture05 )
 % Show "Functional Differential Geometry" p16: Lagrange_example.pdf
 
-\section{Examples of types in mathematics}\label{types-in-mathematics}
+\section{Types of functions, expressions and big operators}
+\label{sec:functions-and-scoping}
+\paragraph{Examples of types in mathematics}
 
 Simple types are sometimes mentioned explicitly in mathematical texts:
 
@@ -20,10 +22,179 @@ Simple types are sometimes mentioned explicitly in mathematical texts:
 \item \((\_)² : ℝ → ℝ_{≥0}\)
 \end{itemize}
 
-However the types of ``higher-order'' operators are usually not given
-explicitly.
-%
-Here are some examples with a possible assignment of types:
+However the types of big operators (sums, limits, integrals, etc.) are
+usually not given explicitly. In fact, it may not be clear at first
+sight that the summing operator ($\sum$) should be assigned a type at
+all! Yet this is exactly what we will set out to do. However, to be
+able to do so convincingly we shall try and clarify the relationship
+between functions and expressions first.
+
+\subsection{Expressions and functions of one variable}
+
+\begin{itemize}
+\item $f(x) = x - 1$
+\item $g(x) = 2*x^2 + 3$
+\item $h(y) = 2*y^2 + 3$
+\end{itemize}
+
+As the reader may guess by now, we can assign to |f|, |g|, |h| the
+type |ℝ -> ℝ|. But other choices could work, such as |ℤ -> ℤ|,
+etc. For sure, they are functions. Additionally, the name of the
+variable appears to play no role in the meaning of the functions, and
+we can say, for example, |g = h|.
+
+Consider now:
+\begin{itemize}
+\item $x - 1$
+\item $2*x^2 + 3$
+\item $2*y^2 + 3$
+\end{itemize}
+
+These are all expressions of one (free) variable. We could say that
+they type is ℝ --- but this is assuming that the free variable also
+has type ℝ. Furthermore, it is less clear now if |2*x + 3 = 2*y +
+3|. In general one cannot simply change a variable name by another
+without making sure that 1. the renaming is applied everywhere
+uniformly and 2. the new variable name is not used for another purpose
+in the same scope (otherwise one informally says that there is a
+``clash'').
+
+To clarify this situation, we will now formalise expressions of one
+variables as a DSL. For simplicity we will focus on arithmetic
+expressions only. Therefore we have constructors for addition,
+multiplication and constants, as in \cref{sec:complex-arithmetic}.
+Additionally, we have the all-important constructor for variables,
+which we will call |X| here. We can implement all this in a datatype
+as follows:\jp{FunExp -> Exp1V}
+\label{sec:FunExp}
+\begin{code}
+data FunExp  =  Const REAL
+             |  X
+             |  FunExp  :+:  FunExp
+             |  FunExp  :*:  FunExp
+\end{code}
+
+We could encode our examples as follows:
+\begin{itemize}
+\item |X :+: Const (-1)|
+\item |Const 2 :*: (X :*: X)  :+: Const 3|
+\end{itemize}
+We no longer have a third example: we can only ever represent one
+variable, as |X|, and thus we skip the last example, equal to the second.
+
+We can now evaluate the value of these expressions. The meaning of
+operators and constants is as in \cref{sec:complex-arithmetic}. But,
+to be able to evaluate |X|, the variable, we need its value --- and we
+simply take it as a parameter.
+\begin{code}
+eval  ::  FunExp         ->  REAL  -> REAL
+eval      (Const alpha)      x     = alpha
+eval      Id                 x     = x
+eval      (e1 :+: e2)        x     = eval e1 x  +  eval e2 x
+eval      (e1 :*: e2)        x     = eval e1 x  *  eval e2 x
+\end{code}
+
+However, we can make an equivalent interpretation of the above type as 
+\begin{spec}
+eval  ::  FunExp         ->  (REAL  -> REAL)
+\end{spec}
+That is, |FunExp| can be interpreted as a function! This is perhaps
+surprising, but the reason is that we used a fixed Haskell symbol
+(constructor) for the variable. There is ever a single variable in
+|FunExp|, and thus they are really equivalent to functions of a single
+variable. 
+
+Thus the above was a deep embedding for functions of a single
+variable.  A shallow embedding would be a using functions as the
+representation, say:
+
+\begin{code}
+type FunExpS = REAL -> REAL
+\end{code}
+
+Then we can define the operators directly on functions, as follows:
+
+\begin{spec}
+const alpha = \x -> alpha
+variable_x = \x -> x
+f + g = \x -> f x + g x
+f * g = \x -> f x * g x
+\end{spec}
+
+Again, we have two possible intuitive readings of the above
+equations. The first reading, as expressions of a single variable, is
+that the variable ($x$) is interpreted as the identity function; a
+constant |alpha| is interpreted as a constant function; the sum of two
+expressions is interpreted as the sum of the evaluation of the
+operands, etc.
+
+The second reading is that we can define an arithmetic structure
+(|*|,|+|, etc.) on functions, by lifting the operators to work
+pointwise.\jp{This vocabulary is probably unknown at this point.}
+
+To wrap it up, if we're so inclined, we can re-define the evaluator of
+the deep-embedding using the operators of the shallow embedding:
+\begin{spec}
+eval  ::  FunExp         ->  REAL -> REAL
+eval      (Const alpha)  =   const alpha
+eval      Id             =   variable_x
+eval      (e1 :+: e2)    =   eval e1  +  eval e2    -- note the use of ``lifted |+|'',
+eval      (e1 :*: e2)    =   eval e1  *  eval e2    -- ``lifted |*|'',
+\end{spec}
+
+\subsection{Scoping and Typing big operators}
+
+Consider the mathematical expression
+\[
+  \sum_{i=1}^n frac 1 {i^2}
+\]
+To be able to see which type is appropriate for $\sum$, we have to
+consider the type of the summand ($i^2$ in the example) first. As you
+may have guessed, it is an expression of one variable ($i$). You may
+ask: but surely the body of the summation operator can use other
+variables? You'd be entirely correct. However, \emph{from the point of
+  view of the summation}, it is as if such other variables were
+constant. Accepting this assertion as a fact until we can show a more
+complicated example, we can now assign a type to the summation
+operator. For simplicity, we will be using the shallow embedding; thus
+the operand can be typed as, say, $ℤ → ℝ$. The other arguments will be
+the limit points ($1$ and $n$ in our example). The variable, $i$ shall
+not be represented as an argument: indeed, the variable name is
+\emph{fixed by the representation of functions}.  There is no choice
+to make at the point of summation. Thus, we write:
+
+\begin{code}
+summmation :: ℤ -> ℤ -> (ℤ -> ℝ) -> ℝ
+\end{code}
+Conveniently, we can even provide a simple implementation:
+\begin{code}
+summmation low high f = sum [f i | i <- [low..high]]
+\end{code}
+
+As another example, let us represent
+\[
+  \sum_{i=1}^n \sum_{j=1}^m {i^2 + j^2}
+\]
+using the shallow embedding of summation:
+
+\begin{code}
+  summation 1 m (\i -> summation 1 n (\j -> i^2 + j^2))
+\end{code}
+Aren't we cheating though? Surely we said that only one variable could
+occur in the summand, but we see both |i| and |j|? Well, we are not
+cheating as long as we use the shallow embedding for functions of one
+variables. Doing so allows us to 1. use lambda notation to bind (and
+name) the variable name of the summation however we wish and 2. we can
+freely use any haskell function producing ℝ inside the summand ---
+including summation itself. If we were to use the deep embedding, then
+we'd need a whole lot more work to ensure that we can represent
+summation within the deep embedding, in particular we need a way to
+embed variable binding itself. And, we shall not be opening this
+can of worms.
+
+
+Sticking conveniently to the shallow embedding, we can apply the same
+kind of reasoning to other big operators, and obtain the following:
 
 \begin{itemize}
 \item |lim : (ℕ → ℝ) → ℝ| for \(lim_{n → ∞} \{a_n\}\)
@@ -46,21 +217,22 @@ Here are some examples with a possible assignment of types:
   \end{itemize}
 \end{itemize}
 
-The chief difficulty to overcome when assigning types for mathematical
-operators is that they often introduce (bind) variable names (see
-also \cref{sec:function-or-value-at-a-point}). For example, in the above, $\lim_{n → ∞}$
-binds $n$ in $a_n$. In this book our stance is to make this binding
-obvious by letting the body of the limit ($a_n$ in the example) be a
+In sum, the chief difficulty to overcome when assigning types for
+mathematical operators is that they often introduce (bind) variable
+names. To take another example from the above, $\lim_{n → ∞}$ binds
+$n$ in $a_n$. In this book our stance is to make this binding obvious
+by letting the body of the limit ($a_n$ in the example) be a
 function. Thus we assign it the type $ℕ → ℝ$. Therefore the limit
 operator has a higher order type. A similar line of reasoning
 justifies the types of derivatives. We study in detail how these play
 out first.
 
 
+
 \section{Typing Mathematics: derivative of a function}
 \label{sec:typeDerivative}
 
-Let's start simple with the classical definition of the derivative
+Let's start with the classical definition of the derivative
 of \citet{adams2010calculus}:
 %
 \begin{quote}
@@ -160,7 +332,7 @@ We will get get back to this question in \refSec{sec:computingDerivatives}.
 % "quest of" is archaic?
 Continuing on our quest to type the elements of mathematical
 textbook definitions, we now turn to a functions of more than one
-argument.
+variable.
 %
 Our example here is from
 \citet[page~169]{maclane1986mathematics}, where we read
@@ -796,7 +968,7 @@ As an example we have that
 
 \subsection{Back to the numeric hierarchy instances for functions}
 
-Back to the main track: defining numeric operations on functions.
+Back to the main track: defining numeric operations on functions.\jp{This has not been a track before.}
 %
 We have already defined the operations of the |Num| class, but we can
 move on to the neighbouring classes |Fractional| and |Floating|.
@@ -851,7 +1023,7 @@ type class, only from that of its implementation.
 \jp{Actually, the typeclass is an interface. It make the implementation abstract for its users, and instances can make implementation concrete.}
 
 
-\section{Type classes in Haskell}
+\section{Type classes in Haskell}\jp{Move this to ``haskell preliminaries'' ?}
 
 We now abstract from the specific |Num| class and look at what a type
 class is in general, and how it is used.
@@ -914,6 +1086,7 @@ make the types |a->Double|, |a->(b->Double)|, etc.\ into instances of |Num|
 % about |foo| instead? (And then just mention |fromInteger| shortly.)
 
 \section{Computing derivatives}
+\jp{What is this doing here? Should most certainly be in \cref{sec:deriv}}
 \label{sec:computingDerivatives}
 
 An important part of calculus is the collection of laws, or rules, for
@@ -944,7 +1117,7 @@ If we want to get a bit closer to actually implementing |D| we quickly
 notice a problem: if |D| has type |(REAL -> REAL) -> (REAL -> REAL)|
 have no way of telling which of these rules we should apply.
 %
-That is, given an extensional (semantic) function |f|, the only thing that we can ever do is to evaluate |f| at given points, and thus we cannot know
+That is, given an extensional (semantic\jp{shallow}) function |f|, the only thing that we can ever do is to evaluate |f| at given points, and thus we cannot know
 if this function was written using a |+|, or |sin| or |exp| as
 outermost operation.  
 %
@@ -965,51 +1138,7 @@ In other words, the computation of derivatives is based on a domain
 specific language (a DSL) of expressions (representing functions in
 one variable).
 %
-Here is the start of a grammar for such a language:\jp{Is there any point in showing a grammar? Do we do it ever before or again?}
-%
-\begin{spec}
-   expression  ∷=  const ℝ
-               |   id
-               |   expression + expression
-               |   expression * expression
-               |   exp expression
-               |   ...
-\end{spec}
-
-We can implement this in a datatype:
-\label{sec:FunExp}
-\begin{code}
-data FunExp  =  Const Double
-             |  Id
-             |  FunExp  :+:  FunExp
-             |  FunExp  :*:  FunExp
-             |  Exp FunExp
-             -- and so on
-             deriving Show
-\end{code}
-
-The intended meaning of elements of the |FunExp| type is functions:
-%
-\begin{code}
-type Func = REAL -> REAL
-
-eval  ::  FunExp         ->  Func
-eval      (Const alpha)  =   const alpha
-eval      Id             =   id
-eval      (e1 :+: e2)    =   eval e1  +  eval e2    -- note the use of ``lifted |+|'',
-eval      (e1 :*: e2)    =   eval e1  *  eval e2    -- ``lifted |*|'',
-eval      (Exp e1)       =   exp (eval e1)          -- and ``lifted |exp|''.
--- and so on
-\end{code}
-%
-An example:
-\begin{code}
-f1 :: REAL -> REAL
-f1 x = exp (x^2)
-e1 :: FunExp
-e1 = Exp (Id :*: Id)
-\end{code}
-
+\jp{See above for the language}
 We can then implement the derivative of |FunExp| expressions using the
 rules of derivatives.
 %
