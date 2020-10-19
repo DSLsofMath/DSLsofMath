@@ -6,7 +6,7 @@
 Workshop on Trends in Functional Programming in Education, 2015.}}
 \label{sec:DSLComplex}
 
-\jp{this chapter has many things. Retitle it?}
+\jp{this chapter has many things. Retitle it/Restructure?}
 
 In this chapter we exemplify our method by applying our method to the
 domain of arithmetic first, and complex numbers second, which we
@@ -23,6 +23,7 @@ the code for this lecture is placed in a module called
 \TODO{It would also be useful to split up these imports into those needed early and those only needed in subsection \cref{sec:complexcase} (to be introduced later).}
 
 \begin{code}
+{-# LANGUAGE InstanceSigs #-}
 module DSLsofMath.W01 where
 import DSLsofMath.CSem (ComplexSem(CS), (.+.), (.*.))
 import Numeric.Natural (Natural)
@@ -1290,9 +1291,23 @@ to the right hand side).
 The new operator |(===)| corresponds to semantic equality, that is,
 equality \emph{after evaluation}:
 %
+
+%if false
+Unfortunately we have not explained classes yet.
 \begin{code}
-(===) :: ComplexE -> ComplexE -> Bool
-z === w {-"\quad"-} = {-"\quad"-} evalE z == evalE w
+infix 0 ===
+class SemEq a where
+  (===) :: a -> a -> Bool
+instance SemEq Int where
+  (===) = (==)
+instance SemEq Double where
+  (===) = (==)
+instance SemEq ComplexE where
+\end{code}
+%endif
+\begin{code}
+  (===) :: ComplexE -> ComplexE -> Bool
+  z === w {-"\quad"-} = {-"\quad"-} evalE z == evalE w
 \end{code}
 
 Another law is that |fromCD| is an embedding: if we start from a
@@ -1304,15 +1319,18 @@ propFromCD :: ComplexD -> Bool
 propFromCD s =  evalE (fromCD s) == s
 \end{code}
 
-Other desirable laws are that |Plus| and |Times| should be associative
-and commutative and |Times| should distribute over |Plus|:
-%
+Other desirable laws are that |+| and |*| should be associative and commutative and |*| should distribute over |+|:
+%if false
 \begin{code}
-propCommPlus   x y                   = {-"\quad"-}  Plus x y             ===  Plus y x
-propCommTimes  x y                   = {-"\quad"-}  Times x y            ===  Times y x
-propAssocPlus  x y z                 = {-"\quad"-}  Plus (Plus x y) z    ===  Plus x (Plus y z)
-propAssocTimes x y z                 =              Times (Times x y) z  ===  Times x (Times y z)
-propDistTimesPlus x y z {-"\quad"-}  =              Times x (Plus y z)   ===  Plus (Times x y) (Times x z)
+propAssocPlus :: (Num a, SemEq a) => a -> a -> a -> Bool
+\end{code}
+%endif
+\begin{code}
+propCommPlus   x y                   = {-"\quad"-}  x + y          ===  y + x
+propCommTimes  x y                   = {-"\quad"-}  x * y          ===  y * x
+propAssocPlus  x y z                 = {-"\quad"-}  (x + y) + z    ===  x + (y + z)
+propAssocTimes x y z                 =              (x * y) * z    ===  x * (y * z)
+propDistTimesPlus x y z {-"\quad"-}  =              x * (y + z)    ===  (x * y) + (x * z)
 \end{code}
 
 These laws actually fail, but not due to any mistake in the
@@ -1435,6 +1453,7 @@ of two quantities is commutative but not associative.\footnote{See
 Such generalisation can be reflected in QuickCheck properties as well.
 
 \begin{code}
+propAssoc :: SemEq a => (a -> a -> a) -> a -> a -> a -> Bool
 propAssoc (⊛) x y z =  (x ⊛ y) ⊛ z === x ⊛ (y ⊛ z)
 \end{code}
 %
@@ -1634,8 +1653,8 @@ evaluation functions or predicates (like |lim| and |sum|).
 \begin{code}
 type QQ     =  Ratio Integer
 
-propAssocAdd :: (Eq a, Num a) => a -> a -> a -> Bool
-propAssocAdd = propAssocA (+)
+propAssocAdd :: (SemEq a, Num a) => a -> a -> a -> Bool
+propAssocAdd = propAssoc (+)
 
 -- timesD :: ComplexD -> ComplexD -> ComplexD
 timesD (CD (ar, ai)) (CD (br, bi)) = CD (ar*br - ai*bi, ar*bi + ai*br)
