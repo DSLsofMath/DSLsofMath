@@ -360,6 +360,7 @@ does not fundamentally change its character if we extended it with
 several types (or sorts) of individuals (one speaks of
 ``multi-sorted'' FOL).
 
+\TODO{Fix formatting using |Forall|.}
 In such a variant, the quantifiers look like |∀(x:S). P(x)| and
 |∃(x:S). P(x)|.
 
