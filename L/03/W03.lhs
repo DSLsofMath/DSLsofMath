@@ -11,7 +11,7 @@ type REAL = Double
 
 \section{Examples of types in mathematics}\label{types-in-mathematics}
 
-Simple types and are sometimes mentioned explicitly in mathematical texts:
+Simple types are sometimes mentioned explicitly in mathematical texts:
 
 \begin{itemize}
 \item \(x ∈ ℝ\)

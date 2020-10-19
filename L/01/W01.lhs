@@ -162,7 +162,7 @@ For any two type expressions |A| and |B| we can form the function type
 |A -> B|.
 %
 Its semantics is the set of (semantic) functions from the
-  semantics of |A| to the semantics of |B|.\jp{In fact we don't do this for other types. Is this really necessary?}
+  semantics of |A| to the semantics of |B|.\jp{In fact we don't write this for other types. Is this really necessary?}
 \footnote{The only way to be precise about semantics
   is to use a formal language, and so semantics sometimes does not
   seem to be that much different from syntax, as in this example.
