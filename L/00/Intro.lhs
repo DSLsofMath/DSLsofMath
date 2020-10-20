@@ -166,7 +166,7 @@ computer science perspective.
         mathematical concepts
   \end{itemize}
 \end{itemize}
-  \caption{Learning outcomes for DSLsofMath}
+  \caption{Learning outcomes for this \course}
   \label{fig:LearningOutcomes}
 \end{wrapfigure}
 

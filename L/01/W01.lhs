@@ -1570,7 +1570,7 @@ First, with this syntax, the $\lim_{i\to\infty} x_i$ expression form
 binds |i| in the expression |xi|.
 %
 We could just as well say that |lim| takes a function |x :: Nat -> X|
-as its only argument.\jp{This needs to go after \cref{sec:functions-and-scoping}}
+as its only argument.\jp{This is explained in \cref{sec:functions-and-scoping}}
 %
 Second, an arbitrary sequence |x|, may or may not have a limit.
 %

@@ -200,9 +200,9 @@ Infinite X|.
 Now we can move from limit points to the more familiar limit of a
 sequence.
 %
-At the core of DSLsofMath\jp{should this be a macro?} is the ability to analyse definitions from
+At the core of this \course{} is the ability to analyse definitions from
 mathematical texts, and here we will use the definition of the limit
-of a sequence from \citet[page 498]{adams2010calculus}:
+of a sequence of \citet[page 498]{adams2010calculus}:
 
 \begin{quote}
   We say that sequence ${a_n}$ converges to the limit $L$, and we
@@ -319,7 +319,8 @@ The |lim| notation has four components: a variable name |x|, a point
 |a|, an expression \(f(x)\) and the limit |L|.
 %
 The variable name and the expression can be combined into just the
-function |f| and this leaves us with three essential components: |f|,
+function |f|\jp{This is explained in \cref{sec:functions-and-scoping}}
+and this leaves us with three essential components: |f|,
 |a|, and |L|.
 %
 Thus, |lim| can be seen as a ternary (3-argument) predicate which is
