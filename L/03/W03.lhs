@@ -25,9 +25,11 @@ Simple types are sometimes mentioned explicitly in mathematical texts:
 However the types of big operators (sums, limits, integrals, etc.) are
 usually not given explicitly. In fact, it may not be clear at first
 sight that the summing operator ($\sum$) should be assigned a type at
-all! Yet this is exactly what we will set out to do. However, to be
-able to do so convincingly we shall try and clarify the relationship
-between functions and expressions first.
+all! Yet this is exactly what we will set out to do, dealing with a
+dangerous pitfall of mathematical notation
+(\cref{sec:scoping-pitfall}). However, to be able to do so
+convincingly we shall clarify the relationship between functions and
+expressions first.
 
 \subsection{Expressions and functions of one variable}
 
@@ -142,6 +144,12 @@ eval      (e1 :+: e2)    =   eval e1  +  eval e2    -- note the use of ``lifted 
 eval      (e1 :*: e2)    =   eval e1  *  eval e2    -- ``lifted |*|'',
 \end{spec}
 
+
+Representing expressions of one variable as functions (of one
+argument) is a recurring technique in this \course{} (\jp{Find back
+  references to FunExp and function instances.}).  To start, we can
+use it to assign types to big operators.
+
 \subsection{Scoping and Typing big operators}
 
 Consider the mathematical expression
@@ -189,7 +197,7 @@ freely use any haskell function producing ℝ inside the summand ---
 including summation itself. If we were to use the deep embedding, then
 we'd need a whole lot more work to ensure that we can represent
 summation within the deep embedding, in particular we need a way to
-embed variable binding itself. And, we shall not be opening this
+embed variable binding itself. And we shall not be opening this
 can of worms.
 
 
@@ -227,6 +235,16 @@ operator has a higher order type. A similar line of reasoning
 justifies the types of derivatives. We study in detail how these play
 out first.
 
+\subsection{Detour: expressions of several variables}
+\label{sec:multiple-variables}
+TODO: import \cref{sec:ArithExp} here.
+
+|Env String REAL| is like a tuple of several variables values. We can select any variable and make it a function of said variable like so:
+
+\begin{code}
+fun1 :: (Env String REAL -> REAL) -> Env String REAL -> X -> (REAL -> REAL)
+fun1 funMultiple env variable value = fun1 ((variable,value):env)
+\end{code}
 
 
 \section{Typing Mathematics: derivative of a function}
@@ -325,6 +343,7 @@ However if we also have access to the ``source code'' of |f|, then we can
 apply the usual rules we have learnt in calculus.
 %
 We will get get back to this question in \refSec{sec:computingDerivatives}.
+
 
 \section{Typing Mathematics: partial derivative}
 \label{sec:typePartialDerivative}
@@ -665,7 +684,7 @@ We will not dig into how to solve such PDEs, but they are widely used
 in physics.
 
 \section{Playing with types}
-
+\jp{Anything more descriptive than 'playing'?}
 So far we have worked on typing mathematics ``by hand'', but we can
 actually get the Haskell interpreter to help a bit even when we are
 still at the specification stage.
@@ -896,7 +915,7 @@ Play around with this a bit in ghci.
 \jp{Can this be made more precise?}
 
 \subsection{Overloaded integers literals}
-\jp{Perhaps such ``haskell asides'' should be clearly marked as such.}
+\jp{Perhaps such ``haskell asides'' should be clearly marked as such, or even collected in a chapter.}
 As an aside, we will spend some time explaining a convenient syntactic
 shorthand which is very useful but which can be confusing: overloaded
 integers.

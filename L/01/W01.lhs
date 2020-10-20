@@ -6,7 +6,7 @@
 Workshop on Trends in Functional Programming in Education, 2015.}}
 \label{sec:DSLComplex}
 
-\jp{this chapter has many things. Retitle it/Restructure?}
+\jp{this chapter has many things. Let's move BLOAT elsewhere.}
 
 In this chapter we exemplify our method by applying our method to the
 domain of arithmetic first, and complex numbers second, which we
@@ -43,11 +43,10 @@ numbers and the infix operator |(%)| used to construct ratios
 (|1%7| is Haskell notation for $\frac{1}{7}$, etc.).
 
 \section{Common pitfalls with traditional mathematical notation}
-\jp{Perhaps this should go in intro chapter.}
+\jp{BLOAT: this should go in intro chapter.}
 \label{sec:pitfalls}
 
 \subsection{A function or the value at a point?}
-\label{sec:function-or-value-at-a-point}
 
 Mathematical texts often talk about ``the function $f(x)$'' when ``the
 function $f$'' would be more clear.
@@ -66,13 +65,8 @@ constant (for some fixed value $x$) or as a function of $x$.
 Paying attention to types and variable scope often helps to sort out
 these ambiguities.
 
-\jp{Representing expressions of one variable as functions (of one argument) is a recurring technique in this \course{}.}
-\jp{Maybe we should introduce the syntax (and semantics?) for functions of one arguments already in this chapter.}
-\jp{And in some places we're still guilty of making this confusion. It may be worth having a margin symbol every time we do this.
-Or not make the confusion.}
-
 \subsection{Scoping}
-\label{sec:scoping}
+\label{sec:scoping-pitfall}
 The syntax and scoping rules for the integral sign are rarely
 explicitly mentioned, but looking at it from a software perspective
 can help.
@@ -584,6 +578,7 @@ data Either p q = Left p | Right q
 
 
 \subsection{Partial functions}
+\jp{BLOAT?}
 As a warmup, and for reasons which will become obvious soon (in
 \cref{sec:ArithExp}), we begin by presenting a DSL for partial
 functions with a finite domain.  The type |Env v s| will be the
@@ -646,8 +641,7 @@ lookup :: Eq a => a -> [(a, b)] -> Maybe b
 \end{spec}
 
 \section{Arithmetic expressions of several variables}
-\jp{Most certainly we should collect: 1. this section 2. the remark on expressions/functions 3. the definition of ``function'' instances into a section on expressions and functions of one or several variables.}
-\jp{In fact, this should probably go after "FunExp". Indeed it is strange to work with functions of many variables a lot before talking about functions of one variable.}
+\jp{BLOAT: It is strange to work with functions of many variables a lot before talking about functions of one variable. Let's move this to \cref{sec:multiple-variables}}
 \label{sec:ArithExp}
 Let us define the following type, describing simple arithmetic
 expressions.
@@ -746,7 +740,7 @@ liftM op   (Just a)  (Just b)  =  Just (op a b)
 liftM _op  _         _         =  Nothing
 \end{code}
 
-\section{A case study: complex numbers}
+\section{An invitation to DSL of Maths: complex numbers}
 \label{sec:complexcase}
 
 We now turn to our first study of mathematics as found ``in the
@@ -1116,7 +1110,7 @@ newtype  ComplexSem r  =  CS  (r , r)        deriving Eq
 
 % ----------------------------------------------------------------
 
-\section{A syntax for (complex) arithmetical expressions}
+\subsection{A syntax for (complex) arithmetical expressions}
 
 By following \citet{adams2010calculus}, we have arrived at representation which captures the
 \emph{semantics} of complex numbers.
@@ -1488,7 +1482,7 @@ Find other pairs of operators satisfying a distributive law.
 \end{exercise}
 \section{Notation and abstract syntax for (infinite) sequences}
 \label{sec:infseq}
-\jp{Seems like an odd place to talk about this. Why not put it together with the limits section?}
+\jp{BLOAT: Seems like an odd place to talk about this. Why not put it together with the limits section?}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
 As preparation for the language of sequences and limits 
@@ -1576,7 +1570,7 @@ First, with this syntax, the $\lim_{i\to\infty} x_i$ expression form
 binds |i| in the expression |xi|.
 %
 We could just as well say that |lim| takes a function |x :: Nat -> X|
-as its only argument.\jp{function vs. expression of one variable tension.\cref{sec:function-or-value-at-a-point}}
+as its only argument.\jp{This needs to go after \cref{sec:functions-and-scoping}}
 %
 Second, an arbitrary sequence |x|, may or may not have a limit.
 %
