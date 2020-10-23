@@ -102,11 +102,13 @@ The answer is no, as we can see from a slightly extended example:
 The variable |x| bound on the left is independent of the variable |x|
 ``bound under the integral sign''.
 %
+We address this issue in detail in \cref{sec:functions-and-scoping}.
+%
 Mathematics text books usually avoid the risk of confusion by
 (silently) renaming variables when needed, but we believe that this
 renaming is a sufficiently important operation to be more explicitly
 mentioned.
-%*TODO: Perhaps add simple exercises on renaming and variable capture
+
 
 \section{Types of |data| and functions}
 
@@ -577,168 +579,6 @@ data Either p q = Left p | Right q
 \end{spec}
 
 
-\subsection{Partial functions}
-\jp{BLOAT?}
-As a warmup, and for reasons which will become obvious soon (in
-\cref{sec:ArithExp}), we begin by presenting a DSL for partial
-functions with a finite domain.  The type |Env v s| will be the
-\emph{syntax} for the type of partial functions from |v| to |s|, and
-defined as follows:
-%
-\begin{spec}
-type Env v s = [(v,s)]
-\end{spec}
-%
-%
-As an example value of this type we can take:
-%
-\begin{code}
-env1 :: Env String Int
-env1 = [("hey", 17), ("you", 38)]
-\end{code}
-
-The intended meaning is that |"hey"| is mapped to |17|, etc.  The
-semantic domain is the set of partial functions, and, as discussed
-above, we represent those as the Haskell type |v -> Maybe s|.
-
-Our evaluation function, |evalEnv|, maps the syntax to the semantics,
-and as such has the following type:
-%
-\begin{code}
-evalEnv :: Eq v =>  Env v s -> (v -> Maybe s)
-\end{code}
-%
-This type signature deserves some more explanation.
-%
-The first part (|Eq v =>|) is a constraint which says that the
-function works, not for \emph{all} types |v|, but only for those who
-support a boolean equality check (|(==) :: v -> v -> Bool|).
-%
-The rest of the type signature (|Env v s -> (v -> Maybe s)|) can be
-interpreted in two ways: either as the type of a one-argument function
-taking an |Env v s| and returning a function, or as the type of a
-two-argument function taking an |Env v s| and a |v| and maybe
-returning an |s|.
-
-The implementation proceeds by searching for the first occurence of
-|x| In the list of pairs |(v,s)| such that |x==v|, and
-return |Just s| if one is found, and |Nothing| otherwise.
-%**TODO: Explain |where| clause syntax
-%**TODO: Explain boolean guards
-\begin{code}
-evalEnv vss x  =  findFst vss
-  where  findFst ((v,s):vss)
-           | x == v         =  Just s
-           | otherwise      =  findFst vss
-         findFst []         =  Nothing
-\end{code}
-%
-Another equivalent definition is |evalEnv = flip lookup|, where
-|lookup| is defined in the Haskell Prelude:
-%
-\begin{spec}
-lookup :: Eq a => a -> [(a, b)] -> Maybe b
-\end{spec}
-
-\section{Arithmetic expressions of several variables}
-\jp{BLOAT: It is strange to work with functions of many variables a lot before talking about functions of one variable. Let's move this to \cref{sec:multiple-variables}}
-\label{sec:ArithExp}
-Let us define the following type, describing simple arithmetic
-expressions.
-
-\begin{code}
-data AE = V String | P AE AE | T AE AE
-\end{code}
-
-The above declaration introduces:
-\begin{itemize}
-\item a new type |AE| for simple arithmetic expressions,
-\item a constructor |V :: String -> AE| to represent variables,
-\item a constructor |P :: AE -> AE -> AE| to represent plus, and
-\item a constructor |T :: AE -> AE -> AE| to represent times.
-\end{itemize}
-
-Example values include |x = V "x"|, |e1 = P x x|, and |e2 = T e1 e1|.
-
-If you want a constructor to be used as an infix operator you need to use
-symbol characters and start with a colon:
-
-\begin{spec}
-data AE' = V' String | AE' :+ AE' | AE' :* AE'
-\end{spec}
-
-Example values are then |y = V' "y"|, |e1 = y :+ y| and |e2 = x :* e1|.
-
-Finally, you can add one or more type parameters to make a whole family
-of datatypes in one go:
-
-\begin{code}
-data AE' v = V' v | AE' v :+ AE' v | AE' v :* AE' v
-\end{code}
-%
-The purpose of the parameter |v| here is to enable a free choice of
-type for the variables (be it |String| or |Int| or something else).
-
-The careful reader will note that the same Haskell module cannot
-contain both these definitions of |AE'|.
-%
-This is because the name of the type and the names of the constructors
-are clashing.
-%
-The typical ways around this are either to define the types in different
-modules, or rename one of them (often by adding primes as in |AE'|).
-%
-In this \course{} we often take the liberty of presenting more than one
-version of a datatype without changing the names, to avoid multiple
-modules or too many primed names.
-
-
-Together with a datatype for the syntax of arithmetic expressions we
- want to define an evaluator of the expressions.
-%
-The concept of ``an evaluator'', a function from the syntax to the
-semantics, is something we will return to many times in this \course{}.
-%
-We have already seen one example: the function |evalEnv| which
-translates from a list of key-value-pairs (the abstract syntax of the
-environment) to a (partial) function (the semantics).
-
-In the evaluator for |AE| we take this idea one step further: given an
-environment |env| and the syntax of an arithmetic expression |e| we
-compute the value of that expression. Hence, the semantics of |AE| is
-a function of type |Env String Integer -> Maybe Integer|.
-%
-%*TODO: perhaps switch Times to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
-%**TODO explain more for those not used to Haskell
-\begin{code}
-evalAE :: AE -> (Env String Integer -> Maybe Integer)
-evalAE (V x)     env  =  evalEnv env x
-evalAE (P e1 e2) env  =  mayP  (evalAE e1 env)  (evalAE e2 env)
-evalAE (T e1 e2) env  =  mayT  (evalAE e1 env)  (evalAE e2 env)
-
-mayP :: Maybe Integer -> Maybe Integer -> Maybe Integer
-mayP (Just a) (Just b)  =  Just (a+b)
-mayP _        _         =  Nothing
-
-mayT :: Maybe Integer -> Maybe Integer -> Maybe Integer
-mayT (Just a) (Just b)  =  Just (a*b)
-mayT _        _         =  Nothing
-\end{code}
-
-The corresponding code for |AE'| is more general and you don't need to
-understand it at this stage, but it is left here as an example for
-those with a stronger Haskell background.\jp{Actually the AE/AE'  generalisation has nothing to do with the change in code.}
-%
-\begin{code}
-evalAE' :: (Eq v, Num sem) =>  (Env v sem) -> (AE' v -> Maybe sem)
-evalAE' env (V' x)      =  evalEnv env x
-evalAE' env (e1 :+ e2)  =  liftM (+)   (evalAE' env e1)  (evalAE' env e2)
-evalAE' env (e1 :* e2)  =  liftM (*)   (evalAE' env e1)  (evalAE' env e2)
-
-liftM :: (a -> b -> c) -> (Maybe a -> Maybe b -> Maybe c)
-liftM op   (Just a)  (Just b)  =  Just (op a b)
-liftM _op  _         _         =  Nothing
-\end{code}
 
 \section{An invitation to DSL of Maths: complex numbers}
 \label{sec:complexcase}
@@ -1123,6 +963,10 @@ We want a datatype |ComplexE| for the abstract syntax tree of
 expressions.
 %
 The syntactic expressions can later be evaluated to semantic values:
+%
+%
+The concept of ``an evaluator'', a function from the syntax to the
+semantics, is something we will return to many times in this \course{}.
 %
 \begin{code}
 evalE :: ComplexE -> ComplexD

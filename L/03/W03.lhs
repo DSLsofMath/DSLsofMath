@@ -198,7 +198,7 @@ including summation itself. If we were to use the deep embedding, then
 we'd need a whole lot more work to ensure that we can represent
 summation within the deep embedding, in particular we need a way to
 embed variable binding itself. And we shall not be opening this
-can of worms.
+can of worms just yet, even though we take a glimpse in \cref{sec:multiple-variables}.
 
 
 Sticking conveniently to the shallow embedding, we can apply the same
@@ -235,9 +235,173 @@ operator has a higher order type. A similar line of reasoning
 justifies the types of derivatives. We study in detail how these play
 out first.
 
-\subsection{Detour: expressions of several variables}
+\section{Detour: expressions of several variables}
 \label{sec:multiple-variables}
-TODO: import \cref{sec:ArithExp} here.
+
+In first reading this section can be skipped, however it is natural to
+to extend the study of expressions from single variables to multiple
+variables.
+
+
+\subsection{Partial functions}
+As an warmup, and for reasons which will become obvious soon (in
+\cref{sec:ArithExp}), we begin by presenting a DSL for partial
+functions with a finite domain.  The type |Env v s| will be the
+\emph{syntax} for the type of partial functions from |v| to |s|, and
+defined as follows:
+%
+\begin{code}
+type Env v s = [(v,s)]
+\end{code}
+%
+%
+As an example value of this type we can take:
+%
+\begin{code}
+env1 :: Env String Int
+env1 = [("hey", 17), ("you", 38)]
+\end{code}
+
+The intended meaning is that |"hey"| is mapped to |17|, etc.  The
+semantic domain is the set of partial functions, and, as discussed
+above, we represent those as the Haskell type |v -> Maybe s|.
+
+Our evaluation function, |evalEnv|, maps the syntax to the semantics,
+and as such has the following type:
+%
+\begin{code}
+evalEnv :: Eq v =>  Env v s -> (v -> Maybe s)
+\end{code}
+%
+This type signature deserves some more explanation.
+%
+The first part (|Eq v =>|) is a constraint which says that the
+function works, not for \emph{all} types |v|, but only for those who
+support a boolean equality check (|(==) :: v -> v -> Bool|).
+%
+The rest of the type signature (|Env v s -> (v -> Maybe s)|) can be
+interpreted in two ways: either as the type of a one-argument function
+taking an |Env v s| and returning a function, or as the type of a
+two-argument function taking an |Env v s| and a |v| and maybe
+returning an |s|.
+
+The implementation proceeds by searching for the first occurence of
+|x| In the list of pairs |(v,s)| such that |x==v|, and
+return |Just s| if one is found, and |Nothing| otherwise.
+%**TODO: Explain |where| clause syntax
+%**TODO: Explain boolean guards
+\begin{code}
+evalEnv vss x  =  findFst vss
+  where  findFst ((v,s):vss)
+           | x == v         =  Just s
+           | otherwise      =  findFst vss
+         findFst []         =  Nothing
+\end{code}
+%
+Another equivalent definition is |evalEnv = flip lookup|, where
+|lookup| is defined in the Haskell Prelude:
+%
+\begin{spec}
+lookup :: Eq a => a -> [(a, b)] -> Maybe b
+\end{spec}
+
+\subsection{The data type of multiple variables expressions}
+\label{sec:ArithExp}
+Let us define the following type, describing a deep embedding for
+simple arithmetic expressions. Compared to single variable
+expressions, we add one argument for variables, giving the \emph{name}
+of the variable. Here we use a string, so we have an infinite supply
+of variables.  \jp{rename type/constructors to match single variable
+  expressions}
+
+\begin{code}
+data AE = V String | P AE AE | T AE AE
+\end{code}
+
+
+The above declaration introduces:\jp{move this kind of consideration much earlier. Haskell primer?}
+\begin{itemize}
+\item a new type |AE| for simple arithmetic expressions,
+\item a constructor |V :: String -> AE| to represent variables,
+\item a constructor |P :: AE -> AE -> AE| to represent plus, and
+\item a constructor |T :: AE -> AE -> AE| to represent times.
+\end{itemize}
+
+Example values include |x = V "x"|, |e1 = P x x|, and |e2 = T e1 e1|.
+
+If you want a constructor to be used as an infix operator you need to use
+symbol characters and start with a colon:
+
+\begin{spec}
+data AE' = V' String | AE' :+ AE' | AE' :* AE' 
+\end{spec}
+
+Example values are then |y = V' "y"|, |e1 = y :+ y| and |e2 = x :* e1|.
+
+Finally, you can add one or more type parameters to make a whole family
+of datatypes in one go:\jp{move this kind of consideration much earlier. Haskell primer?}
+
+\begin{code}
+data AE' v = V' v | AE' v :+ AE' v | AE' v :* AE' v
+\end{code}
+%
+The purpose of the parameter |v| here is to enable a free choice of
+type for the variables (be it |String| or |Int| or something else).
+
+The careful reader will note that the same Haskell module cannot
+contain both these definitions of |AE'|.\jp{move this kind of consideration much earlier. Haskell primer?}
+%
+This is because the name of the type and the names of the constructors
+are clashing.
+%
+The typical ways around this are either to define the types in different
+modules, or rename one of them (often by adding primes as in |AE'|).
+%
+In this \course{} we often take the liberty of presenting more than one
+version of a datatype without changing the names, to avoid multiple
+modules or too many primed names.
+
+
+Together with a datatype for the syntax of arithmetic expressions we
+ want to define an evaluator of the expressions.
+
+In the evaluator for |AE| we take this idea one step further: given an
+environment |env| and the syntax of an arithmetic expression |e| we
+compute the value of that expression. Hence, the semantics of |AE| is
+a function of type |Env String Integer -> Maybe Integer|.
+%
+%*TODO: perhaps switch Times to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
+%**TODO explain more for those not used to Haskell
+\begin{code}
+evalAE :: AE -> (Env String Integer -> Maybe Integer)
+evalAE (V x)     env  =  evalEnv env x
+evalAE (P e1 e2) env  =  mayP  (evalAE e1 env)  (evalAE e2 env)
+evalAE (T e1 e2) env  =  mayT  (evalAE e1 env)  (evalAE e2 env)
+
+mayP :: Maybe Integer -> Maybe Integer -> Maybe Integer
+mayP (Just a) (Just b)  =  Just (a+b)
+mayP _        _         =  Nothing
+
+mayT :: Maybe Integer -> Maybe Integer -> Maybe Integer
+mayT (Just a) (Just b)  =  Just (a*b)
+mayT _        _         =  Nothing
+\end{code}
+
+The corresponding code for |AE'| is more general and you don't need to
+understand it at this stage, but it is left here as an example for
+those with a stronger Haskell background.\jp{Actually the AE/AE'  generalisation has nothing to do with the change in code.}
+%
+\begin{code}
+evalAE' :: (Eq v, Num sem) =>  (Env v sem) -> (AE' v -> Maybe sem)
+evalAE' env (V' x)      =  evalEnv env x
+evalAE' env (e1 :+ e2)  =  liftM (+)   (evalAE' env e1)  (evalAE' env e2)
+evalAE' env (e1 :* e2)  =  liftM (*)   (evalAE' env e1)  (evalAE' env e2)
+
+liftM :: (a -> b -> c) -> (Maybe a -> Maybe b -> Maybe c)
+liftM op   (Just a)  (Just b)  =  Just (op a b)
+liftM _op  _         _         =  Nothing
+\end{code}
+
 
 |Env String REAL| is like a tuple of several variables values. We can select any variable and make it a function of said variable like so:
 
@@ -246,6 +410,9 @@ fun1 :: (Env String REAL -> REAL) -> Env String REAL -> X -> (REAL -> REAL)
 fun1 funMultiple env variable value = fun1 ((variable,value):env)
 \end{code}
 
+\jp{Talk some about variable capture?}
+
+%*TODO: Perhaps add simple exercises on renaming and variable capture
 
 \section{Typing Mathematics: derivative of a function}
 \label{sec:typeDerivative}
@@ -343,6 +510,7 @@ However if we also have access to the ``source code'' of |f|, then we can
 apply the usual rules we have learnt in calculus.
 %
 We will get get back to this question in \refSec{sec:computingDerivatives}.
+
 
 
 \section{Typing Mathematics: partial derivative}
