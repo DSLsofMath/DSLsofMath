@@ -796,7 +796,7 @@ fromInteger n | n < 0 = negate (fromInteger (negate n))
 
 \subsection{Homomorphism and compositional semantics}
 \jp{Seems like a repeat, what is new in this subsection?}
-Earlier, we saw that |eval| is compositional, while |eval'| is not.
+Earlier, we saw that |eval| is compositional, while |eval'|\cref{sec:evalD} is not.
 %
 Another way of phrasing that is to say that |eval| is a homomorphism,
 while |eval'| is not.

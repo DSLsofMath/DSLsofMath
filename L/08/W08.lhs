@@ -11,7 +11,6 @@ import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
 import DSLsofMath.W05
 import DSLsofMath.W06
 import DSLsofMath.Algebra
-import Data.Ratio
 \end{code}
 
 In one of the classical analysis textbooks, \citet{rudin1987real}

@@ -77,3 +77,7 @@ example = embed 1 <> embed 10 <> mempty <> embed 11
 Prove group laws for |Free AdditiveGroup|.
 \end{exercise}
 
+\begin{exercise}
+  Prove that |Free Ring ()| is in bijection with arithmetic
+  expressions of one variable.
+\end{exercise}

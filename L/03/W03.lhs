@@ -4,6 +4,8 @@
 {-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.W03 where
 type REAL = Double
+type ℝ = REAL
+type ℤ = Int
 \end{code}
 %
 % (Based on ../../2016/Lectures/Lecture05 )
@@ -32,7 +34,7 @@ convincingly we shall clarify the relationship between functions and
 expressions first.
 
 \subsection{Expressions and functions of one variable}
-
+\label{sec:expressions-of-one-var}
 \begin{itemize}
 \item $f(x) = x - 1$
 \item $g(x) = 2*x^2 + 3$
@@ -68,6 +70,7 @@ multiplication and constants, as in \cref{sec:complex-arithmetic}.
 Additionally, we have the all-important constructor for variables,
 which we will call |X| here. We can implement all this in a datatype
 as follows:\jp{Rename FunExp -> Exp1V or similar?}
+\subsubsection{Deep embedding}
 \label{sec:FunExp}
 \begin{code}
 data FunExp  =  Const REAL
@@ -91,7 +94,7 @@ simply take it as a parameter.
 \begin{code}
 eval  ::  FunExp         ->  REAL  -> REAL
 eval      (Const alpha)      x     = alpha
-eval      Id                 x     = x
+eval      X                  x     = x
 eval      (e1 :+: e2)        x     = eval e1 x  +  eval e2 x
 eval      (e1 :*: e2)        x     = eval e1 x  *  eval e2 x
 \end{code}
@@ -106,6 +109,8 @@ surprising, but the reason is that we used a fixed Haskell symbol
 |FunExp|, and thus they are really equivalent to functions of a single
 variable. 
 
+\subsubsection{Shallow embedding}
+\label{sec:funexp-shallow}
 Thus the above was a deep embedding for functions of a single
 variable.  A shallow embedding would be a using functions as the
 representation, say:
@@ -139,7 +144,7 @@ the deep-embedding using the operators of the shallow embedding:
 \begin{spec}
 eval  ::  FunExp         ->  REAL -> REAL
 eval      (Const alpha)  =   const alpha
-eval      Id             =   variable_x
+eval      X              =   variable_x
 eval      (e1 :+: e2)    =   eval e1  +  eval e2    -- note the use of ``lifted |+|'',
 eval      (e1 :*: e2)    =   eval e1  *  eval e2    -- ``lifted |*|'',
 \end{spec}
@@ -313,7 +318,7 @@ expressions, we add one argument for variables, giving the \emph{name}
 of the variable. Here we use a string, so we have an infinite supply
 of variables.  \jp{rename type/constructors to match single variable
   expressions}
-
+\jp{There does not seem to be sense or rhyme in the name of data types and constructors.}
 \begin{code}
 data AE = V String | P AE AE | T AE AE
 \end{code}
@@ -516,12 +521,11 @@ We will get get back to this question in \refSec{sec:computingDerivatives}.
 \section{Typing Mathematics: partial derivative}
 \label{sec:typePartialDerivative}
 % https://books.google.com/ngrams/graph?year_end=2019&year_start=1800&corpus=26&content=quest+of%2C+quest+to&smoothing=3&direct_url=t1%3B%2Cquest%20of%3B%2Cc0%3B.t1%3B%2Cquest%20to%3B%2Cc0
-% "quest of" is archaic?
 Continuing on our quest to type the elements of mathematical
 textbook definitions, we now turn to a functions of more than one
 variable.
 %
-Our example here is from
+Our example here is by
 \citet[page~169]{maclane1986mathematics}, where we read
 
 \begin{linenumbers}
@@ -984,10 +988,10 @@ integral2 = int a b expr
 Both versions (and a few more minor variations) would be fine as exam
 solutions, but something where the types don't match up would not be OK.
 
-\section{Types in Mathematics (Part II)}\label{sec:typeclasses}
+\section{Types in Mathematics (Part II)}
 
 \subsection{Type classes}
-
+\label{sec:typeclasses}
 The kind of type inference we presented so far in this chapter becomes
 automatic with experience in a domain, but is very useful in the
 beginning.
@@ -1002,7 +1006,7 @@ as \(4 + 2.5\).
 One way to understand such casts from the point of view of functional
 programming is via \emph{type classes}.
 %
-As a reminder, the reason that the expression \(4 + 2.5\) typechecks
+As a reminder\jp{But this was never explained before?}, the reason that the expression \(4 + 2.5\) typechecks
 is because floating point values are members of the class |Num|, which
 includes the member function
 %
@@ -1016,7 +1020,7 @@ Type classes are related to mathematical structures which, in turn,
 are related to DSLs.
 %
 The structuralist point of view in mathematics is that each
-mathematical domain has its own fundamental structures.
+mathematical domain has its own fundamental structures.\jp{I don't think so. Rather instead of emphasising objects, one emphasises relations between them. Citation needed.}
 %
 Once these have been identified, one tries to push their study as far
 as possible \emph{on their own terms}, i.e., without introducing other
@@ -1027,12 +1031,12 @@ of just the group structure, before one introduces, say, an order
 structure and monotonicity.
 
 The type classes of the Haskell standard libary (also known as the
-``Haskell prelude'') seem to have been introduced without much regard to
+``Haskell prelude''\jp{Haskell Primer}) seem to have been introduced without much regard to
 standard mathematical structure, perhaps because of pragmatic
 considerations.
 %
 For now, we examine the numerical type classes |Num|, |Fractional|, and
-|Floating|.
+|Floating|.\jp{It's somewhat annoying to introduce this only to discard it in the next chapter. Can we delay? It seems that yes, because we won't be talking much about classes.}
 %
 \begin{spec}
 class  (Eq a, Show a) => Num a  where
@@ -1083,7 +1087,7 @@ Play around with this a bit in ghci.
 \jp{Can this be made more precise?}
 
 \subsection{Overloaded integers literals}
-\jp{Perhaps such ``haskell asides'' should be clearly marked as such, or even collected in a chapter.}
+\jp{Perhaps such ``haskell asides'' should be clearly marked as such, or even collected in a chapter. Haskell Primer.}
 As an aside, we will spend some time explaining a convenient syntactic
 shorthand which is very useful but which can be confusing: overloaded
 integers.
@@ -1155,7 +1159,8 @@ As an example we have that
 
 \subsection{Back to the numeric hierarchy instances for functions}
 
-Back to the main track: defining numeric operations on functions.\jp{This has not been a track before.}
+Back to the main track: defining numeric operations on functions.
+\jp{This has not been identified as a track before. This can be connected to the definition of operators for the shallow embeddings in \cref{sec:funexp-shallow}}
 %
 We have already defined the operations of the |Num| class, but we can
 move on to the neighbouring classes |Fractional| and |Floating|.
@@ -1203,7 +1208,7 @@ instance Floating a => Floating (x -> a) where
 Complete the instance declarations.
 \end{exercise}
 
-These type classes represent an abstract language of algebraic and
+These type classes represent an abstract language of algebraic\jp{another evidence that this should go to } and
 standard operations, abstract in the sense that the exact nature of
 the elements involved is not important from the point of view of the
 type class, only from that of its implementation.
@@ -1273,7 +1278,10 @@ make the types |a->Double|, |a->(b->Double)|, etc.\ into instances of |Num|
 % about |foo| instead? (And then just mention |fromInteger| shortly.)
 
 \section{Computing derivatives}
-\jp{What is this doing here? Should most certainly be in \cref{sec:deriv}}
+\jp{What is this doing here? Should most certainly be moved to
+  \cref{sec:deriv}? But it seems that compositionality is the
+  question, so it's for \cref{sec:CompSem}; not this chapter which is
+  about typing.}
 \label{sec:computingDerivatives}
 
 An important part of calculus is the collection of laws, or rules, for
@@ -1382,7 +1390,7 @@ Similarly, we obtain
 %
 \begin{code}
 derive     (Const alpha)  =  Const 0
-derive     Id             =  Const 1
+derive     X              =  Const 1
 derive     (e1 :+: e2)    =  derive e1  :+:  derive e2
 derive     (e1 :*: e2)    =  (derive e1  :*:  e2)  :+:  (e1  :*:  derive e2)
 derive     (Exp e)        =  Exp e :*: derive e
@@ -1397,7 +1405,7 @@ functions.
 
 The DSL of expressions, whose syntax is given by the type |FunExp|,
 turns out to be almost identical to the DSL defined via type classes
-in \refSec{sec:typeclasses}.
+in \cref{sec:typeclasses}\jp{Have we said that we defined a DSL?}.
 %
 The correspondence between them is given by the |eval| function.
 %
@@ -1408,7 +1416,7 @@ For example, |:+:| \emph{stands for} a function, while |+| \emph{is}
 that function.
 %
 The second approach is called ``shallow embedding'' or ``almost
-abstract syntax''.
+abstract syntax''\jp{citation needed}.
 %
 It can be more economical, since it needs no |eval|.
 %

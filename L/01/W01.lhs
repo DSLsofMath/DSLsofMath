@@ -917,7 +917,7 @@ algebraic operations to arrive at a \emph{deep embedding} as seen in
 the next section.
 %
 Both shallow and deep embeddings will be further explained in
-\refSec{sec:evalD}.
+\cref{sec:evalD,sec:expressions-of-one-var}.\footnote{And several other places: this is a recurrent idea of the \course{}}
 
 At this point we can sum up the ``evolution'' of the datatypes introduced so far.
 %
