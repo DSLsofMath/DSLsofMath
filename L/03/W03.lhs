@@ -159,7 +159,7 @@ use it to assign types to big operators.
 
 Consider the mathematical expression
 \[
-  \sum_{i=1}^n frac 1 {i^2}
+  \sum_{i=1}^n {i^2}
 \]
 To be able to see which type is appropriate for $\sum$, we have to
 consider the type of the summand ($i^2$ in the example) first. As you
@@ -184,30 +184,30 @@ Conveniently, we can even provide a simple implementation:
 summmation low high f = sum [f i | i <- [low..high]]
 \end{code}
 
-As another example, let us represent
+As another example, let us represent the following nested sum
 \[
   \sum_{i=1}^n \sum_{j=1}^m {i^2 + j^2}
 \]
-using the shallow embedding of summation:
-
+using the shallow embedding of summation. This representation can be written simply as follows:
 \begin{code}
   summation 1 m (\i -> summation 1 n (\j -> i^2 + j^2))
 \end{code}
 Aren't we cheating though? Surely we said that only one variable could
 occur in the summand, but we see both |i| and |j|? Well, we are not
-cheating as long as we use the shallow embedding for functions of one
+cheating as long as we use the \emph{shallow embedding} for functions of one
 variables. Doing so allows us to 1. use lambda notation to bind (and
-name) the variable name of the summation however we wish and 2. we can
-freely use any haskell function producing ℝ inside the summand ---
-including summation itself. If we were to use the deep embedding, then
+name) the variable name of the summation however we wish (in this case |i| and |j|) and 2. we can
+freely use any haskell function of type |ℤ → ℝ| as the summand. In particular, the this function 
+can be any lambda-expression returing |ℝ|, and this expression can include summation itself. This freedom is an advantage of shallow embeddings:
+if we were to use the deep embedding, then
 we'd need a whole lot more work to ensure that we can represent
-summation within the deep embedding, in particular we need a way to
+summation within the deep embedding. In particular we need a way to
 embed variable binding itself. And we shall not be opening this
 can of worms just yet, even though we take a glimpse in \cref{sec:multiple-variables}.
 
 
 Sticking conveniently to the shallow embedding, we can apply the same
-kind of reasoning to other big operators, and obtain the following:
+kind of reasoning to other big operators, and obtain the following typings:
 
 \begin{itemize}
 \item |lim : (ℕ → ℝ) → ℝ| for \(lim_{n → ∞} \{a_n\}\)
