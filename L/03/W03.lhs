@@ -67,7 +67,7 @@ expressions only. Therefore we have constructors for addition,
 multiplication and constants, as in \cref{sec:complex-arithmetic}.
 Additionally, we have the all-important constructor for variables,
 which we will call |X| here. We can implement all this in a datatype
-as follows:\jp{FunExp -> Exp1V}
+as follows:\jp{Rename FunExp -> Exp1V or similar?}
 \label{sec:FunExp}
 \begin{code}
 data FunExp  =  Const REAL
@@ -146,7 +146,7 @@ eval      (e1 :*: e2)    =   eval e1  *  eval e2    -- ``lifted |*|'',
 
 
 Representing expressions of one variable as functions (of one
-argument) is a recurring technique in this \course{} (\jp{Find back
+argument) is a recurring technique in this \course{} (\jp{Link back
   references to FunExp and function instances.}).  To start, we can
 use it to assign types to big operators.
 

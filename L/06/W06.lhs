@@ -66,7 +66,7 @@ To compute the derivative at some point, say |2|, we have several choices.
 \begin{enumerate}
 \item Using |FunExp|
 
-Recall (\refSec{sec:FunExp}):
+Recall expressions (or functions) of one variables, from \cref{sec:FunExp}:
 %
 \begin{spec}
 data FunExp  =  Const Rational

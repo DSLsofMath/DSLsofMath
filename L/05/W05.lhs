@@ -425,10 +425,11 @@ view, that of homomorphisms.
 \section{Polynomial degree as a homomorphism}
 
 It is often the case that a certain function is \emph{almost} a
-homomorphism and the domain or range \emph{almost} a monoid.
+homomorphism and the domain or range structure is \emph{almost} a monoid.
 %
-In the section on |eval| and |eval'| for |FunExp| we have seen
-``tupling'' as one way to fix such a problem and here we will
+In \cref{sec:evalD}, we have seen
+``tupling''\jp{This is referring to the evaluator of derivatives. But probably is should be moved after this, in the derivatives chapter.}
+as one way to fix such a problem and here we will
 introduce another way.
 
 The |degree| of a polynomial is a good candidate for being a

@@ -253,9 +253,9 @@ Prove or disprove the following claims:
 \end{exercise}
 
 \begin{exercise}
-  \textit{From exam 2017-03-14}
+  \fromExam{2017-03-14}
 
-  Recall the type of expressions
+  Recall the type of expressions of one variable from \cref{sec:FunExp}.
 
   \begin{code}
   data FunExp  =  Const Rational           |  Id

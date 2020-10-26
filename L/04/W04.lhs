@@ -114,7 +114,7 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 
 \subsection{An example of a non-compositional function}
 
-Consider a datatype of very simple integer expressions:
+Consider a datatype of very simple integer expressions:\jp{Why do this again instead of recalling \cref{sec:complex-arithmetic}?}
 %
 \begin{code}
 data E = Add E E | Mul E E | Con Integer deriving Eq

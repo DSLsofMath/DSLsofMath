@@ -950,6 +950,7 @@ newtype  ComplexSem r  =  CS  (r , r)        deriving Eq
 % ----------------------------------------------------------------
 
 \subsection{A syntax for (complex) arithmetical expressions}
+\label{sec:complex-arithmetic}
 
 By following \citet{adams2010calculus}, we have arrived at representation which captures the
 \emph{semantics} of complex numbers.

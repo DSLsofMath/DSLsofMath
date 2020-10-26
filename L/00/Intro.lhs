@@ -386,13 +386,13 @@ be possible to pick up quite a bit of Haskell along the way.
 
 % \section{Roadmap}
 
-%TODO: write about the lecture plan and internal dependencies
-
+%TODO: write about the book plan and internal dependencies
+\jp{Reading guide as dependency graph}
 
 
 \section{Notation and code convention}
 
-The book is a literate program: that is, it consist of text
+The \course{} is a literate program: that is, it consist of text
 interspersed with code fragments.
 %
 The source code of the book (including in particular all the Haskell
@@ -452,7 +452,6 @@ The aim is to improve the reader's skills in understanding, modelling,
 and implementing mathematical text.
 
 
-\jp{Reading guide as dependency graph}
 
 \section*{Acknowledgments}
 
