@@ -1310,11 +1310,14 @@ and so on.
 
 If we want to get a bit closer to actually implementing |D| we quickly
 notice a problem: if |D| has type |(REAL -> REAL) -> (REAL -> REAL)|
-have no way of telling which of these rules we should apply.
+have no way to turn the above specification into a program, because
+the program has no way of telling which of these rules we should
+apply.
 %
-That is, given an extensional (semantic\jp{shallow}) function |f|, the only thing that we can ever do is to evaluate |f| at given points, and thus we cannot know
-if this function was written using a |+|, or |sin| or |exp| as
-outermost operation.  
+That is, given an extensional (semantic\jp{shallow}) function |f|, the
+only thing that we can ever do is to evaluate |f| at given points, and
+thus we cannot know if this function was written using a |+|, or |sin|
+or |exp| as outermost operation.
 %
 The only thing that a derivative operator could do would be to numerically approximate the
 derivative, and that is not what we are exploring in this course.
