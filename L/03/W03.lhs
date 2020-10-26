@@ -1290,7 +1290,8 @@ computing derivatives.
 Using the notation |D f| for the derivative of |f| and lifting the
 numeric operations to functions we can fill in a nice table of
 examples which can be followed to compute derivatives of many
-functions:
+functions:\jp{This will look already very unfamiliar. What about writing it in terms of expressions of one variable?
+This will also avoid much of beating around the bush? Or is this beating the purpose?}
 %
 \begin{spec}
     D (f + g)        =  D f + D g
@@ -1403,7 +1404,7 @@ derive     (Exp e)        =  Exp e :*: derive e
 complete the |FunExp| type and the |eval| and |derive|
 functions.
 \end{exercise}
-\section{Shallow embeddings}
+\subsection{Computing Shallow Embeddings Directly}
 \label{sec:evalD}
 
 The DSL of expressions, whose syntax is given by the type |FunExp|,
