@@ -665,8 +665,7 @@ the keyword ``form'').
 %
 This is underlined by the presentation of \emph{two} forms, which can
 suggest that the operation of juxtaposing |i| (multiplication?) is not
-commutative\footnote{See \refSec{sec:commutative} for more about
-  commutativity.}.
+commutative.
 
 A profitable way of dealing with such concrete syntax in functional
 programming is to introduce an abstract representation of it in the

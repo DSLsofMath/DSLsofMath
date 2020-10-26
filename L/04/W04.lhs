@@ -836,7 +836,7 @@ eval (Exp e)      =  exp (eval e)
 These properties do not hold for |eval'|, but do hold for |evalD|.
 
 The numerical classes in Haskell do not fully do justice to the
-structure of expressions.\jp{Here you are taking about the language of functions of one variable, but this is very hard to infer from the context.} For example, they do not contain an identity
+structure of expressions.\jp{Here you are talking about the language of functions of one variable, but this is very hard to infer from the context.} For example, they do not contain an identity
 operation, which is needed to translate |Id|, nor an embedding of
 doubles, etc.
 %
@@ -946,11 +946,13 @@ evalM  f  (V x)       =  f x
 (Observation: In |FunExp|, the role of variables was played by |REAL|,
 and the role of the assignment by the identity.)
 
-%include InitialMonoid.lhs
+\jp{|forall a. Class a => a| is the initial algebra for Class? Is this clear enough?}
+
+%include FreeMonoid.lhs
 
 
 The following correspondence summarises the discussion so far:
-\jp{Is it really true that initial algebra are deep embeddings? (Free algebra ignore laws.)}
+\jp{Is it really true that initial algebra are deep embeddings? }
 \begin{tabular}{ll}
       Computer Science      &   Mathematics
 \\\hline
