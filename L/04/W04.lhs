@@ -48,7 +48,7 @@ between two algebraic structures of the same type''. To capture this idea,
 in a first instance\footnote{a generalisation will come later in the
   chapter}\jp{Where? We should probably talk about homomorphisms over classes at some point. ie. additive-homomorphism, etc. It does not seem that the connection between H2 and the wikipedia definition is being made clearly and plainly enough.}
 , we can define a ternary predicate |H2|. The first argument
-|h|, is the ``map''. The second (|Op|) and third (|op|) arguments
+|h|, is the map. The second (|Op|) and third (|op|) arguments
 represent the algebraic structures.
 %
 \begin{spec}
@@ -60,8 +60,8 @@ A->A->A| to |op : B->B->B|.
 %
 Or that |h| is a homomorphism from |Op| to |op|.
 %
-Or, simply, that |h| is a homomorphism from |A| to |B| (if the
-operators are clear from the context).
+Or even that |h| is a homomorphism from |A| to |B| if the
+operators are clear from the context.
 We have seen several examples in earlier chapters:
 %
 \begin{enumerate}
@@ -112,6 +112,7 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
   obtained conditions hold.
 \end{exercise}
 
+\jp{Missing: the transition from homomorphisms to compositionality. This is touched in \cref{sec:compositionality-and-homomorphisms}}
 \subsection{An example of a non-compositional function}
 
 Consider a datatype of very simple integer expressions:\jp{Why do this again instead of recalling \cref{sec:complex-arithmetic}?}
@@ -147,14 +148,14 @@ child {node {|Con|} child {node(rightleaf) {|3|}}};
 \node [draw=blue, ellipse, thick, inner sep=-4pt, fit = (root) (leftleaf) (rightleaf)] {};
 \end{tikzpicture}
 
-As you may have guessed, the natural evaluator |eval : E -> Integer|
+As the reader may have guessed, the natural evaluator |eval : E -> Integer|
 (defined later) is a homomorphism from |Add| to |(+)| and from |Mul| to
 |(*)|.
 %
 But to practice the definition of homomorphism we will here check if
 |even| or |isPrime| is a homomorphism from |E| to |Bool|.
 
-\paragraph{Is |even| a homomorphism?} Let's try to define |even : E ->
+Let's try to define |even : E ->
 Bool| with the usual induction pattern (``wishful thinking''):
 %
 \begin{code}
@@ -170,7 +171,7 @@ evenCon :: Integer -> Bool
 Note that |even| throws away lots of information: the domain is
 infinite and the range is a two-element set.
 %
-This could make it hard for the helper functions |evenAdd|,
+This information loss could make it difficult to define the helper functions |evenAdd|,
 etc. because they only get to work on the small range.
 %
 Still, in this case we are lucky: we can use the ``parity rules''
@@ -183,9 +184,11 @@ evenAdd = (==)
 evenMul = (||)
 evenCon = (0==).(`mod` 2)
 \end{code}
-\footnote{A perhaps more natural alternative would be to taken odd instead of even as the base property. You can try it out as an exercise.}
+\footnote{A perhaps more natural alternative would be to taken |odd| instead of |even| as the homomorphism. You can try it out as an exercise.}
 %
+\begin{exercise}
 Exercise: prove |H2(even,Add,evenAdd)| and |H2(even,Mul,evenMul)|.
+\end{exercise}
 
 \paragraph{Is |isPrime| a homomorphism?} Let's now try to define
 |isPrime : E -> Bool| in the same way to see a simple example of a
@@ -224,7 +227,7 @@ and |H2(isPrime,Add,isPrimeAdd)|.
   True
 \end{spec}
 %
-But as we also know that |False /= True| we have a contradiction.
+But because we also know that |False /= True|, we have a contradiction.
 %
 Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
 to |Bool|, regardless of the choice of the operator corresponding to addition.
@@ -343,16 +346,16 @@ String| can be seen as an |n|-tuple.
 In our case a three-element |Precedence| would be enough.
 
 \subsection{Compositional semantics in general}
-
+\label{sec:compositionality-and-homomorphisms}
 In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
 and an |eval| function of type |Syn -> Sem|), we call the semantics
-\emph{compositional} if we can implement |eval| as a fold\jp{So is every homomorphism a fold?}.
+\emph{compositional} if we can implement |eval| as a fold\jp{So is every homomorphism a fold? I don't think that the relationship between homomorphisms and folds is ever stated clearly.}.
 %
 Informally a ``fold'' is a recursive function which replaces each
-abstract syntax constructor |Ci| of |Syn| with a ``semantic
-constructor'' |ci|.
+abstract syntax constructor |Ci| of |Syn| with its semantic interpretation |ci| --- but without doing any other change in the structure. In particular,
+moving around constructors is forbidden.
 %
-Thus, in our datatype |E|, a compositional semantics means that |Add|
+For example, in our datatype |E|, a compositional semantics means that |Add|
 maps to |add|, |Mul {-"\mapsto"-} mul|, and |Con {-"\mapsto"-} con|
 for some ``semantic functions'' |add|, |mul|, and |con|.
 %
@@ -421,7 +424,7 @@ class IntExp t where
   con  ::  Integer -> t
 \end{code}
 %
-In this way we can ``hide'' the arguments to the fold:
+In this way we can turn the arguments to the fold into a constraint on the return type:
 %
 \begin{code}
 foldIE :: IntExp t =>  E -> t
@@ -492,6 +495,7 @@ interpretations (like |Integer|, and |String|).
 \subsection{Back to derivatives and evaluation}
 
 % TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
+% Alternatively, move all computation of derivatives here.
 
 Review \refSec{sec:evalD} again with the definition of |eval'|
 being non-compositional (just like |isPrime|) and |evalD| a more
@@ -1158,7 +1162,7 @@ negateE _ = error "negate: not supported"
 In the coming chapters there will be quite a bit of material on
 infinite structures.
 %
-These are often captured not by algebras, but by co-algebras.
+These are often captured not by algebras, but by co-algebras.\jp{unfortunately the definition that we gave for algebras seem to fit co-algebras just as well?}
 %
 We will not build up a general theory of co-algebras in this notes,
 but because we will be using infinite streams in the upcoming chapters

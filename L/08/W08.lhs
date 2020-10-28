@@ -47,8 +47,7 @@ expf = eval 100 expx
 \end{spec}
 
 It is easy to see, using the definition of |integ| that the power
-series |expx| is, indeed\jp{Why not use taylor series? It would be much easier to write and read. But first, properly include Taylor.hs in \cref{sec:deriv}}
-
+series |expx| is, indeed
 \begin{spec}
 expx = [1, 1/1, 1/(1*2), 1/(1*2*3), ..., 1 / (1*2*3* ... *n), ..]
 \end{spec}
@@ -100,12 +99,12 @@ terms as z = terms1 as z 0  where
 
 We obtain
 
+\jp{Why not use taylor series? It would be much easier to write and read. But first, properly include Taylor.hs in \cref{sec:deriv}}
 \begin{code}
 ex2   ::  Field a => PowerSeries (Complex a)
 ex2    =  takePoly 10 (terms expx i)
 \end{code}
 As the code is polymorphic in the underlying number type, we can use rationals here to be able to test for equality without rounding problems.
-
 \begin{code}
 ex2' :: [Complex Rational]
 ex2' =  [  C (     1  ,          0), {-"\qquad"-}    C (0,     1     ),
