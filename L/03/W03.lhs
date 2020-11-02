@@ -1160,7 +1160,8 @@ As an example we have that
 \subsection{Back to the numeric hierarchy instances for functions}
 
 Back to the main track: defining numeric operations on functions.
-\jp{This has not been identified as a track before. This can be connected to the definition of operators for the shallow embeddings in \cref{sec:funexp-shallow}}
+\jp{This has not been identified as a track before. This can be connected to the definition of operators for the shallow embeddings in \cref{sec:funexp-shallow}. In fact,
+could not we simply do everything at that point?}
 %
 We have already defined the operations of the |Num| class, but we can
 move on to the neighbouring classes |Fractional| and |Floating|.
@@ -1208,7 +1209,7 @@ instance Floating a => Floating (x -> a) where
 Complete the instance declarations.
 \end{exercise}
 
-These type classes represent an abstract language of algebraic\jp{another evidence that this should go to } and
+These type classes represent an abstract language of algebraic and
 standard operations, abstract in the sense that the exact nature of
 the elements involved is not important from the point of view of the
 type class, only from that of its implementation.
