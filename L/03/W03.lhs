@@ -3,6 +3,8 @@
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 module DSLsofMath.W03 where
+import Prelude hiding (Num(..),Fractional(..), Floating(..))
+import DSLsofMath.Algebra (Algebraic(..),Transcendental(..))
 type REAL = Double
 type ℝ = REAL
 type ℤ = Int
@@ -142,13 +144,13 @@ pointwise.\jp{This vocabulary is probably unknown at this point.}
 
 To wrap it up, if we're so inclined, we can re-define the evaluator of
 the deep-embedding using the operators of the shallow embedding:
-\begin{code}
+\begin{spec}
 eval  ::  FunExp         ->  REAL -> REAL
 eval      (Const alpha)  =   evalConst alpha
 eval      X              =   evalX
 eval      (e1 :+: e2)    =   evalPlus   (eval e1) (eval e2)
 eval      (e1 :*: e2)    =   evalTimes  (eval e1) (eval e2)
-\end{code}
+\end{spec}
 
 
 Representing expressions of one variable as functions (of one
@@ -385,7 +387,7 @@ understand it at this stage, but it is left here as an example for
 those with a stronger Haskell background.\jp{Actually the AE/AE'  generalisation has nothing to do with the change in code.}
 %
 \begin{code}
-evalAE' :: (Eq v, Num sem) =>  (Env v sem) -> (AE' v -> Maybe sem)
+evalAE' :: (Eq v, _) =>  (Env v sem) -> (AE' v -> Maybe sem)
 evalAE' env (V' x)      =  evalEnv env x
 evalAE' env (e1 :+ e2)  =  liftM (+)   (evalAE' env e1)  (evalAE' env e2)
 evalAE' env (e1 :* e2)  =  liftM (*)   (evalAE' env e1)  (evalAE' env e2)
@@ -1058,12 +1060,12 @@ certain types belong to this set by using instance declarations, which
 additionally provide an implementation for the equality test. For example,
 we can make |Bool| member of the |Eq| using 
 the following declaration:
-\begin{code}
+\begin{spec}
 instance Eq Bool where
   True == True = True
   False == False = True
   _ == _ = False
-\end{code}
+\end{spec}
 (The Haskell compiler will in fact provide instances for primitive types).
 
 Second, the |Eq| class declaration provides an operator |(==)| of type
@@ -1570,10 +1572,11 @@ We can now define a shallow embedding for the computation of
 derivatives, using the numerical type classes.
 %
 \begin{code}
-instance Num a => Num (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
+instance Additive a => Additive (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
   (f, f')  +  (g, g')  =  (f  +  g,  f'      +  g'      )
+  
+instance Multiplicative a => Multiplicative (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
   (f, f')  *  (g, g')  =  (f  *  g,  f' * g  +  f * g'  )
-  fromInteger n        =  (fromInteger n, const 0)
 \end{code}
 %
 \begin{exercise}
