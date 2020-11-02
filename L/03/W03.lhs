@@ -77,6 +77,7 @@ data FunExp  =  Const REAL
              |  X
              |  FunExp  :+:  FunExp
              |  FunExp  :*:  FunExp
+             |  Exp FunExp
 \end{code}
 
 We could encode our examples as follows:
@@ -122,10 +123,10 @@ type FunExpS = REAL -> REAL
 Then we can define the operators directly on functions, as follows:
 
 \begin{spec}
-const alpha = \x -> alpha
-variable_x = \x -> x
-f + g = \x -> f x + g x
-f * g = \x -> f x * g x
+evalConst alpha = \x -> alpha
+evalX = \x -> x
+evalPlus f g = \x -> f x + g x
+evalTimes f g = \x -> f x * g x
 \end{spec}
 
 Again, we have two possible intuitive readings of the above
@@ -141,13 +142,13 @@ pointwise.\jp{This vocabulary is probably unknown at this point.}
 
 To wrap it up, if we're so inclined, we can re-define the evaluator of
 the deep-embedding using the operators of the shallow embedding:
-\begin{spec}
+\begin{code}
 eval  ::  FunExp         ->  REAL -> REAL
-eval      (Const alpha)  =   const alpha
-eval      X              =   variable_x
-eval      (e1 :+: e2)    =   eval e1  +  eval e2    -- note the use of ``lifted |+|'',
-eval      (e1 :*: e2)    =   eval e1  *  eval e2    -- ``lifted |*|'',
-\end{spec}
+eval      (Const alpha)  =   evalConst alpha
+eval      X              =   evalX
+eval      (e1 :+: e2)    =   evalPlus   (eval e1) (eval e2)
+eval      (e1 :*: e2)    =   evalTimes  (eval e1) (eval e2)
+\end{code}
 
 
 Representing expressions of one variable as functions (of one
@@ -177,11 +178,11 @@ not be represented as an argument: indeed, the variable name is
 to make at the point of summation. Thus, we write:
 
 \begin{code}
-summmation :: ℤ -> ℤ -> (ℤ -> ℝ) -> ℝ
+summation :: ℤ -> ℤ -> (ℤ -> ℝ) -> ℝ
 \end{code}
 Conveniently, we can even provide a simple implementation:
 \begin{code}
-summmation low high f = sum [f i | i <- [low..high]]
+summation low high f = sum [f i | i <- [low..high]]
 \end{code}
 
 As another example, let us represent the following nested sum
@@ -189,9 +190,9 @@ As another example, let us represent the following nested sum
   \sum_{i=1}^n \sum_{j=1}^m {i^2 + j^2}
 \]
 using the shallow embedding of summation. This representation can be written simply as follows:
-\begin{code}
-  summation 1 m (\i -> summation 1 n (\j -> i^2 + j^2))
-\end{code}
+\begin{spec}
+exampleSum m n = summation 1 m (\i -> summation 1 n (\j -> i^2 + j^2))
+\end{spec}
 Aren't we cheating though? Surely we said that only one variable could
 occur in the summand, but we see both |i| and |j|? Well, we are not
 cheating as long as we use the \emph{shallow embedding} for functions of one
@@ -394,13 +395,25 @@ liftM op   (Just a)  (Just b)  =  Just (op a b)
 liftM _op  _         _         =  Nothing
 \end{code}
 
+The approach taken above is to use a |String| to name each variable:
+indeed, |Env String REAL| is like a tuple of several variables values.
+However, other situations, it is better to refer to variables by
+position.
 
-|Env String REAL| is like a tuple of several variables values. We can select any variable and make it a function of said variable like so:
+For example, we can pick out any variable and make it a function of
+said variable like so:
 
 \begin{code}
-fun1 :: (Env String REAL -> REAL) -> Env String REAL -> X -> (REAL -> REAL)
-fun1 funMultiple env variable value = fun1 ((variable,value):env)
+fun1 :: (Env String REAL -> REAL) -> Env String REAL -> String -> (REAL -> REAL)
+fun1 funMultiple env variable value = funMultiple ((variable,value):env)
 \end{code}
+
+\begin{exercise}
+  Assume a function |f| of 3 variables, named |"x"|,|"y"| and |"y"|,
+  and given the type |Env String REAL -> REAL|. Turn it into a
+  function |g| of type | REAL -> REAL -> REAL -> REAL| with the same
+  intended meaning.
+\end{exercise}
 
 \jp{Talk some about variable capture?}
 
@@ -668,9 +681,8 @@ From (Sussman and Wisdom 2013):\jp{fix citation}
 %
 What could this expression possibly mean?
 \end{quote}
-\jp{Is the question in the quote?}
 
-To start answering the question, we start typing the elements involved:
+To start answering the question of Sussman and Wisdom, we start typing the elements involved:
 
 \begin{enumerate}
 \item The use of notation for ``partial derivative'', \(∂L / ∂q\),
@@ -1303,10 +1315,25 @@ make the types |a->Double|, |a->(b->Double)|, etc.\ into instances of |Num|
 % about |foo| instead? (And then just mention |fromInteger| shortly.)
 
 \section{Computing derivatives}
-\jp{What is this doing here? Should most certainly be moved to
+\jp{What is the purpose?
+
+  Element of answers:
+  - we have laws at the semantic level, and we want to derive laws at a syntactic level
+  - point out that such laws are effectively used as computational rules (even though they are not really)
+
+  More difficulties: students will probably have seen a presentation
+  which is in fact syntactic, in the sense that it acts on expression
+  of one variable (x), so some more links need to be made.
+
+  One possibility is to start with Theorem 2 p. 108 in \cite{adams2010calculus}.
+  (f'+g')(x)=f'(x)+g'(x),(f-g)(x)=f(x)-g(x),(C*f)(x)=C*f(x).
+
+  Perhaps it finds a better home in
   \cref{sec:deriv}? But it seems that compositionality is the
-  question, so it's for \cref{sec:CompSem}; not this chapter which is
-  about typing.}
+  question, so it's for \cref{sec:CompSem}.
+
+
+}
 \label{sec:computingDerivatives}
 
 An important part of calculus is the collection of laws, or rules, for
@@ -1426,7 +1453,7 @@ derive     (Exp e)        =  Exp e :*: derive e
 \end{code}
 %
 \begin{exercise}
-complete the |FunExp| type and the |eval| and |derive|
+Complete the |FunExp| type and the |eval| and |derive|
 functions.
 \end{exercise}
 \subsection{Computing Shallow Embeddings Directly}
@@ -1463,6 +1490,7 @@ We check whether the semantics of derivatives is compositional.
 The evaluation function for derivatives is
 %
 \begin{code}
+type Func = ℝ -> ℝ
 eval'  ::  FunExp -> Func
 eval'  =   eval . derive
 \end{code}
