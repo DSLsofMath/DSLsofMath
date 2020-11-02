@@ -1027,7 +1027,7 @@ The kind of type inference we presented so far in this chapter becomes
 automatic with experience in a domain, but is very useful in the
 beginning.
 
-\section{Type classes and algebraic structures}
+\section{Type classes}
 \label{sec:typeclasses}
 
 One difficulty when reading mathematics (and applying them to
@@ -1035,12 +1035,13 @@ programming) is \emph{overloading}. For our purposes, we say that a
 symbol is \emph{overloaded} when its meaning depends on the type of
 the expressions that it applies to.
 
-Consider for example the operator ($+$). In books, one can typically
-use it to add integers, rational numbers, real numbers, complex
-numbers, etc. and it poses no difficulty. We explore the mathematical
-reasons in more detail in \cref{sec:AlgHomo}, but for now we will
-concentrate on the Haskell view of functional programming.  One way to
-understand overloading is via \emph{type classes}.
+Consider for example the operator ($+$). According to usual
+mathematical notation, one can typically use it to add integers,
+rational numbers, real numbers, complex numbers, etc. and it poses no
+difficulty. We explore the mathematical reasons in more detail in
+\cref{sec:AlgHomo}, but for now we will concentrate on the
+view of functional programming of this problem: one  way to understand overloading is
+via \emph{type classes}.
 
 In Haskell both $4 == 3$ and $3.4 == 3.2$ typecheck because both
 integers and floating point values are member of the |Eq| class, which
@@ -1050,30 +1051,50 @@ we can safely assume to be defined as follows:
 class Eq a where
   (==) :: a -> a -> Bool
 \end{spec}
-
-The above declaration does two things. First, it defines an
-set of types which have equality test. One can say that types are within this set by using instance
-declarations, such as the following:
+%
+The above declaration does two things. First, it defines a set of
+types which have equality test. One can tell the Haskell compiler that
+certain types belong to this set by using instance declarations, which
+additionally provide an implementation for the equality test. For example,
+we can make |Bool| member of the |Eq| using 
+the following declaration:
 \begin{code}
-instance Additive Bool where
+instance Eq Bool where
   True == True = True
   False == False = True
   _ == _ = False
 \end{code}
 (The Haskell compiler will in fact provide instances for primitive types).
 
-Second, the |class| declaration provides an operator |(==)| of type
+Second, the |Eq| class declaration provides an operator |(==)| of type
 |Eq a => a -> a -> Bool|. One can use the operator on any type |a|
 which belongs to the |Eq| set. This is expressed in general by a
 constraint |Eq a| occuring before the |=>| symbol.
 
+Instance declarations can also be parameterised on another
+instance. Consider for example:
+\begin{spec}
+instance Eq a => Eq [a] where
+  (==) = ... -- exercise
+\end{spec}
+%
+In the above, the expression |Eq a => Eq [a]| means that for any type |a| which is already an instance of |Eq|
+we also make the type |[a]| an instance of Eq.
+%
+Thus, for example, by recursion we now have an infinite collection of instances of |Eq|: |Char|,
+|[Char]|, |[[Char]]|, etc.
+%
+
+\subsection{Numeric operations}
+
 Haskell also provides a |Num| class, containing various numeric types
-(Int, Double, etc) with several operators (+,*, etc) . Unfortunately,
-the |Num| class was designed with more regard to implementation quirks
-than mathematical structure, and thus it is a poor choice for us. We
-will therefore take a more principled approach, and define the
-following classes, which together, serve a similar role, and which we
-study in more detail in \cref{sec:ring-like-classes}:
+(Int, Double, etc) with several operators (|+|,|*|, etc).
+Unfortunately, the |Num| class was designed with more regard for
+implementation quirks than mathematical structure, and thus it is a
+poor choice for us. We take a more principled approach instead,
+and define the following classes, which together, serve a similar
+role as |Num|, and which we study in more detail in
+\cref{sec:ring-like-classes}:
 
 \begin{code}
 class Additive a where
@@ -1088,10 +1109,20 @@ class Multiplicative a => MulGroup a where
   recip :: a -> a -- reciprocal
 \end{code}
 
-
-% The ``trick'' of looking for an appropriate combinator with which to
-% pre- or post-compose a function in order to makes type match is often
-% useful.\jp{where was that?}
+\begin{exercise}
+  Consider the exponentiation operator, which we can write
+  |(^)|. Taking advantage of the above classes, propose a possible
+  type for it and sketch an implementation.
+\end{exercise}
+\begin{solution}
+  One possibility is |(^) :: Field a => a -> Int -> a|. For positive
+  exponents, one can use repeated multiplication. For negative
+  exponents, one can use repeated division.
+\end{solution}
+\jp{I could not understand what this was referring to:
+The ``trick'' of looking for an appropriate combinator with which to
+pre- or post-compose a function in order to makes type match is often
+useful.}
 % %
 % It is similar to the type-casts one does automatically in expressions such
 % as \(4 + 2.5\).
@@ -1103,20 +1134,20 @@ typecheck.
 
 \subsection{Overloaded integer literals}
 \label{sec:overloaded-integer-literals}
-We will spend some time explaining a convenient syntactic shorthand
-which is very useful but which can be confusing: overloaded integers.
-In Haskell, every use of an integer literal like |2|, |1738|, etc., is
-actually implicitly an application of |fromInteger| to the literal
-typed as an |Integer|.
+We will spend some time explaining a convenient Haskell-specific
+syntactic shorthand which is very useful but which can be confusing:
+overloaded integers.  In Haskell, every use of an integer literal like
+|2|, |1738|, etc., is actually implicitly an application of
+|fromInteger| to the literal typed as an |Integer|.
 
 But what is |fromInteger|? It is a function that maps every value and
 operator in the numeric classes to an arbitrary type |a| in those
 classes. We can implement it as follows:
 \begin{code}
 fromInteger :: (AddGroup a, Multiplicative a) => Integer -> a
-fromInteger n | n < 0 = negate (fromInteger (negate n))
-              | n == 0 = zero
-              | otherwise = one + fromInteger (n - 1)
+fromInteger n  | n < 0 = negate (fromInteger (negate n))
+               | n == 0 = zero
+               | otherwise = one + fromInteger (n - 1)
 \end{code}
 \begin{exercise}
   Define |fromRational| which does the same but also handles rational
@@ -1125,15 +1156,15 @@ fromInteger n | n < 0 = negate (fromInteger (negate n))
 
 %
 This means that the same program text can have various meanings
-depending on the type of the context (but see also \cref{ex:fromInteger}):
+depending on the type of the context (but see also
+\cref{ex:fromInteger}):
 %
 The literal |three = 3|, for example, can be used as an integer, a
 real number, a complex number, or anything which belongs both to
 |AddGroup| and |Multiplicative|.
 
-% The below refers to commented-out stuff.
-\jp{Check tex code, adapt to new stuff.}
 %if False
+% The below refers to commented-out stuff; commented as well.
 The same pattern appeared already in \refSec{sec:firstFromInteger},
 which near the end included roughly the following lines:
 %
@@ -1191,172 +1222,103 @@ are related to DSLs.
 
 As an example, consider again the DSL of expressions of one variables.
 We saw that such expressions can be represented by the shallow
-embedding |REAL -> REAL|. However, as one may suspect, we can use any
-domain and any co-domain in place of |REAL|.
-
-Instead
-
-
-The instance declaration of the method |fromInteger| above looks\jp{fixme}
-recursive, but is not: |fromInteger| is used at a different type on
-the left- and right-hand-side of the equal sign, and thus refers to
-two different functions.
-
-\label{sec:FunNumInst}
-\begin{code}
-instance Num a => Num (x -> a) where
+embedding |REAL -> REAL|.  Using type classes, we can use the usual
+operators names instead of |evalPlus|, |evalTimes|, etc. We could write:
+\begin{spec}
+instance Additive (REAL -> REAL) where
   f + g        =  \x -> f x + g x
-  f - g        =  \x -> f x - g x
-  f * g        =  \x -> f x * g x
-  negate f     =  negate . f
-  abs f        =  abs . f
-  signum f     =  signum . f
-  fromInteger  =  const . fromInteger
+  zero         =  const zero
+\end{spec}
+
+The instance declaration of the method |zero| above looks recursive,
+but is not: |zero| is used at a different type on the left- and
+right-hand-side of the equal sign, and thus refers to two different
+functions. One the left-hand-side we define |zero :: REAL -> REAL|,
+while on the right-hand-side we use |zero :: REAL|.
+
+However, as one may suspect, for functions, we can use any domain
+and any numeric co-domain in place of |REAL|. Therefore we prefer to
+define the following, more general instances:
+\label{sec:FunNumInst}
+
+\begin{code}
+instance Additive a => Additive (x -> a) where
+   f + g        =  \x -> f x + g x
+   zero = const zero
+
+instance Multiplicative a => Multiplicative (x -> a) where
+   f * g        =  \x -> f x * g x
+   one = const one
+
+instance AddGroup a => AddGroup (x -> a) where
+   negate f     =  negate . f
+
+instance MulGroup a => MulGroup (x -> a) where
+   recip f     =  recip . f
+
+instance Algebraic a => Algebraic (x -> a) where
+   sqrt f     =  sqrt . f
+
+instance Transcendental a => Transcendental (x -> a) where
+   pi = const pi
+   sin f =  sin . f
+   cos f =  cos . f
+   exp f =  exp . f
 \end{code}
 
-This instance for functions allows us to write expressions like |sin +
-cos :: Double -> Double| or |sq * double :: Integer -> Integer|, with
-the meaning that an implicit argument is passed to all functions in an
-expression.
+Here we extend our set of type-classes to cover algebraic and
+transcendental numbers.  Together, these type classes represent an
+abstract language of abstract and standard operations, abstract in
+the sense that the exact nature of the elements involved is not
+important from the point of view of the type class, only from that of
+its implementation. What does matter for the class (but is not
+captured in the Haskell definition of the class), is the relationship
+between various operations (for example addition should distribute
+over multiplication).
+
+These instances for functions allow us to write expressions which are
+very commonly used in math books, such as |f+g| for the sum of two functions |f|
+and |g|, say |sin + cos :: Double -> Double|. Somewhat less common
+notations, like |sq * double :: Integer -> Integer| are also
+possible. They have a consistent meaning: the same argument is passed
+to all functions in an expression.
 %
-As another example, we can write |sin^2|, which the above instance assigns the following meaning:
+As another example, we can write |sin^2|, which the above instance
+assigns the following meaning:
 \begin{spec}
   sin^2 = \x -> (sin x)^(const 2 x) = \x -> (sin x)^2
 \end{spec}
 %
-thus the typical math notation \(\sin^2\) can work fine in Haskell, provided the above instance for functions of a fixed argument.
+thus the typical math notation \(\sin^2\) can work fine in Haskell,
+provided the above instances for functions, assuming a fixed argument.
 %
-(Note that there is a clash with another common use of superscript for functions in mathematical texts: sometimes |f^n| means \emph{composition} of |f| with itself |n| times.
+(Note that there is a clash with another common use of superscript for
+functions in mathematical texts: sometimes |f^n| means
+\emph{composition} of |f| with itself |n| times.
 %
 With that reading \(sin^2\) would mean |\x->sin (sin x)|.)
 
 %
 \begin{exercise}
-Play around with this a bit in ghci.
-\end{exercise}
-\jp{Can this be made more precise?}
-
-%
-We have already defined the operations of the |Num| class, but we can
-move on to the neighbouring classes |Fractional| and |Floating|.
-
-The class |Fractional| is for types which in addition to the |Num|
-operations also supports division:
-%
-\begin{spec}
-class  Num a => Fractional a  where
-    (/)           :: a -> a -> a
-    recip         :: a -> a             -- |\x -> 1/x|
-    fromRational  :: Rational -> a      -- similar to |fromInteger|
-\end{spec}
-and the |Floating| class collects the ``standard'' functions from
-calculus:
-\begin{spec}
-class  Fractional a => Floating a  where
-    pi                   :: a
-    exp, log, sqrt       :: a -> a
-    (**), logBase        :: a -> a -> a
-    sin, cos, tan        :: a -> a
-    asin, acos, atan     :: a -> a
-    sinh, cosh, tanh     :: a -> a
-    asinh, acosh, atanh  :: a -> a
-\end{spec}
-
-We can instantiate these type classes for functions in the same way we
-did for |Num|:
-
-\begin{code}
-instance Fractional a => Fractional (x -> a) where
-  recip  f         =  recip . f
-  fromRational     =  const . fromRational
-\end{code}
-%
-\begin{code}
-instance Floating a => Floating (x -> a) where
-  pi       =  const pi
-  exp f    =  exp . f
-  f ** g   =  \ x -> (f x)**(g x)
-  -- and so on
-\end{code}
-%
-\begin{exercise}
-Complete the instance declarations.
+  Experiment with this feature using ghci, for example by evaluating
+  |sin + cos| at various points.
 \end{exercise}
 
-These type classes represent an abstract language of algebraic and
-standard operations, abstract in the sense that the exact nature of
-the elements involved is not important from the point of view of the
-type class, only from that of its implementation.
-\jp{Actually, the typeclass is an interface. It make the implementation abstract for its users, and instances can make implementation concrete.}
+Something which may not be immediately obvious, but is nonetheless
+useful, is that all the above instances are of the form |C a => C (x
+-> a)| and are therefore parametric. This means that, for example,
+given the instance |Additive a => Additive (x -> a)| and the intstance
+|Additive REAL|, we have that the types |a->RAEL|, |a->(b->REAL)|,
+etc. are all instances of |Additive|. Consequently, we can use the
+usual mathematical operators for functions taking any number of
+arguments --- provided that they match in number and types.
 
-
-\section{Type classes in Haskell}
-
-We now abstract from the specific |Num| class and look at what a type
-class is in general, and how it is used.
-%
-One view of a type class is as a set of types.
-%
-For |Num| that is the set of ``numeric types'', for |Eq| the set of
-``types with computable equality'', etc.
-%
-The types in this set are called instances and are declared by
-|instance| declarations.
-%
-When a class |C| is defined, there are no types in this set (no
-instances).
-%
-In each Haskell module where |C| is in scope there is a certain
-collection of instance declarations.
-%
-Here is an example of a class with two instances:
-%
-\begin{code}
-class C a where
-  foo :: a -> a
-instance C Integer where
-  foo = (2+)
-instance C Char where
-  foo = succ . succ
-\end{code}
-%
-Here we see the second view of a type class: as a collection of
-overloaded methods (here just |foo|).
-%
-In this context, ``overloaded'' means that the same symbol can be used with different
-meaning at different types.
-%
-If we use |foo| with an integer it will add one, but if we use it with
-a character it will convert it to upper case.
-%
-The full type of |foo| is |C a => a -> a| and it means that it can
-be used at any type |a| for which there is an instance of |C| in
-scope.
-
-Instance declarations can also be parameterised on another instance. Consider for example:
-\begin{code}
-instance C a => C [a] where
-  foo xs = map foo xs
-\end{code}
-%
-In the above, the expression |C a => C [a]| means that for any type |a| which is already an instance of |C|
-we also make the type |[a]| an instance.
-%
-Thus, for example, by recursion we now have an infinite collection of instances of |C|: |Char|,
-|[Char]|, |[[Char]]|, etc.
-%
-Similarly, with the function instance for |Num| above, we immediately
-make the types |a->Double|, |a->(b->Double)|, etc.\ into instances of |Num|
-(for all types |a|, |b|, \ldots).
-
-%TODO: parhaps make the ``looks recursive'' |fromInteger| example talk
-% about |foo| instead? (And then just mention |fromInteger| shortly.)
 
 \section{Computing derivatives}
 \jp{What is the purpose?
 
-  Element of answers:
-  - we have laws at the semantic level, and we want to derive laws at a syntactic level
+  Elements of answer:
+  - we have laws at the semantic level (coming from the definition of limit), and we want to derive laws at a syntactic level
   - point out that such laws are effectively used as computational rules (even though they are not really)
 
   More difficulties: students will probably have seen a presentation
@@ -1364,7 +1326,7 @@ make the types |a->Double|, |a->(b->Double)|, etc.\ into instances of |Num|
   of one variable (x), so some more links need to be made.
 
   One possibility is to start with Theorem 2 p. 108 in \cite{adams2010calculus}.
-  (f'+g')(x)=f'(x)+g'(x),(f-g)(x)=f(x)-g(x),(C*f)(x)=C*f(x).
+  $(f+g)'(x)=f'(x)+g'(x),(f-g)'(x)=f'(x)-g'(x),(C*f)'(x)=C*f'(x).$
 
   Perhaps it finds a better home in
   \cref{sec:deriv}? But it seems that compositionality is the
@@ -1494,6 +1456,7 @@ derive     (Exp e)        =  Exp e :*: derive e
 Complete the |FunExp| type and the |eval| and |derive|
 functions.
 \end{exercise}
+
 \subsection{Computing Shallow Embeddings Directly}
 \label{sec:evalD}
 

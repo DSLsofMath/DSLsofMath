@@ -558,7 +558,9 @@ eval' = snd . evalD
 \section{Algebraic Structures and DSLs}
 %
 \jp{The structuralist point of view in mathematics is that each
-mathematical domain has its own fundamental structures.\jp{I don't think so. Rather instead of emphasising objects, one emphasises relations between them. Citation needed.}
+mathematical domain has its own fundamental structures.
+
+Also: I don't think so. Rather instead of emphasising objects, one emphasises relations between them. Citation needed.
 %
 Once these have been identified, one tries to push their study as far
 as possible \emph{on their own terms}, i.e., without introducing other
