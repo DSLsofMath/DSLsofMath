@@ -71,13 +71,12 @@ We have seen several examples in earlier chapters:
 \item in \refSec{sec:logic} we saw de Morgan's laws which can be
   stated as |H2(not,(&&),(||||))| and |H2(not,(||||),(&&))|.
 \item in \refSec{sec:FunExp} we saw that |eval : FunExp -> Func| is a
-  homomorphism from syntactic |(:*:)| to semantic |(*)| for functions,
-  and several more examples.
+  homomorphism from syntactic |(:*:)| to semantic |(*)| for functions
 \item
   \label{distributivity-as-homomorphism}
- If |(*)| distributes
+  If |(*)| distributes
   over |(+)| for some type |A| then |(*c) : A -> A| is a homomorphism
-  from |(+)| to |(+)|.
+  from |(+)| to |(+)|: |H2((*c),(+),(+))|.
 \end{enumerate}
 
 To see how this last item plays out, it
@@ -115,7 +114,7 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 \jp{Missing: the transition from homomorphisms to compositionality. This is touched in \cref{sec:compositionality-and-homomorphisms}}
 \subsection{An example of a non-compositional function}
 
-Consider a datatype of very simple integer expressions:\jp{Why do this again instead of recalling \cref{sec:complex-arithmetic}?}
+Consider a datatype of very simple integer expressions:
 %
 \begin{code}
 data E = Add E E | Mul E E | Con Integer deriving Eq
