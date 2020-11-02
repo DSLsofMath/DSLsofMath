@@ -577,11 +577,11 @@ translate to
 %
 |∀ (x, y) ∈ U| as a formula fragment.
 
-The variable |h| appears to be a non-zero real number, bound by a
+The variable |h| is a non-zero real number. The use of the word ``for'' might lead one to believe that it is bound by a
 universal quantifier (``for |h ≠ 0|'' on line 4), but that is incorrect.
 %
 In fact, |h| is used as a local variable introduced in the subscript
-of $lim$.
+of $\lim$.
 %
 This variable |h| is a parameter of an anonymous function, whose limit
 is then taken at |0|.
@@ -593,7 +593,7 @@ That function, which we can name |phi|, has the type |phi : U ->
 phi (x, y) h = (f (x + h, y) - f (x, y)) / h
 \end{spec}
 %
-The limit is then |lim (phi (x, y)) 0|.
+The limit is then written |lim (phi (x, y)) 0|.
 %
 Note that |0| is a limit point of |ℝ-{0}|, so the type of |lim| is the
 one we have discussed:
@@ -618,6 +618,8 @@ There is the added difficulty that, just like the subscript in |f'x|,
 the |x| in |∂ x| is not the |x| bound by the universal quantifier, but
 just a symbol.
 %}
+
+\jp{It's not been made clear that the notation is using some sort of a "pun", with names escaping their scope --- and that a positional notation should be preferred.}
 
 %TODO: perhaps mention "total derivative" at this stage. That could serve as an intermediate step towards the Langrangian, or could be added after it.
 
