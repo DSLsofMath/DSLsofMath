@@ -556,6 +556,18 @@ eval' = snd . evalD
 % \end{tikzcd}
 
 \section{Algebraic Structures and DSLs}
+%
+\jp{The structuralist point of view in mathematics is that each
+mathematical domain has its own fundamental structures.\jp{I don't think so. Rather instead of emphasising objects, one emphasises relations between them. Citation needed.}
+%
+Once these have been identified, one tries to push their study as far
+as possible \emph{on their own terms}, i.e., without introducing other
+structures.
+%
+For example, in group theory, one starts by exploring the consequences
+of just the group structure, before one introduces, say, an order
+structure and monotonicity.
+}
 
 % based on ../../2016/Lectures/Lecture09.lhs
 
@@ -682,7 +694,7 @@ omitted, and instead the names of the operations suggest which of the
 monoids one is referring to.  We will stick to that tradition.  In
 fact, we will define the additive and multiplicative monoids, as
 follows.
-
+\label{sec:ring-like-classes}
 \begin{spec}
 class Additive a where
   zero :: a
@@ -789,14 +801,14 @@ type Ring a = (AddGroup a, Multiplicative a)
 \end{spec}
 
 As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integer| is the sum of |n| ones or the negation of such a sum. Thus we can map every |Integer| to an element of a |Ring| (the multiplicative structure is used to provide |one|):
-
-\begin{code}
-fromInteger :: Ring a => Integer -> a
-fromInteger n | n < 0 = negate (fromInteger (negate n))
-              | n == 0 = zero
-              | otherwise = one + fromInteger (n - 1)
-\end{code}
 \end{example}
+
+\begin{exercise}
+  \label{ex:fromInteger}
+  Assume an arbitrary Ring-homomorphism |f| from |Integer| to an
+  arbitrary type |a|. Prove |f == fromInteger|, provided the
+  definition in \cref{sec:overloaded-integer-literals}.
+\end{exercise}
 
 \subsection{Homomorphism and compositional semantics}
 \jp{Seems like a repeat, what is new in this subsection?}

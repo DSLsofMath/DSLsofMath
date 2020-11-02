@@ -1217,7 +1217,6 @@ At the same time\jp{why though?} we combine |ImagUnit| and |ToComplex| to
 %TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
 % See data blackboard/W1/20170116_114608.jpg, eval blackboard/W1/20170116_114613.jpg
 \label{sec:toComplexSyn}
-\label{sec:firstFromInteger}
 \begin{code}
 data ComplexSyn r  =  ToComplexCart r r
                    |  ComplexSyn r  :+:  ComplexSyn r
@@ -1239,6 +1238,7 @@ evalCSyn (l  :*:  r)          = evalCSyn l  .*.  evalCSyn r
 \end{code}
 %
 %if False
+\label{sec:firstFromInteger}
 \begin{code}
 instance Num a => Num (ComplexSyn a) where
    (+)  = (:+:)
