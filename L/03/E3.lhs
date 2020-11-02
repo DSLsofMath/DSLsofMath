@@ -73,10 +73,12 @@
 % expressions involved. Should be split into parts, similar to exam questions.
 % (This should probably come first)
 
+%if lectureNotes
 \section{Exercises from old exams}
+%endif
 
 \begin{exercise}
-  \textit{From exam 2016-Practice}
+  \fromExam{2016-Practice}
 
   Consider the following text from
   \citeauthor{maclane1986mathematics}'s \textit{Mathematics: Form and
@@ -95,7 +97,7 @@
 \end{exercise}
 
 \begin{exercise}
-  \textit{From exam 2016-03-16}
+  \fromExam{2016-03-16}
 
     Consider the following text from
     \citeauthor{maclane1986mathematics}'s \textit{Mathematics: Form
@@ -122,7 +124,7 @@
 
 
 \begin{exercise}
-  \textit{From exam 2016-08-23}
+  \fromExam{2016-08-23}
 
   In the simplest case of probability theory, we start with a
   \textit{finite}, non-empty set $\Omega$ of \textit{elementary
@@ -170,7 +172,7 @@
 \end{exercise}
 
 \begin{exercise}
-  \textit{From exam 2017-03} (Note that this exam question is now
+  \fromExam{2017-03} (Note that this exam question is now
   included as an example in this chapter, see
   \refSec{sec:typePartialDerivative}.
 %
@@ -205,7 +207,7 @@ You are welcome to introduce functions and names to explain your reasoning.
 % in W3, so should this exercise be here or later?. It doesn't actually seem to
 % use any of the matrix DSL, so I think it should be solvable at this point
 \begin{exercise}
-\textit{From exam 2017-08-22:}
+\fromExam{2017-08-22}
 %
 Multiplication for matrices (from the matrix algebra DSL).
 
