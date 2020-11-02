@@ -156,7 +156,7 @@ argument) is a recurring technique in this \course{} (\jp{Link back
 use it to assign types to big operators.
 
 \subsection{Scoping and Typing big operators}
-
+\label{sec:big-operators}
 Consider the mathematical expression
 \[
   \sum_{i=1}^n {i^2}
@@ -214,19 +214,6 @@ kind of reasoning to other big operators, and obtain the following typings:
 \item \(d/dt : (ℝ → ℝ) → (ℝ → ℝ)\)
   \begin{itemize}
   \item sometimes, instead of \(df/dt\) one sees \(f'\) or \(\dot{f}\) or |D f|
-  \end{itemize}
-\item \(∂f/∂x_i : (ℝⁿ → ℝ) → (ℝⁿ → ℝ)\)
-\item we mostly see \(∂f/∂x\), \(∂f/∂y\), \(∂f/∂z\) etc. when, in the
-  context, the function \(f\) has been given a definition of the form
-  \(f (x, y, z) = \ldots\)
-  \begin{itemize}
-  \item a better notation which doesn't rely on the names
-    given to the arguments was popularised by
-    \citet{landau1934einfuhrung} (English edition
-    \cite{landau2001differential}): \(D₁\) for the partial derivative with
-    respect to \(x₁\), etc.
-  \item
-    Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
   \end{itemize}
 \end{itemize}
 
@@ -521,9 +508,10 @@ We will get get back to this question in \refSec{sec:computingDerivatives}.
 \section{Typing Mathematics: partial derivative}
 \label{sec:typePartialDerivative}
 % https://books.google.com/ngrams/graph?year_end=2019&year_start=1800&corpus=26&content=quest+of%2C+quest+to&smoothing=3&direct_url=t1%3B%2Cquest%20of%3B%2Cc0%3B.t1%3B%2Cquest%20to%3B%2Cc0
-Continuing on our quest to type the elements of mathematical
-textbook definitions, we now turn to a functions of more than one
-variable.
+Armed with our knowledge of functions of more than one variable, we
+can continue on our quest to type the elements of mathematical
+textbook definitions.
+
 %
 Our example here is by
 \citet[page~169]{maclane1986mathematics}, where we read
@@ -564,7 +552,7 @@ f'x  :  U -> ℝ
 \end{spec}
 %
 The |x| in the subscript of |f'| is \emph{not} a real number, but a symbol
-(a |Char|)\jp{Sounds overly naive. Haven't we cleared this up by now?}.
+(we used |String| for similar purposes in \cref{sec:multiple-variables}).
 
 The expression |(x, y)| has six occurrences.
 %
@@ -602,16 +590,16 @@ one we have discussed:
 lim : (X -> ℝ) -> {p | p ∈ ℝ, Limp p X } -> ℝ
 \end{spec}
 
-On line 1, |z = f (x, y)| probably does not mean that |z ∈ ℝ|,\jp{Why not? We have anyway |f(x,y) ∈ ℝ| ?}
+On line 1, |z = f (x, y)| probably does not mean that we let |z| be a fixed value in |ℝ|,
 although the phrase ``the quantity |z|'' (on line 2) suggests this.
 %
-A possible interpretation is that |z| is used to abbreviate the
-expression |f(x, y)|;
+Rather, a possible interpretation is that |z| is used to abbreviate the
+expression |f(x, y)|. That is, |z| stands for an expression which depends on |x| and |y|;
 %
-thus, everywhere we can replace |z| with |f(x, y)|.
+thus, it can be enlightening to replace |z| with |f(x, y)| everywhere.
 %
 In particular, |∂ z / ∂ x| becomes |∂ f (x, y) / ∂ x|, which we can
-interpret as |∂ f / ∂ x| applied to |(x, y)| (remember that |(x, y)|
+interpret as the operator |∂ / ∂ x| applied to |f(x, y)| (remember that |(x, y)|
 is bound in the context by a universal quantifier on line 4).
 %
 There is the added difficulty that, just like the subscript in |f'x|,
@@ -619,7 +607,41 @@ the |x| in |∂ x| is not the |x| bound by the universal quantifier, but
 just a symbol.
 %}
 
-\jp{It's not been made clear that the notation is using some sort of a "pun", with names escaping their scope --- and that a positional notation should be preferred.}
+To sum up, partial derivative operators which mention symbols (such as
+|∂ / ∂ x| or ``prime subscript $x$'') do act on an representation of
+functions which uses symbols for the variables (not positions), such
+as presented in \cref{sec:ArithExp}.
+This is why we mostly see \(∂f/∂x\), \(∂f/∂y\), \(∂f/∂z\) etc. when, in the
+  context, the function \(f\) has been given a definition of the form
+  \(f (x, y, z) = \ldots\).
+This kind of approach presents
+several difficulties:
+
+\begin{enumerate}
+\item it makes it hard to rename variables (which can be a problem if
+  one is renaming variables, for example for the purpose of
+  integration)
+\item Further confusion can be created when a variable (such as $z$
+  above) is depends on other variables. Tracing dependencies can
+  become daunting and it is easy to make errors of name when doing
+  calculations.
+\item it makes it difficult to assign a higher order type to the
+  partial derivatives. Indeed, as we have seen in
+  \cref{sec:big-operators}, doing this means that the operator binds
+  the name of the variable. But it is often awkward to make partial
+  differentiation bind a variable.
+\end{enumerate}
+
+One possibility would be to use the following type:
+\(∂/∂x_i : (ℝⁿ → ℝ) → (ℝⁿ → ℝ)\) But it still assume as input a vector
+of variables $x$.  Hence we prefer a notation which doesn't rely on
+the names given to the arguments whatsoever. It was popularised by
+\citet{landau1934einfuhrung} (English edition
+\cite{landau2001differential}): \(D₁\) for the partial derivative with
+respect to the the first argument, \(D_2\) for the partial derivative with
+respect to the the second argument, etc.
+
+Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
 
 %TODO: perhaps mention "total derivative" at this stage. That could serve as an intermediate step towards the Langrangian, or could be added after it.
 
