@@ -10,25 +10,6 @@ structures and mappings between them (called homomorphisms).
 %
 %*TODO: Sum up a few examples of Syntax and Semantics
 
-%TODO: Perhaps say something more concrete about the contents.
-% 4 Compositional Semantics and Algebraic Structures
-%
-% 4.1 Compositional semantics
-% 4.1.1 An example of a non-compositional function
-% 4.1.2 Compositional semantics in general
-% 4.1.3 Back to derivatives and evaluation .
-%
-% 4.2 Algebraic Structures and DSLs
-% 4.2.1 Algebras, homomorphisms .
-% 4.2.2 Homomorphism and compositional semantics .
-% 4.2.3 Other homomorphisms .
-%
-% 4.3 Summing up: definitions and representation .
-% 4.3.1 Some helper functions
-%
-% 4.4 Co-algebra and the Stream calculus .
-% 4.5 Exercises 82
-%
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ConstraintKinds #-}
@@ -38,18 +19,38 @@ import DSLsofMath.FunExp
 import DSLsofMath.Algebra hiding (fromInteger)
 \end{code}
 %
+
+\jp{
+  
+  - Intro: algebraic structures and (homo-) morphisms are cool.
+  - Motivating example (log/exp)
+  - Algebraic structures + Type classes
+    - monoids
+      - additive/multiplicative monoids
+      - etc.
+  - Definition of homomorphism
+    - Special (1-constructor) version
+    - More general version:
+      - Definition of (H2) + examples
+      H(h,C) = for every operation op in the class C, H2(h,op,op)
+      Morphism:
+      H(h,C1,C2)
+
+  - Compositional semantics stuff
+  - Derivatives
+}
+
 \section{Compositional semantics and homomorphisms}
 % (Based on ../../2016/Lectures/Lecture06  )
 
-\paragraph{Homomorphisms}
+% \paragraph{Homomorphisms}
 %
 According to Wikipedia: ``A homomorphism is a structure-preserving map
-between two algebraic structures of the same type''. To capture this idea,
-in a first instance\footnote{a generalisation will come later in the
-  chapter}\jp{Where? We should probably talk about homomorphisms over classes at some point. ie. additive-homomorphism, etc. It does not seem that the connection between H2 and the wikipedia definition is being made clearly and plainly enough.}
-, we can define a ternary predicate |H2|. The first argument
-|h|, is the map. The second (|Op|) and third (|op|) arguments
-represent the algebraic structures.
+between two algebraic structures of the same type''. To capture this
+idea, in a first instance,\footnote{a generalisation will come later in
+  the chapter} we can define a
+ternary predicate |H2|. The first argument |h|, is the map. The second
+(|Op|) and third (|op|) arguments represent the algebraic structures.
 %
 \begin{spec}
   H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
@@ -344,20 +345,32 @@ String| can be seen as an |n|-tuple.
 %
 In our case a three-element |Precedence| would be enough.
 
+
 \subsection{Compositional semantics in general}
 \label{sec:compositionality-and-homomorphisms}
 In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
 and an |eval| function of type |Syn -> Sem|), we call the semantics
-\emph{compositional} if we can implement |eval| as a fold\jp{So is every homomorphism a fold? I don't think that the relationship between homomorphisms and folds is ever stated clearly.}.
+\emph{compositional} if we can implement |eval| as a fold
+\jp{
+  State that every fold is a (homo-?) morphism:
+  Consider:
+
+  fold phi (Op x1 ... xn) = phi(Op) (fold phi x1) ... (fold phi xn)
+
+  Is every homomorphism a fold?
+
+  Yes if the input structure is a deep-embedding.
+}.
 %
 Informally a ``fold'' is a recursive function which replaces each
 abstract syntax constructor |Ci| of |Syn| with its semantic interpretation |ci| --- but without doing any other change in the structure. In particular,
-moving around constructors is forbidden.
+moving around constructors is forbidden. 
 %
 For example, in our datatype |E|, a compositional semantics means that |Add|
 maps to |add|, |Mul {-"\mapsto"-} mul|, and |Con {-"\mapsto"-} con|
 for some ``semantic functions'' |add|, |mul|, and |con|.
 %
+\begin{center}
 \begin{tikzpicture}[AbsSyn]
 \node (lhs) {|Add|}
 child {node {|Con 1|}}
@@ -374,7 +387,7 @@ child {node {|mul|}
 \path (2,-1) edge[||->] (3,-1);
 %
 \end{tikzpicture}
-
+\end{center}
 As an example we can define a general |foldE| for the integer
 expressions:
 %
@@ -389,7 +402,7 @@ foldE add mul con = rec
 Notice that |foldE| has three function arguments corresponding to the
 three constructors of |E|.
 %
-The ``natural'' evaluator to integers is then easy:
+The ``natural'' evaluator to integers is then easy to define:
 %
 \begin{code}
 evalE1 :: E -> Integer
@@ -426,7 +439,7 @@ class IntExp t where
 In this way we can turn the arguments to the fold into a constraint on the return type:
 %
 \begin{code}
-foldIE :: IntExp t =>  E -> t
+foldIE :: IntExp t => E -> t
 foldIE = foldE add mul con
 
 instance IntExp E where
@@ -489,6 +502,7 @@ An overloaded expression, like |seven :: IntExp a => a|, which only uses
 these smart constructors can be instantiated to different types,
 ranging from the syntax tree type |E| to different semantic
 interpretations (like |Integer|, and |String|).
+
 
 
 \subsection{Back to derivatives and evaluation}
@@ -554,6 +568,8 @@ eval' = snd . evalD
 %   |FunExp| \arrow[r, "|evalD|"]                        & |(Func, Func)|
 % \end{tikzcd}
 
+
+
 \section{Algebraic Structures and DSLs}
 %
 \jp{The structuralist point of view in mathematics is that each
@@ -572,15 +588,15 @@ structure and monotonicity.
 
 % based on ../../2016/Lectures/Lecture09.lhs
 
-In this section, we continue exploring the relationship between type
-classes, mathematical structures, and DSLs.
-
-\subsection{Algebras, homomorphisms}
+\subsection{Algebraic Structures}
 \label{sec:AlgHomo}
 
-The matematical theory behind compositionality talks about
-homomorphisms between algebraic structures.
-%
+The Wikipedia definition of homomorphism states ``A homomorphism is a
+structure-preserving map between two algebraic structures of the same
+type'', but so far our definition of homomorphism takes the rather
+limited view that a single operation is transformed. Usually,
+homomorphisms map a whole \emph{structure}. But what is a structure?
+
 From Wikipedia:
 %
 \begin{quote}
@@ -590,7 +606,8 @@ From Wikipedia:
   satisfy.
 \end{quote}
 
-The fact that a type |a| is equipped with operations can be captured in Haskell using a type class.
+The fact that a type |a| is equipped with operations is conveniently
+captured in Haskell using a type class.
 
 \begin{example}
   A particularly pervasive structure is that of monoids.
@@ -710,6 +727,9 @@ The operator names clash with the |Num| class, which we will avoid
 from now one in favour |Additive| and |Multiplicative|.
 
 
+\jp{come back to the definition of homomorphism here and connect to the example.}
+
+
 \begin{exercise}
 Characterise the homomorphisms from |ANat| to |MNat|.
 \end{exercise}
@@ -811,9 +831,13 @@ As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integ
   definition in \cref{sec:overloaded-integer-literals}.
 \end{exercise}
 
+\begin{exercise}
+  Continue extend the exponential-logarithm morphism to map AddGroup and MulGroup.
+\end{exercise}
+
 \subsection{Homomorphism and compositional semantics}
 \jp{Seems like a repeat, what is new in this subsection?}
-Earlier, we saw that |eval| is compositional, while |eval'|\cref{sec:evalD} is not.
+Earlier, we saw that |eval| is compositional, while |eval'| (from \cref{sec:evalD}) is not.
 %
 Another way of phrasing that is to say that |eval| is a homomorphism,
 while |eval'| is not.
@@ -991,8 +1015,8 @@ See
 
 \subsection{Other homomorphisms}
 
-In \refSec{sec:FunNumInst}, we defined a |Num| instance for
-functions with a |Num| codomain.
+In \refSec{sec:FunNumInst}, we defined a |Ring| instance for
+functions with a |Ring| codomain.
 %
 If we have an element of the domain of such a function, we can use it
 to obtain a homomorphism from functions to their codomains:
