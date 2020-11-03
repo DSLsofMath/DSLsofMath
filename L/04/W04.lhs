@@ -1,14 +1,7 @@
 \chapter{Compositional Semantics and Algebraic Structures}
+% Based on ../../2016/Lectures/Lecture06  and
+% based on ../../2016/Lectures/Lecture09.lhs
 \label{sec:CompSem}
-
-By now we have seen several examples of mathematical domains where we
-have identified an abstract syntax (a datatype), a semantic domain
-(another type) and an evaluation function between them (the semantics).
-%
-This chapter will dig a bit deeper and relate the DSLs with algebraic
-structures and mappings between them (called homomorphisms).
-%
-%*TODO: Sum up a few examples of Syntax and Semantics
 
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
@@ -20,47 +13,192 @@ import DSLsofMath.Algebra hiding (fromInteger)
 \end{code}
 %
 
-\jp{
-  
-  - Intro: algebraic structures and (homo-) morphisms are cool.
-  - Motivating example (log/exp)
-  - Algebraic structures + Type classes
-    - monoids
-      - additive/multiplicative monoids
-      - etc.
-  - Definition of homomorphism
-    - Definition of (H2) + examples
-    - Version on classes:
-      H(h,C) = for every operation op in the class C, H2(h,op,op)
-      Morphism:
-      H(h,C1,C2)
-    - Other homomorphisms: apply
-  - Compositional semantics
-    - An example of a compositional function (odd, even)
-    - An example of a non-compositional function (isPrime)
-    - Characterisation: Folds
-      - What is a fold?
-      - Restrictive version of algebra to Fa -> a (or a bunch thereof ...)
-      - Relation between folds and homomorphisms
-    - Even compositional functions can be wrong
-  - Initial and Free structures
-    - Deep embeddings (FunExp is a deep free Ring-like structure; modulo laws. )
-    - Shallow embeddings (-> is a shallow free ...; in this case we don't have to worry about laws)
-    - Generic Free/Initial shallow structures
-  - Summing up table
-  - Application: Derivatives
-  - Co-algebras
-}
-
-\section{Compositional semantics and homomorphisms}
-% (Based on ../../2016/Lectures/Lecture06  )
-
-% \paragraph{Homomorphisms}
+Algebraic structures are fundamental to
+the structuralist point of view in mathematics, which emphasises relations
+between objects rather than the objects themselves, and their
+representations.
+Furthermore, each mathematical domain has its own fundamental
+structures.
 %
-According to Wikipedia: ``A homomorphism is a structure-preserving map
-between two algebraic structures of the same type''. To capture this
-idea, in a first instance,\footnote{a generalisation will come later in
-  the chapter} we can define a
+Once these have been identified, one tries to push their study as far
+as possible \emph{on their own terms}, without picking any particular
+representation (which may have richer structure than the one we want
+to study).
+%
+For example, in group theory, one starts by exploring the consequences
+of just the group structure, rather than introducing any particular
+group (like integers) which have an order structure and monotonicity.
+
+Furthermore, mappings or (translations) between such structures
+becomes an important topic of study.
+
+When such mappings preserve the structure, they are called
+\emph{homomorphisms}.
+%
+As two examples, we have the homomorphisms |exp| and |log|, specified
+as follows:
+%
+\begin{spec}
+  exp  :  REAL  ->  RPos
+  exp  0        =   1                 --  \(e^0 = 1\)
+  exp  (a + b)  =   exp a  *  exp b   --  \(e^{a+b} = e^a e^b\)
+
+  log  :  RPos  ->  REAL
+  log  1        =   0                 -- \(\log 1 = 0\)
+  log  (a * b)  =   log a  +  log b   -- \(\log(ab) = \log a + \log b \)
+\end{spec}
+%
+What we recognize as the familiar laws of exponentiation and
+logarithms are actually examples of homomorphism conditions, which
+relate the additive and multiplicative structures of reals and
+positive reals.
+
+Additionally, homomorphisms play a crucial role when relating an
+abstract syntax (a datatype), and a semantic domain (another type) via
+an evaluation function between them (the semantics).
+%
+In this chapter we will explain the notions of algebraic struture and
+homomorphism in detail and show applications both in mathematics and
+DSLs in general.
+
+
+\section{Algebraic Structures}
+
+What is an algebraic structure?
+%
+Let's turn to Wikipedia as a starting point:
+%
+\begin{quote}
+  In universal algebra, an algebra (or algebraic structure) is a set
+  |A| together with a collection of operations on |A| (of finite
+  arity) and a collection of axioms which those operation must
+  satisfy.
+\end{quote}
+
+The fact that a type |a| is equipped with operations is conveniently
+captured in Haskell using a type class (\cref{sec:typeclasses}).
+
+\begin{example}
+  A particularly pervasive structure is that of monoids.
+  %
+  A monoid is an algebra which has an associative operation |op| and a
+  |unit|:
+\begin{code}
+class Monoid a where
+    unit  ::  a
+    op    ::  a -> a -> a
+\end{code}
+% 
+The laws cannot be obviously captured in the class, but can be
+formulated as the following equations:
+% 
+\begin{spec}
+  ∀ x : a? (unit `op` x == x  ∧  x `op` unit == x)
+  ∀ x, y, z : a? (x `op` (y `op` z) == (x `op` y) `op` z)
+  \end{spec}
+  The first law ensures that |unit| is indeed the unit of |op| and the
+  second law is the familiar associativity law for |op|.
+\end{example}
+
+\begin{example}
+  Examples of monoids include numbers with additions, |(REAL, 0, (+))|,
+  positive numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
+  with composition |(a->a,id, (.))| .
+  %
+  (An ``endofunction'', also known as ``endomorphism'' is a function of type |X->X| for some set
+  |X|.)
+  \label{ex:endofunction}
+\end{example}
+
+\begin{exercise}
+  Define the above monoids and check that the laws are satisfied.
+\end{exercise}
+
+To make this a bit more concrete, here are two examples of monoids in
+Haskell: the additive monoid |ANat| and the multiplicative monoid
+|MNat|.
+%
+\begin{code}
+newtype ANat      =  A Natural          deriving (Show, Eq)
+
+instance Monoid ANat where
+  unit            =  A 0
+  op (A m) (A n)  =  A (m + n)
+
+newtype MNat      =  M Natural          deriving (Show, Eq)
+
+instance Monoid MNat where
+  unit            =  M 1
+  op (M m) (M n)  =  M (m * n)
+\end{code}
+Indeed, in Haskell there can ever be at most one instance of a given
+class for a given type, so we cannot define two |instance Monoid
+Natural|: we must make a |newtype| whose role is to indicate which of
+the two possible monoids applies in a given context.
+%
+But, in mathematical texts the constructors |M| and |A| are usually
+omitted, and instead the names of the operations suggest which of the
+monoids one is referring to.  To be able to conform to that tradition
+we can define two separate classes, one for the additive and one for
+the multiplicative monoids, as follows.
+\label{sec:ring-like-classes}
+\begin{spec}
+class Additive a where
+  zero :: a
+  (+) :: a -> a -> a
+
+class Multiplicative a where
+  one :: a
+  (*) :: a -> a -> a
+\end{spec}
+This is what we have done in \cref{sec:numeric-classes}.
+
+\begin{example}{Groups and rings}
+  Another important structure are groups, which are monoids augmented with an
+  inverse. To complete our mathematically-grounded |Num| replacement,
+  we define the additive group as follows.
+
+\begin{spec}
+class Additive a => AddGroup a where
+  negate :: a -> a
+\end{spec}
+
+Groups demand that the inverse (called |negate| for the additive
+group) act like an inverse. Namely, applying the operation to an
+element and its inverse should yield the unit of the group.  Thus, for
+the additive group, the laws look like this:
+
+\begin{spec}
+negate a + a = zero
+a + negate a = zero
+\end{spec}
+
+And thus we can define subtraction as
+\begin{spec}
+a - b = a + negate b
+\end{spec}
+
+Finally, when the additive monoid is abelian (commutative) and
+addition distributes over multiplication, we have a |Ring|. As always
+we cannot conveniently specify laws in Haskell typeclasses and thus
+define |Ring| simply as the conjunction of |AddGroup| and
+|Multiplicative|:
+\begin{spec}
+type Ring a = (AddGroup a, Multiplicative a)
+\end{spec}
+
+With that, we have completed the structural motivation of our
+replacement for the |Num| class!
+
+\section{Homomorphisms}
+The Wikipedia definition of homomorphism states ``A homomorphism is a
+structure-preserving map between two algebraic structures of the same
+type''. 
+
+\subsection{(Homo)morphism on one operation}
+
+To capture this
+idea, in a first instance, we can define a
 ternary predicate |H2|. The first argument |h|, is the map. The second
 (|Op|) and third (|op|) arguments represent the algebraic structures.
 %
@@ -107,6 +245,7 @@ We observe that |(*c)| is ``pushed down'' to both |a| and |b|:
   emph/.style={edge from parent/.style={thick,draw},font=\boldmath},
   bold/.style={font=\boldmath}
 }
+
 \begin{tikzpicture}[AbsSyn]
 \node [bold] {|*|}
 child {node {|+|} child {node {|a|}} child {node {|b|}}}
@@ -124,9 +263,134 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
   obtained conditions hold.
 \end{exercise}
 
-\jp{Missing: the transition from homomorphisms to compositionality. This is touched in \cref{sec:compositionality-and-homomorphisms}}
-\subsection{An example of a non-compositional function}
+\subsection{Homomorphism on structures}
+\label{sec:AlgHomo}
+But so far our definition of homomorphism takes the rather
+limited view that a single operation is transformed. Usually,
+homomorphisms map a whole \emph{structure}.
 
+Back to Wikipedia:
+%
+\begin{quote}
+  More formally, a homomorphism between two algebras |A| and |B| is a
+function |h : A → B| from the set |A| to the set |B| such that, for
+every operation |fA| of |A| and corresponding |fB| of |B| (of arity,
+say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
+\end{quote}
+
+\subsubsection{Example: Log-space}
+
+The general monoid homomorphism conditions for |h : A -> B| are:
+%
+\begin{spec}
+h unit        =  unit             -- |h| takes units to units
+h (x `op` y)  =  h x `op` h y     -- and distributes over |op| (for all |x| and |y|)
+\end{spec}
+%
+Note that both |unit| and |op| have different types on the left and right hand sides.
+%
+On the left they belong to the monoid |(A, unitA, opA)| and on the
+right the belong to |(B, unitB, opB)|.
+
+\jp{the log/exp example from the start}
+
+\jp{remind ANat and MNat here }
+
+\begin{exercise}
+Characterise the homomorphisms from |ANat| to |MNat|.
+\end{exercise}
+%
+\begin{solution}
+Let |h : ANat -> MNat| be a homomorphism.
+%
+Then it must satisfy the following conditions:
+%
+\begin{spec}
+h 0        = 1
+h (x + y)  = h x * h y  -- for all |x| and |y|
+\end{spec}
+%
+For example |h (x + x) = h x * h x = (h x) ^ 2| which for |x = 1|
+means that |h 2 = h (1 + 1) = (h 1) ^ 2|.
+
+More generally, every |n| in |ANat| is equal to the sum of |n| ones:
+|1 + 1 + ... + 1|.\jp{Here you have to talk about associativity and unit laws, otherwise it's too much to assume.}
+%
+Therefore
+%
+\begin{spec}
+h n = (h 1) ^ n
+\end{spec}
+%
+Every choice of |h 1| ``induces a homomorphism''.
+%
+This means that the value of the function |h|, for any natural number,
+is fully determined by its value for |1|.
+\end{solution}
+
+
+
+Our examples |exp| and |log| are homomorphisms between monoids (either the additive monoid or the mutiplicative monoid). 
+\jp{come back to the definition of homomorphism here and connect to the example.}
+
+\jp{And, ... Summing up:
+  
+  H(h,C) = for every operation op in the class C, H2(h,op,op)
+      Morphism:
+      H(h,C1,C2)
+    }
+
+\subsubsection{Other homomorphisms}
+
+
+
+\begin{exercise}
+  Show that |const| is a homomorphism\jp{What structure are we talking
+    about here? Also, if the additive one (minus zero), is it
+    reasonable to expect that we remember that instance for functions
+    here?}
+\end{exercise}
+%
+The distribution law\jp{This is the first time that this name is used. Also, isn't it simply the homomorphism law?}
+can be shown as follows:
+%
+\begin{spec}
+  h a + h b                     =  {- |h = const| in this case -}
+  const a  +  const b           =  {- By def. of |(+)| on functions -}
+  (\x-> const a x + const b x)  =  {- By def. of |const|, twice -}
+  (\x->  a + b )                =  {- By def. of |const| -}
+  const (a + b)                 =  {- |h = const| -}
+  h (a + b)
+\end{spec}
+%
+We now have a homomorphism from values to functions, and you may
+wonder if there is a homomorphism in the other direction.
+%
+The answer is ``Yes, many''.
+%
+\begin{exercise}
+Show that |apply c| is a homomorphism for all |c|, where
+|apply x f = f x|.
+\end{exercise}
+
+
+As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integer| is the sum of |n| ones or the negation of such a sum. Thus we can map every |Integer| to an element of a |Ring| (the multiplicative structure is used to provide |one|):
+\end{example}
+
+\begin{exercise}
+  \label{ex:fromInteger}
+  Assume an arbitrary Ring-homomorphism |f| from |Integer| to an
+  arbitrary type |a|. Prove |f == fromInteger|, provided the
+  definition in \cref{sec:overloaded-integer-literals}.
+\end{exercise}
+
+\begin{exercise}
+  Continue extend the exponential-logarithm morphism to map AddGroup and MulGroup.
+\end{exercise}
+
+\section{Compositional semantics}
+
+\subsection{Compositional functions are homomorphisms}
 Consider a datatype of very simple integer expressions:
 %
 \begin{code}
@@ -202,7 +466,10 @@ evenCon = (0==).(`mod` 2)
 Exercise: prove |H2(even,Add,evenAdd)| and |H2(even,Mul,evenMul)|.
 \end{exercise}
 
-\paragraph{Is |isPrime| a homomorphism?} Let's now try to define
+\subsection{An example of a non-compositional function}
+
+
+Let's now try to define
 |isPrime : E -> Bool| in the same way to see a simple example of a
 non-compositional function.
 %
@@ -244,7 +511,172 @@ But because we also know that |False /= True|, we have a contradiction.
 Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
 to |Bool|, regardless of the choice of the operator corresponding to addition.
 
-\subsection{Even compositional functions can be ``wrong''}
+
+\section{Characterisation of compositionality as Folds}
+
+\label{sec:compositionality-and-homomorphisms}
+In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
+and an |eval| function of type |Syn -> Sem|), we call the semantics
+\emph{compositional} if we can implement |eval| as a fold
+%
+Informally a ``fold'' is a recursive function which replaces each
+abstract syntax constructor |Ci| of |Syn| with its semantic interpretation |ci| --- but without doing any other change in the structure. In particular,
+moving around constructors is forbidden. 
+%
+For example, in our datatype |E|, a compositional semantics means that |Add|
+maps to |add|, |Mul {-"\mapsto"-} mul|, and |Con {-"\mapsto"-} con|
+for some ``semantic functions'' |add|, |mul|, and |con|.
+%
+\begin{center}
+\begin{tikzpicture}[AbsSyn]
+\node (lhs) {|Add|}
+child {node {|Con 1|}}
+child {node {|Mul|}
+  child {node {|Con 2|}}
+  child {node {|Con 3|}}};
+%
+\node (rhs) at (5,0) {|add|}
+child {node {|con 1|}}
+child {node {|mul|}
+  child {node {|con 2|}}
+  child {node {|con 3|}}};
+%
+\path (2,-1) edge[||->] (3,-1);
+%
+\end{tikzpicture}
+\end{center}
+As an example we can define a general |foldE| for the integer
+expressions:
+%
+\begin{code}
+foldE ::  (s -> s -> s) -> (s -> s -> s) -> (Integer -> s) -> (E -> s)
+foldE add mul con = rec
+  where  rec (Add x y)  = add (rec x) (rec y)
+         rec (Mul x y)  = mul (rec x) (rec y)
+         rec (Con i)    = con i
+\end{code}
+%
+Notice that |foldE| has three function arguments corresponding to the
+three constructors of |E|.
+%
+The ``natural'' evaluator to integers is then easy to define:
+%
+\begin{code}
+evalE1 :: E -> Integer
+evalE1 = foldE (+) (*) id
+\end{code}
+%
+and with a minimal modification we can also make it work for other
+numeric types:
+%
+\begin{code}
+evalE2 :: Ring a => E -> a
+evalE2 = foldE (+) (*) fromInteger
+\end{code}
+
+Another thing worth noting is that if we replace each abstract syntax
+constructor with itself we get the identity function (a ``deep
+copy''):
+%
+\begin{code}
+idE :: E -> E
+idE = foldE Add Mul Con
+\end{code}
+
+
+\jp{
+  State that every fold is a (homo-?) morphism:
+  Consider:
+
+  fold phi (Op x1 ... xn) = phi(Op) (fold phi x1) ... (fold phi xn)
+
+  Is every homomorphism a fold?
+
+  Yes if the input structure is a deep-embedding.
+}.
+
+Finally, it is useful to capture the semantic functions (the
+parameters to the fold) in a type class:
+%
+\begin{code}
+class IntExp t where
+  add  ::  t -> t -> t
+  mul  ::  t -> t -> t
+  con  ::  Integer -> t
+\end{code}
+%
+In this way we can turn the arguments to the fold into a constraint on the return type:
+%
+\begin{code}
+foldIE :: IntExp t => E -> t
+foldIE = foldE add mul con
+
+instance IntExp E where
+  add = Add
+  mul = Mul
+  con = Con
+
+instance IntExp Integer where
+  add = (+)
+  mul = (*)
+  con = id
+
+idE' :: E -> E
+idE' = foldIE
+
+evalE' :: E -> Integer
+evalE' = foldIE
+\end{code}
+
+To get a more concrete feeling for this, we define some concrete
+values, not just functions:
+%
+\begin{code}
+seven :: IntExp a => a
+seven = add (con 3) (con 4)
+
+testI :: Integer
+testI = seven
+
+testE :: E
+testE = seven
+
+check :: Bool
+check = and  [  testI  ==  7
+             ,  testE  ==  Add (Con 3) (Con 4)
+             ,  testP  ==  "3+4"
+             ]
+\end{code}
+%
+We can also see |String| and |pretty| as an instance:
+%
+\begin{code}
+instance IntExp String where
+  add = prettyAdd
+  mul = prettyMul
+  con = prettyCon
+
+pretty' :: E -> String
+pretty' = foldIE
+
+testP :: String
+testP = seven
+\end{code}
+
+To sum up, by defining a class |IntExp| (and some instances) we can
+use the metods (|add|, |mul|, |con|) of the class as ``smart
+constructors'' which adapt to the context.
+%
+An overloaded expression, like |seven :: IntExp a => a|, which only uses
+these smart constructors can be instantiated to different types,
+ranging from the syntax tree type |E| to different semantic
+interpretations (like |Integer|, and |String|).
+
+      - What is a fold?
+      - Restrictive version of algebra to Fa -> a (or a bunch thereof ...)
+      - Relation between folds and homomorphisms
+
+\subsection{Even folds can be wrong!}
 %
 When working with expressions it is often useful to have a
 ``pretty-printer'' to convert the abstract syntax trees to strings
@@ -358,498 +790,13 @@ String| can be seen as an |n|-tuple.
 In our case a three-element |Precedence| would be enough.
 
 
-\subsection{Compositional semantics in general}
-\label{sec:compositionality-and-homomorphisms}
-In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
-and an |eval| function of type |Syn -> Sem|), we call the semantics
-\emph{compositional} if we can implement |eval| as a fold
-\jp{
-  State that every fold is a (homo-?) morphism:
-  Consider:
+\section{Initial and Free structures}
 
-  fold phi (Op x1 ... xn) = phi(Op) (fold phi x1) ... (fold phi xn)
+\subsection{Initial Ring}
 
-  Is every homomorphism a fold?
 
-  Yes if the input structure is a deep-embedding.
-}.
-%
-Informally a ``fold'' is a recursive function which replaces each
-abstract syntax constructor |Ci| of |Syn| with its semantic interpretation |ci| --- but without doing any other change in the structure. In particular,
-moving around constructors is forbidden. 
-%
-For example, in our datatype |E|, a compositional semantics means that |Add|
-maps to |add|, |Mul {-"\mapsto"-} mul|, and |Con {-"\mapsto"-} con|
-for some ``semantic functions'' |add|, |mul|, and |con|.
-%
-\begin{center}
-\begin{tikzpicture}[AbsSyn]
-\node (lhs) {|Add|}
-child {node {|Con 1|}}
-child {node {|Mul|}
-  child {node {|Con 2|}}
-  child {node {|Con 3|}}};
-%
-\node (rhs) at (5,0) {|add|}
-child {node {|con 1|}}
-child {node {|mul|}
-  child {node {|con 2|}}
-  child {node {|con 3|}}};
-%
-\path (2,-1) edge[||->] (3,-1);
-%
-\end{tikzpicture}
-\end{center}
-As an example we can define a general |foldE| for the integer
-expressions:
-%
-\begin{code}
-foldE ::  (s -> s -> s) -> (s -> s -> s) -> (Integer -> s) -> (E -> s)
-foldE add mul con = rec
-  where  rec (Add x y)  = add (rec x) (rec y)
-         rec (Mul x y)  = mul (rec x) (rec y)
-         rec (Con i)    = con i
-\end{code}
-%
-Notice that |foldE| has three function arguments corresponding to the
-three constructors of |E|.
-%
-The ``natural'' evaluator to integers is then easy to define:
-%
-\begin{code}
-evalE1 :: E -> Integer
-evalE1 = foldE (+) (*) id
-\end{code}
-%
-and with a minimal modification we can also make it work for other
-numeric types:
-%
-\begin{code}
-evalE2 :: Ring a => E -> a
-evalE2 = foldE (+) (*) fromInteger
-\end{code}
-
-Another thing worth noting is that if we replace each abstract syntax
-constructor with itself we get the identity function (a ``deep
-copy''):
-%
-\begin{code}
-idE :: E -> E
-idE = foldE Add Mul Con
-\end{code}
-
-Finally, it is useful to capture the semantic functions (the
-parameters to the fold) in a type class:
-%
-\begin{code}
-class IntExp t where
-  add  ::  t -> t -> t
-  mul  ::  t -> t -> t
-  con  ::  Integer -> t
-\end{code}
-%
-In this way we can turn the arguments to the fold into a constraint on the return type:
-%
-\begin{code}
-foldIE :: IntExp t => E -> t
-foldIE = foldE add mul con
-
-instance IntExp E where
-  add = Add
-  mul = Mul
-  con = Con
-
-instance IntExp Integer where
-  add = (+)
-  mul = (*)
-  con = id
-
-idE' :: E -> E
-idE' = foldIE
-
-evalE' :: E -> Integer
-evalE' = foldIE
-\end{code}
-
-To get a more concrete feeling for this, we define some concrete
-values, not just functions:
-%
-\begin{code}
-seven :: IntExp a => a
-seven = add (con 3) (con 4)
-
-testI :: Integer
-testI = seven
-
-testE :: E
-testE = seven
-
-check :: Bool
-check = and  [  testI  ==  7
-             ,  testE  ==  Add (Con 3) (Con 4)
-             ,  testP  ==  "3+4"
-             ]
-\end{code}
-%
-We can also see |String| and |pretty| as an instance:
-%
-\begin{code}
-instance IntExp String where
-  add = prettyAdd
-  mul = prettyMul
-  con = prettyCon
-
-pretty' :: E -> String
-pretty' = foldIE
-
-testP :: String
-testP = seven
-\end{code}
-
-To sum up, by defining a class |IntExp| (and some instances) we can
-use the metods (|add|, |mul|, |con|) of the class as ``smart
-constructors'' which adapt to the context.
-%
-An overloaded expression, like |seven :: IntExp a => a|, which only uses
-these smart constructors can be instantiated to different types,
-ranging from the syntax tree type |E| to different semantic
-interpretations (like |Integer|, and |String|).
-
-
-
-\subsection{Back to derivatives and evaluation}
-
-% TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
-% Alternatively, move all computation of derivatives here.
-
-Review \refSec{sec:evalD} again with the definition of |eval'|
-being non-compositional (just like |isPrime|) and |evalD| a more
-complex, but compositional, semantics.
-%
-
-We want to implement |eval' = eval . derive| in the following diagram:
-
-\tikzcdset{diagrams={column sep = 2cm, row sep = 2cm}}
-\quad%
-\begin{tikzcd}
-  |FunExp| \arrow[r, "|eval|"] \arrow[d, "|derive|"]
-                               \arrow[dr, "|eval'|"]  & |(REAL -> REAL)| \arrow[d, "D"] \\
-  |FunExp| \arrow[r, "|eval|"]                        & |(REAL -> REAL)|
-\end{tikzcd}
-
-As we saw in \refSec{sec:evalD} this does not work in the sense
-that |eval'| cannot directly be implemented compositionally.
-%
-The problem is that some of the rules of computing the derivative
-depends not only on the derivative of the subexpressions, but also on
-the subexpressions before taking the derivative.
-%
-A typical example of the problem is |derive (f :*: g)| where the
-result involves not only |derive f| and |derive g|, but also |f| and
-|g|.
-%
-
-The solution is to extend the return type of |eval'| from one
-semantic value |f| of type |Func = REAL -> REAL| to two such values
-|(f, f') :: (Func, Func)| where |f' = D f|.
-%
-One way of expressing this is to say that in order to implement |eval'
-:: FunExp -> Func| we need to also compute |eval :: FunExp -> Func|.
-%
-Thus we need to implement a pair of |eval|-functions |(eval, eval')|
-together.
-%
-Using the ``tupling transform'' we can express this as computing just
-one function |evalD :: FunExp -> (Func, Func)| returning a pair of |f|
-and |D f| at once.
-%
-
-This combination \emph{is} compositional, and we can then get |eval'|
-back as the second component of |evalD e|:
-%
-\begin{spec}
-eval' :: FunExp -> Func
-eval' = snd . evalD
-\end{spec}
-
-% \tikzcdset{diagrams={column sep = 2cm, row sep = 2cm}}
-% \quad%
-% \begin{tikzcd}
-%   |FunExp| \arrow[r, "|evalD|"] \arrow[d, "|derive|"]
-%                                 \arrow[dr, "|eval'|"]  & |(Func, Func)| \arrow[d, "D"] \\
-%   |FunExp| \arrow[r, "|evalD|"]                        & |(Func, Func)|
-% \end{tikzcd}
-
-
-
-\section{Algebraic Structures and DSLs}
-%
-\jp{The structuralist point of view in mathematics is that each
-mathematical domain has its own fundamental structures.
-
-Also: I don't think so. Rather instead of emphasising objects, one emphasises relations between them. Citation needed.
-%
-Once these have been identified, one tries to push their study as far
-as possible \emph{on their own terms}, i.e., without introducing other
-structures.
-%
-For example, in group theory, one starts by exploring the consequences
-of just the group structure, before one introduces, say, an order
-structure and monotonicity.
-}
-
-% based on ../../2016/Lectures/Lecture09.lhs
-
-\subsection{Algebraic Structures}
-\label{sec:AlgHomo}
-
-The Wikipedia definition of homomorphism states ``A homomorphism is a
-structure-preserving map between two algebraic structures of the same
-type'', but so far our definition of homomorphism takes the rather
-limited view that a single operation is transformed. Usually,
-homomorphisms map a whole \emph{structure}. But what is a structure?
-
-From Wikipedia:
-%
-\begin{quote}
-  In universal algebra, an algebra (or algebraic structure) is a set
-  |A| together with a collection of operations on |A| (of finite
-  arity) and a collection of axioms which those operation must
-  satisfy.
-\end{quote}
-
-The fact that a type |a| is equipped with operations is conveniently
-captured in Haskell using a type class.
-
-\begin{example}
-  A particularly pervasive structure is that of monoids.
-  %
-  A monoid is an algebra which has an associative operation 'op' and a
-  unit:
-\begin{code}
-class Monoid a where
-    unit  ::  a
-    op    ::  a -> a -> a
-\end{code}
-  % 
-  The laws can be formulated as the following equations:
-  % 
-  \begin{spec}
-    ∀ x : a? (unit `op` x == x  ∧  x `op` unit == x)
-    ∀ x, y, z : a? (x `op` (y `op` z) == (x `op` y) `op` z)
-  \end{spec}
-  % 
-\end{example}
-
-\begin{example}
-  Examples of monoids include numbers with additions, |(REAL, 0, (+))|,
-  numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
-  with composition |(a->a,id, (.))| .
-  %
-  (An ``endofunction'', also known as ``endomorphism'' is a function of type |X->X| for some set
-  |X|.)
-  \label{ex:endofunction}
-\end{example}
-
-\begin{exercise}
-  Define the above monoids and check that the laws are satisfied.
-\end{exercise}
-
-
-In mathematics, as soon as there are several examples of a structure,
-the question of what a ``translation between them'' means comes up.
-%
-An important class of such ``translations'' are ``structure preserving
-maps'' called \emph{homomorphisms}.
-%
-As two examples, we have the homomorphisms |exp| and |log|, specified
-as follows:
-%
-\begin{spec}
-  exp  :  REAL  ->  RPos
-  exp  0        =   1                 --  \(e^0 = 1\)
-  exp  (a + b)  =   exp a  *  exp b   --  \(e^{a+b} = e^a e^b\)
-
-  log  :  RPos  ->  REAL
-  log  1        =   0                 -- \(\log 1 = 0\)
-  log  (a * b)  =   log a  +  log b   -- \(\log(ab) = \log a + \log b \)
-\end{spec}
-%
-What we recognize as the familiar laws of exponentiation and
-logarithms are actually examples of the homomorphism conditions for
-|exp| and |log|, which relate the additive and multiplicative structures of reals and positive reals.
-%
-Back to Wikipedia:
-%
-\begin{quote}
-  More formally, a homomorphism between two algebras |A| and |B| is a
-function |h : A → B| from the set |A| to the set |B| such that, for
-every operation |fA| of |A| and corresponding |fB| of |B| (of arity,
-say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
-\end{quote}
-
-Our examples |exp| and |log| are homomorphisms between monoids (either the additive monoid or the mutiplicative monoid). The
-general monoid homomorphism conditions for |h : A -> B| are:
-%
-\begin{spec}
-h unit        =  unit             -- |h| takes units to units
-h (x `op` y)  =  h x `op` h y     -- and distributes over |op| (for all |x| and |y|)
-\end{spec}
-%
-Note that both |unit| and |op| have different types on the left and right hand sides.
-%
-On the left they belong to the monoid |(A, unitA, opA)| and on the
-right the belong to |(B, unitB, opB)|.
-
-To make this a bit more concrete, here are two examples of monoids in
-Haskell: the additive monoid |ANat| and the multiplicative monoid
-|MNat|.
-%
-\begin{code}
-newtype ANat      =  A Int          deriving (Show, Eq)
-
-instance Monoid ANat where
-  unit            =  A 0
-  op (A m) (A n)  =  A (m + n)
-
-newtype MNat      =  M Int          deriving (Show, Eq)
-
-instance Monoid MNat where
-  unit            =  M 1
-  op (M m) (M n)  =  M (m * n)
-\end{code}
-%
-In mathematical texts the constructors |M| and |A| are usually
-omitted, and instead the names of the operations suggest which of the
-monoids one is referring to.  We will stick to that tradition.  In
-fact, we will define the additive and multiplicative monoids, as
-follows.
-\label{sec:ring-like-classes}
-\begin{spec}
-class Additive a where
-  zero :: a
-  (+) :: a -> a -> a
-
-class Multiplicative a where
-  one :: a
-  (*) :: a -> a -> a
-\end{spec}
-
-The operator names clash with the |Num| class, which we will avoid
-from now one in favour |Additive| and |Multiplicative|.
-
-
-\jp{come back to the definition of homomorphism here and connect to the example.}
-
-
-\begin{exercise}
-Characterise the homomorphisms from |ANat| to |MNat|.
-\end{exercise}
-%
-\begin{solution}
-Let |h : ANat -> MNat| be a homomorphism.
-%
-Then it must satisfy the following conditions:
-%
-\begin{spec}
-h 0        = 1
-h (x + y)  = h x * h y  -- for all |x| and |y|
-\end{spec}
-%
-For example |h (x + x) = h x * h x = (h x) ^ 2| which for |x = 1|
-means that |h 2 = h (1 + 1) = (h 1) ^ 2|.
-
-More generally, every |n| in |ANat| is equal to the sum of |n| ones:
-|1 + 1 + ... + 1|.\jp{Here you have to talk about associativity and unit laws, otherwise it's too much to assume.}
-%
-Therefore
-%
-\begin{spec}
-h n = (h 1) ^ n
-\end{spec}
-%
-Every choice of |h 1| ``induces a homomorphism''.
-%
-This means that the value of the function |h|, for any natural number,
-is fully determined by its value for |1|.
-\end{solution}
-
-\begin{exercise}
-  Show that |const| is a homomorphism\jp{What structure are we talking
-    about here? Also, if the additive one (minus zero), is it
-    reasonable to expect that we remember that instance for functions
-    here?}
-\end{exercise}
-%
-The distribution law\jp{This is the first time that this name is used. Also, isn't it simply the homomorphism law?}
-can be shown as follows:
-%
-\begin{spec}
-  h a + h b                     =  {- |h = const| in this case -}
-  const a  +  const b           =  {- By def. of |(+)| on functions -}
-  (\x-> const a x + const b x)  =  {- By def. of |const|, twice -}
-  (\x->  a + b )                =  {- By def. of |const| -}
-  const (a + b)                 =  {- |h = const| -}
-  h (a + b)
-\end{spec}
-%
-We now have a homomorphism from values to functions, and you may
-wonder if there is a homomorphism in the other direction.
-%
-The answer is ``Yes, many''.
-%
-\begin{exercise}
-Show that |apply c| is a homomorphism for all |c|, where
-|apply x f = f x|.
-\end{exercise}
-
-\begin{example}{Groups and rings}
-
-  Another important structure are groups, which are monoids augmented with an
-  inverse. To complete our mathematically-grounded |Num| replacement,
-  we will define the additive group as follows.
-
-\begin{spec}
-class Additive a => AddGroup a where
-  negate :: a -> a
-\end{spec}
-
-The inverse must act like an inverse. Namely, applying the operation to an element and its inverse should yield the unit of the group.
-Thus, for the additive group, the laws look like this:
-
-\begin{spec}
-negate a + a = zero
-a + negate a = zero
-\end{spec}
-
-And thus we can define subtraction as
-\begin{spec}
-a - b = a + negate b
-\end{spec}
-
-Finally, when the additive monoid is abelian (commutative) and
-addition distributes over multiplication, we have a |Ring|. We cannot specify laws in Haskell typeclasses  and thus define it simply as the conjuction of |AddGroup| and |Multiplicative|:
-\begin{spec}
-type Ring a = (AddGroup a, Multiplicative a)
-\end{spec}
-
-As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integer| is the sum of |n| ones or the negation of such a sum. Thus we can map every |Integer| to an element of a |Ring| (the multiplicative structure is used to provide |one|):
-\end{example}
-
-\begin{exercise}
-  \label{ex:fromInteger}
-  Assume an arbitrary Ring-homomorphism |f| from |Integer| to an
-  arbitrary type |a|. Prove |f == fromInteger|, provided the
-  definition in \cref{sec:overloaded-integer-literals}.
-\end{exercise}
-
-\begin{exercise}
-  Continue extend the exponential-logarithm morphism to map AddGroup and MulGroup.
-\end{exercise}
-
-\subsection{Homomorphism and compositional semantics}
-\jp{Seems like a repeat, what is new in this subsection?}
-
+\subsection{Free Ring}
+\jp{Rewrite this whole subsection to make it comprehensible}
 Earlier, we saw that |eval| is compositional, while |eval'| (from \cref{sec:evalD}) is not.
 %
 Another way of phrasing that is to say that |eval| is a homomorphism,
@@ -896,6 +843,7 @@ doubles, etc.
 %
 If they did, then we could have evaluated expressions more abstractly:
 %
+\jp{Probably this is saying that FunExp is the free field, or something like that?}
 \begin{spec}
 eval :: GoodClass a  =>  FunExp -> a
 \end{spec}
@@ -969,6 +917,8 @@ initial algebra\jp{Probably should be a footnote. Or should we define an explain
 
 Let us explore this in the simpler context of |Monoid|.
 %
+
+\subsection{Free Monoid}
 Ignoring its laws, the language of monoid expressions is given by
 %
 \begin{code}
@@ -1000,9 +950,79 @@ evalM  f  (V x)       =  f x
 (Observation: In |FunExp|, the role of variables was played by |REAL|,
 and the role of the assignment by the identity.)
 
-
+\subsection{\extraMaterial A generic Free construction}
 %include FreeMonoid.lhs
 
+\subsection{Summary}
+\jp{
+ - Deep embeddings (FunExp is a deep free Ring-like structure; modulo laws. )
+ - Shallow embeddings (-> is a shallow free ...; in this case we don't have to worry about laws)}
+
+\section{Application: Derivatives}
+
+% TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
+% Alternatively, move all computation of derivatives here.
+
+Review \refSec{sec:evalD} again with the definition of |eval'|
+being non-compositional (just like |isPrime|) and |evalD| a more
+complex, but compositional, semantics.
+%
+
+We want to implement |eval' = eval . derive| in the following diagram:
+
+\tikzcdset{diagrams={column sep = 2cm, row sep = 2cm}}
+\quad%
+\begin{tikzcd}
+  |FunExp| \arrow[r, "|eval|"] \arrow[d, "|derive|"]
+                               \arrow[dr, "|eval'|"]  & |(REAL -> REAL)| \arrow[d, "D"] \\
+  |FunExp| \arrow[r, "|eval|"]                        & |(REAL -> REAL)|
+\end{tikzcd}
+
+As we saw in \refSec{sec:evalD} this does not work in the sense
+that |eval'| cannot directly be implemented compositionally.
+%
+The problem is that some of the rules of computing the derivative
+depends not only on the derivative of the subexpressions, but also on
+the subexpressions before taking the derivative.
+%
+A typical example of the problem is |derive (f :*: g)| where the
+result involves not only |derive f| and |derive g|, but also |f| and
+|g|.
+%
+
+The solution is to extend the return type of |eval'| from one
+semantic value |f| of type |Func = REAL -> REAL| to two such values
+|(f, f') :: (Func, Func)| where |f' = D f|.
+%
+One way of expressing this is to say that in order to implement |eval'
+:: FunExp -> Func| we need to also compute |eval :: FunExp -> Func|.
+%
+Thus we need to implement a pair of |eval|-functions |(eval, eval')|
+together.
+%
+Using the ``tupling transform'' we can express this as computing just
+one function |evalD :: FunExp -> (Func, Func)| returning a pair of |f|
+and |D f| at once.
+%
+
+This combination \emph{is} compositional, and we can then get |eval'|
+back as the second component of |evalD e|:
+%
+\begin{spec}
+eval' :: FunExp -> Func
+eval' = snd . evalD
+\end{spec}
+
+% \tikzcdset{diagrams={column sep = 2cm, row sep = 2cm}}
+% \quad%
+% \begin{tikzcd}
+%   |FunExp| \arrow[r, "|evalD|"] \arrow[d, "|derive|"]
+%                                 \arrow[dr, "|eval'|"]  & |(Func, Func)| \arrow[d, "D"] \\
+%   |FunExp| \arrow[r, "|evalD|"]                        & |(Func, Func)|
+% \end{tikzcd}
+
+
+\section{Summing up}
 
 The following correspondence summarises the discussion so far:
 \jp{Is it really true that initial algebra are deep embeddings? }
@@ -1024,6 +1044,91 @@ See
 (lecture notes are available on
 \href{https://github.com/DSLsofMath/ctfp2014}{github}).
 
+\subsection{Definitions and representations}
+\jp{I think that this is meant to say that the initial structure is not the only
+representent of the structure? Unclear/pedantic?}
+We defined a |Ring| structure on pairs |(REAL, REAL)| by requiring
+the operations to be compatible with the interpretation |(f a, f' a)|.
+%
+For example
+%
+\begin{spec}
+(x, x') *? (y, y') = (x * y, x' * y + x * y')
+\end{spec}
+%
+There is nothing in the ``nature'' of pairs of |REAL| that forces
+this definition upon us.
+%
+We chose it, because of the intended interpretation.
+
+This multiplication is obviously not the one we need for \emph{complex
+  numbers}. It would be instead:
+%
+\begin{spec}
+(x, x') *. (y, y') = (x * y - x' * y', x * y' + x' * y)
+\end{spec}
+%
+Again, there is nothing in the nature of pairs that foists this
+operation on us.
+%
+In particular, it is, strictly speaking, incorrect to say that a
+complex number \emph{is} a pair of real numbers.
+%
+The correct interpretation is that a complex number can be
+\emph{represented} by a pair of real numbers, provided we define the
+operations on these pairs in a suitable way.
+
+The distinction between definition and representation is similar to
+the one between specification and implementation, and, in a certain
+sense, to the one between syntax and semantics.
+%
+All these distinctions are frequently obscured, for example, because
+of prototyping (working with representations / implementations /
+concrete objects in order to find out what definition / specification
+/ syntax is most adequate).
+%
+They can also be context-dependent (one man's specification is another
+man's implementation).
+%
+Insisting on the difference between definition and representation can
+also appear quite pedantic (as in the discussion of complex numbers
+above).
+%
+In general though, it is a good idea to be aware of these
+distinctions, even if they are suppressed for reasons of brevity or
+style.
+%
+We will see this distinction again in
+\refSec{sec:polynotpolyfun}.
+
+\section{Beyond Algebras: Co-algebra and the Stream calculus}
+
+In the coming chapters there will be quite a bit of material on
+infinite structures.
+%
+These are often captured not by algebras, but by co-algebras.\jp{unfortunately the definition that we gave for algebras seem to fit co-algebras just as well?}
+%
+We will not build up a general theory of co-algebras in this notes,
+but because we will be using infinite streams in the upcoming chapters
+we will expose right here their co-algebraic structure.
+
+%include AbstractStream.lhs
+
+
+=============================================================================================
+
+
+\section{Spillover to sort}
+
+
+
+
+
+
+
+
+
+
 
 \subsection{Other homomorphisms}
 
@@ -1031,7 +1136,7 @@ In \refSec{sec:FunNumInst}, we defined a |Ring| instance for
 functions with a |Ring| codomain.
 %
 If we have an element of the domain of such a function, we can use it
-to obtain a homomorphism from functions to their codomains:
+to obtain a homomorphism from functions to their codomains:\jp{I have no idea what this tries to say.}
 %
 \begin{spec}
 Ring a => x ->  (x -> a) -> a
@@ -1129,61 +1234,6 @@ Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|
 
 Hint: Something very similar can be used for Assignment 2.\jp{What's that?}
 
-\section{Summing up: definitions and representation}
-
-We defined a |Ring| structure on pairs |(REAL, REAL)| by requiring
-the operations to be compatible with the interpretation |(f a, f' a)|.
-%
-For example
-%
-\begin{spec}
-(x, x') *? (y, y') = (x * y, x' * y + x * y')
-\end{spec}
-%
-There is nothing in the ``nature'' of pairs of |REAL| that forces
-this definition upon us.
-%
-We chose it, because of the intended interpretation.
-
-This multiplication is obviously not the one we need for \emph{complex
-  numbers}. It would be instead:
-%
-\begin{spec}
-(x, x') *. (y, y') = (x * y - x' * y', x * y' + x' * y)
-\end{spec}
-%
-Again, there is nothing in the nature of pairs that foists this
-operation on us.
-%
-In particular, it is, strictly speaking, incorrect to say that a
-complex number \emph{is} a pair of real numbers.
-%
-The correct interpretation is that a complex number can be
-\emph{represented} by a pair of real numbers, provided we define the
-operations on these pairs in a suitable way.
-
-The distinction between definition and representation is similar to
-the one between specification and implementation, and, in a certain
-sense, to the one between syntax and semantics.
-%
-All these distinctions are frequently obscured, for example, because
-of prototyping (working with representations / implementations /
-concrete objects in order to find out what definition / specification
-/ syntax is most adequate).
-%
-They can also be context-dependent (one man's specification is another
-man's implementation).
-%
-Insisting on the difference between definition and representation can
-also appear quite pedantic (as in the discussion of complex numbers
-above).
-%
-In general though, it is a good idea to be aware of these
-distinctions, even if they are suppressed for reasons of brevity or
-style.
-%
-We will see this distinction again in
-\refSec{sec:polynotpolyfun}.
 
 
 \subsection{Some helper functions}
@@ -1206,18 +1256,6 @@ negateE _ = error "negate: not supported"
 %
 %TODO: Perhaps include the comparison of the |Ring t => Ring (Bool -> t)| instance (as a special case of functions as |Ring|) and the |Ring r => Ring (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
 
-\section{Co-algebra and the Stream calculus}
-
-In the coming chapters there will be quite a bit of material on
-infinite structures.
-%
-These are often captured not by algebras, but by co-algebras.\jp{unfortunately the definition that we gave for algebras seem to fit co-algebras just as well?}
-%
-We will not build up a general theory of co-algebras in this notes,
-but because we will be using infinite streams in the upcoming chapters
-we will expose right here their co-algebraic structure.
-
-%include AbstractStream.lhs
 
 
 %include E4.lhs

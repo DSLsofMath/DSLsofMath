@@ -1088,7 +1088,6 @@ Thus, for example, by recursion we now have an infinite collection of instances 
 %
 
 \subsection{Numeric operations}
-
 Haskell also provides a |Num| class, containing various numeric types
 (Int, Double, etc) with several operators (|+|,|*|, etc).
 Unfortunately, the |Num| class was designed with more regard for
@@ -1098,6 +1097,7 @@ and define the following classes, which together, serve a similar
 role as |Num|, and which we study in more detail in
 \cref{sec:ring-like-classes}:
 
+\label{sec:numeric-classes}
 \begin{code}
 class Additive a where
   zero :: a
@@ -1110,6 +1110,8 @@ class Multiplicative a where
 class Multiplicative a => MulGroup a where
   recip :: a -> a -- reciprocal
 \end{code}
+The operator names clash with the |Num| class, which we will avoid
+from now one in favour |Additive| and |Multiplicative|.
 
 \begin{exercise}
   Consider the exponentiation operator, which we can write
