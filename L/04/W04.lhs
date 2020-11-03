@@ -29,15 +29,27 @@ import DSLsofMath.Algebra hiding (fromInteger)
       - additive/multiplicative monoids
       - etc.
   - Definition of homomorphism
-    - Special (1-constructor) version
-    - More general version:
-      - Definition of (H2) + examples
+    - Definition of (H2) + examples
+    - Version on classes:
       H(h,C) = for every operation op in the class C, H2(h,op,op)
       Morphism:
       H(h,C1,C2)
-
-  - Compositional semantics stuff
-  - Derivatives
+    - Other homomorphisms: apply
+  - Compositional semantics
+    - An example of a compositional function (odd, even)
+    - An example of a non-compositional function (isPrime)
+    - Characterisation: Folds
+      - What is a fold?
+      - Restrictive version of algebra to Fa -> a (or a bunch thereof ...)
+      - Relation between folds and homomorphisms
+    - Even compositional functions can be wrong
+  - Initial and Free structures
+    - Deep embeddings (FunExp is a deep free Ring-like structure; modulo laws. )
+    - Shallow embeddings (-> is a shallow free ...; in this case we don't have to worry about laws)
+    - Generic Free/Initial shallow structures
+  - Summing up table
+  - Application: Derivatives
+  - Co-algebras
 }
 
 \section{Compositional semantics and homomorphisms}
@@ -837,6 +849,7 @@ As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integ
 
 \subsection{Homomorphism and compositional semantics}
 \jp{Seems like a repeat, what is new in this subsection?}
+
 Earlier, we saw that |eval| is compositional, while |eval'| (from \cref{sec:evalD}) is not.
 %
 Another way of phrasing that is to say that |eval| is a homomorphism,
@@ -987,7 +1000,6 @@ evalM  f  (V x)       =  f x
 (Observation: In |FunExp|, the role of variables was played by |REAL|,
 and the role of the assignment by the identity.)
 
-\jp{|forall a. Class a => a| is the initial algebra for Class? Is this clear enough?}
 
 %include FreeMonoid.lhs
 
