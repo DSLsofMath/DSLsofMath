@@ -400,7 +400,7 @@ As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integ
 \end{exercise}
 
 \begin{exercise}
-  Continue extend the exponential-logarithm morphism to map AddGroup and MulGroup.
+  Continue extend the exponential-logarithm morphism to map |AddGroup| and |MulGroup|.
 \end{exercise}
 
 \section{Compositional semantics}
@@ -661,7 +661,7 @@ constructors'' which adapt to the context.
 An overloaded expression, like |seven :: IntExp a => a|, which only uses
 these smart constructors can be instantiated to different types,
 ranging from the syntax tree type |E| to different semantic
-interpretations (like |Integer|, and |String|).
+interpretations (like |Integer|, |E|, etc.).
 
 Additionally |IntExp| is the underlying algebraic structure of the
 fold. The function |foldIE| is a homomorphism which maps the |IntExp
@@ -803,21 +803,157 @@ String| can be seen as an |n|-tuple.
 In our case a three-element |Precedence| would be enough.
 
 
-\section{Initial and Free structures}
+\section{Initial and Free Structures}
 
-\subsection{Initial Monoid}
+\subsection{Initial Structures}
 
-\subsection{Initial Ring}
+Before we started with a data-type, and derived an algebraic
+structure, more precisely an algebra from it. But we can go in the
+other direction: start with an algebra and derive a datatype which
+capture only the structure of the algebra. This is representation is
+called the initial algebra.
+
+\subsubsection{Initial Monoid}
+
+- We know that we have at least one object: the |unit|. 
+- We can construct more objects using |op|:
+|unit `op` unit|, |unit `op` (unit `op` unit)|, etc.
+
+- So a draft for the initial monoid could be:
+
+\begin{code}
+data M where
+  Unit :: M
+  Op :: M -> M -> M
+\end{code}
+or:
+\begin{code}
+data M = M | Op M M
+\end{code}
+
+But we also have the unit laws, which in particular tell us that |unit
+`op` unit == unit|. So it seems that we're left with a single element: the unit.
+The representation of the initial monoid is then simply:
+
+\begin{code}
+data M = M
+\end{code}
+
+As one might guess, there are not many interesting applications of the
+initial monoid.
+
+\subsubsection{Initial Ring}
+
+\begin{spec}
+zero :: a
+(+) :: a -> a -> a
+negate :: a -> a
+one :: a
+(*) :: a -> a -> a
+\end{spec}
+
+In this case, we can start with |zero| and |one|. As before, using
+addition on |zero| or multiplication on |one| would yield no more
+elements. But we can use addition on |one|, and get |one + one|, |one
++ one + one|, etc. Because of associativity, we don't have to --- and
+ought not to --- write parentheses. Let's write an addition of |n|
+ones as |n|. What about multiplying? Are we going to get more kinds of
+numbers from that? No, because of distributivity. For example:
+
+\begin{spec}
+(one + one) * (one + one) == one + one + one + one
+\end{spec}
+
+By following this line of reasoning to its conclusion, we will find that
+the initial |Ring| is the set of integers.
+
+\subsection{Free Structures}
+
+Another useful kind of are free structures. They are similar to
+initial structures, but they also allow to embed an arbitrary set of
+\emph{generators} |G|. That is, it is as if we would throw an
+additional |generate| function in the algebra:
+
+\begin{code}
+class Generate a where
+  generate :: G -> a
+\end{code}
+
+(Alternatively, we could parameterize everything over an abstract
+generator set |g|.)
 
 
-\subsection{Free Ring}
-\jp{Rewrite this whole subsection to make it comprehensible}
-Earlier, we saw that |eval| is compositional, while |eval'| (from \cref{sec:evalD}) is not.
+\subsubsection{Free Monoid}
+
+As an example, consider the free monoid. Our algebra has:
+
+\begin{spec}
+generate :: G -> a
+op :: a -> a -> a
+unit :: a -> a -> a
+\end{spec}
+
+We could define the type:
+\begin{code}
+data FreeMonoid    =  Unit  |  Op FreeMonoid FreeMonoid  |  Generator G
+\end{code}
+
+Let us consider a fold for |FreeMonoid|. We can write it as
+\begin{code}
+evalM :: (Monoid a, Generate a) => (FreeMonoid -> a)
+\end{code}
+but we can also take the |generate| method as an explicit argument:
+\begin{code}
+evalM :: Monoid a => (G -> a) -> (FreeMonoid -> a)
+\end{code}
+Note that if this is similar to the evaluators of expressions with variables of type |G|.
 %
-Another way of phrasing that is to say that |eval| is a homomorphism,
-while |eval'| is not.
+Once given an |f :: G -> a|, the homomorphism condition nearly fixes
+|evalM|:
 %
-To see this, we need to make explicit the structure of |FunExp|:
+\begin{code}
+evalM  f  Unit           =  unit
+evalM  f  (Op e1 e2)     =  op (evalM f e1) (evalM f e2)
+evalM  f  (Generator x)  =  f x
+\end{code}
+
+But, the |FreeMonoid| representation is ignoring monoid laws.  By
+following the same kind of reasoning as before, we find that we only
+have in fact only two forms for the elements:
+
+- unit
+- generate x1 `op` generate x2 `op` ... `op` generate xn
+
+Because of associativity we have no parentheses in the second form;
+and because of the unit laws we need not have unit composed with op
+either.
+
+Thus, the free monoid over a generator set G is a list of G.
+
+We seemingly also ignored the laws when defining |evalM|. Is this a problem?
+
+For example, is it possible that |e1 `Op` (e2 `Op` e3)| and |(e1 `Op`
+e2) `Op` e3| which are by law equal, map to different values?  By
+definition of |evalM|, the condition reduces to checking |evalM f e1
+`op` (evalM f e2 `op` evalM f e3) == (evalM f e1 `op` evalM f e2) `op`
+evalM f e3|. But then, this turns out to be satisfied if |op| is
+associative. In sum, |evalM| will be correct if the target |Monoid|
+instance satisfies the laws. This is true in general: folds are always
+homomorphisms even if the datatype representation that it works on
+ignores laws.
+
+
+\subsubsection{Free structure with one generator}
+
+Earlier we have used (many variants of) data types for arithmetic
+expressions. Using the free construction, we can easily conceive a
+suitable type for any such expression language. For example, the type
+for arithmetic expressions with |+,-,*| and variables is the free
+|Ring| with the set of variables as generator set. Unfortunately, for
+the free ring, accounting for the laws is no longer as simple as
+before. For this reason, we use datatypes which simply
+ignore them.
+
 %
 \begin{spec}
 instance Additive FunExp where
@@ -849,6 +985,13 @@ eval (e1 :*: e2)  =  eval e1 * eval e2
 eval (Exp e)      =  exp (eval e)
 \end{spec}
 %
+
+Earlier\jp{where?}, we saw that |eval| is compositional, while |eval'| (from \cref{sec:evalD}) is not.
+%
+Another way of phrasing that is to say that |eval| is a homomorphism,
+while |eval'| is not.
+%
+
 These properties do not hold for |eval'|, but do hold for |evalD|.
 
 The numerical classes in Haskell do not fully do justice to the
@@ -933,37 +1076,6 @@ initial algebra\jp{Probably should be a footnote. Or should we define an explain
 Let us explore this in the simpler context of |Monoid|.
 %
 
-\subsection{Free Monoid}
-Ignoring its laws, the language of monoid expressions is given by
-%
-\begin{code}
-type Var      =  String
-
-data MExpr    =  Unit  |  Op MExpr MExpr  |  V Var
-\end{code}
-%
-Alternatively, we could have parametrised |MExpr| over the type of
-variables.
-
-Just as in the case of FOL terms, we can evaluate an |MExpr| in a
-monoid instance if we are given a way of interpreting variables, also
-called an assignment:
-%
-\begin{code}
-evalM :: Monoid a => (Var -> a) -> (MExpr -> a)
-\end{code}
-%
-Once given an |f :: Var -> a|, the homomorphism condition defines
-|evalM|:
-%
-\begin{code}
-evalM  f  Unit        =  unit
-evalM  f  (Op e1 e2)  =  op (evalM f e1) (evalM f e2)
-evalM  f  (V x)       =  f x
-\end{code}
-%
-(Observation: In |FunExp|, the role of variables was played by |REAL|,
-and the role of the assignment by the identity.)
 
 \subsection{\extraMaterial A generic Free construction}
 %include FreeMonoid.lhs
