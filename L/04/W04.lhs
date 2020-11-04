@@ -1047,17 +1047,12 @@ initial |OneVarExp|.
 \subsection{\extraMaterial A generic Free construction}
 %include FreeMonoid.lhs
 
-\subsection{Summary}
-\jp{
- - Deep embeddings (FunExp is a deep free Ring-like structure; modulo laws. )
- - Shallow embeddings (-> is a shallow free ...; in this case we don't have to worry about laws)}
-
 \section{Application: Derivatives}
 
 % TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
 % Alternatively, move all computation of derivatives here.
 
-Review \refSec{sec:evalD} again with the definition of |eval'|
+Review \cref{sec:evalD} again with the definition of |eval'|
 being non-compositional (just like |isPrime|) and |evalD| a more
 complex, but compositional, semantics.
 %
@@ -1116,10 +1111,10 @@ eval' = snd . evalD
 % \end{tikzcd}
 
 
-\section{Summing up}
+\section{Summary}
 
-The following correspondence summarises the discussion so far:
-\jp{Is it really true that initial algebra are deep embeddings? }
+The following correspondence table summarises the discussion so far:
+\begin{center}
 \begin{tabular}{ll}
       Computer Science      &   Mathematics
 \\\hline
@@ -1128,9 +1123,19 @@ The following correspondence summarises the discussion so far:
 \\    shallow embedding     &   any other algebra
 \\    semantics             &   homomorphism from the initial algebra
 \end{tabular}
+\end{center}
+\jp{I disagree with this table.
 
+  1. Initial algebras can be constructed without reference to data types (|Class a => a|)
+
+  2. Shallow embeddings can be initial algebras (|Class a => x -> a| is an initial algebra of |Class| + unit generator.)
+
+  3. We saw that homomorphisms are not necessarily judicious semantics.
+  
+  4. And isn't a DSL akin to a mathematical domain?
+}
 The underlying theory of this table is a fascinating topic but mostly
-out of scope for these lecture notes (and the DSLsofMath course).
+out of scope for this \course{}.
 %
 See
 \href{http://wiki.portal.chalmers.se/cse/pmwiki.php/CTFP14/CoursePlan}{Category
@@ -1140,8 +1145,8 @@ See
 
 \subsection{Definitions and representations}
 \jp{I think that this is meant to say that the initial structure is not the only
-representent of the structure? Unclear/pedantic?}
-We defined a |Ring| structure on pairs |(REAL, REAL)| by requiring
+representent of the structure? Unclear/pedantic? }
+In \cref{sec:evalD} we defined a |Ring| structure on pairs |(REAL, REAL)| by requiring
 the operations to be compatible with the interpretation |(f a, f' a)|.
 %
 For example
@@ -1193,7 +1198,7 @@ distinctions, even if they are suppressed for reasons of brevity or
 style.
 %
 We will see this distinction again in
-\refSec{sec:polynotpolyfun}.
+\cref{sec:polynotpolyfun}.
 
 \section{Beyond Algebras: Co-algebra and the Stream calculus}
 
@@ -1209,23 +1214,9 @@ we will expose right here their co-algebraic structure.
 %include AbstractStream.lhs
 
 
-=============================================================================================
 
-
-\section{Spillover to sort}
-
-
-
-
-
-
-
-
-
-
-
-\subsection{Other homomorphisms}
-
+\section{????}
+\jp{I don't understand the point of this section}
 In \refSec{sec:FunNumInst}, we defined a |Ring| instance for
 functions with a |Ring| codomain.
 %
@@ -1326,9 +1317,9 @@ a|) instead of pairs of functions.
 %
 Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|
 
+%if lectureNotes
 Hint: Something very similar can be used for Assignment 2.\jp{What's that?}
-
-
+%endif
 
 \subsection{Some helper functions}
 
