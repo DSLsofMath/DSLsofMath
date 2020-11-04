@@ -962,18 +962,18 @@ instance Generate FunExp where
 
 instance Additive FunExp where
   (+) = (:+:)
-  -- ...
+  zero = Const 0
 
 instance Multiplicative FunExp where
   (*) = (:*:)
-  -- ...
+  one = Const 1
 \end{code}
 %
 and so on.
 
 
 \begin{exercise}
-Complete the type instances for |FunExp|.
+Complete the instances for |FunExp| (possibly extending the datatype).
 
 Remark: to translate the |Const :: REAL -> FunExp| constructor we need
 a way to map any |REAL| to the above structures.  We know how to do
@@ -1014,7 +1014,7 @@ For example, we could define
 \begin{code}
 varX = generate ()
 twoexp :: OneVarExp a => a
-twoexp = fromInteger 2 * (exp varx)
+twoexp = 2 * exp varX -- recall the implicit |fromInteger|
 \end{code}
 %
 and instantiate it to either syntax or semantics:
@@ -1034,9 +1034,10 @@ instance Generate (a -> x) where
   generate () = id
 \end{code}
 
+\begin{exercise}
 Find another instance of |OneVarExp|.
 \jp{What is the intent?}
-
+\end{exercise}
 As before, we can always define a homomorphism from |FunExp| to \emph{any}
 instance of |OneVarExp|, in a unique way, using the fold pattern.
 %

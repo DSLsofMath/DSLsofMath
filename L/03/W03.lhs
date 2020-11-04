@@ -125,10 +125,10 @@ type FunExpS = REAL -> REAL
 Then we can define the operators directly on functions, as follows:
 
 \begin{spec}
-evalConst alpha = \x -> alpha
-evalX = \x -> x
-evalPlus f g = \x -> f x + g x
-evalTimes f g = \x -> f x * g x
+funConst alpha = \x -> alpha
+funX = \x -> x
+funPlus f g = \x -> f x + g x
+funTimes f g = \x -> f x * g x
 \end{spec}
 
 Again, we have two possible intuitive readings of the above
@@ -146,10 +146,10 @@ To wrap it up, if we're so inclined, we can re-define the evaluator of
 the deep-embedding using the operators of the shallow embedding:
 \begin{spec}
 eval  ::  FunExp         ->  REAL -> REAL
-eval      (Const alpha)  =   evalConst alpha
-eval      X              =   evalX
-eval      (e1 :+: e2)    =   evalPlus   (eval e1) (eval e2)
-eval      (e1 :*: e2)    =   evalTimes  (eval e1) (eval e2)
+eval      (Const alpha)  =   funConst alpha
+eval      X              =   funX
+eval      (e1 :+: e2)    =   funPlus   (eval e1) (eval e2)
+eval      (e1 :*: e2)    =   funTimes  (eval e1) (eval e2)
 \end{spec}
 
 
@@ -1337,9 +1337,6 @@ arguments --- provided that they match in number and types.
   \cref{sec:deriv}? But it seems that compositionality is the
   question, so it's for \cref{sec:CompSem}.
 }
-\jp{Is it she right place?
-   Most certainly not: we have 7 occurences of "compositional" in what follows, so it seems that compositionality is a pre-requisite.
-  }
 
 An important part of calculus is the collection of laws, or rules, for
 computing derivatives.
@@ -1463,6 +1460,9 @@ functions.
 \end{exercise}
 
 \subsection{Computing Shallow Embeddings Directly}
+\jp{Is it she right place?
+   Most certainly not: we have 7 occurences of "compositional" in what follows, so it seems that compositionality is a pre-requisite.
+  }
 \label{sec:evalD}
 
 The DSL of expressions, whose syntax is given by the type |FunExp|,
@@ -1483,6 +1483,7 @@ abstract syntax''\jp{citation needed}.
 It can be more economical, since it needs no |eval|.
 %
 The question is: can we implement |derive| in the shallow embedding?
+
 
 The reason that the shallow embedding is feasible is that the
 |eval| function is a \emph{fold}: first evaluate the sub-expressions
