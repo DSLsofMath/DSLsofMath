@@ -943,19 +943,23 @@ homomorphisms even if the datatype representation that it works on
 ignores laws.
 
 
-\subsubsection{Free structure with one generator}
+\subsubsection{Functions of one variable, reprise.}
 
 Earlier we have used (many variants of) data types for arithmetic
 expressions. Using the free construction, we can easily conceive a
 suitable type for any such expression language. For example, the type
 for arithmetic expressions with |+,-,*| and variables is the free
-|Ring| with the set of variables as generator set. Unfortunately, for
-the free ring, accounting for the laws is no longer as simple as
-before. For this reason, we use datatypes which simply
-ignore them.
+|Ring| with the set of variables as generator set.
 
-%
-\begin{spec}
+Let us consider again our deep-embedding for expressions of one
+variable \cref{sec:FunExp}. According to our analysis, it should be a
+free structure, and because we have only one variable, we can take the
+generator set (|G|) to be the unit type.
+
+\begin{code}
+instance Generate FunExp where
+  generate () = Id
+
 instance Additive FunExp where
   (+) = (:+:)
   -- ...
@@ -963,60 +967,54 @@ instance Additive FunExp where
 instance Multiplicative FunExp where
   (*) = (:*:)
   -- ...
-
-instance Fractional FunExp where
-  -- Exercise: fill in
-
-instance Floating FunExp where
-  exp          =  Exp
-  -- Exercise: fill in
-\end{spec}
+\end{code}
 %
 and so on.
-%
+
 
 \begin{exercise}
 Complete the type instances for |FunExp|.
+
+Remark: to translate the |Const :: REAL -> FunExp| constructor we need
+a way to map any |REAL| to the above structures.  We know how to do
+that for integers, (|fromInteger|). For this exercise you can restrict
+yourself to floating point representations, and use |MulGroup| to map
+them to fractions.
 \end{exercise}
+
+We can then check that the evaluator is compositional.
 For instance, we have
 %
 \begin{spec}
 eval (e1 :*: e2)  =  eval e1 * eval e2
 eval (Exp e)      =  exp (eval e)
 \end{spec}
-%
+etc.
 
-Earlier\jp{where?}, we saw that |eval| is compositional, while |eval'| (from \cref{sec:evalD}) is not.
+We can now also generalise the type of evaluator as follows:
+\begin{spec}
+type OneVarExp a = (Generate a, Field a)
+eval :: OneVarExp a  =>  FunExp -> a
+\end{spec}
+
+\jp{Where should this go: In \cref{sec:evalD}, we saw that |eval| is compositional, while |eval'|  is not.
 %
-Another way of phrasing that is to say that |eval| is a homomorphism,
+As we saw, another way of phrasing that  is to say that |eval| is a homomorphism,
 while |eval'| is not.
 %
 
 These properties do not hold for |eval'|, but do hold for |evalD|.
+}
 
-The numerical classes in Haskell do not fully do justice to the
-structure of expressions.\jp{Here you are talking about the language of functions of one variable, but this is very hard to infer from the context.} For example, they do not contain an identity
-operation, which is needed to translate |Id|, nor an embedding of
-doubles, etc.
-%
-If they did, then we could have evaluated expressions more abstractly:
-%
-\jp{Probably this is saying that FunExp is the free field, or something like that?}
-\begin{spec}
-eval :: GoodClass a  =>  FunExp -> a
-\end{spec}
-%
-where |GoodClass| gives exactly the structure needed for the
-translation.
-%
 With this class in place we can define generic expressions using smart
 constructors just like in the case of |IntExp| above.
 %
 For example, we could define
 %
 \begin{code}
-twoexp :: GoodClass a => a
-twoexp = mulF (constF 2) (expF idF)
+varX = generate ()
+twoexp :: OneVarExp a => a
+twoexp = fromInteger 2 * (exp varx)
 \end{code}
 %
 and instantiate it to either syntax or semantics:
@@ -1029,53 +1027,21 @@ testFu :: Func
 testFu = twoexp
 \end{code}
 
-\begin{exercise}
-Define the class |GoodClass| and instances for |FunExp| and
-|Func = REAL -> REAL| to make the example work.
-\end{exercise}
-%
-Find another instance of |GoodClass|.
-\jp{I am lost here. (Perhaps we can use  |Ring t =>| here?) The only new operations appears to be |idF|. (Check if |expF| is useful.)}
-%
+Provided a suitable instance for |Generate Func|:
+
 \begin{code}
-class GoodClass t where
-  constF :: REAL -> t
-  addF :: t -> t -> t
-  mulF :: t -> t -> t
-  expF :: t -> t
-  idF  :: t
-  -- ... Exercise: continue to mimic the |FunExp| datatype as a class
-
-newtype FD a = FD (a -> a, a -> a)
-
-instance Ring a => GoodClass (FD a) where
-  addF = evalDApp
-  mulF = evalDMul
-  expF = evalDExp
-  -- ... Exercise: fill in the rest
-
-evalDApp = error "Exercise"
-evalDMul = error "Exercise"
-evalDExp = error "Exercise"
-
-instance GoodClass FunExp where
-  addF = (:+:)
-  -- ...
-
-instance GoodClass (REAL->REAL) where
-  addF = (+)
-  -- ...
+instance Generate (a -> x) where
+  generate () = id
 \end{code}
-%
-We can always define a homomorphism from |FunExp| to \emph{any}
-instance of |GoodClass|, in an essentially unique way.
-%
-In the language of category theory, the datatype |FunExp| is an
-initial algebra\jp{Probably should be a footnote. Or should we define an explain this term properly and use it below?}.
 
-Let us explore this in the simpler context of |Monoid|.
-%
+Find another instance of |OneVarExp|.
+\jp{What is the intent?}
 
+As before, we can always define a homomorphism from |FunExp| to \emph{any}
+instance of |OneVarExp|, in a unique way, using the fold pattern.
+%
+This is because the datatype |FunExp| is an
+initial |OneVarExp|.
 
 \subsection{\extraMaterial A generic Free construction}
 %include FreeMonoid.lhs

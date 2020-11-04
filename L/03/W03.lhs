@@ -1319,7 +1319,8 @@ arguments --- provided that they match in number and types.
 
 
 \section{Computing derivatives}
-\jp{What is the purpose?
+\label{sec:computingDerivatives}
+\jp{What is the purpose of the section? 
 
   Elements of answer:
   - we have laws at the semantic level (coming from the definition of limit), and we want to derive laws at a syntactic level
@@ -1335,10 +1336,10 @@ arguments --- provided that they match in number and types.
   Perhaps it finds a better home in
   \cref{sec:deriv}? But it seems that compositionality is the
   question, so it's for \cref{sec:CompSem}.
-
-
 }
-\label{sec:computingDerivatives}
+\jp{Is it she right place?
+   Most certainly not: we have 7 occurences of "compositional" in what follows, so it seems that compositionality is a pre-requisite.
+  }
 
 An important part of calculus is the collection of laws, or rules, for
 computing derivatives.
