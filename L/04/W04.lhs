@@ -101,7 +101,7 @@ formulated as the following equations:
 \end{example}
 
 \begin{example}
-  Examples of monoids include numbers with additions, |(REAL, 0, (+))|,
+  Examples of monoids include numbers with addition, |(REAL, 0, (+))|,
   positive numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
   with composition |(a->a,id, (.))| .
   %
@@ -118,7 +118,13 @@ To make this a bit more concrete, here are two examples of monoids in
 Haskell: the additive monoid |ANat| and the multiplicative monoid
 |MNat|.
 %
+%if False
 \begin{code}
+data Natural = Zero | Succ Natual
+\end{code}
+%endif
+\begin{code}
+  
 newtype ANat      =  A Natural          deriving (Show, Eq)
 
 instance Monoid ANat where
@@ -131,7 +137,7 @@ instance Monoid MNat where
   unit            =  M 1
   op (M m) (M n)  =  M (m * n)
 \end{code}
-Indeed, in Haskell there can ever be at most one instance of a given
+In Haskell there can ever be at most one instance of a given
 class for a given type, so we cannot define two |instance Monoid
 Natural|: we must make a |newtype| whose role is to indicate which of
 the two possible monoids applies in a given context.
@@ -186,27 +192,27 @@ define |Ring| simply as the conjunction of |AddGroup| and
 \begin{spec}
 type Ring a = (AddGroup a, Multiplicative a)
 \end{spec}
+\end{example}
 
 With that, we have completed the structural motivation of our
-replacement for the |Num| class!
+replacement for the |Num| class! \jp{Show some instances?}
 
 \section{Homomorphisms}
-The Wikipedia definition of homomorphism states ``A homomorphism is a
-structure-preserving map between two algebraic structures of the same
-type''. 
+The Wikipedia definition of homomorphism states that ``A homomorphism
+is a structure-preserving map between two algebraic structures of the
+same type''.
 
 \subsection{(Homo)morphism on one operation}
 
-To capture this
-idea, in a first instance, we can define a
+As a stepping stone to capture this idea, we can define a
 ternary predicate |H2|. The first argument |h|, is the map. The second
-(|Op|) and third (|op|) arguments represent the algebraic structures.
+(|Op|) and third (|op|) arguments correspond to the algebraic structures.
 %
 \begin{spec}
   H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
 \end{spec}
 %
-If this holds, we say that |h : A -> B| is a homomorphism from |Op :
+If |H2(h,Op,op)| holds, we say that |h : A -> B| is a homomorphism from |Op :
 A->A->A| to |op : B->B->B|.
 %
 Or that |h| is a homomorphism from |Op| to |op|.
@@ -265,7 +271,7 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 
 \subsection{Homomorphism on structures}
 \label{sec:AlgHomo}
-But so far our definition of homomorphism takes the rather
+So far our definition of homomorphism takes the rather
 limited view that a single operation is transformed. Usually,
 homomorphisms map a whole \emph{structure}.
 
@@ -278,8 +284,13 @@ every operation |fA| of |A| and corresponding |fB| of |B| (of arity,
 say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
 \end{quote}
 
-\subsubsection{Example: Log-space}
+In our Haskell interpretation, the above would mean that we have
+|H2(h,op,op)| for every function |op| in a given class |C|. More
+precisely the first occurence of |op| comes from the |C A| instance
+and the second one from |C B|.
 
+
+\begin{example}
 The general monoid homomorphism conditions for |h : A -> B| are:
 %
 \begin{spec}
@@ -291,16 +302,26 @@ Note that both |unit| and |op| have different types on the left and right hand s
 %
 On the left they belong to the monoid |(A, unitA, opA)| and on the
 right the belong to |(B, unitB, opB)|.
+\end{example}
 
-\jp{the log/exp example from the start}
+\begin{example}
+  Hence, the function |log| is a monoid homomorphism between (|RPos|,1,*)
+  and (|Real|,0,+).
+  \begin{spec}
+    log  :  RPos  ->  REAL
+    log  1        =   0                 -- \(\log 1 = 0\)
+    log  (a * b)  =   log a  +  log b   -- \(\log(ab) = \log a + \log b \)
+  \end{spec}
+\end{example}
 
-\jp{remind ANat and MNat here }
+Sometimes, the homomorphism conditions are very restrictive: they
+strongly constrain what the map can be.
 
-\begin{exercise}
-Characterise the homomorphisms from |ANat| to |MNat|.
-\end{exercise}
-%
-\begin{solution}
+
+\begin{example}
+  As an example, we can characterise the homomorphisms from |ANat| to
+  |MNat|.
+
 Let |h : ANat -> MNat| be a homomorphism.
 %
 Then it must satisfy the following conditions:
@@ -326,22 +347,17 @@ Every choice of |h 1| ``induces a homomorphism''.
 %
 This means that the value of the function |h|, for any natural number,
 is fully determined by its value for |1|.
-\end{solution}
 
-
-
-Our examples |exp| and |log| are homomorphisms between monoids (either the additive monoid or the mutiplicative monoid). 
-\jp{come back to the definition of homomorphism here and connect to the example.}
-
-\jp{And, ... Summing up:
-  
-  H(h,C) = for every operation op in the class C, H2(h,op,op)
-      Morphism:
-      H(h,C1,C2)
-    }
+In other words, we have that |h| is of the form 
+\begin{spec}
+h n = a ^ n
+\end{spec}
+for a given number |a|. So, the only possible homomorphisms between
+the additive monoid and the multiplicative monoid are exponential
+functions.
+\end{example}
 
 \subsubsection{Other homomorphisms}
-
 
 
 \begin{exercise}
@@ -375,7 +391,6 @@ Show that |apply c| is a homomorphism for all |c|, where
 
 
 As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integer| is the sum of |n| ones or the negation of such a sum. Thus we can map every |Integer| to an element of a |Ring| (the multiplicative structure is used to provide |one|):
-\end{example}
 
 \begin{exercise}
   \label{ex:fromInteger}
@@ -517,11 +532,12 @@ to |Bool|, regardless of the choice of the operator corresponding to addition.
 \label{sec:compositionality-and-homomorphisms}
 In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
 and an |eval| function of type |Syn -> Sem|), we call the semantics
-\emph{compositional} if we can implement |eval| as a fold
+\emph{compositional} if we can implement |eval| as a fold.
 %
 Informally a ``fold'' is a recursive function which replaces each
-abstract syntax constructor |Ci| of |Syn| with its semantic interpretation |ci| --- but without doing any other change in the structure. In particular,
-moving around constructors is forbidden. 
+abstract syntax constructor |Ci| of |Syn| with its semantic
+interpretation |ci| --- but without doing any other change in the
+structure. In particular, moving around constructors is forbidden.
 %
 For example, in our datatype |E|, a compositional semantics means that |Add|
 maps to |add|, |Mul {-"\mapsto"-} mul|, and |Con {-"\mapsto"-} con|
@@ -584,17 +600,6 @@ idE = foldE Add Mul Con
 \end{code}
 
 
-\jp{
-  State that every fold is a (homo-?) morphism:
-  Consider:
-
-  fold phi (Op x1 ... xn) = phi(Op) (fold phi x1) ... (fold phi xn)
-
-  Is every homomorphism a fold?
-
-  Yes if the input structure is a deep-embedding.
-}.
-
 Finally, it is useful to capture the semantic functions (the
 parameters to the fold) in a type class:
 %
@@ -648,20 +653,6 @@ check = and  [  testI  ==  7
              ]
 \end{code}
 %
-We can also see |String| and |pretty| as an instance:
-%
-\begin{code}
-instance IntExp String where
-  add = prettyAdd
-  mul = prettyMul
-  con = prettyCon
-
-pretty' :: E -> String
-pretty' = foldIE
-
-testP :: String
-testP = seven
-\end{code}
 
 To sum up, by defining a class |IntExp| (and some instances) we can
 use the metods (|add|, |mul|, |con|) of the class as ``smart
@@ -672,9 +663,18 @@ these smart constructors can be instantiated to different types,
 ranging from the syntax tree type |E| to different semantic
 interpretations (like |Integer|, and |String|).
 
-      - What is a fold?
-      - Restrictive version of algebra to Fa -> a (or a bunch thereof ...)
-      - Relation between folds and homomorphisms
+Additionally |IntExp| is the underlying algebraic structure of the
+fold. The function |foldIE| is a homomorphism which maps the |IntExp
+E| instance to another (arbitrary) instance |IntExp e|.  This is what
+a fold is in general. Given a structure |C|, a homomorphism from a
+datatype realisation of |C| as a data-type.  We can note at this point
+that a class |C a| can be realised as a datatype only if all the
+functions of |class C a| return |a|. (Otherwise the constructors could
+create another type; and so they are not constructors any more.) This
+condition was satisfied in the case of our |class IntExp t|: all
+function signatures end with |... -> t|.  When this condition is
+satisfied, we say that the class is an \emph{algebra} --- not just any
+algebraic structure.\footnote{Indeed, this terminology can be confusing.}
 
 \subsection{Even folds can be wrong!}
 %
@@ -690,7 +690,7 @@ We can view |pretty| as an alternative |eval| function for a semantics
 using |String| as the semantic domain instead of the more natural
 |Integer|.
 %
-We can implement |pretty| in the usual way as a ``fold''\jp{Fold is defined only informally below} over the
+We can implement |pretty| in the usual way as a fold over the
 syntax tree using one ``semantic constructor'' for each syntactic
 constructor:
 %
@@ -703,10 +703,23 @@ prettyAdd :: String -> String -> String
 prettyMul :: String -> String -> String
 prettyCon :: Integer -> String
 \end{code}
+
+We can also see |String| and |pretty| as an instance of the |IntExp| class:
 %
-With this definition, note that |pretty : E -> String| is a
-homomorphism (from |Add| to |prettyAdd| and from |Mul| to |prettyMul|)
-regardless of what their definitions are.
+\begin{code}
+instance IntExp String where
+  add = prettyAdd
+  mul = prettyMul
+  con = prettyCon
+
+pretty' :: E -> String
+pretty' = foldIE
+
+testP :: String
+testP = seven
+\end{code}
+
+%
 
 Now, if we try to implement the semantic constructors without thinking
 too much we would get the following:
@@ -730,8 +743,8 @@ the same string.
 This means that |pretty| is doing something wrong: the inverse,
 |parse|, is ambiguous.
 %
-There are many ways to fix this, some more ``pretty'' than others, but
-the main problem is that some information is lost in the translation:
+There are many ways to fix this, some more ``pretty'' than others. One way to
+characterise the issue is that some information is lost in the translation:
 |pretty| is not invertible.
 
 Thus, we can see that a function can be a homomorphism and still be
@@ -791,6 +804,8 @@ In our case a three-element |Precedence| would be enough.
 
 
 \section{Initial and Free structures}
+
+\subsection{Initial Monoid}
 
 \subsection{Initial Ring}
 
