@@ -1,4 +1,3 @@
-\jp{Integrate this with the rest more seamlessly.}
 
 %if False
 \begin{code}

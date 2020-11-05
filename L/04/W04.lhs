@@ -4,6 +4,7 @@
 \label{sec:CompSem}
 
 \begin{code}
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ConstraintKinds, RebindableSyntax #-}
 module DSLsofMath.W04 where
@@ -169,8 +170,8 @@ This is what we have done in \cref{sec:numeric-classes}.
 
 \begin{example}{Groups and rings}
   Another important structure are groups, which are monoids augmented with an
-  inverse. To complete our mathematically-grounded |Num| replacement,
-  we define the additive group as follows.
+  inverse. To continue our mathematically-grounded |Num| replacement,
+  we have also defined the additive group as follows:
 
 \begin{spec}
 class Additive a => AddGroup a where
@@ -364,9 +365,9 @@ In other words, we now that every |h| (homomorphism from |ANat| to
 \begin{spec}
 h n = a ^ n
 \end{spec}
-for a given natual number |a|. So, the only possible homomorphisms
-between the additive monoid and the multiplicative monoid are
-exponential functions.
+for a given natual number |a|. So, the set of homomorphisms
+between the additive monoid and the multiplicative monoid is
+the set exponential functions, one for every base |a|.
 \end{example}
 
 \begin{exercise}
@@ -408,6 +409,7 @@ it can either be zero, positive or negative.
     here?}
 \end{exercise}
 %
+\begin{solution}
 The distribution law\jp{This is the first time that this name is used. Also, isn't it simply the homomorphism law?}
 can be shown as follows:
 %
@@ -422,6 +424,7 @@ can be shown as follows:
 %
 We now have a homomorphism from values to functions, and you may
 wonder if there is a homomorphism in the other direction.
+\end{solution}
 %
 The answer is ``Yes, many''.
 %
@@ -431,13 +434,13 @@ Show that |apply c| is a homomorphism for all |c|, where
 \end{exercise}
 
 \begin{exercise}
-  Continue extend the exponential-logarithm morphism to map |AddGroup| and |MulGroup|.
+  Extend the exponential-logarithm morphism to relate |AddGroup| and |MulGroup|.
 \end{exercise}
 
 \section{Compositional semantics}
 
 \subsection{Compositional functions are homomorphisms}
-\cref{sec:compositionality-and-homomorphisms}
+\label{sec:compositionality-and-homomorphisms}
 Consider a datatype of very simple integer expressions:
 %
 \begin{code}
@@ -446,7 +449,6 @@ e1, e2 :: E                             -- | 1 + 2 * 3 |
 e1 = Add (Con 1) (Mul (Con 2) (Con 3))  -- | 1 +(2 * 3)|
 e2 = Mul (Add (Con 1) (Con 2)) (Con 3)  -- |(1 + 2)* 3 |
 \end{code}
-%
 |e1 = |
 \begin{tikzpicture}[AbsSyn]
 \begin{scope}[yshift=2ex]
@@ -627,8 +629,7 @@ evalE2 = foldE (+) (*) fromInteger
 \end{code}
 
 Another thing worth noting is that if we replace each abstract syntax
-constructor with itself we get the identity function (a ``deep
-copy''):
+constructor with itself we get an identity function, sometimes known as a ``deep copy'':
 %
 \begin{code}
 idE :: E -> E
@@ -669,41 +670,12 @@ evalE' :: E -> Integer
 evalE' = foldIE
 \end{code}
 
-To get a more concrete feeling for this, we define some concrete
-values, not just functions:
-%
-\begin{code}
-seven :: IntExp a => a
-seven = add (con 3) (con 4)
-
-testI :: Integer
-testI = seven
-
-testE :: E
-testE = seven
-
-check :: Bool
-check = and  [  testI  ==  7
-             ,  testE  ==  Add (Con 3) (Con 4)
-             ,  testP  ==  "3+4"
-             ]
-\end{code}
-%
-
-To sum up, by defining a class |IntExp| (and some instances) we can
-use the metods (|add|, |mul|, |con|) of the class as ``smart
-constructors''\jp{what is that?} which adapt to the context.
-%
-An overloaded expression, like |seven :: IntExp a => a|, which only uses
-these smart constructors can be instantiated to different types,
-ranging from the syntax tree type |E| to different semantic
-interpretations (like |Integer|, |E|, etc.).
 
 Additionally |IntExp| is the underlying algebraic structure of the
 fold. The function |foldIE| is a homomorphism which maps the |IntExp
 E| instance to another (arbitrary) instance |IntExp e|.  This is what
-a fold is in general. Given a structure |C|, a homomorphism from a
-datatype realisation of |C| as a data-type.  We can note at this point
+a fold is in general. Given a structure |C|, a fold is a homomorphism from a
+realisation of |C| as a data-type.  We can note at this point
 that a class |C a| can be realised as a datatype only if all the
 functions of |class C a| return |a|. (Otherwise the constructors could
 create another type; and so they are not constructors any more.) This
@@ -751,8 +723,6 @@ instance IntExp String where
 pretty' :: E -> String
 pretty' = foldIE
 
-testP :: String
-testP = seven
 \end{code}
 
 %
@@ -906,6 +876,53 @@ numbers from that? No, because of distributivity. For example:
 By following this line of reasoning to its conclusion, we will find that
 the initial |Ring| is the set of integers.
 
+
+\subsection{A general initial structure}
+
+In Haskell, the type |C a => a| is a generic way to represent the
+initial algebra for a class |C|.  To get a more concrete feeling for
+this, let us return to |IntExp|, and consider a few values of type
+|IntExp a => a|.
+%
+\begin{code}
+seven :: IntExp a => a
+seven = add (con 3) (con 4)
+
+testI :: Integer
+testI = seven
+
+testE :: E
+testE = seven
+
+testP :: String
+testP = seven
+
+check :: Bool
+check = and  [  testI  ==  7
+             ,  testE  ==  Add (Con 3) (Con 4)
+             ,  testP  ==  "3+4"
+             ]
+\end{code}
+%
+
+By defining a class |IntExp| (and some instances) we can
+use the methods (|add|, |mul|, |con|) of the class as ``smart
+constructors''\jp{what is that?} which adapt to the context.
+%
+An overloaded expression, like |seven :: IntExp a => a|, which only
+uses these smart constructors can be instantiated to different types,
+ranging from the syntax tree type |E| to any possible semantic
+interpretations (like |Integer|, |String|, etc.).  In general, for any
+given value |x| of type |IntExp a => a|, all the variants of |x|
+instanciated at different types are guaranteed to be related by
+homomorphisms, because one simply replaces |add|, |mul|, |con| by
+valid instances.
+
+The same kind of reasoning justifies the overloading of Haskell
+integer literals. They can be given the type |Ring a => a|, and doing
+in a mathematically meaningful way, because |Ring a => a| is the
+initial algebra for |Ring|.
+
 \subsection{Free Structures}
 
 Another useful kind of are free structures. They are similar to
@@ -918,37 +935,41 @@ class Generate a where
   generate :: G -> a
 \end{code}
 
-(Alternatively, we could parameterize everything over an abstract
-generator set |g|.)
-
+(We could parameterize the class  over an abstract generator set |g|,
+but will refain from it to avoid needless complications.)
 
 \subsubsection{Free Monoid}
 
-As an example, consider the free monoid. Our algebra has:
-
+As an example, consider the free monoid. Our algebra has the following
+signature:
 \begin{spec}
 generate :: G -> a
 op :: a -> a -> a
 unit :: a -> a -> a
 \end{spec}
 
-We could define the type:
+As a first version, we can convert each function to a constructor and
+obtain the type:
 \begin{code}
-data FreeMonoid    =  Unit  |  Op FreeMonoid FreeMonoid  |  Generator G
+data FreeMonoid g   =  Unit  |  Op (FreeMonoid g) (FreeMonoid g)  |  Generator g deriving Show
+instance Monoid (FreeMonoid g) where
+  unit = Unit
+  op = Op
 \end{code}
 
-Let us consider a fold for |FreeMonoid|. We can write it as
+Let us consider a fold for the above |FreeMonoid|. We can write its type as follows:
 \begin{spec}
 evalM :: (Monoid a, Generate a) => (FreeMonoid -> a)
 \end{spec}
-but we can also take the |generate| method as an explicit argument:
+but we can also drop the |Generate| constraint and take the |generate|
+method as an explicit argument:
 \begin{code}
-evalM :: Monoid a => (G -> a) -> (FreeMonoid -> a)
+evalM :: Monoid a => (G -> a) -> (FreeMonoid G -> a)
 \end{code}
 This form is similar to the evaluators of expressions with variables
 of type |G|, which we have seen for example in \cref{sec:ArithExp}.
 %
-Once given an |f :: G -> a|, the homomorphism condition forces
+Once given a function |f :: G -> a|, the homomorphism condition forces
 |evalM| to be a fold:
 %
 \begin{code}
@@ -960,30 +981,28 @@ evalM  f  (Generator x)  =  f x
 However, before being completely satisfied, we must note that the
 |FreeMonoid| representation is ignoring monoid laws.  By following the
 same kind of reasoning as before, we find that we only have in fact
-only two forms for the elements:
+only two distinct forms for the elements of the free monoid:
 
 \begin{itemize}
 \item |unit|
 \item |generate x1 `op` generate x2 `op` ... `op` generate xn|
 \end{itemize}
 Because of associativity we have no parentheses in the second form;
-and because of the unit laws we need not have unit composed with op
+and because of the unit laws we need not have |unit| composed with |op|
 either.
 
 Thus, the free monoid over a generator set |G| is a list of |G|.
 
 We seemingly also ignored the laws when defining |evalM|. Is this a problem?
-
 For example, is it possible that |e1 `Op` (e2 `Op` e3)| and |(e1 `Op`
-e2) `Op` e3| which are by law equal, map to different values?  By
+e2) `Op` e3| which are by monoid laws equal, map to different values?  By
 definition of |evalM|, the condition reduces to checking |evalM f e1
 `op` (evalM f e2 `op` evalM f e3) == (evalM f e1 `op` evalM f e2) `op`
 evalM f e3|. But then, this turns out to be satisfied if |op| is
 associative. In sum, |evalM| will be correct if the target |Monoid|
 instance satisfies the laws. This is true in general: folds are always
-homomorphisms even if the datatype representation that it works on
-ignores laws.
-
+homomorphisms even if the datatype representation that they work on
+ignore laws.
 
 \subsubsection{Functions of one variable as algebras}
 
@@ -1025,8 +1044,8 @@ Complete the instances for |FunExp| (possibly extending the datatype).
 Remark: to translate the |Const :: REAL -> FunExp| constructor we need
 a way to map any |REAL| to the above structures.  We know how to do
 that for integers, (|fromInteger|). For this exercise you can restrict
-yourself to floating point representations, and use |MulGroup| to map
-them to fractions.
+yourself to floating point representation of constants, and use
+|recip| (from |MulGroup|) to map them to fractions.
 \end{exercise}
 
 We can then check that the evaluator is compositional.
@@ -1044,11 +1063,10 @@ type OneVarExp a = (Generate a, Transcendental a)
 eval :: OneVarExp a  =>  FunExp -> a
 \end{code}
 
-
 With this class in place we can define generic expressions using smart
 constructors just like in the case of |IntExp| above.
 %
-For example, we could define
+For example, we can define
 %
 \begin{code}
 varX :: OneVarExp a => a
@@ -1057,7 +1075,7 @@ twoexp :: OneVarExp a => a
 twoexp = 2 * exp varX -- recall the implicit |fromInteger|
 \end{code}
 %
-and instantiate it to either syntax or semantics:
+and instantiate |twoexp| to either syntax or semantics:
 %
 \begin{code}
 testFE :: FunExp
@@ -1066,9 +1084,7 @@ testFE = twoexp
 testFu :: Func
 testFu = twoexp
 \end{code}
-
-Provided a suitable instance for |Generate Func|:
-
+provided a suitable instance for |Generate Func|:
 \begin{code}
 instance Generate Func where
   generate () = id
@@ -1084,7 +1100,79 @@ instance of |OneVarExp|, in a unique way, using the fold pattern.
 This is because the datatype |FunExp| is an initial |OneVarExp|.
 
 \subsection{\extraMaterial A generic Free construction}
-%include FreeMonoid.lhs
+
+We can use the same trick as for initial algebras to construct free
+algebras: |(C a, Generate a) => a| is the free |C|-structure. However,
+it is often more convenient to pass the embedding function explicitly
+rather than via the |Generate| class. In this case, we obtain the type:
+|C a => (g -> a) -> a| if |g| is the set of generators.
+In modern versions of Haskell, we can even parameterize over the |C| class, and write:
+\begin{code}
+newtype Free c g = Free (forall a. c a => (g -> a) -> a)
+\end{code}
+Embedding a generator is then done like so:
+\begin{code}
+embed :: g -> Free c g
+embed g = Free (\generate -> generate g)
+\end{code}
+
+Unfortunately the |Free c| type is not automatically an instance of
+|c|: we have to implement those manually. Let us see how this plays out for monoid:
+
+\begin{code}
+instance Monoid (Free Monoid g)  where
+  unit = Free (\_ -> unit)
+  Free f `op` Free g = Free (\x -> f x `op` g x)
+\end{code}
+
+We can also check the monoid laws for the free monoid. For
+example, here is the proof that the right identity law holds:
+\begin{spec}
+    a <> unit
+==  {- def. -}
+    Free f `op` Free (\_ -> unit)
+==  {- def. -}
+    Free (\x -> f x `op` unit)
+==  {- law of the underlying monoid (|m|) -}
+    Free (\x -> f x)
+==  {- law of the underlying monoid (|m|) -}
+    Free f
+==  {- def -}
+    a
+  \end{spec}
+
+\begin{exercise}
+Prove group laws for |Free AdditiveGroup|.
+\end{exercise}
+
+
+But we can also recover the whole structure which was used to build an
+element of this type, for example we could use lists (recall that they are isomorphic to free monoids):
+\begin{code}
+extract :: Free Monoid g -> [g]
+extract (Free f) = f (\g -> [g])
+\end{code}
+
+%if False
+\begin{code}
+instance Monoid [a] where
+  unit = []
+  op = (++)
+\end{code}
+%endif
+As an example, we can extract the value of the following:
+\begin{code}
+example :: Free Monoid Int
+example = embed 1 `op` embed 10 `op` unit `op` embed 11
+
+-- |>>> extract example|
+-- |[1,10,11]|
+\end{code}
+
+\begin{exercise}
+  Show that |Free Ring ()| is in bijection with |FunExp|.
+\end{exercise}
+
 
 \section{Application: Derivatives}
 

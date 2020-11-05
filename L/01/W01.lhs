@@ -27,8 +27,7 @@ the code for this lecture is placed in a module called
 module DSLsofMath.W01 where
 import DSLsofMath.CSem (ComplexSem(CS), (.+.), (.*.))
 import Numeric.Natural (Natural)
-import Data.Ratio (Rational, Ratio, (%))
-import Data.List (find)
+import Data.Ratio (Ratio, (%))
 \end{code}
 
 These lines constitute the module header which usually starts a Haskell
