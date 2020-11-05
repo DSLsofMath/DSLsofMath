@@ -959,7 +959,7 @@ instance Monoid (FreeMonoid g) where
 
 Let us consider a fold for the above |FreeMonoid|. We can write its type as follows:
 \begin{spec}
-evalM :: (Monoid a, Generate a) => (FreeMonoid -> a)
+evalM :: (Monoid a, Generate a) => (FreeMonoid G -> a)
 \end{spec}
 but we can also drop the |Generate| constraint and take the |generate|
 method as an explicit argument:
@@ -1128,17 +1128,15 @@ instance Monoid (Free Monoid g)  where
 We can also check the monoid laws for the free monoid. For
 example, here is the proof that the right identity law holds:
 \begin{spec}
-    a <> unit
+    Free f `op` unit
 ==  {- def. -}
     Free f `op` Free (\_ -> unit)
 ==  {- def. -}
     Free (\x -> f x `op` unit)
-==  {- law of the underlying monoid (|m|) -}
+==  {- law of the underlying monoid -}
     Free (\x -> f x)
-==  {- law of the underlying monoid (|m|) -}
+==  {- eta-reduction -}
     Free f
-==  {- def -}
-    a
   \end{spec}
 
 \begin{exercise}
