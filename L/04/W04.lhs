@@ -114,6 +114,8 @@ formulated as the following equations:
   Define the above monoids and check that the laws are satisfied.
 \end{exercise}
 
+
+\begin{example}
 To make this a bit more concrete, here are two examples of monoids in
 Haskell: the additive monoid |ANat| and the multiplicative monoid
 |MNat|.
@@ -123,6 +125,7 @@ Haskell: the additive monoid |ANat| and the multiplicative monoid
 data Natural = Zero | Succ Natual
 \end{code}
 %endif
+\label{sec:anat-mnat}
 \begin{code}
   
 newtype ANat      =  A Natural          deriving (Show, Eq)
@@ -137,10 +140,12 @@ instance Monoid MNat where
   unit            =  M 1
   op (M m) (M n)  =  M (m * n)
 \end{code}
-In Haskell there can ever be at most one instance of a given
-class for a given type, so we cannot define two |instance Monoid
-Natural|: we must make a |newtype| whose role is to indicate which of
-the two possible monoids applies in a given context.
+\end{example}
+
+In Haskell there can ever be at most one instance of a given class for
+a given type, so we cannot define two |instance Monoid Natural|: we
+must make a |newtype| whose role is to indicate which of the two
+possible monoids (additive or applicative) applies in a given context.
 %
 But, in mathematical texts the constructors |M| and |A| are usually
 omitted, and instead the names of the operations suggest which of the
@@ -308,21 +313,22 @@ right the belong to |(B, unitB, opB)|.
   Hence, the function |log| is a monoid homomorphism between (|RPos|,1,*)
   and (|Real|,0,+).
   \begin{spec}
-    log  :  RPos  ->  REAL
-    log  1        =   0                 -- \(\log 1 = 0\)
-    log  (a * b)  =   log a  +  log b   -- \(\log(ab) = \log a + \log b \)
+  exp  :  REAL  ->  RPos
+  exp  0        =   1                 --  \(e^0 = 1\)
+  exp  (a + b)  =   exp a  *  exp b   --  \(e^{a+b} = e^a e^b\)
   \end{spec}
 \end{example}
 
-Sometimes, the homomorphism conditions are very restrictive: they
-strongly constrain what the map can be.
-
+In the above example, we have simply checked the homomorphism
+conditions for the exponential function. But we can try to go the
+other way around: knowing that a function |h| is homomorphism, what is the
+kind of function that |h| can be?
 
 \begin{example}
-  As an example, we can characterise the homomorphisms from |ANat| to
-  |MNat|.
+As an example, let us can characterise the homomorphisms from |ANat| to
+|MNat| (from \cref{sec:anat-mnat}).
 
-Let |h : ANat -> MNat| be a homomorphism.
+Let |h : ANat -> MNat| be a monoid homomorphism.
 %
 Then it must satisfy the following conditions:
 %
@@ -334,27 +340,30 @@ h (x + y)  = h x * h y  -- for all |x| and |y|
 For example |h (x + x) = h x * h x = (h x) ^ 2| which for |x = 1|
 means that |h 2 = h (1 + 1) = (h 1) ^ 2|.
 
-More generally, every |n| in |ANat| is equal to the sum of |n| ones:
-|1 + 1 + ... + 1|.\jp{Here you have to talk about associativity and unit laws, otherwise it's too much to assume.}
+More generally, every natural number can is equal to the sum of |n| ones:
+|1 + 1 + ... + 1|.
 %
 Therefore
 %
 \begin{spec}
-h n = (h 1) ^ n
+h n   =  h (1 + ... + 1)
+      =  h 1 *  ... * h 1
+      =  (h 1) ^ n
 \end{spec}
 %
-Every choice of |h 1| ``induces a homomorphism''.
+That is, every choice of |h 1| induces a homomorphism from |ANat| to |MNat|.
 %
 This means that the value of the function |h|, for any natural number,
 is fully determined by its value for |1|.
 
-In other words, we have that |h| is of the form 
+In other words, we now that every |h| (homomorphism from |ANat| to
+|MNat|) is of the form
 \begin{spec}
 h n = a ^ n
 \end{spec}
-for a given number |a|. So, the only possible homomorphisms between
-the additive monoid and the multiplicative monoid are exponential
-functions.
+for a given natual number |a|. So, the only possible homomorphisms
+between the additive monoid and the multiplicative monoid are
+exponential functions.
 \end{example}
 
 \subsubsection{Other homomorphisms}
@@ -447,7 +456,11 @@ But to practice the definition of homomorphism we will here check if
 |even| or |isPrime| is a homomorphism from |E| to |Bool|.
 
 Let's try to define |even : E ->
-Bool| with the usual induction pattern (``wishful thinking''):
+Bool| with the usual induction pattern
+%if lectureNotes
+(``wishful thinking'')
+%endif
+:
 %
 \begin{code}
 even (Add x y)  =  evenAdd (even x) (even y)
@@ -813,7 +826,9 @@ other direction: start with an algebra and derive a datatype which
 capture only the structure of the algebra. This is representation is
 called the initial algebra.
 
-\subsubsection{Initial Monoid}
+\subsubsection{The Initial Monoid}
+
+\jp{todo: flow}
 
 - We know that we have at least one object: the |unit|. 
 - We can construct more objects using |op|:
@@ -821,28 +836,28 @@ called the initial algebra.
 
 - So a draft for the initial monoid could be:
 
-\begin{code}
+\begin{spec}
 data M where
   Unit :: M
   Op :: M -> M -> M
-\end{code}
+\end{spec}
 or:
-\begin{code}
-data M = M | Op M M
-\end{code}
+\begin{spec}
+data M = Unit | Op M M
+\end{spec}
 
 But we also have the unit laws, which in particular tell us that |unit
 `op` unit == unit|. So it seems that we're left with a single element: the unit.
 The representation of the initial monoid is then simply:
 
-\begin{code}
-data M = M
-\end{code}
+\begin{spec}
+data M = Unit
+\end{spec}
 
 As one might guess, there are not many interesting applications of the
 initial monoid.
 
-\subsubsection{Initial Ring}
+\subsubsection{The Initial Ring}
 
 \begin{spec}
 zero :: a
@@ -906,10 +921,11 @@ but we can also take the |generate| method as an explicit argument:
 \begin{code}
 evalM :: Monoid a => (G -> a) -> (FreeMonoid -> a)
 \end{code}
-Note that if this is similar to the evaluators of expressions with variables of type |G|.
+This form is similar to the evaluators of expressions with variables
+of type |G|, which we have seen for example in \cref{sec:ArithExp}.
 %
-Once given an |f :: G -> a|, the homomorphism condition nearly fixes
-|evalM|:
+Once given an |f :: G -> a|, the homomorphism condition forces
+|evalM| to be a fold:
 %
 \begin{code}
 evalM  f  Unit           =  unit
@@ -917,18 +933,20 @@ evalM  f  (Op e1 e2)     =  op (evalM f e1) (evalM f e2)
 evalM  f  (Generator x)  =  f x
 \end{code}
 
-But, the |FreeMonoid| representation is ignoring monoid laws.  By
-following the same kind of reasoning as before, we find that we only
-have in fact only two forms for the elements:
+However, before being completely satisfied, we must note that the
+|FreeMonoid| representation is ignoring monoid laws.  By following the
+same kind of reasoning as before, we find that we only have in fact
+only two forms for the elements:
 
-- unit
-- generate x1 `op` generate x2 `op` ... `op` generate xn
-
+\begin{itemize}
+\item |unit|
+\item |generate x1 `op` generate x2 `op` ... `op` generate xn|
+\end{itemize}
 Because of associativity we have no parentheses in the second form;
 and because of the unit laws we need not have unit composed with op
 either.
 
-Thus, the free monoid over a generator set G is a list of G.
+Thus, the free monoid over a generator set |G| is a list of |G|.
 
 We seemingly also ignored the laws when defining |evalM|. Is this a problem?
 
@@ -943,7 +961,7 @@ homomorphisms even if the datatype representation that it works on
 ignores laws.
 
 
-\subsubsection{Functions of one variable, reprise.}
+\subsubsection{Functions of one variable as algebras}
 
 Earlier we have used (many variants of) data types for arithmetic
 expressions. Using the free construction, we can easily conceive a
@@ -997,14 +1015,6 @@ type OneVarExp a = (Generate a, Field a)
 eval :: OneVarExp a  =>  FunExp -> a
 \end{spec}
 
-\jp{Where should this go: In \cref{sec:evalD}, we saw that |eval| is compositional, while |eval'|  is not.
-%
-As we saw, another way of phrasing that  is to say that |eval| is a homomorphism,
-while |eval'| is not.
-%
-
-These properties do not hold for |eval'|, but do hold for |evalD|.
-}
 
 With this class in place we can define generic expressions using smart
 constructors just like in the case of |IntExp| above.
@@ -1036,13 +1046,12 @@ instance Generate (a -> x) where
 
 \begin{exercise}
 Find another instance of |OneVarExp|.
-\jp{What is the intent?}
+\jp{What is the intent of the exercise?}
 \end{exercise}
 As before, we can always define a homomorphism from |FunExp| to \emph{any}
 instance of |OneVarExp|, in a unique way, using the fold pattern.
 %
-This is because the datatype |FunExp| is an
-initial |OneVarExp|.
+This is because the datatype |FunExp| is an initial |OneVarExp|.
 
 \subsection{\extraMaterial A generic Free construction}
 %include FreeMonoid.lhs
@@ -1205,9 +1214,9 @@ We will see this distinction again in
 In the coming chapters there will be quite a bit of material on
 infinite structures.
 %
-These are often captured not by algebras, but by co-algebras.\jp{unfortunately the definition that we gave for algebras seem to fit co-algebras just as well?}
+These are often captured not by algebras, but by co-algebras.
 %
-We will not build up a general theory of co-algebras in this notes,
+We will not build up a general theory of co-algebras in this \course{},
 but because we will be using infinite streams in the upcoming chapters
 we will expose right here their co-algebraic structure.
 
@@ -1216,6 +1225,18 @@ we will expose right here their co-algebraic structure.
 
 
 \section{????}
+\jp{Some lost text:
+
+
+%
+As we saw, another way of phrasing that  is to say that |eval| is a homomorphism,
+while |eval'| is not.
+%
+
+These properties do not hold for |eval'|, but do hold for |evalD|.
+}
+
+
 \jp{I don't understand the point of this section}
 In \refSec{sec:FunNumInst}, we defined a |Ring| instance for
 functions with a |Ring| codomain.
