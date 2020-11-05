@@ -366,6 +366,35 @@ between the additive monoid and the multiplicative monoid are
 exponential functions.
 \end{example}
 
+\begin{exercise}
+  \label{ex:fromInteger}
+  Assume an arbitrary Ring-homomorphism |f| from |Integer| to an
+  arbitrary type |a|. Prove |f == fromInteger|, provided the
+  definition in \cref{sec:overloaded-integer-literals}.
+\end{exercise}
+
+\begin{solution}
+The homomorphism conditions include:
+
+\begin{spec}
+f zero = zero
+f (one + x) = one + (f x)
+f (negate x) = negate (f x)
+\end{spec}
+
+By substitution we get the following equations:
+
+\begin{spec}
+f zero = zero
+f x = one + (f (x - one))
+f x = negate (f (negate x))
+\end{spec}
+
+These are compatible with the behaviour of |fromInteger|, but they
+also completely fix the behaviour of |f| if |x| is an integer, because
+it can either be zero, positive or negative.
+\end{solution}
+
 \subsubsection{Other homomorphisms}
 
 
@@ -398,16 +427,6 @@ Show that |apply c| is a homomorphism for all |c|, where
 |apply x f = f x|.
 \end{exercise}
 
-
-As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integer| is the sum of |n| ones or the negation of such a sum. Thus we can map every |Integer| to an element of a |Ring| (the multiplicative structure is used to provide |one|):
-
-\begin{exercise}
-  \label{ex:fromInteger}
-  Assume an arbitrary Ring-homomorphism |f| from |Integer| to an
-  arbitrary type |a|. Prove |f == fromInteger|, provided the
-  definition in \cref{sec:overloaded-integer-literals}.
-\end{exercise}
-
 \begin{exercise}
   Continue extend the exponential-logarithm morphism to map |AddGroup| and |MulGroup|.
 \end{exercise}
@@ -415,6 +434,7 @@ As we saw that every |n| in |ANat| is equal to the sum of |n| ones, every |Integ
 \section{Compositional semantics}
 
 \subsection{Compositional functions are homomorphisms}
+\cref{sec:compositionality-and-homomorphisms}
 Consider a datatype of very simple integer expressions:
 %
 \begin{code}
@@ -540,9 +560,9 @@ Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
 to |Bool|, regardless of the choice of the operator corresponding to addition.
 
 
-\section{Characterisation of compositionality as Folds}
+\section{Folds}
 
-\label{sec:compositionality-and-homomorphisms}
+\label{sec:folds}
 In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
 and an |eval| function of type |Syn -> Sem|), we call the semantics
 \emph{compositional} if we can implement |eval| as a fold.
@@ -669,7 +689,7 @@ check = and  [  testI  ==  7
 
 To sum up, by defining a class |IntExp| (and some instances) we can
 use the metods (|add|, |mul|, |con|) of the class as ``smart
-constructors'' which adapt to the context.
+constructors''\jp{what is that?} which adapt to the context.
 %
 An overloaded expression, like |seven :: IntExp a => a|, which only uses
 these smart constructors can be instantiated to different types,
@@ -818,23 +838,21 @@ In our case a three-element |Precedence| would be enough.
 
 \section{Initial and Free Structures}
 
-\subsection{Initial Structures}
 
-Before we started with a data-type, and derived an algebraic
-structure, more precisely an algebra from it. But we can go in the
-other direction: start with an algebra and derive a datatype which
-capture only the structure of the algebra. This is representation is
-called the initial algebra.
+In \cref{sec:folds} we started with a data-type, and derived an
+algebraic structure (more precisely an algebra) from it. But we can go
+in the other direction: start with an algebra and derive a datatype
+which capture the structure of the algebra, but nothing more. This is
+representation is called the initial algebra.
 
 \subsubsection{The Initial Monoid}
 
-\jp{todo: flow}
+As a first example, consider an initial algebra for monoids (an initial monoid for short).
 
-- We know that we have at least one object: the |unit|. 
-- We can construct more objects using |op|:
+We know that we have at least one object: the |unit|. 
+But we can also construct more objects using |op|:
 |unit `op` unit|, |unit `op` (unit `op` unit)|, etc.
-
-- So a draft for the initial monoid could be:
+So a draft for the initial monoid could be:
 
 \begin{spec}
 data M where
@@ -847,17 +865,20 @@ data M = Unit | Op M M
 \end{spec}
 
 But we also have the unit laws, which in particular tell us that |unit
-`op` unit == unit|. So it seems that we're left with a single element: the unit.
-The representation of the initial monoid is then simply:
+`op` unit == unit|. So, in fact, we are left with a single element:
+the |unit|.  A representation of the initial monoid is then simply:
 
 \begin{spec}
 data M = Unit
 \end{spec}
 
 As one might guess, there are not many interesting applications of the
-initial monoid.
+initial monoid, so let us consider another structure.
 
 \subsubsection{The Initial Ring}
+
+Gathering all function in various type classes, we find that a |Ring|
+corresponds to the following algebra --- again we start by ignoring laws:
 
 \begin{spec}
 zero :: a
@@ -1361,7 +1382,6 @@ negateE _ = error "negate: not supported"
 \end{code}
 %
 %TODO: Perhaps include the comparison of the |Ring t => Ring (Bool -> t)| instance (as a special case of functions as |Ring|) and the |Ring r => Ring (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
-
 
 
 %include E4.lhs
