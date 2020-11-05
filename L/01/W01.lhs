@@ -1,6 +1,6 @@
 %{
 %format bi = "\Varid{bi}"
-\chapter[Types, Arithmetic, Complex numbers, Testing, and Sequences]{Types, Arithmetic and Complex numbers, Testing, and Sequences
+\chapter[Types, Complex numbers, \ldots]{Types, Complex numbers, Testing, and Sequences
 \footnote{This chapter is partly based on material by
 \citet{TFPIE15_DSLsofMath_IonescuJansson} which appeared at the International
 Workshop on Trends in Functional Programming in Education, 2015.}}

@@ -1,33 +1,33 @@
-\chapter{Compositional Semantics and Algebraic Structures}
+\chapter{Compositionality and Algebras}
 % Based on ../../2016/Lectures/Lecture06  and
 % based on ../../2016/Lectures/Lecture09.lhs
 \label{sec:CompSem}
 
 \begin{code}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE ConstraintKinds, RebindableSyntax #-}
 module DSLsofMath.W04 where
-import Prelude hiding (Monoid, even, Num(..))
-import DSLsofMath.FunExp
-import DSLsofMath.Algebra hiding (fromInteger)
+import Prelude hiding (Monoid, even, Num(..), exp)
+import DSLsofMath.FunExp hiding (eval)
+import DSLsofMath.Algebra
 \end{code}
 %
 
 Algebraic structures are fundamental to
 the structuralist point of view in mathematics, which emphasises relations
-between objects rather than the objects themselves, and their
+between objects rather than the objects themselves and their
 representations.
 Furthermore, each mathematical domain has its own fundamental
 structures.
 %
-Once these have been identified, one tries to push their study as far
+Once these structures have been identified, one tries to push their study as far
 as possible \emph{on their own terms}, without picking any particular
 representation (which may have richer structure than the one we want
 to study).
 %
 For example, in group theory, one starts by exploring the consequences
 of just the group structure, rather than introducing any particular
-group (like integers) which have an order structure and monotonicity.
+group (like integers) which have (among others) an order structure and monotonicity.
 
 Furthermore, mappings or (translations) between such structures
 becomes an important topic of study.
@@ -49,7 +49,7 @@ as follows:
 \end{spec}
 %
 What we recognize as the familiar laws of exponentiation and
-logarithms are actually examples of homomorphism conditions, which
+logarithms arise from homomorphism conditions, which
 relate the additive and multiplicative structures of reals and
 positive reals.
 
@@ -122,7 +122,10 @@ Haskell: the additive monoid |ANat| and the multiplicative monoid
 %
 %if False
 \begin{code}
-data Natural = Zero | Succ Natual
+data Natural = Zero | Succ Natural deriving (Show, Eq)
+instance Additive Natural
+instance AddGroup Natural
+instance Multiplicative Natural
 \end{code}
 %endif
 \label{sec:anat-mnat}
@@ -935,9 +938,9 @@ data FreeMonoid    =  Unit  |  Op FreeMonoid FreeMonoid  |  Generator G
 \end{code}
 
 Let us consider a fold for |FreeMonoid|. We can write it as
-\begin{code}
+\begin{spec}
 evalM :: (Monoid a, Generate a) => (FreeMonoid -> a)
-\end{code}
+\end{spec}
 but we can also take the |generate| method as an explicit argument:
 \begin{code}
 evalM :: Monoid a => (G -> a) -> (FreeMonoid -> a)
@@ -996,6 +999,7 @@ free structure, and because we have only one variable, we can take the
 generator set (|G|) to be the unit type.
 
 \begin{code}
+type G = ()
 instance Generate FunExp where
   generate () = Id
 
@@ -1006,6 +1010,10 @@ instance Additive FunExp where
 instance Multiplicative FunExp where
   (*) = (:*:)
   one = Const 1
+
+instance AddGroup FunExp where -- ...
+instance MulGroup FunExp where -- ...
+instance Transcendental FunExp where -- ...
 \end{code}
 %
 and so on.
@@ -1024,17 +1032,17 @@ them to fractions.
 We can then check that the evaluator is compositional.
 For instance, we have
 %
-\begin{spec}
+\begin{code}
 eval (e1 :*: e2)  =  eval e1 * eval e2
 eval (Exp e)      =  exp (eval e)
-\end{spec}
+\end{code}
 etc.
 
 We can now also generalise the type of evaluator as follows:
-\begin{spec}
-type OneVarExp a = (Generate a, Field a)
+\begin{code}
+type OneVarExp a = (Generate a, Transcendental a)
 eval :: OneVarExp a  =>  FunExp -> a
-\end{spec}
+\end{code}
 
 
 With this class in place we can define generic expressions using smart
@@ -1043,6 +1051,7 @@ constructors just like in the case of |IntExp| above.
 For example, we could define
 %
 \begin{code}
+varX :: OneVarExp a => a
 varX = generate ()
 twoexp :: OneVarExp a => a
 twoexp = 2 * exp varX -- recall the implicit |fromInteger|
@@ -1061,7 +1070,7 @@ testFu = twoexp
 Provided a suitable instance for |Generate Func|:
 
 \begin{code}
-instance Generate (a -> x) where
+instance Generate Func where
   generate () = id
 \end{code}
 
@@ -1298,9 +1307,10 @@ The elements of |FD a| are pairs of functions, so we can take
 \label{sec:applyFD}
 \begin{code}
 type Dup a = (a, a)
+type FD a = (a -> a, a -> a)
 
 applyFD ::  a ->  FD a          ->  Dup a
-applyFD     c     (FD (f, f'))  =   (f c, f' c)
+applyFD     c     ((f, f'))  =   (f c, f' c)
 \end{code}
 
 We now have the domain of the homomorphism |(FD a)| and the
