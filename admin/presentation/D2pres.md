@@ -1,16 +1,16 @@
-# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=30199) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
-(Presentation för D2, Må 2019-11-18 av Patrik Jansson.)
+(Presentation för D2, Fr 2020-11-06 av Patrik Jansson.)
 
 * Patrik Jansson: forskare och lärare inom Funktionell Programmering
     * examinator och kursansvarig för kursen DSLsofMath
     * XPA för D (2011–13), nu "inspektor" för D-sektionen
 * LP3 i D2: ett första smakprov på programmets valfrihet
     * Vi tror på er förmåga att själva kombinera kurser till en bra helhet
-    * Budskap: *Välj både DSLsofMath (i LP3) och ConcProg (i LP1)*
-* Gästföreläsare:
-    * Nicola Botta, adjungerad docent i Tyskland
-    * Cezar Ionescu, AI professor i Tyskland (tidigare Oxford)
+    * Budskap: *Välj både DSLsofMath (i LP3) och PCP (i LP1)*
+* Tidigare gästföreläsare:
+    * Nicola Botta, Docent, Potsdam Institute of Climate Impact Research
+    * Cezar Ionescu, Professor inom AI och funktionell programmering, Tyskland
 
 # Kursidé för "Matematikens domänspecifika språk"
 
@@ -44,10 +44,10 @@ på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
 # Resultatstatistik
 
 * Resultat på DSLsofMath:
-    * 2016: 28 reg., godkända: 68%
     * 2017: 43 reg., godkända: 58%
     * 2018: 39 reg., godkända: 89%
     * 2019: 59 reg., godkända: 73%
+    * 2020: 50 reg., godkända: 68%
 
 * Resultat i D3 (Transformer samt Regler)
 
@@ -140,26 +140,32 @@ Exempel:
 * excel-formler:
     * Syntax: "SUM(A1:A9)", "RIGHT(LEFT(C7,4),2)", ...
     * Semantik: [ [ Cell ] ] -> Value
-* integraler: [Behöver ritas!]
-    * (notera var variablerna binds)
+* integraler:
 
-# Matematikens domänspecifika språk (DSLsofMath)
+  \includegraphics[width=5cm]{integral_scope.png}
 
-* linjär algebra:
-    * vektorer, matriser, egenvärden, ...
-* lite kategoriteori: funktioner och typer kan generaliseras till många olika delar av matematiken
-* polynom och potensserier:
-    * Syntax/representation: ändliga och oändliga listor av koefficienter
-    * Semantik: funktioner (flera semantiker att välja på för samma syntax)
-    * [Power series – power serious!](http://www.cs.dartmouth.edu/~doug/powser.html)
-* komplexa tal (och transformer)
-    * Algebra: En "imaginär enhet" i och några lagar (i^2 = -1, etc)
-    * Geometri: rotation och skalning av punkter i planet
-    * Två helt olika språk med samma semantik: de komplexa talen.
+# Matematikens domänspecifika språk (DSLsofMath) för andra ämnen
+
+Inspirerat av den här kursen har flera studentgrupper genomfört kandidatarbetesprojekt under de senaste åren med följande resultat:
+
++ 2016: \small Programmering som undervisningsverktyg för Transformer, signaler och system - [Utvecklingen av läromaterialet TSS med DSL](https://hdl.handle.net/20.500.12380/243894)
+  Jacob Jonsson, Joakim Olsson, Filip Lindahl, Peter Ngo, Cecilia Rosvall
++ 2018: Ett komplementerande läromaterial för datastudenter som lär sig fysik - [Läromaterialet Learn You a Physics for Great
+Good!](https://hdl.handle.net/20.500.12380/256122)
+  Johan Johansson, Oskar Lundström, Erik Sjöström, Björn Werner
++ 2020: A Computer Science Approach to Teaching Control Theory - Developing Learning Material Using Domain-Specific Languages
+  Simon Hägglund, Jakob Alexander Fihlman, Elin Ohlman, Filip Nylander, Christian Josefsson, Tommy Räjert
+
+Några av er kanske också vill gå den vägen, eller ta del av deras material.
+
+# Exempel: 2018: Learn you a physics for great good ...
+Johan Johansson, Oskar Lundström, Erik Sjöström, Björn Werner
+
+![Learn you a physics](LearnYouAPhysics.png)
 
 # Sammanfattning
 
-Jag rekommenderar er att välja *både* DSLsofMath *och* ConcProg under
+Jag rekommenderar er att välja *både* DSLsofMath *och* PCP under
 er utbildning, men att börja med DSLsofMath eftersom den ger er bättre
 chanser att segla igenom D3 utan att gå på grund.
 
@@ -167,7 +173,7 @@ chanser att segla igenom D3 utan att gå på grund.
 
 Välkomna i januari önskar lärarlaget
 
-  Patrik, Solrun, Victor
+  Patrik, Sólrún, Victor
 
 
 \begin{align*}
