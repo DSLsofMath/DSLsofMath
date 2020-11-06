@@ -1262,25 +1262,28 @@ The following correspondence table summarises the discussion so far:
 The underlying theory of this table is a fascinating topic but mostly
 out of scope for this \course{}.
 %
+%if lectureNotes
 See
 \href{http://wiki.portal.chalmers.se/cse/pmwiki.php/CTFP14/CoursePlan}{Category
   Theory and Functional Programming} for a whole course around this
 (lecture notes are available on
 \href{https://github.com/DSLsofMath/ctfp2014}{github}).
-
-\subsection{Definitions and representations}
-\jp{I think that this is meant to say that the initial structure is not the only
-representent of the structure? Unclear/pedantic? }
-In \cref{sec:evalD} we defined a |Ring| structure on pairs |(REAL, REAL)| by requiring
+%endif
+\subsection{Structures and representations}
+One take home message of this chapter is that one should, as a rule,
+start with structural definitions first, and consider representation
+second.
+For example, in \cref{sec:evalD} we defined a |Ring| structure on pairs |(REAL, REAL)| by requiring
 the operations to be compatible with the interpretation |(f a, f' a)|.
 %
-For example
+This requirement yields the following definition for multiplication
+for pairs:
 %
 \begin{spec}
 (x, x') *? (y, y') = (x * y, x' * y + x * y')
 \end{spec}
 %
-There is nothing in the ``nature'' of pairs of |REAL| that forces
+But there is nothing in the ``nature'' of pairs of |REAL| that forces
 this definition upon us.
 %
 We chose it, because of the intended interpretation.
@@ -1299,7 +1302,7 @@ In particular, it is, strictly speaking, incorrect to say that a
 complex number \emph{is} a pair of real numbers.
 %
 The correct interpretation is that a complex number can be
-\emph{represented} by a pair of real numbers, provided we define the
+\emph{represented} by a pair of real numbers, provided that we define the
 operations on these pairs in a suitable way.
 
 The distinction between definition and representation is similar to
@@ -1316,13 +1319,13 @@ man's implementation).
 %
 Insisting on the difference between definition and representation can
 also appear quite pedantic (as in the discussion of complex numbers
-above).
+in \cref{sec:complexcase}).
 %
 In general though, it is a good idea to be aware of these
 distinctions, even if they are suppressed for reasons of brevity or
 style.
 %
-We will see this distinction again in
+We will encounter this distinction again in
 \cref{sec:polynotpolyfun}.
 
 \section{Beyond Algebras: Co-algebra and the Stream calculus}
@@ -1459,24 +1462,7 @@ Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|
 Hint: Something very similar can be used for Assignment 2.
 %endif
 
-\subsection{Some helper functions}
 
-\begin{code}
-instance Additive E where -- Some abuse of notation (no proper |negate|, etc.)
-  (+)  = Add
-  zero = Con zero
-
-instance Multiplicative E where
-  (*)  = Mul
-  one  = Con one
-
-instance AddGroup E where -- TODO: probably this is there to allow for fromInteger to work (with Num). But the funny implementation is no longer needed.
-  negate = negateE
-
-negateE (Con c) = Con (negate c)
-negateE _ = error "negate: not supported"
-\end{code}
-%
 %TODO: Perhaps include the comparison of the |Ring t => Ring (Bool -> t)| instance (as a special case of functions as |Ring|) and the |Ring r => Ring (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
 
 
