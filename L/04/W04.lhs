@@ -1456,7 +1456,7 @@ a|) instead of pairs of functions.
 Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|
 
 %if lectureNotes
-Hint: Something very similar can be used for Assignment 2.\jp{What's that?}
+Hint: Something very similar can be used for Assignment 2.
 %endif
 
 \subsection{Some helper functions}

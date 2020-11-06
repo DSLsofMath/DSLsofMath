@@ -9,7 +9,7 @@
 
 %\newpage
 \begin{exercise} \label{exc:e1_semiring}
-  \textit{From exam 2017-08-22}
+  \fromExam{2017-08-22}
 
   A semiring is a set |R| equipped with two binary operations |+| and
   |⋅|, called addition and multiplication, such that:
@@ -59,7 +59,7 @@
 \end{exercise}
 
 \begin{exercise} \label{exc:e1_lattice}
-  \textit{From exam 2016-03-15}
+  \fromExam{2016-03-15}
 
   A \emph{lattice} is a set |L| together with two operations |∨| and
   |∧| (usually pronounced ``sup'' and ``inf'') such that
@@ -96,7 +96,7 @@
 \end{exercise}
 
 \begin{exercise} \label{exc:e1_abMon}
-  \textit{From exam 2016-08-23}
+  \fromExam{2016-08-23}
 
   An \emph{abelian monoid} is a set |M| together with a constant
   (nullary operation) |0 ∈ M| and a binary operation |⊕ : M → M → M|
