@@ -1320,32 +1320,34 @@ arguments --- provided that they match in number and types.
 
 \section{Computing derivatives}
 \label{sec:computingDerivatives}
-\jp{What is the purpose of the section? 
+\jp{What is the purpose of the section?
 
   Elements of answer:
   - we have laws at the semantic level (coming from the definition of limit), and we want to derive laws at a syntactic level
   - point out that such laws are effectively used as computational rules (even though they are not really)
 
-  More difficulties: students will probably have seen a presentation
-  which is in fact syntactic, in the sense that it acts on expression
-  of one variable (x), so some more links need to be made.
-
-  One possibility is to start with Theorem 2 p. 108 in \cite{adams2010calculus}.
-  $(f+g)'(x)=f'(x)+g'(x),(f-g)'(x)=f'(x)-g'(x),(C*f)'(x)=C*f'(x).$
-
-  Perhaps it finds a better home in
-  \cref{sec:deriv}? But it seems that compositionality is the
-  question, so it's for \cref{sec:CompSem}.
+  It is a stepping stone towards showing an example of non-trivial
+  compositionality for the next chapter.
 }
 
 An important part of calculus is the collection of laws, or rules, for
-computing derivatives.
+computing derivatives. They are provided by \citet{adams2010calculus}
+as a series of theorems, starting at page 108 of their book. We we
+can summarize those as follows:
+\begin{spec}
+  (f+g)'(x)  = f'(x) + g'(x)
+  (f*g)'(x)  = f'(x) g(x) + f(x) g'(x)
+  (C*f)'(x)  = C*f'(x)
+  (f . g)(x) = f' (g (x)) * g'(x)
+\end{spec}
+(After a while, they \citeauthor{adams2010calculus} switch to
+differential notation, so we omit corresponding rules for
+trigonometric and exponential functions.)
 %
 Using the notation |D f| for the derivative of |f| and lifting the
-numeric operations to functions we can fill in a nice table of
+numeric operations to functions we can fill in a table of
 examples which can be followed to compute derivatives of many
-functions:\jp{This will look already very unfamiliar. What about writing it in terms of expressions of one variable?
-This will also avoid much of beating around the bush? Or is this beating the purpose?}
+functions:
 %
 \begin{spec}
     D (f + g)        =  D f + D g
@@ -1354,11 +1356,11 @@ This will also avoid much of beating around the bush? Or is this beating the pur
     D (const a)      =  const 0
 
     D (f . g)        =  (D f . g) * D g     -- the chain rule
-    D (powTo n)      =  (n*) . (powTo (n-1))
     D sin            =  cos
     D cos            =  - sin
     D exp            =  exp
 \end{spec}
+% D (powTo n)      =  (n*) . (powTo (n-1))  % commented out because it has difficulties (n = 0) and it's taken care of by the product rule and we don't refer to it anyway.
 %
 and so on.
 %
@@ -1379,8 +1381,10 @@ derivative, and that is not what we are exploring in this course.
 %
 Thus we need to take a step back and change the type that we work on.
 %
-All the rules in the table seem to work on \emph{syntactic} functions:
-abstract syntax trees \emph{representing} the real (semantic)
+Even though the rules in the table are obtained by reasoning
+semantically, using the definition of limit for functions (of type |ℝ
+→ ℝ|), they are really intended to be used on \emph{syntactic}
+functions: abstract syntax trees \emph{representing} the (semantic)
 functions.
 
 We observe that we can compute derivatives for any expression made
@@ -1391,11 +1395,13 @@ In other words, the computation of derivatives is based on a domain
 specific language (a DSL) of expressions (representing functions in
 one variable).
 %
-\jp{See above for the language}
-We can then implement the derivative of |FunExp| expressions using the
-rules of derivatives.
-%
-We want to implement a function |derive :: FunExp -> FunExp| which
+Hence we can then implement the derivative of |FunExp| expressions
+using the rules of derivatives. Because the specification of
+derivation rules is already in the right format, the way to obtain
+this implementation may seem obvious, but we will go through the steps
+as a way to show the process in a simple case.
+
+Our goal is want to implement a function |derive :: FunExp -> FunExp| which
 makes the following diagram commute:
 
 \quad%
@@ -1410,13 +1416,13 @@ That is, we want the following equality to hold:
      eval . derive  =  D . eval
 \end{spec}
 %
-in turn this means that any expression |e :: FunExp|, we want
+in turn this means that for any expression |e :: FunExp|, we want
 %
 \begin{spec}
      eval (derive e)  =  D (eval e)
 \end{spec}
 
-For example, let us derive the |derive| function for |Exp e|:
+For example, let us calculate the |derive| function for |Exp e|:
 %
 \begin{spec}
      eval (derive (Exp e))                          =  {- specification of |derive| above -}
