@@ -1204,19 +1204,15 @@ reference to the sub-expressions.
 
 Let us now check whether the semantics of derivatives is
 compositional.
-
-
 %
-The evaluation function for derivatives is
+This evaluation function for derivatives is given by composition as below:
 %
 \begin{code}
 type Func = ℝ -> ℝ
 eval'  ::  FunExp -> Func
 eval'  =   eval . derive
 \end{code}
-In other words, we want to find what |eval'| is in the following
-diagram:
-
+In a diagram:
 \tikzcdset{diagrams={column sep = 2cm, row sep = 2cm}}
 \quad%
 \begin{tikzcd}
@@ -1249,14 +1245,14 @@ Another example of the problem is |derive (f :*: g)| where the
 result involves not only |derive f| and |derive g|, but also |f| and
 |g|.
 %
+In general, the problem is that some of the rules for computing the derivative
+depend not only on the derivative of the subexpressions, but also on
+the subexpressions before taking the derivative.
 
 Consequently, |eval'| is in
 fact non-compositional (just like |isPrime|).  There is no way to
 implement |eval' :: FunExp -> Func| as a fold \emph{ if |Func| is the
   target type}.
-In general, the problem is that some of the rules for computing the derivative
-depend not only on the derivative of the subexpressions, but also on
-the subexpressions before taking the derivative.
 
 One way of expressing this is to say that in order to implement |eval'
 :: FunExp -> Func| we need to also compute |eval :: FunExp -> Func|.
@@ -1328,7 +1324,7 @@ classes.
 \begin{code}
 instance Additive a => Additive (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
   (f, f')  +  (g, g')  =  (f  +  g,  f'      +  g'      )
-  
+
 instance Multiplicative a => Multiplicative (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
   (f, f')  *  (g, g')  =  (f  *  g,  f' * g  +  f * g'  )
 \end{code}
@@ -1336,7 +1332,6 @@ instance Multiplicative a => Multiplicative (a -> a, a -> a) where  -- same as |
 \begin{exercise}
 Implement the rest of the |Num| instance for |FD a|.
 \end{exercise}
- 
 
 
 \section{Summary}
