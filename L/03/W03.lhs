@@ -1320,15 +1320,14 @@ arguments --- provided that they match in number and types.
 
 \section{Computing derivatives}
 \label{sec:computingDerivatives}
-\jp{What is the purpose of the section?
+% What is the purpose of the section?
 
-  Elements of answer:
-  - we have laws at the semantic level (coming from the definition of limit), and we want to derive laws at a syntactic level
-  - point out that such laws are effectively used as computational rules (even though they are not really)
+%   Elements of answer:
+%   - we have laws at the semantic level (coming from the definition of limit), and we want to derive laws at a syntactic level
+%   - point out that such laws are effectively used as computational rules (even though they are not really)
 
-  It is a stepping stone towards showing an example of non-trivial
-  compositionality for the next chapter.
-}
+%   It is a stepping stone towards showing an example of non-trivial
+%   compositionality for the next chapter.
 
 An important part of calculus is the collection of laws, or rules, for
 computing derivatives. They are provided by \citet{adams2010calculus}
@@ -1465,131 +1464,4 @@ Complete the |FunExp| type and the |eval| and |derive|
 functions.
 \end{exercise}
 
-\subsection{Computing Shallow Embeddings Directly}
-\jp{Is it she right place?
-   Most certainly not: we have 7 occurences of "compositional" in what follows, so it seems that compositionality is a pre-requisite.
-  }
-\label{sec:evalD}
-
-The DSL of expressions, whose syntax is given by the type |FunExp|,
-turns out to be almost identical to the DSL defined via type classes
-in \cref{sec:typeclasses}\jp{Have we said that we defined a DSL?}.
-%
-The correspondence between them is given by the |eval| function.
-%
-The difference between the two implementations is that the first one
-separates more cleanly from the semantical one.
-%
-For example, |:+:| \emph{stands for} a function, while |+| \emph{is}
-that function.
-%
-The second approach is called ``shallow embedding'' or ``almost
-abstract syntax''\jp{citation needed}.
-%
-It can be more economical, since it needs no |eval|.
-%
-The question is: can we implement |derive| in the shallow embedding?
-
-
-The reason that the shallow embedding is feasible is that the
-|eval| function is a \emph{fold}: first evaluate the sub-expressions
-of |e|, then put the evaluations together without reference to the
-sub-expressions.
-%
-This is sometimes referred to as ``compositionality''.
-%
-We check whether the semantics of derivatives is compositional.
-%
-The evaluation function for derivatives is
-%
-\begin{code}
-type Func = ℝ -> ℝ
-eval'  ::  FunExp -> Func
-eval'  =   eval . derive
-\end{code}
-%
-For example:
-%
-\begin{spec}
-     eval' (Exp e)                      =  {- def. |eval'|, function composition -}
-
-     eval (derive (Exp e))              =  {- def. |derive| for |Exp| -}
-
-     eval (Exp e :*: derive e)          =  {- def. |eval| for |:*:| -}
-
-     eval (Exp e) * eval (derive e)     =  {- def. |eval| for |Exp| -}
-
-     exp (eval e) * eval (derive e)     =  {- def. |eval'| -}
-
-     exp (eval e) * eval' e             =  {- let |f = eval e|, |f' = eval' e| -}
-
-     exp f * f'
-\end{spec}
-%
-Thus, given only the derivative |f' = eval' e|, it is impossible to
-compute |eval' (Exp e)|.
-%
-(There is no way to implement |eval'Exp :: Func -> Func|.)
-%
-Thus, it is not possible to directly implement |derive| using a shallow
-embedding; the semantics of derivatives is not compositional.
-%
-Or rather, \emph{this} semantics is not compositional.
-%
-It is quite clear that the derivatives cannot be evaluated without, at
-the same time, being able to evaluate the functions.
-%
-So we can try to do both evaluations simultaneously:
-%
-\begin{code}
-type FD a = (a -> a, a -> a)
-
-evalD ::  FunExp  ->  FD Double
-evalD     e       =   (eval e, eval' e)
-\end{code}
-%
-Note: At this point, you are advised to look up and solve
-Exercise~\ref{exc:tuplingE1} on the ``tupling transform'' in case you
-have not done so already.
-
-Is |evalD| compositional?
-%
-We compute, for example:
-%
-\begin{spec}
-     evalD (Exp e)                           =  {- specification of |evalD| -}
-
-     (eval (Exp e), eval' (Exp e))           =  {- def. |eval| for |Exp| and reusing the computation above -}
-
-     (exp (eval e), exp (eval e) * eval' e)  =  {- introduce names for subexpressions -}
-
-     let  f   = eval e
-          f'  = eval' e
-     in (exp f, exp f * f')                  =  {- def. |evalD| -}
-
-     let (f, f') = evalD e
-     in (exp f, exp f * f')
-\end{spec}
-%
-This semantics \emph{is} compositional and the |Exp| case is as follows:
-%
-\begin{code}
-evalDExp ::  FD Double  ->  FD Double
-evalDExp     (f, f')  =   (exp f, exp f * f')
-\end{code}
-%
-We can now define a shallow embedding for the computation of
-derivatives, using the numerical type classes.
-%
-\begin{code}
-instance Additive a => Additive (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
-  (f, f')  +  (g, g')  =  (f  +  g,  f'      +  g'      )
-  
-instance Multiplicative a => Multiplicative (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
-  (f, f')  *  (g, g')  =  (f  *  g,  f' * g  +  f * g'  )
-\end{code}
-%
-\begin{exercise}
-Implement the rest of the |Num| instance for |FD a|.
-\end{exercise}
 %include E3.lhs

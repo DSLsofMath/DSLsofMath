@@ -1005,7 +1005,7 @@ homomorphisms even if the datatype representation that they work on
 ignore laws.
 
 \subsubsection{Functions of one variable as algebras}
-
+\label{sec:OneVarExp-class}
 Earlier we have used (many variants of) data types for arithmetic
 expressions. Using the free construction, we can easily conceive a
 suitable type for any such expression language. For example, the type
@@ -1098,6 +1098,20 @@ As before, we can always define a homomorphism from |FunExp| to \emph{any}
 instance of |OneVarExp|, in a unique way, using the fold pattern.
 %
 This is because the datatype |FunExp| is an initial |OneVarExp|.
+Working with |OneVarExp a => a| can be more economical than using |FunExp|:
+one does not need any |eval|.
+
+The DSL of expressions, whose syntax is given by the type |FunExp|,
+turns out to be almost identical to the DSL defined via type classes
+in \cref{sec:typeclasses}\jp{Have we said that we defined a DSL?}.
+%
+The correspondence between them is given by the |eval| function.
+%
+The difference between the two implementations is that the first one
+separates more cleanly from the semantical one.
+%
+For example, |:+:| \emph{stands for} a function, while |+| \emph{is}
+that function.
 
 \subsection{\extraMaterial A generic Free construction}
 
@@ -1172,17 +1186,36 @@ example = embed 1 `op` embed 10 `op` unit `op` embed 11
 \end{exercise}
 
 
-\section{Application: Derivatives}
+\section{Computing Derivatives, reprise.}
 
-% TODO: perhaps not include this here. The background is that this material did not quite fit in the previous lecture. Also some repition was needed.
-% Alternatively, move all computation of derivatives here.
-
-Review \cref{sec:evalD} again with the definition of |eval'|
-being non-compositional (just like |isPrime|) and |evalD| a more
-complex, but compositional, semantics.
+\label{sec:evalD}
 %
+As discussed in \cref{sec:OneVarExp-class}, it can sometimes be
+economical to use the |OneVarExp a => a| representation rather than
+the |FunExp| data type. However, in \cref{sec:computingDerivatives} we
+argued that the rules for derivatives were naturally operating on a
+syntactic representation.
 
-We want to implement |eval' = eval . derive| in the following diagram:
+The question is: can we implement |derive| in the shallow embedding?
+As a reminder, the reason that the shallow embedding (|ℝ -> ℝ|) works is
+that the |eval| function is a \emph{fold}: first evaluate the
+sub-expressions of |e|, then put the evaluations together without
+reference to the sub-expressions.
+
+Let us now check whether the semantics of derivatives is
+compositional.
+
+
+%
+The evaluation function for derivatives is
+%
+\begin{code}
+type Func = ℝ -> ℝ
+eval'  ::  FunExp -> Func
+eval'  =   eval . derive
+\end{code}
+In other words, we want to find what |eval'| is in the following
+diagram:
 
 \tikzcdset{diagrams={column sep = 2cm, row sep = 2cm}}
 \quad%
@@ -1192,34 +1225,94 @@ We want to implement |eval' = eval . derive| in the following diagram:
   |FunExp| \arrow[r, "|eval|"]                        & |(REAL -> REAL)|
 \end{tikzcd}
 
-As we saw in \refSec{sec:evalD} this does not work in the sense
-that |eval'| cannot directly be implemented compositionally.
 %
-The problem is that some of the rules of computing the derivative
-depends not only on the derivative of the subexpressions, but also on
-the subexpressions before taking the derivative.
+Let us consider the |Exp| case:
 %
-A typical example of the problem is |derive (f :*: g)| where the
+\begin{spec}
+     eval' (Exp e)                      =  {- def. |eval'|, function composition -}
+
+     eval (derive (Exp e))              =  {- def. |derive| for |Exp| -}
+
+     eval (Exp e :*: derive e)          =  {- def. |eval| for |:*:| -}
+
+     eval (Exp e) * eval (derive e)     =  {- def. |eval| for |Exp| -}
+
+     exp (eval e) * eval (derive e)     =  {- def. |eval'| -}
+
+     exp (eval e) * eval' e             =  {- let |f = eval e|, |f' = eval' e| -}
+
+     exp f * f'
+\end{spec}
+Thus, given \emph{only} the derivative |f' = eval' e|, it is
+impossible to compute |eval' (Exp e)|.
+Another example of the problem is |derive (f :*: g)| where the
 result involves not only |derive f| and |derive g|, but also |f| and
 |g|.
 %
 
-The solution is to extend the return type of |eval'| from one
-semantic value |f| of type |Func = REAL -> REAL| to two such values
-|(f, f') :: (Func, Func)| where |f' = D f|.
-%
+Consequently, |eval'| is in
+fact non-compositional (just like |isPrime|).  There is no way to
+implement |eval' :: FunExp -> Func| as a fold \emph{ if |Func| is the
+  target type}.
+In general, the problem is that some of the rules for computing the derivative
+depend not only on the derivative of the subexpressions, but also on
+the subexpressions before taking the derivative.
+
 One way of expressing this is to say that in order to implement |eval'
 :: FunExp -> Func| we need to also compute |eval :: FunExp -> Func|.
 %
+
+%
 Thus we need to implement a pair of |eval|-functions |(eval, eval')|
 together.
+
+In practice, the solution is to extend the return type of |eval'| from one
+semantic value |f| of type |Func = REAL -> REAL| to two such values
+|(f, f') :: (Func, Func)| where |f' = D f|. 
 %
-Using the ``tupling transform'' we can express this as computing just
+That is, we are using the ``tupling transform'': we are computing just
 one function |evalD :: FunExp -> (Func, Func)| returning a pair of |f|
-and |D f| at once.
+and |D f| at once. (At this point, you are advised to look up and solve
+Exercise~\ref{exc:tuplingE1} in case you
+have not done so already.)
+\begin{code}
+type FD a = (a -> a, a -> a)
+
+evalD ::  FunExp  ->  FD Double
+evalD     e       =   (eval e, eval' e)
+\end{code}
 %
 
-This combination \emph{is} compositional, and we can then get |eval'|
+Is |evalD| compositional?
+%
+We compute, for example:
+%
+\begin{spec}
+     evalD (Exp e)                           =  {- specification of |evalD| -}
+
+     (eval (Exp e), eval' (Exp e))           =  {- def. |eval| for |Exp| and reusing the computation above -}
+
+     (exp (eval e), exp (eval e) * eval' e)  =  {- introduce names for subexpressions -}
+
+     let  f   = eval e
+          f'  = eval' e
+     in (exp f, exp f * f')                  =  {- def. |evalD| -}
+
+     let (f, f') = evalD e
+     in (exp f, exp f * f')
+\end{spec}
+%
+This semantics \emph{is} compositional and the |Exp| case is as follows:
+%
+\begin{code}
+evalDExp ::  FD Double  ->  FD Double
+evalDExp     (f, f')  =   (exp f, exp f * f')
+\end{code}
+
+In general, while |eval'| is non-compositional, |evalD| is a more
+complex, but compositional, semantics.
+%
+We can then get |eval'|
 back as the second component of |evalD e|:
 %
 \begin{spec}
@@ -1227,13 +1320,23 @@ eval' :: FunExp -> Func
 eval' = snd . evalD
 \end{spec}
 
-% \tikzcdset{diagrams={column sep = 2cm, row sep = 2cm}}
-% \quad%
-% \begin{tikzcd}
-%   |FunExp| \arrow[r, "|evalD|"] \arrow[d, "|derive|"]
-%                                 \arrow[dr, "|eval'|"]  & |(Func, Func)| \arrow[d, "D"] \\
-%   |FunExp| \arrow[r, "|evalD|"]                        & |(Func, Func)|
-% \end{tikzcd}
+Because all compositional functions can be expressed as a fold for a
+given algebra, we can now define a shallow embedding for the combined
+computation of functions and derivatives, using the numerical type
+classes.
+%
+\begin{code}
+instance Additive a => Additive (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
+  (f, f')  +  (g, g')  =  (f  +  g,  f'      +  g'      )
+  
+instance Multiplicative a => Multiplicative (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
+  (f, f')  *  (g, g')  =  (f  *  g,  f' * g  +  f * g'  )
+\end{code}
+%
+\begin{exercise}
+Implement the rest of the |Num| instance for |FD a|.
+\end{exercise}
+ 
 
 
 \section{Summary}
