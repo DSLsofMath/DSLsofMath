@@ -67,7 +67,7 @@ Prove or disprove the following claims:
 
 
 \begin{exercise}
-  \textit{From exam 2017-08-22}
+  \fromExam{2017-08-22}
 
   In Exercise~\ref{exc:e1_semiring} we looked at the datatype |SR v|
   for the language of semiring expressions.
@@ -109,7 +109,7 @@ Prove or disprove the following claims:
 \end{exercise}
 
 \begin{exercise}
-  \textit{From exam 2016-03-15}
+  \fromExam{2016-03-15}
 
   In Exercise~\ref{exc:e1_lattice}, we looked a datatype for the language of lattice
   expressions. We will now use some of the concepts discussed in this chapter to
@@ -135,7 +135,7 @@ Prove or disprove the following claims:
 \end{exercise}
 
  \begin{exercise}
-  \textit{From exam 2016-08-23}
+  \fromExam{2016-08-23}
 
 
   In Exercise~\ref{exc:e1_abMon}, we looked a datatype for the language of abelian monoid
@@ -164,7 +164,8 @@ Prove or disprove the following claims:
 
 
 \begin{exercise}
-  (Closely related to exam question)
+  
+  \lnOnly{(Closely related to exam question)}
 
   A \textit{ring} is a set |A| together with two constants (or nullary
   operations), |0| and |1|, one unary operation, |negate|, and two

@@ -49,7 +49,7 @@
     operations to the appropriate number of arguments, e.g., all the
     left hand sides and right hand sides of the above equations.
 
-  \item (Was not part of the exam) Implement the expressions from the laws.
+  \item \lnOnly{(Was not part of the exam)} Implement the expressions from the laws.
 
   \item Give a type signature for, and define, a general evaluator for
     |SR v| expressions on the basis of an assignment function.
