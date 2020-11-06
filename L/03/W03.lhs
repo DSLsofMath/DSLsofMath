@@ -102,7 +102,7 @@ eval      (e1 :+: e2)        x     = eval e1 x  +  eval e2 x
 eval      (e1 :*: e2)        x     = eval e1 x  *  eval e2 x
 \end{code}
 
-However, we can make an equivalent interpretation of the above type as 
+However, we can make an equivalent interpretation of the above type as
 \begin{spec}
 eval  ::  FunExp         ->  (REAL  -> REAL)
 \end{spec}
@@ -110,7 +110,7 @@ That is, |FunExp| can be interpreted as a function! This is perhaps
 surprising, but the reason is that we used a fixed Haskell symbol
 (constructor) for the variable. There is ever a single variable in
 |FunExp|, and thus they are really equivalent to functions of a single
-variable. 
+variable.
 
 \subsubsection{Shallow embedding}
 \label{sec:funexp-shallow}
@@ -200,7 +200,7 @@ occur in the summand, but we see both |i| and |j|? Well, we are not
 cheating as long as we use the \emph{shallow embedding} for functions of one
 variables. Doing so allows us to 1. use lambda notation to bind (and
 name) the variable name of the summation however we wish (in this case |i| and |j|) and 2. we can
-freely use any haskell function of type |ℤ → ℝ| as the summand. In particular, the this function 
+freely use any haskell function of type |ℤ → ℝ| as the summand. In particular, the this function
 can be any lambda-expression returing |ℝ|, and this expression can include summation itself. This freedom is an advantage of shallow embeddings:
 if we were to use the deep embedding, then
 we'd need a whole lot more work to ensure that we can represent
@@ -328,7 +328,7 @@ If you want a constructor to be used as an infix operator you need to use
 symbol characters and start with a colon:
 
 \begin{spec}
-data AE' = V' String | AE' :+ AE' | AE' :* AE' 
+data AE' = V' String | AE' :+ AE' | AE' :* AE'
 \end{spec}
 
 Example values are then |y = V' "y"|, |e1 = y :+ y| and |e2 = x :* e1|.
@@ -637,7 +637,7 @@ several difficulties:
   one is renaming variables, for example for the purpose of
   integration)
 \item Further confusion can be created when a variable (such as $z$
-  above) is depends on other variables. Tracing dependencies can
+  above) depends on other variables. Tracing dependencies can
   become daunting and it is easy to make errors of name when doing
   calculations.
 \item it makes it difficult to assign a higher order type to the
@@ -1058,7 +1058,7 @@ The above declaration does two things. First, it defines a set of
 types which have equality test. One can tell the Haskell compiler that
 certain types belong to this set by using instance declarations, which
 additionally provide an implementation for the equality test. For example,
-we can make |Bool| member of the |Eq| using 
+we can make |Bool| member of the |Eq| using
 the following declaration:
 \begin{spec}
 instance Eq Bool where
@@ -1312,7 +1312,7 @@ Something which may not be immediately obvious, but is nonetheless
 useful, is that all the above instances are of the form |C a => C (x
 -> a)| and are therefore parametric. This means that, for example,
 given the instance |Additive a => Additive (x -> a)| and the intstance
-|Additive REAL|, we have that the types |a->RAEL|, |a->(b->REAL)|,
+|Additive REAL|, we have that the types |a->REAL|, |a->(b->REAL)|,
 etc. are all instances of |Additive|. Consequently, we can use the
 usual mathematical operators for functions taking any number of
 arguments --- provided that they match in number and types.

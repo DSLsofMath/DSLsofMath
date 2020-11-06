@@ -89,10 +89,10 @@ class Monoid a where
     unit  ::  a
     op    ::  a -> a -> a
 \end{code}
-% 
+%
 The laws cannot be obviously captured in the class, but can be
 formulated as the following equations:
-% 
+%
 \begin{spec}
   ∀ x : a? (unit `op` x == x  ∧  x `op` unit == x)
   ∀ x, y, z : a? (x `op` (y `op` z) == (x `op` y) `op` z)
@@ -131,7 +131,7 @@ instance Multiplicative Natural
 %endif
 \label{sec:anat-mnat}
 \begin{code}
-  
+
 newtype ANat      =  A Natural          deriving (Show, Eq)
 
 instance Monoid ANat where
@@ -314,8 +314,8 @@ right the belong to |(B, unitB, opB)|.
 \end{example}
 
 \begin{example}
-  Hence, the function |log| is a monoid homomorphism between (|RPos|,1,*)
-  and (|Real|,0,+).
+  Hence, the function |exp| is a monoid homomorphism from (|Real|,0,+)
+  to (|RPos|,1,*).
   \begin{spec}
   exp  :  REAL  ->  RPos
   exp  0        =   1                 --  \(e^0 = 1\)
@@ -360,12 +360,12 @@ That is, every choice of |h 1| induces a homomorphism from |ANat| to |MNat|.
 This means that the value of the function |h|, for any natural number,
 is fully determined by its value for |1|.
 
-In other words, we now that every |h| (homomorphism from |ANat| to
+In other words, we know that every |h| (homomorphism from |ANat| to
 |MNat|) is of the form
 \begin{spec}
 h n = a ^ n
 \end{spec}
-for a given natual number |a|. So, the set of homomorphisms
+for a given natual number |a = h 1|. So, the set of homomorphisms
 between the additive monoid and the multiplicative monoid is
 the set exponential functions, one for every base |a|.
 \end{example}
@@ -822,7 +822,7 @@ representation is called the initial algebra.
 
 As a first example, consider an initial algebra for monoids (an initial monoid for short).
 
-We know that we have at least one object: the |unit|. 
+We know that we have at least one object: the |unit|.
 But we can also construct more objects using |op|:
 |unit `op` unit|, |unit `op` (unit `op` unit)|, etc.
 So a draft for the initial monoid could be:
@@ -1354,7 +1354,7 @@ The following correspondence table summarises the discussion so far:
   2. Shallow embeddings can be initial algebras (|Class a => x -> a| is an initial algebra of |Class| + unit generator.)
 
   3. We saw that homomorphisms are not necessarily judicious semantics.
-  
+
   4. And isn't a DSL akin to a mathematical domain?
 }
 The underlying theory of this table is a fascinating topic but mostly
