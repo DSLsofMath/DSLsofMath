@@ -1,4 +1,5 @@
-default: DSLsofMathBook.pdf DSLsofMathNotes.pdf
+default: DSLsofMathBook.pdf
+# default: DSLsofMathNotes.pdf
 
 nix::
 	nix-shell --run "make"

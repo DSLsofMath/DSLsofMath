@@ -71,7 +71,7 @@ p4 = Implies (And a b) (And b a)
   where a = Name "a"; b = Name "b"
 \end{code}
 %
-Because ``names'' stand for propositions, if we assign 
+Because ``names'' stand for propositions, if we assign
 truth values for the names, we can compute a truth value of the whole
 proposition for the assignment in question.
 %
@@ -138,9 +138,9 @@ only variable |a|, the semantic value is |T = True|.
 Thus the whole expression could be simplified to just |T| without
 changing its semantics.
 
-\begin{wrapfigure}{R}{0.35\textwidth}
-  \centering
-\begin{tabular}{||lllllll||}
+\begin{wrapfigure}[10]{R}{0.25\textwidth}
+\centering%
+\begin{tabular}{|| *{6}{c@@{~}} l||}
     \hline   |a| & |&| & |b| & |=>| & |b| & |&| & |a|
   \\\hline    F  &  F  &  F  &  T   &  F  &  F  &  F
   \\          F  &  F  &  T  &  T   &  T  &  F  &  F
@@ -152,6 +152,7 @@ changing its semantics.
 }
 \label{fig:abswap}
 \end{wrapfigure}
+\pj{make different columns use different background colours}
 %
 If we continue with the example |p4| from above we have two names |a|
 and |b| which together can have any of four combinations of true and
@@ -174,9 +175,13 @@ isTautology :: Prop -> Bool
 isTautology p = and [eval p e | e <- envs (freeNames p)]
 \end{code}
 which uses the following intermediate function to generate all possible environments for a given list of names
+\pj{Haskell notation for list comprehensions not introduced}
 \begin{code}
 envs :: [Name] -> [Name -> Bool]
-envs (n:ns) = [\n' -> if n == n' then b else e n' | b <- [True,False], e <- envs ns]
+envs (n:ns) =  [  \n' -> if n == n' then b else e n'
+               |  b  <-  [True,False]
+               ,  e  <-  envs ns
+               ]
 \end{code}
 and a function to find all names in a proposition:
 \begin{code}
@@ -277,16 +282,20 @@ quodlibet} --- from falsehood, anything (follows).
 
 We can then write our proof checker as follows:
 \begin{code}
-checkProof TruthIntro (Con True) = True
-checkProof (AndIntro t u) (And p q) = checkProof t p && checkProof u q
-checkProof (OrIntro (Left t)) (Or p q) = checkProof t p
-checkProof (OrIntro (Right t)) (Or p q) = checkProof t q
-checkProof (NotIntro t u q) (Not p) = checkProof t (p `Implies` q) && checkProof u (p `Implies` Not q)
-checkProof (AndElimL t q) p = checkProof t (p `And` q)
-checkProof (AndElimR t p) q = checkProof t (p `And` q)
-checkProof (OrElim t u v p q) r = checkProof t (p `Implies` r) && checkProof u (q `Implies` r) && checkProof v (Or p q)
-checkProof (NotElim t) p = checkProof t (Not (Not p))
-checkProof (FalseElim t) p = checkProof t (Con False)
+checkProof TruthIntro           (Con True)   =   True
+checkProof (AndIntro t u)       (And p q)    =   checkProof t p
+                                             &&  checkProof u q
+checkProof (OrIntro (Left t))   (Or p q)     =   checkProof t p
+checkProof (OrIntro (Right t))  (Or p q)     =   checkProof t q
+checkProof (NotIntro t u q)     (Not p)      =   checkProof t (p `Implies` q)
+                                             &&  checkProof u (p `Implies` Not q)
+checkProof (AndElimL t q)       p  =   checkProof  t  (p `And` q)
+checkProof (AndElimR t p)       q  =   checkProof  t  (p `And` q)
+checkProof (OrElim t u v p q)   r  =   checkProof  t  (p `Implies` r)
+                                   &&  checkProof  u  (q `Implies` r)
+                                   &&  checkProof  v  (Or p q)
+checkProof (NotElim t)          p  =   checkProof  t  (Not (Not p))
+checkProof (FalseElim t)        p  =   checkProof  t  (Con False)
 \end{code}
 
 Any other combination of proof/prop else is an incorrect combination: the proof is not valid for the proposition.
@@ -298,9 +307,9 @@ checkProof _ _ = False -- incorrect proof
 At this point it can be interesting to, see |checkProof| as an
 evaluator again, by, and flipping its arguments: |flip checkProof ::
 Prop -> (Proof -> Bool)|. This way, one can understand |Proof ->
-Bool|, a subset of propositions, as the semantic domain of |Prop|.  In
+Bool|, a subset of proofs, as the semantic domain of |Prop|.  In
 other words, a proposition can be interpreted at the subset of
-propositions which prove it.
+proofs which prove it.
 
 
 \subsection{Implication, hypothetical derivations, contexts}
@@ -331,7 +340,7 @@ The eliminator for implication (also known as the hard-to-translate
 phrase \textit{modus ponens}) is \(\frac{P → Q \quad P} Q\). We
 formalise it as |ImplyElim :: Proof -> Proof -> Prop -> Proof| (The
 proposition |P| is a not given by the conclusion and thus has to be
-provided as part of the proof.). 
+provided as part of the proof.).
 And we can finally complete our proof checker as follows:
 
 \begin{code}
@@ -368,7 +377,7 @@ can also define the following version of |checkProof|, which uses an
 extra context to check that assumption have been rightfully introduced
 earlier.  \footnote{This kind of presentation of the checker matches
   well the sequent calculus presentation of the proof system.}
- 
+
 \begin{spec}
 checkProof :: Context -> Proof -> Prop -> Bool
 checkProof ctx (ImplyIntro t) (p `Implies` q) = checkProof' (p:ctx) t q
@@ -661,4 +670,3 @@ isomorphisms.)
 %*TODO: Perhaps add an example with (p->p')->(q->q')->(Or  p q -> Or  p q)
 %*TODO: Explain that the values of type |And p q| can be seen as "proofs" (abstract or concrete).
 %
-

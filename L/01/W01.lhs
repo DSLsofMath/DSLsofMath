@@ -1,18 +1,14 @@
 %{
 %format bi = "\Varid{bi}"
-\chapter[Types, Complex numbers, \ldots]{Types, Complex numbers, Testing, and Sequences
-\footnote{This chapter is partly based on material by
-\citet{TFPIE15_DSLsofMath_IonescuJansson} which appeared at the International
-Workshop on Trends in Functional Programming in Education, 2015.}}
+\chapter{Types, Functions, and Complex numbers}
 \label{sec:DSLComplex}
-
-\jp{this chapter has many things. Let's move BLOAT elsewhere.}
 
 In this chapter we exemplify our method by applying our method to the
 domain of arithmetic first, and complex numbers second, which we
-assume most readers will already be familiar with. However, before
-doing so, we introduce several central concepts in the \course{}, as
-well as laying out methodological assumptions.
+assume most readers will already be familiar with.
+%
+However, before doing so, we introduce several central concepts in the
+\course{}, as well as laying out methodological assumptions.
 
 %
 We will implement certain concepts in the functional programming
@@ -20,7 +16,7 @@ language Haskell and
 %
 the code for this lecture is placed in a module called
 |DSLsofMath.W01| that starts here\footnote{As mentioned already in the introduction, the code is available on \href{https://github.com/DSLsofMath/DSLsofMath}{GitHub}.}:
-\TODO{It would also be useful to split up these imports into those needed early and those only needed in subsection \cref{sec:complexcase} (to be introduced later).}
+\TODO{It would also be useful to split up these imports into those needed early (|Natural|, |Ratio|) and those (|CSem|) only needed in subsection \cref{sec:complexcase} (to be introduced later).}
 
 \begin{code}
 {-# LANGUAGE InstanceSigs #-}
@@ -40,74 +36,6 @@ to |import| (bring into scope) definitions from other modules.
 As an example, the second to last line imports types for rational
 numbers and the infix operator |(%)| used to construct ratios
 (|1%7| is Haskell notation for $\frac{1}{7}$, etc.).
-
-\section{Common pitfalls with traditional mathematical notation}
-\jp{BLOAT: this should go in intro chapter.}
-\label{sec:pitfalls}
-
-\subsection{A function or the value at a point?}
-
-Mathematical texts often talk about ``the function $f(x)$'' when ``the
-function $f$'' would be more clear.
-%
-Otherwise there is a risk of confusion between $f(x)$ as a
-function and $f(x)$ as the value you get from applying the function
-$f$ to the value bound to the name $x$.
-
-Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
-%
-Then it is clear that the value of $t$ is the constant $15$.
-%
-But if we let $s = 5*f(x)$ it is not clear if $s$ should be seen as a
-constant (for some fixed value $x$) or as a function of $x$.
-
-Paying attention to types and variable scope often helps to sort out
-these ambiguities.
-
-\subsection{Scoping}
-\label{sec:scoping-pitfall}
-The syntax and scoping rules for the integral sign are rarely
-explicitly mentioned, but looking at it from a software perspective
-can help.
-%
-If we start from a simple example, like \(\int_{1}^{2} x^2 dx\), it is
-relatively clear: the integral sign takes two real numbers as limits
-and then a certain notation for a function, or expression, to be
-integrated.
-%
-Comparing the part after the integral sign to the syntax of a function
-definition \(f(x) = x^2\) reveals a rather odd rule: instead of
-\emph{starting} with declaring the variable \(x\), the integral syntax
-\emph{ends} with the variable name, and also uses the letter ``d''.
-%
-(There are historical explanations for this notation, and it is
-motivated by computation rules in the differential calculus, but we
-will not go there now. We are also aware that the notation
-$\int dx f(x)$, which emphasises the bound variable, is sometimes
-used, especially by physicists, but it remains the exception rather
-than the rule at the time of writing.)
-%
-It seems like the scope of the variable ``bound'' by |d| is from the
-integral sign to the final |dx|, but does it also extend to the
-limits of the domain of integration?
-%
-The answer is no, as we can see from a slightly extended example:
-%
-\begin{align*}
-   f(x) &= x^2
-\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
-\end{align*}
-%
-The variable |x| bound on the left is independent of the variable |x|
-``bound under the integral sign''.
-%
-We address this issue in detail in \cref{sec:functions-and-scoping}.
-%
-Mathematics text books usually avoid the risk of confusion by
-(silently) renaming variables when needed, but we believe that this
-renaming is a sufficiently important operation to be more explicitly
-mentioned.
-
 
 \section{Types of |data| and functions}
 
@@ -350,7 +278,7 @@ Fortunately, in mathematics and in Haskell all functions are pure.
 %*TODO forward pointer to exercises about cardinality~\ref{exc:counting}
 %*TODO explain the e : t syntax (and mention e `elem` t)
 
-\subsection{Functions}
+%\subsection{Functions}
 
 \paragraph{Variable names as type hints}
 
@@ -578,8 +506,175 @@ data Either p q = Left p | Right q
 \end{spec}
 
 
+\section{Notation and abstract syntax for sequences}
+\label{sec:infseq}
+\jp{BLOAT: Seems like an odd place to talk about this. Why not put it together with the limits section?}
+%TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
+%TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
+As preparation for the language of sequences and limits
+later (\cref{par:LimitOfSequence,sec:formal-power-series}), we spend a few lines on the notation and abstract
+syntax of sequences.
 
-\section{An invitation to DSL of Maths: complex numbers}
+In math textbooks, the following notation is commonly in use: $\left\{ a_i \right\}_{i=0}^{\infty}$ or
+just $\left\{ a_i \right\}$ and (not always) an indication of the type
+$X$ of the $a_i$.
+%
+Note that the |a| at the center of this notation actually carries all
+of the information: an infinite family of values $a_i$ each of type |X|.
+%
+If we interpret the subscript notation $a_i$ as function application ($a(i)$) we can see that
+|a : Nat -> X| is a useful typing of an infinite sequence.
+%
+Some examples:
+%
+\begin{code}
+type Nat    =  Natural     -- imported from |Numeric.Natural|
+type QQP    =  Ratio Nat   -- imported from |Data.Ratio|
+type Seq a  =  Nat -> a
+
+idSeq :: Seq Nat
+idSeq i = i                -- |{0, 1, 2, 3, ...}|
+
+invSeq :: Seq QQP
+invSeq i = 1%(1 + i)       -- |{frac 1 1, frac 1 2, frac 1 3, frac 1 4, ...}|
+
+pow2 :: Num r =>  Seq r
+pow2 = (2^{-"{}"-})        -- |{1, 2, 4, 8, ...}|
+
+conSeq :: a -> Seq a
+conSeq c i = c             -- |{c, c, c, c, ...}|
+\end{code}
+
+What operations can be performed on sequences?
+%
+We have seen the first one: given a value |c| we can generate a
+constant sequence with |conSeq c|.
+%
+We can also add sequences componentwise (also called ``pointwise''):
+%
+\begin{code}
+addSeq :: Num a => Seq a -> Seq a -> Seq a
+addSeq f g i = f i + g i
+\end{code}
+and in general we can lift any binary operation |op :: a -> b -> c| to the
+corresponding, pointwise, operation of sequences:
+\begin{code}
+liftSeq2 :: (a->b->c) -> Seq a -> Seq b -> Seq c
+liftSeq2 op f g i = op (f i) (g i)    -- |{op (f 0) (g 0), op (f 1) (g 1), ...}|
+\end{code}
+Similarly we can lift unary operations, and ``nullary'' operations:
+\begin{code}
+liftSeq1 :: (a->b) -> Seq a -> Seq b
+liftSeq1 h f i = h (f i)              -- |{h (f 0), h (f 1), h (f 2), ...}|
+
+liftSeq0 :: a -> Seq a
+liftSeq0 c i = c
+\end{code}
+
+Exercise~\ref{exc:fmap}: what does function composition do to a sequence?
+  For a sequence |a| what is |a . (1+)|? What is |(1+) . a|?
+
+Another common mathematical operator on sequences is the limit.
+%
+We will get back to limits later (\cref{sec:LimPoint,sec:FunLimit}),
+but for now we just analyse the notation and typing.
+%
+This definition is slightly adapted from Wikipedia (2017-11-08):
+\begin{quote}
+  We call \(L\) the limit of the sequence |{xn}| if the following
+  condition holds: For each real number |ε>0|, there exists
+  a natural number |N| such that, for every natural number
+  |n >= N|, we have |absBar (xn - L) < ε|.
+
+  If so, we say that the sequence converges to |L| and write
+  \[L = \lim_{i\to\infty} x_i\]
+\end{quote}
+%
+There are (at least) two things to note here.
+%
+First, with this syntax, the $\lim_{i\to\infty} x_i$ expression form
+binds |i| in the expression |xi|.
+%
+We could just as well say that |lim| takes a function |x :: Nat -> X|
+as its only argument.\jp{This is explained in \cref{sec:functions-and-scoping}}
+%
+Second, an arbitrary sequence |x|, may or may not have a limit.
+%
+Thus the customary use of |L =| is a bit of an abuse of notation, because
+the right hand side may not be well defined.
+%
+One way to capture that idea is to let |lim| return the type |Maybe
+X|, with |Nothing| corresponding to divergence. Then its complete type
+is |(Nat -> X) -> Maybe X| and
+%
+\(L = \lim_{i\to\infty} x_i\) means |Just L = lim x|
+%
+We will return to limits and their proofs in
+\cref{par:LimitOfSequence} after we have reviewed some logic.
+\jp{Again, awkward back-and-forth}
+
+Here we just define one more common operation: the sum of a sequence
+(like \(\sigma = \sum_{i=0}^{\infty} 1/i!\)\footnote{Here |n! =
+  1*2* ... *n| is the factorial \lnOnly{(sv: fakultet)}.}).
+%
+Just as not all sequences have a limit, not all have a sum either.
+%
+But for every sequence we can define a new sequence of partial sums:
+%
+\begin{code}
+sums :: Num a => Seq a -> Seq a
+sums = scan (+) 0
+\end{code}
+The function |sums| is perhaps best illustrated by examples:
+\begin{spec}
+  sums (conSeq c)  == {0, c, 2*c, 3*c, ...}
+  sums (idSeq)     == {0, 0, 1, 3, 6, 10, ...}
+\end{spec}
+The general pattern is to start at zero and accumulate the sum of
+initial prefixes of the input sequence (we leave the defintion of
+|scan| as an exercise to the reader).
+%
+% The definition of |sums| uses |scan| which is a generalisation which
+% ``sums'' with a user-supplied operator |(⊛)| starting from an
+% arbitrary value |z| (instead of zero).\jp{|scan| never comes up again. Let's not generalise.}
+% %
+% \begin{code}
+% scan :: (b->a->b) -> b -> Seq a -> Seq b
+% scan (⊛) z a = s
+%   where  s 0 = z
+%          s i = s (i-1)  ⊛  a i
+% \end{code}
+%
+
+By combining |sums| with limits we can state formally that the sum
+of an infinite sequence |a| exists and is |S| iff the limit of |sums a| exists
+and is |S|.
+%
+We can write the above as a formula: |Just S = lim (sums a)|. For our example it
+turns out that the sum converges and that
+\(\sigma = \sum_{i=0}^{\infty} 1/i! = e\) but we will not get to that
+until \cref{sec:exp}.
+
+We will also return to (another type of) limits in \refSec{sec:typePartialDerivative}
+about derivatives where we explore variants of the classical
+definition
+%
+\[f'(x) = \lim_{h\to0} \frac{f(x+h)-f(x)}{h}\]
+
+To sum up this subsection, we have defined a small Domain-Specific
+Language (DSL) for infinite sequences by defining a type (|Seq a|),
+some operations (|conSeq|, |addSeq|, |liftSeq1|, |sums|, \ldots) and some
+evaluation functions or predicates (like |lim| and |sum|).
+%*TODO: the concept of "run functions" has not yet been introduced
+
+% ----------------------------------------------------------------
+
+
+
+\section[A DSL of complex numbers]{A DSL of complex numbers\footnote{This part is partly based on material by
+\citet{TFPIE15_DSLsofMath_IonescuJansson} which appeared at the International
+Workshop on Trends in Functional Programming in Education, 2015.}
+}
 \label{sec:complexcase}
 
 We now turn to our first study of mathematics as found ``in the
@@ -1323,167 +1418,6 @@ parameter to make the degree of approximation tunable (|Int|,
 \begin{exercise}
 Find other pairs of operators satisfying a distributive law.
 \end{exercise}
-\section{Notation and abstract syntax for (infinite) sequences}
-\label{sec:infseq}
-\jp{BLOAT: Seems like an odd place to talk about this. Why not put it together with the limits section?}
-%TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
-%TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
-As preparation for the language of sequences and limits 
-later (\cref{par:LimitOfSequence,sec:formal-power-series}), we spend a few lines on the notation and abstract
-syntax of sequences.\jp{Forward references for where we use this.}
-
-In math textbooks, the following notation is commonly in use: $\left\{ a_i \right\}_{i=0}^{\infty}$ or
-just $\left\{ a_i \right\}$ and (not always) an indication of the type
-$X$ of the $a_i$.
-%
-Note that the |a| at the center of this notation actually carries all
-of the information: an infinite family of values $a_i$ each of type |X|.
-%
-If we interpret the subscript notation $a_i$ as function application ($a(i)$) we can see that
-|a : Nat -> X| is a useful typing of an infinite sequence.
-%
-Some examples:
-%
-\begin{code}
-type Nat    =  Natural     -- imported from |Numeric.Natural|
-type QQP    =  Ratio Nat   -- imported from |Data.Ratio|
-type Seq a  =  Nat -> a
-
-idSeq :: Seq Nat
-idSeq i = i                -- |{0, 1, 2, 3, ...}|
-
-invSeq :: Seq QQP
-invSeq i = 1%(1 + i)       -- |{frac 1 1, frac 1 2, frac 1 3, frac 1 4, ...}|
-
-pow2 :: Num r =>  Seq r
-pow2 = (2^{-"{}"-})        -- |{1, 2, 4, 8, ...}|
-
-conSeq :: a -> Seq a
-conSeq c i = c             -- |{c, c, c, c, ...}|
-\end{code}
-
-What operations can be performed on sequences?
-%
-We have seen the first one: given a value |c| we can generate a
-constant sequence with |conSeq c|.
-%
-We can also add sequences componentwise (also called ``pointwise''):
-%
-\begin{code}
-addSeq :: Num a => Seq a -> Seq a -> Seq a
-addSeq f g i = f i + g i
-\end{code}
-and in general we can lift any binary operation |op :: a -> b -> c| to the
-corresponding, pointwise, operation of sequences:
-\begin{code}
-liftSeq2 :: (a->b->c) -> Seq a -> Seq b -> Seq c
-liftSeq2 op f g i = op (f i) (g i)    -- |{op (f 0) (g 0), op (f 1) (g 1), ...}|
-\end{code}
-Similarly we can lift unary operations, and ``nullary'' operations:
-\begin{code}
-liftSeq1 :: (a->b) -> Seq a -> Seq b
-liftSeq1 h f i = h (f i)              -- |{h (f 0), h (f 1), h (f 2), ...}|
-
-liftSeq0 :: a -> Seq a
-liftSeq0 c i = c
-\end{code}
-
-Exercise~\ref{exc:fmap}: what does function composition do to a sequence?
-  For a sequence |a| what is |a . (1+)|? What is |(1+) . a|?
-
-Another common mathematical operator on sequences is the limit.
-%
-We will get back to limits later (\cref{sec:LimPoint,sec:FunLimit}),
-but for now we just analyse the notation and typing.
-%
-This definition is slightly adapted from Wikipedia (2017-11-08):
-\begin{quote}
-  We call \(L\) the limit of the sequence |{xn}| if the following
-  condition holds: For each real number |ε>0|, there exists
-  a natural number |N| such that, for every natural number
-  |n >= N|, we have |absBar (xn - L) < ε|.
-
-  If so, we say that the sequence converges to |L| and write
-  \[L = \lim_{i\to\infty} x_i\]
-\end{quote}
-%
-There are (at least) two things to note here.
-%
-First, with this syntax, the $\lim_{i\to\infty} x_i$ expression form
-binds |i| in the expression |xi|.
-%
-We could just as well say that |lim| takes a function |x :: Nat -> X|
-as its only argument.\jp{This is explained in \cref{sec:functions-and-scoping}}
-%
-Second, an arbitrary sequence |x|, may or may not have a limit.
-%
-Thus the customary use of |L =| is a bit of an abuse of notation, because
-the right hand side may not be well defined.
-%
-One way to capture that idea is to let |lim| return the type |Maybe
-X|, with |Nothing| corresponding to divergence. Then its complete type
-is |(Nat -> X) -> Maybe X| and
-%
-\(L = \lim_{i\to\infty} x_i\) means |Just L = lim x|
-%
-We will return to limits and their proofs in
-\cref{par:LimitOfSequence} after we have reviewed some logic.
-\jp{Again, awkward back-and-forth}
-
-Here we just define one more common operation: the sum of a sequence
-(like \(\sigma = \sum_{i=0}^{\infty} 1/i!\)\footnote{Here |n! =
-  1*2* ... *n| is the factorial \lnOnly{(sv: fakultet)}.}).
-%
-Just as not all sequences have a limit, not all have a sum either.
-%
-But for every sequence we can define a new sequence of partial sums:
-%
-\begin{code}
-sums :: Num a => Seq a -> Seq a
-sums = scan (+) 0
-\end{code}
-The function |sums| is perhaps best illustrated by examples:
-\begin{spec}
-  sums (conSeq c)  == {0, c, 2*c, 3*c, ...}
-  sums (idSeq)     == {0, 0, 1, 3, 6, 10, ...}
-\end{spec}
-The general pattern is to start at zero and accumulate the sum of
-initial prefixes of the input sequence.
-%
-The definition of |sums| uses |scan| which is a generalisation which
-``sums'' with a user-supplied operator |(⊛)| starting from an
-arbitrary value |z| (instead of zero).\jp{|scan| never comes up again. Let's not generalise.}
-%
-\begin{code}
-scan :: (b->a->b) -> b -> Seq a -> Seq b
-scan (⊛) z a = s
-  where  s 0 = z
-         s i = s (i-1)  ⊛  a i
-\end{code}
-%
-And by combining the definition of |sums| with limits we can state formally that the sum
-of an infinite sequence |a| exists and is |S| iff the limit of |sums a| exists
-and is |S|.
-%
-We can write the above as a formula: |Just S = lim (sums a)|. For our example it
-turns out that the sum converges and that
-\(\sigma = \sum_{i=0}^{\infty} 1/i! = e\) but we will not get to that
-until \cref{sec:exp}.
-
-We will also return to (another type of) limits in \refSec{sec:typePartialDerivative}
-about derivatives where we explore variants of the classical
-definition
-%
-\[f'(x) = \lim_{h\to0} \frac{f(x+h)-f(x)}{h}\]
-
-To sum up this subsection, we have defined a small Domain-Specific
-Language (DSL) for infinite sequences by defining a type (|Seq a|),
-some operations (|conSeq|, |addSeq|, |liftSeq1|, |sums|, |scan|, \ldots) and some
-evaluation functions or predicates (like |lim| and |sum|).
-%*TODO: the concept of "run functions" has not yet been introduced
-
-% ----------------------------------------------------------------
-
 
 
 %if False
