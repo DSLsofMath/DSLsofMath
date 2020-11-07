@@ -44,12 +44,14 @@
 \usepackage{tabu}
 \newtheorem{theorem}{Theorem}
 \newcommand\jp[1]{\todo{JP: #1}}
+\newcommand\ci[1]{\todo{CI: #1}}
+\newcommand\pj[1]{\todo{PJ: #1}}
 \newcommand\extraMaterial{\(\ast\)}
 \newcommand\pedantic[1]{\footnote{Pedantic remark: #1}}
 
 \providecommand\mathbbm{\mathbb}
 
- 
+
 %let submit = False
 %if submit
 \newcommand{\todo}[2][?]{}
@@ -117,7 +119,7 @@
 : Lecture Notes
 %endif lectureNotes
 }
-\author{Jean-Philippe Bernardy \and Cezar Ionescu  \and Patrik Jansson}
+\author{Patrik Jansson \and Cezar Ionescu  \and Jean-Philippe Bernardy}
 %           {Chalmers University of Technology, Sweden}
 %           {\texttt{patrikj@@chalmers.se}}
 %           {\texttt{cezar@@chalmers.se}}
@@ -149,9 +151,6 @@
 %
   and, finally, to organize the resulting functions and types in
   domain-specific languages.
-
-
-
 
 \tableofcontents
 

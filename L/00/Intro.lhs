@@ -2,9 +2,8 @@
 \chapter{Introduction}
 \label{ch:intro}
 
-
-These lecture notes\reviseForBook{This book stems from ....} aim to cover the lectures and exercises of the
-recently introduced BSc-level course ``Domain-Specific Languages of
+This book started out as lecture notes aimed at covering the lectures and exercises of the
+BSc-level course ``Domain-Specific Languages of
 Mathematics'' (at Chalmers University of Technology and University of
 Gothenburg).
 %
@@ -35,8 +34,8 @@ the classical textbook of \citet{gries1993logical}) only in the field
 of discrete mathematics.
 %
 In fact, this demonstration has been so successful, that we
-increasingly see the discrete mathematics courses being taken over by
-computer science departments.\jp{evidence?}
+see discrete mathematics courses being taken over by
+computer science departments.
 %
 This is a quite unsatisfactory state of affairs, for at least two
 reasons.
@@ -68,17 +67,6 @@ such as real and complex analysis, or linear algebra.
 
 This is a serious problem, because this lack of competence tends to
 infect the design of the entire curriculum.
-%
-\lnOnly{
-For example, a course in
-``\href{https://www.student.chalmers.se/sp/course?course_id=22612}
-{Modeling of sustainable energy systems}'' for Chalmers'
-CSE\footnote{CSE = Computer Science \& Engineering = Datateknik = D}
-students has to be tailored around this limitation, meaning that the
-models, methods, and tools that can be presented need to be
-drastically simplified, to the point where contact with mainstream
-research becomes impossible.}
-
 
 We propose that a focus on \emph{domain-specific languages} (DSLs) can
 be used to repair this unsatisfactory state of affairs.
@@ -93,7 +81,9 @@ productivity, above alternative modelling approaches such as UML
 %
 Moreover, building DSLs also offers the opportunity for
 interdisciplinary activity and can assist in reaching a shared
-understanding of intuitive or vague notions. This is supported by our experience: an example is the
+understanding of intuitive or vague notions.
+%
+This is supported by our experience: an example is the
 work done at Chalmers in cooperation with the Potsdam Institute for
 Climate Impact Research in the context of
 \href{http://www.chalmers.se/en/departments/cse/news/Pages/Global-Systems-Science.aspx}{Global
@@ -101,7 +91,7 @@ Climate Impact Research in the context of
   ionescujansson2013DTPinSciComp, jaeger13:GSSshort,
   ionescujansson:LIPIcs:2013:3899, DBLP:journals/corr/BottaJICB16,
   botta_jansson_ionescu_2017_avoidability}.
-
+%TODO: perhaps look over the references here
 
 Thus, a course on designing and implementing DSLs can be an important
 addition to an engineering curriculum.
@@ -111,25 +101,29 @@ applications: mathematics.
 %
 Indeed, mathematics offers countless examples of DSLs: the language of
 group theory, say, or the language of probability theory, embedded in
-that of measure theory\jp{forward references to chapters}.
+that of measure theory\jp{forward references to chapters (and update text here to better fit actual content)}.
 %
 The idea that the various branches of mathematics are in fact DSLs
 embedded in the ``general purpose language'' of set theory was (even
 if not expressed in these words) the driving idea of the Bourbaki
-project\jp{citations}, which exerted an enormous influence on present day
+project\ci{what to cite: \href{https://en.wikipedia.org/wiki/Nicolas_Bourbaki}{wikipedia}?, \href{https://www.bourbaki.fr/}{Bourbaki association homepage}?, first book(s)?}, which exerted an enormous influence on present day
 mathematics.
 
-Hence, the topic of this \course{} is \emph{DSLs of Mathematics (DSLM)}. It presents
-classical mathematical topics in a way which builds on the experience
-of discrete mathematics: giving specifications of the concepts
-introduced, paying attention to syntax and types, and so on.
+Hence, the topic of this \course{} is \emph{DSLs of Mathematics (DSLM)}.
+%
+It presents classical mathematical topics in a way which builds on the
+experience of discrete mathematics: giving specifications of the
+concepts introduced, paying attention to syntax and types, and so on.
 %
 For the mathematics students, the style of this \course{} will be more
-formal than usual, as least from a linguistic perspective. The
-increased formality is justified by the need to implement (fragments
-of) the language.
-\jp{There seem to be a paragraph missing about the benefits for the CS student}
+formal than usual, as least from a linguistic perspective.
 %
+The increased formality is justified by the need to implement
+(parts of) the languages.
+%
+\jp{There seem to be a paragraph missing about the benefits for the CS
+  student}
+%TODO: one aspect is to bring the "computer aided learning" present in feedback from the compiler from programming to also help in mathematics.
 We provide a wide range of applications of the DSLs introduced,
 so that the new concepts can be seen ``in action'' as soon as
 possible.
@@ -143,12 +137,16 @@ Second, they should be able to handle new mathematical areas using the
 computer science perspective.
 %
 (For the detailed learning outcomes, see Figure~\ref{fig:LearningOutcomes}.)
-
-\begin{wrapfigure}{R}{0.5\textwidth}
+%
+\begin{wrapfigure}[26]{R}{0.5\textwidth}
+\small
+\vspace{-2em}
 \begin{itemize}
 \item Knowledge and understanding
   \begin{itemize}
-  \item design and implement a DSL (Domain-Specific Language) for a new domain
+  \item design and implement a DSL
+    % (Domain-Specific Language)
+    for a new domain
   \item organize areas of mathematics in DSL terms
   \item explain main concepts of elementary real and complex analysis,
         algebra, and linear algebra
@@ -171,11 +169,13 @@ computer science perspective.
 \end{wrapfigure}
 
 To achieve these objectives, the course consists of a sequence of case
-studies in which a mathematical area is first presented (for example,
-a fragment of linear algebra, probability theory, interval analysis,
-or differential equations), followed by a careful analysis that
-reveals the domain elements needed to build a language for that
-domain.
+studies in which a mathematical area is first presented (for
+example,\pj{update the list to match contents, and perhaps include
+  chapter references} a fragment of linear algebra, probability
+theory, interval analysis, or differential equations), followed by a
+careful analysis that reveals the domain elements needed to build a
+language for that domain.
+%**TODO: adjust to real areas covered.
 %
 The DSL is first used informally, in order to ensure that it is
 sufficient to account for intended applications (for example, solving
@@ -186,8 +186,7 @@ valuable for improving the students' understanding of the mathematical
 area.
 %
 The DSL is then implemented in Haskell.
-%**TODO: adjust to real areas covered.
-%**TODO: add these comparisons
+%**TODO: add these comparisons, or update the text
 The resulting implementation can be compared with existing ones, such
 as Matlab in the case of linear algebra, or R in the case of
 statistical computations.
@@ -196,7 +195,7 @@ Finally, limitations of the DSL are assessed and the possibility for
 further improvements discussed.
 
 In the first instances, the course is an elective course for the
-second year within programmes such as CSE, SE, and Math.
+second year within programmes such as CSE\footnote{CSE = Computer Science \& Engineering = Datateknik = D}, SE, and Math.
 %
 The potential students will have all taken first-year mathematics
 courses, and the only prerequisite which some of them will not satisfy
@@ -223,10 +222,8 @@ students who, having taken DSLM, pass the third-year courses
 \emph{\href{https://www.student.chalmers.se/sp/course?course_id=21303}{Control
     Theory (sv: Reglerteknik)}}, which are current major stumbling blocks.
 %
-\lnOnly{
-Since the course is, at least initially, an elective one, we have also
-used the possibility to compare the results with those of a control
-group (students who have not taken the course).}
+We have compared the results with those of a control group (students
+who have not taken the course).
 %
 The evaluation of the student results shows improvements in the pass
 rates and grades in later courses.
@@ -250,48 +247,37 @@ details are explained by
     Control mean grade  & 3.91  & 3.88 & 3.35 \\
 
   \end{tabu}
-\caption{Pass rate and mean grade in third year courses for students who took and passed DSLsofMath and those who did not. Group sizes: PASS 34, IN 53, OUT 92 (145 in all)}
+\caption{Pass rate and mean grade in third year courses for students who took and passed DSLsofMath and those who did not. Group sizes: PASS 34, IN 53, OUT 92 (145 in all).}
   \label{tab:res}
 \end{table}
+%TODO: perhaps add later statistics
 
-
-
-
-The work that leads up to the current \course{} is as follows:
-
-\paragraph{2014:} in interaction with our colleagues from the various
-study programmes, we performed an assessment of the current status of
-potential students for the course in terms of their training (what
-prerequisites we can reasonably assume) and future path (what
-mathematical fields they are likely to encounter in later studies),
-and we worked out a course plan (which we submitted in February 2015,
-so that the first instance of the course could start in January 2016).
+The work that leads up to the current \course{} started in 2014 with
+an assessment of what prerequisites we can reasonably assume and what
+mathematical fields the targeted students are likely to encounter in
+later studies.
 %
-We also made a survey of similar courses being offered at other
-universities, but did not find any close matches.\reviseForBook{What about Doets and van Eijck ``The Haskell road to Logic Math and Programming''}
+In 2015 we submitted a course plan so that the first instance of the
+course could start early 2016.
+%
+We also surveyed similar courses being offered at other universities,
+but did not find any close matches.
+%
+(``The Haskell road to Logic Math and Programming'' by
+\citet{doets-haskellroadto-2004} is perhaps the closest, but it is
+mainly aimed at discrete mathematics.)
 
 \reviseForBook{What follows probably needs thorough revision}
-\paragraph{2015:} we developed course materials for use within the
-first instance, wrote a paper
-\citep{TFPIE15_DSLsofMath_IonescuJansson} about the course and
-pressented the pedagogical ideas at several events (TFPIE'15,
-DSLDI'15, IFIP WG 2.1 \#73 in Göteborg, LiVe4CS in Glasgow).
-
-\paragraph{2016:} we ran the first instance of DSLM (partly paid by
-the regular course budget, partly by the pedagogical project) with
-Cezar Ionescu as main lecturer.
-
-\paragraph{2017:} we ran the second instance of DSLM (paid fully by
-the regular course budget), now with Patrik Jansson as main lecturer.
-
-\paragraph{2016, 2017, and 2018:} we used the feedback from students
-following the standard Chalmers course evaluation in order to improve
-and further develop the course material.
-
-\paragraph{2018:} we wrote a paper presenting three examples from the
-course material, and an evaluation of the student results showing
-improvements in the pass rates and grades in later courses.
-
+%
+While preparing course materials for use within the first instance we
+wrote a paper \citep{TFPIE15_DSLsofMath_IonescuJansson} about the
+course and presented the pedagogical ideas at several events
+(TFPIE'15, DSLDI'15, IFIP WG 2.1 \#73 in Göteborg, LiVe4CS in
+Glasgow).
+%
+In the following years we used the feedback from students following
+the standard course evaluation in order to improve and further develop
+the course material into complete lecture notes, and now a book.
 
 \paragraph{Future work} includes involving faculty from CSE and
 mathematics in the development of other mathematics courses with the
@@ -349,13 +335,17 @@ expect all students to be familiar with them (for example, limits of
 sequences, continuous functions, derivatives) or because they can be
 useful in many applications (e.g., Laplace transforms, linear algebra).
 
-In the first three years, the enrolment and results of the DSLsofMath
+In the first few years, the enrolment and results of the DSLsofMath
 course itself was as follows:
-\begin{itemize}
-\item 2016: 28 students, pass rate: 68\%
-\item 2017: 43 students, pass rate: 58\%
-\item 2018: 39 students, pass rate: 89\%
-\end{itemize}
+
+\begin{center}
+\begin{tabular}{lrrrrr}
+Year           & '16 & '17 & '18 & '19 & '20\\\hline
+Student count  &  28 &  43 &  39 &  59 &  50\\
+Pass rate (\%) &  68 &  58 &  89 &  73 &  68\\
+\end{tabular}
+\end{center}
+
 Note that this also counts students from other programmes (mainly SE
 and Math) while Table~\ref{tab:res} only deals with the CSE
 programme students.
@@ -421,7 +411,7 @@ In this book, as a compromise, we use the period in our source code,
 but our typesetting tool renders it as a circle glyph. If, when
 looking at typset pages, any doubt should remain regarding to the form
 of the Haskell source, we urge the reader to consult the github
-repository. 
+repository.
 
 %
 The reader is encouraged to experiment with the examples to get a
