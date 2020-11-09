@@ -1,5 +1,5 @@
-# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
-(Pres. for TM3, To 2019-11-19 av Patrik Jansson.)
+# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=30199) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+(Pres. for TM3, Ti 2020-11-10 av Patrik Jansson.)
 
 * Patrik Jansson, forskare & lärare i funktionell programmering
     * i gränsområdet mellan matematik och datavetenskap
@@ -13,7 +13,7 @@ Presentera klassiska matematiska ämnen från ett datavetenskapligt perspektiv:
 
 Kursen är tänkt att ge en fördjupad matematisk förståelse för
 datastudenter och en fördjupad datavetenskaplig förståelse för
-matematikstudenter.
+matematikstudenter. (11 TM-studenter har gått kursen)
 
 # Student-citat
 
@@ -77,7 +77,6 @@ list         =  [(1+), (2*), kvadrat, upphöjtFyra]
 * Mötet mellan matematiken och datavetenskapen
     * det är där det händer riktigt spännande saker ...
 
-
 Välkomna!
 /Patrik
 
@@ -89,6 +88,34 @@ Välkomna!
 \begin{align*}
 \frac{d}{dt} \frac{\partial L}{\partial \dot{q}} - \frac{\partial L}{\partial q} &= 0
 \end{align*}
+
+# Förkunskaper
+
+Studenten ska ha klarat (+TM-exempel):
+
+* en kurs i diskret matematik
+    * TM1: en kombination av Mat.prog., Lin.alg&geometri, Mat.orientering, Sannolikhet, ...
+* två andra kurser i matematik
+    * TM1: exempelvis Linjär algebra, Analys I och II
+* två kurser i datateknik
+    * TM1: Programmeringsteknik + TM2: Datastrukturer
+* ytterligare tre kurser (22.5hp) inom matematik, data eller IT
+    * TM1: LinAlg&NumAn, Flervariabel + TM2: Komplex, ...
+
+Rekommenderat (men ej krav): Funktionell programmering
+# Matematikens domänspecifika språk (DSLsofMath) för andra ämnen
+
+Inspirerat av den här kursen har flera studentgrupper genomfört kandidatarbetesprojekt under de senaste åren med följande resultat: (*TM-student*)
+
++ 2016: \small Programmering som undervisningsverktyg för Transformer, signaler och system - [Utvecklingen av läromaterialet TSS med DSL](https://hdl.handle.net/20.500.12380/243894)
+  Jacob Jonsson, Joakim Olsson, Filip Lindahl, *Peter Ngo*, Cecilia Rosvall
++ 2018: Ett komplementerande läromaterial för datastudenter som lär sig fysik - [Läromaterialet Learn You a Physics for Great
+Good!](https://hdl.handle.net/20.500.12380/256122)
+  Johan Johansson, Oskar Lundström, Erik Sjöström, Björn Werner
++ 2020: A Computer Science Approach to Teaching Control Theory - Developing Learning Material Using Domain-Specific Languages
+  Simon Hägglund, Jakob Alexander Fihlman, *Elin Ohlman*, Filip Nylander, Christian Josefsson, Tommy Räjert
+
+Några av er kanske också vill gå den vägen, eller ta del av deras material.
 
 
 
@@ -114,18 +141,3 @@ Exempel:
     * Semantik: [ [ Cell ] ] -> Value
 * integraler: [Behöver ritas!]
     * (notera var variablerna binds)
-
-# Förkunskaper
-
-Studenten ska ha klarat (+TM-exempel):
-
-* en kurs i diskret matematik
-    * TM1: en kombination av Mat.prog., Lin.alg&geometri, Mat.orientering, Sannolikhet, ...
-* två andra kurser i matematik
-    * TM1: exempelvis Linjär algebra, Analys I och II
-* två kurser i datateknik
-    * TM1: Programmeringsteknik + TM2: Datastrukturer
-* ytterligare tre kurser (22.5hp) inom matematik, data eller IT
-    * TM1: LinAlg&NumAn, Flervariabel + TM2: Komplex, ...
-
-Rekommenderat (men ej krav): Funktionell programmering
