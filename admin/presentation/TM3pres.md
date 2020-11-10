@@ -103,6 +103,7 @@ Studenten ska ha klarat (+TM-exempel):
     * TM1: LinAlg&NumAn, Flervariabel + TM2: Komplex, ...
 
 Rekommenderat (men ej krav): Funktionell programmering
+
 # Matematikens domänspecifika språk (DSLsofMath) för andra ämnen
 
 Inspirerat av den här kursen har flera studentgrupper genomfört kandidatarbetesprojekt under de senaste åren med följande resultat: (*TM-student*)
