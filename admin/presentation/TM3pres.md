@@ -15,7 +15,7 @@ Kursen är tänkt att ge en fördjupad matematisk förståelse för
 datastudenter och en fördjupad datavetenskaplig förståelse för
 matematikstudenter. (11 TM-studenter har gått kursen)
 
-# Student-citat
+# Några student-citat från kursvärderingar
 
 * "I feel like I have gotten a better understanding of mathematics, and how to make use of domain-specific languages."
 * "The teachers (and assistants) were very engaging."
