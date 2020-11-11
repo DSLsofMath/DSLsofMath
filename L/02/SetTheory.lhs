@@ -1,22 +1,22 @@
 \section{An aside: Pure set theory}
-
+\label{sec:PureSet}
+\pj{This subsection depends on terminology from later in the chapter. Needs to be moved of rephrased.}
 One way to build mathematics from the ground up is to start from pure
 set theory and define all concepts by translation to sets.
 %
-We will only work with this as a mathematical domain to study\jp{Really? Where is the DSL?}, not as
+We will only work with (a small corner of) this as a mathematical domain to study, not as
 ``the right way'' of doing mathematics (there are other ways).
 %
 The core of the language of pure set theory is captured by four
-function symbols.
+function symbols (|{}|, |S|, |Union|, and |Intersection|).
 %
-We have a nullary function symbol |{}| for the empty set (sometimes
+We use a nullary function symbol |{}| for the empty set (sometimes
 written $\emptyset$) and a unary function symbol |S| for the function
 that builds a singleton set from an ``element''.
 %
 All non-variable terms so far are |{}|, |S {}|, |S (S {})|, \ldots
 %
 The first set is empty but all the others are (different) one-element sets.
-%
 
 Next we add two binary function symbols for union and intersection of
 sets (denoted by terms).
@@ -34,7 +34,7 @@ set are again sets.
 %
 \lnOnly{(Yes, this can make your head spin.)}
 
-At this point it can be a good exercise to enumerate a few sets of
+At this point it is a good exercise to enumerate a few sets of
 cardinality\footnote{The \emph{cardinality} of a set is the number of
   elements in it.} 0, 1, 2, and 3.
 %
@@ -57,7 +57,7 @@ And we can at any point apply |S| to get back a new set of cardinality
 To talk about things like natural numbers in pure set theory they need
 to be encoded.
 %
-FOL does not have function definitions or recursion, but in a suitable
+FOL\pj{Fix these references to concepts introduced later.} does not have function definitions or recursion, but in a suitable
 meta-language (like Haskell) we can write a function that creates a
 set with |n| elements (for any natural number |n|) as a term in FOL.
 %

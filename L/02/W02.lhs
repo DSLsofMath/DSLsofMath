@@ -5,7 +5,7 @@
 \label{sec:logic}
 
 
-In this chapter, we continue to exercise our skill of organize areas
+In this chapter, we continue to exercise our skill of organizing areas
 of mathematics in DSL terms. We apply our methodology to the languages
 of logic: propositions and proofs. Additionally, at the same time, we
 will develop adequate notions and notations for mathematical

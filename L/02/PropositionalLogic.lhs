@@ -12,6 +12,7 @@ deriving instance Eq Prop
 \section{Propositional Calculus}
 \label{sec:PropFrag} % yep, the propositional calculus is a propositional fragment of other logics, such as FOL.
 
+\pj{If section \ref{sec:PureSet} is not moved again, this ``first'' is second.}
 Our first DSL for this chapter is the language of \emph{propositional
   calculus} (or propositional logic), modelling simple propositions with the usual
 combinators for and, or, implies, etc.
