@@ -633,18 +633,20 @@ The function |sums| is perhaps best illustrated by examples:
 The general pattern is to start at zero and accumulate the sum of
 initial prefixes of the input sequence (we leave the defintion of
 |scan| as an exercise to the reader).
+
+%if False
 %
 % The definition of |sums| uses |scan| which is a generalisation which
 % ``sums'' with a user-supplied operator |(⊛)| starting from an
 % arbitrary value |z| (instead of zero).\jp{|scan| never comes up again. Let's not generalise.}
 % %
-% \begin{code}
-% scan :: (b->a->b) -> b -> Seq a -> Seq b
-% scan (⊛) z a = s
-%   where  s 0 = z
-%          s i = s (i-1)  ⊛  a i
-% \end{code}
-%
+\begin{code}
+scan :: (b->a->b) -> b -> Seq a -> Seq b
+scan (⊛) z a = s
+  where  s 0 = z
+         s i = s (i-1)  ⊛  a i
+\end{code}
+%endif
 
 By combining |sums| with limits we can state formally that the sum
 of an infinite sequence |a| exists and is |S| iff the limit of |sums a| exists

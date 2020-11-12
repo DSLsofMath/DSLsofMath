@@ -64,8 +64,10 @@ We may also need the Haskell standard library version for some testing later:
 > eqFun2 :: Eq c => (a -> b -> c) -> (a -> b -> c) -> (a -> b -> Bool)
 > eqFun2 f g a b  =  f a b == g a b
 
-> cmpEvalEnv :: Int -> Env Int String -> Bool
-> cmpEvalEnv = eqFun2 lookup (flip evalEnv)
+Moved to Chapter 3
 
-> testEvalEnv :: IO ()
-> testEvalEnv = quickCheck cmpEvalEnv
+cmpEvalEnv :: Int -> Env Int String -> Bool
+cmpEvalEnv = eqFun2 lookup (flip evalEnv)
+
+testEvalEnv :: IO ()
+testEvalEnv = quickCheck cmpEvalEnv

@@ -18,7 +18,7 @@ Our first DSL for this chapter is the language of \emph{propositional
 combinators for and, or, implies, etc.
 %
 \lnOnly{(The Swedish translation is ``satslogik'' and some more Swe-Eng
-translations are collected on the GitHub page of these lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)}
+translations are collected on the GitHub page of these lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)}%
 %
 When reading a logic book, one will encounter several concrete syntactic constructs related to propositional logic, which are collected in
 Table~\ref{tab:PropCalc}. Each row lists common synonyms and their arity (number of arguments).
@@ -37,8 +37,8 @@ Table~\ref{tab:PropCalc}. Each row lists common synonyms and their arity (number
 \label{tab:PropCalc}
 \end{table}
 
-Some example propositions will include \(|p1| = a \wedge (\neg a)\),
-\(|p2| = a \Rightarrow b\), \(|p3| = a \vee (\neg a)\),
+Some example propositions are \(|p1| = a \wedge (\neg a)\),
+\(|p2| = a \vee (\neg a)\), \(|p3| = a \Rightarrow b\),
 \(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).
 %
 The names |a|, |b|, |c|, \ldots are ``propositional variables'': they
@@ -48,8 +48,8 @@ calculus --- so we keep calling them ``names'' to avoid mixing them
 up.
 
 
-%
-Just as we did with simple arithmetic, and with complex number
+% simple arithmetic in \sref{sec:ch1ex}
+Just as we did with with complex number %\sref{sec:complex-arithmetic}
 expressions in \cref{sec:DSLComplex}, we can model the abstract
 syntax of propositions as a datatype:
 \begin{code}
@@ -65,10 +65,11 @@ type Name = String
 The example expressions can then be expressed as
 %
 \begin{code}
-p1 = And (Name "a") (Not (Name "a"))
-p2 = Implies (Name "a") (Name "b")
-p3 = Or (Name "a") (Not (Name "a"))
-p4 = Implies (And a b) (And b a)
+p1, p2, p3, p4 :: Prop
+p1 = And  (Name "a")  (Not (Name "a"))
+p2 = Or   (Name "a")  (Not (Name "a"))
+p3 = Implies  (Name "a")  (Name "b")
+p4 = Implies  (And a b)   (And b a)
   where a = Name "a"; b = Name "b"
 \end{code}
 %
@@ -78,10 +79,9 @@ proposition for the assignment in question.
 %
 
 \subsection{An Evaluator for |Prop|}
-Let us formalise this in general,
-by writing an evaluator which takes
+Let us formalise this in general, by writing an evaluator which takes
 a |Prop| term to its truth value.
-
+%
 (The evaluation function for a DSL describing a logic is often called
 |check| instead of |eval| but for consistency we stick to |eval|.)
 %
@@ -94,14 +94,14 @@ eval (Not p)        env = not (eval p env)
 eval (Name n)       env = env n
 eval (Con t)        env = t
 
-implies :: Bool -> Bool -> Bool
-implies False  _  =  True
-implies _      p  =  p
+implies ::  Bool ->  Bool  ->  Bool
+implies     False    _     =   True
+implies     _        p     =   p
 \end{code}
 %
 The function |eval| translates from the syntactic domain to the semantic
 domain, given an environment (an assignment of names to truth values), which we represent as a function from each |Name| to |Bool|.
-.
+%
 Here |Prop| is the (abstract) \emph{syntax} of the language of
 propositional calculus and |Bool| is the \emph{semantic
   domain}, and |Name -> Bool| is a necessary extra parameter to write the function.
@@ -139,7 +139,7 @@ only variable |a|, the semantic value is |T = True|.
 Thus the whole expression could be simplified to just |T| without
 changing its semantics.
 
-\begin{wrapfigure}[10]{R}{0.25\textwidth}
+\begin{wrapfigure}[9]{R}{0.26\textwidth}
 \centering%
 \begin{tabular}{|| *{6}{c@@{~}} l||}
     \hline   |a| & |&| & |b| & |=>| & |b| & |&| & |a|
@@ -153,6 +153,7 @@ changing its semantics.
 }
 \label{fig:abswap}
 \end{wrapfigure}
+
 \pj{make different columns use different background colours}
 %
 If we continue with the example |p4| from above we have two names |a|
@@ -165,27 +166,26 @@ one operation (column) at a time (see \refFig{fig:abswap}).
 The |&| columns become |F F F T| and finally the |=>| column (the
 output) becomes true everywhere.
 %
-For our other examples, |p1| is always false, |p2| is mixed and |p3| is always true.
+For our other examples, |p1| is always false, |p2| is always true, and |p3| is mixed.
 
 A proposition whose truth table output is constantly true is called a
 \emph{tautology}.
 %
-Thus |t|, |p3| and |p4| are tautologies. We can formalise this idea as the following tautology-tester:
+Thus |t|, |p2| and |p4| are tautologies. We can formalise this idea as the following tautology-tester:
 \begin{code}
 isTautology :: Prop -> Bool
-isTautology p = and [eval p e | e <- envs (freeNames p)]
+isTautology p = and (map (eval p) (envs (freeNames p)))
 \end{code}
-which uses the following intermediate function to generate all possible environments for a given list of names
+which uses the helper functions |envs| to generate all possible environments for a given list of names and |freeNames| to find all names in a proposition
 \pj{Haskell notation for list comprehensions not introduced}
 \begin{code}
 envs :: [Name] -> [Name -> Bool]
+envs []     =  [error "envs: never used"]
 envs (n:ns) =  [  \n' -> if n == n' then b else e n'
                |  b  <-  [True,False]
                ,  e  <-  envs ns
                ]
-\end{code}
-and a function to find all names in a proposition:
-\begin{code}
+
 freeNames :: Prop -> [Name]
 freeNames = error "exercise"
 \end{code}
@@ -212,15 +212,21 @@ that |t| is a valid proof of |p|:
 \begin{code}
 checkProof :: Proof -> Prop -> Bool
 \end{code}
-
+%
 But we still have to figure out what consitutes proofs.
+%
+We will build up the ``proof DSL'' one step at a time but looking at
+what we need to prove the different propositions.
 
-To prove |And P Q|, one needs simultaneously of |P| and a proof of
-|Q|. (In logic texts, one will often find
-\[ \frac{P \quad Q}{P ∧ Q} \] to represent this fact, which is called the \emph{introduction rule for (∧)})
+To prove |And P Q|, one both a proof of |P| and a proof of |Q|.
+%
+In logic texts, one will often find
+\[ \frac{P \quad Q}{P ∧ Q} \] to represent this fact, which is called the \emph{introduction rule for (∧)}.
+%
 (For the proof to be complete, one still needs to provide a full proof of |P| and another for |Q| --- it is not enough to just invoke this rule.)
 
-Therefore, in Haskell, can represent this rule by a proof-term constructor |AndIntro| with two |Proof| arguments:
+Therefore, in Haskell, can represent this rule by a proof-term
+constructor |AndIntro| with two |Proof| arguments:
 \begin{spec}
 AndIntro :: Proof -> Proof -> Proof
 \end{spec}
@@ -233,63 +239,95 @@ checkProof (AndIntro t u) (And p q) = checkProof t p && checkProof u q
 
 To prove |Or P Q|, we need either a proof of |P| or proof of |Q| --- but
 we need to know which side (|Left| for |p| or |Right| for |q|) we
-refer to.  Therefore, we need a proof-term constructor:
-
+refer to.
+%
+Therefore, we introduce two proof-term constructors:
+%
+% \pj{A symmetric treatment would use |(,)| for |AndIntro| and |Either| for |OrIntro|, or it would use two arguments (as now) for |AndIntro| and |OrIntroL| and |OrIntroR| instead of |OrIntro|.}
+%
 \begin{spec}
-OrIntro :: Either Proof Proof -> Proof
+OrIntroL :: Proof -> Proof
+OrIntroR :: Proof -> Proof
 \end{spec}
+%
+\pj{Somewhere else: introduce the |Either| type:
 For reference, the either type is defined as follows in the Haskell prelude:
-%include Either.lhs
+% include Either.lhs
+}
 
 There are a couple of possible approaches to deal with negation.
+%
 One approach is to define it as de Morgan dualisation:
+%
 \begin{spec}
-Not (a `Or` b) = Not a `And` Not b
-Not (a `And` b) = Not a `Or` Not b
+Not (a  `Or`   b)  =  Not a  `And`  Not b
+Not (a  `And`  b)  =  Not a  `Or`   Not b
 ...
 \end{spec}
-Negation can then only apply to names, which can recieve a special treatment in proof-checking.
+Negation can then be pushed all the way down to names, which can
+recieve a special treatment in proof-checking.
 
-However, we will instead apply the same treatment to negation as to other constructions, and define
-a suitable introduction rule:
-\[ \frac{P → Q \quad P → ¬Q}{¬P} \]. We can represent it by the
-|NegIntro :: Prop -> Proof -> Proof -> Proof| constructor.
+However, we will instead apply the same treatment to negation as to
+other constructions, and define a suitable introduction rule:
+\[ \frac{P → Q \quad P → ¬Q}{¬P} \]
+%
+We can represent it by the |NegIntro :: Prop -> Proof -> Proof ->
+Proof| constructor.
 
 Because we have inductive proofs (described from the bottom up),
 we have the additional difficulty that this rule conjures-up a new
-proposition, $Q$. This is why we need an additional |Prop| argument,
-which gives the |Q| formula.
+proposition, $Q$.
+%
+This is why we need an additional |Prop| argument, which gives the |Q|
+formula.
 
-There is no way to introduce Falsity (⊥), otherwise we'd have an inconsistent logic!
-Finally we can introduce "Truth", with no premiss:\(\frac{}{⊤}\). The proof has no information either |TruthIntro :: Proof|.
+There is syntax to introduce Falsity (⊥), otherwise we'd have an
+inconsistent logic!
+%
+\pj{Fix formatting of the rule for truth.}
+Finally we can introduce "Truth", with no premiss: \(\frac{}{⊤}\).
+%
+The proof has no information either |TruthIntro :: Proof|.
 
-To complete the system, in addition to introduction rules (where the connective appears as
-conclusion), we also need elimination rules (where the connective
-appears as premiss). For conjuction, we have two eliminations rules: $\frac{P ∧ Q}{P}$ and
-$\frac{P ∧ Q}{Q}$.  So we represent them by |AndElim1 :: Proof -> Prop -> Proof| (and |AndElim2| symmetrically),
-where the extra |Prop| argument corresponds to |Q|.
+To complete the system, in addition to introduction rules (where the
+connective appears as conclusion), we also need elimination rules
+(where the connective appears as premiss).
+%
+For conjuction (|And|), we have two eliminations rules: $\frac{P ∧ Q}{P}$ and
+$\frac{P ∧ Q}{Q}$.
+%
+So we represent them by |AndElim1 :: Proof -> Prop -> Proof| (and
+|AndElim2| symmetrically), where the extra |Prop| argument corresponds
+to |Q|.
 
-Our elimination rule for disjunction is $\frac {P ∨ Q \quad P → R \quad Q →
-R} R$. The idea here is that if we know that \(P ∨ Q\) holds, then we
-have two cases: either |P| holds and |Q| holds. If only we can find a
-proposition |R| which is a consequence of both |P| and |Q|, then,
-regardless of which case we are facing, we know that |R| will hold.
+Our elimination rule for disjunction (|Or|) is
+$\frac {P ∨ Q \quad P → R \quad Q → R} R$.
+%
+The idea here is that if we know that \(P ∨ Q\) holds, then we have
+two cases: either |P| holds and |Q| holds.
+%
+If only we can find a proposition |R| which is a consequence of both
+|P| and |Q|, then, regardless of which case we are facing, we know
+that |R| will hold.
 
-Our elimination for negation is $\frac {¬ ¬ P} P$. It simply says that two negations cancel out.
+Our elimination for negation is $\frac {¬ ¬ P} P$.
+%
+It simply says that two negations cancel out.
 
-Finally we can eliminate Falsity as follows: $\frac {⊥} P$. This rule
-goes some times by its descriptive latin name \textit{ex falso
-quodlibet} --- from falsehood, anything (follows).
+Finally we can eliminate falsity as follows: $\frac {⊥} P$.
+%
+This rule goes some times by its descriptive latin name \textit{ex
+  falso quodlibet} --- from falsehood, anything (follows).
 
 We can then write our proof checker as follows:
 \begin{code}
-checkProof TruthIntro           (Con True)   =   True
-checkProof (AndIntro t u)       (And p q)    =   checkProof t p
-                                             &&  checkProof u q
-checkProof (OrIntro (Left t))   (Or p q)     =   checkProof t p
-checkProof (OrIntro (Right t))  (Or p q)     =   checkProof t q
-checkProof (NotIntro t u q)     (Not p)      =   checkProof t (p `Implies` q)
-                                             &&  checkProof u (p `Implies` Not q)
+checkProof TruthIntro        (Con True)   =   True
+checkProof (AndIntro t u)    (And p q)    =   checkProof t p
+                                          &&  checkProof u q
+checkProof (OrIntroL t)      (Or p q)     =   checkProof t p
+checkProof (OrIntroR u)      (Or p q)     =   checkProof u q
+checkProof (NotIntro t u q)  (Not p)      =   checkProof t (p `Implies` q)
+                                          &&  checkProof u (p `Implies` Not q)
 checkProof (AndElimL t q)       p  =   checkProof  t  (p `And` q)
 checkProof (AndElimR t p)       q  =   checkProof  t  (p `And` q)
 checkProof (OrElim t u v p q)   r  =   checkProof  t  (p `Implies` r)
@@ -299,17 +337,20 @@ checkProof (NotElim t)          p  =   checkProof  t  (Not (Not p))
 checkProof (FalseElim t)        p  =   checkProof  t  (Con False)
 \end{code}
 
-Any other combination of proof/prop else is an incorrect combination: the proof is not valid for the proposition.
+Any other combination of proof/prop is an incorrect combination: the proof is not valid for the proposition.
 
 \begin{spec}
 checkProof _ _ = False -- incorrect proof
 \end{spec}
 
-At this point it can be interesting to, see |checkProof| as an
-evaluator again, by, and flipping its arguments: |flip checkProof ::
-Prop -> (Proof -> Bool)|. This way, one can understand |Proof ->
-Bool|, a subset of proofs, as the semantic domain of |Prop|.  In
-other words, a proposition can be interpreted at the subset of
+At this point it can be interesting to see |checkProof| as an
+evaluator again by flipping its arguments: |flip checkProof ::
+Prop -> (Proof -> Bool)|.
+%
+This way, one can understand |Proof -> Bool|, a subset of proofs, as
+the semantic domain of |Prop|.
+%
+In other words, a proposition can be interpreted at the subset of
 proofs which prove it.
 
 
@@ -360,7 +401,8 @@ data Proof  =  Assumption Prop
             |  AndIntro Proof Proof
             |  AndElimL Proof Prop
             |  AndElimR Proof Prop
-            |  OrIntro (Either Proof Proof)
+            |  OrIntroL Proof
+            |  OrIntroR Proof
             |  OrElim Proof Proof Proof Prop Prop
             |  NotIntro Proof Proof Prop
             |  NotElim Proof
