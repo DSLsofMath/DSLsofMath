@@ -29,6 +29,7 @@ polynomial, is called the \textbf{degree} of the polynomial.
 %
 (The degree of the zero polynomial is not defined.)
 \end{quote}
+\jp{They "conveniently" leave the degree of the zero polynomial undefined.}
 
 This definition raises a number of questions, for example ``what is
 the zero polynomial?''.
@@ -108,7 +109,8 @@ This semantic definition only requires that the function |P|
 (Has the same value for all |x|.)
 %
 This may seem pedantic, but here is an interesting example of a family
-of functions which syntactically looks very\jp{what is the subtext here?} trigonometric:
+of functions which syntactically looks very\jp{what is the subtext here?
+(just because a function does have the form of a finite polynomial, it can be one.)} trigonometric:
 %
 \[T_n(x) = \cos (n*\arccos(x))\ .\]
 %

@@ -364,8 +364,8 @@ specially with |Implies|. However this approach does not bring any new
 insight. In particular, this view is hard to transpose to more
 complicated logics (such as second-order logic).
 
-Thus we take our usual approach and give rules for it. The introduction rule is sometimes written like so in logic texts: \[\frac{\begin{array}{c}P \\ \vdots \\ Q \end{array}}{P → Q}\]
-Such a notation can however be terribly confusing. We were used to the fact that proofs above the line had to be continued, so what can the dots possibly mean?
+Thus we take our usual approach and give rules for it. The introduction rule is sometimes written in this way in logic texts: \[\frac{\begin{array}{c}P \\ \vdots \\ Q \end{array}}{P → Q}\]
+Such a notation can, however, be terribly confusing. We were used to the fact that proofs above the line had to be continued, so what can the dots possibly mean?
 The intended meaning of this notation is that, to prove that $P → Q$, it suffices to prove $Q$, but one is also allowed to use $P$ as an assumption in this (local) proof of $Q$.
 
 We can use our DSL to formalise this rule as Haskell data, by adding a
@@ -380,9 +380,9 @@ function from proofs to proofs.
 
 The eliminator for implication (also known as the hard-to-translate
 phrase \textit{modus ponens}) is \(\frac{P → Q \quad P} Q\). We
-formalise it as |ImplyElim :: Proof -> Proof -> Prop -> Proof| (The
+formalise it as |ImplyElim :: Proof -> Proof -> Prop -> Proof|\footnote{The
 proposition |P| is a not given by the conclusion and thus has to be
-provided as part of the proof.).
+provided as part of the proof.}.
 And we can finally complete our proof checker as follows:
 
 \begin{code}
