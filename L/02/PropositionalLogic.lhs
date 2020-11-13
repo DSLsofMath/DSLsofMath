@@ -409,7 +409,7 @@ data Proof  =  Assumption Prop
             |  ImplyIntro (Proof -> Proof)
             |  ImplyElim  Proof Proof Prop
 \end{code}
-
+\jp{Props are like having lemmas}
 
 \paragraph{Aside}
 The |Assumption| constructor may make the reader somewhat uneasy: how

@@ -508,7 +508,7 @@ data Either p q = Left p | Right q
 
 \section{Notation and abstract syntax for sequences}
 \label{sec:infseq}
-\jp{BLOAT: Seems like an odd place to talk about this. Why not put it together with the limits section?}
+\jp{Seems like an odd place to talk about this. Why not put it together with the limits section?}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
 As preparation for the language of sequences and limits
