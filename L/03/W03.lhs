@@ -239,6 +239,7 @@ variables.
 
 
 \subsection{Partial functions}
+\jp{move this in chapter 1 together with the discussion of functions.}
 As an warmup, and for reasons which will become obvious soon (in
 \cref{sec:ArithExp}), we begin by presenting a DSL for partial
 functions with a finite domain.  The type |Env v s| will be the

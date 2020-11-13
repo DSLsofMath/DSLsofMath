@@ -1,6 +1,7 @@
 \section{An aside: Pure set theory}
 \label{sec:PureSet}
 \pj{This subsection depends on terminology from later in the chapter. Needs to be moved of rephrased.}
+\jp{A possibility is to include the assignments in the book and move this there.}
 One way to build mathematics from the ground up is to start from pure
 set theory and define all concepts by translation to sets.
 %
@@ -9,6 +10,9 @@ We will only work with (a small corner of) this as a mathematical domain to stud
 %
 The core of the language of pure set theory is captured by four
 function symbols (|{}|, |S|, |Union|, and |Intersection|).
+\begin{code}
+data Set = EmptySet | S | Union | Intersection
+\end{code}
 %
 We use a nullary function symbol |{}| for the empty set (sometimes
 written $\emptyset$) and a unary function symbol |S| for the function

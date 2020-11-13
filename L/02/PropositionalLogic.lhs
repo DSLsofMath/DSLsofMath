@@ -176,8 +176,10 @@ Thus |t|, |p2| and |p4| are tautologies. We can formalise this idea as the follo
 isTautology :: Prop -> Bool
 isTautology p = and (map (eval p) (envs (freeNames p)))
 \end{code}
-which uses the helper functions |envs| to generate all possible environments for a given list of names and |freeNames| to find all names in a proposition
-\pj{Haskell notation for list comprehensions not introduced}
+which uses the helper functions |envs| to generate all possible
+environments for a given list of names and |freeNames| to find all
+names in a proposition \pj{Haskell notation for list comprehensions
+  not introduced}
 \begin{code}
 envs :: [Name] -> [Name -> Bool]
 envs []     =  [error "envs: never used"]
@@ -250,7 +252,7 @@ OrIntroL :: Proof -> Proof
 OrIntroR :: Proof -> Proof
 \end{spec}
 %
-\pj{Somewhere else: introduce the |Either| type:
+\pj{At first point of use: introduce the |Either| type:
 For reference, the either type is defined as follows in the Haskell prelude:
 % include Either.lhs
 }
