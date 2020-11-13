@@ -1335,17 +1335,17 @@ computing derivatives. They are provided by \citet{adams2010calculus}
 as a series of theorems, starting at page 108 of their book. We we
 can summarize those as follows:
 \begin{spec}
-  (f+g)'(x)  = f'(x) + g'(x)
-  (f*g)'(x)  = f'(x) g(x) + f(x) g'(x)
-  (C*f)'(x)  = C*f'(x)
-  (f . g)(x) = f' (g (x)) * g'(x)
+  (f+g)'(x)  =   f'(x) + g'(x)
+  (f*g)'(x)  =   f'(x) g(x) + f(x) g'(x)
+  (C*f)'(x)  =   C*f'(x)
+  (f . g)(x) =   f' (g (x)) * g'(x)          -- chain rule
 \end{spec}
-(After a while, they \citeauthor{adams2010calculus} switch to
+(After a while, \citeauthor{adams2010calculus} switch to
 differential notation, so we omit corresponding rules for
 trigonometric and exponential functions.)
 %
-Using the notation |D f| for the derivative of |f| and lifting the
-numeric operations to functions we can fill in a table of
+Using the notation |D f| for the derivative of |f| and applying the
+numeric operations to functions directly, we can fill in a table of
 examples which can be followed to compute derivatives of many
 functions:
 %
@@ -1355,7 +1355,7 @@ functions:
     D id             =  const 1
     D (const a)      =  const 0
 
-    D (f . g)        =  (D f . g) * D g     -- the chain rule
+    D (f . g)        =  (D f . g) * D g     -- chain rule
     D sin            =  cos
     D cos            =  - sin
     D exp            =  exp
