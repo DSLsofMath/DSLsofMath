@@ -426,12 +426,35 @@ We now have a homomorphism from values to functions, and you may
 wonder if there is a homomorphism in the other direction.
 \end{solution}
 %
-The answer is ``Yes, many''.
+The answer is ``Yes, many''. Such homomorphisms take the form |apply
+c|, for any |c|.
 %
 \begin{exercise}
-Show that |apply c| is a homomorphism for all |c|, where
+  \label{ex:apply}
+Show that |apply c| is an |Additive| homomorphism for all |c|, where
 |apply x f = f x|.
 \end{exercise}
+\begin{solution}
+Indeed, writing |h = apply c| for some fixed |c|, we have
+%
+\begin{spec}
+     h (f + g)         =  {- def. |apply| -}
+
+     (f + g) c         =  {- def. |+| for functions -}
+
+     f c + g c         =  {- def. |apply| -}
+
+     h f + h g
+   \end{spec}
+   and
+\begin{spec}
+     h zero            =  {- def. |apply| -}
+
+     zero c            =  {- def. |zero| for functions -}
+
+     zero
+   \end{spec}
+\end{solution}
 
 \begin{exercise}
   Extend the exponential-logarithm morphism to relate |AddGroup| and |MulGroup|.
@@ -1333,6 +1356,113 @@ instance Multiplicative a => Multiplicative (a -> a, a -> a) where  -- same as |
 Implement the rest of the |Num| instance for |FD a|.
 \end{exercise}
 
+\subsection{Automatic differentiation}
+The simultaneous computation of values and derivatives is an important
+technique called ``automatic differentiation''. Automatic
+differentiation has grown in importance with the rise of machine
+learning, which often uses derivatives (or gradients) to find a values
+of parameter which minimizes a user-defined objective
+function. However, in such systems, one is often not interested in
+computing whole functions and their derivatives (as we have done so
+far), but rather a function at a point (say |f x0|) and the derivative
+at the same point (say |D f x0|).
+
+The question then arises: is it enough to \emph{only} compute the pair
+|(f x0, D f x0)|? In other words, is automatic differentiation
+compositional? To answer this question, we must find yet again if
+there is a homomorphism between whole functions and their value at a
+point.
+
+Fortunately, we have already seen part of the answer in
+\cref{ex:apply}.
+Namely, the homomorphism is |apply c|, with the definition:
+\begin{spec}
+apply :: a -> (a -> b) -> b
+apply a = \f -> f a
+\end{spec}
+Because |apply c| is so simple, it is an homomorphism not only for
+|Additive|, but also |Ring| (and any numeric class we have seen so
+far). We already took advantage of this simple structure to define
+homomorphism in the other direction in \cref{sec:FunNumInst}, where we
+defined a |Ring| instance for functions with a |Ring| codomain.
+\label{sec:apply}
+
+Can we do something similar for |FD|?
+The elements of |FD a| are pairs of functions, so we can take
+%
+\label{sec:applyFD}
+\begin{code}
+type Dup a = (a, a)
+type FD a = (a -> a, a -> a)
+
+applyFD ::  a ->  FD a          ->  Dup a
+applyFD     c     ((f, f'))  =   (f c, f' c)
+\end{code}
+
+We now have the domain of the homomorphism |(FD a)| and the
+homomorphism itself |(applyFD c)|, but we are missing the structure on
+the codomain, which now consists of pairs |Dup a = (a, a)|.
+%
+In fact, we can \emph{compute} this structure from the homomorphism
+condition.
+%
+For example (we skip the constructor |FD| for brevity):
+%
+\begin{spec}
+     h ((f, f') * (g, g'))                       =  {- def. |*| for |FD a| -}
+
+     h (f * g, f' * g + f * g')                  =  {- def. |h = applyFD c| -}
+
+     ((f * g) c, (f' * g + f * g') c)            =  {- def. |*| and |+| for functions -}
+
+     (f c * g c, f' c * g c + f c * g' c)        =  {- |let x=f c; y=g c; x'=f' c; y'=g' c| -}
+
+     (  x * y  ,   x' * y   +   x * y'  )        =  {- \textbf{introduce |*?| to make the ends meet} -}
+
+     (  x, x'  ) *? (y  , y'  )                  =  {- expand shorter names again -}
+
+     (f c, f' c) *? (g c, g' c)                  =  {- def. |h = applyFD c| -}
+
+     h (f, f') *? h (g, g')
+\end{spec}
+%
+The identity will hold if we take
+%
+\begin{code}
+(*?) :: Ring a =>  Dup a -> Dup a -> Dup a
+(x, x') *? (y, y')  =  (x * y, x' * y + x * y')
+\end{code}
+%
+Thus, if we define a ``multiplication'' on pairs of values using
+|(*?)|, we get that |(applyFD c)| is a |Multiplicative|-homomorphism for all |c|.
+%
+We can now define an instance
+%
+\begin{code}
+instance Ring a => Multiplicative (Dup a) where
+  (*) = (*?)
+  -- ... exercise
+\end{code}
+%
+\begin{exercise}
+Complete the instance declarations for |Dup REAL|.
+\end{exercise}
+
+
+In sum, because this computation goes through also for the other cases we can
+actually work with just pairs of values (at an implicit point |c ::
+a|) instead of pairs of functions.
+%
+Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|
+
+%if lectureNotes
+Hint: Something very similar can be used for Assignment 2.
+%endif
+
+
+%TODO: Perhaps include the comparison of the |Ring t => Ring (Bool -> t)| instance (as a special case of functions as |Ring|) and the |Ring r => Ring (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
+
+
 
 \section{Summary}
 
@@ -1440,128 +1570,6 @@ we will expose right here their co-algebraic structure.
 %include AbstractStream.lhs
 
 
-
-\section{????}
-\jp{Some lost text:
-
-
-%
-As we saw, another way of phrasing that  is to say that |eval| is a homomorphism,
-while |eval'| is not.
-%
-
-These properties do not hold for |eval'|, but do hold for |evalD|.
-}
-
-
-\jp{I don't understand the point of this section}
-In \refSec{sec:FunNumInst}, we defined a |Ring| instance for
-functions with a |Ring| codomain.
-%
-If we have an element of the domain of such a function, we can use it
-to obtain a homomorphism from functions to their codomains:\jp{I have no idea what this tries to say.}
-%
-\begin{spec}
-Ring a => x ->  (x -> a) -> a
-\end{spec}
-%
-As suggested by the type, the homomorphism is just function
-application:
-%
-\begin{spec}
-apply :: a -> (a -> b) -> b
-apply a = \f -> f a
-\end{spec}
-\label{sec:apply}
-
-Indeed, writing |h = apply c| for some fixed |c|, we have
-%
-\begin{spec}
-     h (f + g)         =  {- def. |apply| -}
-
-     (f + g) c         =  {- def. |+| for functions -}
-
-     f c + g c         =  {- def. |apply| -}
-
-     h f + h g
-\end{spec}
-%
-etc.
-
-Can we do something similar for |FD|?
-The elements of |FD a| are pairs of functions, so we can take
-%
-\label{sec:applyFD}
-\begin{code}
-type Dup a = (a, a)
-type FD a = (a -> a, a -> a)
-
-applyFD ::  a ->  FD a          ->  Dup a
-applyFD     c     ((f, f'))  =   (f c, f' c)
-\end{code}
-
-We now have the domain of the homomorphism |(FD a)| and the
-homomorphism itself |(applyFD c)|, but we are missing the structure on
-the codomain, which now consists of pairs |Dup a = (a, a)|.
-%
-In fact, we can \emph{compute} this structure from the homomorphism
-condition.
-%
-For example (we skip the constructor |FD| for brevity):
-%
-\begin{spec}
-     h ((f, f') * (g, g'))                       =  {- def. |*| for |FD a| -}
-
-     h (f * g, f' * g + f * g')                  =  {- def. |h = applyFD c| -}
-
-     ((f * g) c, (f' * g + f * g') c)            =  {- def. |*| and |+| for functions -}
-
-     (f c * g c, f' c * g c + f c * g' c)        =  {- |let x=f c; y=g c; x'=f' c; y'=g' c| -}
-
-     (  x * y  ,   x' * y   +   x * y'  )        =  {- \textbf{introduce |*?| to make the ends meet} -}
-
-     (  x, x'  ) *? (y  , y'  )                  =  {- expand shorter names again -}
-
-     (f c, f' c) *? (g c, g' c)                  =  {- def. |h = applyFD c| -}
-
-     h (f, f') *? h (g, g')
-\end{spec}
-%
-The identity will hold if we take
-%
-\begin{code}
-(*?) :: Ring a =>  Dup a -> Dup a -> Dup a
-(x, x') *? (y, y')  =  (x * y, x' * y + x * y')
-\end{code}
-%
-Thus, if we define a ``multiplication'' on pairs of values using
-|(*?)|, we get that |(applyFD c)| is a |Multiplicative|-homomorphism for all |c|.
-%
-We can now define an instance
-%
-\begin{code}
-instance Ring a => Multiplicative (Dup a) where
-  (*) = (*?)
-  -- ... exercise
-\end{code}
-%
-\begin{exercise}
-Complete the instance declarations for |Dup REAL|.
-\end{exercise}
-
-
-Note: because this computation goes through also for the other cases we can
-actually work with just pairs of values (at an implicit point |c ::
-a|) instead of pairs of functions.
-%
-Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|
-
-%if lectureNotes
-Hint: Something very similar can be used for Assignment 2.
-%endif
-
-
-%TODO: Perhaps include the comparison of the |Ring t => Ring (Bool -> t)| instance (as a special case of functions as |Ring|) and the |Ring r => Ring (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
 
 
 %include E4.lhs
