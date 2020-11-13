@@ -9,11 +9,12 @@ module DSLsofMath.W05 where
 import Prelude hiding (Num(..),(/),(^))
 import DSLsofMath.FunNumInst
 import DSLsofMath.Algebra
+type REAL = Double
 \end{code}
 
 \section{Polynomials}
 
-From \cite{adams2010calculus}, page 39:
+Again we take as starting point a definition from \cite{adams2010calculus}, page 39:
 
 \begin{quote}
 A \textbf{polynomial} is a function $P$ whose value at $x$ is
@@ -29,17 +30,16 @@ polynomial, is called the \textbf{degree} of the polynomial.
 %
 (The degree of the zero polynomial is not defined.)
 \end{quote}
-\jp{They "conveniently" leave the degree of the zero polynomial undefined.}
 
 This definition raises a number of questions, for example ``what is
-the zero polynomial?''.
+the zero polynomial?'' (and why isn't its degree defined).
 
 The types of the elements involved in the definition appear to be
 
 \begin{quote}
   $n ∈ ℕ$, $P : ℝ → ℝ$, $x ∈ ℝ$, $a_0$, \ldots, $a_n ∈ ℝ$ with $a_n ≠ 0$ if $n > 0$
 \end{quote}
-
+%
 The phrasing should be ``whose value at \emph{any} $x$ is''.
 %
 The remark that the $a_i$ are constants is probably meant to indicate
@@ -57,8 +57,9 @@ Thus, what is meant is
   such that, for any $x ∈ ℝ$
 
   \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
+  For the constant zero, the degree of the polynomial is not defined.
+  Otherwise, the degree is $n$.
 \end{quote}
-
 Given the coefficients $a_i$ we can evaluate $P$ at any given $x$.
 %
 Ignoring the condition on coefficients for now, we can assume that the coefficients are given as a list
@@ -88,7 +89,7 @@ Using the |Ring| instance for functions we can rewrite |eval| into
 a one-argument function (returning a polynomial function):
 %
 \begin{code}
-evalL :: Ring a => [a] -> (a -> a)
+evalL :: [REAL] -> (REAL -> REAL)
 evalL []      = const 0
 evalL (a:as)  = const a  +  id * evalL as
 \end{code}
@@ -101,20 +102,19 @@ It is worth noting that the definition of what we call a
 ``polynomial function'' is semantic, not syntactic.
 %
 A syntactic defintion would talk about the form of the expression (a
-sum of coefficients times natural powers of x).
+sum of coefficients times natural powers of $x$).
 %
-This semantic definition only requires that the function |P|
+In contrast, this semantic definition only requires that the function |P|
 \emph{behaves like} such a sum.
 %
-(Has the same value for all |x|.)
+% (Has the same value for all |x|.)
 %
-This may seem pedantic, but here is an interesting example of a family
-of functions which syntactically looks very\jp{what is the subtext here?
-(just because a function does have the form of a finite polynomial, it can be one.)} trigonometric:
+Insisting on this difference may seem pedantic, but here is an interesting example of a family
+of functions which syntactically does not look like a sum of powers:
 %
 \[T_n(x) = \cos (n*\arccos(x))\ .\]
 %
-It can be shown that \(T_n\) is a polynomial function of degree |n|.
+And yet, it can be shown that \(T_n\) is a polynomial function of degree |n|.
 %
 (Exercise~\ref{ex:chebyshev} guides you to a proof.
 %
@@ -135,37 +135,34 @@ The valid lists are those \emph{finite} lists in the set
   {[0]} ∪ {(a : as) | last (a : as) ≠ 0}
 \end{spec}
 
-The fact that the element should be non-zero is easy to express as a Haskell expression (|last (a : as) ≠ 0|), but not so easy
-to express in the \emph{types}. But we can easily
-express the condition that the list should not be empty:
+The fact that the element should be non-zero is easy to express as a
+Haskell expression (|last (a : as) ≠ 0|), but not so easy to express
+in the \emph{types}.
 
+We could try jumping through the relevant hoops.  However, at this
+stage, we can realise that the the non-zero condition is there only
+to define the degree of the polynomial. The same can be said
+about the separation between zero and non-zero polynomials, which is there to explicitly leave the degree undefined. So we can
+further improve the definition as follows:
+\begin{quote}
+  A \textbf{polynomial} is a function $P : ℝ → ℝ$ such that
+  there exist $a_0$, \ldots, $a_n$ ∈ ℝ and for any $x ∈ ℝ$
+  \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
+  The degree of the polynomial is the largest $i$ such that $a_i≠0$.
+\end{quote}
+This definition is much simpler to manipulate
+and clearly separates the definition of degree from the definition of
+polynomial. Perhaps surprisingly, there is no longer any need to single out the
+zero polynomial to define the degree.  Indeed, when the polynomial is
+zero, $a_i=0$ for every $i$, and we have an empty set of indices
+$a_i≠0$. The largest element of this set is undefined (by definition
+of largest, see also \cref{ex:maximum-homo}), and we have the intended
+definition.
+
+So, we can symply use any list of coefficients to \emph{represent} a
+polynomial:
 \begin{code}
-data Poly a  =  Single a  |  Cons a (Poly a)
-                deriving (Eq, Ord)
-\end{code}
-
-Note that if we drop the requirement of what constitutes a ``valid''
-list of coefficients we can use |[a]| instead of |Poly a|.
-%
-Basically, we then use |[]| as the syntax for the ``zero polynomial''
-and |(c:cs)| for all non-zero polynomials.
-
-\jp{But it appears that this ``validity'' is there only to define the degree. Terrible.}
-The relationship between |Poly a| and |[a]| is given by the following
-functions:
-
-\begin{code}
-toList :: Poly a   ->  [a]
-toList (Single a)   =  a : []
-toList (Cons a as)  =  a : toList as
-
-fromList :: Ring a => [a]  ->  Poly a
-fromList (a : [])         =  Single a
-fromList (a0 : a1 : as)   =  Cons a0 (fromList (a1 : as))
-fromList []               =  Single 0  -- to complete the pattern match
-
-instance Show a => Show (Poly a) where
-  show = show . toList
+newtype Poly a = Poly [a] deriving (Show,Eq)
 \end{code}
 
 Since we only use the arithmetical operations, we can generalise our
@@ -173,8 +170,8 @@ evaluator to an arbitrary |Ring| type.
 
 \begin{code}
 evalPoly :: Ring a => Poly a -> (a -> a)
-evalPoly (Single a)     x   =  a
-evalPoly (Cons a as)    x   =  a + x * evalPoly as x
+evalPoly (Poly [])        x   =  0
+evalPoly (Poly (a:as))    x   =  a + x * evalPoly (Poly as) x
 \end{code}
 
 Since we have |Ring a|, there is a |Ring| structure on |a -> a|, and
@@ -206,8 +203,7 @@ For an arbitrary |x|
 To proceed further, we need to consider the various cases in the
 definition of |evalPoly|.
 %
-We give here the computation for the last case (where |as| has at
-least one |Cons|), using the traditional list notation |(:)| for
+We give here the computation for the last case, dropping the |Poly| constructor for
 brevity.
 %
 
@@ -220,7 +216,7 @@ For the left-hand side, we have:
 \begin{spec}
   evalPoly (a : as) x  +  evalPoly (b : bs) x      =  {- def. |evalPoly| -}
 
-  (a + x * evalPoly as x) + (b + x * eval bs x)    =  {- properties of |+|, valid in any ring -}
+  (a + x * evalPoly as x) + (b + x * evalPoly bs x)    =  {- properties of |+|, valid in any ring -}
 
   (a + b) + x * (evalPoly as x + evalPoly bs x)    =  {- homomorphism condition -}
 
@@ -247,33 +243,31 @@ Here, we just give the corresponding definitions.
 \begin{code}
 instance Additive a => Additive (Poly a) where
   (+) = polyAdd
-  zero = Single zero
+  zero = Poly []
 
 instance Ring a => Multiplicative (Poly a) where
   (*) = polyMul
-  one = Single one
+  one = Poly [one]
 
 instance AddGroup a => AddGroup (Poly a) where
   negate = polyNeg
 
+polyCons x (Poly xs) = Poly (x:xs)
 polyAdd :: Additive a => Poly a -> Poly a -> Poly a
-polyAdd (Single a )  (Single b )  =  Single (a + b)
-polyAdd (Single a )  (Cons b bs)  =  Cons (a + b) bs
-polyAdd (Cons a as)  (Single b )  =  Cons (a + b) as
-polyAdd (Cons a as)  (Cons b bs)  =  Cons (a + b) (polyAdd as bs)
+polyAdd as (Poly [])  = as
+polyAdd (Poly []) as  = as
+polyAdd (Poly (a:as))  (Poly (b:bs))  =  polyCons (a + b) (polyAdd (Poly as) (Poly bs))
 
 polyMul :: Ring a => Poly a -> Poly a -> Poly a
-polyMul (Single a )  (Single b )  =  Single (a * b)
-polyMul (Single a )  (Cons b bs)  =  Cons (a * b) (polyMul (Single a) bs)
-polyMul (Cons a as)  (Single b )  =  Cons (a * b) (polyMul as (Single b))
-polyMul (Cons a as)  (Cons b bs)  =  Cons (a * b) (polyAdd  (polyMul as (Cons b bs))
-                                                            (polyMul (Single a) bs)  )
+polyMul (Poly []) _ = Poly []
+polyMul _ (Poly []) = Poly []
+polyMul (Poly (a:as))  (Poly (b:bs)) =  polyCons (a * b) (polyAdd  (polyMul (Poly as) (Poly (b:bs)))
+                                                                   (polyMul (Poly [a]) (Poly bs)))
 polyNeg :: AddGroup a => Poly a -> Poly a
 polyNeg = mapPoly negate
 
 mapPoly :: (a->b) -> (Poly a -> Poly b)
-mapPoly f (Single a)   = Single (f a)
-mapPoly f (Cons a as)  = Cons (f a) (mapPoly f as)
+mapPoly f (Poly as)   = Poly (map f as)
 \end{code}
 %
 Therefore, we \emph{can} define a |Ring| structure on |Poly a|, and we have arrived at the
@@ -299,7 +293,7 @@ algebra does not use finite lists, but the equivalent
 \end{quote}
 
 \begin{exercise}
-What are the ring operations on |Poly' A|?  Hint: they are different from the operation induced by the ring operations on |A|.
+What are the ring operations on |Poly' A|?  Hint: they are different from the operations on arbitrary functions |X -> A|.
 \end{exercise}
 
 %
@@ -320,7 +314,7 @@ for the |ci| must now be given via a case distinction:
 \noindent
 since |bi| does not exist for values greater than |m|.
 
-Compare this with the above formula for functions, where no case
+Compare this with the above formula for functions from ℕ, where no case
 distinction necessary.  The advantage is even clearer in the case of
 multiplication.
 
@@ -328,11 +322,11 @@ multiplication.
 
 \label{sec:polynotpolyfun}
 \begin{enumerate}
-\item If one considers arbitrary rings, polynomials are not isomorphic (in one-to-one
+\item If one considers arbitrary rings, polynomials\jp{representations?} are not isomorphic (in one-to-one
   correspondence) to polynomial functions.
   %
   For any finite ring |A|, there is a finite number of functions |A ->
-  A|, but there is a countable number of polynomials.
+  A|, but there is a countable infinity of polynomials.
   %
   That means that the same polynomial function on |A| will be the
   evaluation of many different polynomials.
@@ -377,11 +371,10 @@ Let
 
 \begin{code}
 x :: Ring a => Poly a
-x = Cons 0 (Single 1)
+x = Poly [1]
 \end{code}
 
-Then (again, using the list notation for brevity) for any polynomial
-|as = [a0, a1, ..., an]| we have
+Then for any polynomial |as = Poly [a0, a1, ..., an]| we have
 
 \begin{spec}
 as = a0 + a1 * x + a2 * x^2 + ... + an * x^n
@@ -419,7 +412,7 @@ non-zero constant polynomial, resulting in a zero polynomial
 remainder.  But the degree of a constant polynomial is zero.  If the
 degree of the zero polynomial were a natural number, it would have to
 be smaller than zero.  For this reason, it is either considered
-undefined (as in \cite{adams2010calculus}), or it is defined as |-∞|.
+undefined (as in \cite{adams2010calculus}), or it is defined as |-∞|.\footnote{Likewise we could define the largest element of the empty set to be |-∞|.}
 The next section examines this question from a different point of
 view, that of homomorphisms.
 
@@ -430,7 +423,7 @@ It is often the case that a certain function is \emph{almost} a
 homomorphism and the domain or range structure is \emph{almost} a monoid.
 %
 In \cref{sec:evalD}, we have seen
-``tupling''\jp{This is referring to the evaluator of derivatives. But probably is should be moved after this, in the derivatives chapter.}
+``tupling''
 as one way to fix such a problem and here we will
 introduce another way.
 
@@ -444,8 +437,8 @@ underlying a monoid morphism we need to decide on the monoid structure
 to use for the source and for the target, and we need to check the
 homomorphism laws.
 %
-We can use |unit = Single 1| and |op = polyMul| for the source monoid
-and we can try to use |unit = 0| and |op = (+)| for the target monoid.
+We can use the multiplicative monoid  (|unit = Single 1| and |op = polyMul|) for the source
+and we can try to use the additive monoid (|unit = 0| and |op = (+)|) for the target monoid.
 %
 Then we need to check that
 %
@@ -455,7 +448,7 @@ degree (Single 1) = 0
 \end{spec}
 %
 The first law is no problem and for most polynomials the second law is
-also straighforward to prove (exercise: prove it).
+also straighforward to prove (Try it as an exercise).
 %
 But we run into trouble with one special case: the zero polynomial.
 
@@ -592,7 +585,7 @@ PowerSeries' a = { f : ℕ → a }
 \end{spec}
 
 \begin{code}
-type PowerSeries a = Poly a   -- finite and infinite non-empty lists
+type PowerSeries a = Poly a   -- finite and infinite lists
 \end{code}
 
 The operations are still defined as before.
@@ -630,7 +623,7 @@ not exist).
 We will consider, as is usual, only the case in which |A = ℝ| or |A =
 ℂ|.
 
-The term \emph{formal}\jp{What formal? Formal power series have never been introduced.} refers to the independence of the definition of
+The word \emph{formal} refers to the independence of the definition of
 power series from the ideas of convergence and evaluation.
 %
 In particular, two power series represented by |a| and |b|, respectively,
@@ -648,10 +641,10 @@ eval :: Ring a => Integer -> PowerSeries a -> (a -> a)
 eval n as x = evalPoly (takePoly n as) x
 
 takePoly :: Integer -> PowerSeries a -> Poly a
-takePoly n (Single a)   =  Single a
-takePoly n (Cons a as)  =  if n <= 1
-                              then  Single a
-                              else  Cons a (takePoly (n-1) as)
+takePoly n (Poly [])      =  Poly []
+takePoly n (Poly (a:as))  =  if n <= 0
+                              then  Poly []
+                              else  polyCons a (takePoly (n-1) (Poly as))
 \end{code}
 %TODO: perhaps explain with plain lists: |takeP :: Nat -> PS r -> P r| with |takeP n (PS as) = P (take n as)|
 %
@@ -760,10 +753,9 @@ instance (Eq a, Field a) => MulGroup (PowerSeries a) where
   (/) = divPS
 
 divPS :: (Eq a, Field a) => PowerSeries a -> PowerSeries a -> PowerSeries a
-divPS as           (Single b)    =  as * Single (1 / b)
-divPS (Single 0)   (Cons b bs)   =  Single 0
-divPS (Single a)   (Cons b bs)   =  divPS (Cons a (Single 0)) (Cons b bs)
-divPS (Cons a as)  (Cons b bs)   =  Cons c  (divPS (as - (Single c) * bs) (Cons b bs))
+divPS (Poly [])    (Poly bs)     =  Poly []
+divPS as           (Poly [b])    =  as * Poly [1 / b]
+divPS (Poly (a:as))  (Poly (b:bs))   =  polyCons c  (divPS (Poly as - (Poly [c]) * Poly bs) (Poly (b:bs)))
                                     where  c = a / b
 \end{code}
 
@@ -838,10 +830,11 @@ Thus the $m$th coefficient of the derivative is \((m+1) * a_{m+1}\).
 We can implement this, for example, as
 
 \begin{code}
-deriv (Single a)   =  Single 0
-deriv (Cons a as)  =  deriv' as 1
-  where  deriv' (Single a)   n  =  Single  (n * a)
-         deriv' (Cons a as)  n  =  Cons    (n * a)  (deriv' as (n+1))
+deriv :: Ring a => Poly a -> Poly a
+deriv (Poly [])   =  Poly []
+deriv (Poly (a:as))  =  Poly (deriv' as 1)
+  where  deriv' []      n  =  []
+         deriv' (a:as)  n  =  (n * a) : (deriv' as (n+1))
 \end{code}
 
 Side note: we cannot in general implement a decidable (Boolean) equality test for
@@ -881,7 +874,7 @@ po1 :: (Eq a, Field a) => Poly a
 po1 = 1 + x^2 - 3*x^4
 
 instance Ring a => Monoid' (Poly a) where
-  unit = Single 1
+  unit = Poly [1]
   op = (*)
 
 instance Monoid' Integer where
@@ -891,12 +884,25 @@ instance Monoid' Integer where
 type Nat = Integer
 
 degree :: (Eq a, Ring a) => Poly a -> Maybe Nat
-degree (Single 0) = Nothing
-degree (Single x) = Just 0
-degree (Cons x xs) = maxd (degree (Single x)) (fmap (1+) (degree xs))
+degree (Poly []) = Nothing
+degree (Poly (x:xs)) = maxd (if x == 0 then Nothing else Just 1) (fmap (1+) (degree (Poly xs)))
   where  maxd x        Nothing   = x
          maxd Nothing  (Just d)  = Just d
          maxd (Just a) (Just b)  = Just (max a b)
+
+degreeAlt :: (Eq a,AddGroup a) => Poly a -> Maybe Nat
+degreeAlt = maximumd . coefIndices
+
+coefIndices :: (Eq a,AddGroup a) => Poly a -> [Nat]
+coefIndices (Poly as) = [i | (a,i) <- zip as [1..], a  /= zero]
+
+maximumd :: Ord a => [a] -> Maybe a
+maximumd [] = Nothing
+maximumd (x:xs) = maxd (Just x) (maximumd xs)
+  where  maxd x        Nothing   = x
+         maxd Nothing  (Just d)  = Just d
+         maxd (Just a) (Just b)  = Just (max a b)
+
 
 checkDegree0 = degree (unit :: Poly Integer) == unit
 checkDegreeM :: Poly Integer -> Poly Integer -> Bool

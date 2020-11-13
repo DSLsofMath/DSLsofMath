@@ -468,9 +468,9 @@ drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 data Poly a  =  Single a  |  Cons a (Poly a)
                 deriving (Eq, Ord)
 
-evalPoly ::  Num a => Poly a -> a -> a
-evalPoly (Single a)     x   =  a
-evalPoly (Cons a as)    x   =  a + x * evalPoly as x
+evalPoly :: Ring a => Poly a -> (a -> a)
+evalPoly (Poly [])        x   =  0
+evalPoly (Poly (a:as))    x   =  a + x * evalPoly (Poly as) x
 \end{spec}
 
 \section{Formal power series}
@@ -494,10 +494,11 @@ Now we can divide, as well as add and multiply.
 We can also compute derivatives:
 %
 \begin{spec}
-deriv (Single a)   =  Single 0
-deriv (Cons a as)  =  deriv' as 1
-  where  deriv' (Single a)   n  =  Single  (n * a)
-         deriv' (Cons a as)  n  =  Cons    (n * a)  (deriv' as (n+1))
+deriv :: Ring a => Poly a -> Poly a
+deriv (Poly [])   =  Poly []
+deriv (Poly (a:as))  =  Poly (deriv' as 1)
+  where  deriv' []      n  =  []
+         deriv' (a:as)  n  =  (n * a) : (deriv' as (n+1))
 \end{spec}
 %
 and integrate:
@@ -505,9 +506,9 @@ and integrate:
 %TODO: Perhaps swap the order of arguments to |integ| to match the order of |Cons|. Or remove that argument and just use |a0 +| in combination with a 1-arg. |integ|.
 \begin{code}
 integ  ::  Field a => a -> PowerSeries a -> PowerSeries a
-integ  a0 as  =  Cons a0 (integ' as 1)
-  where  integ' (Single a)   n  =  Single  (a / n)
-         integ' (Cons a as)  n  =  Cons    (a / n)  (integ' as (n+1))
+integ  a0 (Poly as)  =  Poly (a0:(integ' as 1))
+  where  integ' []      n  =  []
+         integ' (a:as)  n  =  (a / n) : (integ' as (n+1))
 \end{code}
 %
 Note that |a0| is the constant that we need due to indefinite integration.
@@ -555,7 +556,7 @@ f' x = g f x, {-"\qquad"-} f 0 = f0
 %
 i.e., they are defined in terms of the higher-order function |g|.
 
-The fundamental theorem of calculus gives us
+The fundamental theorem of calculus gives us\jp{Refer to adams2010calculus}
 %
 \begin{spec}
 f x = f0 + {-"\int_0^x "-} (g f t) dt
@@ -749,7 +750,7 @@ Note: we cannot use |solve| here, because the |g| function uses both
 \jp{So what's happening now? Why this code suddenly?}
 \begin{code}
 instance (Eq a, Transcendental a) => Transcendental (PowerSeries a) where
-  pi   =  Single pi
+  pi   =  Poly [pi]
   exp  =  expPS
   sin  =  sinPS
   cos  =  cosPS
@@ -760,8 +761,7 @@ sinPS  fs  =  integ  (sin  (val fs))  (cos fs   * deriv fs)
 cosPS  fs  =  integ  (cos  (val fs))  (-sin fs  * deriv fs)
 
 val ::  PowerSeries a  ->  a
-val     (Single a)     =   a
-val     (Cons a as)    =   a
+val     (Poly (a:as))     =   a
 \end{code}
 
 In fact, we can implement \emph{all} the operations needed for
@@ -769,7 +769,7 @@ evaluating |FunExp| functions as power series! \jp{Wasn't it done already when f
 
 \begin{code}
 evalP :: (Eq r, Transcendental r) => FunExp -> PowerSeries r
-evalP (Const x)    =  Single (fromRational (toRational x))
+evalP (Const x)    =  Poly [fromRational (toRational x)]
 evalP (e1 :+: e2)  =  evalP e1 + evalP e2
 evalP (e1 :*: e2)  =  evalP e1 * evalP e2
 evalP (e1 :/: e2)  =  evalP e1 / evalP e2
@@ -816,11 +816,11 @@ called the Taylor series centred in |0|, or the Maclaurin series.
 
 \begin{code}
 derivs :: Ring a => PowerSeries a -> PowerSeries a
-derivs as = derivs1 as 0 1
+derivs (Poly as) = derivs1 as 0 1
   where
-  derivs1 (Cons a as)  n factn  =  Cons    (a * factn)
+  derivs1 (a:as)  n factn  =  polyCons    (a * factn)
                                            (derivs1 as (n + 1) (factn * (n + 1)))
-  derivs1 (Single a)   n factn  =  Single  (a * factn)
+  derivs1 []      n factn  =  Poly []
 
 -- remember that |x = Cons 0 (Single 1)|
 ex3,ex4 :: Poly Double
@@ -890,7 +890,7 @@ Use, for example, our |f x = sin x + 2 * x| above.
 As before, we can use directly power series:
 
 \begin{code}
-dP f a = takePoly 10 (derivs (f (idx + Single a)))
+dP f a = takePoly 10 (derivs (f (idx + Poly [a])))
 \end{code}
 
 \section{Associated code}

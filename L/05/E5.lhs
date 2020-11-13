@@ -151,4 +151,20 @@ class Functor f where
 
 \end{exercise}
 
+\begin{exercise}
+  \label{ex:maximum-homo}
+  Can the function |maximum :: [ℤ] -> ℤ| be defined a homomorphism?
+\end{exercise}
+ 
+\begin{solution}
+  The homomorphism conditions are |maximum (xs ++ ys) = max (maximum
+  xs) (maximum ys)| and |maximum = inf|, for some operation |op| and
+  a constant |unit|, forming a monoid.
+
+  Because of what maximum does, we must pick |op = max|. The |unit|
+  must act like an identity for |max|: |max unit x = x|. This is
+  possible only if |unit ≤ x| for every |x|. But, this is not
+  possible: there is no lower bound in |ℤ| (|-∞| is not in |ℤ|).
+
+\end{solution}
 %TODO: more exercises!
