@@ -23,7 +23,7 @@ Other times, this is supplemented by the definition of a row vector:
 %
 
 The |vi|s are real or complex numbers, or, more generally, elements of
-a \emph{field}.\jp{track down the first time we use fields and define |Field| there.}
+a \emph{field} (\cref{sec:fields-defintion}).
 %
 
 However, following our theme, we will first characterize vectors
@@ -49,15 +49,15 @@ And, on the other side, |(*^ a)| is a homomorphism from the additive group struc
   zero *^ a        = zero
   negate s *^ a    = negate (s *^ a)
 \end{spec}
-The multiplicative structure of |s| maps the monoid of endofunctions (See \cref{ex:endofunction}) as follows:
+The multiplicative monoid of |s| maps to the monoid of endofunctions (See \cref{ex:endofunction}) as follows:
 \begin{spec}
   one      *^ a    = id                  a  =  a
   (s * t)  *^ a    = ((s *^) . (t *^))   a  =  s *^ (t *^ a)
 \end{spec}
 \footnote{Traditionally some of the above laws are omitted because they are consequences of other laws.}
 
-An important consequence of their algebraic structure is
-that vectors can be expressed as a simple sort of
+An important consequence of the algebraic structure of vectors is
+that they can be expressed as a simple sort of
 combination of other special vectors.  More precisely, we can \emph{uniquely}
 represent any vector |v| in the space in terms of a fixed set of
 \emph{basis} vectors |{b0, ..., bn}| which cover the whole space and are \emph{linearly
@@ -73,9 +73,13 @@ One can prove the uniqueness of representation as follows.
 By the basis being linearly independent, we find |si-ti=0|, and |si=ti|.
 \end{proof}
 
-This representation is what justifies the introduction of vectors as
-columns (or rows) of numbers. (According to our red thread, this
-representation is akin to the notion of ``syntax''.) Indeed, we can
+According to our red thread, this representation (coefficients) is
+akin to the notion of ``syntax''. But this is a case where the
+representation is \emph{equivalent} to the algebraic definition: the
+evaluator is not only a homomorphism, but an isomorphism.
+%
+This equivalence is what justifies the introduction of vectors as
+columns (or rows) of numbers.  Indeed, we can
 define:
 \[v = \colvec{v} = |v0 *^| \colveccc{1 \\ 0 \\ \vdots \\ 0} +
                    |v1 *^| \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
@@ -92,32 +96,43 @@ In the following we denote by
 %
 \[e_k = \colveccc{0\\\vdots\\0\\1 \makebox[0pt][l]{\qquad $\leftarrow$ position $k$} \\0\\\vdots\\0}\]
 %
-the canonical base vectors, ie. the vector that is everywhere |0|
+the canonical base vectors, ie. $e_k$ is the vector that is everywhere |0|
 except at position |k|, where it is |1|, so that |v = v0 *^ e0 + ... +
 vn *^ en|. This formula maps the syntax (coefficients) to the
 semantics (a vector).
+
+\begin{exercise}
+  Define a function which takes as input a vector |v| and a set of
+  (non-canonical) basis vectors $b_i$ and returns the coefficients of
+  |v| in that basis.
+\end{exercise}
 
 \section{Representing vectors as functions}
 In what follows we will systematically use the represention of vectors
 as a linear combination of basis vectors.
 %
 There is a temptation to model the corresponding set of coefficients
-as a lists or tuples, but a more general (and conceptually simpler)
+as a lists, or tuples, but a more general (and conceptually simpler)
 way is to view them as \emph{functions} from a set of indices |G|:
 %
 \begin{code}
 newtype Vector s g    = V (g -> s) deriving (Additive,AddGroup)
 \end{code}
-%*TODO Perhaps explain "deriving ... here"
+\footnote{The addition of |Vectors| is defined indexwise. Because
+  indexwise addition is already our definition of addition for
+  functions (|g -> s|), we can simply reuse this definition. (Likewise
+  for |zero| and |negate|.) This is what the |deriving| clause amounts
+  to here.}
 
-We define right away the notation |a ! i| for the coefficient of the base vector |e i|, as follows:
+We define right away the notation |a ! i| for the coefficient of the
+canonical base vector |e i|, as follows:
 \begin{code}
 infix 9 !
 (!) :: Vector s g -> g -> s
 V f ! i = f i
 \end{code}
 
-As discussed, the |S| parameter in |Vector S| has to be a field (|REAL|,
+As discussed above, the |S| parameter in |Vector S| has to be a field (|REAL|,
 or |Complex|, or |Zn|, etc.) for values of type |Vector S G| to
 represent elements of a vector space.
 
@@ -201,7 +216,7 @@ G| into operations in |Vector S G'| as follows:
 f (u + v) =  f u + f v
 f (s *^ u) =  s *^ f u
 \end{spec}
-Since |v = (v 0 *^ e 0 + ... + v n *^ e n)|, we also have:
+Because |v = (v 0 *^ e 0 + ... + v n *^ e n)|, we also have:
 %
 \begin{spec}
 f v =  f (v 0 *^ e 0 + ... + v n *^ e n) = v 0 *^ f (e 0) + ... + v n *^ f (e n)
@@ -296,7 +311,9 @@ s g g'| as a type of syntax and the linear transformation (of type
 %
 With this view, |mulMV| is just another |eval :: Syntax -> Semantics|.
 %
-
+However, again, given a fixed basis we have an isomorphism rather than
+a mere homomorphism: for a given linear transformation, the matrix
+representation is unique.
 %
 \begin{example}
   Consider the multiplication of a matrix with a basis vector:
@@ -835,7 +852,7 @@ However, |({0, 1}, max, min)| is not a field, and neither is
 |(REAL, max, min)|.
 %
 This means that we do not have a vector space, but rather a \emph{module}.
-One can still do a lot with modules: for example the definition of multiplication only demands a |Ring| rather than a |Field|.
+One can still do a lot with modules: for example the definition of matrix multiplication only demands a |Ring| rather than a |Field| (and none of the |VectorSpace| laws demand scalar division).
 Therefore, having just a module is not a problem if all we want is to compute the evolutions of
 possible states,
 but we cannot apply most of the deeper results of

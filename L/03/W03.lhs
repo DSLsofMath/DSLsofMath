@@ -1094,7 +1094,7 @@ Haskell also provides a |Num| class, containing various numeric types
 Unfortunately, the |Num| class was designed with more regard for
 implementation quirks than mathematical structure, and thus it is a
 poor choice for us. We take a more principled approach instead,
-and define the following classes, which together, serve a similar
+and define the following classes, which together serve a similar
 role as |Num|, and which we study in more detail in
 \cref{sec:ring-like-classes}:
 

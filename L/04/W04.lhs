@@ -193,7 +193,7 @@ And thus we can define subtraction as
 a - b = a + negate b
 \end{spec}
 
-Finally, when the additive monoid is abelian (commutative) and
+When the additive monoid is abelian (commutative) and
 addition distributes over multiplication, we have a |Ring|. As always
 we cannot conveniently specify laws in Haskell typeclasses and thus
 define |Ring| simply as the conjunction of |AddGroup| and
@@ -205,6 +205,26 @@ type Ring a = (AddGroup a, Multiplicative a)
 
 With that, we have completed the structural motivation of our
 replacement for the |Num| class! \jp{Show some instances?}
+
+We note right away that one can have a multiplicative group structure
+as well, whose inverse is called the reciprocal (traditionally
+abbreviated as |recip| in Haskell).
+\begin{spec}
+class Multiplicative a => MulGroup a where
+  recip :: a -> a -- reciprocal
+\end{spec}
+And division can be defined is terms of multiplication and reciprocal:
+\begin{code}
+a / b = a * recip b
+\end{code}
+Often the multiplicative group is added to a |Ring|, and one has a |Field|:
+\label{sec:fields-defintion}
+\begin{code}
+type Field a = (Ring a, MulGroup a)
+\end{code}
+For fields, the reciprocal is not defined at |0|. We will not capture
+this precondition in types: it would cause too much notational
+awkwardness.
 
 \section{Homomorphisms}
 The Wikipedia definition of homomorphism states that ``A homomorphism
