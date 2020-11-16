@@ -87,41 +87,61 @@ a |Prop| term to its truth value.
 %
 \begin{code}
 eval :: Prop -> (Name -> Bool) -> Bool
-eval (Implies p q)  env = eval p env `implies` eval q env
-eval (And p q)      env = eval p env && eval q env
-eval (Or  p q)      env = eval p env || eval q env
+eval (Implies p q)  env = eval p env  ==>  eval q env
+eval (And p q)      env = eval p env  &&   eval q env
+eval (Or  p q)      env = eval p env  ||   eval q env
 eval (Not p)        env = not (eval p env)
 eval (Name n)       env = env n
 eval (Con t)        env = t
 
-implies ::  Bool ->  Bool  ->  Bool
-implies     False    _     =   True
-implies     _        p     =   p
+(==>) :: Bool -> Bool -> Bool
+False  ==> _  = True
+True   ==> p  = p
 \end{code}
 %
 The function |eval| translates from the syntactic domain to the semantic
 domain, given an environment (an assignment of names to truth values), which we represent as a function from each |Name| to |Bool|.
 %
 Here |Prop| is the (abstract) \emph{syntax} of the language of
-propositional calculus and |Bool| is the \emph{semantic
-  domain}, and |Name -> Bool| is a necessary extra parameter to write the function.
+propositional calculus and |Bool| is the \emph{semantic domain}, and
+|Name -> Bool| is a necessary extra parameter to write the function.
 %
-Alternatively, and perhaps more elegantly, we can view |(Name -> Bool) -> Bool| as the semantic domain.
+Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
+-> Bool| as the semantic domain.
 %
 \subsection{Truth tables and tautologies}
-%
-\begin{wrapfigure}{R}{0.17\textwidth}
-  \centering
-\begin{tabular}{||l||l||}
-    \hline   a & t
-  \\\hline   F & T
-  \\         T & T
-  \\\hline
-\end{tabular}
-\caption{|F => a|}
-\label{fig:F2a}
-\end{wrapfigure}
-%
+
+\pj{\refFig{fig:F2a} uses a different notation from \refFig{fig:F2a}: |F => a| is not the header.}
+\begin{figure}[tbp]\centering
+  \begin{subfigure}[b]{0.2\textwidth}\centering
+    \begin{tabular}{||l||l||}
+        \hline   |a| & |t| % |F => a|
+      \\\hline  |F|& |T|
+      \\        |T|& |T|
+      \\\hline
+    \end{tabular}
+    \caption{|F => a|}
+    \label{fig:F2a}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}\centering
+    \begin{tabular}{|| *{6}{c@@{~}} l||}
+        \hline   |a| & |&| & |b| & |=>| & |b| & |&| & |a|
+      \\\hline   |F| & |F| & |F| & |T|  & |F| & |F| & |F|
+      \\         |F| & |F| & |T| & |T|  & |T| & |F| & |F|
+      \\         |T| & |F| & |F| & |T|  & |F| & |F| & |T|
+      \\         |T| & |T| & |T| & |T|  & |T| & |T| & |T|
+      \\\hline
+    \end{tabular}
+    \caption{\(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).}
+    \label{fig:abswap}
+  \end{subfigure}
+  \caption{Two example truth tables.}
+  \label{fig:TruthTables}
+\end{figure}
+\pj{make different columns use different background colours}
+
+%TODO \refFig{fig:TruthTables}
+
 As a first example of a truth table, consider the proposition |F => a|
 which we call |t| here.
 %
@@ -139,22 +159,7 @@ only variable |a|, the semantic value is |T = True|.
 Thus the whole expression could be simplified to just |T| without
 changing its semantics.
 
-\begin{wrapfigure}[9]{R}{0.26\textwidth}
-\centering%
-\begin{tabular}{|| *{6}{c@@{~}} l||}
-    \hline   |a| & |&| & |b| & |=>| & |b| & |&| & |a|
-  \\\hline    F  &  F  &  F  &  T   &  F  &  F  &  F
-  \\          F  &  F  &  T  &  T   &  T  &  F  &  F
-  \\          T  &  F  &  F  &  T   &  F  &  F  &  T
-  \\          T  &  T  &  T  &  T   &  T  &  T  &  T
-  \\\hline
-\end{tabular}
-\caption{\(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).
-}
-\label{fig:abswap}
-\end{wrapfigure}
 
-\pj{make different columns use different background colours}
 %
 If we continue with the example |p4| from above we have two names |a|
 and |b| which together can have any of four combinations of true and

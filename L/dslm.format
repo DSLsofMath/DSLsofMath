@@ -72,6 +72,7 @@
 %format ^ = "\mathbin{\hat{}}"
 %format undefined = "\Varid{undefined}"
 %format == = "\doubleequals"
+%format ==> = "\mathrel{\doubleequals\!\!\!{>}}"
 %format /= = "\not\doubleequals"
 %format === = "\tripleequals"
 %format phi = "\varphi"

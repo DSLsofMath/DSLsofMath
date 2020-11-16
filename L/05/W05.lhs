@@ -314,7 +314,7 @@ for the |ci| must now be given via a case distinction:
 \noindent
 since |bi| does not exist for values greater than |m|.
 
-Compare this with the above formula for functions from ℕ, where no case
+Compare this with the above formula for functions from |ℕ|, where no case
 distinction necessary.  The advantage is even clearer in the case of
 multiplication.
 

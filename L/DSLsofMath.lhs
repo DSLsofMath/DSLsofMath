@@ -36,6 +36,9 @@
 \RequirePackage{amsfonts}
 \usepackage[capitalize]{cleveref} % \cref
 \usepackage{tikz}
+%\usepackage[labelfont=bf]{caption}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{tikz-cd}
 \usetikzlibrary{trees,graphs,quotes,fit,shapes}
 \usepackage{lineno}
