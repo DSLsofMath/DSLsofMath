@@ -10,6 +10,19 @@ import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..))
 import Prelude (abs)
 \end{code}
 
+
+\jp{
+
+  Possible outline for the chapter:
+
+
+  - Review all the ways that we can compute derivatives 
+  - If you can compute a pair, then you may just as well compute a whole list. \cref{sec:hh-od}
+    -> This gives a specification.
+    -> Again we search for a homomorphism, so that we can compute all the derivatives directly to have a reasonable implementation.
+}
+
+
 \chapter{Higher-order Derivatives and their Applications}
 \label{sec:deriv}
 
@@ -19,36 +32,41 @@ import Prelude (abs)
   the end of the subsection. It seems that the flow goes all over the
   place. Using an example or generalising, using several methods,
   etc. I have a really hard time following where one is going, perhaps
-  the whole sub section should be rewritten.}
+  the whole sub section should be rewritten.
+}
+
+\jp{Perhaps this ``itemize'' should go at the end of ch. 4?}
 \begin{itemize}
-\item key notion \emph{homomorphism}: |S1 -> S2| (read ``from |S1| to |S2|'')
+\item key notion \emph{homomorphism}: |h : S1 -> S2| (read ``h is an isomorphism from |S1| to |S2|'')
 
 \item questions (``equations''):
 
   \begin{itemize}
-  \item  |S1 ->? S2|     what is the homomorphism between two given structures
+  \item  |? : S1 -> S2|     what is the homomorphism between two given structures
 
         - e.g., |apply c : Num (x -> a) -> Num a|\jp{Can we derive some function which is a homomorphism between those two structures? }
 
-  \item |S1?? -> S2|    what is |S1| compatible with a given homomorphism
+  \item |h : S1?? -> S2|    what is |S1| compatible with a given homomorphism |h|
 
         - e.g., |eval : Poly a -> (a -> a)|\jp{If the function and the 2nd structure are given, what is the 1st structure that one has to have? }
 
-  \item |S1 -> S2??|   what is |S2| compatible with a given homomorphism
+  \item |h : S1 -> S2??|   what is |S2| compatible with a given homomorphism |h|
 
         - e.g.,   |applyFD c : FD a -> (a, a)|
          \jp{(Say that we have the composition fo syntactic derivative and eval. )}
 
-  \item |S1 ->? S2??|   can we find a good structure on |S2| so that it becomes homomorphic w. |S1|?
+  \item |? : S1 -> S2??|   can we find a good structure on |S2| so that it becomes homomorphic w. |S1|?
 
         - e.g.,   |evalD : FunExp -> FD a|
   \end{itemize}
 \end{itemize}
 
-The importance of |applyFD| (from \cref{sec:applyFD}) and |evalD| (\refSec{sec:evalD}) lies in that they offer ``automatic
-differentiation'', i.e., any function constructed according to the
-grammar of |FunExp|, can be ``lifted'' to a function that computes the
-derivative (e.g., a function on pairs).
+The importance of |applyFD| (from \cref{sec:applyFD}) and |evalD|
+(\refSec{sec:evalD}) lies in that they offer hasautomatic
+differentiation (\cref{sec:automoatic-differentiation}), i.e., any
+function constructed according to the grammar of |FunExp|, can be
+``lifted'' to a function that computes the derivative (e.g., a
+function on pairs).
 
 
 
@@ -70,7 +88,7 @@ Recall expressions (or functions) of one variables, from \cref{sec:FunExp}:
 %
 \begin{spec}
 data FunExp  =  Const Rational
-             |  Id
+             |  X
              |  FunExp :+: FunExp
              |  FunExp :*: FunExp
              |  FunExp :/: FunExp
@@ -88,41 +106,39 @@ We have
 \begin{spec}
         eval e x = f x
 <=>     eval e x = sin x + 2 * x
-<=>     eval e x = eval (Sin Id) x + eval (Const 2 :*: Id) x
-<=>     eval e x = eval ((Sin Id) :+: (Const 2 :*: Id)) x
-<==     e = Sin Id :+: (Const 2 :*: Id)
+<=>     eval e x = eval (Sin X) x + eval (Const 2 :*: X) x
+<=>     eval e x = eval ((Sin X) :+: (Const 2 :*: X)) x
+<==     e = Sin X :+: (Const 2 :*: X)
 \end{spec}
 %
 Finally, we can apply |derive| and obtain
 %
 \begin{code}
-e = Sin Id :+: (Const 2 :*: Id)
+e = Sin X :+: (Const 2 :*: X)
 f' 2 = evalFunExp (derive e) 2
 \end{code}
 %
 This can hardly be called ``automatic'', look at all the work we did in
-deducing |e|!
+deducing |e|!\jp{But |f| was provided syntactically anyway?}
 %
 However, consider this definition:
 %
 \begin{code}
 e2 :: FunExp
-e2 = f Id
+e2 = f X
 \end{code}
 %
-As |Id :: FunExp|, the Haskell interpreter will look for |FunExp| instances of |Num|
+As |X :: FunExp|, the Haskell interpreter will look for |FunExp| instances of |Num|
 and other numeric classes and build the syntax tree for |f| instead of computing its
 semantic value.
 %
-(Perhaps it would have been better to use, in the definition of
-|FunExp|, the constructor name |X| instead of |Id|.)
 
 In general, to find the derivative of a function |f :: Transcendental a => a -> a|, we can use
 %
 \begin{code}
-drv f = evalFunExp (derive (f Id))
+drv f = evalFunExp (derive (f X))
 \end{code}
-
+\jp{|derive| was defined in \cref{sec:derive}}
 \item Using |FD| (pairs of functions)
 
 Recall
@@ -205,7 +221,7 @@ instance Transcendental a => Transcendental (a, a) where  -- just pairs
   cos (f, f')       =  (cos f, -(sin f) * f')
 \end{spec}
 %
-In fact, the latter (just pairs) represents a generalisation of the former (pairs of functions).
+In fact, the latter (just pairs) represents a generalisation\jp{Isn't it equivalent? (The isomorphism is |c -> (a,b)| iso. |(c -> b, c -> b)|)} of the former (pairs of functions).
 %
 To see this, note that if we have a |Transcendental| instance for some |A|,
 we get a floating instance for |x->A| for all |x| from the module |FunNumInst|\jp{What is this module? Was it ever introduced?}.
@@ -220,10 +236,9 @@ Thus it is enough to have |FunNumInst| and the pair instance to get
 the ``pairs of functions'' instance (and more).
 
 The pair instance is also the ``maximally general'' such
-generalisation (discounting the ``noise'' generated by the
-less-than-clean design of |Num|, |Fractional|, |Transcendental|).
+generalisation.
 
-Still, we need to use this machinery.
+Still, we need to use this machinery.\jp{Use it for what? I never know what the goal was?}
 %
 We are now looking for a pair of values |(g, g')| such that
 %
@@ -284,7 +299,9 @@ a -> a| to compute |f' 2|:
 
 
 \section{Higher-order derivatives}
-\jp{Title of the section = title of the chapter? Change?}
+\label{sec:hh-od}
+\jp{Title of the section = title of the chapter? Change?
+In fact it seems that everything that was written up to here is a (long) review summarizing the previous chapters?}
  \jp{Rename |Stream| to |Taylor|?}
 \jp{Fold ../04/UnusualStream.hs in here}
 
@@ -380,7 +397,7 @@ The remaining part is then
     help a b (evalAll (d e1)) (evalAll (d e2))
 \end{spec}
 
-Informally, we can refer to (co-)induction at this point\jp{what does this mean here?} and rewrite
+Informally, we can refer to (co-)induction\jp{undefined} at this point and rewrite
 |evalAll (d e1 :*: e2)| to |evalAll (d e1) * evalAll e2|.
 %
 We also have |evalAll . d = tail . evalAll| which leads to:
@@ -416,6 +433,7 @@ As in the case of pairs, we find that we do not need any properties of
 functions, other than their |Num| structure, so the definitions apply
 to any infinite list of |Num a|:
 %
+\jp{It is rather bad practice to define instances on something which is named after the representation rather than the semantics}
 \begin{code}
 type Stream a = [a]
 instance Additive a => Additive (Stream a) where
@@ -462,12 +480,8 @@ drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 %
 
 \section{Polynomials}
-\jp{What is this doing here? and not in the relevant chapter?}
-\jp{Why insisting on non-empty lists? Isn't this trivial?}
+\jp{What is this doing here? and not in the relevant chapter? Delete?}
 \begin{spec}
-data Poly a  =  Single a  |  Cons a (Poly a)
-                deriving (Eq, Ord)
-
 evalPoly :: Ring a => Poly a -> (a -> a)
 evalPoly (Poly [])        x   =  0
 evalPoly (Poly (a:as))    x   =  a + x * evalPoly (Poly as) x
@@ -475,7 +489,9 @@ evalPoly (Poly (a:as))    x   =  a + x * evalPoly (Poly as) x
 
 \section{Formal power series}
 \label{sec:formal-power-series}
-\jp{Are we saying anything non-trivial and new in this section? If so indicate what it is right away.}
+\jp{
+  Are we saying anything non-trivial and new in this section? If so indicate what it is right away.}
+\jp{Is this ``formal taylor series''? }
 As we mentioned above, the Haskell list type contains both finite and
 infinite lists.
 %
@@ -484,6 +500,7 @@ polynomials.
 %
 Thus we can reuse that type also as ``syntax for power series'':
 potentially infinite ``polynomials''.
+\jp{Is this section trying to say make a difference between finite and infinite series of derivatives? But we don't actually discuss derivability? }
 %
 \begin{spec}
 type PowerSeries a = Poly a -- finite and infinite non-empty lists
@@ -667,12 +684,12 @@ sinf, cosf :: Field a =>  a -> a
   using usual mathematical notation.
 \end{exercise}
 %
-The reason that these definitions ``work'' (in the sense of not
-looping) is because |integ| immediately returns the first element of
+The reason that these definitions produce an output instead of entering an infinite
+loop is because Haskell is a lazy language: |integ| can immediately returns the first element of
 the stream before requesting any information about its first input.
 %
 It is instructive to mimic part of what the lazy evaluation machinery
-is doing ``by hand'' as follows.
+is doing by hand, as follows.
 %
 We know that both |sinx| and |cosx| are streams, thus we can start
 by filling in just the very top level structure:
@@ -773,7 +790,7 @@ evalP (Const x)    =  Poly [fromRational (toRational x)]
 evalP (e1 :+: e2)  =  evalP e1 + evalP e2
 evalP (e1 :*: e2)  =  evalP e1 * evalP e2
 evalP (e1 :/: e2)  =  evalP e1 / evalP e2
-evalP Id           =  idx
+evalP X           =  idx
 evalP (Exp e)      =  exp (evalP e)
 evalP (Sin e)      =  sin (evalP e)
 evalP (Cos e)      =  cos (evalP e)
@@ -874,7 +891,7 @@ In order to compute the values of
 for |a /= 0|, we compute
 
 \begin{code}
-ida a = takePoly 10 (derivs (evalP (Id :+: Const a)))
+ida a = takePoly 10 (derivs (evalP (X :+: Const a)))
 \end{code}
 
 More generally, if we want to compute the derivative of a function |f|
@@ -882,7 +899,7 @@ constructed with |FunExp| grammar, at a point |a|, we need the power
 series of |g x = f (x + a)|:
 
 \begin{code}
-d f a = takePoly 10 (derivs (evalP (f (Id :+: Const a))))
+d f a = takePoly 10 (derivs (evalP (f (X :+: Const a))))
 \end{code}
 
 Use, for example, our |f x = sin x + 2 * x| above.
@@ -900,7 +917,7 @@ dP f a = takePoly 10 (derivs (f (idx + Poly [a])))
 \begin{code}
 evalFunExp  ::  Transcendental a => FunExp -> a -> a
 evalFunExp  (Const alpha)  =   const (fromRational (toRational alpha))
-evalFunExp  Id             =   id
+evalFunExp  X              =   id
 evalFunExp  (e1 :+: e2)    =   evalFunExp e1  +  evalFunExp e2    -- note the use of ``lifted |+|''
 evalFunExp  (e1 :*: e2)    =   evalFunExp e1  *  evalFunExp e2    -- ``lifted |*|''
 evalFunExp  (Exp e1)       =   exp (evalFunExp e1)                -- and ``lifted |exp|''
@@ -909,7 +926,7 @@ evalFunExp  (Cos e1)       =   cos (evalFunExp e1)
 -- and so on
 
 derive     (Const alpha)  =  Const 0
-derive     Id             =  Const 1
+derive     X              =  Const 1
 derive     (e1 :+: e2)    =  derive e1  :+:  derive e2
 derive     (e1 :*: e2)    =  (derive e1  :*:  e2)  :+:  (e1  :*:  derive e2)
 derive     (Exp e)        =  Exp e :*: derive e

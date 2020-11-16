@@ -1377,6 +1377,7 @@ Implement the rest of the |Num| instance for |FD a|.
 \end{exercise}
 
 \subsection{Automatic differentiation}
+\label{sec:automoatic-differentiation}
 The simultaneous computation of values and derivatives is an important
 technique called ``automatic differentiation''. Automatic
 differentiation has grown in importance with the rise of machine

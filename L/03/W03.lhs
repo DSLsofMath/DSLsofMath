@@ -1401,6 +1401,7 @@ derivation rules is already in the right format, the way to obtain
 this implementation may seem obvious, but we will go through the steps
 as a way to show the process in a simple case.
 
+\label{sec:derive}
 Our goal is want to implement a function |derive :: FunExp -> FunExp| which
 makes the following diagram commute:
 
