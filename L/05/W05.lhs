@@ -371,7 +371,7 @@ Let
 
 \begin{code}
 x :: Ring a => Poly a
-x = Poly [1]
+x = Poly [0,1]
 \end{code}
 
 Then for any polynomial |as = Poly [a0, a1, ..., an]| we have
@@ -781,9 +781,9 @@ return power series, the third is a polynomial (almost: it has a
 trailing |0.0|).
 
 \begin{code}
-example0 :: (Eq a, Field a) => PowerSeries a 
+example0 :: (Eq a, Field a) => PowerSeries a
 example0   = takePoly 10 ps0
-example01 :: (Eq a, Field a) => PowerSeries a 
+example01 :: (Eq a, Field a) => PowerSeries a
 example01  = takePoly 10 (ps0 * (1-x))
 \end{code}
 
@@ -874,7 +874,7 @@ po1 :: (Eq a, Field a) => Poly a
 po1 = 1 + x^2 - 3*x^4
 
 instance Ring a => Monoid' (Poly a) where
-  unit = Poly [1]
+  unit = Poly [one]
   op = (*)
 
 instance Monoid' Integer where

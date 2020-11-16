@@ -277,7 +277,7 @@ dieDistr = uniformDiscrete [1..6]
 
 Another useful discrete distribution is the Bernoulli distribution of parameter |p|.
 %
-It is a distribution whose value is |True| with probability |p| and and |False| with probability |1-p|.
+It is a distribution whose value is |True| with probability |p| and |False| with probability |1-p|.
 %
 Hence it can be used to represent a biased coin toss.
 \begin{code}

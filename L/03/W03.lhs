@@ -654,8 +654,8 @@ of variables $x$.  Hence we prefer a notation which doesn't rely on
 the names given to the arguments whatsoever. It was popularised by
 \citet{landau1934einfuhrung} (English edition
 \cite{landau2001differential}): \(D₁\) for the partial derivative with
-respect to the the first argument, \(D_2\) for the partial derivative with
-respect to the the second argument, etc.
+respect to the first argument, \(D_2\) for the partial derivative with
+respect to the second argument, etc.
 
 Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
 
