@@ -124,6 +124,18 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
     \label{fig:F2a}
   \end{subfigure}
   \begin{subfigure}[b]{0.3\textwidth}\centering
+    \begin{tabular}{|| *{2}{c@@{~}} l||}
+        \hline   |a| & |=>|& |b|
+      \\\hline   |F| & |T| & |T|
+      \\         |F| & |T| & |T|
+      \\         |T| & |F| & |F|
+      \\         |T| & |T| & |T|
+      \\\hline
+    \end{tabular}
+    \caption{|p3 = a => b|.}
+    \label{fig:TruthTableImplies}
+  \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}\centering
     \begin{tabular}{|| *{6}{c@@{~}} l||}
         \hline   |a| & |&| & |b| & |=>| & |b| & |&| & |a|
       \\\hline   |F| & |F| & |F| & |T|  & |F| & |F| & |F|
@@ -135,12 +147,13 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
     \caption{\(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).}
     \label{fig:abswap}
   \end{subfigure}
-  \caption{Two example truth tables.}
+  \caption{Truth table examples.}
   \label{fig:TruthTables}
 \end{figure}
 \pj{make different columns use different background colours}
 
-%TODO \refFig{fig:TruthTables}
+%TODO Perhaps cite the full \refFig{fig:TruthTables}
+%TODO Perhaps cite the middle subfigure \refFig{fig:TruthTableImplies}
 
 As a first example of a truth table, consider the proposition |F => a|
 which we call |t| here.
@@ -199,7 +212,7 @@ freeNames = error "exercise"
 %
 Truth table verification is only viable for propositions with few
 names because of the exponential growth in the number of cases to
-check: we get $2^n$ different |truthTables| for |n| names.
+check: for |n| names we get $2^n$ different rows in a truth table.
 %
 \begin{exercise}
 Define the function |freeNames|.
@@ -222,7 +235,7 @@ checkProof :: Proof -> Prop -> Bool
 %
 But we still have to figure out what consitutes proofs.
 %
-We will build up the ``proof DSL'' one step at a time but looking at
+We will build up the ``proof DSL'' one step at a time by looking at
 what we need to prove the different propositions.
 
 To prove |And P Q|, one both a proof of |P| and a proof of |Q|.
@@ -230,7 +243,7 @@ To prove |And P Q|, one both a proof of |P| and a proof of |Q|.
 In logic texts, one will often find
 \[ \frac{P \quad Q}{P ∧ Q} \] to represent this fact, which is called the \emph{introduction rule for (∧)}.
 %
-(For the proof to be complete, one still needs to provide a full proof of |P| and another for |Q| --- it is not enough to just invoke this rule.)
+For the proof to be complete, one still needs to provide a full proof of |P| and another for |Q| --- it is not enough to just invoke this rule.
 
 Therefore, in Haskell, can represent this rule by a proof-term
 constructor |AndIntro| with two |Proof| arguments:
@@ -278,17 +291,17 @@ However, we will instead apply the same treatment to negation as to
 other constructions, and define a suitable introduction rule:
 \[ \frac{P → Q \quad P → ¬Q}{¬P} \]
 %
-We can represent it by the |NegIntro :: Prop -> Proof -> Proof ->
-Proof| constructor.
-
-Because we have inductive proofs (described from the bottom up),
-we have the additional difficulty that this rule conjures-up a new
-proposition, $Q$.
+We can represent it by the constructor |NegIntro :: Prop -> Proof -> Proof ->
+Proof|.
+%
+Because we have inductive proofs (described from the bottom up), we
+have the additional difficulty that this rule conjures-up a new
+proposition, |Q|.
 %
 This is why we need an additional |Prop| argument, which gives the |Q|
 formula.
 
-There is syntax to introduce Falsity (⊥), otherwise we'd have an
+There is no syntax to introduce falsity (|⊥|), otherwise we'd have an
 inconsistent logic!
 %
 \pj{Fix formatting of the rule for truth.}
@@ -305,13 +318,13 @@ $\frac{P ∧ Q}{Q}$.
 %
 So we represent them by |AndElim1 :: Proof -> Prop -> Proof| (and
 |AndElim2| symmetrically), where the extra |Prop| argument corresponds
-to |Q|.
+to~|Q|.
 
 Our elimination rule for disjunction (|Or|) is
 $\frac {P ∨ Q \quad P → R \quad Q → R} R$.
 %
 The idea here is that if we know that \(P ∨ Q\) holds, then we have
-two cases: either |P| holds and |Q| holds.
+two cases: either |P| holds or |Q| holds.
 %
 If only we can find a proposition |R| which is a consequence of both
 |P| and |Q|, then, regardless of which case we are facing, we know
@@ -319,7 +332,7 @@ that |R| will hold.
 
 Our elimination for negation is $\frac {¬ ¬ P} P$.
 %
-It simply says that two negations cancel out.
+It simply says that two negations cancel.
 
 Finally we can eliminate falsity as follows: $\frac {⊥} P$.
 %
@@ -359,6 +372,8 @@ the semantic domain of |Prop|.
 %
 In other words, a proposition can be interpreted at the subset of
 proofs which prove it.
+%
+\pj{Make the identification of ``subset of A'' with ``predicate on A'' explicit earlier.}
 
 
 \subsection{Implication, hypothetical derivations, contexts}
@@ -368,7 +383,7 @@ can use the so-called material implication definition which we invoked
 earlier in truth tables. It means to define |Implies a b = (Not a)
 `Or` b| --- and this equality means that there is no need to deal
 specially with |Implies|. However this approach does not bring any new
-insight. In particular, this view is hard to transpose to more
+insight. In particular, this view is hard to transport to more
 complicated logics (such as second-order logic).
 
 Thus we take our usual approach and give rules for it. The introduction rule is sometimes written in this way in logic texts: \[\frac{\begin{array}{c}P \\ \vdots \\ Q \end{array}}{P → Q}\]
