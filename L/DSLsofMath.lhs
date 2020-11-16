@@ -46,6 +46,7 @@
 \usepackage{pdfpages}
 \usepackage{tabu}
 \newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
 \newcommand\jp[1]{\todo{JP: #1}}
 \newcommand\ci[1]{\todo{CI: #1}}
 \newcommand\pj[1]{\todo{PJ: #1}}

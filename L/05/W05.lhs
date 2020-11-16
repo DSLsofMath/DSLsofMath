@@ -326,7 +326,9 @@ multiplication.
   correspondence) to polynomial functions.
   %
   For any finite ring |A|, there is a finite number of functions |A ->
-  A|, but there is a countable infinity of polynomials.
+  A|, but there is a countable infinity of polynomials.\jp{I thought
+    we said that polynomials are the functions (not the
+    representations). I am confused.}
   %
   That means that the same polynomial function on |A| will be the
   evaluation of many different polynomials.
@@ -524,16 +526,16 @@ Check all the Monoid and homomorphism properties.
 
 \section{Power Series}
 
-Consider the following ``pseudo proof'':
+Consider the following (false) proposition:
 
-\jp{Proposition?}
-\begin{theorem}[Fake theorem]
+\begin{proposition}
 Let |m, n ∈ ℕ| and let |cs| and |as| be any polynomials of degree |m + n| and |n|, respectively, and with |a0 /= 0|.
 %
 Then |cs| is divisible by |as|.
-\end{theorem}
+\end{proposition}
 
-\jp{Proof attempt?}
+Even if the proposition is false, we can make the following proof
+attempt:
 \begin{proof}
 We need to find |bs = [b0, ..., bm]| such that |cs = as * bs|.
 %
@@ -559,19 +561,24 @@ Similarly
 
 from which we obtain, exactly as before, the value of |b2|.
 
-It is clear that this process can be continued, yielding at every step a value for a coefficient of |bs|, and thus we have obtained |bs| satisfying |cs = as * bs|.
+It is clear that this process can be continued, yielding at every step
+a value for a coefficient of |bs|, and thus we have obtained |bs|
+satisfying |cs = as * bs|.
 
 \end{proof}
 
-The problem with this ``proof'' is in the statement ``it is clear that this process can be continued''.
+The problem with this proof attempt is in the statement ``it is clear that this process can be continued''.
 %
-In fact, it is rather clear that it cannot (for polynomials)!
+In fact, it is rather clear that it cannot be continued (for polynomials)!
 %
-Indeed, |bs| only has |m+1| coefficients, therefore for all remaining |n| equations of the form |ck = {-"\sum_{i = 0}^k a_i * b_{k-i}"-}|, the values of |bk| have to be zero.
+Indeed, |bs| only has |m+1| coefficients\jp{why? I don't think that it was a requirement of the problem}, therefore for all remaining
+|n| equations of the form |ck = {-"\sum_{i = 0}^k a_i * b_{k-i}"-}|,
+the values of |bk| have to be zero.
 %
-But in general this will not satisfy the equations.
+But in general this\jp{this what?} will not satisfy the equations.
 
-However, we can now see that, if we were able to continue for ever, we would be able to divide |cs| by |as| exactly.
+However, we can now see that, if we were able to continue forever, we
+would be able to divide |cs| by |as| exactly.\jp{Is this supposed to mean that the list of coefficients |bk| will yield a diverging sum? }
 %
 The only obstacle is the ``finite'' nature of our lists of coefficients.
 
@@ -623,7 +630,7 @@ not exist).
 We will consider, as is usual, only the case in which |A = ℝ| or |A =
 ℂ|.
 
-The word \emph{formal} refers to the independence of the definition of
+Here the qualifier ``formal'' refers to the independence of the definition of
 power series from the ideas of convergence and evaluation.
 %
 In particular, two power series represented by |a| and |b|, respectively,
@@ -678,10 +685,10 @@ Power series have a richer structure than polynomials.
 % (not sure if there is any actual connection or just a coincidence, but still
 % interesting to note)
 %
-For example, we also have division (this is similar to the move from |ℤ|
-to |ℚ|).
+For example, as suggested above, we also have division (this is reminiscent of the move from |ℤ|
+to |ℚ| to allow division to be generalised).
 %
-\jp{Wasn't this explained just above in the ``fake proof''?}We start with a special case: trying to compute |p = frac 1 (1-x)| as a
+To illustrate, let us start with a special case: trying to compute |p = frac 1 (1-x)| as a
 power series.
 %
 The specification of |a/b = c| is |a=c*b|, thus in our case we need to
@@ -694,8 +701,8 @@ of the left hand side is |0| and the degree of the RHS is |1 +  degree p /= 0|.
 %
 But there is still hope if we move to formal power series.
 
-Remember that |p| is then represented by a stream of coefficients
-|[p0, p1, ...]|.
+Remember that |p| is then represented by a stream of coefficients,
+and let that stream be |[p0, p1, ...]|.
 %
 We make a table of the coefficients of the RHS |= (1-x)*p =
 p - x*p| and of the LHS |= 1| (seen as a power series).
@@ -712,7 +719,7 @@ coefficients satisfying |p0=1|, |p1-p0=0|, |p2-p1=0|, \ldots.
 %
 The solution is unique: |1 = p0 = p1 = p2 = | \ldots
 %
-but only exists for streams (infinite lists) of coefficients.
+but it only exists for streams (infinite lists) of coefficients.
 %
 In the common math notation we have just computed
 %
@@ -724,7 +731,7 @@ Note that this equation holds when we interpret both sides as formal
 power series, but not necessarily if we try to evaluate the
 expressions for a particular |x|.
 %
-That works for |absBar x < 1| but not for |x=2|, for example.
+Indeed, the RHS will converge for |absBar x < 1| but not for |x=2|, for example.
 
 For a more general case of power series division, consider |p/q| with |p =
 a:as|, |q = b:bs|, and assume that |a * b ≠ 0|.
@@ -777,7 +784,7 @@ ps2  = (x^2 - 2 * x + 1) / (x - 1)
 \end{code}
 %
 Every |ps| is the result of a division of polynomials: the first two
-return power series, the third is a polynomial (almost: it has a
+return power series, the third is a polynomial (even though it ends up having a
 trailing |0.0|).
 
 \begin{code}
@@ -827,7 +834,7 @@ Thus the $m$th coefficient of the derivative is \((m+1) * a_{m+1}\).
 
 %TODO: redo to arrive at the recursive formulation.
 
-We can implement this, for example, as
+We can implement this formula, for example, as
 
 \begin{code}
 deriv :: Ring a => Poly a -> Poly a
