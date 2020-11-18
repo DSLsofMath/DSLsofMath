@@ -340,6 +340,7 @@ This rule goes some times by its descriptive latin name \textit{ex
   falso quodlibet} --- from falsehood, anything (follows).
 
 We can then write our proof checker as follows:
+\savecolumns
 \begin{code}
 checkProof TruthIntro        (Con True)   =   True
 checkProof (AndIntro t u)    (And p q)    =   checkProof t p
@@ -407,34 +408,32 @@ proposition |P| is a not given by the conclusion and thus has to be
 provided as part of the proof.}.
 And we can finally complete our proof checker as follows:
 
+\restorecolumns
 \begin{code}
-checkProof (Assumption p') p = p == p'
-checkProof (ImplyIntro f) (p `Implies` q) = checkProof (f (Assumption p)) q
-checkProof (ImplyElim t u p) q = checkProof t (q `Implies` p) && checkProof u q
-checkProof _ _ = False -- incorrect proof
+checkProof (Assume p')          p                =   p == p'
+checkProof (ImplyIntro f)       (p `Implies` q)  =   checkProof (f (Assume p)) q
+checkProof (ImplyElim t u p)    q                =   checkProof t (p `Implies` q)
+                                                 &&  checkProof u p
+checkProof _                    _                =   False -- incorrect proof
 \end{code}
-
+\pj{I feel the |Prop| arguments should come first in the constructors as they do (implicitly) when they are modelled as types later.}%
+%
 And, for reference, the complete DSL for proofs is given by the
 following datatype:
 \begin{code}
-data Proof  =  Assumption Prop
-            |  TruthIntro
-            |  FalseElim Proof
-            |  AndIntro Proof Proof
-            |  AndElimL Proof Prop
-            |  AndElimR Proof Prop
-            |  OrIntroL Proof
-            |  OrIntroR Proof
+data Proof  =  TruthIntro                   |  FalseElim Proof
+            |  AndIntro  Proof  Proof
+            |  AndElimL  Proof  Prop        |  AndElimR  Proof  Prop
+            |  OrIntroL  Proof              |  OrIntroR  Proof
             |  OrElim Proof Proof Proof Prop Prop
-            |  NotIntro Proof Proof Prop
-            |  NotElim Proof
-            |  ImplyIntro (Proof -> Proof)
-            |  ImplyElim  Proof Proof Prop
+            |  NotIntro Proof Proof Prop    |  NotElim Proof
+            |  Assume Prop
+            |  ImplyIntro (Proof -> Proof)  |  ImplyElim  Proof Proof Prop
 \end{code}
 \jp{Props are like having lemmas}
 
 \paragraph{Aside}
-The |Assumption| constructor may make the reader somewhat uneasy: how
+The |Assume| constructor may make the reader somewhat uneasy: how
 come that we can simply assume anything? The intent is that this
 constructor is \emph{private} to the |checkProof| function (or
 module). No user-defined proof can use it. The most worried readers
@@ -445,28 +444,27 @@ earlier.  \footnote{This kind of presentation of the checker matches
 
 \begin{spec}
 checkProof :: Context -> Proof -> Prop -> Bool
-checkProof ctx (ImplyIntro t) (p `Implies` q) = checkProof' (p:ctx) t q
-checkProof ctx Assumption p = p `elem` ctx
+checkProof ctx  (ImplyIntro t)  (p `Implies` q)  = checkProof' (p:ctx) t q
+checkProof ctx  Assume          p                = p `elem` ctx
 \end{spec}
+\jp{Is there something missing on the last line or has |Assume| been implicitly redefined?}
 
 \paragraph{Example proof}
-We can put our proof-checker to the test, by writing a number of
-proofs and verifying them.
+We can put our proof-checker to the test by writing some proofs and
+verifying them.
 
 \begin{code}
 conjunctionCommutative :: Prop
-conjunctionCommutative = (p `And` q) `Implies` (q `And` p)
-  where p = Name "p"; q = Name "q"
+conjunctionCommutative = p4
 
 conjunctionCommutativeProof :: Proof
-conjunctionCommutativeProof =
-  ImplyIntro (\evPQ ->
-  AndIntro  (AndElimR evPQ (Name "p"))
-            (AndElimL evPQ (Name "q")) )
-
+conjunctionCommutativeProof = ImplyIntro step
+  where  step :: Proof -> Proof
+         step evAB =  AndIntro  (AndElimR  evAB  (Name "a"  ))
+                                (AndElimL  evAB  (Name "b"  ))
 \end{code}
-(where |evPQ| stands for "evidence for |P| and |Q|.")
-
+where |evAB| stands for ``evidence for |A| and |B|''.
+%
 We can then run the checker and verify:
 |checkProof conjunctionCommutativeProof conjunctionCommutative == True|
 
@@ -484,9 +482,9 @@ We can then run the checker and verify:
 \begin{code}
 conjunctionCommutativeProof2 :: Proof
 conjunctionCommutativeProof2 =
-  ImplyIntro (\evPQ ->
-  AndIntro  (AndElimL evPQ (Name "q"))
-            (AndElimR evPQ (Name "p")) )
+  ImplyIntro (\evAB ->
+  AndIntro  (AndElimL evAB (Name "b"))
+            (AndElimR evAB (Name "a")) )
 
 -- >>> checkProof conjunctionCommutativeProof2 conjunctionCommutative
 -- False
@@ -503,11 +501,11 @@ built-in in the Haskell compiler. Let us clarify what we mean, using
 the same example, but adapt it to let the type-checker do the work:
 
 \begin{code}
-conjunctionCommutativeProof' :: (p `And` q) `Implies` (q `And` p)
-conjunctionCommutativeProof' =
-   implyIntro (\evPQ ->
-   andIntro  (andElimR evPQ)
-             (andElimL evPQ))
+conjunctionCommutativeProof' :: Implies (And a b) (And b a)
+conjunctionCommutativeProof' = implyIntro step
+  where  step :: And a b -> And b a
+         step evAB =  andIntro  (andElimR  evAB)
+                                (andElimL  evAB)
 \end{code}
 
 That is, instead of writing propositions, we write types (|And|, |Or|,
@@ -518,16 +516,18 @@ whose types capture rules:
 truthIntro  :: Truth
 falseElim   :: False -> p
 andIntro    :: p -> q -> And p q
-andElimL    :: a `And` b -> a
-andElimR    :: a `And` b -> b
-orIntro     :: Either a b -> Or a b
+andElimL    :: And p q -> p
+andElimR    :: And p q -> q
+orIntroL    :: p -> Or p q
+orIntroR    :: q -> Or p q
 orElim      :: Or p q -> (p `Implies` r) -> (q `Implies` r) -> r
 notIntro    :: (p `Implies` q) `And`  (p `Implies` Not q) -> Not p
 notElim     :: Not (Not p) -> p
 implyIntro  :: (p -> q) -> (p `Implies` q)
-implyElim   :: (p `Implies` q) -> p -> q
+implyElim   :: (p `Implies` q) -> (p -> q)
 \end{code}
 Instead of running |checkProof|, we type-check the above program.
+%
 Because the proof is correct, we get no type-error.
 \begin{exercise}
   What would happen if you swap |andElimR| and |andElimL|? Why?
@@ -535,10 +535,10 @@ Because the proof is correct, we get no type-error.
 %
 
 This style of propositional logic proof is very advantageous, because
-we not only the checker comes for free, but we additionally get all
+not only the checker comes for free, but we additionally get all
 the engineering tools of the Haskell tool-chain.
 
-One should be careful however that Haskell is not design with
+One should be careful however that Haskell is not designed with
 theorem-proving in mind.  For this reason it is easily possible make
 the compiler accept invalid proofs. The main two sources of invalid
 proofs are 1. non-terminating programs and 2. exception-raising
@@ -568,24 +568,25 @@ notElim = error "not possible as such in intuitionistic logic"
 On the other hand the introduction for negation becomes a theorem of the logic.
 The formulation of the theorem is:
 \begin{spec}
-notIntro :: (p `Implies` q) `And` (p `Implies` (q `Implies` False)) -> p `Implies` False
+notIntro :: (p `Implies` q) `And` (p `Implies` Not q) -> Not p
 \end{spec}
-And its proof is:
+where |Not p = p `Implies` False|, and its proof is:
 \begin{code}
-notIntro (evPimpliesQ,evPimpliesNotQ) evP =
-    (evPimpliesNotQ `implyElim` evP ) `implyElim` (evPimpliesQ `implyElim` evP)
+notIntro (evPimpQ, evPimpNotQ) = implyIntro $ \evP ->
+    (evPimpNotQ `implyElim` evP ) `implyElim` (evPimpQ `implyElim` evP)
 \end{code}
-
+% $ -- resync emacs mode parser
 \label{sec:curry-howard}
 By focusing on intuitionistic logic, we can give a \emph{typed}
-representation for each of the formula constructors. Let us consider implication first.
-|impIntro| and |impElim| seem to be conversion from and to functions, and so it
-should be obvious that the representation of the implication formula is a function:
+representation for each of the formula constructors. Let us consider
+implication first.  The proof rules |impIntro| and |impElim| seem to
+be conversion from and to functions, and so it should be clear that
+the representation of the implication formula is a function:
 
 \begin{code}
 type Implies p q = p -> q
-implyElim f x = f x
-implyIntro f x = f x
+implyElim   f = f
+implyIntro  f = f
 \end{code}
 
 Conjunction is represented as pairs; that is, if |p : P| and |q : Q|
@@ -594,19 +595,21 @@ elimination rules are projections. In code:
 \begin{code}
 type And p q = (p,q)
 andIntro t u = (t,u)
-andElimL = fst
-andElimR = snd
+andElimL  = fst
+andElimR  = snd
 \end{code}
 Similarly, disjuction is represented as |Either|:
 if |p : P| then |Left p : Or P Q| and if |q : Q| then |Right q : Or P
 Q|.
 \begin{code}
 type Or a b = Either a b
-orIntro x = x
-orElim (Left   t) u _ = u t
-orElim (Right  t) _ v = v t
+orIntroL  = Left
+orIntroR  = Right
+orElim pOrq f g = case pOrq of
+  Left   p -> f  p
+  Right  q -> g  q
 \end{code}
-We already had characterize or-elimination as case analysis, and,
+We already had characterized or-elimination as case analysis, and,
 indeed, this is how we implement it.
 
 Truth is represented as the unit type:
@@ -633,27 +636,28 @@ fragment is called the simply-typed lambda calculus (STLC) with sum and products
 \label{sec:excluded-middle}
 As an example of how intuitionism twists usual law, consider the law of the excluded middle,
 which states that, for any proposition |P|, either |P| or |Not P| holds. For example, either
-it rains or it does not rain. There is no ``middle compromise''.
-If we attempt to prove |P `Or` (Not P)| in intuitionitic logic, we quickly find ourselves in a dead end.
+it rains or it does not rain. There is no ``middle ground''.
+If we attempt to prove |Or P (Not P)| in intuitionitic logic, we quickly find ourselves in a dead end.
 Clearly, we cannot prove |P| for any |P|. Likewise |Not P|, or equivalently |P -> False| cannot be deduced.
 
-What we have to do account for the fact that we cannot use negation elimination, and so
-we have to make-do with proving |Not (Not Q)| instead of |Q|. This is exactly what
-we have to do to prove  the law of excluded
-middle.
-We can then provide this Haskell-encoded proof:
+What we have to do is to account for the fact that we cannot use
+negation elimination, and so we have to make-do with proving |Not (Not
+Q)| instead of~|Q|. This is exactly what we have to do to (almost)
+prove the law of excluded middle.  We can then provide this
+Haskell-encoded proof:
 
 \begin{code}
-excludedMiddle :: Not (Not (p `Or` Not p))
--- to prove this, we can ...
-excludedMiddle k = -- ... assume |Not (p `Or` (Not p))| and prove falsity.
-   k -- So, we can prove falsity if we can prove |p `Or` (Not p)|.
+excludedMiddle :: Not (Not (p `Or` Not p)) -- to prove this, we can ...
+excludedMiddle k = -- ... assume |Not (Or p (Not p))| and prove falsity.
+   k -- So, we can prove falsity if we can prove |Or p (Not p)|.
    (Right  -- We can prove in particular the right case, |Not p|
      (\evP ->  -- ... by assuming that |p| holds, and prove falsity.
-        k --  But again, we can prove falsity if we can prove |p `Or` (Not p)|.
+        k --  But again, we can prove falsity if we can prove |Or p (Not p)|.
         (Left -- This time, we can prove in particular the left case, |p| ...
           evP))) -- because we assumed it earlier!
 \end{code}
+% excludedMiddle k = k (Right (\evP -> k (Left evP)))
+% excludedMiddle k = k (Right (k . Left))
 
 
 \paragraph{Revisiting the tupling transform}
@@ -675,11 +679,11 @@ Therefore we start with the two directions of the transform as functions:
 
 \begin{code}
 test1' :: (a -> (b, c)) -> (a->b, a->c)
-test1' = \a2bc ->  ( \a -> fst (a2bc a)
-                   , \a -> snd (a2bc a) )
+test1' a2bc =  ( \a -> fst  (a2bc a)
+               , \a -> snd  (a2bc a) )
 
 test2' :: (a->b, a->c) -> (a -> (b, c))
-test2' = \fg -> \a -> (fst fg a, snd fg a)
+test2' fg = \a -> (fst fg a, snd fg a)
 \end{code}
 %
 Then we move on to the corresponding logic statements with proofs.
@@ -705,7 +709,7 @@ test2  =   implyIntro (\fg ->
 Another view of the same isomorphism is that the logical rules for IPL
 can be obtained by erasing programs from the typing rules for STLC.
 We will show here only the application rule, leaving the rest as
-exercise. This typing rule for function application can be written as follows:
+an exercise. This typing rule for function application can be written as follows:
 
 \[\frac{f : A → B \quad x : A}{f(x) : B}\]
 
@@ -723,7 +727,7 @@ Before moving on to our next topic, we make a final remark on |And| and |Or|.
 %
 Most of the properties of |And| have corresponding properties for
 |Or|.  This can be explained one way by observing that they are de
-Morgan duals. Another explanatino is that one can swap the direction
+Morgan duals. Another explanation is that one can swap the direction
 of the arrows in the types of the the role between introduction and
 elimination. (Using our presentation, doing so requires applying
 isomorphisms.)

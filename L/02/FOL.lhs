@@ -1,8 +1,7 @@
+\section{First Order Logic}
 \begin{code}
  module FOL where
 \end{code}
-
-\section{First Order Logic}
 
 %
 Our second DSL is that of \emph{First Order Logic\lnOnly{\footnote{Swedish: Första ordningens logik = predikatlogik}}},
