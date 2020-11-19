@@ -21,12 +21,15 @@ or the application of a \emph{function symbol} (like |f|, |g|) to a
 suitable number of terms.
 %
 If we have the function symbols |f| of arity |2| and |g| of arity |3|
-we can form terms like |f(x,x)|, |g(y,z,z)|, |g(x,y,f(x,y))|, etc.
+we can form terms like \(f(x,x)\), \(g(y,z,z)\), \(g(x,y,f(x,y))\), etc.
 %
-The individuals are often limited to a single domain. For example here
-we will take individuals to be rationals.\jp{why?} Consequently, the
-actual function symbols are also domain-specific --- for rationals we
-will have addition, division, etc.
+The individuals are often limited to a single domain.
+%
+For example here we will take individuals to be rationals (to be able
+to express basic mathematical concepts).
+%
+Consequently, the actual function symbols are also domain-specific ---
+for rationals we will have addition, division, etc.
 %
 In this case we can model the terms as a datatype:
 
@@ -72,7 +75,7 @@ Note that we have two separate layers, with terms at the bottom:
 formulas normally refer to terms, but terms cannot refer to formulas.
 
 The formulas introduced so far are all \emph{atomic formulas}:
-generalisations of the \emph{names} from |PropCalc|.
+generalisations of the \emph{names} from |Prop|.
 %
 Now we will add two more concepts:
 %
@@ -114,7 +117,7 @@ As before we can model the expression syntax (for FOL, in this case)
 as a datatype.
 %
 We keep the logical connectives |And|, |Or|, |Implies|, |Not| from the
-type |PropCalc|, add predicates over terms, and quantification.
+type |Prop|, add predicates over terms, and quantification.
 %
 The constructor |Equal| could be eliminated in favour of |PName "Eq"| but
 it is often included as a separate constructor.
@@ -139,80 +142,89 @@ data FOL  =  PName PSym [RatT]
 Setting us up for failure, let us attempt to write an |eval| function
 for FOL, as we did for propositional logic.
 
-In propositional logic, we allowed the interpretation of propositional variables
-to change depending on the environment. Here, we will let the interpretation of
-term variables be dependent on an environment, which will therefore map
-(term) variables
-to individuals (|VarT -> RatSem|).
-If we so wished, we could have an environment for the interpretation of predicate
-names, with an environment of type |PSym -> [RatSem] -> Bool|. Rather, with little
-loss of generality, we will fix this interpretation, via a constant function |eval0|, which
-may look like this:
+In propositional logic, we allowed the interpretation of propositional
+variables to change depending on the environment.
+%
+Here, we will let the interpretation of term variables be dependent on
+an environment, which will therefore map (term) variables to
+individuals (|VarT -> RatSem|).
+%
+If we so wished, we could have an environment for the interpretation
+of predicate names, with an environment of type |PSym -> [RatSem] ->
+Bool|.
+%
+Rather, with little loss of generality, we will fix this
+interpretation, via a constant function |eval0|, which may look like
+this:
 
 \begin{code}
 eval0 :: PSym -> [RatSem] -> Bool
-eval0 "Equal" [t1,t2] = t1 == t2
-eval0 "LessThan" [t1,t2] = t1 < t2
-eval0 "Positive" [t1] = t1 > 0
+eval0 "Equal"     [t1,t2]  =  t1 == t2
+eval0 "LessThan"  [t1,t2]  =  t1 < t2
+eval0 "Positive"  [t1]     =  t1 > 0
 \end{code}
 etc.
 
-the environment which was mapping
-names to truth values is replaced by an environment mapping each
-predicate/argument combinations to a truth value: (|PSym -> [RatSem]
--> Bool|). Additionally we need en evironment mapping   So we would use the following
-type:
-
+So we would use the following type:
+%
 \begin{code}
 eval :: FOL -> (VarT -> RatSem) -> Bool
 \end{code}
 And go our merry way for most cases:
 \begin{code}
-eval formula ratEnv = case formula of
-  (PName n args) -> eval0 n (map (flip evalRat ratEnv) args)
-  Equal a b -> evalRat a ratEnv == evalRat b ratEnv
-  And p q -> eval p ratEnv && eval p ratEnv
-  Or  p q -> eval p ratEnv || eval p ratEnv
+eval formula env = case formula of
+  PName n args  -> eval0 n (map (flip evalRat env) args)
+  Equal a b     -> evalRat a env == evalRat b env
+  And p q       -> eval p env && eval p env
+  Or  p q       -> eval p env || eval p env
 \end{code}
-etc.
 
-However, as soon as we encounter quantifiers, we have a problem. To
-evaluate |EXISTS x p| (at least in certain contexts) we may need to
-evaluate |p| for each possible value of |x|. But, unfortunately, there
-are infinitely many such possible values, and so we can never know if
-the formula is a tautology.\footnote{FOL experts will scoff at this
-  view, because they routinely use much more sophisticated methods of
-  evaluation, which handle quantifiers in completely different ways.
-  Their methods are even able to identify tautologies as
-  such. However, even such methods are not guaranteed to terminate on
-  formulas which are not tautologies. Therefore, as long as an
-  even-very-advanced FOL tautology-checker is running, there is no way
-  to know how close it is to confirming if the formula at hand is a
-  tautology or not. This is not a technical limitation, but rather a
-  fundamental one, which boils down to the presence of quantifier over
-  an infinite domain.} So, if we were to try to run the evaluator, it
-would not terminate. Hence, the best that we can ever do is, given a
-hand-written proof of the formula, check if the proof is
-valid. Fortunately, we have already studied the notion of proof in the
+However, as soon as we encounter quantifiers, we have a problem.
+%
+To evaluate |EXISTS x p| (at least in certain contexts) we may need to
+evaluate |p| for each possible value of |x|.
+%
+But, unfortunately, there are infinitely many such possible values,
+and so we can never know if the formula is a tautology.%
+\footnote{FOL experts will scoff at this view, because they routinely
+  use much more sophisticated methods of evaluation, which handle
+  quantifiers in completely different ways.  Their methods are even
+  able to identify tautologies as such. However, even such methods are
+  not guaranteed to terminate on formulas which are not tautologies.
+  Therefore, as long as an even-very-advanced FOL tautology-checker is
+  running, there is no way to know how close it is to confirming if
+  the formula at hand is a tautology or not. This is not a technical
+  limitation, but rather a fundamental one, which boils down to the
+  presence of quantifier over an infinite domain.}
+%
+So, if we were to try to run the evaluator, it would not
+terminate.
+%
+Hence, the best that we can ever do is, given a hand-written proof of
+the formula, check if the proof is valid.
+%
+Fortunately, we have already studied the notion of proof in the
 section on propositional logic, and it only needs to be extended to
 support quantifiers.
 
 \subsection{Universal quantification}
 %
-Universal quantification (Forall or ∀) can be seen as a generalisation of |And|.
+Universal quantification (Forall or ∀) can be seen as a generalisation
+of |And|.
 %
-To see this, we can begin by generalising the binary operator |And| to an |n|-ary version:
-|Andn|.
+To see this, we can begin by generalising the binary operator |And| to
+an |n|-ary version: |Andn|.
 %
 To prove |Andn(A1,A2, ..., An)| we need a proof of each |Ai|.
 %
 Thus we could define |Andn(A1,A2, ..., An) = A1 & A2 & ... & An| where
 |&| is the infix version of binary |And|.
 %
-The next step is to require the formulas |Ai| to be of the same form, ie. the result of applying a constant function |A| to
+The next step is to require the formulas |Ai| to be of the same form, i.e.\ the result of applying a constant function |A| to
 the individual |i|.
 %
-And, we can think of the variable |i| ranging over the full set of individuals |i1|, |i2|, \ldots
+And, we can think of the variable |i| ranging over the full set of
+individuals |i1|, |i2|, \ldots.
 %
 Then the final step is to introduce the notation |Forall i A(i)| for
 |A(i1) & A(i2) & ... |.
@@ -224,21 +236,27 @@ Now, a proof of |Forall x A(x)| should in some way contain a proof of
 For the binary |And| we simply provide the two proofs, but in the
 infinite case, we need an infinite collection of proofs.
 %
-To do so, a possible procedure is to introduce a fresh (meaning that we know nothing about this new term) constant term |a| and
-prove |A(a)|.
+To do so, a possible procedure is to introduce a fresh (meaning that
+we know nothing about this new term) constant term |a| and prove
+|A(a)|.
 %
 Intuitively, if we can show |A(a)| without knowing anything about |a|,
 we have proved |Forall x A(x)|.
 %
 Another way to view this is to say that a proof of |Forall x (P x)| is
-a function |f| from individuals to proofs such that |f t| is a proof of |P
-t| for each term |t|.
+a function |f| from individuals to proofs such that |f t| is a proof
+of |P t| for each term |t|.
 %
 
 So we can now extend our type for proofs: the introduction rule for
 universal quantification is \(\frac{A(x) \quad \text{\(x\) fresh
-  }}{∀x. A(x)}\).  The corresponding constructor can be
-|UniversalIntro :: (RatSem -> Proof) -> Proof|.
+  }}{∀x. A(x)}\).
+%
+The corresponding constructor can be |AllIntro :: (RatSem ->
+Proof) -> Proof|.
+%
+\pj{Perhaps use |ForallIntro| instead of |AllIntro|. At least explain
+  the ``textual'' syntax as well as the ``math''-rendering of \verb+AllIntro+ (|AllIntro|) and \verb+AllElim+ (|AllElim|).}
 
 % TODO: A simple example might also be a good idea, where we end up
 % with a function f where f t is a proof of P t for all terms t.
@@ -256,41 +274,54 @@ the end of |b| (but not further).
 One common source of confusion in mathematical (and other semi-formal)
 texts is that variable binding sometimes is implicit.
 %
-A typical example is the notation for equations: for instance |x^2 + 2*x + 1 == 0| usually means
-roughly |Exists x (x^2 + 2*x + 1 == 0)|.
+A typical example is the notation for equations: for instance |x^2 +
+2*x + 1 == 0| usually means roughly |Exists x (x^2 + 2*x + 1 == 0)|.
 %
-We write ``roughly'' here because in math texts the scope of |x| very often extends
-to some text after the equation where something more is said about the
-solution |x|.
-\footnote{This phenomena seems to be borrowed the behaviour of quantifiers in natural language. See for example \citep{bernardy_computational_2020} for a discussion.}
+We write ``roughly'' here because in math texts the scope of |x| very
+often extends to some text after the equation where something more is
+said about the solution |x|.
+%
+\footnote{This phenomena seems to be borrowed the behaviour of
+  quantifiers in natural language. See for example
+  \citep{bernardy_computational_2020} for a discussion.}
 
 Let us now consider the elimination rule for universal
-quantification. The idea here is that if |A(x)| holds for every
-abstract individual |x|, then it also holds for any concrete
-individual |a|: \(\frac{∀x. A(x)}{A(a)}\). As for |And| we had to
-provide the other argument to recover |p `And` q|, here we have to be
-able reconstruct the general form |A(x)| --- indeed, it is not simply
-a matter of substituting |x| for |a|, because there can be several
-occurences of |a| in the formula to prove. So, in fact, the proof
-constructor must contain the general form |A(x)|, for example as a
-function from individuals: |UniversalElim :: (RatSem -> Prop) -> Proof ->
-Proof|.
+quantification.
+%
+The idea here is that if |A(x)| holds for every abstract individual
+|x|, then it also holds for any concrete individual |a|:
+\(\frac{∀x. A(x)}{A(a)}\).
+%
+As for |And| we had to provide the other argument to recover |p `And`
+q|, here we have to be able reconstruct the general form |A(x)| ---
+indeed, it is not simply a matter of substituting |x| for |a|, because
+there can be several occurences of |a| in the formula to prove.
+%
+So, in fact, the proof constructor must contain the general form
+|A(x)|, for example as a function from individuals:
+%
+|AllElim :: (RatSem -> Prop) -> Proof -> Proof|.
 
 Let us sketch the proof-checker cases corresponding to universal
 quantification:
+%
+\pj{I added the ``prime'' to avoid confusion / unintended recursion.}
 \begin{spec}
-proofChecker (UniversalIntro f a) (Forall x p) = proofChecker (f a) (subst x a p)
-  where a = freshFor [a, Forall x p]
-proofChecker (UniversalElim f t) p = checkUnify (f x) p && proofChecker t (Forall x (f x))
-  where x = freshFor [f x, p]
+proofChecker (AllIntro f a) (Forall x p) = proofChecker (f a') (subst x a' p)
+  where a' = freshFor [a, Forall x p]
+proofChecker (AllElim f t) p = checkUnify (f x') p && proofChecker t (Forall x' (f x'))
+  where x' = freshFor [f x, p]
 \end{spec}
+%
 The introduction rule uses a new concept: |subst x a p|, which
 replaces the variable |x| by |a| in |p|, but otherwise follows closely
-our informal explanation. The eliminator uses |checkUnify| which
-verifies that |f x| is indeed a generalisation of the formula to
-prove, |p|. Finally we need a way to introduce fresh variables
-|freshFor|, which conjures up a variable occuring nowhere (in its
-argument).
+our informal explanation.
+%
+The eliminator uses |checkUnify| which verifies that |f x| is indeed a
+generalisation of the formula to prove, |p|.
+%
+Finally we need a way to introduce fresh variables |freshFor|, which
+conjures up a variable occuring nowhere (in its argument).
 
 \subsection{Existential quantification}
 
@@ -340,11 +371,13 @@ The generalisation unifies these two to one family of arguments.
 If we can prove |R| for each member of the family, we can be sure to
 prove |R| when we encounter some family member:
 
-The constructors for proofs can be |ExistsIntro
-:: RatSem -> Proof -> Proof| and |ExistsElim :: (RatSem -> Prop) -> Proof ->
-Proof|. In this case we'd have |i| as the
-first argument of |ExistsProof| and a proof of |A(i)| as its second
-argument.
+The constructors for proofs can be |ExistsIntro :: RatSem -> Proof ->
+Proof| and |ExistsElim :: (RatSem -> Prop) -> Proof -> Proof|.
+%
+In this case we'd have |i| as the first argument of |ExistsProof| and
+a proof of |A(i)| as its second argument.
+%
+\pj{What is |ExistsProof|? Is it |ExistsIntro|?}
 
 \begin{exercise}
   Sketch the |proofChecker| cases for universal quantification.
@@ -353,10 +386,10 @@ argument.
 \subsection{Typed quantification}
 \label{sec:TypedQuant}
 
-So far, we have considered quantification always as over the full set of
-individuals, but it is often convenient to
-quantify over a subset with a certain property (like all even numbers,
-or all non-empty sets).
+So far, we have considered quantification always as over the full set
+of individuals, but it is often convenient to quantify over a subset
+with a certain property (like all even numbers, or all non-empty
+sets).
 
 Even though it is not usually considered as strictly part of FOL, it
 does not fundamentally change its character if we extended it with
@@ -364,13 +397,15 @@ several types (or sorts) of individuals (one speaks of
 ``multi-sorted'' FOL).
 
 \TODO{Fix formatting using |Forall|.}
-In such a variant, the quantifiers look like |∀(x:S). P(x)| and
-|∃(x:S). P(x)|.
+In such a variant, the quantifiers look like |Forall (x:S) (P(x))| and
+|Exists (x:S) (P(x))|.
 
 Indeed, if a type (a set) |S| of terms can be described as those that
-satisfy the unary predicate |T| we can understand |∀(x:T). P(x)| as a
-shorthand for |∀x. T(x) `Implies` P(x)|. Likewise we can understand
-|∃(x:T). P(x)| as a shorthand for |∃x. T(x) `And` P(x)|.
+satisfy the unary predicate |T| we can understand |Forall (x:T) (P(x))| as a
+shorthand for |Forall x (T(x)) => P(x)|.
+%
+Likewise we can understand |Exists (x:T) (P(x))| as a shorthand for |Exists x (T(x)
+& P(x))|.
 
 As hinted at in the previous chapters, we find that writing types
 explicitly can greatly help understanding, and we won't refrain from
@@ -393,18 +428,18 @@ writing down types in quantifiers in FOL formulas.
 
 \subsection{Curry-Howard for quantification over individuals}
 
-We can try and draw parrellels with an hypothetical programming
+We can try and draw parrellels with a hypothetical programming
 lanaguage corresponding to FOL.
 
-In such a programming language, we expect to be able to encode proof rules
-as follows:
+In such a programming language, we expect to be able to encode proof
+rules as follows:
 \begin{spec}
   allIntro   :: ((a : Individual) -> P a) -> (Forall x (P x))
   allElim    :: (Forall x (P x)) -> ((a : Individual) -> P a)
   existIntro :: (a : Individual) -> P a -> Exists x (P x)
-  ExistsElim :: ((a:Individual) -> P a `Implies` R) -> (Exists x (P x)) `Implies` R
+  existsElim :: ((a:Individual) -> P a `Implies` R) -> (Exists x (P x)) `Implies` R
 \end{spec}
-
+%
 (We must write the above using a \emph{dependent} function type |(a:A) → B|, see below.).
 
 Taking the intuitionistic version of FOL (with the same treatment of
@@ -417,24 +452,30 @@ able to represent proofs of quantifiers, directly. That is:
 \end{quote}
 
 Unfortunately, in its 2010 standard, Haskell does not provide the
-equivalent of quantification over individuals. Therefore, one would
-have to use a different tool than Haskell as a proof assistant for
-(intuitionistic) FOL.  the quantification that Haskell provides
-|forall a. ...| is \emph{over types} rather than individuals.
+equivalent of quantification over individuals.
+%
+Therefore, one would have to use a different tool than Haskell as a
+proof assistant for (intuitionistic) FOL.
+%
+the quantification that Haskell provides |forall a? ...| is \emph{over
+  types} rather than individuals.%
+%
 \footnote{There is ongoing progress in this direction, but we find the
   current state too clunky to be worthy of basing our development on
-  it.}  What we'd need is: 1. a type corresponding to universal
+  it.}
+%
+What we'd need is: 1. a type corresponding to universal
 quantification, the dependent function type |(a:A) → B|, and 2. a type
 corresponding to |Exists (x:A) (P x)|, the dependent pair |(x:A,
 P(x))|.
 
-
 We can recommend the language Agda (which provides even more forms of
 quantification), however, in order to avoid a multiplicity of tools
 and potentially an excessive emphasis on proof formalism, we will
-refrain to formalise any proof as Agda programs in the
-Remainder. Rather, in the rest of the chapter, we will illustrate the
-logical principles seen so far by examples.
+refrain to formalise any proof as Agda programs in the remainder.
+%
+Rather, in the rest of the chapter, we will illustrate the logical
+principles seen so far by examples.
 
 %if lectureNotes
 \subsection{\extraMaterial More general code for first order languages}
