@@ -396,16 +396,15 @@ does not fundamentally change its character if we extended it with
 several types (or sorts) of individuals (one speaks of
 ``multi-sorted'' FOL).
 
-\TODO{Fix formatting using |Forall|.}
-In such a variant, the quantifiers look like |Forall (x:S) (P(x))| and
-|Exists (x:S) (P(x))|.
+In such a variant, the quantifiers look like |Forall (x:S) (P x)| and
+|Exists (x:S) (P x)|.
 
 Indeed, if a type (a set) |S| of terms can be described as those that
-satisfy the unary predicate |T| we can understand |Forall (x:T) (P(x))| as a
-shorthand for |Forall x (T(x)) => P(x)|.
+satisfy the unary predicate |T| we can understand |Forall (x:T) (P x)| as a
+shorthand for |Forall x (T x) => P x|.
 %
-Likewise we can understand |Exists (x:T) (P(x))| as a shorthand for |Exists x (T(x)
-& P(x))|.
+Likewise we can understand |Exists (x:T) (P x)| as a shorthand for |Exists x (T x
+& P x)|.
 
 As hinted at in the previous chapters, we find that writing types
 explicitly can greatly help understanding, and we won't refrain from
@@ -429,15 +428,16 @@ writing down types in quantifiers in FOL formulas.
 \subsection{Curry-Howard for quantification over individuals}
 
 We can try and draw parrellels with a hypothetical programming
-lanaguage corresponding to FOL.
-
+language corresponding to FOL.
+%
 In such a programming language, we expect to be able to encode proof
 rules as follows:
 \begin{spec}
-  allIntro   :: ((a : Individual) -> P a) -> (Forall x (P x))
-  allElim    :: (Forall x (P x)) -> ((a : Individual) -> P a)
-  existIntro :: (a : Individual) -> P a -> Exists x (P x)
-  existsElim :: ((a:Individual) -> P a `Implies` R) -> (Exists x (P x)) `Implies` R
+  allIntro    :: ((a : Individual) -> P a) -> (Forall x (P x))
+  allElim     :: (Forall x (P x)) -> ((a : Individual) -> P a)
+
+  existIntro  :: (a : Individual) -> P a -> Exists x (P x)
+  existsElim  :: ((a:Individual) -> P a `Implies` R) -> (Exists x (P x)) `Implies` R
 \end{spec}
 %
 (We must write the above using a \emph{dependent} function type |(a:A) → B|, see below.).
@@ -446,9 +446,9 @@ Taking the intuitionistic version of FOL (with the same treatment of
 negation as for propositional logic), we additionally expect to be
 able to represent proofs of quantifiers, directly. That is:
 \begin{quote}
-|(t, bt)| is a program of type |Exists x (P(x))| if |bt| is has type |P(t)|.
+|(t, bt)| is a program of type |Exists x (P x)| if |bt| is has type |P t|.
 
-|f| is a program of type |Forall x (P(x))| if |f t| is has type |P(t)| for all |t|.
+|f| is a program of type |Forall x (P x)| if |f t| is has type |P t| for all |t|.
 \end{quote}
 
 Unfortunately, in its 2010 standard, Haskell does not provide the
@@ -464,10 +464,10 @@ the quantification that Haskell provides |forall a? ...| is \emph{over
   current state too clunky to be worthy of basing our development on
   it.}
 %
-What we'd need is: 1. a type corresponding to universal
+What we would need is: 1. a type corresponding to universal
 quantification, the dependent function type |(a:A) → B|, and 2. a type
 corresponding to |Exists (x:A) (P x)|, the dependent pair |(x:A,
-P(x))|.
+P x)|.
 
 We can recommend the language Agda (which provides even more forms of
 quantification), however, in order to avoid a multiplicity of tools

@@ -6,7 +6,7 @@ data ZZ where
   Two :: ZZ
 type Pos = ZZ
 data (==) (a::ZZ) (b::ZZ) where
-data GCD  (a::ZZ) (b::ZZ)  where
+data GCD  (a::ZZ) (b::ZZ) where
 data R x where
   Decomposition :: (forall (a::ZZ). forall (b::Pos). Not ((b ':*: x) == a `And` ('GCD a b == 'One))) -> R x
 data Sqrt2Rational where

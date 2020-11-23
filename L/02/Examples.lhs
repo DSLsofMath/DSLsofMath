@@ -18,15 +18,20 @@ predicate ``is rational''.\footnote{In fact we additionally require the rational
 \begin{spec}
   R x = Exists (a:ZZ) (Exists (b:Pos) (b*x==a & GCD(a,b)==1))
 \end{spec}
-The pattern of proof by contradiction says that to prove a negation |not P| is to assume |P| and
-derive something absurd. This pattern was formalised in \cref{sec:intuitionistic-logic} as 
-|Not a = a `Implies` False|.
-In turn, to obtain |False| we could prove simultaneously some |Q| and |not Q|, for example.
-
-Let us take |P = R r| and |Q = GCD(a,b)==1|.
+The pattern ``proof by contradiction'' says that a way to prove some
+statement |P| is to assume |not P| and derive something absurd.
 %
-Assuming |P| we immediately get |Q| so what we need is to prove |not
-Q|, that is |GCD(a,b)/=1|.
+%This pattern was formalised in \cref{sec:intuitionistic-logic} as |Not
+%a = a `Implies` False|.
+%
+The traditional ``absurd'' statement is to prove simultaneously some
+|Q| and |not Q|, for example.
+
+Let us take |P = not (R r)| so that |not P = not (not (R r)) = R r|
+and try with |Q = GCD(a,b)==1|.
+%
+Assuming |not P| we immediately get |Q| so what we need is to prove
+|not Q|, that is |GCD(a,b)/=1|.
 %
 We can use the equations |b*r==a| and |r^2 == 2|.
 %
@@ -39,11 +44,13 @@ But then |b^2*2==a^2==4*c^2| which means that |b^2==2*c^2|.
 %
 By the same reasoning again we have that also |b| is even.
 %
-But then 2 is a factor of both |a| and |b|, which means that |GCD(a,b)>=2|, which in turn implies |not Q|.
+But then |2| is a factor of both |a| and |b|, which means that
+|GCD(a,b)>=2|, which in turn implies |not Q|.
 
-To sum up: by assuming |P| we can prove both |Q| and |not Q|.
+To sum up: by assuming |not P| we can prove both |Q| and |not Q|.
 %
-Thus, by contradiction |not P| must hold.
+Thus, by contradiction, |P| must hold (the square root of two is
+irrational).
 
 \subsection{Proof by cases}
 %
@@ -60,11 +67,13 @@ attempt we could set |p=q=r|.
 Then we have satisfied two of the three clauses (|not (R p)| and |not
 (R q)|).
 %
-What about the third clause: is |x=p^q==r^r|\jp{how to parse this?} rational?
+What about the third clause: is |x=p^q=r^r| rational?
 %
 By the principle of the excluded middle (\cref{sec:excluded-middle}),
-we know that either |R x| or |not (R x)| must hold. 
-Then, we apply ∨-elimination, and thus we have to deal with the two possible cases separately.
+we know that either |R x| or |not (R x)| must hold.
+%
+Then, we apply ∨-elimination, and thus we have to deal with the two
+possible cases separately.
 
 Case 1: |R x| holds.
 %
@@ -76,7 +85,7 @@ Then we have another irrational number |x| to play with.
 %
 Let's try |p=x| and |q=r|.
 %
-Then |p^q == x^r == (r^r)^r == r^(r*r) == r^2 == 2| which is clearly
+Then |p^q = x^r = (r^r)^r = r^(r*r) = r^2 = 2| which is clearly
 rational.
 %
 Thus, also in this case we have a proof of |S|, but now with |p=r^r|
