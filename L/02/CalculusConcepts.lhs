@@ -28,7 +28,7 @@ exists |q ∈ X| such that |q ≠ p| and |absBar(q - p) < ε|.
 
 To express ``Let |X| be a subset of |ℝ|'' we write |X : 𝒫 ℝ|.
 %
-In general, the operator |𝒫| takes a set (here |REAL|) to the set of
+In general, the function |𝒫| takes a set (here |REAL|) to the set of
 all its subsets.
 %
 \begin{spec}
@@ -110,11 +110,11 @@ Similarly, we can show that any internal point (like |1/2|) is a limit
 point.
 
 Example 3: limit of an infinite discrete set |X|
-
+%
 \begin{spec}
 X = {1/n | n ∈ Pos }
 \end{spec}
-
+%
 Show that |0| is a limit point of |X|.
 %
 Note (as above) that |0 ∉ X|.
@@ -150,7 +150,7 @@ prove that |0| is the \emph{only} limit point of |X|.
 This is a good exercise in quantifier negation!
 %
 \begin{spec}
-  not (Limp p X)                                   = {- Def. of |Limp| -}
+  not (Limp p X)                                  = {- Def. of |Limp| -}
   not (∃ getq : Q? ∀ ε > 0? getq ε ∈ B p ε)       = {- Negation of existential -}
   ∀ getq : Q? not (∀ ε > 0? getq ε ∈ B p ε)       = {- Negation of universal -}
   ∀ getq : Q? ∃ ε > 0? not (getq ε ∈ B p ε)       = {- Simplification -}
@@ -218,8 +218,8 @@ A sequence |a| is a function from |Nat| to |REAL|, thus |a : Nat ->
 REAL| where |an| is special syntax for normal function application of
 |a| to |n : Nat|.
 %
-Then we have |L : REAL|, |ε : RPos|, and |N : Nat| (or |N : RPos ->
-Nat|).
+Then we have |L : REAL|, |ε : RPos|, and |N : Nat| (or |getN : RPos ->
+Nat| as we will see later).
 %
 
 In the next step we analyse the new concept introduced:
@@ -277,8 +277,8 @@ Prove that the limit of a sequence is unique.
 %TODO: add the proof from file:~/src/DSLM/DSLsofMath/2016/Lectures/BasicConcepts.lhs
 
 \begin{exercise}
-prove that |(a1 haslim L1) & (a2 haslim L2)| implies
-|(a1+a2) haslim (L1+L2)|.
+%Prove |(a1 haslim L1) & (a2 haslim L2) => (a1+a2) haslim (L1+L2)|.
+Prove |(a haslim L) & (b haslim M) => (a+b) haslim (L+M)|.
 \end{exercise}
 
 % TODO: Perhaps include something about the relation between |haslim| and |Limp|
@@ -365,4 +365,13 @@ This means that each function |f| can have \emph{at most} one limit
 %
 (This is not evident from the definition and proving it is a good
 exercise.)
-\jp{Exercise: what does Adams means by ``delta possibly depends on epsilon''? How did we express that in our formal defintion? Hint: how whould you express that delta cannot depend on epsilon?}
+
+\begin{exercise}
+  What does Adams mean by ``\(\delta > 0\), possibly depending on
+  epsilon''?
+  %
+  How did we express ``possibly depending on'' in our formal
+  defintion?
+  %
+  Hint: how would you express that |delta| cannot depend on |epsilon|?
+\end{exercise}

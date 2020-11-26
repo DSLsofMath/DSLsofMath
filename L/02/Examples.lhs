@@ -164,9 +164,15 @@ where |mod x y| is the remainder after integer division of |x| by |y|.
 %
 Thus |m'| is not divisible by any number from |2| to |n|.
 %
-But is it a prime? Here we could, has before, use the law of excluded middle to
-progress. But we don't have to, because primality is a \emph{decidable property}:
-we can write a terminating function which checks if |m'| is prime.
+But is it a prime?
+%
+Here we could, as before, use the law of excluded middle to
+progress.
+%
+But we don't have to, because primality is a \emph{decidable
+  property}: we can write a terminating function which checks if |m'|
+is prime.
+%
 We can then proceed by case analysis again:
 %
 If |m'| is prime then |m=m'| and the proof is done (because |1+n! >= 1
@@ -178,7 +184,8 @@ Then |1 == mod m' p == (mod m p)*(mod q p)| which means that neither
 |m| nor |q| are divisible by |p| (otherwise the product would be
 zero).
 %
-Thus they must both be |>n|, including |m|.
+As |m| is thus not divisible by any number from |2| to |n|, it has to
+be bigger than |n|.
 %
 QED.
 
