@@ -28,19 +28,19 @@
   %
   The key idea is to represent the truth values by zero (False) and
   one (True) and each named proposition |P| by a fresh variable |p|.
-  
+
   %
   To represent logical operations one just has to check that the usual notion of expression
-  evaluation gives the right answer for zero and one. 
+  evaluation gives the right answer for zero and one.
   (Can you express this as a homomorphism --- seen in \cref{sec:CompSem}?)
 
   The simplest operation to represent is |And| which becomes
   multiplication: |P And Q| translates to \(p q\) as can be easily
   checked.
   %
-  (Note that |p+q| does not represent any proposition, because its
+  Note that |p+q| does not represent any proposition, because its
   value would be |2| for |p=q=1|, but |2| does not represent any
-  boolean.)
+  boolean.
 
   How should |Not|, |Or|, and |Implies| be represented?
 
@@ -148,7 +148,7 @@ type checker can indeed be used as a poor man's proof checker.
 
 \end{exercise}
 \begin{exercise}
- From now on you can assume the representation of proofs defined in \label{sec:intuitionistic-logic}.
+ From now on you can assume the representation of proofs defined in \refSec{sec:intuitionistic-logic}.
 \begin{enumerate}
 \item Check your understanding by re-defining all the introduction and elimination rules as functions.
 \item Compare proving the distributivity laws
@@ -397,4 +397,3 @@ Same as Exercise \ref{exc:NotConv} but for |a = id|.
     it.
   \end{enumerate}
 \end{exercise}
-

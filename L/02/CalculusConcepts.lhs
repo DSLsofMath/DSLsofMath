@@ -375,3 +375,4 @@ exercise.)
   %
   Hint: how would you express that |delta| cannot depend on |epsilon|?
 \end{exercise}
+%Answer: by swapping the order of quantifier
