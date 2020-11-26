@@ -1,13 +1,16 @@
 \chapter{Types in Mathematics}
 \label{sec:types}
 \begin{code}
-{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE FlexibleInstances, PartialTypeSignatures #-}
 module DSLsofMath.W03 where
 import Prelude hiding (Num(..),Fractional(..), Floating(..))
-import DSLsofMath.Algebra (Algebraic(..),Transcendental(..))
+import DSLsofMath.Algebra (Algebraic(..),Transcendental(..), (-))
+import DSLsofMath.W01 (Env, evalEnv)
 type REAL = Double
 type ℝ = REAL
 type ℤ = Int
+powTo n = (^n)
+powTo' = powTo . fromIntegral
 \end{code}
 %
 % (Based on ../../2016/Lectures/Lecture05 )
@@ -218,9 +221,9 @@ Conveniently, we can even provide a simple implementation:
 summation low high f = sum [f i | i <- [low..high]]
 \end{code}
 and use it for our example as follows:
-\begin{code}
+\begin{spec}
 sumOfSquares n = summation 1 n (powTo 2)
-\end{code}
+\end{spec}
 %TODO: perhaps mention types: skipped here because of |ℤ|, |ℝ| mismatch.
 
 As another example, let us represent the following nested sum
@@ -298,85 +301,27 @@ In first reading this section can be skipped, however it is natural to
 to extend the study of expressions from single variables to multiple
 variables.
 
-
-\subsection{Partial functions}
-\jp{move this in chapter 1 together with the discussion of functions.}
-As an warmup, and for reasons which will become obvious soon (in
-\cref{sec:ArithExp}), we begin by presenting a DSL for partial
-functions with a finite domain.  The type |Env v s| will be the
-\emph{syntax} for the type of partial functions from |v| to |s|, and
-defined as follows:
-%
-\begin{code}
-type Env v s = [(v,s)]
-\end{code}
-%
-%
-As an example value of this type we can take:
-%
-\begin{code}
-env1 :: Env String Int
-env1 = [("hey", 17), ("you", 38)]
-\end{code}
-
-The intended meaning is that |"hey"| is mapped to |17|, etc.  The
-semantic domain is the set of partial functions, and, as discussed
-above, we represent those as the Haskell type |v -> Maybe s|.
-
-Our evaluation function, |evalEnv|, maps the syntax to the semantics,
-and as such has the following type:
-%
-\begin{code}
-evalEnv :: Eq v =>  Env v s -> (v -> Maybe s)
-\end{code}
-%
-This type signature deserves some more explanation.
-%
-The first part (|Eq v =>|) is a constraint which says that the
-function works, not for \emph{all} types |v|, but only for those who
-support a boolean equality check (|(==) :: v -> v -> Bool|).
-%
-The rest of the type signature (|Env v s -> (v -> Maybe s)|) can be
-interpreted in two ways: either as the type of a one-argument function
-taking an |Env v s| and returning a function, or as the type of a
-two-argument function taking an |Env v s| and a |v| and maybe
-returning an |s|.
-
-The implementation proceeds by searching for the first occurence of
-|x| In the list of pairs |(v,s)| such that |x==v|, and
-return |Just s| if one is found, and |Nothing| otherwise.
-%**TODO: Explain |where| clause syntax
-%**TODO: Explain boolean guards
-\begin{code}
-evalEnv vss x  =  findFst vss
-  where  findFst ((v,s):vss)
-           | x == v         =  Just s
-           | otherwise      =  findFst vss
-         findFst []         =  Nothing
-\end{code}
-%
-Another equivalent definition is |evalEnv = flip lookup|, where
-|lookup| is defined in the Haskell Prelude:
-%
-\begin{spec}
-lookup :: Eq a => a -> [(a, b)] -> Maybe b
-\end{spec}
-
-\subsection{The data type of multiple variables expressions}
+\paragraph{The data type of multiple variables expressions}
 \label{sec:ArithExp}
 Let us define the following type, describing a deep embedding for
-simple arithmetic expressions. Compared to single variable
-expressions, we add one argument for variables, giving the \emph{name}
-of the variable. Here we use a string, so we have an infinite supply
-of variables.  \jp{rename type/constructors to match single variable
-  expressions}
-\jp{There does not seem to be sense or rhyme in the name of data types and constructors.}
+simple arithmetic expressions.
+%
+Compared to single variable expressions, we add one argument for
+variables, giving the \emph{name} of the variable.
+%
+Here we use a string, so we have an infinite supply of variables.
+%
+\jp{rename type/constructors to match single variable expressions}
+%
+\jp{There does not seem to be sense or rhyme in the name of data types
+  and constructors.}
+%
 \begin{code}
 data AE = V String | P AE AE | T AE AE
 \end{code}
 
-
-The above declaration introduces:\jp{move this kind of consideration much earlier. Haskell primer?}
+The above declaration introduces:\jp{move this kind of consideration
+  much earlier. Haskell primer?}
 \begin{itemize}
 \item a new type |AE| for simple arithmetic expressions,
 \item a constructor |V :: String -> AE| to represent variables,
@@ -406,7 +351,9 @@ The purpose of the parameter |v| here is to enable a free choice of
 type for the variables (be it |String| or |Int| or something else).
 
 The careful reader will note that the same Haskell module cannot
-contain both these definitions of |AE'|.\jp{move this kind of consideration much earlier. Haskell primer?}
+contain both these definitions of |AE'|.
+%
+\jp{move this kind of consideration much earlier. Haskell primer?}
 %
 This is because the name of the type and the names of the constructors
 are clashing.
@@ -418,14 +365,15 @@ In this \course{} we often take the liberty of presenting more than one
 version of a datatype without changing the names, to avoid multiple
 modules or too many primed names.
 
-
 Together with a datatype for the syntax of arithmetic expressions we
- want to define an evaluator of the expressions.
+want to define an evaluator of the expressions.
 
 In the evaluator for |AE| we take this idea one step further: given an
 environment |env| and the syntax of an arithmetic expression |e| we
-compute the value of that expression. Hence, the semantics of |AE| is
-a function of type |Env String Integer -> Maybe Integer|.
+compute the value of that expression.
+%
+Hence, the semantics of |AE| is a function of type |Env String Integer
+-> Maybe Integer|.
 %
 %*TODO: perhaps switch Times to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
 %**TODO explain more for those not used to Haskell
@@ -446,7 +394,8 @@ mayT _        _         =  Nothing
 
 The corresponding code for |AE'| is more general and you don't need to
 understand it at this stage, but it is left here as an example for
-those with a stronger Haskell background.\jp{Actually the AE/AE'  generalisation has nothing to do with the change in code.}
+those with a stronger Haskell background.\jp{Actually the AE/AE'
+  generalisation has nothing to do with the change in code.}
 %
 \begin{code}
 evalAE' :: (Eq v, _) =>  (Env v sem) -> (AE' v -> Maybe sem)
@@ -461,7 +410,8 @@ liftM _op  _         _         =  Nothing
 
 The approach taken above is to use a |String| to name each variable:
 indeed, |Env String REAL| is like a tuple of several variables values.
-However, other situations, it is better to refer to variables by
+%
+However, in other situations, it is better to refer to variables by
 position.
 
 For example, we can pick out any variable and make it a function of
@@ -1307,7 +1257,7 @@ and any numeric co-domain in place of |REAL|. Therefore we prefer to
 define the following, more general instances:
 \label{sec:FunNumInst}
 
-\begin{code}
+\begin{spec}
 instance Additive a => Additive (x -> a) where
    f + g        =  \x -> f x + g x
    zero = const zero
@@ -1330,7 +1280,7 @@ instance Transcendental a => Transcendental (x -> a) where
    sin f =  sin . f
    cos f =  cos . f
    exp f =  exp . f
-\end{code}
+\end{spec}
 
 Here we extend our set of type-classes to cover algebraic and
 transcendental numbers.  Together, these type classes represent an

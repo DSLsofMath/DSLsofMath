@@ -166,8 +166,9 @@ As an exercise it is good to experiment a bit with these building
 blocks to see how they fit together and what types their combinations
 have.
 
-The type is perhaps best illustrated by a diagram with types as nodes
-and functions (arrows) as directed edges:
+The type is perhaps best illustrated by a diagram (see
+\cref{fig:funcomp}) with types as nodes and functions (arrows) as
+directed edges.
 %
 \begin{figure}[htbp]
 \hfill
@@ -232,10 +233,83 @@ when given zero as an input.
 %
 Thus |Double| is a mix of ``normal'' numbers and ``special
 quantities'' like |NaN| and |Infinity|.
+%
+Often the type |Maybe a| with values |Nothing| and |Just a| (for all
+|x::a|) is used as the target of functions.
 
 There are also mathematical functions which cannot be implemented at
 all (uncomputable functions), but we will not deal with that in this
 course.
+
+\paragraph{Partial functions with finite domain}
+\pj{Look over the paragraphs and subsections - perhaps restructure}
+
+Later on (in \cref{sec:ArithExp}), we will use partial functions for
+looking up values in an environment.
+%
+Here we prepare this by presenting a DSL for partial functions with a
+finite domain.
+%
+The type |Env v s| will be the \emph{syntax} for the type of partial
+functions from |v| to |s|, and defined as follows:
+%
+\begin{code}
+type Env v s = [(v,s)]
+\end{code}
+%
+As an example value of this type we can take:
+%
+\begin{code}
+env1 :: Env String Int
+env1 = [("hey", 17), ("you", 38)]
+\end{code}
+
+The intended meaning is that |"hey"| is mapped to |17|, etc.
+%
+The semantic domain is the set of partial functions, and, as discussed
+above, we represent those as the Haskell type |v -> Maybe s|.
+
+Our evaluation function, |evalEnv|, maps the syntax to the semantics,
+and as such has the following type:
+%
+\begin{code}
+evalEnv :: Eq v =>  Env v s -> (v -> Maybe s)
+\end{code}
+%
+This type signature deserves some more explanation.
+%
+The first part (|Eq v =>|) is a constraint which says that the
+function works, not for \emph{all} types |v|, but only for those who
+support a boolean equality check (|(==) :: v -> v -> Bool|).
+%
+The rest of the type signature (|Env v s -> (v -> Maybe s)|) can be
+interpreted in two ways:
+%
+either as the type of a one-argument function taking an |Env v s| and
+returning a function,
+%
+or as the type of a two-argument function taking an |Env v s| and a
+|v| and maybe returning an |s|.
+
+The implementation proceeds by searching for the first occurence of
+|x| in the list of pairs |(v,s)| such that |x==v|, and return |Just s|
+if one is found, and |Nothing| otherwise.
+%**TODO: Explain |where| clause syntax
+%**TODO: Explain boolean guards
+\begin{code}
+evalEnv vss x  =  findFst vss
+  where  findFst ((v,s):vss)
+           | x == v         =  Just s
+           | otherwise      =  findFst vss
+         findFst []         =  Nothing
+\end{code}
+%
+Another equivalent definition is |evalEnv = flip lookup|, where
+|lookup| is defined in the Haskell Prelude:
+%
+\begin{spec}
+lookup :: Eq a => a -> [(a, b)] -> Maybe b
+\end{spec}
 
 % \begin{tikzcd}
 %   |[Int]| \arrow[d, "|sort|"] \arrow[rd, "|head.sort|", dashed] &  \\
@@ -366,15 +440,19 @@ There are three keywords in Haskell involved in naming types: |type|,
 The |type| keyword is used to create a type synonym -- just another name
 for a type expression.
 %
-The semantics is unchanged: the set of values of type |Heltal| is
+The semantics is unchanged: the set of values of type |Number| is
 exactly the same as the set of values of type |Integer|, etc.
-\jp{What is Heltal? Shall we say "WholeNumbers" for a less parochial approach?}
+
+\begin{joincode}% The |Env| definition was earlier
 \begin{code}
-type Heltal   =  Integer
-type Foo      =  (Maybe [String], [[Heltal]])
-type BinOp    =  Heltal -> Heltal -> Heltal
-type Env v s  =  [(v,s)]
+type Number   =  Integer
+type Foo      =  (Maybe [String], [[Number]])
+type BinOp    =  Number -> Number -> Number
 \end{code}
+\begin{spec}
+type Env v s  =  [(v,s)]
+\end{spec}
+\end{joincode}
 
 The new name for the type on the right hand side (RHS) does not add
 type safety, just readability (if used wisely).
