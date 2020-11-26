@@ -416,17 +416,19 @@ position.
 
 For example, we can pick out any variable and make it a function of
 said variable like so:
-
+%
+\pj{Too abstract without explanation.}
 \begin{code}
-fun1 :: (Env String REAL -> REAL) -> Env String REAL -> String -> (REAL -> REAL)
+fun1 :: (Env k v -> r) -> Env k v -> k -> v -> r
 fun1 funMultiple env variable value = funMultiple ((variable,value):env)
 \end{code}
 
 \begin{exercise}
   Assume a function |f| of 3 variables, named |"x"|,|"y"| and |"y"|,
-  and given the type |Env String REAL -> REAL|. Turn it into a
-  function |g| of type | REAL -> REAL -> REAL -> REAL| with the same
-  intended meaning.
+  and given the type |Env String REAL -> REAL|.
+  %
+  Turn it into a function |g| of type |REAL -> REAL -> REAL -> REAL|
+  with the same intended meaning.
 \end{exercise}
 
 \jp{Talk some about variable capture?}
@@ -468,8 +470,8 @@ in the definition is a postfix prime.
 To make it easier to see we use a prefix |D| instead and we can
 thus write |D : (X->REAL) -> (Y->REAL)|.
 %
-We will often assume that |X = Y| (|f| is differentiable everywhere) so that we can can see |D| as
-preserving the type of its argument.
+We will often assume that |X = Y| (|f| is differentiable everywhere)
+so that we can can see |D| as preserving the type of its argument.
 
 Now, with the type of |D| sorted out, we can turn to the actual
 definition of the function |D f|.
@@ -529,8 +531,6 @@ However if we also have access to the ``source code'' of |f|, then we can
 apply the usual rules we have learnt in calculus.
 %
 We will get get back to this question in \refSec{sec:computingDerivatives}.
-
-
 
 \section{Typing Mathematics: partial derivative}
 \label{sec:typePartialDerivative}
@@ -675,8 +675,8 @@ Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D�
 \section{Type inference and understanding: Lagrangian case study}
 \label{sec:Lagrangian}
 
-From (Sussman and Wisdom 2013):\jp{fix citation}
-
+From \citet{sussman2013functional}:
+\pj{Compare with the edits made in preparation for a TiPES talk.}
 \begin{quote}
   A mechanical system is described by a Lagrangian function of the
   system state (time, coordinates, and velocities).
@@ -894,7 +894,7 @@ If we zoom out slightly we see that the quoted text means something
 like:
 %
 If we can describe the mechanical system in terms of ``a Lagrangian''
-(|L : S -> ℝ|)\jp{what is S?}, then we can use the equation to check if a particular
+(|L : S -> ℝ| where |S = (T, Q, V)|), then we can use the equation to check if a particular
 candidate path |w : T → ℝ| qualifies as a possible ``motion of the system'' or
 not.
 %
@@ -1049,21 +1049,23 @@ programming) is \emph{overloading}. For our purposes, we say that a
 symbol is \emph{overloaded} when its meaning depends on the type of
 the expressions that it applies to.
 
-Consider for example the operator ($+$). According to usual
-mathematical notation, one can typically use it to add integers,
-rational numbers, real numbers, complex numbers, etc. and it poses no
-difficulty. We explore the mathematical reasons in more detail in
-\cref{sec:AlgHomo}, but for now we will concentrate on the
-view of functional programming of this problem: one  way to understand overloading is
-via \emph{type classes}.
+Consider, for example, the operator |(+)|.
+%
+According to usual mathematical notation, one can use it to add
+integers, rational numbers, real numbers, complex numbers, etc.\ and it
+poses no difficulty.
+%
+We explore the mathematical reasons in more detail in
+\cref{sec:AlgHomo}, but for now we will concentrate on the view of
+functional programming of this problem: one way to understand
+overloading is via \emph{type classes}.
 
 In Haskell both $4 == 3$ and $3.4 == 3.2$ typecheck because both
 integers and floating point values are member of the |Eq| class, which
 we can safely assume to be defined as follows:
 
 \begin{spec}
-class Eq a where
-  (==) :: a -> a -> Bool
+class Eq a where   (==) :: a -> a -> Bool
 \end{spec}
 %
 The above declaration does two things. First, it defines a set of
@@ -1073,10 +1075,11 @@ additionally provide an implementation for the equality test. For example,
 we can make |Bool| member of the |Eq| using
 the following declaration:
 \begin{spec}
-instance Eq Bool where
-  True == True = True
-  False == False = True
-  _ == _ = False
+eqBool :: Bool -> Bool -> Bool
+eqBool  True   True   = True
+eqBool  False  False  = True
+eqBool  _      _      = False
+instance Eq Bool where  (==) = eqBool
 \end{spec}
 (The Haskell compiler will in fact provide instances for primitive types).
 
@@ -1088,12 +1091,12 @@ constraint |Eq a| occuring before the |=>| symbol.
 Instance declarations can also be parameterised on another
 instance. Consider for example:
 \begin{spec}
-instance Eq a => Eq [a] where
-  (==) = ... -- exercise
+instance Eq a => Eq [a] where  (==) = ... -- exercise
 \end{spec}
 %
-In the above, the expression |Eq a => Eq [a]| means that for any type |a| which is already an instance of |Eq|
-we also make the type |[a]| an instance of Eq.
+In the above, the expression |Eq a => Eq [a]| means that for any type
+|a| which is already an instance of |Eq| we also make the type |[a]|
+an instance of Eq.
 %
 Thus, for example, by recursion we now have an infinite collection of instances of |Eq|: |Char|,
 |[Char]|, |[[Char]]|, etc.
@@ -1101,44 +1104,46 @@ Thus, for example, by recursion we now have an infinite collection of instances 
 
 \subsection{Numeric operations}
 Haskell also provides a |Num| class, containing various numeric types
-(Int, Double, etc) with several operators (|+|,|*|, etc).
+(|Int|, |Double|, etc) with several operators (|+|,|*|, etc).
+%
 Unfortunately, the |Num| class was designed with more regard for
 implementation quirks than mathematical structure, and thus it is a
-poor choice for us. We take a more principled approach instead,
-and define the following classes, which together serve a similar
-role as |Num|, and which we study in more detail in
-\cref{sec:ring-like-classes}:
+poor choice for us.
+%
+We take a more principled approach instead, and define the following
+classes, which together serve a similar role as |Num|, and which we
+study in more detail in \cref{sec:ring-like-classes}:
 
 \label{sec:numeric-classes}
 \begin{code}
 class Additive a where
-  zero :: a
-  (+) :: a -> a -> a
+  zero  :: a
+  (+)   :: a -> a -> a
 class Additive a => AddGroup a where
   negate :: a -> a
 class Multiplicative a where
-  one :: a
-  (*) :: a -> a -> a
+  one  :: a
+  (*)  :: a -> a -> a
 class Multiplicative a => MulGroup a where
   recip :: a -> a -- reciprocal
 \end{code}
 The operator names clash with the |Num| class, which we will avoid
-from now one in favour |Additive| and |Multiplicative|.
+from now on in favour |Additive| and |Multiplicative|.
 
 \begin{exercise}
-  Consider the exponentiation operator, which we can write
-  |(^)|. Taking advantage of the above classes, propose a possible
-  type for it and sketch an implementation.
+  Consider the exponentiation operator, which we can write |(^)|.
+  %
+  Taking advantage of the above classes, propose a possible type for
+  it and sketch an implementation.
 \end{exercise}
 \begin{solution}
-  One possibility is |(^) :: Field a => a -> Int -> a|. For positive
-  exponents, one can use repeated multiplication. For negative
-  exponents, one can use repeated division.
+\pj{|Field| has not been introduced.}
+  One possibility is |(^) :: Field a => a -> Int -> a|.
+  %
+  For positive exponents, one can use repeated multiplication.
+  %
+  For negative exponents, one can use repeated division.
 \end{solution}
-\jp{I could not understand what this was referring to:
-The ``trick'' of looking for an appropriate combinator with which to
-pre- or post-compose a function in order to makes type match is often
-useful.}
 % %
 % It is similar to the type-casts one does automatically in expressions such
 % as \(4 + 2.5\).
@@ -1161,9 +1166,9 @@ operator in the numeric classes to an arbitrary type |a| in those
 classes. We can implement it as follows:
 \begin{code}
 fromInteger :: (AddGroup a, Multiplicative a) => Integer -> a
-fromInteger n  | n < 0 = negate (fromInteger (negate n))
-               | n == 0 = zero
-               | otherwise = one + fromInteger (n - 1)
+fromInteger n  | n < 0      = negate (fromInteger (negate n))
+               | n == 0     = zero
+               | otherwise  = one + fromInteger (n - 1)
 \end{code}
 \begin{exercise}
   Define |fromRational| which does the same but also handles rational
@@ -1237,9 +1242,14 @@ Type classes are related to mathematical structures which, in turn,
 are related to DSLs.
 
 As an example, consider again the DSL of expressions of one variables.
+%
 We saw that such expressions can be represented by the shallow
-embedding |REAL -> REAL|.  Using type classes, we can use the usual
-operators names instead of |evalPlus|, |evalTimes|, etc. We could write:
+embedding |REAL -> REAL|.
+%
+Using type classes, we can use the usual operators names instead of
+|evalPlus|, |evalTimes|, etc.
+%
+We could write:
 \begin{spec}
 instance Additive (REAL -> REAL) where
   f + g        =  \x -> f x + g x
@@ -1249,37 +1259,40 @@ instance Additive (REAL -> REAL) where
 The instance declaration of the method |zero| above looks recursive,
 but is not: |zero| is used at a different type on the left- and
 right-hand-side of the equal sign, and thus refers to two different
-functions. One the left-hand-side we define |zero :: REAL -> REAL|,
-while on the right-hand-side we use |zero :: REAL|.
+functions.
+%
+One the left-hand-side we define |zero :: REAL -> REAL|, while on the
+right-hand-side we use |zero :: REAL|.
 
-However, as one may suspect, for functions, we can use any domain
-and any numeric co-domain in place of |REAL|. Therefore we prefer to
-define the following, more general instances:
+However, as one may suspect, for functions, we can use any domain and
+any numeric co-domain in place of |REAL|.
+%
+Therefore we prefer to define the following, more general instances:
 \label{sec:FunNumInst}
 
 \begin{spec}
 instance Additive a => Additive (x -> a) where
    f + g        =  \x -> f x + g x
-   zero = const zero
+   zero         =  const zero
 
 instance Multiplicative a => Multiplicative (x -> a) where
    f * g        =  \x -> f x * g x
-   one = const one
+   one          =  const one
 
 instance AddGroup a => AddGroup (x -> a) where
    negate f     =  negate . f
 
 instance MulGroup a => MulGroup (x -> a) where
-   recip f     =  recip . f
+   recip f      =  recip . f
 
 instance Algebraic a => Algebraic (x -> a) where
-   sqrt f     =  sqrt . f
+   sqrt f       =  sqrt . f
 
 instance Transcendental a => Transcendental (x -> a) where
-   pi = const pi
-   sin f =  sin . f
-   cos f =  cos . f
-   exp f =  exp . f
+   pi     =  const pi
+   sin f  =  sin . f
+   cos f  =  cos . f
+   exp f  =  exp . f
 \end{spec}
 
 Here we extend our set of type-classes to cover algebraic and
@@ -1345,12 +1358,12 @@ An important part of calculus is the collection of laws, or rules, for
 computing derivatives. They are provided by \citet{adams2010calculus}
 as a series of theorems, starting at page 108 of their book. We we
 can summarize those as follows:
-\begin{spec}
-  (f+g)'(x)  =   f'(x) + g'(x)
-  (f*g)'(x)  =   f'(x) g(x) + f(x) g'(x)
-  (C*f)'(x)  =   C*f'(x)
-  (f . g)(x) =   f' (g (x)) * g'(x)          -- chain rule
-\end{spec}
+\begin{align*}
+  (f + g)'(x)  &=   f'(x) + g'(x)            \\
+  (f * g)'(x)  &=   f'(x)*g(x) + f(x)*g'(x)  \\
+  (C * f)'(x)  &=   C*f'(x)                  \\
+  (f ∘ g)'(x)  &=   f' (g (x)) * g'(x)       |-- chain rule|
+\end{align*}
 (After a while, \citeauthor{adams2010calculus} switch to
 differential notation, so we omit corresponding rules for
 trigonometric and exponential functions.)
@@ -1377,12 +1390,12 @@ and so on.
 %
 
 If we want to get a bit closer to actually implementing |D| we quickly
-notice a problem: if |D| has type |(REAL -> REAL) -> (REAL -> REAL)|
-have no way to turn the above specification into a program, because
-the program has no way of telling which of these rules we should
-apply.
+notice a problem: if |D| has type |(REAL -> REAL) -> (REAL -> REAL)|,
+we have no way to turn the above specification into a program, because
+the program has no way of telling which of these rules should
+be applied.
 %
-That is, given an extensional (semantic\jp{shallow}) function |f|, the
+That is, given an extensional (semantic, shallow) function |f|, the
 only thing that we can ever do is to evaluate |f| at given points, and
 thus we cannot know if this function was written using a |+|, or |sin|
 or |exp| as outermost operation.
@@ -1428,7 +1441,7 @@ That is, we want the following equality to hold:
      eval . derive  =  D . eval
 \end{spec}
 %
-in turn this means that for any expression |e :: FunExp|, we want
+In turn, this means that for any expression |e :: FunExp|, we want
 %
 \begin{spec}
      eval (derive e)  =  D (eval e)
@@ -1473,8 +1486,7 @@ derive     (Exp e)        =  Exp e :*: derive e
 \end{code}
 %
 \begin{exercise}
-Complete the |FunExp| type and the |eval| and |derive|
-functions.
+  Complete the |FunExp| type and the |eval| and |derive| functions.
 \end{exercise}
 
 %include E3.lhs
