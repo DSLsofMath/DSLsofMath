@@ -106,17 +106,22 @@ However, we can make an equivalent interpretation of the above type as
 \begin{spec}
 eval  ::  FunExp         ->  (REAL  -> REAL)
 \end{spec}
-That is, |FunExp| can be interpreted as a function! This is perhaps
-surprising, but the reason is that we used a fixed Haskell symbol
-(constructor) for the variable. There is ever a single variable in
-|FunExp|, and thus they are really equivalent to functions of a single
-variable.
+That is, |FunExp| can be interpreted as a function!
+%
+This is perhaps surprising, but the reason is that we used a fixed
+Haskell symbol (constructor) for the variable.
+%
+There is only a single variable available in the syntax of |FunExp|,
+and thus such expressions are really equivalent to functions of a
+single argument.
 
 \subsubsection{Shallow embedding}
 \label{sec:funexp-shallow}
 Thus the above was a deep embedding for functions of a single
-variable.  A shallow embedding would be a using functions as the
-representation, say:
+variable.
+%
+A shallow embedding would be using functions as the representation,
+say:
 
 \begin{code}
 type FunExpS = REAL -> REAL
@@ -125,18 +130,23 @@ type FunExpS = REAL -> REAL
 Then we can define the operators directly on functions, as follows:
 
 \begin{spec}
-funConst alpha = \x -> alpha
-funX = \x -> x
-funPlus f g = \x -> f x + g x
-funTimes f g = \x -> f x * g x
+funConst alpha   = \x -> alpha
+funX             = \x -> x
+funPlus   f g    = \x -> f x  +  g x
+funTimes  f g    = \x -> f x  *  g x
 \end{spec}
 
 Again, we have two possible intuitive readings of the above
-equations. The first reading, as expressions of a single variable, is
-that the variable ($x$) is interpreted as the identity function; a
-constant |alpha| is interpreted as a constant function; the sum of two
-expressions is interpreted as the sum of the evaluation of the
-operands, etc.
+equations.
+%
+The first reading, as expressions of a single variable, is that
+%
+a constant |alpha| is interpreted as a constant function;
+%
+the variable (|X|) is interpreted as the identity function;
+%
+the sum of two expressions is interpreted as the sum of the evaluation
+of the operands, etc.
 
 The second reading is that we can define an arithmetic structure
 (|*|,|+|, etc.) on functions, by lifting the operators to work
@@ -145,39 +155,60 @@ pointwise.\jp{This vocabulary is probably unknown at this point.}
 To wrap it up, if we're so inclined, we can re-define the evaluator of
 the deep-embedding using the operators of the shallow embedding:
 \begin{spec}
-eval  ::  FunExp         ->  REAL -> REAL
+eval  ::  FunExp         ->  (REAL -> REAL)
 eval      (Const alpha)  =   funConst alpha
 eval      X              =   funX
 eval      (e1 :+: e2)    =   funPlus   (eval e1) (eval e2)
 eval      (e1 :*: e2)    =   funTimes  (eval e1) (eval e2)
 \end{spec}
 
-
 Representing expressions of one variable as functions (of one
-argument) is a recurring technique in this \course{} (\jp{Link back
-  references to FunExp and function instances.}).  To start, we can
-use it to assign types to big operators.
+argument) is a recurring technique in this \course{}.
+%
+\jp{Link back references to |FunExp| and function instances.}
+%
+To start, we can use it to assign types to big operators.
 
 \subsection{Scoping and Typing big operators}
 \label{sec:big-operators}
 Consider the mathematical expression
+%
 \[
   \sum_{i=1}^n {i^2}
 \]
+%
 To be able to see which type is appropriate for $\sum$, we have to
-consider the type of the summand ($i^2$ in the example) first. As you
-may have guessed, it is an expression of one variable ($i$). You may
-ask: but surely the body of the summation operator can use other
-variables? You'd be entirely correct. However, \emph{from the point of
-  view of the summation}, it is as if such other variables were
-constant. Accepting this assertion as a fact until we can show a more
+consider the type of the summand ($i^2$ in the example) first.
+%
+As you may have guessed, it is an expression of one variable
+($i$).
+%
+You may ask: but surely the body of the summation operator can use
+other variables?
+%
+You'd be entirely correct.
+%
+However, \emph{from the point of view of the summation}, it is as if
+such other variables were constant.
+%
+Accepting this assertion as a fact until we can show a more
 complicated example, we can now assign a type to the summation
-operator. For simplicity, we will be using the shallow embedding; thus
-the operand can be typed as, say, $ℤ → ℝ$. The other arguments will be
-the limit points ($1$ and $n$ in our example). The variable, $i$ shall
-not be represented as an argument: indeed, the variable name is
-\emph{fixed by the representation of functions}.  There is no choice
-to make at the point of summation. Thus, we write:
+operator.
+%
+For simplicity, we will be using the shallow embedding; thus the
+operand can be typed as, say, $ℤ → ℝ$.
+%
+The other arguments will be the lower and upper limits of the sum ($1$
+and $n$ in our example).
+%
+The variable, $i$ shall not be represented as an argument:
+%
+indeed, the variable name is \emph{fixed by the representation of
+  functions}.
+%
+There is no choice to make at the point of summation.
+%
+Thus, we write:
 
 \begin{code}
 summation :: ℤ -> ℤ -> (ℤ -> ℝ) -> ℝ
@@ -186,31 +217,53 @@ Conveniently, we can even provide a simple implementation:
 \begin{code}
 summation low high f = sum [f i | i <- [low..high]]
 \end{code}
+and use it for our example as follows:
+\begin{code}
+sumOfSquares n = summation 1 n (powTo 2)
+\end{code}
+%TODO: perhaps mention types: skipped here because of |ℤ|, |ℝ| mismatch.
 
 As another example, let us represent the following nested sum
 \[
-  \sum_{i=1}^n \sum_{j=1}^m {i^2 + j^2}
+  \sum_{i=1}^m \sum_{j=1}^n {i^2 + j^2}
 \]
-using the shallow embedding of summation. This representation can be written simply as follows:
+using the shallow embedding of summation.
+%
+This representation can be written simply as follows:
 \begin{spec}
 exampleSum m n = summation 1 m (\i -> summation 1 n (\j -> i^2 + j^2))
 \end{spec}
-Aren't we cheating though? Surely we said that only one variable could
-occur in the summand, but we see both |i| and |j|? Well, we are not
-cheating as long as we use the \emph{shallow embedding} for functions of one
-variables. Doing so allows us to 1. use lambda notation to bind (and
-name) the variable name of the summation however we wish (in this case |i| and |j|) and 2. we can
-freely use any haskell function of type |ℤ → ℝ| as the summand. In particular, the this function
-can be any lambda-expression returing |ℝ|, and this expression can include summation itself. This freedom is an advantage of shallow embeddings:
-if we were to use the deep embedding, then
-we'd need a whole lot more work to ensure that we can represent
-summation within the deep embedding. In particular we need a way to
-embed variable binding itself. And we shall not be opening this
-can of worms just yet, even though we take a glimpse in \cref{sec:multiple-variables}.
-
+Aren't we cheating though?
+%
+Surely we said that only one variable could occur in the summand, but
+we see both |i| and |j|?
+%
+Well, we are not cheating as long as we use the \emph{shallow
+  embedding} for functions of one variables.
+%
+Doing so allows us to
+%
+1. use lambda notation to bind (and name) the variable name of the
+summation however we wish (in this case |i| and |j|) and
+%
+2. we can freely use any haskell function of type |ℤ → ℝ| as the
+summand.
+%
+In particular, this function can be any lambda-expression returning
+|ℝ|, and this expression can include summation itself.
+%
+This freedom is an advantage of shallow embeddings: if we were to use
+the deep embedding, then we'd need a whole lot more work to ensure
+that we can represent summation within the deep embedding.
+%
+In particular we need a way to embed variable binding itself.
+%
+And we shall not be opening this can of worms just yet, even though we
+take a glimpse in \cref{sec:multiple-variables}.
 
 Sticking conveniently to the shallow embedding, we can apply the same
-kind of reasoning to other big operators, and obtain the following typings:
+kind of reasoning to other big operators, and obtain the following
+typings:
 
 \begin{itemize}
 \item |lim : (ℕ → ℝ) → ℝ| for \(lim_{n → ∞} \{a_n\}\)
@@ -222,13 +275,21 @@ kind of reasoning to other big operators, and obtain the following typings:
 
 In sum, the chief difficulty to overcome when assigning types for
 mathematical operators is that they often introduce (bind) variable
-names. To take another example from the above, $\lim_{n → ∞}$ binds
-$n$ in $a_n$. In this book our stance is to make this binding obvious
-by letting the body of the limit ($a_n$ in the example) be a
-function. Thus we assign it the type $ℕ → ℝ$. Therefore the limit
-operator has a higher order type. A similar line of reasoning
-justifies the types of derivatives. We study in detail how these play
-out first.
+names.
+%
+To take another example from the above, $\lim_{n → ∞}$ binds $n$ in
+$a_n$.
+%
+In this book our stance is to make this binding clear by letting the
+body of the limit ($a_n$ in the example) be a function.
+%
+Thus we use the type $ℕ → ℝ$ for the body.
+%
+Therefore the limit operator has a higher order type.
+%
+A similar line of reasoning justifies the types of derivatives.
+%
+We study in detail how these play out first.
 
 \section{Detour: expressions of several variables}
 \label{sec:multiple-variables}
