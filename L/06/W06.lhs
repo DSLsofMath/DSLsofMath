@@ -302,8 +302,7 @@ a -> a| to compute |f' 2|:
 \label{sec:hh-od}
 \jp{Title of the section = title of the chapter? Change?
 In fact it seems that everything that was written up to here is a (long) review summarizing the previous chapters?}
- \jp{Rename |Stream| to |Taylor|?}
-\jp{Fold ../04/UnusualStream.hs in here}
+ \jp{Rename |Stream| to |Taylor|? Not quite, this words with functions as well. (The name indicates that we deal with infinite lists  )}
 
 Consider
 %
@@ -479,19 +478,18 @@ drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 \end{exercise}
 %
 
-\section{Polynomials}
-\jp{What is this doing here? and not in the relevant chapter? Delete?}
-\begin{spec}
-evalPoly :: Ring a => Poly a -> (a -> a)
-evalPoly (Poly [])        x   =  0
-evalPoly (Poly (a:as))    x   =  a + x * evalPoly (Poly as) x
-\end{spec}
 
-\section{Formal power series}
+\section{Derivatives and Integral for Formal power series}
 \label{sec:formal-power-series}
 \jp{
   Are we saying anything non-trivial and new in this section? If so indicate what it is right away.}
-\jp{Is this ``formal taylor series''? }
+\jp{this is not ``taylor series'', which have particular convergence properties.
+Here we don't divide by factorials, and the formulas are therefore different.
+
+The sigma notation going to infinity means that we have an infinite list of coefficients.
+
+We can work with it even if there is non convergence. Returning to the DSL of formal power
+}
 As we mentioned above, the Haskell list type contains both finite and
 infinite lists.
 %
@@ -500,7 +498,6 @@ polynomials.
 %
 Thus we can reuse that type also as ``syntax for power series'':
 potentially infinite ``polynomials''.
-\jp{Is this section trying to say make a difference between finite and infinite series of derivatives? But we don't actually discuss derivability? }
 %
 \begin{spec}
 type PowerSeries a = Poly a -- finite and infinite non-empty lists
@@ -637,10 +634,10 @@ expx = solve 1 (\f -> f)
 expf :: Field a => a -> a
 expf = eval 100 expx
 \end{code}
+\jp{|eval| was declared |REAL -> REAL| above. Which eval is this referring to? Say so explicitly.}
 \begin{exercise}
   Write |expx| as a recursive equation (inline |solve| in the definition above).
 \end{exercise}
-\jp{|eval| was declared |REAL -> REAL| above. Which eval is this referring to?}
 %
 The first solution, |idx| is just the polynomial |[0,1]| --- i.e. just $x$ in usual mathematical notation.
 %
@@ -648,7 +645,7 @@ We can easily check that its derivative is constantly |1| and its
 value at |0| is |0|.
 %
 The function |idf| is just there to check that the semantics behaves
-as expected.\jp{So what should we check? Is this meant to be a sanity check? Then we should print something?}
+as expected.\jp{So let's look at it by evaluating it at several points?}
 
 The second solution |expx| is a formal power series representing the
 exponential function.
@@ -797,6 +794,7 @@ evalP (Cos e)      =  cos (evalP e)
 \end{code}
 
 \section{Taylor series}
+\jp{Splice ../04/UnusualStream.hs in here, mention the coalgebraic structure explicitly}
 
 If |f = eval [a0, a1, ..., an, ...]|, then\jp{Which eval is that, and what is the meaning of the list here? polynomial? power series? derivatives?}
 
