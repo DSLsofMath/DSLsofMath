@@ -9,6 +9,7 @@ import DSLsofMath.Algebra
 import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
 import Data.List(nub)
 type REAL = Double
+type ℕ = Int
 \end{code}
 
 Often, especially in engineering textbooks, one encounters the
@@ -706,15 +707,15 @@ As interesting as it is, this basis does not cover all functions over I. To
 start, |eval bi 0 == 0| for every |i|, and thus linear
 combinations can only ever be zero at the origin.
 
-But if we were to include  |cos (n*x) / sqrt pi| in the set of base vectors, then the
-space would cover all periodic functions with period $2 \pi$. This 
+But if we were to include  |cos (n*x) / sqrt pi| in the set of base vectors, it would remain orthogonal, and the
+space would cover all periodic functions with period $2 \pi$.  This 
 representation is called the Fourier series. Let us define a meaningful
 index (|G|) for the basis:
 
 \begin{code}
 data Periodic where
-  Sin :: Int -> Periodic
-  Cos :: Int -> Periodic
+  Sin :: ℕ -> Periodic
+  Cos :: ℕ -> Periodic
 \end{code}
 
 A useful property of an orthonormal basis is that its representation
@@ -1377,9 +1378,27 @@ it follows that all quantum mechanical systems have an invertible dynamics.
 Furthermore, the inverted matrix is also unitary,
 and therefore the inverted system is also valid as a quantum dynamical system.
 
-\jp{An example as a graph is daunting. One can construct an example by combining generator matrices $e^{i \theta}$ (one coordinate rotates in complex plane), and 2-d rotations (the "cos theta/sin thetha/-sin theta/cos theta" matrix). But there wont be "mostly zeros everywhere". The form $U = e^{iH}$ is also a possibility, but then there is a whole bunch of more theory to cover.}
+Here is an example orthogonal (and thus also unitary matrix)  
+  \[
+  M =
+  \bordermatrix{
+         & c_0 & c_1 & c_2 & c_3 & c_4 & c_5 & c_6 \cr
+    r_0  &  0  &  0  &  1  &  0  &  0  &  0  &  0 \cr
+    r_1  &  1  &  0  &  0  &  0  &  0  &  0  &  0 \cr
+    r_2  &  0  &  1  &  0  &  0  &  0  &  0  &  0 \cr
+    r_3  &  0  &  0  &  0  & \sqrt 2 &-\sqrt 2 &  0  &  0 \cr
+    r_4  &  0  &  0  &  0  & \sqrt 2 & \sqrt 2 &  0  &  0 \cr
+    r_5  &  0  &  0  &  0  &  0  &  0  &  1/2  &  \sqrt 3 / 2 \cr
+    r_6  &  0  &  0  &  0  &  0  &  0  &  \sqrt 3 / 2  &  -1/2 \cr
+  }
+\]
 
-\section{Monadic dynamical systems}
+In this example the amplitudes of state 0,1,2 are permuted at every
+step.  States 3 and 4 get mixed into one another, and one can note
+that the sign of their amplitudes may get inverted. A similar
+situation happens between states 5 and 6, but at a higher rate.
+
+\section{\extraMaterial Monadic dynamical systems}
 
 This section is not part of the intended learning outcomes of the
 course, but it presents a useful unified view of the previous
