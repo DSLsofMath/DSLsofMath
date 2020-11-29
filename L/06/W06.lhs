@@ -16,7 +16,7 @@ import Prelude (abs)
   Possible outline for the chapter:
 
 
-  - If you can compute a pair, then you may just as well compute a whole list. \cref{sec:hh-od}
+  - If you can compute a pair, then you may just as well compute a whole list. 
     -> This gives a specification.
     -> Again we search for a homomorphism, so that we can compute all the derivatives directly to have a reasonable implementation.
 }
@@ -27,21 +27,24 @@ import Prelude (abs)
 
 We will now make heavy use of concepts from \cref{sec:CompSem} and
 thus we urge the reader to verify their understanding by checking
-\cref{sec:homomophism-roadmap} and \cref{ex:findFunExp0}.
-
-
-\label{sec:hh-od}
-\jp{Title of the section = title of the chapter? Change?
-In fact it seems that everything that was written up to here is a (long) review summarizing the previous chapters?}
- \jp{Rename |Stream| to |Taylor|? Not quite, this words with functions as well. (The name indicates that we deal with infinite lists  )}
-
-Consider
+\cref{sec:homomophism-roadmap} and \cref{ex:findFunExp0}. We have seen
+in particular that we can give a numeric (|Field|, etc.) structure to
+not only functions, but also to pairs of functions and their
+derivatives (|Field x => Field (a -> x, a -> x)|). But why stop there?
+Why not compute a (lazy) list of a function together with its
+derivative, second derivative, etc.\footnote{The \emph{cognoscenti}
+  will notice now the similarity with Taylor series
+  (\label{sec:taylor-series}) ---but here we have a list of functions,
+  not of coefficients.}  :
 %
 \begin{spec}
 [f, f', f'', ...] :: [a -> a]
 \end{spec}
+
 %
-representing the evaluation of an expression (of one variable $x$) as a function, and all its derivatives:
+The above then represents the evaluation of an expression (of one
+variable $x$) as a function, and all its derivatives. We can write
+this evaluation as an explicit function:
 %
 \begin{code}
 evalAll e = (evalFunExp e) : evalAll (derive e)
@@ -62,7 +65,9 @@ then
 Thus |evalAll (derive e) == tail (evalAll e)| which can be written
 |evalAll . derive = tail . evalAll|.
 %
-Thus |evalAll| is a homomorphism from |derive| to |tail|, or in other words, |H1(evalAll,derive,tail)| (defined in \cref{exc:homomorphisms}).
+Thus |evalAll| is a homomorphism from |derive| to |tail|, or in other
+words, |H1(evalAll,derive,tail)| (|H1| was defined in
+\cref{exc:homomorphisms}) --- this is our specification.
 
 We want to define the other operations on lists of functions in such a way
 that |evalAll| is a homomorphism.
@@ -74,12 +79,13 @@ evalAll (e1 :*: e2) = evalAll e1 * evalAll e2
 \end{spec}
 %
 where the |(*)| sign stands for the multiplication of infinite lists of
-functions, the operation we are trying to determine.
+functions --- the operation we are trying to determine.
 %
 We assume that we have already derived the definition of |+| for these
-lists (it is |zipWith (+)| --- and because the lists are infinite one needs not worry about differing lengths).
+lists (it is |zipWith (+)| --- and because the lists are infinite one
+needs not worry about differing lengths).
 
-We have the following (writing |eval| for |evalFunExp| and |d| for |derive| in order
+We have the following derivation (writing |eval| for |evalFunExp| and |d| for |derive| in order
 to save ink):
 %
 \begin{spec}
@@ -157,13 +163,16 @@ Thus, we can eliminate |help| to arrive at a definition for multiplication:
 \begin{code}
 mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 \end{code}
-\jp{This is different from  |polyMul|, but this is because the coefficients here are "bigger". In fact,
-we compute several times the same thing here and add them together. }
-As in the case of pairs, we find that we do not need any properties of
-functions, other than their |Num| structure, so the definitions apply
-to any infinite list of |Num a|:
+\footnote{This expression is reminiscent of polynomial multiplication
+  (\cref{sec:polyMul}), but it is different from it because here each
+  element is implicitly divided by a factorial: we compute bigger
+  values.} As in the case of pairs, we find that we do not need any
+properties of functions, other than their |Ring| structure, so the
+definitions apply to any infinite list of |Ring a|:
 %
-\jp{It is rather bad practice to define instances on something which is named after the representation rather than the semantics}
+\jp{It is rather bad practice to define instances on something which
+  is named after the representation rather than the
+  semantics.}
 \begin{code}
 type Stream a = [a]
 instance Additive a => Additive (Stream a) where
@@ -183,7 +192,7 @@ Complete the instance declarations for |Fractional| and
 \end{exercise}
 %
 Note that it may make more sense to declare a |newtype| for |Stream a|
-first, for at least two reasons.
+instead of using |[a]|, for at least two reasons.
 %
 First, because the type |[a]| also contains finite lists, but we use it
 here to represent only the infinite lists (also known as streams).
@@ -525,6 +534,7 @@ evalP (Cos e)      =  cos (evalP e)
 \end{code}
 
 \section{Taylor series}
+\label{sec:taylor-series}
 \jp{Splice ../04/UnusualStream.hs in here, mention the coalgebraic structure explicitly}
 
 If |f = eval [a0, a1, ..., an, ...]|, then\jp{Which eval is that, and what is the meaning of the list here? polynomial? power series? derivatives?}

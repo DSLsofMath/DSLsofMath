@@ -240,6 +240,7 @@ exercise.
 %
 Here, we just give the corresponding definitions.
 %
+\label{sec:polyMul}
 \begin{code}
 instance Additive a => Additive (Poly a) where
   (+) = polyAdd
