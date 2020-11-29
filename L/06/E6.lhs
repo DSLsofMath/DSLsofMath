@@ -11,9 +11,9 @@
 
 \begin{exercise} \label{exc:findFunExp}
 
-  As shown at the start of the chapter, we can find expressions |e :: FunExp|
+  As shown in \cref{exc:findFunExp0}, we can find expressions |e :: FunExp|
   such that |eval e = f| automatically using the assignment |e = f Id|. This is
-  possible thanks to the |Num|, |Fractional|, and |Floating| instances of
+  possible thanks to the |Ring|, |Transcendental|, etc. instances of
   |FunExp|. Use this method to find |FunExp| representations of the functions
   below, and show step by step how the application of the function to |Id| is
   evaluated in each case.

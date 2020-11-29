@@ -349,6 +349,7 @@ other way around: knowing that a function |h| is homomorphism, what is the
 kind of function that |h| can be?
 
 \begin{example}
+  \label{ex:exponential-as-homomorphism}
 As an example, let us can characterise the homomorphisms from |ANat| to
 |MNat| (from \cref{sec:anat-mnat}).
 
@@ -1377,7 +1378,7 @@ Implement the rest of the |Num| instance for |FD a|.
 \end{exercise}
 
 \subsection{Automatic differentiation}
-\label{sec:automoatic-differentiation}
+\label{sec:automatic-differentiation}
 The simultaneous computation of values and derivatives is an important
 technique called ``automatic differentiation''. Automatic
 differentiation has grown in importance with the rise of machine
@@ -1518,6 +1519,37 @@ See
 (lecture notes are available on
 \href{https://github.com/DSLsofMath/ctfp2014}{github}).
 %endif
+
+\subsection{Homomorphism as roadmaps}
+\label{sec:homomophism-roadmap}
+Homomorphisms are key to describe mathematical structure, specify programs, and derive of correct programs.
+The relation |h : S1 -> S2| (standing for for ``h is an isomorphism from |S1| to |S2|''), can be used in many ways,
+depending on what is known and what is unknown.
+
+
+\begin{itemize}
+\item |? : S1 -> S2|. Given two structures |S1| and |S2|, can we
+  derive some function which is a homomorphism between those two
+  structures? We asked such a question in \cref{ex:apply} (|apply c :
+  Num (x -> a) -> Num a|) and \cref{ex:exponential-as-homomorphism}
+  (exponentials).
+
+\item |h : S1 -> S2??|.  What is a structure |S2| compatible with a
+  given structure |S1| and given homomorphism |h|?  (eg. we derived
+  |applyFD c : FD a -> (a, a)| as a composition of a syntactic
+  derivative and an evaluation function.)
+
+\item |? : S1 -> S2??|.  Can we find a good structure on |S2| so that
+  it becomes homomorphic with |S1|? This is how we found the structure
+  |FD| in |evalD : FunExp -> FD a|.
+
+\item |h : S1?? -> S2|. Given |h| and |S2|, can we find a structure
+  |S1| compatible with a given homomorphism |h|?  We will encounter an
+  example in \cref{sec:poly} (evaluation function for polynomials.)
+\end{itemize}
+
+
+
 \subsection{Structures and representations}
 One take home message of this chapter is that one should, as a rule,
 start with structural definitions first, and consider representation

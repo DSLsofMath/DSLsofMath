@@ -1,6 +1,7 @@
 \newpage
 \section{Exercises}
 
+ 
 \begin{exercise}\label{exc:homomorphisms}
 \textbf{Homomorphisms.}
 Consider the following definitions:
@@ -332,3 +333,237 @@ Prove or disprove the following claims:
   that the second derivative looks even worse.
 
 \end{exercise}
+
+\begin{exercise}
+
+\label{exc:findFunExp0}
+
+We have seen three different ways to use a generic |f :: Transcendental a =>
+a -> a| to compute the derivative at some point (say, at 2.0, |f' 2|):
+%
+\begin{itemize}
+\item fully symbolic (using |FunExp|),
+\item using pairs of functions (|FD|),
+\item or just pairs of values.
+\end{itemize}
+
+Given the following definition of |f|, compute |f' 2|.
+
+\begin{code}
+f :: Transcendental a => a -> a
+f x = sin x + 2 * x
+\end{code}
+%
+(So, we have: |f 0 = 0|, |f 2 = 4.909297426825682|, etc.)
+
+\end{exercise}
+
+\begin{solution}
+
+\begin{enumerate}
+\item Using |FunExp|
+
+Recall expressions (or functions) of one variables, from \cref{sec:FunExp}:
+%
+\begin{spec}
+data FunExp  =  Const Rational
+             |  X
+             |  FunExp :+: FunExp
+             |  FunExp :*: FunExp
+             |  FunExp :/: FunExp
+             |  Exp FunExp
+             |  Sin FunExp
+             |  Cos FunExp
+                -- and so on
+  deriving (Eq, Show)
+\end{spec}
+%
+What is the expression |e| for which |f = eval e|?
+
+We have
+%
+\begin{spec}
+        eval e x = f x
+<=>     eval e x = sin x + 2 * x
+<=>     eval e x = eval (Sin X) x + eval (Const 2 :*: X) x
+<=>     eval e x = eval ((Sin X) :+: (Const 2 :*: X)) x
+<==     e = Sin X :+: (Const 2 :*: X)
+\end{spec}
+%
+Finally, we can apply |derive| and obtain
+%
+\begin{code}
+e = Sin X :+: (Const 2 :*: X)
+f' 2 = evalFunExp (derive e) 2
+\end{code}
+%
+This can hardly be called ``automatic'', look at all the work we did in
+deducing |e|!\jp{But |f| was provided syntactically anyway?}
+%
+However, consider this definition:
+%
+\begin{code}
+e2 :: FunExp
+e2 = f X
+\end{code}
+%
+As |X :: FunExp|, the Haskell interpreter will look for |FunExp| instances of |Num|
+and other numeric classes and build the syntax tree for |f| instead of computing its
+semantic value.
+%
+
+In general, to find the derivative of a function |f :: Transcendental a => a -> a|, we can use
+%
+\begin{code}
+drv f = evalFunExp (derive (f X))
+\end{code}
+\jp{|derive| was defined in \cref{sec:derive}}
+\item Using |FD| (pairs of functions)
+
+Recall
+%
+\begin{code}
+type FD a = (a -> a, a -> a)
+
+applyFD x (f, g) = (f x, g x)
+\end{code}
+%
+The operations (the numeric type class instances) on |FD a| are such that, if |eval e = f|, then
+%
+\begin{spec}
+(eval e, eval' e) = (f, f')
+\end{spec}
+%
+We are looking for |(g, g')| such that
+%
+\begin{spec}
+f (g, g') = (f, f')   -- (*)
+\end{spec}
+%
+so we can then do
+%
+\begin{spec}
+f' 2 = snd (applyFD 2 (f (g, g')))
+\end{spec}
+%
+We can fullfill (*) if we can find a pair |(g, g')| that is a sort of
+``unit'' for |FD a|:
+%
+\begin{spec}
+sin (g, g') = (sin, cos)
+exp (g, g') = (exp, exp)
+\end{spec}
+%
+and so on.
+
+In general, the chain rule gives us
+%
+\begin{spec}
+f (g, g') = (f . g, (f' . g) * g')
+\end{spec}
+%
+Therefore, we need: |g = id| and |g' = const 1|.
+
+Finally
+%
+\begin{spec}
+f' 2 = snd (applyFD 2 (f (id, const 1)))
+\end{spec}
+%
+In general
+%
+\begin{code}
+drvFD f x = snd (applyFD x (f (id, const 1)))
+\end{code}
+%
+computes the derivative of |f| at |x|.
+%
+\begin{code}
+f1 :: FD Double -> FD Double
+f1  = f
+\end{code}
+
+\item Using pairs.
+
+We have |instance Transcendental a => Transcendental (a, a)|, moreover, the
+instance declaration looks exactly the same as that for |FD a|:
+%
+\begin{spec}
+instance Transcendental a => Transcendental (FD a) where  -- pairs of functions
+  exp (f, f')       =  (exp f, (exp f) * f')
+  sin (f, f')       =  (sin f, (cos f) * f')
+  cos (f, f')       =  (cos f, -(sin f) * f')
+
+instance Transcendental a => Transcendental (a, a) where  -- just pairs
+  exp (f, f')       =  (exp f,  (exp f) * f')
+  sin (f, f')       =  (sin f,   cos f  * f')
+  cos (f, f')       =  (cos f, -(sin f) * f')
+\end{spec}
+%
+In fact, the latter (just pairs) represents a generalisation\jp{Isn't it equivalent? (The isomorphism is |c -> (a,b)| iso. |(c -> b, c -> b)|)} of the former (pairs of functions).
+%
+To see this, note that if we have a |Transcendental| instance for some |A|,
+we get a floating instance for |x->A| for all |x| from the module |FunNumInst|\jp{What is this module? Was it ever introduced?}.
+%
+Then from the instance for pairs we get an instance for any type of
+the form |(x->A, x->A)|.
+%
+As a special case when |x=A| this includes all |(A->A, A->A)| which is
+|FD A|.
+%
+Thus it is enough to have |FunNumInst| and the pair instance to get
+the ``pairs of functions'' instance (and more).
+
+The pair instance is also the ``maximally general'' such
+generalisation.
+
+Still, we need to use this machinery.\jp{Use it for what? I never know what the goal was?}
+%
+We are now looking for a pair of values |(g, g')| such that
+%
+\begin{spec}
+f (g, g') = (f 2, f' 2)
+\end{spec}
+%
+In general
+%
+\begin{spec}
+f (g, g') = (f g, (f' g) * g')
+\end{spec}
+%
+Therefore
+%
+\begin{spec}
+      f (g, g') = (f 2, f' 2)
+
+<=>   (f g, (f' g) * g') = (f 2, f' 2)
+<==   g = 2, g' = 1
+\end{spec}
+%
+Introducing
+%
+\begin{code}
+var x = (x, 1)
+\end{code}
+%
+we can, as in the case of |FD|, simplify matters a little:
+%
+\begin{spec}
+f' x = snd (f (var x))
+\end{spec}
+%
+In general
+%
+\begin{code}
+drvP f x  =  snd (f (x, 1))
+\end{code}
+%
+computes the derivative of |f| at |x|.
+%
+\begin{code}
+f2 :: (Double, Double) -> (Double, Double)
+f2  = f
+\end{code}
+
+\end{enumerate}
+\end{solution}
