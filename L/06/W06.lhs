@@ -13,8 +13,8 @@ import Prelude (abs)
 \chapter{Higher-order Derivatives and their Applications}
 \label{sec:deriv}
 
-We will now make heavy use of concepts from \cref{sec:CompSem} and
-thus we urge the reader to verify their understanding by checking
+In this chapter we make heavy use of concepts from \cref{sec:CompSem}
+and thus we urge the reader to verify their understanding by checking
 \cref{sec:homomophism-roadmap} and \cref{ex:findFunExp0}. We have seen
 in particular that we can give a numeric (|Field|, etc.) structure to
 not only functions, but also to pairs of functions and their
@@ -54,11 +54,11 @@ Thus |evalAll (derive e) == tail (evalAll e)| which can be written
 |evalAll . derive = tail . evalAll|.
 %
 Thus |evalAll| is a homomorphism from |derive| to |tail|, or in other
-words, |H1(evalAll,derive,tail)| (|H1| was defined in
-\cref{exc:homomorphisms}) --- this is our specification.
+words, we have |H1(evalAll,derive,tail)| (|H1| was defined in
+\cref{exc:homomorphisms}) --- this is our specification for what follows.
 
 We want to define the other operations on lists of functions in such a way
-that |evalAll| is a homomorphism.
+that |evalAll| is such a homomorphism.
 %
 For example:
 %
@@ -121,8 +121,11 @@ The remaining part is then
     help a b (evalAll (d e1)) (evalAll (d e2))
 \end{spec}
 
-Informally, we can refer to (co-)induction\jp{undefined} at this point and rewrite
-|evalAll (d e1 :*: e2)| to |evalAll (d e1) * evalAll e2|.
+Informally, we can refer to (co-)induction\jp{co-inductin is not a
+  concept which can be assumed to be known at an informal level (since
+  we define lots of other simpler things much more precisely.)} at
+this point and rewrite |evalAll (d e1 :*: e2)| to |evalAll (d e1) *
+evalAll e2|.
 %
 We also have |evalAll . d = tail . evalAll| which leads to:
 %
@@ -156,11 +159,8 @@ mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
   element is implicitly divided by a factorial: we compute bigger
   values.} As in the case of pairs, we find that we do not need any
 properties of functions, other than their |Ring| structure, so the
-definitions apply to any infinite list of |Ring a|:
+definitions apply to any infinite list of |Ring a|, which, for a lack of more specific name at this point, will call a |Stream|:
 %
-\jp{It is rather bad practice to define instances on something which
-  is named after the representation rather than the
-  semantics.}
 \begin{code}
 type Stream a = [a]
 instance Additive a => Additive (Stream a) where
@@ -195,12 +195,14 @@ We used just a type synonym here to avoid cluttering the definitions
 with the newtype constructors.
 
 %
-Write a general derivative computation, similar to |drv| functions
+\begin{exercise}
+Write a general derivative computation, similar to |drv|\jp{dangling reference} functions
 above:
 %
 \begin{code}
 drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 \end{code}
+\end{exercise}
 
 \begin{exercise}
   Compare the efficiency of different ways of computing derivatives.
@@ -211,13 +213,23 @@ drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 \section{Taylor series}
 \label{sec:taylor-series}
 
-\jp{Stream is actually a taylor series, and deriv=tail}
-\jp{Splice ../04/UnusualStream.hs in here, mention the coalgebraic structure explicitly}
+We have arrived at the instances for |Stream| by reasoning on list of
+functions. But everywhere that we needed to manipulate functions, we
+ended up using their numerical operations (assuming instances such as
+|Ring (x -> a)|.) So, the |Stream| instances hold for any numeric type
+|a|. Effectively, we have used implicitly the |apply| homomorphism, as
+we did in \cref{sec:applyFD}. So we can view |Stream a| as series of
+higher-order derivatives applied to the same point |a|:
 
+\begin{spec}
+[f(a), f'(a), f''(a), ...]
+\end{spec}
 
+Assume that |f| is a power series of coefficients (|ai|):
 
-If |f = eval [a0, a1, ..., an, ...]|, then\jp{Which eval is that, and what is the meaning of the list here? polynomial? power series? derivatives?}
+|f = eval [a0, a1, ..., an, ...]|
 
+We derive:
 \begin{spec}
    f 0    =  a0
    f'     =  eval (deriv [a0, a1, ..., an, ...])
@@ -244,20 +256,26 @@ Therefore
 
 That is, there is a simple mapping between the representation of |f|
 as a power series (the coefficients |a_k|), and the value of all
-derivatives of |f| at |0| (our |Stream a| type above).
+derivatives of |f| at |0|.
 
 The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
-called the Taylor series centred in |0|, or the Maclaurin series. 
+called the Taylor series centred in |0|, or the Maclaurin series.
+
+\section{Derivatives and Integral for Maclaurin series}
+
+\jp{Stream is actually a taylor series, and deriv=tail}
+\jp{Splice ../04/UnusualStream.hs in here, mention the coalgebraic structure explicitly}
+
+\section{Bridging power series and Taylor series}
 
 \begin{code}
 derivs :: Ring a => PowerSeries a -> PowerSeries a
-derivs (Poly as) = derivs1 as 0 1
-  where
+derivs (Poly as) = derivs1 as 0 1 where
   derivs1 (a:as)  n factn  =  polyCons    (a * factn)
                                            (derivs1 as (n + 1) (factn * (n + 1)))
   derivs1 []      n factn  =  Poly []
 
--- remember that |x = Cons 0 (Single 1)|
+-- remember that |x = Poly [0,1]|
 ex3,ex4 :: Poly Double
 ex3 = takePoly 10 (derivs (x^3 + 2 * x))
 ex4 = takePoly 10 (derivs sinx)
@@ -307,8 +325,7 @@ In order to compute the values of
 \end{spec}
 
 for |a /= 0|, we compute
-\jp{This is one way to do it, but we can manipulate tayor series directly. }
-% FROM HERE ....
+
 \begin{code}
 ida a = takePoly 10 (derivs (evalP (X :+: Const a)))
 \end{code}
@@ -328,7 +345,8 @@ As before, we can use directly power series:
 \begin{code}
 dP f a = takePoly 10 (derivs (f (idx + Poly [a])))
 \end{code}
-% TO HERE ....
+
+
 
 
 \section{Derivatives and Integral for Formal power series}
