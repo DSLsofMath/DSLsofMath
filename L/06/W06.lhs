@@ -10,18 +10,6 @@ import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..))
 import Prelude (abs)
 \end{code}
 
-
-\jp{
-
-  Possible outline for the chapter:
-
-
-  - If you can compute a pair, then you may just as well compute a whole list. 
-    -> This gives a specification.
-    -> Again we search for a homomorphism, so that we can compute all the derivatives directly to have a reasonable implementation.
-}
-
-
 \chapter{Higher-order Derivatives and their Applications}
 \label{sec:deriv}
 
@@ -197,9 +185,11 @@ instead of using |[a]|, for at least two reasons.
 First, because the type |[a]| also contains finite lists, but we use it
 here to represent only the infinite lists (also known as streams).
 %
-Second, because there are competing possibilities for |Num| instances
+Second, because there are competing possibilities for |Ring| instances
 for infinite lists, for example applying all the operations
-``pointwise'' as with ``FunNumInst''.
+indexwise.\footnote{These can be obtained applying the the
+  homomorphism between |[a]| and |ℕ -> a| to the |Ring| instances of
+  |(x -> a)|}
 %
 We used just a type synonym here to avoid cluttering the definitions
 with the newtype constructors.
@@ -216,37 +206,137 @@ drvList k f x = undefined    -- |k|th derivative of |f| at |x|
   Compare the efficiency of different ways of computing derivatives.
   \jp{This is a pretty tough exercise...}
 \end{exercise}
+
+
+\section{Taylor series}
+\label{sec:taylor-series}
+
+\jp{Stream is actually a taylor series, and deriv=tail}
+\jp{Splice ../04/UnusualStream.hs in here, mention the coalgebraic structure explicitly}
+
+
+
+If |f = eval [a0, a1, ..., an, ...]|, then\jp{Which eval is that, and what is the meaning of the list here? polynomial? power series? derivatives?}
+
+\begin{spec}
+   f 0    =  a0
+   f'     =  eval (deriv [a0, a1, ..., an, ...])
+          =  eval ([1 * a1, 2 * a2, 3 * a3, ..., n * an, ...])
+=>
+   f' 0   =  a1
+   f''    =  eval (deriv [a1, 2 * a2, ..., n * an, ...])
+          =  eval ([2 * a2, 3 * 2 * a3, ..., n * (n - 1) * an, ...])
+=>
+   f'' 0  =  2 * a2
+\end{spec}
+
+In general:
+
+\begin{spec}
+   {-"f^{(k)} "-} 0  =  fact k * ak
+\end{spec}
+
+Therefore
+
+\begin{spec}
+   f      =  eval [f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]
+\end{spec}
+
+That is, there is a simple mapping between the representation of |f|
+as a power series (the coefficients |a_k|), and the value of all
+derivatives of |f| at |0| (our |Stream a| type above).
+
+The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
+called the Taylor series centred in |0|, or the Maclaurin series. 
+
+\begin{code}
+derivs :: Ring a => PowerSeries a -> PowerSeries a
+derivs (Poly as) = derivs1 as 0 1
+  where
+  derivs1 (a:as)  n factn  =  polyCons    (a * factn)
+                                           (derivs1 as (n + 1) (factn * (n + 1)))
+  derivs1 []      n factn  =  Poly []
+
+-- remember that |x = Cons 0 (Single 1)|
+ex3,ex4 :: Poly Double
+ex3 = takePoly 10 (derivs (x^3 + 2 * x))
+ex4 = takePoly 10 (derivs sinx)
+\end{code}
+
+In this way, we can compute all the derivatives at |0| for all
+functions |f| constructed with the grammar of |FunExp|.
 %
+That is because, as we have seen, we can represent all of them by
+power series!
+
+What if we want the value of the derivatives at |a /= 0|?
+
+We then need the power series of the ``shifted'' function g:
+
+\begin{spec}
+g x  =  f (x + a)  <=>  g = f . (+ a)
+\end{spec}
+
+If we can represent |g| as a power series, say |[b0, b1, ...]|, then
+we have
+
+\begin{spec}
+{-"g^{(k)} "-} 0  =  fact k * bk  =  {-"f^{(k)} "-} a
+\end{spec}
+
+In particular, we would have
+
+\begin{spec}
+f x  =  g (x - a)  =  {-"\sum"-} bn * (x - a){-"^n"-}
+\end{spec}
+
+which is called the Taylor expansion of |f| at |a|.
+
+Example:
+
+We have that |idx = [0, 1]|, thus giving us indeed the values
+
+\begin{spec}
+[id 0, id' 0, id'' 0, ...]
+\end{spec}
+
+In order to compute the values of
+
+\begin{spec}
+[id a, id' a, id'' a, ...]
+\end{spec}
+
+for |a /= 0|, we compute
+\jp{This is one way to do it, but we can manipulate tayor series directly. }
+% FROM HERE ....
+\begin{code}
+ida a = takePoly 10 (derivs (evalP (X :+: Const a)))
+\end{code}
+
+More generally, if we want to compute the derivative of a function |f|
+constructed with |FunExp| grammar, at a point |a|, we need the power
+series of |g x = f (x + a)|:
+
+\begin{code}
+d f a = takePoly 10 (derivs (evalP (f (X :+: Const a))))
+\end{code}
+
+Use, for example, our |f x = sin x + 2 * x| above.
+
+As before, we can use directly power series:
+
+\begin{code}
+dP f a = takePoly 10 (derivs (f (idx + Poly [a])))
+\end{code}
+% TO HERE ....
 
 
 \section{Derivatives and Integral for Formal power series}
 \label{sec:formal-power-series}
-\jp{
-  Are we saying anything non-trivial and new in this section? If so indicate what it is right away.}
-\jp{this is not ``taylor series'', which have particular convergence properties.
-Here we don't divide by factorials, and the formulas are therefore different.
-
-The sigma notation going to infinity means that we have an infinite list of coefficients.
-
-We can work with it even if there is non convergence. Returning to the DSL of formal power
-}
-As we mentioned above, the Haskell list type contains both finite and
-infinite lists.
-%
-The same holds for the type |Poly| that we designed as ``syntax'' for
-polynomials.
-%
-Thus we can reuse that type also as ``syntax for power series'':
-potentially infinite ``polynomials''.
-%
-\begin{spec}
-type PowerSeries a = Poly a -- finite and infinite non-empty lists
-\end{spec}
-%
-Now we can divide, as well as add and multiply.
-
-We can also compute derivatives:
-%
+\jp{One should understand the difference between taylor series and polynomials first before throwing this in here.
+Most probably Taylor series should be explained first (this is what Stream is!)}
+In \cref{sec:poly-formal-derivative-1} we \emph{already} arrived at a
+definition of derivatives for infinite lists:
 \begin{spec}
 deriv :: Ring a => Poly a -> Poly a
 deriv (Poly [])   =  Poly []
@@ -254,8 +344,23 @@ deriv (Poly (a:as))  =  Poly (deriv' as 1)
   where  deriv' []      n  =  []
          deriv' (a:as)  n  =  (n * a) : (deriv' as (n+1))
 \end{spec}
+However, we now have a different implementation.
+
+(As we mentioned above, the Haskell list type contains both finite and
+infinite lists, and the same holds for the type |Poly| that we
+designed as ``syntax'' for polynomials. Thus we can reuse that type
+also as ``syntax for power series'': potentially infinite
+``polynomials''. So the infiniteness is not a relevant difference.)
 %
-and integrate:
+
+%
+\begin{spec}
+type PowerSeries a = Poly a -- finite and infinite non-empty lists
+\end{spec}
+%
+Now we can divide, as well as add and multiply.
+
+We can also integrate:
 %
 %TODO: Perhaps swap the order of arguments to |integ| to match the order of |Cons|. Or remove that argument and just use |a0 +| in combination with a 1-arg. |integ|.
 \begin{code}
@@ -533,121 +638,6 @@ evalP (Sin e)      =  sin (evalP e)
 evalP (Cos e)      =  cos (evalP e)
 \end{code}
 
-\section{Taylor series}
-\label{sec:taylor-series}
-\jp{Splice ../04/UnusualStream.hs in here, mention the coalgebraic structure explicitly}
-
-If |f = eval [a0, a1, ..., an, ...]|, then\jp{Which eval is that, and what is the meaning of the list here? polynomial? power series? derivatives?}
-
-\begin{spec}
-   f 0    =  a0
-   f'     =  eval (deriv [a0, a1, ..., an, ...])
-          =  eval ([1 * a1, 2 * a2, 3 * a3, ..., n * an, ...])
-=>
-   f' 0   =  a1
-   f''    =  eval (deriv [a1, 2 * a2, ..., n * an, ...])
-          =  eval ([2 * a2, 3 * 2 * a3, ..., n * (n - 1) * an, ...])
-=>
-   f'' 0  =  2 * a2
-\end{spec}
-
-In general:
-
-\begin{spec}
-   {-"f^{(k)} "-} 0  =  fact k * ak
-\end{spec}
-
-Therefore
-
-\begin{spec}
-   f      =  eval [f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]
-\end{spec}
-
-That is, there is a simple mapping between the representation of |f|
-as a power series (the coefficients |a_k|), and the value of all
-derivatives of |f| at |0| (our |Stream a| type above).
-
-The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
-called the Taylor series centred in |0|, or the Maclaurin series. 
-
-\begin{code}
-derivs :: Ring a => PowerSeries a -> PowerSeries a
-derivs (Poly as) = derivs1 as 0 1
-  where
-  derivs1 (a:as)  n factn  =  polyCons    (a * factn)
-                                           (derivs1 as (n + 1) (factn * (n + 1)))
-  derivs1 []      n factn  =  Poly []
-
--- remember that |x = Cons 0 (Single 1)|
-ex3,ex4 :: Poly Double
-ex3 = takePoly 10 (derivs (x^3 + 2 * x))
-ex4 = takePoly 10 (derivs sinx)
-\end{code}
-
-In this way, we can compute all the derivatives at |0| for all
-functions |f| constructed with the grammar of |FunExp|.
-%
-That is because, as we have seen, we can represent all of them by
-power series!
-
-What if we want the value of the derivatives at |a /= 0|?
-
-We then need the power series of the ``shifted'' function g:
-
-\begin{spec}
-g x  =  f (x + a)  <=>  g = f . (+ a)
-\end{spec}
-
-If we can represent |g| as a power series, say |[b0, b1, ...]|, then
-we have
-
-\begin{spec}
-{-"g^{(k)} "-} 0  =  fact k * bk  =  {-"f^{(k)} "-} a
-\end{spec}
-
-In particular, we would have
-
-\begin{spec}
-f x  =  g (x - a)  =  {-"\sum"-} bn * (x - a){-"^n"-}
-\end{spec}
-
-which is called the Taylor expansion of |f| at |a|.
-
-Example:
-
-We have that |idx = [0, 1]|, thus giving us indeed the values
-
-\begin{spec}
-[id 0, id' 0, id'' 0, ...]
-\end{spec}
-
-In order to compute the values of
-
-\begin{spec}
-[id a, id' a, id'' a, ...]
-\end{spec}
-
-for |a /= 0|, we compute
-
-\begin{code}
-ida a = takePoly 10 (derivs (evalP (X :+: Const a)))
-\end{code}
-
-More generally, if we want to compute the derivative of a function |f|
-constructed with |FunExp| grammar, at a point |a|, we need the power
-series of |g x = f (x + a)|:
-
-\begin{code}
-d f a = takePoly 10 (derivs (evalP (f (X :+: Const a))))
-\end{code}
-
-Use, for example, our |f x = sin x + 2 * x| above.
-
-As before, we can use directly power series:
-
-\begin{code}
-dP f a = takePoly 10 (derivs (f (idx + Poly [a])))
-\end{code}
 
 \section{Associated code}
 

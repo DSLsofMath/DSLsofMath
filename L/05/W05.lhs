@@ -818,7 +818,7 @@ more traditional mathematical notation.
 
 
 \section{Formal derivative}
-
+\label{sec:poly-formal-derivative-1}
 Considering the analogy between power series and polynomial functions
 (via polynomials), we can arrive at a formal derivative for power
 series through the folowing computation:
