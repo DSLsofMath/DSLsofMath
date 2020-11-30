@@ -261,24 +261,20 @@ derivatives of |f| at |0|.
 The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
 called the Taylor series centred in |0|, or the Maclaurin series.
 
-\section{Derivatives and Integral for Maclaurin series}
 
-\jp{Stream is actually a taylor series, and deriv=tail}
-\jp{Splice ../04/UnusualStream.hs in here, mention the coalgebraic structure explicitly}
-
-\section{Bridging power series and Taylor series}
+We can perform the above mapping (from a power series to the maclaurin
+series) efficiently as follows:
 
 \begin{code}
-derivs :: Ring a => PowerSeries a -> PowerSeries a
+derivs :: Ring a => PowerSeries a -> Taylor a
 derivs (Poly as) = derivs1 as 0 1 where
-  derivs1 (a:as)  n factn  =  polyCons    (a * factn)
-                                           (derivs1 as (n + 1) (factn * (n + 1)))
-  derivs1 []      n factn  =  Poly []
+  derivs1 (a:as)  n factn  =  (a * factn) : (derivs1 as (n + 1) (factn * (n + 1)))
+  derivs1 []      n factn  =  []
 
 -- remember that |x = Poly [0,1]|
-ex3,ex4 :: Poly Double
-ex3 = takePoly 10 (derivs (x^3 + 2 * x))
-ex4 = takePoly 10 (derivs sinx)
+ex3,ex4 :: Taylor Double
+ex3 = derivs (x^3 + 2 * x)
+ex4 = derivs sinx
 \end{code}
 
 In this way, we can compute all the derivatives at |0| for all
@@ -287,7 +283,8 @@ functions |f| constructed with the grammar of |FunExp|.
 That is because, as we have seen, we can represent all of them by
 power series!
 
-What if we want the value of the derivatives at |a /= 0|?
+What if we want the value of the derivatives at some other point |a|
+(different form zero)?
 
 We then need the power series of the ``shifted'' function g:
 
@@ -327,11 +324,11 @@ In order to compute the values of
 for |a /= 0|, we compute
 
 \begin{code}
-ida a = takePoly 10 (derivs (evalP (X :+: Const a)))
+ida a = (derivs (evalP (X :+: Const a)))
 \end{code}
 
 More generally, if we want to compute the derivative of a function |f|
-constructed with |FunExp| grammar, at a point |a|, we need the power
+constructed with |FunExp| grammar, at a point |a|, we can use the power
 series of |g x = f (x + a)|:
 
 \begin{code}
@@ -343,18 +340,57 @@ Use, for example, our |f x = sin x + 2 * x| above.
 As before, we can use directly power series:
 
 \begin{code}
-dP f a = takePoly 10 (derivs (f (idx + Poly [a])))
+dP f a = (derivs (f (idx + Poly [a])))
 \end{code}
 
 
+\section{Derivatives and Integral for Maclaurin series}
+
+(See also \citet{Pavlovic:1998:CCF:788020.788885})
+
+Since the Maclaurin series represents |[f(0), f'(0), f''(0), ...]|, it
+is clear that taking the tail of the list is equivalent to taking the
+derivative of |f|.
+
+Another way to see this is that, we started with the equation |evalAll
+. derive = tail . evalAll|; but now our input represention is Taylor
+series so, |evalAll = id|, and |derive = tail|.
+
+In sum:
+\begin{spec}
+head  f    = eval f 0            -- value of |f| at |0|
+tail  f    = deriv f             -- derivative of |f|
+\end{spec}
+Additionally, integration is can be defined simply as cons (with the
+first argument fixing the value of |f| at 0):
+\begin{spec}
+integ :: a -> Taylor a -> Taylor a
+integ = (:)
+\end{spec}
+
+Given that we have an infinite list, we have |f = head f : tail
+f|. Let's see what this law means in terms of calculus:
+\begin{spec}
+  f  ==  head f : tail f
+     ==  integ (head f)  (tail f)
+     ==  integ (f 0)  (deriv f)
+\end{spec}
+or, in traditional notation:
+
+\[
+  f(x) = f(0) + \int_0^x f'(t) \text{d}t
+\]
+
+... which is the fundamental theorem of calculus.  In sum, we find
+that our definition of integ is exactly that needed to satisfy
+calculus needs.
 
 
 \section{Derivatives and Integral for Formal power series}
 \label{sec:formal-power-series}
-\jp{One should understand the difference between taylor series and polynomials first before throwing this in here.
-Most probably Taylor series should be explained first (this is what Stream is!)}
+
 In \cref{sec:poly-formal-derivative-1} we \emph{already} arrived at a
-definition of derivatives for infinite lists:
+definition of derivatives for infinite lists:\jp{Why the duplication?}
 \begin{spec}
 deriv :: Ring a => Poly a -> Poly a
 deriv (Poly [])   =  Poly []
@@ -362,13 +398,12 @@ deriv (Poly (a:as))  =  Poly (deriv' as 1)
   where  deriv' []      n  =  []
          deriv' (a:as)  n  =  (n * a) : (deriv' as (n+1))
 \end{spec}
-However, we now have a different implementation.
 
-(As we mentioned above, the Haskell list type contains both finite and
+As we mentioned above, the Haskell list type contains both finite and
 infinite lists, and the same holds for the type |Poly| that we
 designed as ``syntax'' for polynomials. Thus we can reuse that type
 also as ``syntax for power series'': potentially infinite
-``polynomials''. So the infiniteness is not a relevant difference.)
+``polynomials''. So the infiniteness is not a relevant difference.
 %
 
 %
