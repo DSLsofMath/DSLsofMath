@@ -5,7 +5,7 @@ import DSLsofMath.FunNumInst
 type REAL = Double
 
 data FunExp  =  Const REAL         -- |Rational| does not work with |Floating|
-             |  Id
+             |  X
              |  FunExp :+: FunExp
              |  FunExp :*: FunExp
              |  FunExp :/: FunExp
@@ -21,7 +21,7 @@ Example:
 
 \begin{code}
 expr1 :: FunExp
-expr1 = (Const 2) :*: (Exp (Exp Id))
+expr1 = (Const 2) :*: (Exp (Exp X))
 \end{code}
 
 What is the function corresponding to this expression?
@@ -32,7 +32,7 @@ f x  = 2 * exp (exp x)
 type Func = REAL -> REAL
 eval  ::  FunExp          ->  Func
 eval      (Const alpha)    =  const alpha
-eval      Id               =  id
+eval      X               =  id
 eval      (e1 :+: e2)      =  eval e1 + eval e2
 eval      (e1 :*: e2)      =  eval e1 * eval e2
 eval      (Negate e)       =  negate (eval e)

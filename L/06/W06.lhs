@@ -260,6 +260,9 @@ derivatives of |f| at |0|.
 
 The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
 called the Taylor series centred in |0|, or the Maclaurin series.
+\begin{code}
+type Taylor a = Stream a
+\end{code}
 
 
 We can perform the above mapping (from a power series to the maclaurin
@@ -327,20 +330,20 @@ for |a /= 0|, we compute
 ida a = (toMacLaurin (evalP (X :+: Const a)))
 \end{code}
 
-More generally, if we want to compute the derivative of a function |f|
+More generally, if we want to compute the derivatives of a function |f|
 constructed with |FunExp| grammar, at a point |a|, we can use the power
-series of |g x = f (x + a)|:
+series of |g x = f (x + a)| (we additionally restrict ourselves to the first 10 derivatives):
 
 \begin{code}
-d f a = takePoly 10 (toMacLaurin (evalP (f (X :+: Const a))))
+d f a = take 10 (toMacLaurin (evalP (f (X :+: Const a))))
 \end{code}
 
 Use, for example, our |f x = sin x + 2 * x| above.
 
-As before, we can use directly power series:
+As before, we can use power series directly to construct the input:
 
 \begin{code}
-dP f a = (toMacLaurin (f (idx + Poly [a])))
+dP f a = toMacLaurin (f (idx + Poly [a]))
 \end{code}
 
 \section{Derivatives and Integral for Maclaurin series}
