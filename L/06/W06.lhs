@@ -266,15 +266,15 @@ We can perform the above mapping (from a power series to the maclaurin
 series) efficiently as follows:
 
 \begin{code}
-derivs :: Ring a => PowerSeries a -> Taylor a
-derivs (Poly as) = derivs1 as 0 1 where
-  derivs1 (a:as)  n factn  =  (a * factn) : (derivs1 as (n + 1) (factn * (n + 1)))
-  derivs1 []      n factn  =  []
+toMacLaurin :: Ring a => PowerSeries a -> Taylor a
+toMacLaurin (Poly as) = toMacLaurin1 as 0 1 where
+  toMacLaurin1 (a:as)  n factn  =  (a * factn) : (toMacLaurin1 as (n + 1) (factn * (n + 1)))
+  toMacLaurin1 []      n factn  =  []
 
 -- remember that |x = Poly [0,1]|
 ex3,ex4 :: Taylor Double
-ex3 = derivs (x^3 + 2 * x)
-ex4 = derivs sinx
+ex3 = toMacLaurin (x^3 + 2 * x)
+ex4 = toMacLaurin sinx
 \end{code}
 
 In this way, we can compute all the derivatives at |0| for all
@@ -324,7 +324,7 @@ In order to compute the values of
 for |a /= 0|, we compute
 
 \begin{code}
-ida a = (derivs (evalP (X :+: Const a)))
+ida a = (toMacLaurin (evalP (X :+: Const a)))
 \end{code}
 
 More generally, if we want to compute the derivative of a function |f|
@@ -332,7 +332,7 @@ constructed with |FunExp| grammar, at a point |a|, we can use the power
 series of |g x = f (x + a)|:
 
 \begin{code}
-d f a = takePoly 10 (derivs (evalP (f (X :+: Const a))))
+d f a = takePoly 10 (toMacLaurin (evalP (f (X :+: Const a))))
 \end{code}
 
 Use, for example, our |f x = sin x + 2 * x| above.
@@ -340,13 +340,11 @@ Use, for example, our |f x = sin x + 2 * x| above.
 As before, we can use directly power series:
 
 \begin{code}
-dP f a = (derivs (f (idx + Poly [a])))
+dP f a = (toMacLaurin (f (idx + Poly [a])))
 \end{code}
-
 
 \section{Derivatives and Integral for Maclaurin series}
 
-(See also \citet{Pavlovic:1998:CCF:788020.788885})
 
 Since the Maclaurin series represents |[f(0), f'(0), f''(0), ...]|, it
 is clear that taking the tail of the list is equivalent to taking the
@@ -386,36 +384,24 @@ that our definition of integ is exactly that needed to satisfy
 calculus needs.
 
 
-\section{Derivatives and Integral for Formal power series}
-\label{sec:formal-power-series}
+\section{Integral for Formal Power series}
+\label{sec:integral-power-series}
 
-In \cref{sec:poly-formal-derivative-1} we \emph{already} arrived at a
-definition of derivatives for infinite lists:\jp{Why the duplication?}
+In \cref{sec:poly-formal-derivative-1} we found a definition of
+derivatives for formal power series (which we can also divide, as well
+as add and multiply):
 \begin{spec}
-deriv :: Ring a => Poly a -> Poly a
-deriv (Poly [])   =  Poly []
+deriv :: Ring a => PowerSeries a -> PowerSeries a
+deriv (Poly [])      =  Poly []
 deriv (Poly (a:as))  =  Poly (deriv' as 1)
   where  deriv' []      n  =  []
          deriv' (a:as)  n  =  (n * a) : (deriv' as (n+1))
 \end{spec}
 
-As we mentioned above, the Haskell list type contains both finite and
-infinite lists, and the same holds for the type |Poly| that we
-designed as ``syntax'' for polynomials. Thus we can reuse that type
-also as ``syntax for power series'': potentially infinite
-``polynomials''. So the infiniteness is not a relevant difference.
-%
+With our insight regarding Taylor series, we can now see that |deriv =
+fromMacLaurin . tail . toMacLaurin|.  We can apply the same recipe to
+obtain integration for power series:
 
-%
-\begin{spec}
-type PowerSeries a = Poly a -- finite and infinite non-empty lists
-\end{spec}
-%
-Now we can divide, as well as add and multiply.
-
-We can also integrate:
-%
-%TODO: Perhaps swap the order of arguments to |integ| to match the order of |Cons|. Or remove that argument and just use |a0 +| in combination with a 1-arg. |integ|.
 \begin{code}
 integ  ::  Field a => a -> PowerSeries a -> PowerSeries a
 integ  a0 (Poly as)  =  Poly (a0:(integ' as 1))
@@ -423,14 +409,15 @@ integ  a0 (Poly as)  =  Poly (a0:(integ' as 1))
          integ' (a:as)  n  =  (a / n) : (integ' as (n+1))
 \end{code}
 %
-Note that |a0| is the constant that we need due to indefinite integration.
+Remember that |a0| is the constant that we need due to indefinite integration.
 %
 
 These operations work on the type |PowerSeries a| which we can see as
 the syntax of power series, often called ``formal power series''.
 %
 The intended semantics of a formal power series |a| is, as we saw in
-Chapter~\ref{sec:poly}, an infinite sum
+Chapter~\ref{sec:poly}, an infinite sum\jp{Probably the following should go in \cref{sec:power-series}, nothing about derivatives here.
+}
 %
 \begin{spec}
 eval a : REAL -> REAL

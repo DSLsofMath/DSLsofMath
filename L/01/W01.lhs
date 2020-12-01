@@ -590,7 +590,7 @@ data Either p q = Left p | Right q
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
 As preparation for the language of sequences and limits
-later (\cref{par:LimitOfSequence,sec:formal-power-series}), we spend a few lines on the notation and abstract
+later (\cref{par:LimitOfSequence,sec:power-series}), we spend a few lines on the notation and abstract
 syntax of sequences.
 
 In math textbooks, the following notation is commonly in use: $\left\{ a_i \right\}_{i=0}^{\infty}$ or

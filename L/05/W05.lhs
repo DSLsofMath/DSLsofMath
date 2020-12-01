@@ -526,7 +526,7 @@ Check all the Monoid and homomorphism properties.
 \end{exercise}
 
 \section{Power Series}
-
+\label{sec:power-series}
 Consider the following (false) proposition:
 
 \begin{proposition}
