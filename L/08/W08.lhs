@@ -99,7 +99,11 @@ terms as z = terms1 as z 0  where
 
 We obtain
 
-\jp{Why not use taylor series? It would be much easier to write and read. But first, properly include Taylor.hs in \cref{sec:deriv}}
+\jp{Why not use taylor series? It would be much easier to write and read.
+    This can very nearly be done with:
+    |toMaclaurin (evalP (Exp (ComplexConst (0 :+ 1) * X)))|
+    Unfortunately Exp does not support complex constants yet.
+   }
 \begin{code}
 ex2   ::  Field a => PowerSeries (Complex a)
 ex2    =  takePoly 10 (terms expx i)
