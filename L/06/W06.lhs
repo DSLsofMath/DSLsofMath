@@ -20,10 +20,7 @@ in particular that we can give a numeric (|Field|, etc.) structure to
 not only functions, but also to pairs of functions and their
 derivatives (|Field x => Field (a -> x, a -> x)|). But why stop there?
 Why not compute a (lazy) list of a function together with its
-derivative, second derivative, etc.\footnote{The \emph{cognoscenti}
-  will notice now the similarity with Taylor series
-  (\label{sec:taylor-series}) ---but here we have a list of functions,
-  not of coefficients.}  :
+derivative, second derivative, etc.:
 %
 \begin{spec}
 [f, f', f'', ...] :: [a -> a]
@@ -35,6 +32,7 @@ variable $x$) as a function, and all its derivatives. We can write
 this evaluation as an explicit function:
 %
 \begin{code}
+evalAll :: Transcendental a => FunExp -> [a -> a]
 evalAll e = (evalFunExp e) : evalAll (derive e)
 \end{code}
 %
@@ -121,7 +119,7 @@ The remaining part is then
     help a b (evalAll (d e1)) (evalAll (d e2))
 \end{spec}
 
-Informally, we can refer to (co-)induction\jp{co-inductin is not a
+Informally, we can refer to (co-)induction\jp{co-induction is not a
   concept which can be assumed to be known at an informal level (since
   we define lots of other simpler things much more precisely.)} at
 this point and rewrite |evalAll (d e1 :*: e2)| to |evalAll (d e1) *
@@ -152,6 +150,7 @@ help a b as bs = as * (b : bs) + (a : as) * bs
 Thus, we can eliminate |help| to arrive at a definition for multiplication:
 %
 \begin{code}
+mulStream :: Ring a => Stream a -> Stream a -> Stream a
 mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 \end{code}
 \footnote{This expression is reminiscent of polynomial multiplication
@@ -164,14 +163,14 @@ definitions apply to any infinite list of |Ring a|, which, for a lack of more sp
 \begin{code}
 type Stream a = [a]
 instance Additive a => Additive (Stream a) where
+  zero = repeat zero
   (+) = addStream
 instance Ring a => Multiplicative (Stream a) where
+  one = 1 : zero
   (*) = mulStream
 
 addStream :: Additive a => Stream a -> Stream a -> Stream a
 addStream (a : as)  (b : bs)  =  (a + b)  :  (as + bs)
-
-mulStream :: Ring a => Stream a -> Stream a -> Stream a
 \end{code}
 
 \begin{exercise}
@@ -213,10 +212,10 @@ drvList k f x = undefined    -- |k|th derivative of |f| at |x|
 \section{Taylor series}
 \label{sec:taylor-series}
 
-We have arrived at the instances for |Stream| by reasoning on list of
-functions. But everywhere that we needed to manipulate functions, we
-ended up using their numerical operations (assuming instances such as
-|Ring (x -> a)|.) So, the |Stream| instances hold for any numeric type
+We have arrived at the instances for |Stream| by reasoning on lists of
+functions. But everywhere we needed to manipulate functions, we
+ended up using their numerical structure directly (assuming instances such as
+|Ring (x -> a)|, rather than treating them at functions) So, the |Stream| instances hold for \emph{any} numeric type
 |a|. Effectively, we have used implicitly the |apply| homomorphism, as
 we did in \cref{sec:applyFD}. So we can view |Stream a| as series of
 higher-order derivatives applied to the same point |a|:
@@ -225,7 +224,7 @@ higher-order derivatives applied to the same point |a|:
 [f(a), f'(a), f''(a), ...]
 \end{spec}
 
-Assume that |f| is a power series of coefficients (|ai|):
+Assume now that |f| is a power series of coefficients (|ai|):
 
 |f = eval [a0, a1, ..., an, ...]|
 
@@ -256,7 +255,7 @@ Therefore
 
 That is, there is a simple mapping between the representation of |f|
 as a power series (the coefficients |a_k|), and the value of all
-derivatives of |f| at |0|.
+derivatives of |f| at |0|. 
 
 The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
 called the Taylor series centred in |0|, or the Maclaurin series.
@@ -265,22 +264,31 @@ type Taylor a = Stream a
 \end{code}
 
 
-We can perform the above mapping (from a power series to the maclaurin
+We can perform the above mapping (between a power series to the maclaurin
 series) efficiently as follows:
 
 \begin{code}
-toMacLaurin :: Ring a => PowerSeries a -> Taylor a
-toMacLaurin (Poly as) = toMacLaurin1 as 0 1 where
-  toMacLaurin1 (a:as)  n factn  =  (a * factn) : (toMacLaurin1 as (n + 1) (factn * (n + 1)))
-  toMacLaurin1 []      n factn  =  []
+toMaclaurin :: Ring a => PowerSeries a -> Taylor a
+toMaclaurin (Poly as) = zipWith (*) as factorials
+
+fromMaclaurin :: Field a => Taylor a -> PowerSeries a
+fromMaclaurin as = Poly (zipWith (/) as factorials)
+
+-- List of all factorials (starting from 0)
+factorials :: Ring a => [a]
+factorials = factorialsFrom 0 1
+  where factorialsFrom n factn = factn : factorialsFrom (n+1) (factn * (n + 1))
+
 
 -- remember that |x = Poly [0,1]|
 ex3,ex4 :: Taylor Double
-ex3 = toMacLaurin (x^3 + 2 * x)
-ex4 = toMacLaurin sinx
+ex3 = toMaclaurin (x^3 + 2 * x)
+ex4 = toMaclaurin sinx
 \end{code}
 
-In this way, we can compute all the derivatives at |0| for all
+This means that the |Taylor| type, interpreted as a Maclaurin series, can work as an alternative representation for power series (and in certain cases it can be a better choice computationally).
+
+Regardless, we can see |toMaclaurin| as a way to compute all the derivatives at |0| for all
 functions |f| constructed with the grammar of |FunExp|.
 %
 That is because, as we have seen, we can represent all of them by
@@ -327,7 +335,7 @@ In order to compute the values of
 for |a /= 0|, we compute
 
 \begin{code}
-ida a = (toMacLaurin (evalP (X :+: Const a)))
+ida a = (toMaclaurin (evalP (X :+: Const a)))
 \end{code}
 
 More generally, if we want to compute the derivatives of a function |f|
@@ -335,7 +343,7 @@ constructed with |FunExp| grammar, at a point |a|, we can use the power
 series of |g x = f (x + a)| (we additionally restrict ourselves to the first 10 derivatives):
 
 \begin{code}
-d f a = take 10 (toMacLaurin (evalP (f (X :+: Const a))))
+d f a = take 10 (toMaclaurin (evalP (f (X :+: Const a))))
 \end{code}
 
 Use, for example, our |f x = sin x + 2 * x| above.
@@ -343,19 +351,20 @@ Use, for example, our |f x = sin x + 2 * x| above.
 As before, we can use power series directly to construct the input:
 
 \begin{code}
-dP f a = toMacLaurin (f (idx + Poly [a]))
+dP f a = toMaclaurin (f (idx + Poly [a]))
 \end{code}
 
 \section{Derivatives and Integral for Maclaurin series}
 
-
 Since the Maclaurin series represents |[f(0), f'(0), f''(0), ...]|, it
-is clear that taking the tail of the list is equivalent to taking the
+the tail of the list is equivalent to taking the
 derivative of |f|.
 
-Another way to see this is that, we started with the equation |evalAll
-. derive = tail . evalAll|; but now our input represention is Taylor
-series so, |evalAll = id|, and |derive = tail|.
+To see that one can substitute |f| by |f'| in the above. Another way
+to see it is to remarks that we started with the equation |evalAll
+. derive = tail . evalAll|; but now our input represention is
+\emph{already} a Maclaurin series so |evalAll = id|, and in turn
+|derive = tail|.
 
 In sum:
 \begin{spec}
@@ -383,8 +392,8 @@ or, in traditional notation:
 \]
 
 ... which is the fundamental theorem of calculus.  In sum, we find
-that our definition of integ is exactly that needed to satisfy
-calculus needs.
+that our definition of |integ| is exactly that needed to comply with
+calculus laws.
 
 
 \section{Integral for Formal Power series}
@@ -402,7 +411,7 @@ deriv (Poly (a:as))  =  Poly (deriv' as 1)
 \end{spec}
 
 With our insight regarding Taylor series, we can now see that |deriv =
-fromMacLaurin . tail . toMacLaurin|.  We can apply the same recipe to
+fromMaclaurin . tail . toMaclaurin|.  We can apply the same recipe to
 obtain integration for power series:
 
 \begin{code}
