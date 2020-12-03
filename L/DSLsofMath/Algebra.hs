@@ -33,7 +33,7 @@ times n0 = if n0 < 0 then Prelude.error "Algebra.Classes.times: negative number 
 
 
 (-) :: AddGroup a => a -> a -> a
-x - y           =  x - negate y
+x - y           =  x + negate y
 
 class Additive a => AddGroup a where
   negate :: a -> a
@@ -185,4 +185,3 @@ neg = negate   -- |neg| is used to typeset unary minus as a shorter dash, closer
 
 frac :: MulGroup a => a -> a -> a
 frac = (/)     -- |frac| is used to typeset a fraction (more compactly than |x / y|)
-
