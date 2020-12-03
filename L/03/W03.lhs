@@ -1180,13 +1180,19 @@ typecheck.
 \label{sec:overloaded-integer-literals}
 We will spend some time explaining a convenient Haskell-specific
 syntactic shorthand which is very useful but which can be confusing:
-overloaded integers.  In Haskell, every use of an integer literal like
-|2|, |1738|, etc., is actually implicitly an application of
-|fromInteger| to the literal typed as an |Integer|.
+overloaded integers.
+%
+In Haskell, every use of an integer literal like |2|, |1738|, etc., is
+actually implicitly an application of |fromInteger| to the literal
+typed as an |Integer|.
 
-But what is |fromInteger|? It is a function that maps every value and
-operator in the numeric classes to an arbitrary type |a| in those
-classes. We can implement it as follows:
+But what is |fromInteger|?
+%
+\pj{?what does ``every value and operator'' mean here?}
+It is a function that maps every value and operator in the numeric
+classes to an arbitrary type |a| in those classes.
+%
+We can implement it as follows:
 \begin{code}
 fromInteger :: (AddGroup a, Multiplicative a) => Integer -> a
 fromInteger n  | n < 0      = negate (fromInteger (negate n))
@@ -1266,8 +1272,8 @@ are related to DSLs.
 
 As an example, consider again the DSL of expressions of one variables.
 %
-We saw that such expressions can be represented by the shallow
-embedding |REAL -> REAL|.
+We saw that such expressions can be represented by the type |REAL ->
+REAL| in the shallow embedding.
 %
 Using type classes, we can use the usual operators names instead of
 |evalPlus|, |evalTimes|, etc.
@@ -1282,7 +1288,7 @@ instance Additive (REAL -> REAL) where
 The instance declaration of the method |zero| above looks recursive,
 but is not: |zero| is used at a different type on the left- and
 right-hand-side of the equal sign, and thus refers to two different
-functions.
+definitions.
 %
 One the left-hand-side we define |zero :: REAL -> REAL|, while on the
 right-hand-side we use |zero :: REAL|.
@@ -1319,21 +1325,27 @@ instance Transcendental a => Transcendental (x -> a) where
 \end{spec}
 
 Here we extend our set of type-classes to cover algebraic and
-transcendental numbers.  Together, these type classes represent an
-abstract language of abstract and standard operations, abstract in
-the sense that the exact nature of the elements involved is not
-important from the point of view of the type class, only from that of
-its implementation. What does matter for the class (but is not
-captured in the Haskell definition of the class), is the relationship
-between various operations (for example addition should distribute
-over multiplication).
+transcendental numbers.
+%
+Together, these type classes represent an abstract language of
+abstract and standard operations, abstract in the sense that the exact
+nature of the elements involved is not important from the point of
+view of the type class, only from that of its implementation.
+%
+What does matter for the class (but is not captured in the Haskell
+definition of the class), is the relationship between various
+operations (for example addition should distribute over
+multiplication).
 
 These instances for functions allow us to write expressions which are
-very commonly used in math books, such as |f+g| for the sum of two functions |f|
-and |g|, say |sin + cos :: Double -> Double|. Somewhat less common
-notations, like |sq * double :: Integer -> Integer| are also
-possible. They have a consistent meaning: the same argument is passed
-to all functions in an expression.
+very commonly used in math books, such as |f+g| for the sum of two
+functions |f| and |g|, say |sin + cos :: Double -> Double|.
+%
+Somewhat less common notations, like |sq * double :: Integer ->
+Integer| are also possible.
+%
+They have a consistent meaning: the same argument is passed to all
+functions in an expression.
 %
 As another example, we can write |sin^2|, which the above instance
 assigns the following meaning:
@@ -1358,13 +1370,15 @@ With that reading \(sin^2\) would mean |\x->sin (sin x)|.)
 
 Something which may not be immediately obvious, but is nonetheless
 useful, is that all the above instances are of the form |C a => C (x
--> a)| and are therefore parametric. This means that, for example,
-given the instance |Additive a => Additive (x -> a)| and the intstance
-|Additive REAL|, we have that the types |a->REAL|, |a->(b->REAL)|,
-etc. are all instances of |Additive|. Consequently, we can use the
-usual mathematical operators for functions taking any number of
-arguments --- provided that they match in number and types.
-
+-> a)| and are therefore parametric.
+%
+This means that, for example, given the instance |Additive a =>
+Additive (x -> a)| and the instance |Additive REAL|, we have that the
+types |a->REAL|, |a->(b->REAL)|, etc. are all instances of |Additive|.
+%
+Consequently, we can use the usual mathematical operators for
+functions taking any number of arguments --- provided that they match
+in number and types.
 
 \section{Computing derivatives}
 \label{sec:computingDerivatives}
@@ -1378,9 +1392,12 @@ arguments --- provided that they match in number and types.
 %   compositionality for the next chapter.
 
 An important part of calculus is the collection of laws, or rules, for
-computing derivatives. They are provided by \citet{adams2010calculus}
-as a series of theorems, starting at page 108 of their book. We we
-can summarize those as follows:
+computing derivatives.
+%
+They are provided by \citet{adams2010calculus} as a series of
+theorems, starting at page 108 of their book.
+%
+We we can summarize those as follows:
 \begin{align*}
   (f + g)'(x)  &=   f'(x) + g'(x)            \\
   (f * g)'(x)  &=   f'(x)*g(x) + f(x)*g'(x)  \\
@@ -1413,30 +1430,31 @@ and so on.
 %
 
 If we want to get a bit closer to actually implementing |D| we quickly
-notice a problem: if |D| has type |(REAL -> REAL) -> (REAL -> REAL)|,
-we have no way to turn the above specification into a program, because
-the program has no way of telling which of these rules should
-be applied.
+notice a problem:
+%
+if |D| has type |(REAL -> REAL) -> (REAL -> REAL)|, we have no way to
+turn the above specification into a program, because the program has
+no way of telling which of these rules should be applied.
 %
 That is, given an extensional (semantic, shallow) function |f|, the
 only thing that we can ever do is to evaluate |f| at given points, and
 thus we cannot know if this function was written using a |+|, or |sin|
 or |exp| as outermost operation.
 %
-The only thing that a derivative operator could do would be to numerically approximate the
-derivative, and that is not what we are exploring in this course.
+The only thing that a derivative operator could do would be to
+numerically approximate the derivative, and that is not what we are
+exploring in this \course{}.
 %
 Thus we need to take a step back and change the type that we work on.
 %
 Even though the rules in the table are obtained by reasoning
 semantically, using the definition of limit for functions (of type |ℝ
 → ℝ|), they are really intended to be used on \emph{syntactic}
-functions: abstract syntax trees \emph{representing} the (semantic)
-functions.
+functions or expressions: abstract syntax trees \emph{representing}
+the (semantic) functions.
 
-We observe that we can compute derivatives for any expression made
-out of arithmetical functions, standard functions, and their
-compositions.
+We observe that we can compute derivatives for any expression made out
+of arithmetical functions, standard functions, and their compositions.
 %
 In other words, the computation of derivatives is based on a domain
 specific language (a DSL) of expressions (representing functions in
@@ -1449,7 +1467,7 @@ this implementation may seem obvious, but we will go through the steps
 as a way to show the process in a simple case.
 
 \label{sec:derive}
-Our goal is want to implement a function |derive :: FunExp -> FunExp| which
+Our goal is to implement a function |derive :: FunExp -> FunExp| which
 makes the following diagram commute:
 
 \quad%
