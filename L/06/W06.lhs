@@ -255,7 +255,7 @@ Therefore
 
 That is, there is a simple mapping between the representation of |f|
 as a power series (the coefficients |a_k|), and the value of all
-derivatives of |f| at |0|. 
+derivatives of |f| at |0|.
 
 The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
 called the Taylor series centred in |0|, or the Maclaurin series.
@@ -295,7 +295,7 @@ That is because, as we have seen, we can represent all of them by
 power series!
 
 What if we want the value of the derivatives at some other point |a|
-(different form zero)?
+(different from zero)?
 
 We then need the power series of the ``shifted'' function g:
 
@@ -356,9 +356,8 @@ dP f a = toMaclaurin (f (idx + Poly [a]))
 
 \section{Derivatives and Integral for Maclaurin series}
 
-Since the Maclaurin series represents |[f(0), f'(0), f''(0), ...]|, it
-the tail of the list is equivalent to taking the
-derivative of |f|.
+Since the Maclaurin series represents |[f(0), f'(0), f''(0), ...]|,
+ the tail of the list is equivalent to the derivative of |f|.
 
 To see that one can substitute |f| by |f'| in the above. Another way
 to see it is to remarks that we started with the equation |evalAll
@@ -515,7 +514,7 @@ solve :: Field a => a -> (PowerSeries a -> PowerSeries a) -> PowerSeries a
 solve f0 g = f              -- solves |f' = g f|, |f 0 = f0|
   where f = integ f0 (g f)
 \end{code}
-On the face of it, the solution |f| appears not well defined, because its definition depends on itself. 
+On the face of it, the solution |f| appears not well defined, because its definition depends on itself.
 %
 We come back to this point soon, but first we observe |solve| in action on simple instances of |g|,
 starting with |const 1| and |id|:
