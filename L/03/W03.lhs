@@ -1,5 +1,6 @@
 \chapter{Types in Mathematics}
 \label{sec:types}
+%if False
 \begin{code}
 {-# LANGUAGE FlexibleInstances, PartialTypeSignatures #-}
 module DSLsofMath.W03 where
@@ -12,11 +13,12 @@ type ℤ = Int
 powTo n = (^n)
 powTo' = powTo . fromIntegral
 \end{code}
+%endif
 %
 % (Based on ../../2016/Lectures/Lecture05 )
 % Show "Functional Differential Geometry" p16: Lagrange_example.pdf
 
-\section{Types of functions, expressions and big operators}
+\section{Types of functions, expressions and operators}
 \label{sec:functions-and-scoping}
 \paragraph{Examples of types in mathematics}
 
@@ -35,11 +37,12 @@ sight that the summing operator ($\sum$) should be assigned a type at
 all! Yet this is exactly what we will set out to do, dealing with a
 dangerous pitfall of mathematical notation
 (\cref{sec:scoping-pitfall}). However, to be able to do so
-convincingly we shall clarify the relationship between functions and
-expressions first.
+convincingly we shall first clarify the relationship between functions and
+expressions.
 
 \subsection{Expressions and functions of one variable}
 \label{sec:expressions-of-one-var}
+Consider the following examples of function definitions:
 \begin{itemize}
 \item $f(x) = x - 1$
 \item $g(x) = 2*x^2 + 3$
@@ -47,26 +50,36 @@ expressions first.
 \end{itemize}
 
 As the reader may guess by now, we can assign to |f|, |g|, |h| the
-type |ℝ -> ℝ|. But other choices could work, such as |ℤ -> ℤ|,
-etc. For sure, they are functions. Additionally, the name of the
-variable appears to play no role in the meaning of the functions, and
-we can say, for example, |g = h|.
+type |ℝ -> ℝ|.
+%
+Other choices could work, such as |ℤ -> ℤ|, etc., but for sure, they
+are functions.
+%
+Additionally, the name of the variable appears to play no role in the
+meaning of the functions, and we can say, for example, |g = h|.
 
-Consider now:
+Consider now the three expressions:
 \begin{itemize}
-\item $x - 1$
-\item $2*x^2 + 3$
-\item $2*y^2 + 3$
+\item |e1 = x - 1|
+\item |e2 = 2*{-"x^2"-} + 3|
+\item |e3 = 2*{-"y^2"-} + 3|
 \end{itemize}
-
-These are all expressions of one (free) variable. We could say that
-they type is ℝ --- but this is assuming that the free variable also
-has type ℝ. Furthermore, it is less clear now if |2*x + 3 = 2*y +
-3|. In general one cannot simply change a variable name by another
-without making sure that 1. the renaming is applied everywhere
-uniformly and 2. the new variable name is not used for another purpose
-in the same scope (otherwise one informally says that there is a
-``clash'').
+%
+These are all expressions of one (free) variable.
+%
+We could say that their type is ℝ --- assuming that the free variable
+also has type ℝ.
+%
+%format =?= = "\mathbin{\stackrel{?}{=}}"
+Furthermore, it is less clear now if |e2 = 2*x + 3 =?= 2*y + 3 = e3|.
+%
+In general one cannot simply change a variable name by another without
+making sure that
+%
+1. the renaming is applied everywhere uniformly and
+%
+2. the new variable name is not used for another purpose in the same
+scope (otherwise one informally says that there is a ``clash'').
 
 To clarify this situation, we will now formalise expressions of one
 variables as a DSL. For simplicity we will focus on arithmetic
@@ -75,6 +88,7 @@ multiplication and constants, as in \cref{sec:complex-arithmetic}.
 Additionally, we have the all-important constructor for variables,
 which we will call |X| here. We can implement all this in a datatype
 as follows:\jp{Rename FunExp -> Exp1V or similar?}
+
 \subsubsection{Deep embedding}
 \label{sec:FunExp}
 \begin{code}
@@ -87,16 +101,19 @@ data FunExp  =  Const REAL
 
 We could encode our examples as follows:
 \begin{itemize}
-\item |X :+: Const (-1)|
-\item |Const 2 :*: (X :*: X)  :+: Const 3|
+\item |e1 = X :+: Const (-1)|
+\item |e2 = Const 2 :*: (X :*: X)  :+: Const 3|
 \end{itemize}
 We no longer have a third example: we can only ever represent one
 variable, as |X|, and thus we skip the last example, equal to the second.
 
-We can now evaluate the value of these expressions. The meaning of
-operators and constants is as in \cref{sec:complex-arithmetic}. But,
-to be able to evaluate |X|, the variable, we need its value --- and we
-simply take it as a parameter.
+We can now evaluate the value of these expressions.
+%
+The meaning of operators and constants is as in
+\cref{sec:complex-arithmetic}.
+%
+But, to be able to evaluate |X|, the variable, we need its value ---
+and we simply take it as a parameter.
 \begin{code}
 eval  ::  FunExp         ->  REAL  -> REAL
 eval      (Const alpha)      x     = alpha
@@ -131,14 +148,14 @@ type FunExpS = REAL -> REAL
 \end{code}
 
 Then we can define the operators directly on functions, as follows:
-
+%
 \begin{spec}
 funConst alpha   = \x -> alpha
 funX             = \x -> x
 funPlus   f g    = \x -> f x  +  g x
 funTimes  f g    = \x -> f x  *  g x
 \end{spec}
-
+%
 Again, we have two possible intuitive readings of the above
 equations.
 %
@@ -249,8 +266,7 @@ Doing so allows us to
 1. use lambda notation to bind (and name) the variable name of the
 summation however we wish (in this case |i| and |j|) and
 %
-2. we can freely use any haskell function of type |ℤ → ℝ| as the
-summand.
+2. freely use any haskell function of type |ℤ → ℝ| as the summand.
 %
 In particular, this function can be any lambda-expression returning
 |ℝ|, and this expression can include summation itself.
@@ -269,7 +285,8 @@ kind of reasoning to other big operators, and obtain the following
 typings:
 
 \begin{itemize}
-\item |lim : (ℕ → ℝ) → ℝ| for \(lim_{n → ∞} \{a_n\}\)
+\item |lim : (ℕ → ℝ) → ℝ| for \(\lim_{n → ∞} \{a_n\}\)
+\pj{It is a bit confusing with the ``for'' in the middle and the expression for |lim a| }
 \item \(d/dt : (ℝ → ℝ) → (ℝ → ℝ)\)
   \begin{itemize}
   \item sometimes, instead of \(df/dt\) one sees \(f'\) or \(\dot{f}\) or |D f|
@@ -292,7 +309,8 @@ Therefore the limit operator has a higher order type.
 %
 A similar line of reasoning justifies the types of derivatives.
 %
-We study in detail how these play out first.
+We return to derivatives after a section about multi-variable expressions.
+%study in detail how these play out first.
 
 \section{Detour: expressions of several variables}
 \label{sec:multiple-variables}
@@ -340,8 +358,9 @@ data AE' = V' String | AE' :+ AE' | AE' :* AE'
 
 Example values are then |y = V' "y"|, |e1 = y :+ y| and |e2 = x :* e1|.
 
-Finally, you can add one or more type parameters to make a whole family
-of datatypes in one go:\jp{move this kind of consideration much earlier. Haskell primer?}
+Finally, you can add one or more type parameters to make a whole
+family of datatypes in one go:\jp{move this kind of consideration much
+  earlier. Haskell primer?}
 
 \begin{code}
 data AE' v = V' v | AE' v :+ AE' v | AE' v :* AE' v
@@ -379,9 +398,9 @@ Hence, the semantics of |AE| is a function of type |Env String Integer
 %**TODO explain more for those not used to Haskell
 \begin{code}
 evalAE :: AE -> (Env String Integer -> Maybe Integer)
-evalAE (V x)     env  =  evalEnv env x
-evalAE (P e1 e2) env  =  mayP  (evalAE e1 env)  (evalAE e2 env)
-evalAE (T e1 e2) env  =  mayT  (evalAE e1 env)  (evalAE e2 env)
+evalAE (V x)      env   =  evalEnv env x
+evalAE (P e1 e2)  env   =  mayP  (evalAE e1 env)  (evalAE e2 env)
+evalAE (T e1 e2)  env   =  mayT  (evalAE e1 env)  (evalAE e2 env)
 
 mayP :: Maybe Integer -> Maybe Integer -> Maybe Integer
 mayP (Just a) (Just b)  =  Just (a+b)
@@ -424,13 +443,12 @@ fun1 funMultiple env variable value = funMultiple ((variable,value):env)
 \end{code}
 
 \begin{exercise}
-  Assume a function |f| of 3 variables, named |"x"|,|"y"| and |"y"|,
+  Assume a function |f| of 3 variables, named |"x"|, |"y"| and |"y"|,
   and given the type |Env String REAL -> REAL|.
   %
   Turn it into a function |g| of type |REAL -> REAL -> REAL -> REAL|
   with the same intended meaning.
 \end{exercise}
-
 \jp{Talk some about variable capture?}
 
 %*TODO: Perhaps add simple exercises on renaming and variable capture
@@ -438,8 +456,8 @@ fun1 funMultiple env variable value = funMultiple ((variable,value):env)
 \section{Typing Mathematics: derivative of a function}
 \label{sec:typeDerivative}
 
-Let's start with the classical definition of the derivative
-of \citet{adams2010calculus}:
+Consider the classical definition of the derivative of
+\citet{adams2010calculus}:
 %
 \begin{quote}
   The \textbf{derivative} of a function |f| is another function |f'| defined by
@@ -502,6 +520,7 @@ definition that can come in handy:
 %
 |D f = limAt 0 . psi f|.}
 \jp{But in chapter 2 lim was a predicate? Check.}
+\pj{Perhaps also make |limAt| the name and arg. order from the start.}
 The key here is that we name, type, and specify the operation of
 computing the derivative (of a one-argument function).
 %
@@ -538,11 +557,11 @@ We will get get back to this question in \refSec{sec:computingDerivatives}.
 Armed with our knowledge of functions of more than one variable, we
 can continue on our quest to type the elements of mathematical
 textbook definitions.
-
 %
 Our example here is by
 \citet[page~169]{maclane1986mathematics}, where we read
 
+\pj{The math spacing in |f(x,y)| is a bit ugly (too large).}
 \begin{linenumbers}
 \begin{quote}
   [...] a function |z = f (x, y)| for all points |(x, y)| in some open
@@ -616,12 +635,16 @@ one we have discussed:
 \begin{spec}
 lim : (X -> ℝ) -> {p | p ∈ ℝ, Limp p X } -> ℝ
 \end{spec}
+\pj{If |lim| is changed to |limAt| this use also needs to swap arg. order.}
 
-On line 1, |z = f (x, y)| probably does not mean that we let |z| be a fixed value in |ℝ|,
-although the phrase ``the quantity |z|'' (on line 2) suggests this.
+On line 1, |z = f (x, y)| probably does not mean that we let |z| be a
+fixed value in |ℝ|, although the phrase ``the quantity |z|'' (on line
+2) suggests this.
 %
-Rather, a possible interpretation is that |z| is used to abbreviate the
-expression |f(x, y)|. That is, |z| stands for an expression which depends on |x| and |y|;
+Rather, a possible interpretation is that |z| is used to abbreviate
+the expression |f(x, y)|.
+%
+That is, |z| stands for an expression which depends on |x| and |y|;
 %
 thus, it can be enlightening to replace |z| with |f(x, y)| everywhere.
 %
@@ -1044,10 +1067,11 @@ beginning.
 \section{Type classes}
 \label{sec:typeclasses}
 
-One difficulty when reading mathematics (and applying them to
-programming) is \emph{overloading}. For our purposes, we say that a
-symbol is \emph{overloaded} when its meaning depends on the type of
-the expressions that it applies to.
+One difficulty when reading (and implementing) mathematics is
+\emph{overloading}.
+%
+For our purposes, we say that a symbol is \emph{overloaded} when its
+meaning depends on the type of the expressions that it applies to.
 
 Consider, for example, the operator |(+)|.
 %
@@ -1137,8 +1161,7 @@ from now on in favour |Additive| and |Multiplicative|.
   it and sketch an implementation.
 \end{exercise}
 \begin{solution}
-\pj{|Field| has not been introduced.}
-  One possibility is |(^) :: Field a => a -> Int -> a|.
+  One possibility is |(^) :: MulGroup a => a -> Int -> a|.
   %
   For positive exponents, one can use repeated multiplication.
   %
