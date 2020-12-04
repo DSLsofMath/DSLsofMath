@@ -3,15 +3,20 @@
 % based on ../../2016/Lectures/Lecture09.lhs
 \label{sec:CompSem}
 
+%if False
 \begin{code}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ConstraintKinds, RebindableSyntax #-}
 module DSLsofMath.W04 where
-import Prelude hiding (Monoid, even, Num(..), exp)
+import Prelude hiding (Monoid, even, Num(..), recip, exp)
 import DSLsofMath.FunExp hiding (eval)
 import DSLsofMath.Algebra
+import DSLsofMath.Derive (derive)
+-- import DSLsofMath.W03 (derive)
+type ℝ = REAL
 \end{code}
+%endif
 %
 
 Algebraic structures are fundamental to
@@ -1064,7 +1069,7 @@ generator set (|G|) to be the unit type.
 \begin{code}
 type G = ()
 instance Generate FunExp where
-  generate () = Id
+  generate () = X
 
 instance Additive FunExp where
   (+) = (:+:)
@@ -1251,11 +1256,14 @@ compositional.
 %
 This evaluation function for derivatives is given by composition as below:
 %
+%{
+%format DummyFunc = Func
 \begin{code}
-type Func = ℝ -> ℝ
+type DummyFunc = ℝ -> ℝ
 eval'  ::  FunExp -> Func
 eval'  =   eval . derive
 \end{code}
+%}
 In a diagram:
 \tikzcdset{diagrams={column sep = 2cm, row sep = 2cm}}
 \quad%
@@ -1308,7 +1316,7 @@ together.
 
 In practice, the solution is to extend the return type of |eval'| from one
 semantic value |f| of type |Func = REAL -> REAL| to two such values
-|(f, f') :: (Func, Func)| where |f' = D f|. 
+|(f, f') :: (Func, Func)| where |f' = D f|.
 %
 That is, we are using the ``tupling transform'': we are computing just
 one function |evalD :: FunExp -> (Func, Func)| returning a pair of |f|
@@ -1367,9 +1375,11 @@ classes.
 %
 \begin{code}
 instance Additive a => Additive (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
+  zero = (const zero, const zero)
   (f, f')  +  (g, g')  =  (f  +  g,  f'      +  g'      )
 
-instance Multiplicative a => Multiplicative (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
+instance (Additive a, Multiplicative a) => Multiplicative (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
+  one = (const one, const zero)
   (f, f')  *  (g, g')  =  (f  *  g,  f' * g  +  f * g'  )
 \end{code}
 %
@@ -1413,13 +1423,16 @@ Can we do something similar for |FD|?
 The elements of |FD a| are pairs of functions, so we can take
 %
 \label{sec:applyFD}
+%{
+%format DummyFD = FD
 \begin{code}
 type Dup a = (a, a)
-type FD a = (a -> a, a -> a)
+type DummyFD a = (a -> a, a -> a)
 
 applyFD ::  a ->  FD a          ->  Dup a
 applyFD     c     ((f, f'))  =   (f c, f' c)
 \end{code}
+%}
 
 We now have the domain of the homomorphism |(FD a)| and the
 homomorphism itself |(applyFD c)|, but we are missing the structure on
@@ -1463,11 +1476,11 @@ We can now define an instance
 \begin{code}
 instance Ring a => Multiplicative (Dup a) where
   (*) = (*?)
-  -- ... exercise
+  one = (one, one)
 \end{code}
 %
 \begin{exercise}
-Complete the instance declarations for |Dup REAL|.
+Complete the instance declarations for |Dup REAL|: |Additive|, |AddGroup|, etc.
 \end{exercise}
 
 

@@ -5,7 +5,9 @@
 {-# LANGUAGE FlexibleInstances, PartialTypeSignatures #-}
 module DSLsofMath.W03 where
 import Prelude hiding (Num(..),Fractional(..), Floating(..))
-import DSLsofMath.Algebra (Algebraic(..),Transcendental(..), (-))
+import DSLsofMath.Algebra (Algebraic(..),Transcendental(..),
+                           Additive(..),AddGroup(..),(-),
+                           Multiplicative(..))
 import DSLsofMath.W01 (Env, evalEnv)
 type REAL = Double
 type ℝ = REAL
@@ -1139,7 +1141,8 @@ classes, which together serve a similar role as |Num|, and which we
 study in more detail in \cref{sec:ring-like-classes}:
 
 \label{sec:numeric-classes}
-\begin{code}
+\pj{Make sure the code matches ../DSLsofMath/Algebra.hs.}
+\begin{spec}
 class Additive a where
   zero  :: a
   (+)   :: a -> a -> a
@@ -1150,7 +1153,8 @@ class Multiplicative a where
   (*)  :: a -> a -> a
 class Multiplicative a => MulGroup a where
   recip :: a -> a -- reciprocal
-\end{code}
+\end{spec}
+
 The operator names clash with the |Num| class, which we will avoid
 from now on in favour |Additive| and |Multiplicative|.
 

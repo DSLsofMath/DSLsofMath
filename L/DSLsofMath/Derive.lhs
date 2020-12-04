@@ -4,7 +4,7 @@
 
 > derive  ::  FunExp        ->  FunExp
 > derive      (Const alpha)  =  Const 0
-> derive      Id             =  Const 1
+> derive      X              =  Const 1
 > derive      (e1 :+: e2)    =  derive e1 :+: derive e2
 > derive      (e1 :*: e2)    =  (derive e1 :*: e2) :+: (e1 :*: derive e2)
 > derive      (Negate e)     =  Negate (derive e)
