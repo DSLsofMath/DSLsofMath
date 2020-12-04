@@ -81,8 +81,11 @@
   \fromExam{2016-Practice}
 
   Consider the following text from
-  \citeauthor{maclane1986mathematics}'s \textit{Mathematics: Form and
-    Function} (page 168):
+  \citeauthor{maclane1986mathematics}'s
+  \textit{Mathematics Form and Function}
+%\citetitle{maclane1986mathematics} %requires biblatex https://tex.stackexchange.com/questions/5091/what-to-do-to-switch-to-biblatex
+%\textit{Mathematics: Form and Function}
+(page 168):
 
   \begin{quote}
     If $z = g(y)$ and $y = h(x)$ are two functions with continuous
@@ -100,7 +103,7 @@
   \fromExam{2016-03-16}
 
     Consider the following text from
-    \citeauthor{maclane1986mathematics}'s \textit{Mathematics: Form
+    \citeauthor{maclane1986mathematics}'s \textit{Mathematics Form
     and Function} (page 182):
 
    \begin{quote}
@@ -130,8 +133,8 @@
   \textit{finite}, non-empty set $\Omega$ of \textit{elementary
     events}.
   %
-  \textit{Events} are subsets of $\Omega$, i.e. elements of the
-  powerset of $\Omega$, (that is, $\mathcal{P} \Omega$).
+  An \textit{event} is a subset of $\Omega$, i.e.\ an element of the
+  powerset of $\Omega$, (that is, $\mathcal{P}\,\Omega$).
   %
   A \textit{probability function} |P| associates to each event a real
   number between 0 and 1, such that
