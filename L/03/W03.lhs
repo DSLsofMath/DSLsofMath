@@ -1115,7 +1115,9 @@ which belongs to the |Eq| set. This is expressed in general by a
 constraint |Eq a| occuring before the |=>| symbol.
 
 Instance declarations can also be parameterised on another
-instance. Consider for example:
+instance.
+%
+Consider for example:
 \begin{spec}
 instance Eq a => Eq [a] where  (==) = ... -- exercise
 \end{spec}
@@ -1124,8 +1126,8 @@ In the above, the expression |Eq a => Eq [a]| means that for any type
 |a| which is already an instance of |Eq| we also make the type |[a]|
 an instance of Eq.
 %
-Thus, for example, by recursion we now have an infinite collection of instances of |Eq|: |Char|,
-|[Char]|, |[[Char]]|, etc.
+Thus, for example, by recursion we now have an infinite collection of
+instances of |Eq|: |Char|, |[Char]|, |[[Char]]|, etc.
 %
 
 \subsection{Numeric operations}

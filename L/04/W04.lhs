@@ -19,25 +19,26 @@ type ℝ = REAL
 %endif
 %
 
-Algebraic structures are fundamental to
-the structuralist point of view in mathematics, which emphasises relations
-between objects rather than the objects themselves and their
-representations.
+Algebraic structures are fundamental to the structuralist point of
+view in mathematics, which emphasises relations between objects rather
+than the objects themselves and their representations.
+%
 Furthermore, each mathematical domain has its own fundamental
 structures.
 %
-Once these structures have been identified, one tries to push their study as far
-as possible \emph{on their own terms}, without picking any particular
-representation (which may have richer structure than the one we want
-to study).
+Once these structures have been identified, one tries to push their
+study as far as possible \emph{on their own terms}, without picking
+any particular representation (which may have richer structure than
+the one we want to study).
 %
 For example, in group theory, one starts by exploring the consequences
 of just the group structure, rather than introducing any particular
-group (like integers) which have (among others) an order structure and monotonicity.
+group (like integers) which have (among others) an order structure and
+monotonicity.
 
 Furthermore, mappings or (translations) between such structures
 becomes an important topic of study.
-
+%
 When such mappings preserve the structure, they are called
 \emph{homomorphisms}.
 %
@@ -45,13 +46,13 @@ As two examples, we have the homomorphisms |exp| and |log|, specified
 as follows:
 %
 \begin{spec}
-  exp  :  REAL  ->  RPos
-  exp  0        =   1                 --  \(e^0 = 1\)
-  exp  (a + b)  =   exp a  *  exp b   --  \(e^{a+b} = e^a e^b\)
+  exp :  REAL     ->  RPos
+  exp    0        =   1                 --  \(e^0 = 1\)
+  exp    (a + b)  =   exp a  *  exp b   --  \(e^{a+b} = e^a e^b\)
 
-  log  :  RPos  ->  REAL
-  log  1        =   0                 -- \(\log 1 = 0\)
-  log  (a * b)  =   log a  +  log b   -- \(\log(ab) = \log a + \log b \)
+  log :  RPos     ->  REAL
+  log    1        =   0                 -- \(\log 1 = 0\)
+  log    (a * b)  =   log a  +  log b   -- \(\log(ab) = \log a + \log b \)
 \end{spec}
 %
 What we recognize as the familiar laws of exponentiation and
@@ -66,7 +67,6 @@ an evaluation function between them (the semantics).
 In this chapter we will explain the notions of algebraic struture and
 homomorphism in detail and show applications both in mathematics and
 DSLs in general.
-
 
 \section{Algebraic Structures}
 
@@ -95,13 +95,13 @@ class Monoid a where
     op    ::  a -> a -> a
 \end{code}
 %
-The laws cannot be obviously captured in the class, but can be
-formulated as the following equations:
+The laws cannot easily be captured in the class, but can be formulated
+as the following propositions:
 %
 \begin{spec}
   ∀ x : a? (unit `op` x == x  ∧  x `op` unit == x)
   ∀ x, y, z : a? (x `op` (y `op` z) == (x `op` y) `op` z)
-  \end{spec}
+\end{spec}
   The first law ensures that |unit| is indeed the unit of |op| and the
   second law is the familiar associativity law for |op|.
 \end{example}
@@ -109,22 +109,22 @@ formulated as the following equations:
 \begin{example}
   Examples of monoids include numbers with addition, |(REAL, 0, (+))|,
   positive numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
-  with composition |(a->a,id, (.))| .
+  with composition |(a->a,id, (.))|.
   %
-  (An ``endofunction'', also known as ``endomorphism'' is a function of type |X->X| for some set
-  |X|.)
+  (An ``endofunction'', also known as ``endomorphism'' is a function
+  of type |X->X| for some set |X|.)
   \label{ex:endofunction}
 \end{example}
 
 \begin{exercise}
-  Define the above monoids and check that the laws are satisfied.
+  Define the above monoids as type class instances and check that the
+  laws are satisfied.
 \end{exercise}
 
-
 \begin{example}
-To make this a bit more concrete, here are two examples of monoids in
-Haskell: the additive monoid |ANat| and the multiplicative monoid
-|MNat|.
+  To make this a bit more concrete, here are two examples of monoids
+  in Haskell: the additive monoid |ANat| and the multiplicative monoid
+  |MNat|.
 %
 %if False
 Included just for type-checking (it is really inefficient in practice).
@@ -166,10 +166,15 @@ possible monoids (additive or applicative) applies in a given context.
 %
 But, in mathematical texts the constructors |M| and |A| are usually
 omitted, and instead the names of the operations suggest which of the
-monoids one is referring to.  To be able to conform to that tradition
-we can define two separate classes, one for the additive and one for
-the multiplicative monoids, as follows.
+monoids one is referring to.
+%
+To be able to conform to that tradition we define two separate
+classes, one for the additive and one for the multiplicative monoids,
+as follows.
 \label{sec:ring-like-classes}
+\pj{Perhaps use two one-liners to see the matching structure?}
+% class Additive a        where  zero  :: a;   (+)  :: a -> a -> a
+% class Multiplicative a  where  one   :: a;   (*)  :: a -> a -> a
 \begin{spec}
 class Additive a where
   zero :: a
@@ -181,10 +186,12 @@ class Multiplicative a where
 \end{spec}
 This is what we have done in \cref{sec:numeric-classes}.
 
-\begin{example}{Groups and rings}
+\begin{example}\textbf{Groups and rings}
   Another important structure are groups, which are monoids augmented with an
-  inverse. To continue our mathematically-grounded |Num| replacement,
-  we have also defined the additive group as follows:
+  inverse.
+  %
+  To continue our mathematically-grounded |Num| replacement, we have
+  also defined the additive group as follows:
 
 \begin{spec}
 class Additive a => AddGroup a where
@@ -192,9 +199,12 @@ class Additive a => AddGroup a where
 \end{spec}
 
 Groups demand that the inverse (called |negate| for the additive
-group) act like an inverse. Namely, applying the operation to an
-element and its inverse should yield the unit of the group.  Thus, for
-the additive group, the laws look like this:
+group) act like an inverse.
+%
+Namely, applying the operation to an element and its inverse should
+yield the unit of the group.
+%
+Thus, for the additive group, the laws look like this:
 
 \begin{spec}
 negate a + a = zero
@@ -203,13 +213,15 @@ a + negate a = zero
 
 And thus we can define subtraction as
 \begin{spec}
+(-) :: AddGroup a => a -> a -> a
 a - b = a + negate b
 \end{spec}
 
-When the additive monoid is abelian (commutative) and
-addition distributes over multiplication, we have a |Ring|. As always
-we cannot conveniently specify laws in Haskell typeclasses and thus
-define |Ring| simply as the conjunction of |AddGroup| and
+When the additive monoid is abelian (commutative) and addition
+distributes over multiplication, we have a |Ring|.
+%
+As always we cannot conveniently specify laws in Haskell typeclasses
+and thus define |Ring| simply as the conjunction of |AddGroup| and
 |Multiplicative|:
 \begin{spec}
 type Ring a = (AddGroup a, Multiplicative a)
@@ -218,26 +230,34 @@ type Ring a = (AddGroup a, Multiplicative a)
 
 With that, we have completed the structural motivation of our
 replacement for the |Num| class! \jp{Show some instances?}
+\pj{Provide a comparison table / figure relating the operations of
+  |Num|, |Fractional|, etc. with those of |Additive|, etc.}
 
 We note right away that one can have a multiplicative group structure
 as well, whose inverse is called the reciprocal (traditionally
 abbreviated as |recip| in Haskell).
+%
+With that in place, division can be defined is terms of multiplication
+and reciprocal.
+\begin{joincode}%class Multiplicative is defined earlier
 \begin{spec}
 class Multiplicative a => MulGroup a where
   recip :: a -> a -- reciprocal
 \end{spec}
-And division can be defined is terms of multiplication and reciprocal:
 \begin{code}
+(/) :: MulGroup a => a -> a -> a
 a / b = a * recip b
 \end{code}
+\end{joincode}
 Often the multiplicative group is added to a |Ring|, and one has a |Field|:
 \label{sec:fields-defintion}
 \begin{code}
 type Field a = (Ring a, MulGroup a)
 \end{code}
-For fields, the reciprocal is not defined at |0|. We will not capture
-this precondition in types: it would cause too much notational
-awkwardness.
+For fields, the reciprocal is not defined at |0|.
+%
+We will not capture this precondition in types: it would cause too
+much notational awkwardness.
 
 \section{Homomorphisms}
 The Wikipedia definition of homomorphism states that ``A homomorphism
@@ -254,21 +274,23 @@ ternary predicate |H2|. The first argument |h|, is the map. The second
   H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
 \end{spec}
 %
-If |H2(h,Op,op)| holds, we say that |h : A -> B| is a homomorphism from |Op :
-A->A->A| to |op : B->B->B|.
+If the predicate |H2(h,Op,op)| holds, we say that |h : A -> B| is a
+homomorphism from |Op : A->A->A| to |op : B->B->B|.
 %
 Or that |h| is a homomorphism from |Op| to |op|.
 %
-Or even that |h| is a homomorphism from |A| to |B| if the
-operators are clear from the context.
+Or even that |h| is a homomorphism from |A| to |B| if the operators
+are clear from the context.
+%
 We have seen several examples in earlier chapters:
 %
 \begin{enumerate}
 \item in \refSec{sec:complexcase} we saw that |evalE : ComplexE ->
   ComplexD| is a homomorphism from the syntactic operator |Plus| to
   the corresponding semantic operator |plusD|.
-\item in \refSec{sec:logic} we saw de Morgan's laws which can be
-  stated as |H2(not,(&&),(||||))| and |H2(not,(||||),(&&))|.
+\item in \refSec{sec:logic} we saw de Morgan's laws, which says that
+  ``not'' (|not|) is a homomorphism in two ways: |H2(not,(&&),(||||))|
+  and |H2(not,(||||),(&&))|.
 \item in \refSec{sec:FunExp} we saw that |eval : FunExp -> Func| is a
   homomorphism from syntactic |(:*:)| to semantic |(*)| for functions
 \item
@@ -278,11 +300,11 @@ We have seen several examples in earlier chapters:
   from |(+)| to |(+)|: |H2((*c),(+),(+))|.
 \end{enumerate}
 
-To see how this last item plays out, it
-can be helpful to study the syntax trees of the left and right hand
-sides of the distributive law: |((a+b)*c = (a*c)+(b*c))|.
+To see how this last item plays out, it can be helpful to study the
+syntax trees of the left and right hand sides of the distributive law:
+|((a+b)*c = (a*c)+(b*c))|.
 %
-We observe that |(*c)| is ``pushed down'' to both |a| and |b|:
+We observe that the function |(*c)| is ``pushed down'' to both |a| and |b|:
 
 \tikzset{
   AbsSyn/.style={%
@@ -327,9 +349,12 @@ say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
 \end{quote}
 
 In our Haskell interpretation, the above would mean that we have
-|H2(h,op,op)| for every function |op| in a given class |C|. More
-precisely the first occurence of |op| comes from the |C A| instance
-and the second one from |C B|.
+|H2(h,fA,fB)| for every binary method |f| in a given class |C| and
+more generally |Hn(h,opA,opB)| for each operation |op| of arity |n|.
+%
+We can also use type class overloading to write |Hn(h,op,op)| where
+the first occurence of |op| comes from the |C A| instance and the
+second one from |C B|.
 
 
 \begin{example}
@@ -355,11 +380,12 @@ right the belong to |(B, unitB, opB)|.
   exp  (a + b)  =   exp a  *  exp b   --  \(e^{a+b} = e^a e^b\)
   \end{spec}
 \end{example}
-
+%
 In the above example, we have simply checked the homomorphism
-conditions for the exponential function. But we can try to go the
-other way around: knowing that a function |h| is homomorphism, what is the
-kind of function that |h| can be?
+conditions for the exponential function.
+%
+But we can try to go the other way around: knowing that a function |h|
+is homomorphism, what kind of function can |h| be?
 
 \begin{example}
   \label{ex:exponential-as-homomorphism}
@@ -384,8 +410,8 @@ More generally, every natural number can is equal to the sum of |n| ones:
 Therefore
 %
 \begin{spec}
-h n   =  h (1 + ... + 1)
-      =  h 1 *  ... * h 1
+h n   =  h (1  + ...   + 1)
+      =  h 1   *  ...  * h 1
       =  (h 1) ^ n
 \end{spec}
 %
@@ -399,9 +425,11 @@ In other words, we know that every |h| (homomorphism from |ANat| to
 \begin{spec}
 h n = a ^ n
 \end{spec}
-for a given natual number |a = h 1|. So, the set of homomorphisms
-between the additive monoid and the multiplicative monoid is
-the set exponential functions, one for every base |a|.
+for a given natual number |a = h 1|.
+%
+So, the set of homomorphisms between the additive monoid and the
+multiplicative monoid is the set of exponential functions, one for
+every base |a|.
 \end{example}
 
 \begin{exercise}
@@ -437,15 +465,28 @@ it can either be zero, positive or negative.
 
 
 \begin{exercise}
-  Show that |const| is a homomorphism\jp{What structure are we talking
-    about here? Also, if the additive one (minus zero), is it
-    reasonable to expect that we remember that instance for functions
-    here?}
+  Show that |const| is a homomorphism.
 \end{exercise}
 %
 \begin{solution}
-The distribution law\jp{This is the first time that this name is used. Also, isn't it simply the homomorphism law?}
-can be shown as follows:
+  This exercise is underspecified (what structure? from and to which
+  types?) so we need to explore a bit to find a reasonable
+  interpretation.
+  %
+  We can start simple and use addition |(+)| as the structure, thus we
+  want to show |H2(h,(+),(+))| where |h = const| is of type |A->B|.
+  %
+  Next we need to identify the types |A| and |B| where addition is
+  used in the predicate.
+  %
+  We have |const :: a -> (x->a)| for any |a| and |x| and we can take
+  |A=a=REAL| and |B=x->REAL|.
+  %
+  As |B| is a function type the |(+)| on that side is addition of
+  functions, which we defined in \refSec{sec:FunNumInst}.
+  %
+  The homomorphism law (that |h| distributes over |(+)|) can be shown
+  as follows:
 %
 \begin{spec}
   h a + h b                     =  {- |h = const| in this case -}
@@ -563,14 +604,14 @@ etc. because they only get to work on the small range.
 Still, in this case we are lucky: we can use the ``parity rules''
 taught in elementary school: even plus even is even, etc.
 %
-In code we simply get:
+In code we simply get:\footnote{A perhaps more natural alternative would be to taken |odd| instead of |even| as the homomorphism. You can try it out as an exercise.}
 %
 \begin{code}
 evenAdd = (==)
 evenMul = (||)
 evenCon = (0==).(`mod` 2)
 \end{code}
-\footnote{A perhaps more natural alternative would be to taken |odd| instead of |even| as the homomorphism. You can try it out as an exercise.}
+
 %
 \begin{exercise}
 Exercise: prove |H2(even,Add,evenAdd)| and |H2(even,Mul,evenMul)|.
@@ -593,7 +634,7 @@ isPrimeAdd = error "Can this be done?"
 \end{code}
 %
 As before, if we can define |isPrimeAdd|, we will get
-|H2(isPrime,Add,isPrimeAdd)| ``by construction''
+|H2(isPrime,Add,isPrimeAdd)| ``by construction''.
 %
 But it is not possible for |isPrime| to both satisfy its specification
 and |H2(isPrime,Add,isPrimeAdd)|.
@@ -602,7 +643,7 @@ and |H2(isPrime,Add,isPrimeAdd)|.
 %
 \begin{spec}
   False
-= {- By spec. of |isPrime| (four is prime). -}
+= {- By spec. of |isPrime| (four is not prime). -}
   isPrime (Add 2 2)
 = {- by |H2| -}
   isPrimeAdd (isPrime 2) (isPrime 2)
@@ -686,7 +727,8 @@ evalE2 = foldE (+) (*) fromInteger
 \end{code}
 
 Another thing worth noting is that if we replace each abstract syntax
-constructor with itself we get an identity function, sometimes known as a ``deep copy'':
+constructor with itself we get an identity function, sometimes known
+as a ``deep copy'':
 %
 \begin{code}
 idE :: E -> E
@@ -704,21 +746,22 @@ class IntExp t where
   con  ::  Integer -> t
 \end{code}
 %
-In this way we can turn the arguments to the fold into a constraint on the return type:
+In this way we can turn the arguments to the fold into a constraint on
+the return type:
 %
 \begin{code}
 foldIE :: IntExp t => E -> t
 foldIE = foldE add mul con
 
 instance IntExp E where
-  add = Add
-  mul = Mul
-  con = Con
+  add  = Add
+  mul  = Mul
+  con  = Con
 
 instance IntExp Integer where
-  add = (+)
-  mul = (*)
-  con = id
+  add  = (+)
+  mul  = (*)
+  con  = id
 
 idE' :: E -> E
 idE' = foldIE
@@ -729,17 +772,29 @@ evalE' = foldIE
 
 
 Additionally |IntExp| is the underlying algebraic structure of the
-fold. The function |foldIE| is a homomorphism which maps the |IntExp
-E| instance to another (arbitrary) instance |IntExp e|.  This is what
-a fold is in general. Given a structure |C|, a fold is a homomorphism from a
-realisation of |C| as a data-type.  We can note at this point
-that a class |C a| can be realised as a datatype only if all the
-functions of |class C a| return |a|. (Otherwise the constructors could
-create another type; and so they are not constructors any more.) This
-condition was satisfied in the case of our |class IntExp t|: all
-function signatures end with |... -> t|.  When this condition is
-satisfied, we say that the class is an \emph{algebra} --- not just any
-algebraic structure.\footnote{Indeed, this terminology can be confusing.}
+fold.
+%
+The function |foldIE| is a homomorphism which maps the |IntExp E|
+instance to another (arbitrary) instance |IntExp e|.
+%
+This is what a fold is in general.
+%
+Given a structure |C|, a fold is a homomorphism from a realisation of
+|C| as a data-type.
+%
+We can note at this point that a class |C a| can be realised as a
+datatype only if all the functions of |class C a| return
+|a|.
+%
+(Otherwise the constructors could create another type; and so they are
+not constructors any more.)
+%
+This condition was satisfied in the case of our |class IntExp t|: all
+function signatures end with |... -> t|.
+%
+When this condition is satisfied, we say that the class is an
+\emph{algebra} --- not just any algebraic structure.\footnote{Indeed,
+  this terminology can be confusing.}
 
 \subsection{Even folds can be wrong!}
 %
@@ -781,9 +836,7 @@ pretty' :: E -> String
 pretty' = foldIE
 
 \end{code}
-
 %
-
 Now, if we try to implement the semantic constructors without thinking
 too much we would get the following:
 %
@@ -806,9 +859,10 @@ the same string.
 This means that |pretty| is doing something wrong: the inverse,
 |parse|, is ambiguous.
 %
-There are many ways to fix this, some more ``pretty'' than others. One way to
-characterise the issue is that some information is lost in the translation:
-|pretty| is not invertible.
+There are many ways to fix this, some more ``pretty'' than others.
+%
+One way to characterise the issue is that some information is lost in
+the translation: |pretty| is not invertible.
 
 Thus, we can see that a function can be a homomorphism and still be
 ``wrong''.
@@ -867,7 +921,6 @@ In our case a three-element |Precedence| would be enough.
 
 
 \section{Initial and Free Structures}
-
 
 In \cref{sec:folds} we started with a data-type, and derived an
 algebraic structure (more precisely an algebra) from it. But we can go

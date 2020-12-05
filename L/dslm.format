@@ -169,6 +169,7 @@
 %format H0
 %format H1
 %format H2
+%format Hn = H "_" n
 %format y1
 %format y2
 %format y3
