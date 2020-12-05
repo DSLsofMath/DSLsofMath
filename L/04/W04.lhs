@@ -9,7 +9,7 @@
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE ConstraintKinds, RebindableSyntax #-}
 module DSLsofMath.W04 where
-import Prelude hiding (Monoid, even, Num(..), recip, exp)
+import Prelude hiding (Monoid, even, Num(..), recip, sin, cos, exp, (^))
 import DSLsofMath.FunExp hiding (eval)
 import DSLsofMath.Algebra
 import DSLsofMath.Derive (derive)
@@ -127,26 +127,34 @@ Haskell: the additive monoid |ANat| and the multiplicative monoid
 |MNat|.
 %
 %if False
+Included just for type-checking (it is really inefficient in practice).
 \begin{code}
 data Natural = Zero | Succ Natural deriving (Show, Eq)
-instance Additive Natural
-instance AddGroup Natural
-instance Multiplicative Natural
+addNatural :: Natural -> Natural -> Natural
+addNatural Zero      m = m
+addNatural (Succ n)  m = Succ (addNatural n m)
+
+mulNatural :: Natural -> Natural -> Natural
+mulNatural Zero      m     = zero
+mulNatural n         Zero  = zero
+mulNatural (Succ n)  m     = addNatural m (mulNatural n m)
+
+instance Additive Natural        where zero = Zero;      (+) = addNatural
+instance Multiplicative Natural  where one = Succ Zero;  (*) = mulNatural
 \end{code}
 %endif
 \label{sec:anat-mnat}
 \begin{code}
-
 newtype ANat      =  A Natural          deriving (Show, Eq)
 
 instance Monoid ANat where
-  unit            =  A 0
+  unit            =  A zero
   op (A m) (A n)  =  A (m + n)
 
 newtype MNat      =  M Natural          deriving (Show, Eq)
 
 instance Monoid MNat where
-  unit            =  M 1
+  unit            =  M one
   op (M m) (M n)  =  M (m * n)
 \end{code}
 \end{example}
@@ -1078,23 +1086,31 @@ instance Additive FunExp where
 instance Multiplicative FunExp where
   (*) = (:*:)
   one = Const 1
-
-instance AddGroup FunExp where -- ...
-instance MulGroup FunExp where -- ...
-instance Transcendental FunExp where -- ...
 \end{code}
 %
-and so on.
+and so on for the other numeric classes.
+
+%if False
+\begin{code}
+instance AddGroup FunExp where negate = Negate
+instance MulGroup FunExp where (/) = (:/:)
+instance Transcendental FunExp where pi = Const (Prelude.pi); exp = Exp; sin = Sin; cos = Cos
+\end{code}
+%endif
 
 
 \begin{exercise}
-Complete the instances for |FunExp| (possibly extending the datatype).
+  Implement |FunExp| instances for |AddGroup|, |MulGroup|, and
+  |Transcendental| (possibly extending the datatype).
 
-Remark: to translate the |Const :: REAL -> FunExp| constructor we need
-a way to map any |REAL| to the above structures.  We know how to do
-that for integers, (|fromInteger|). For this exercise you can restrict
-yourself to floating point representation of constants, and use
-|recip| (from |MulGroup|) to map them to fractions.
+  Remark: to translate the |Const :: REAL -> FunExp| constructor we
+  need a way to map any |REAL| to the above structures.
+%
+  We know how to do that for integers, (|fromInteger|).
+  %
+  For this exercise you can restrict yourself to floating point
+  representation of constants, and use |recip| (from |MulGroup|) to
+  map them to fractions.
 \end{exercise}
 
 We can then check that the evaluator is compositional.

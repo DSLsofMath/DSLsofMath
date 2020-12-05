@@ -25,12 +25,14 @@ sum :: (Foldable t, Additive a) => t a -> a
 sum = foldr (+) zero
 
 times :: Additive a => Integer -> a -> a
-times n0 = if n0 < 0 then Prelude.error "Algebra.Classes.times: negative number of times" else go n0
+times n0 = if n0 < 0  then Prelude.error "Algebra.Classes.times: negative number of times"
+                      else go n0
   where go 0 _ = zero
-        go n x = if r == 0 then y + y else x + y + y
+        go 1 x = x
+        go n x = if r == 0 then twoy else x + twoy
           where (m,r) = n `Prelude.divMod` 2
                 y = go m x
-
+                twoy = y+y
 
 (-) :: AddGroup a => a -> a -> a
 x - y           =  x + negate y
@@ -47,11 +49,14 @@ class Multiplicative a where
 
 (^+) :: Multiplicative a => a -> Int -> a
 
-x0 ^+ n0 = if n0 < 0 then Prelude.error "Algebra.Classes.^: negative exponent" else go x0 n0
-  where go _ 0 = one
-        go x n = if r == 0 then y * y else x * y * y
-          where (m,r) = n `Prelude.divMod` 2
-                y = go x m
+x0 ^+ n0 = if n0 < 0  then Prelude.error "Algebra.Classes.^: negative exponent"
+                      else go n0 x0
+  where go 0 _ = one
+        go 1 x = x
+        go n x = if r == 0 then y2 else x * y2
+          where  (m,r) = n `Prelude.divMod` 2
+                 y = go m x
+                 y2 = y * y
 
 type Ring a = (AddGroup a, Multiplicative a)
 

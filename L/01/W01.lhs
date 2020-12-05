@@ -1414,11 +1414,17 @@ evalCSyn (l  :*:  r)          = evalCSyn l  .*.  evalCSyn r
 %if False
 \label{sec:firstFromInteger}
 \begin{code}
+negateCS :: Num a => ComplexSyn a -> ComplexSyn a
+negateCS = ((-1) :*:)
+absCS = error "absCS: missing constructor"
+signumCS = error "signumCS: missing constructor"
 instance Num a => Num (ComplexSyn a) where
    (+)  = (:+:)
    (*)  = (:*:)
    fromInteger = fromIntegerCS
-
+   negate = negateCS
+   abs = absCS
+   signum = signumCS
 fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
 fromIntegerCS = toComplexSyn . fromInteger
 \end{code}
