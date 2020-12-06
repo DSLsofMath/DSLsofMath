@@ -1,7 +1,7 @@
 \newpage
 \section{Exercises}
 
- 
+
 \begin{exercise}\label{exc:homomorphisms}
 \textbf{Homomorphisms.}
 Consider the following definitions:
@@ -49,6 +49,9 @@ Prove or disprove the following claims:
 \end{exercise}
 
 \begin{exercise}
+  \pj{Check where that ``three different ways'' text could live (it is
+    now further down in E4.lhs).}
+  %
   We now have three different ways of computing the derivative of a
   function such as |f x = sin x + exp (exp x)| at a given point, say
   |x = pi|.
@@ -165,7 +168,7 @@ Prove or disprove the following claims:
 
 
 \begin{exercise}
-  
+
   \lnOnly{(Closely related to exam question)}
 
   A \textit{ring} is a set |A| together with two constants (or nullary
@@ -260,7 +263,7 @@ Prove or disprove the following claims:
   Recall the type of expressions of one variable from \cref{sec:FunExp}.
 
   \begin{code}
-  data FunExp  =  Const Rational           |  Id
+  data FunExp  =  Const Rational           |  X
                |  FunExp  :+:  FunExp      |  Exp  FunExp
                |  FunExp  :*:  FunExp      |  Sin  FunExp
                |  FunExp  :/:  FunExp      |  Cos  FunExp
@@ -280,10 +283,13 @@ Prove or disprove the following claims:
     \item Find an expression |e| such that |eval e == f| and show this using
       equational reasoning.
 
-    \item Implement a function |deriv2| such that, for any |f : Fractional a =>
-      a -> a| constructed with the grammar of |FunExp| and any |x| in the domain
-      of |f|, we have that |deriv2 f x| computes the second derivative of |f| at
-      |x|.
+
+    \item Implement a function |deriv2| such that, for any
+      \pj{Include translation between Num, Fractional, etc. and Additive, etc.}
+%
+      |f : Fractional a => a -> a| constructed with the grammar of
+      |FunExp| and any |x| in the domain of |f|, we have that |deriv2
+      f x| computes the second derivative of |f| at |x|.
   %
       Use the function |derive :: FunExp -> FunExp| from the lectures (|eval
       (derive e)| is the derivative of |eval e|).
@@ -322,14 +328,14 @@ Prove or disprove the following claims:
   %
   For example, the following tests should work:
   \begin{spec}
-  simplify (Const 0 :*: Exp Id)   ==  Const 0
-  simplify (Const 0 :+: Exp Id)   ==  Exp Id
+  simplify (Const 0 :*: Exp X)    ==  Const 0
+  simplify (Const 0 :+: Exp X)    ==  Exp X
   simplify (Const 2 :*: Const 1)  ==  Const 2
-  simplify (derive (Id:*:Id))     ==  Const 2 :*: Id
+  simplify (derive (X:*:X))       ==  Const 2 :*: X
   \end{spec}
 
-  As a motivating example, note that |derive (Id:*:Id)| evalutes to
-  |(Const 1.0 :*: Id) :+: (Id :*: Const 1.0)| without |simplify|, and
+  As a motivating example, note that |derive (X:*:X)| evalutes to
+  |(Const 1.0 :*: X) :+: (X :*: Const 1.0)| without |simplify|, and
   that the second derivative looks even worse.
 
 \end{exercise}

@@ -1094,12 +1094,16 @@ we can safely assume to be defined as follows:
 class Eq a where   (==) :: a -> a -> Bool
 \end{spec}
 %
-The above declaration does two things. First, it defines a set of
-types which have equality test. One can tell the Haskell compiler that
-certain types belong to this set by using instance declarations, which
-additionally provide an implementation for the equality test. For example,
-we can make |Bool| member of the |Eq| using
-the following declaration:
+The above declaration does two things.
+%
+First, it defines a set of types which have equality test.
+%
+One can tell the Haskell compiler that certain types belong to this
+set by using instance declarations, which additionally provide an
+implementation for the equality test.
+%
+For example, we can make |Bool| member of the |Eq| using the following
+declaration:
 \begin{spec}
 eqBool :: Bool -> Bool -> Bool
 eqBool  True   True   = True
@@ -1110,9 +1114,13 @@ instance Eq Bool where  (==) = eqBool
 (The Haskell compiler will in fact provide instances for primitive types).
 
 Second, the |Eq| class declaration provides an operator |(==)| of type
-|Eq a => a -> a -> Bool|. One can use the operator on any type |a|
-which belongs to the |Eq| set. This is expressed in general by a
-constraint |Eq a| occuring before the |=>| symbol.
+|Eq a => a -> a -> Bool|.
+%
+One can use the operator on any type |a| which belongs to the |Eq|
+set.
+%
+This is expressed in general by a constraint |Eq a| occuring before
+the |=>| symbol.
 
 Instance declarations can also be parameterised on another
 instance.
@@ -1194,9 +1202,8 @@ typed as an |Integer|.
 
 But what is |fromInteger|?
 %
-\pj{?what does ``every value and operator'' mean here?}
-It is a function that maps every value and operator in the numeric
-classes to an arbitrary type |a| in those classes.
+It is a function that converts integers to any type that supports
+|zero|, |one|, |(+)|, and |(-)|.
 %
 We can implement it as follows:
 \begin{code}

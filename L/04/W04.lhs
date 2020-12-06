@@ -479,8 +479,8 @@ it can either be zero, positive or negative.
   Next we need to identify the types |A| and |B| where addition is
   used in the predicate.
   %
-  We have |const :: a -> (x->a)| for any |a| and |x| and we can take
-  |A=a=REAL| and |B=x->REAL|.
+  We have |const :: a -> (x->a)| for any types |a| and |x| and we can
+  take |A=a=REAL| and |B=x->REAL|.
   %
   As |B| is a function type the |(+)| on that side is addition of
   functions, which we defined in \refSec{sec:FunNumInst}.
@@ -489,20 +489,21 @@ it can either be zero, positive or negative.
   as follows:
 %
 \begin{spec}
-  h a + h b                     =  {- |h = const| in this case -}
-  const a  +  const b           =  {- By def. of |(+)| on functions -}
-  (\x-> const a x + const b x)  =  {- By def. of |const|, twice -}
-  (\x->  a + b )                =  {- By def. of |const| -}
-  const (a + b)                 =  {- |h = const| -}
-  h (a + b)
+  h (a + b)                     =  {- |h = const| in this case -}
+  const (a + b)                 =  {- By def. of |const| -}
+  (\x->  a + b )                =  {- By def. of |const|, twice -}
+  (\x-> const a x + const b x)  =  {- By def. of |(+)| on functions -}
+  const a  +  const b           =  {- |h = const|, twice -}
+  h a + h b
 \end{spec}
 %
 We now have a homomorphism from values to functions, and you may
 wonder if there is a homomorphism in the other direction.
 \end{solution}
 %
-The answer is ``Yes, many''. Such homomorphisms take the form |apply
-c|, for any |c|.
+The answer is ``Yes, many''.
+%
+Such homomorphisms take the form |apply c|, for any |c|.
 %
 \begin{exercise}
   \label{ex:apply}
@@ -514,19 +515,14 @@ Indeed, writing |h = apply c| for some fixed |c|, we have
 %
 \begin{spec}
      h (f + g)         =  {- def. |apply| -}
-
      (f + g) c         =  {- def. |+| for functions -}
-
      f c + g c         =  {- def. |apply| -}
-
      h f + h g
-   \end{spec}
-   and
+\end{spec}
+and
 \begin{spec}
      h zero            =  {- def. |apply| -}
-
      zero c            =  {- def. |zero| for functions -}
-
      zero
    \end{spec}
 \end{solution}
@@ -673,7 +669,9 @@ and an |eval| function of type |Syn -> Sem|), we call the semantics
 Informally a ``fold'' is a recursive function which replaces each
 abstract syntax constructor |Ci| of |Syn| with its semantic
 interpretation |ci| --- but without doing any other change in the
-structure. In particular, moving around constructors is forbidden.
+structure.
+%
+In particular, moving around constructors is forbidden.
 %
 For example, in our datatype |E|, a compositional semantics means that |Add|
 maps to |add|, |Mul {-"\mapsto"-} mul|, and |Con {-"\mapsto"-} con|
@@ -735,7 +733,6 @@ idE :: E -> E
 idE = foldE Add Mul Con
 \end{code}
 
-
 Finally, it is useful to capture the semantic functions (the
 parameters to the fold) in a type class:
 %
@@ -770,7 +767,6 @@ evalE' :: E -> Integer
 evalE' = foldIE
 \end{code}
 
-
 Additionally |IntExp| is the underlying algebraic structure of the
 fold.
 %
@@ -793,8 +789,10 @@ This condition was satisfied in the case of our |class IntExp t|: all
 function signatures end with |... -> t|.
 %
 When this condition is satisfied, we say that the class is an
-\emph{algebra} --- not just any algebraic structure.\footnote{Indeed,
-  this terminology can be confusing.}
+\emph{algebra} --- not just any algebraic structure.%
+\footnote{Indeed, this terminology can be confusing.}
+
+
 
 \subsection{Even folds can be wrong!}
 %
@@ -923,20 +921,26 @@ In our case a three-element |Precedence| would be enough.
 \section{Initial and Free Structures}
 
 In \cref{sec:folds} we started with a data-type, and derived an
-algebraic structure (more precisely an algebra) from it. But we can go
-in the other direction: start with an algebra and derive a datatype
-which capture the structure of the algebra, but nothing more. This is
-representation is called the initial algebra.
+algebraic structure (more precisely an algebra) from it.
+%
+But we can go in the other direction: start with an algebra and derive
+a datatype which captures the structure of the algebra, but nothing
+more.
+%
+This representation is called the initial algebra.
 
 \subsubsection{The Initial Monoid}
 
-As a first example, consider an initial algebra for monoids (an initial monoid for short).
+As a first example, consider an initial algebra for monoids (an
+initial monoid for short).
 
-We know that we have at least one object: the |unit|.
-But we can also construct more objects using |op|:
-|unit `op` unit|, |unit `op` (unit `op` unit)|, etc.
+We know that we have at least one element: the |unit|.
+%
+But we can also construct more elements using |op|: |unit `op` unit|,
+|unit `op` (unit `op` unit)|, etc.
+%
 So a draft for the initial monoid could be:
-
+%
 \begin{spec}
 data M where
   Unit :: M
@@ -946,15 +950,18 @@ or:
 \begin{spec}
 data M = Unit | Op M M
 \end{spec}
-
+%
 But we also have the unit laws, which in particular tell us that |unit
-`op` unit == unit|. So, in fact, we are left with a single element:
-the |unit|.  A representation of the initial monoid is then simply:
-
+`op` unit == unit|.
+%
+So, in fact, we are left with a single element: the |unit|.
+%
+A representation of the initial monoid is then simply:
+%
 \begin{spec}
 data M = Unit
 \end{spec}
-
+%
 As one might guess, there are not many interesting applications of the
 initial monoid, so let us consider another structure.
 
@@ -962,37 +969,50 @@ initial monoid, so let us consider another structure.
 
 Gathering all function in various type classes, we find that a |Ring|
 corresponds to the following algebra --- again we start by ignoring laws:
-
+%
 \begin{spec}
-zero :: a
-(+) :: a -> a -> a
-negate :: a -> a
-one :: a
-(*) :: a -> a -> a
+zero    :: a
+(+)     :: a -> a -> a
+negate  :: a -> a
+one     :: a
+(*)     :: a -> a -> a
 \end{spec}
-
-In this case, we can start with |zero| and |one|. As before, using
-addition on |zero| or multiplication on |one| would yield no more
-elements. But we can use addition on |one|, and get |one + one|, |one
-+ one + one|, etc. Because of associativity, we don't have to --- and
-ought not to --- write parentheses. Let's write an addition of |n|
-ones as |n|. What about multiplying? Are we going to get more kinds of
-numbers from that? No, because of distributivity. For example:
-
+%
+In this case, we can start with |zero| and |one|.
+%
+As before, using addition on |zero| or multiplication on |one| would
+yield no more elements.
+%
+But we can use addition on |one|, and get |one + one|, |one + one +
+one|, etc.
+%
+Because of associativity, we don't have to --- and ought not to ---
+write parentheses.
+%
+Let's write an addition of |n| ones as |n|.
+%
+What about multiplying?
+%
+Are we going to get more kinds of numbers from that?
+%
+No, because of distributivity.
+%
+For example:
+%
 \begin{spec}
 (one + one) * (one + one) == one + one + one + one
 \end{spec}
-
-By following this line of reasoning to its conclusion, we will find that
-the initial |Ring| is the set of integers.
-
+%
+By following this line of reasoning to its conclusion, we will find
+that the initial |Ring| is the set of integers.
 
 \subsection{A general initial structure}
 
 In Haskell, the type |C a => a| is a generic way to represent the
-initial algebra for a class |C|.  To get a more concrete feeling for
-this, let us return to |IntExp|, and consider a few values of type
-|IntExp a => a|.
+initial algebra for a class |C|.
+%
+To get a more concrete feeling for this, let us return to |IntExp|,
+and consider a few values of type |IntExp a => a|.
 %
 \begin{code}
 seven :: IntExp a => a
@@ -1014,60 +1034,68 @@ check = and  [  testI  ==  7
              ]
 \end{code}
 %
-
-By defining a class |IntExp| (and some instances) we can
-use the methods (|add|, |mul|, |con|) of the class as ``smart
-constructors''\jp{what is that?} which adapt to the context.
+By defining a class |IntExp| (and some instances) we can use the
+methods (|add|, |mul|, |con|) of the class as ``generic constructors''
+which adapt to the context.
 %
 An overloaded expression, like |seven :: IntExp a => a|, which only
-uses these smart constructors can be instantiated to different types,
-ranging from the syntax tree type |E| to any possible semantic
-interpretations (like |Integer|, |String|, etc.).  In general, for any
-given value |x| of type |IntExp a => a|, all the variants of |x|
-instanciated at different types are guaranteed to be related by
-homomorphisms, because one simply replaces |add|, |mul|, |con| by
-valid instances.
+uses these generic constructors can be instantiated to different
+types, ranging from the syntax tree type |E| to any possible semantic
+interpretations (like |Integer|, |String|, etc.).
+%
+In general, for any given value |x| of type |IntExp a => a|, all the
+variants of |x| instantiated at different types are guaranteed to be
+related by homomorphisms, because one simply replaces |add|, |mul|,
+|con| by valid instances.
 
 The same kind of reasoning justifies the overloading of Haskell
-integer literals. They can be given the type |Ring a => a|, and doing
-in a mathematically meaningful way, because |Ring a => a| is the
-initial algebra for |Ring|.
+integer literals.
+%
+They can be given the type |Ring a => a|, and doing it in a
+mathematically meaningful way, because |Ring a => a| is the initial
+algebra for |Ring|.
 
 \subsection{Free Structures}
 
-Another useful kind of are free structures. They are similar to
-initial structures, but they also allow to embed an arbitrary set of
-\emph{generators} |G|. That is, it is as if we would throw an
-additional |generate| function in the algebra:
-
+Another useful way of constructing type is through ``free structures''.
+%
+They are similar to initial structures, but they also allow to embed
+an arbitrary set of \emph{generators} |G|.
+%
+That is, it is as if we would throw an additional |generate| function
+in the algebra:
+%
 \begin{code}
 class Generate a where
   generate :: G -> a
 \end{code}
-
-(We could parameterize the class  over an abstract generator set |g|,
+%
+(We could parameterize the class over an abstract generator set |g|,
 but will refain from it to avoid needless complications.)
 
 \subsubsection{Free Monoid}
 
-As an example, consider the free monoid. Our algebra has the following
-signature:
+As an example, consider the free monoid.
+%
+Our algebra has the following signature:
 \begin{spec}
-generate :: G -> a
-op :: a -> a -> a
-unit :: a -> a -> a
+generate  :: G -> a
+unit      :: a
+op        :: a -> a -> a
 \end{spec}
 
 As a first version, we can convert each function to a constructor and
 obtain the type:
 \begin{code}
-data FreeMonoid g   =  Unit  |  Op (FreeMonoid g) (FreeMonoid g)  |  Generator g deriving Show
-instance Monoid (FreeMonoid g) where
-  unit = Unit
-  op = Op
+data FreeMonoid g   =  Unit
+                    |  Op (FreeMonoid g) (FreeMonoid g)
+                    |  Generator g deriving Show
+instance Monoid (FreeMonoid g) where  unit = Unit;  op = Op
 \end{code}
 
-Let us consider a fold for the above |FreeMonoid|. We can write its type as follows:
+Let us consider a fold for |FreeMonoid|.
+%
+We can write its type as follows:
 \begin{spec}
 evalM :: (Monoid a, Generate a) => (FreeMonoid G -> a)
 \end{spec}
@@ -1079,8 +1107,8 @@ evalM :: Monoid a => (G -> a) -> (FreeMonoid G -> a)
 This form is similar to the evaluators of expressions with variables
 of type |G|, which we have seen for example in \cref{sec:ArithExp}.
 %
-Once given a function |f :: G -> a|, the homomorphism condition forces
-|evalM| to be a fold:
+Once given a function |f :: G -> a| (which we call an ``assignment
+function''), the homomorphism condition forces |evalM| to be a fold:
 %
 \begin{code}
 evalM  f  Unit           =  unit
@@ -1089,10 +1117,12 @@ evalM  f  (Generator x)  =  f x
 \end{code}
 
 However, before being completely satisfied, we must note that the
-|FreeMonoid| representation is ignoring monoid laws.  By following the
-same kind of reasoning as before, we find that we only have in fact
-only two distinct forms for the elements of the free monoid:
-
+|FreeMonoid| representation is ignoring monoid laws.
+%
+By following the same kind of reasoning as before, we find that we
+only have in fact only two distinct forms for the elements of the free
+monoid:
+%
 \begin{itemize}
 \item |unit|
 \item |generate x1 `op` generate x2 `op` ... `op` generate xn|
@@ -1101,44 +1131,52 @@ Because of associativity we have no parentheses in the second form;
 and because of the unit laws we need not have |unit| composed with |op|
 either.
 
-Thus, the free monoid over a generator set |G| is a list of |G|.
+Thus, the free monoid over a generator set |G| can be represented by a
+list of |G|.
 
-We seemingly also ignored the laws when defining |evalM|. Is this a problem?
+We seemingly also ignored the laws when defining |evalM|.
+%
+Is this a problem?
+%
 For example, is it possible that |e1 `Op` (e2 `Op` e3)| and |(e1 `Op`
-e2) `Op` e3| which are by monoid laws equal, map to different values?  By
-definition of |evalM|, the condition reduces to checking |evalM f e1
-`op` (evalM f e2 `op` evalM f e3) == (evalM f e1 `op` evalM f e2) `op`
-evalM f e3|. But then, this turns out to be satisfied if |op| is
-associative. In sum, |evalM| will be correct if the target |Monoid|
-instance satisfies the laws. This is true in general: folds are always
-homomorphisms even if the datatype representation that they work on
-ignore laws.
+e2) `Op` e3| which are by monoid laws equal, map to different values?
+%
+By definition of |evalM|, the condition reduces to checking |evalM f
+e1 `op` (evalM f e2 `op` evalM f e3) == (evalM f e1 `op` evalM f e2)
+`op` evalM f e3|.
+%
+But then, this turns out to be satisfied if |op| is associative.
+%
+In sum, |evalM| will be correct if the target |Monoid| instance
+satisfies the laws.
+%
+This is true in general: folds are always homomorphisms even if the
+datatype representation that they work on ignore laws.
 
 \subsubsection{Functions of one variable as algebras}
 \label{sec:OneVarExp-class}
 Earlier we have used (many variants of) data types for arithmetic
-expressions. Using the free construction, we can easily conceive a
-suitable type for any such expression language. For example, the type
-for arithmetic expressions with |+,-,*| and variables is the free
-|Ring| with the set of variables as generator set.
+expressions.
+%
+Using the free construction, we can easily conceive a suitable type
+for any such expression language.
+%
+For example, the type for arithmetic expressions with |(+),(-),(*)|
+and variables is the free |Ring| with the set of variables as
+generator set.
 
 Let us consider again our deep-embedding for expressions of one
-variable \cref{sec:FunExp}. According to our analysis, it should be a
-free structure, and because we have only one variable, we can take the
-generator set (|G|) to be the unit type.
+variable \cref{sec:FunExp}.
+%
+According to our analysis, it should be a free structure, and because
+we have only one variable, we can take the generator set (|G|) to be
+the unit type.
 
 \begin{code}
 type G = ()
-instance Generate FunExp where
-  generate () = X
-
-instance Additive FunExp where
-  (+) = (:+:)
-  zero = Const 0
-
-instance Multiplicative FunExp where
-  (*) = (:*:)
-  one = Const 1
+instance Generate        FunExp where  generate () = X
+instance Additive        FunExp where  (+)  = (:+:);  zero  = Const 0
+instance Multiplicative  FunExp where  (*)  = (:*:);  one   = Const 1
 \end{code}
 %
 and so on for the other numeric classes.
@@ -1156,6 +1194,7 @@ instance Transcendental FunExp where pi = Const (Prelude.pi); exp = Exp; sin = S
   Implement |FunExp| instances for |AddGroup|, |MulGroup|, and
   |Transcendental| (possibly extending the datatype).
 
+  \pj{Perhaps add hints here.}
   Remark: to translate the |Const :: REAL -> FunExp| constructor we
   need a way to map any |REAL| to the above structures.
 %
@@ -1176,12 +1215,13 @@ eval (Exp e)      =  exp (eval e)
 etc.
 
 We can now also generalise the type of evaluator as follows:
+\pj{It is only ``OneVar'' in a context where |G=()|. Otherwise it allows for any number of variables.}
 \begin{code}
 type OneVarExp a = (Generate a, Transcendental a)
 eval :: OneVarExp a  =>  FunExp -> a
 \end{code}
 
-With this class in place we can define generic expressions using smart
+With this class in place we can define generic expressions using generic
 constructors just like in the case of |IntExp| above.
 %
 For example, we can define
@@ -1208,16 +1248,14 @@ instance Generate Func where
   generate () = id
 \end{code}
 
-\begin{exercise}
-Find another instance of |OneVarExp|.
-\jp{What is the intent of the exercise?}
-\end{exercise}
-As before, we can always define a homomorphism from |FunExp| to \emph{any}
-instance of |OneVarExp|, in a unique way, using the fold pattern.
+As before, we can always define a homomorphism from |FunExp| to
+\emph{any} instance of |OneVarExp|, in a unique way, using the fold
+pattern.
 %
 This is because the datatype |FunExp| is an initial |OneVarExp|.
-Working with |OneVarExp a => a| can be more economical than using |FunExp|:
-one does not need any |eval|.
+%
+Working with |OneVarExp a => a| can be more economical than using
+|FunExp|: one does not need any |eval|.
 
 The DSL of expressions, whose syntax is given by the type |FunExp|,
 turns out to be almost identical to the DSL defined via type classes
@@ -1234,22 +1272,32 @@ that function.
 \subsection{\extraMaterial A generic Free construction}
 
 We can use the same trick as for initial algebras to construct free
-algebras: |(C a, Generate a) => a| is the free |C|-structure. However,
-it is often more convenient to pass the embedding function explicitly
-rather than via the |Generate| class. In this case, we obtain the type:
-|C a => (g -> a) -> a| if |g| is the set of generators.
-In modern versions of Haskell, we can even parameterize over the |C| class, and write:
+algebras: |(C a, Generate a) => a| is the free |C|-structure.
+%
+However, it is often more convenient to pass the embedding function
+explicitly rather than via the |Generate| class.
+%
+In this case, we obtain the type: |C a => (g -> a) -> a| if |g| is the
+set of generators.
+%
+In modern versions of Haskell, we can even parameterize over the |C|
+class, and write:
+%{
+%format . = ".~"
 \begin{code}
 newtype Free c g = Free (forall a. c a => (g -> a) -> a)
 \end{code}
-Embedding a generator is then done like so:
+%}
+Embedding a generator is then done as follows:
 \begin{code}
 embed :: g -> Free c g
 embed g = Free (\generate -> generate g)
 \end{code}
 
 Unfortunately the |Free c| type is not automatically an instance of
-|c|: we have to implement those manually. Let us see how this plays out for monoid:
+|c|: we have to implement those manually.
+%
+Let us see how this plays out for monoid:
 
 \begin{code}
 instance Monoid (Free Monoid g)  where
@@ -1257,8 +1305,9 @@ instance Monoid (Free Monoid g)  where
   Free f `op` Free g = Free (\x -> f x `op` g x)
 \end{code}
 
-We can also check the monoid laws for the free monoid. For
-example, here is the proof that the right identity law holds:
+We can also check the monoid laws for the free monoid.
+%
+For example, here is the proof that the right identity law holds:
 \begin{spec}
     Free f `op` unit
 ==  {- def. -}
@@ -1275,9 +1324,9 @@ example, here is the proof that the right identity law holds:
 Prove group laws for |Free AdditiveGroup|.
 \end{exercise}
 
-
-But we can also recover the whole structure which was used to build an
-element of this type, for example we could use lists (recall that they are isomorphic to free monoids):
+We can also recover the whole structure which was used to build an
+element of this type, for example we could use lists (recall that they
+are isomorphic to free monoids):
 \begin{code}
 extract :: Free Monoid g -> [g]
 extract (Free f) = f (\g -> [g])
@@ -1290,7 +1339,7 @@ instance Monoid [a] where
   op = (++)
 \end{code}
 %endif
-As an example, we can extract the value of the following:
+As an example, we can |extract| the value of the following example:
 \begin{code}
 example :: Free Monoid Int
 example = embed 1 `op` embed 10 `op` unit `op` embed 11
@@ -1301,8 +1350,8 @@ example = embed 1 `op` embed 10 `op` unit `op` embed 11
 
 \begin{exercise}
   Show that |Free Ring ()| is in bijection with |FunExp|.
+\pj{Which version of |FunExp|? Surely not the one with |Sin|, |Cos|, |Exp|.}
 \end{exercise}
-
 
 \section{Computing Derivatives, reprise.}
 
@@ -1310,20 +1359,24 @@ example = embed 1 `op` embed 10 `op` unit `op` embed 11
 %
 As discussed in \cref{sec:OneVarExp-class}, it can sometimes be
 economical to use the |OneVarExp a => a| representation rather than
-the |FunExp| data type. However, in \cref{sec:computingDerivatives} we
-argued that the rules for derivatives were naturally operating on a
-syntactic representation.
+the |FunExp| data type.
+%
+However, in \cref{sec:computingDerivatives} we argued that the rules
+for derivatives were naturally operating on a syntactic
+representation.
 
 The question is: can we implement |derive| in the shallow embedding?
-As a reminder, the reason that the shallow embedding (|ℝ -> ℝ|) works is
-that the |eval| function is a \emph{fold}: first evaluate the
+%
+As a reminder, the reason that the shallow embedding (|ℝ -> ℝ|) works
+is that the |eval| function is a \emph{fold}: first evaluate the
 sub-expressions of |e|, then put the evaluations together without
 reference to the sub-expressions.
 
 Let us now check whether the semantics of derivatives is
 compositional.
 %
-This evaluation function for derivatives is given by composition as below:
+This evaluation function for derivatives is given by composition as
+below:
 %
 %{
 %format DummyFunc = Func
@@ -1362,23 +1415,23 @@ Let us consider the |Exp| case:
 \end{spec}
 Thus, given \emph{only} the derivative |f' = eval' e|, it is
 impossible to compute |eval' (Exp e)|.
+%
 Another example of the problem is |derive (f :*: g)| where the
 result involves not only |derive f| and |derive g|, but also |f| and
 |g|.
 %
-In general, the problem is that some of the rules for computing the derivative
-depend not only on the derivative of the subexpressions, but also on
-the subexpressions before taking the derivative.
+In general, the problem is that some of the rules for computing the
+derivative depend not only on the derivative of the subexpressions,
+but also on the subexpressions before taking the derivative.
 
-Consequently, |eval'| is in
-fact non-compositional (just like |isPrime|).  There is no way to
-implement |eval' :: FunExp -> Func| as a fold \emph{ if |Func| is the
-  target type}.
-
+Consequently, |eval'| is in fact non-compositional (just like
+|isPrime|).
+%
+There is no way to implement |eval' :: FunExp -> Func| as a fold
+\emph{if |Func| is the target type}.
+%
 One way of expressing this is to say that in order to implement |eval'
 :: FunExp -> Func| we need to also compute |eval :: FunExp -> Func|.
-%
-
 %
 Thus we need to implement a pair of |eval|-functions |(eval, eval')|
 together.
@@ -1389,9 +1442,10 @@ semantic value |f| of type |Func = REAL -> REAL| to two such values
 %
 That is, we are using the ``tupling transform'': we are computing just
 one function |evalD :: FunExp -> (Func, Func)| returning a pair of |f|
-and |D f| at once. (At this point, you are advised to look up and solve
-Exercise~\ref{exc:tuplingE1} in case you
-have not done so already.)
+and |D f| at once.
+%
+(At this point, you are advised to look up and solve
+Exercise~\ref{exc:tuplingE1} in case you have not done so already.)
 \begin{code}
 type FD a = (a -> a, a -> a)
 
@@ -1429,8 +1483,7 @@ evalDExp     (f, f')  =   (exp f, exp f * f')
 In general, while |eval'| is non-compositional, |evalD| is a more
 complex, but compositional, semantics.
 %
-We can then get |eval'|
-back as the second component of |evalD e|:
+We can then get |eval'| back as the second component of |evalD e|:
 %
 \begin{spec}
 eval' :: FunExp -> Func
@@ -1443,39 +1496,47 @@ computation of functions and derivatives, using the numerical type
 classes.
 %
 \begin{code}
-instance Additive a => Additive (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
+instance Additive a => Additive (a -> a, a -> a) where
   zero = (const zero, const zero)
   (f, f')  +  (g, g')  =  (f  +  g,  f'      +  g'      )
 
-instance (Additive a, Multiplicative a) => Multiplicative (a -> a, a -> a) where  -- same as |Num a => Num (FD a)|
-  one = (const one, const zero)
+oneFD :: (Additive a, Multiplicative a) => FD a
+oneFD = (const one, const zero)
+instance (Additive a, Multiplicative a) => Multiplicative (a -> a, a -> a) where
+  one = oneFD
   (f, f')  *  (g, g')  =  (f  *  g,  f' * g  +  f * g'  )
 \end{code}
 %
 \begin{exercise}
-Implement the rest of the |Num| instance for |FD a|.
+Implement the rest of the numeric instances for |FD a|.
 \end{exercise}
 
 \subsection{Automatic differentiation}
 \label{sec:automatic-differentiation}
 The simultaneous computation of values and derivatives is an important
-technique called ``automatic differentiation''. Automatic
-differentiation has grown in importance with the rise of machine
-learning, which often uses derivatives (or gradients) to find a values
-of parameter which minimizes a user-defined objective
-function. However, in such systems, one is often not interested in
-computing whole functions and their derivatives (as we have done so
-far), but rather a function at a point (say |f x0|) and the derivative
-at the same point (say |D f x0|).
+technique called ``automatic differentiation''.
+%
+Automatic differentiation has grown in importance with the rise of
+machine learning, which often uses derivatives (or gradients) to find
+a values of parameter which minimizes a user-defined objective
+function.
+%
+However, in such systems, one is often not interested in computing
+whole functions and their derivatives (as we have done so far), but
+rather a function at a point (say |f x0|) and the derivative at the
+same point (say |D f x0|).
 
 The question then arises: is it enough to \emph{only} compute the pair
-|(f x0, D f x0)|? In other words, is automatic differentiation
-compositional? To answer this question, we must find yet again if
-there is a homomorphism between whole functions and their value at a
-point.
+|(f x0, D f x0)|?
+%
+In other words, is automatic differentiation compositional?
+%
+To answer this question, we must find yet again if there is a
+homomorphism between whole functions and their value at a point.
 
 Fortunately, we have already seen part of the answer in
 \cref{ex:apply}.
+%
 Namely, the homomorphism is |apply c|, with the definition:
 \begin{spec}
 apply :: a -> (a -> b) -> b
@@ -1483,23 +1544,26 @@ apply a = \f -> f a
 \end{spec}
 Because |apply c| is so simple, it is an homomorphism not only for
 |Additive|, but also |Ring| (and any numeric class we have seen so
-far). We already took advantage of this simple structure to define
+far).
+%
+We already took advantage of this simple structure to define
 homomorphism in the other direction in \cref{sec:FunNumInst}, where we
 defined a |Ring| instance for functions with a |Ring| codomain.
 \label{sec:apply}
 
 Can we do something similar for |FD|?
+%
 The elements of |FD a| are pairs of functions, so we can take
 %
 \label{sec:applyFD}
 %{
 %format DummyFD = FD
 \begin{code}
-type Dup a = (a, a)
-type DummyFD a = (a -> a, a -> a)
+type Dup a      = (a, a)
+type DummyFD a  = (a -> a, a -> a)
 
-applyFD ::  a ->  FD a          ->  Dup a
-applyFD     c     ((f, f'))  =   (f c, f' c)
+applyFD ::  a ->  FD a     ->  Dup a
+applyFD     c     (f, f')  =   (f c, f' c)
 \end{code}
 %}
 
@@ -1510,14 +1574,14 @@ the codomain, which now consists of pairs |Dup a = (a, a)|.
 In fact, we can \emph{compute} this structure from the homomorphism
 condition.
 %
-For example (we skip the constructor |FD| for brevity):
+For example:
 %
 \begin{spec}
-     h ((f, f') * (g, g'))                       =  {- def. |*| for |FD a| -}
+     h ((f, f') * (g, g'))                       =  {- def. |(*)| for |FD a| -}
 
      h (f * g, f' * g + f * g')                  =  {- def. |h = applyFD c| -}
 
-     ((f * g) c, (f' * g + f * g') c)            =  {- def. |*| and |+| for functions -}
+     ((f * g) c, (f' * g + f * g') c)            =  {- def. |(*)| and |(+)| for functions -}
 
      (f c * g c, f' c * g c + f c * g' c)        =  {- |let x=f c; y=g c; x'=f' c; y'=g' c| -}
 
@@ -1538,14 +1602,26 @@ The identity will hold if we take
 \end{code}
 %
 Thus, if we define a ``multiplication'' on pairs of values using
-|(*?)|, we get that |(applyFD c)| is a |Multiplicative|-homomorphism for all |c|.
+|(*?)|, we get that |(applyFD c)| is a homomorphism from |FD a| to
+|Dup a| for all |c|.
+%
+To make it a |Multiplicative|-homomorphism we just need to calculate a
+definition for |oneDup| to make it satisfy to homomorphism law:
+\begin{spec}
+  oneDup                                = {- |H0(applyFD c,oneFD,oneDup)|-}
+  applyFD c oneFD                       = {- Def. of |oneFD| and |applyFD| -}
+  (const one c, const zero c)           = {- Def. of |const| -}
+  (one, zero)
+\end{spec}
 %
 We can now define an instance
 %
 \begin{code}
+oneDup :: Ring a => Dup a
+oneDup = (one, zero)
 instance Ring a => Multiplicative (Dup a) where
-  (*) = (*?)
-  one = (one, one)
+  one  = oneDup
+  (*)  = (*?)
 \end{code}
 %
 \begin{exercise}
@@ -1604,40 +1680,54 @@ See
 
 \subsection{Homomorphism as roadmaps}
 \label{sec:homomophism-roadmap}
-Homomorphisms are key to describe mathematical structure, specify programs, and derive of correct programs.
-The relation |h : S1 -> S2| (standing for for ``h is an isomorphism from |S1| to |S2|''), can be used in many ways,
-depending on what is known and what is unknown.
-
+Homomorphisms are key to describe mathematical structure, specify
+programs, and derive of correct programs.
+%
+The relation |h : S1 -> S2| (standing for for ``h is an isomorphism
+from |S1| to |S2|''), can be used in many ways, depending on what is
+known and what is unknown.
 
 \begin{itemize}
-\item |? : S1 -> S2|. Given two structures |S1| and |S2|, can we
-  derive some function which is a homomorphism between those two
-  structures? We asked such a question in \cref{ex:apply} (|apply c :
-  Num (x -> a) -> Num a|) and \cref{ex:exponential-as-homomorphism}
-  (exponentials).
+\item |?? : S1 -> S2|.
+  %
+  Given two structures |S1| and |S2|, can we derive some function
+  which is a homomorphism between those two structures?
+  %
+  We asked such a question in \cref{ex:apply} (|apply c : Additive (x -> a)
+  -> Additive a|) and \cref{ex:exponential-as-homomorphism} (exponentials).
 
-\item |h : S1 -> S2??|.  What is a structure |S2| compatible with a
-  given structure |S1| and given homomorphism |h|?  (eg. we derived
-  |applyFD c : FD a -> (a, a)| as a composition of a syntactic
-  derivative and an evaluation function.)
+\item |h : S1 -> S2??|.
+  %
+  What is a structure |S2| compatible with a given structure |S1| and
+  given homomorphism |h|?
+  %
+  (e.g., we derived the operations on |Dup a = (a,a)| from |applyFD c
+  : FD a -> Dup a| and operations on |FD a| in \cref{sec:applyFD}.)
 
-\item |? : S1 -> S2??|.  Can we find a good structure on |S2| so that
-  it becomes homomorphic with |S1|? This is how we found the structure
-  |FD| in |evalD : FunExp -> FD a|.
+\item |?? : S1 -> S2??|.
+  %
+  Can we find a good structure on |S2| so that it becomes homomorphic
+  with |S1|?
+  %
+  This is how we found the structure |FD| in |evalD : FunExp -> FD a|.
 
-\item |h : S1?? -> S2|. Given |h| and |S2|, can we find a structure
-  |S1| compatible with a given homomorphism |h|?  We will encounter an
-  example in \cref{sec:poly} (evaluation function for polynomials.)
+\item |h : S1?? -> S2|.
+  %
+  Given |h| and |S2|, can we find a structure |S1| compatible with a
+  given homomorphism |h|?
+  %
+  We will encounter an example in \cref{sec:poly} (evaluation function
+  for polynomials).
 \end{itemize}
-
-
 
 \subsection{Structures and representations}
 One take home message of this chapter is that one should, as a rule,
 start with structural definitions first, and consider representation
 second.
-For example, in \cref{sec:evalD} we defined a |Ring| structure on pairs |(REAL, REAL)| by requiring
-the operations to be compatible with the interpretation |(f a, f' a)|.
+%
+For example, in \cref{sec:evalD} we defined a |Ring| structure on
+pairs |(REAL, REAL)| by requiring the operations to be compatible with
+the interpretation |(f a, f' a)|.
 %
 This requirement yields the following definition for multiplication
 for pairs:
@@ -1651,8 +1741,9 @@ this definition upon us.
 %
 We chose it, because of the intended interpretation.
 
-This multiplication is obviously not the one we need for \emph{complex
-  numbers}. It would be instead:
+This multiplication is not the one we need for \emph{complex numbers}.
+%
+It would be instead:
 %
 \begin{spec}
 (x, x') *. (y, y') = (x * y - x' * y', x * y' + x' * y)
@@ -1665,8 +1756,8 @@ In particular, it is, strictly speaking, incorrect to say that a
 complex number \emph{is} a pair of real numbers.
 %
 The correct interpretation is that a complex number can be
-\emph{represented} by a pair of real numbers, provided that we define the
-operations on these pairs in a suitable way.
+\emph{represented} by a pair of real numbers, provided that we define
+the operations on these pairs in a suitable way.
 
 The distinction between definition and representation is similar to
 the one between specification and implementation, and, in a certain
@@ -1681,15 +1772,14 @@ They can also be context-dependent (one man's specification is another
 man's implementation).
 %
 Insisting on the difference between definition and representation can
-also appear quite pedantic (as in the discussion of complex numbers
-in \cref{sec:complexcase}).
+also appear quite pedantic (as in the discussion of complex numbers in
+\cref{sec:complexcase}).
 %
 In general though, it is a good idea to be aware of these
 distinctions, even if they are suppressed for reasons of brevity or
 style.
 %
-We will encounter this distinction again in
-\cref{sec:polynotpolyfun}.
+We will encounter this distinction again in \cref{sec:polynotpolyfun}.
 
 \section{Beyond Algebras: Co-algebra and the Stream calculus}
 
@@ -1698,13 +1788,11 @@ infinite structures.
 %
 These are often captured not by algebras, but by co-algebras.
 %
-We will not build up a general theory of co-algebras in this \course{},
-but because we will be using infinite streams in the upcoming chapters
-we will expose right here their co-algebraic structure.
+We will not build up a general theory of co-algebras in this
+\course{}, but because we will be using infinite streams in the
+upcoming chapters we will expose right here their co-algebraic
+structure.
 
 %include AbstractStream.lhs
-
-
-
 
 %include E4.lhs

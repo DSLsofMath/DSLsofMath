@@ -18,9 +18,9 @@ head  ::  X  ->  A
 tail  ::  X  ->  X
 cons  ::  A  ->  X  ->  X
 
-law1     s  = {-"\qquad"-}  s == cons (head s) (tail s)
-law2  a  s  =               s == tail (cons a s)
-law3  a  s  =               a == head (cons a s)
+law1     s  = {-"\qquad"-}  s  == cons  (head s) (tail s)
+law2  a  s  =               s  == tail  (cons a s)
+law3  a  s  =               a  == head  (cons a s)
 \end{code}
 %if False
 \begin{code}
@@ -62,8 +62,8 @@ could describe it in terms of how to take it apart; by specifying its
 %
 In the constant stream example we would get something like:
 \begin{spec}
-head (constS a) = a
-tail (constS a) = constS a
+head  (constS a)  = a
+tail  (constS a)  = constS a
 \end{spec}
 but this syntax is not supported in Haskell.
 
