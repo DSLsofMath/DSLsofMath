@@ -1,5 +1,6 @@
 \chapter{Polynomials and Power Series}
 \label{sec:poly}
+%if False
 \begin{code}
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE TypeSynonymInstances #-}
@@ -11,10 +12,12 @@ import DSLsofMath.FunNumInst
 import DSLsofMath.Algebra
 type REAL = Double
 \end{code}
+%endif
 
 \section{Polynomials}
 
-Again we take as starting point a definition from \cite{adams2010calculus}, page 39:
+Again we take as starting point a definition from
+  \cite{adams2010calculus}, this time from page 39:
 
 \begin{quote}
 A \textbf{polynomial} is a function $P$ whose value at $x$ is
@@ -35,7 +38,7 @@ This definition raises a number of questions, for example ``what is
 the zero polynomial?'' (and why isn't its degree defined).
 
 The types of the elements involved in the definition appear to be
-
+%
 \begin{quote}
   $n ∈ ℕ$, $P : ℝ → ℝ$, $x ∈ ℝ$, $a_0$, \ldots, $a_n ∈ ℝ$ with $a_n ≠ 0$ if $n > 0$
 \end{quote}
@@ -50,11 +53,11 @@ The zero polynomial is, according to this definition, the |const 0|
 function.
 %
 Thus, what is meant is
-
+%
 \begin{quote}
   A \textbf{polynomial} is a function $P : ℝ → ℝ$ which either is the
-  constant zero, or there exist $a_0$, \ldots, $a_n$ ∈ ℝ with $a_n ≠ 0$
-  such that, for any $x ∈ ℝ$
+  constant zero, or there exist $a_0$, \ldots, $a_n$ ∈ ℝ with
+  $a_n ≠ 0$ (called \textbf{coefficients}) such that, for every $x ∈ ℝ$
 
   \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
   For the constant zero, the degree of the polynomial is not defined.
@@ -62,13 +65,11 @@ Thus, what is meant is
 \end{quote}
 Given the coefficients $a_i$ we can evaluate $P$ at any given $x$.
 %
-Ignoring the condition on coefficients for now, we can assume that the coefficients are given as a list
-
-\begin{spec}
-as = [a0, a1, ..., an]
-\end{spec}
+Ignoring the condition on coefficients for now, we can assume that the
+coefficients are given as a list |as = [a0, a1, ..., an]| (we prefer
+counting up).
 %
-(we prefer counting up), then the evaluation function is written
+Then the evaluation function is:
 %
 \begin{spec}
 evalL ::  [REAL] ->  REAL  ->  REAL
@@ -85,8 +86,8 @@ polynomial functions).
 Show that this evaluation function gives the same result as the formula above.
 \end{exercise}
 
-Using the |Ring| instance for functions we can rewrite |eval| into
-a one-argument function (returning a polynomial function):
+Using the |Ring| instance for functions we can rewrite |eval| into a
+one-argument function (returning a polynomial function):
 %
 \begin{code}
 evalL :: [REAL] -> (REAL -> REAL)
@@ -98,23 +99,25 @@ As an example, the polynomial which is usually written just |x| is
 represented by the list |[0, 1]| and the polynomial function |\x -> x^2-1| is
 represented by the list |[-1,0,1]|.
 
-It is worth noting that the definition of what we call a
-``polynomial function'' is semantic, not syntactic.
+It is worth noting that the definition of what we call a ``polynomial
+function'' is semantic, not syntactic.
 %
 A syntactic defintion would talk about the form of the expression (a
 sum of coefficients times natural powers of $x$).
 %
-In contrast, this semantic definition only requires that the function |P|
-\emph{behaves like} such a sum.
+In contrast, this semantic definition only requires that the function
+|P| \emph{behaves like} such a sum.
 %
 % (Has the same value for all |x|.)
 %
-Insisting on this difference may seem pedantic, but here is an interesting example of a family
-of functions which syntactically does not look like a sum of powers:
+Insisting on this difference may seem pedantic, but here is an
+interesting example of a family of functions which syntactically does
+not look like a sum of powers:
 %
 \[T_n(x) = \cos (n*\arccos(x))\ .\]
 %
-And yet, it can be shown that \(T_n\) is a polynomial function of degree |n|.
+And yet, it can be shown that \(T_n\) is a polynomial function of
+degree |n| (on the interval |[-1,1]|).
 %
 (Exercise~\ref{ex:chebyshev} guides you to a proof.
 %
@@ -139,24 +142,33 @@ The fact that the element should be non-zero is easy to express as a
 Haskell expression (|last (a : as) ≠ 0|), but not so easy to express
 in the \emph{types}.
 
-We could try jumping through the relevant hoops.  However, at this
-stage, we can realise that the the non-zero condition is there only
-to define the degree of the polynomial. The same can be said
-about the separation between zero and non-zero polynomials, which is there to explicitly leave the degree undefined. So we can
-further improve the definition as follows:
+We could try jumping through the relevant hoops.
+%
+However, at this stage, we can realise that the the non-zero condition
+is there only to define the degree of the polynomial.
+%
+The same can be said about the separation between zero and non-zero
+polynomials, which is there to explicitly leave the degree
+undefined.
+%
+So we can further improve the definition as follows:
 \begin{quote}
   A \textbf{polynomial} is a function $P : ℝ → ℝ$ such that
   there exist $a_0$, \ldots, $a_n$ ∈ ℝ and for any $x ∈ ℝ$
   \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
   The degree of the polynomial is the largest $i$ such that $a_i≠0$.
 \end{quote}
-This definition is much simpler to manipulate
-and clearly separates the definition of degree from the definition of
-polynomial. Perhaps surprisingly, there is no longer any need to single out the
-zero polynomial to define the degree.  Indeed, when the polynomial is
-zero, $a_i=0$ for every $i$, and we have an empty set of indices
-$a_i≠0$. The largest element of this set is undefined (by definition
-of largest, see also \cref{ex:maximum-homo}), and we have the intended
+This definition is much simpler to manipulate and clearly separates
+the definition of degree from the definition of polynomial.
+%
+Perhaps surprisingly, there is no longer any need to single out the
+zero polynomial to define the degree.
+%
+Indeed, when the polynomial is zero, $a_i=0$ for every $i$, and we
+have an empty set of indices $a_i≠0$.
+%
+The largest element of this set is undefined (by definition of
+largest, see also \cref{ex:maximum-homo}), and we have the intended
 definition.
 
 So, we can symply use any list of coefficients to \emph{represent} a
@@ -165,15 +177,15 @@ polynomial:
 newtype Poly a = Poly [a] deriving (Show,Eq)
 \end{code}
 
-Since we only use the arithmetical operations, we can generalise our
+Since we only use the arithmetic operations, we can generalise our
 evaluator to an arbitrary |Ring| type.
-
+%
 \begin{code}
 evalPoly :: Ring a => Poly a -> (a -> a)
 evalPoly (Poly [])        x   =  0
 evalPoly (Poly (a:as))    x   =  a + x * evalPoly (Poly as) x
 \end{code}
-
+%
 Since we have |Ring a|, there is a |Ring| structure on |a -> a|, and
 |evalPoly| looks like a homomorphism.
 %
@@ -186,8 +198,8 @@ For example, the homomorphism condition gives for |(+)|
 evalPoly as + evalPoly bs = evalPoly (as + bs)
 \end{spec}
 
-Both sides are functions, they are equal iff. they are equal for every
-argument.
+Both sides are functions, they are equal iff.\ they are equal for
+every argument.
 %
 For an arbitrary |x|
 
@@ -203,10 +215,10 @@ For an arbitrary |x|
 To proceed further, we need to consider the various cases in the
 definition of |evalPoly|.
 %
-We give here the computation for the last case, dropping the |Poly| constructor for
-brevity.
+We give here the computation for the last case, dropping the |Poly|
+constructor for brevity.
 %
-
+\pj{Perhaps also drop ``oly'' to fit within the margins.}
 \begin{spec}
 evalPoly (a : as) x  +  evalPoly (b : bs) x  =  evalPoly ((a : as)  +  (b : bs)) x
 \end{spec}
@@ -231,9 +243,9 @@ The homomorphism condition will hold for every |x| if we define
   (a : as) + (b : bs)  = (a + b) : (as + bs)
 \end{spec}
 %
-This definition looks natural (we could probably have guessed it
-early on) but it is still interesting to see that we can derive
-it as the form that it has to take for the proof to go through.
+This definition looks natural (we could probably have guessed it early
+on) but it is still interesting to see that we can derive it as the
+form that it has to take for the proof to go through.
 
 We leave the derivation of the other cases and operations as an
 exercise.
@@ -270,19 +282,23 @@ polyNeg = mapPoly negate
 mapPoly :: (a->b) -> (Poly a -> Poly b)
 mapPoly f (Poly as)   = Poly (map f as)
 \end{code}
+\pj{Clean up the code a bit: separate the Poly level from the list level.}
 %
-Therefore, we \emph{can} define a |Ring| structure on |Poly a|, and we have arrived at the
-canonical definition of polynomials, as found in any algebra book
-(see, for example, \cite{rotman2006first} for a very readable text):
-
+Therefore, we \emph{can} define a |Ring| structure on |Poly a|, and we
+have arrived at the canonical definition of polynomials, as found in
+any algebra book (see, for example, \cite{rotman2006first} for a very
+readable text):
+%
 \begin{quote}
   Given a commutative ring |A|, the commutative ring given by the set
   |Poly A| together with the operations defined above is the ring of
   \textbf{polynomials} with coefficients in |A|.
 \end{quote}
-
 %
-The family of functions |evalPoly as| for every possible |as| are known as \emph{polynomial functions}.
+Note that from here on we will use the term ``polynomial'' for the
+abstract syntax (the list of coefficients, |as|) and ``polynomial
+function'' for its semanics (the function |evalPoly as : A -> A|).
+
 
 \textbf{Caveat:} The canonical representation of polynomials in
 algebra does not use finite lists, but the equivalent
@@ -294,21 +310,28 @@ algebra does not use finite lists, but the equivalent
 \end{quote}
 
 \begin{exercise}
-What are the ring operations on |Poly' A|?  Hint: they are different from the operations on arbitrary functions |X -> A|.
+  What are the ring operations on |Poly' A|?
+  %
+  Hint: they are different from the operations on arbitrary functions
+  |X -> A|.
 \end{exercise}
 
 %
 For example, here is addition:
-
+%
 \begin{spec}
   a + b = c  <=>  a n + b n = c n  --  |∀ n : ℕ|
 \end{spec}
 
-Remark: Using functions from |ℕ| in the definition has certain technical
-advantages over using finite lists.  For example, consider adding
-|[a0, a1, ..., an]| and |[b0, b1, ..., bm]|, where |n > m|.  Then, we
-obtain a polynomial of degree |n|: |[c0, c1, ..., cn]|.  The formula
-for the |ci| must now be given via a case distinction:
+Remark: Using functions from |ℕ| in the definition has certain
+technical advantages over using finite lists.
+%
+For example, consider adding |[a0, a1, ..., an]| and |[b0, b1, ...,
+bm]|, where |n > m|.
+%
+Then, we obtain a polynomial of degree |n|: |[c0, c1, ..., cn]|.
+%
+The formula for the |ci| must now be given via a case distinction:
 
 < ci = if i > m then ai else ai + bi
 
@@ -323,13 +346,11 @@ multiplication.
 
 \label{sec:polynotpolyfun}
 \begin{enumerate}
-\item If one considers arbitrary rings, polynomials\jp{representations?} are not isomorphic (in one-to-one
-  correspondence) to polynomial functions.
+\item If one considers arbitrary rings, polynomials are not isomorphic
+  (in one-to-one correspondence) to polynomial functions.
   %
   For any finite ring |A|, there is a finite number of functions |A ->
-  A|, but there is a countable infinity of polynomials.\jp{I thought
-    we said that polynomials are the functions (not the
-    representations). I am confused.}
+  A|, but there is a countable infinity of polynomials.
   %
   That means that the same polynomial function on |A| will be the
   evaluation of many different polynomials.
@@ -337,7 +358,8 @@ multiplication.
   For example, consider the ring |ℤ₂| (|{0, 1}| with addition and
   multiplication modulo |2|).
   %
-  In this ring, we have that |p x = x+x^2| is actually a constant function.
+  In this ring, we have that |p x = x+x^2| is actually a constant
+  function.
   %
   The only two input values to |p| are |0| and |1| and we can easily
   check that |p 0 = 0| and also |p 1 = mod (1+1^2) 2 = mod 2 2 = 0|.
@@ -354,11 +376,10 @@ multiplication.
   \end{spec}
 
   Therefore, it is not generally a good idea to conflate polynomials
-  and polynomial functions.
+  (syntax) and polynomial functions (semantics).
 
-\item Following the DSL terminology, we can say that the
-  polynomial functions are the semantics of the language of
-  polynomials.
+\item Following the DSL terminology, we can say that the polynomial
+  functions are the semantics of the language of polynomials.
   %
   We started with polynomial functions, we wrote the evaluation
   function and realised that we have the makings of a homomorphism.
@@ -371,7 +392,7 @@ multiplication.
   definition of polynomials.
 
 Let
-
+%
 \begin{code}
 x :: Ring a => Poly a
 x = Poly [0,1]
@@ -397,28 +418,41 @@ This equality justifies the standard notation
 
 Recall the fundamental property of division that we learned in high school:
 
-For all natural numbers |a|, |b|, with |b ≠ 0|, there exist \emph{unique} integers |q| and |r|, such that
+For all naturals |a|, |b|, with |b ≠ 0|, there exist \emph{unique}
+integers |q| and |r|, such that
 
 < a = b * q + r, with r < b
 
-When |r = 0|, |a| is divisible by |b|.  Questions of divisibility are essential in number theory and its applications (including cryptography).
+When |r = 0|, |a| is divisible by |b|.
+%
+Questions of divisibility are essential in number theory and its
+applications (including cryptography).
 
 A similar theorem holds for polynomials (see, for example, \cite{adams2010calculus} page 40):
 
-For all polynomials |as|, |bs|, with |bs ≠ Single 0|, there exist \emph{unique} polynomials |qs| and |rs|, such that
+For all polynomials |as|, |bs|, with |bs ≠ 0|, there exist \emph{unique} polynomials |qs| and |rs|, such that
 
 < as = bs * qs + rs, with degree rs < degree bs
 
 The condition |r < b| is replaced by |degree rs < degree bs|.
-However, we now have a problem.  Every polynomial is divisible by any
-non-zero constant polynomial, resulting in a zero polynomial
-remainder.  But the degree of a constant polynomial is zero.  If the
-degree of the zero polynomial were a natural number, it would have to
-be smaller than zero.  For this reason, it is either considered
-undefined (as in \cite{adams2010calculus}), or it is defined as |-∞|.\footnote{Likewise we could define the largest element of the empty set to be |-∞|.}
+%
+However, we now have a problem.
+%
+Every polynomial is divisible by any non-zero constant polynomial,
+resulting in a zero polynomial remainder.
+%
+But the degree of a constant polynomial is zero.
+%
+If the degree of the zero polynomial were a natural number, it would
+have to be smaller than zero.
+%
+For this reason, it is either considered undefined (as in
+\cite{adams2010calculus}), or it is defined as |-∞|.%
+\footnote{Likewise we could define the largest element of the empty
+  set to be |-∞|.}
+%
 The next section examines this question from a different point of
 view, that of homomorphisms.
-
 
 \section{Polynomial degree as a homomorphism}
 
@@ -440,18 +474,19 @@ underlying a monoid morphism we need to decide on the monoid structure
 to use for the source and for the target, and we need to check the
 homomorphism laws.
 %
-We can use the multiplicative monoid  (|unit = Single 1| and |op = polyMul|) for the source
-and we can try to use the additive monoid (|unit = 0| and |op = (+)|) for the target monoid.
+We can use the multiplicative monoid (|unit = one| and |op = polyMul|)
+for the source and we can try to use the additive monoid (|unit = zero|
+and |op = (+)|) for the target monoid.
 %
 Then we need to check that
 %
 \begin{spec}
-degree (Single 1) = 0
+degree one = zero
 ∀ x, y? degree (x `op` y) = degree x  +  degree y
 \end{spec}
 %
 The first law is no problem and for most polynomials the second law is
-also straighforward to prove (Try it as an exercise).
+also straighforward to prove (try it as an exercise).
 %
 But we run into trouble with one special case: the zero polynomial.
 
@@ -460,7 +495,9 @@ it says that the degree of the zero polynomial is not defined.
 %
 Let's see why that is the case and how we might ``fix'' it.
 %
-Assume that there exists a natural number |z| such that |degree 0 = z|.
+Assume that there exists a natural number |z| such that |degree 0 =
+z|.
+%
 Assume additionally a polynomial |p| with |degree p = n|.
 %
 Then we get
@@ -477,8 +514,8 @@ Then we get
   z + n
 \end{spec}
 %
-Thus we need to find a |z| such that |z = z + n| for all natural
-numbers |n|!
+Thus we need to find a degree |z|, for the zero polynomial, such that
+|z = z + n| for all natural numbers |n|!
 %
 At this stage we could either give up, or think out of the box.
 %
@@ -501,8 +538,9 @@ instance Monoid' a => Monoid' (Maybe a) where
   unit  = Just unit
   op    = opMaybe
 
-opMaybe Nothing    m          = Nothing    -- |-Inf + m   = -Inf|
-opMaybe m          Nothing    = Nothing    -- |m + (-Inf) = -Inf|
+opMaybe :: Monoid' a => Maybe a -> Maybe a -> Maybe a
+opMaybe Nothing    m          = Nothing    -- |-Inf + m    = -Inf|
+opMaybe m          Nothing    = Nothing    -- |m + (-Inf)  = -Inf|
 opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
 \end{code}
 %}
