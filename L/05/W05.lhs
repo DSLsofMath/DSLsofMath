@@ -539,7 +539,7 @@ instance Monoid' a => Monoid' (Maybe a) where
   op    = opMaybe
 
 opMaybe :: Monoid' a => Maybe a -> Maybe a -> Maybe a
-opMaybe Nothing    m          = Nothing    -- |-Inf + m    = -Inf|
+opMaybe Nothing    m          = Nothing    -- |(-Inf) + m  = -Inf|
 opMaybe m          Nothing    = Nothing    -- |m + (-Inf)  = -Inf|
 opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
 \end{code}
@@ -568,9 +568,11 @@ Check all the Monoid and homomorphism properties.
 Consider the following (false) proposition:
 
 \begin{proposition}
-Let |m, n ∈ ℕ| and let |cs| and |as| be any polynomials of degree |m + n| and |n|, respectively, and with |a0 /= 0|.
+  Let |m, n ∈ ℕ| and let |cs| and |as| be any polynomials of degree |m
+  + n| and |n|, respectively, and with |a0 /= 0|.
 %
-Then |cs| is divisible by |as|.
+  Then there exists a polynomial |bs| of degree |m| such that |cs = as
+  * bs| (thus |cs| is divisible by |as|).
 \end{proposition}
 
 Even if the proposition is false, we can make the following proof
@@ -592,7 +594,8 @@ Next
 
 < c1 = a0 * b1 + a1 * b0
 
-Again, we are given |c1|, |a0| and |a1|, and we have just computed |b0|, therefore we can obtain |b1|.
+Again, we are given |c1|, |a0| and |a1|, and we have just computed
+|b0|, therefore we can obtain |b1 = (c1-a1*b0)/a0|.
 %
 Similarly
 
@@ -606,38 +609,42 @@ satisfying |cs = as * bs|.
 
 \end{proof}
 
-The problem with this proof attempt is in the statement ``it is clear that this process can be continued''.
+The problem with this proof attempt is in the statement ``it is clear
+that this process can be continued''.
 %
 In fact, it is rather clear that it cannot be continued (for polynomials)!
 %
-Indeed, |bs| only has |m+1| coefficients\jp{why? I don't think that it was a requirement of the problem}, therefore for all remaining
+Indeed, |bs| only has |m+1| coefficients, therefore for all remaining
 |n| equations of the form |ck = {-"\sum_{i = 0}^k a_i * b_{k-i}"-}|,
-the values of |bk| have to be zero.
+the values of |bk| (for |k>m|) have to be zero.
 %
-But in general this\jp{this what?} will not satisfy the equations.
+But in general this will not satisfy the equations.
 
 However, we can now see that, if we were able to continue forever, we
-would be able to divide |cs| by |as| exactly.\jp{Is this supposed to mean that the list of coefficients |bk| will yield a diverging sum? }
+would be able to divide |cs| by |as| exactly.
 %
-The only obstacle is the ``finite'' nature of our lists of coefficients.
+The only obstacle is the ``finite'' nature of our lists of
+coefficients.
 
 Power series are obtained from polynomials by removing in |Poly'| the
 restriction that there should be a \emph{finite} number of non-zero
 coefficients; or, in, the case of |Poly|, by going from lists to
 streams.
 
+
+\begin{joincode}%
 \begin{spec}
 PowerSeries' a = { f : ℕ → a }
 \end{spec}
-
 \begin{code}
 type PowerSeries a = Poly a   -- finite and infinite lists
 \end{code}
+\end{joincode}
 
 The operations are still defined as before.
 %
-If we consider only infinite lists, then only the equations which do
-not contain the patterns for singleton lists will apply.
+If we consider only infinite lists, then only the equations which deal
+with nonempty lists will apply.
 
 Power series are usually denoted
 
@@ -654,23 +661,30 @@ The simplest operation, addition, can be illustrated as follows:
 \end{array}
 \]
 
-
 The evaluation of a power series represented by |a : ℕ → A| is defined,
 in case the necessary operations make sense on |A|, as a function
-
+%
 \begin{spec}
 eval a : A -> A
 eval a x  =  lim s   where   s n = {-" \sum_{i = 0}^n a_i * x^i "-}
 \end{spec}
-
+%
+We will focus on the case in which |A = ℝ| or |A = ℂ|.
+%
 Note that |eval a| is, in general, a partial function (the limit might
 not exist).
+%
+To make |eval a| a total function, the domain |A| would have to be
+restricted to just those values of |x| for which the limit exists (the
+infinite sum converges).
+%
+Keeping track of different domains for different power series is
+cumbersome and the standard treatment is to work with ``formal power
+series'' with no requirement of convergence.
 
-We will consider, as is usual, only the case in which |A = ℝ| or |A =
-ℂ|.
-
-Here the qualifier ``formal'' refers to the independence of the definition of
-power series from the ideas of convergence and evaluation.
+Here the qualifier ``formal'' refers to the independence of the
+definition of power series from the ideas of convergence and
+evaluation.
 %
 In particular, two power series represented by |a| and |b|, respectively,
 are equal only if |a = b| (as infinite series of numbers).
@@ -679,8 +693,8 @@ If |a ≠ b|, then the power series are different, even if |eval a =
 eval b|.
 
 Since we cannot in general compute limits, we can use an
-``approximative'' |eval|, by evaluating the polynomial resulting from
-an initial segment of the power series.
+``approximative'' |eval|, by evaluating the polynomial initial segment
+of the power series.
 
 \begin{code}
 eval :: Ring a => Integer -> PowerSeries a -> (a -> a)
