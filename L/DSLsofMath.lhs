@@ -40,7 +40,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{tikz-cd}
-\usetikzlibrary{trees,graphs,quotes,fit,shapes}
+\usetikzlibrary{trees,graphs,quotes,fit,shapes,matrix}
 \usepackage{lineno}
 \usepackage{enumitem}
 \usepackage{pdfpages}

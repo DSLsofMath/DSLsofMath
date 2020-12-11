@@ -1168,6 +1168,37 @@ class Multiplicative a => MulGroup a where
 The operator names clash with the |Num| class, which we will avoid
 from now on in favour |Additive| and |Multiplicative|.
 
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+  \matrix (mat) [matrix of math nodes,row sep=0.4em,column sep=1em]
+  {
+    |Additive|       & |zero|, |(+)|    &                  \\
+    |AddGroup|       & |negate|, |(-)|  &             \\
+    |Multiplicative| & |one|, |(*)|     &                  \\
+                     & |fromInteger|    &                  \\
+    |MulGroup|       & |recip|, |(/)|   &      \\
+                     & |fromRational|   &                  \\
+  };
+  \node[draw,fit=(mat-1-2) (mat-4-2),rounded corners=2ex,label=right:|Num|] (Num) {};
+  \node[draw,fit=(Num) (mat-5-2) (mat-6-2),rounded corners=2ex,label=right:|Fractional|] {};
+  \node[draw,fit=(mat-1-1) (mat-3-2),rounded corners=2ex,dashed,label=left:|Ring|] (Ring) {};
+
+  \end{tikzpicture}
+
+
+  In |Num| but not in the book: |abs|, |signum|.
+
+  In |Real| but not in the book: |toRational|.
+
+  Not in the book: |Integral| with |div|, |mod|, \ldots
+  \caption{Comparing the |Num| class hierarchy with the book's hierarchy.}
+  \label{fig:CompNum}
+\end{figure}
+\pj{Somewhere: insert |Num| comparison: \cref{fig:CompNum}}
+\pj{Explain \cref{fig:CompNum}}
+
 \begin{exercise}
   Consider the exponentiation operator, which we can write |(^)|.
   %
