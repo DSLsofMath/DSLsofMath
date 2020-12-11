@@ -7,7 +7,7 @@ import qualified Data.Ratio
 
 import qualified Prelude
 import Prelude (Int,Integer,Float,Double, Foldable (..), (==), Monoid(..), Ord(..) ,Real(..), Enum(..), snd, Rational, Functor(..), Eq(..), Bool(..), Semigroup(..), const, (.))
-
+import Data.Complex
 
 -------------------------------
 -- Classes
@@ -171,6 +171,31 @@ instance Algebraic Double where
    sqrt = Prelude.sqrt
 
 instance Transcendental Double where
+   pi = Prelude.pi
+   sin =  Prelude.sin
+   cos =  Prelude.cos
+   exp =  Prelude.exp
+
+
+instance Additive a => Additive (Complex a) where
+  (x :+ y) + (x' :+ y') = (x + x') :+ (y+y') 
+  zero = zero :+ zero
+
+instance AddGroup a => AddGroup (Complex a) where
+  negate (a :+ b) = negate a :+ negate b
+
+instance Ring a => Multiplicative (Complex a) where
+  (a :+ b) * (a' :+ b') = (a * a' - b * b') :+ (a * b' + b * a')
+  one = one :+ zero
+
+instance Field a => MulGroup (Complex a) where
+  recip (a :+ b) = (a / m)  :+ (negate b / m) where m = a*a + b*b
+
+
+instance (Algebraic a, Prelude.RealFloat a) =>  Algebraic (Complex a) where
+   sqrt = Prelude.sqrt
+
+instance (Transcendental a, Prelude.RealFloat a) =>  Transcendental (Complex a) where
    pi = Prelude.pi
    sin =  Prelude.sin
    cos =  Prelude.cos
