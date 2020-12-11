@@ -11,6 +11,7 @@ import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
 import DSLsofMath.W05
 import DSLsofMath.W06
 import DSLsofMath.Algebra
+import qualified Data.Complex as Predefined
 \end{code}
 
 In one of the classical analysis textbooks, \citet{rudin1987real}
@@ -93,17 +94,71 @@ Instead of evaluating the sum of the terms |an * z^n|, let us instead
 collect the terms in a series:
 
 \begin{code}
-terms as z = terms1 as z 0  where
-  terms1 (Cons a as) z n  =  Cons (a * z^n) (terms1 as z (n+1))
+terms :: MulGroup t => Poly t -> t -> Poly t
+terms (Poly as) z = Poly (terms1 as z 0)  where
+  terms1 (a:as) z n  =  a * z^n : terms1 as z (n+1)
 \end{code}
 
 We obtain
 
-\jp{Why not use taylor series? It would be much easier to write and read.
-    This can very nearly be done with:
-    |toMaclaurin (evalP (Exp (ComplexConst (0 :+ 1) * X)))|
-    Unfortunately Exp does not support complex constants yet.
-   }
+\jp{Why not use series directly? see alternatives below}
+
+
+Alternative from here (does not need 'terms'):
+
+%%%%%%
+We can define the function \(f(x) = e^{i x}\)  as follows, using the power series instance
+\begin{code}
+expix :: PowerSeries (Predefined.Complex Double)
+expix = exp (i * x)
+ where i = Poly [0 Predefined.:+ 1]
+       x = Poly [0,1]
+
+ex2alt = takePoly 10 expix
+
+cosxisinx :: PowerSeries (Predefined.Complex Double)
+cosxisinx = cos x + i * sin x
+ where i = Poly [0 Predefined.:+ 1]
+       x = Poly [0,1]
+
+ex2'alt = takePoly 10 cosxisinx -- also possible: convert using toMacLaurin to get rid of factorial
+
+-- >>> ex2alt
+-- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
+
+-- >>> ex2'alt
+-- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
+
+\end{code}
+ends here
+
+
+Yet another Alternative from here; but does not work due to lack of Transcendental instance for Stream/MacLaurin
+
+\begin{spec}
+expix3 :: Taylor (Predefined.Complex Double)
+expix3 = exp (i * x)
+ where i = [0 Predefined.:+ 1]
+       x = [0,1]
+
+ex2alt3 = take 10 expix3
+
+cosxisinx3 :: Taylor (Predefined.Complex Double)
+cosxisinx3 = cos x + i * sin x
+ where i = [0 Predefined.:+ 1]
+       x = [0,1]
+
+ex2'alt3 = take 10 cosxisinx3 -- also possible: convert using toMacLaurin to get rid of factorial
+
+-- >>> ex2alt
+-- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
+
+-- >>> ex2'alt
+-- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
+
+\end{spec}
+ends here
+
 \begin{code}
 ex2   ::  Field a => PowerSeries (Complex a)
 ex2    =  takePoly 10 (terms expx i)
@@ -118,6 +173,7 @@ ex2' =  [  C (     1  ,          0), {-"\qquad"-}    C (0,     1     ),
            C (     1  /  40320,  0), {-"\qquad"-}    C (0,     1  /  362880)]
 
 check = toList ex2 == ex2'
+  where toList (Poly x) = x
 \end{code}
 
 % [  C (1.0,                     0.0), {-"\qquad"-} C (0.0,  1.0                     )
