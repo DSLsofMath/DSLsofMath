@@ -782,7 +782,7 @@ In the common math notation we have just computed
 %
 Note that this equation holds when we interpret both sides as formal
 power series, but not necessarily if we try to evaluate the
-expressions for a particular |x|.
+expressions for a particular~|x|.
 %
 Indeed, the RHS will converge for |absBar x < 1| but not for |x=2|, for example.
 

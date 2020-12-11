@@ -1647,6 +1647,7 @@ Hint: Something very similar can be used for Assignment 2.
 \section{Summary}
 
 The following correspondence table summarises the discussion so far:
+\pj{Merge table + jp comment into a few sentences}
 \begin{center}
 \begin{tabular}{ll}
       Computer Science      &   Mathematics
