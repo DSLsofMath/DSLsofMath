@@ -8,6 +8,7 @@ import DSLsofMath.W05
 import DSLsofMath.Algebra
 import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..))
 import Prelude (abs)
+import Data.Complex
 \end{code}
 
 \chapter{Higher-order Derivatives and their Applications}
@@ -15,7 +16,7 @@ import Prelude (abs)
 
 In this chapter we make heavy use of concepts from \cref{sec:CompSem}
 and thus we urge the reader to verify their understanding of
-\cref{sec:homomophism-roadmap} and do \cref{ex:findFunExp0} if their
+\cref{sec:homomophism-roadmap} and do \cref{exc:findFunExp0} if their
 might have skipped it. We have seen in particular that we can give a
 numeric (|Field|, etc.) structure not only to functions, but also to
 pairs of functions and their derivatives (|Field x => Field (a -> x, a
@@ -688,6 +689,8 @@ evalP X           =  idx
 evalP (Exp e)      =  exp (evalP e)
 evalP (Sin e)      =  sin (evalP e)
 evalP (Cos e)      =  cos (evalP e)
+
+
 \end{code}
 
 
