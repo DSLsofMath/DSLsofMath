@@ -14,13 +14,13 @@ import Prelude (abs)
 \label{sec:deriv}
 
 In this chapter we make heavy use of concepts from \cref{sec:CompSem}
-and thus we urge the reader to verify their understanding by checking
-\cref{sec:homomophism-roadmap} and \cref{ex:findFunExp0}. We have seen
-in particular that we can give a numeric (|Field|, etc.) structure to
-not only functions, but also to pairs of functions and their
-derivatives (|Field x => Field (a -> x, a -> x)|). But why stop there?
-Why not compute a (lazy) list of a function together with its
-derivative, second derivative, etc.:
+and thus we urge the reader to verify their understanding of
+\cref{sec:homomophism-roadmap} and do \cref{ex:findFunExp0} if their
+might have skipped it. We have seen in particular that we can give a
+numeric (|Field|, etc.) structure not only to functions, but also to
+pairs of functions and their derivatives (|Field x => Field (a -> x, a
+-> x)|). But why stop there?  Why not compute a (lazy) list of a
+function together with its derivative, second derivative, etc.:
 %
 \begin{spec}
 [f, f', f'', ...] :: [a -> a]
@@ -158,7 +158,8 @@ mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
   element is implicitly divided by a factorial: we compute bigger
   values.} As in the case of pairs, we find that we do not need any
 properties of functions, other than their |Ring| structure, so the
-definitions apply to any infinite list of |Ring a|, which, for a lack of more specific name at this point, will call a |Stream|:
+definitions apply to any infinite list of |a| (with |Ring|) which, for
+a lack of more specific name at this point, we call a |Stream|:
 %
 \begin{code}
 type Stream a = [a]
@@ -181,8 +182,8 @@ Complete the instance declarations for |Fractional| and
 Note that it may make more sense to declare a |newtype| for |Stream a|
 instead of using |[a]|, for at least two reasons.
 %
-First, because the type |[a]| also contains finite lists, but we use it
-here to represent only the infinite lists (also known as streams).
+First, because the type |[a]| also contains finite lists, but we use |Stream|
+here to represent only the infinite lists (also known as... streams).
 %
 Second, because there are competing possibilities for |Ring| instances
 for infinite lists, for example applying all the operations
