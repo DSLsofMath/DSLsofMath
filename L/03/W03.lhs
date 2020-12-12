@@ -1169,35 +1169,41 @@ The operator names clash with the |Num| class, which we will avoid
 from now on in favour |Additive| and |Multiplicative|.
 
 
+% If label:=pin then the text will be connected to the rectangle by a short "pin" (line) 17.10.3 in pgfmanual
 \begin{figure}
   \centering
   \begin{tikzpicture}
-  \matrix (mat) [matrix of math nodes,row sep=0.4em,column sep=1em]
+%  \draw[help lines] (-3,-3) grid (3,3);
+  \matrix (mat) [matrix of math nodes,row sep=1ex,cells=right]
   {
-    |Additive|       & |zero|, |(+)|    &                  \\
-    |AddGroup|       & |negate|, |(-)|  &             \\
-    |Multiplicative| & |one|, |(*)|     &                  \\
-                     & |fromInteger|    &                  \\
-    |MulGroup|       & |recip|, |(/)|   &      \\
-                     & |fromRational|   &                  \\
+    \node[draw,pin={[name=AddL]left:|Additive|}]       (AddOps) {|zero|,   |(+)|}; \\
+    \node[draw,pin={[name=SubL]left:|AddGroup|}]       (SubOps) {|negate|, |(-)|}; \\
+    \node[draw,pin={[name=MulL]left:|Multiplicative|}] (MulOps) {|one|,    |(*)|}; \\
+    \node (frIn) {|fromInteger|};                                                  \\
+    \node (abs)  {|abs|, |signum|};                                                \\[0.5ex]
+    \node[draw,pin={[name=DivL]left:|MulGroup|}]       (DivOps) {|recip|,  |(/)|}; \\
+    \node (frRa) {|fromRational|};                                                 \\
   };
-  \node[draw,fit=(mat-1-2) (mat-4-2),rounded corners=2ex,label=right:|Num|] (Num) {};
-  \node[draw,fit=(Num) (mat-5-2) (mat-6-2),rounded corners=2ex,label=right:|Fractional|] {};
-  \node[draw,fit=(mat-1-1) (mat-3-2),rounded corners=2ex,dashed,label=left:|Ring|] (Ring) {};
-
+  \node[draw,fit=(AddOps) (SubOps) (MulOps) (abs),
+        inner sep=1ex,rounded corners=2ex,
+        label={[name=NumL]right:|Num|}]
+        (NumR) {};
+  \node[draw,fit=(NumL) (NumR) (DivOps) (frRa),
+        rounded corners=2ex,label=right:|Fractional|]
+        (FracR) {};
+  \node[draw,fit=(AddL) (AddOps) (SubL) (SubOps) (MulL) (MulOps),
+        %inner sep=-0.3ex,
+        rounded corners=2ex,dashed,label=left:|Ring|]
+        (Ring) {};
   \end{tikzpicture}
-
-
-  In |Num| but not in the book: |abs|, |signum|.
-
-  In |Real| but not in the book: |toRational|.
-
-  Not in the book: |Integral| with |div|, |mod|, \ldots
+%  In |Real| but not in the book: |toRational|.
+%  Not in the book: |Integral| with |div|, |mod|, \ldots
   \caption{Comparing the |Num| class hierarchy with the book's hierarchy.}
   \label{fig:CompNum}
 \end{figure}
 \pj{Somewhere: insert |Num| comparison: \cref{fig:CompNum}}
 \pj{Explain \cref{fig:CompNum}}
+\pj{Fix the figure to indicate that |AddGroup| includes |Additive| and |MulGroup| includes |Multiplicative|.}
 
 \begin{exercise}
   Consider the exponentiation operator, which we can write |(^)|.
