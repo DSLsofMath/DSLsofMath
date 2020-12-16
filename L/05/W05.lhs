@@ -254,43 +254,46 @@ exercise.
 %
 Here, we just give the corresponding definitions.
 %
-\label{sec:polyMul}
+\label{sec:mulPoly}
 \begin{code}
 instance Additive a => Additive (Poly a) where
-  (+) = polyAdd
+  (+) = addPoly
   zero = Poly []
 
 instance Ring a => Multiplicative (Poly a) where
-  (*) = polyMul
+  (*) = mulPoly
   one = Poly [one]
 
 instance AddGroup a => AddGroup (Poly a) where
-  negate = polyNeg
+  negate = negPoly
 
-polyAdd :: Additive a => Poly a -> Poly a -> Poly a
-polyAdd (Poly xs) (Poly ys) = Poly (listAdd xs ys)
+addPoly :: Additive a => Poly a -> Poly a -> Poly a
+addPoly (Poly xs) (Poly ys) = Poly (addList xs ys)
 
-listAdd :: Additive a => [a] -> [a] -> [a]
-listAdd = zipWithLonger (+)
+addList :: Additive a => [a] -> [a] -> [a]
+addList = zipWithLonger (+)
 
 zipWithLonger :: (a->a->a) -> ([a] -> [a] -> [a])
 zipWithLonger op  []      bs      = bs  -- |0+bs == bs|
 zipWithLonger op  as      []      = as  -- |as+0 == as|
 zipWithLonger op  (a:as)  (b:bs)  = op a b : zipWithLonger op as bs
 
-polyMul :: Ring a => Poly a -> Poly a -> Poly a
-polyMul (Poly xs) (Poly ys) = Poly (listMul xs ys)
+mulPoly :: Ring a => Poly a -> Poly a -> Poly a
+mulPoly (Poly xs) (Poly ys) = Poly (mulList xs ys)
 
-listMul :: Ring a => [a] -> [a] -> [a]
-listMul  []      _       =  []    -- |0*bs == 0|
-listMul  _       []      =  []    -- |as*0 == 0|
-listMul  (a:as)  (b:bs)  =  (a * b) :  listAdd  (listMul [a]  bs)
-                                                (listMul as   (b:bs))
-polyNeg :: AddGroup a => Poly a -> Poly a
-polyNeg = mapPoly negate
+mulList :: Ring a => [a] -> [a] -> [a]
+mulList  []      _       =  []    -- |0*bs == 0|
+mulList  _       []      =  []    -- |as*0 == 0|
+mulList  (a:as)  (b:bs)  =  (a * b) :  addList  (scaleList a  bs)
+                                                (mulList as   (b:bs))
+scaleList :: Multiplicative a => a -> [a] -> [a]
+scaleList a = map (a*)
 
-mapPoly :: (a->b) -> (Poly a -> Poly b)
-mapPoly f (Poly as)   = Poly (map f as)
+negPoly :: AddGroup a => Poly a -> Poly a
+negPoly = polyMap negate
+
+polyMap :: (a->b) -> (Poly a -> Poly b)
+polyMap f (Poly as)   = Poly (map f as)
 
 polyCons :: a -> Poly a -> Poly a
 polyCons x (Poly xs) = Poly (x:xs)
@@ -323,15 +326,15 @@ algebra does not use finite lists, but the equivalent
 \begin{exercise}
   What are the ring operations on |Poly' A|?
   %
-  Hint: they are different from the operations on arbitrary functions
+  Hint: they are not all the same as the operations on arbitrary functions
   |X -> A|.
 \end{exercise}
 
 %
-For example, here is addition:
+For example, here is the specification of addition:
 %
 \begin{spec}
-  a + b = c  <=>  a n + b n = c n  --  |∀ n : ℕ|
+  a + b = c  <=>  Forall (n : ℕ) (a n + b n = c n)
 \end{spec}
 
 Remark: Using functions from |ℕ| in the definition has certain
@@ -377,13 +380,13 @@ multiplication.
   %
   Thus
   \begin{spec}
-    evalPoly [0, 1, 1] = p = const 0 = evalPoly [0]  {- in |ℤ₂ -> ℤ₂| -}
+    evalPoly [0, 1, 1] = p = const 0 = evalPoly []  {-"\quad"-}-- in |ℤ₂ -> ℤ₂|
   \end{spec}
 
   but
 
   \begin{spec}
-    [0, 1, 1] ≠ [0]  {- in |Poly ℤ₂| -}
+    [0, 1, 1] ≠ []  {-"\quad"-} -- in |Poly ℤ₂|
   \end{spec}
 
   Therefore, it is not generally a good idea to conflate polynomials
@@ -432,7 +435,7 @@ Recall the fundamental property of division that we learned in high school:
 For all naturals |a|, |b|, with |b ≠ 0|, there exist \emph{unique}
 integers |q| and |r|, such that
 
-< a = b * q + r, with r < b
+< a = b * q + r{-"\text{, with }"-} 0 <= r < b
 
 When |r = 0|, |a| is divisible by |b|.
 %
@@ -470,10 +473,8 @@ view, that of homomorphisms.
 It is often the case that a certain function is \emph{almost} a
 homomorphism and the domain or range structure is \emph{almost} a monoid.
 %
-In \cref{sec:evalD}, we have seen
-``tupling''
-as one way to fix such a problem and here we will
-introduce another way.
+In \cref{sec:evalD}, we saw tupling as one way to fix such a
+problem and here we will introduce another way.
 
 The |degree| of a polynomial is a good candidate for being a
 homomorphism:
@@ -485,7 +486,7 @@ underlying a monoid morphism we need to decide on the monoid structure
 to use for the source and for the target, and we need to check the
 homomorphism laws.
 %
-We can use the multiplicative monoid (|unit = one| and |op = polyMul|)
+We can use the multiplicative monoid (|unit = one| and |op = mulPoly|)
 for the source and we can try to use the additive monoid (|unit = zero|
 and |op = (+)|) for the target monoid.
 %
@@ -612,7 +613,7 @@ Similarly
 
 < c2 = a0 * b2 + a1 * b1 + a2 * b0
 
-from which we obtain, exactly as before, the value of |b2|.
+from which we obtain,as before, the value of |b2| by subtraction and division.
 
 It is clear that this process can be continued, yielding at every step
 a value for a coefficient of |bs|, and thus we have obtained |bs|
@@ -704,18 +705,15 @@ If |a ≠ b|, then the power series are different, even if |eval a =
 eval b|.
 
 Since we cannot in general compute limits, we can use an
-``approximative'' |eval|, by evaluating the polynomial initial segment
+approximative |eval|, by evaluating the polynomial initial segment
 of the power series.
 
 \begin{code}
-eval :: Ring a => Integer -> PowerSeries a -> (a -> a)
-eval n as x = evalPoly (takePoly n as) x
+eval :: Ring a => Int -> PowerSeries a -> (a -> a)
+eval n as = evalPoly (takePoly n as)
 
-takePoly :: Integer -> PowerSeries a -> Poly a
-takePoly n (Poly [])      =  Poly []
-takePoly n (Poly (a:as))  =  if n <= 0
-                              then  Poly []
-                              else  polyCons a (takePoly (n-1) (Poly as))
+takePoly :: Int -> PowerSeries a -> Poly a
+takePoly n (Poly xs) = Poly (take n xs)
 \end{code}
 %TODO: perhaps explain with plain lists: |takeP :: Nat -> PS r -> P r| with |takeP n (PS as) = P (take n as)|
 %
@@ -804,17 +802,17 @@ Then we want to find, for any given |(a : as)| and |(b : bs)|, the
 series |(c : cs)| satisfying
 %
 \begin{spec}
-  (a : as) / (b : bs) = (c : cs)                     <=> {- def. of division -}
+  (a : as) / (b : bs) = (c : cs)                     <=> {- spec. of division -}
 
   (a : as) = (c : cs) * (b : bs)                     <=> {- def. of |*| for |Cons| -}
 
-  (a : as) = (c * b)  :  (cs * (b : bs)  +  [c]*bs)  <=> {- equality on components, def. of division -}
+  (a : as) = (c * b)  :  ([c]*bs  +  cs * (b : bs))  <=> {- equality on components -}
+
+  a   = c * b                          {- and -}
+  as  = [c] * bs + cs * (b : bs)       {-" "-}       <=> {- solve for |c| and |cs| -}
 
   c   = a / b                          {- and -}
-  as  = cs * (b : bs) + [c] * bs       {-" "-}       <=> {- arithmetics -}
-
-  c   = a / b                          {- and -}
-  cs  =  (as - [c] * bs) / (b : bs)
+  cs  = (as - [c] * bs) / (b : bs)
 \end{spec}
 
 This leads to the implementation:
@@ -824,22 +822,24 @@ instance (Eq a, Field a) => MulGroup (PowerSeries a) where
   (/) = divPS
 
 divPS :: (Eq a, Field a) => PowerSeries a -> PowerSeries a -> PowerSeries a
-divPS (Poly [])    (Poly bs)     =  Poly []
-divPS as           (Poly [b])    =  as * Poly [1 / b]
-divPS (Poly (a:as))  (Poly (b:bs))   =  polyCons c  (divPS (Poly as - (Poly [c]) * Poly bs) (Poly (b:bs)))
-                                    where  c = a / b
+divPS (Poly as) (Poly bs) = Poly (divL as bs)
+
+divL :: (Eq a, Field a) => [a] -> [a] -> [a]
+divL []      bs      =  []                             -- case |0/q|
+divL (0:as)  (0:bs)  =  divL as bs                     -- case |xp/xq|
+divL (0:as)  bs      =  0 : divL as bs                 -- case |xp/q|
+divL as      [b]     =  scaleList (1 / b) as           -- case |p/c|
+divL (a:as)  (b:bs)  =  c : divL (addList as (scaleList (-c) bs)) (b:bs)
+                        where c = a/b
 \end{code}
 
-The first two equations allow us to also use division on polynomials,
-but the result will, in general, be a power series, not a polynomial.
+This definition allow us to also use division on polynomials, but the
+result will, in general, be a power series, not a polynomial.
 %
-The first one should be self-explanatory.
+The different cases can be calculated from the specification.
 %
-The second one extends a constant polynomial, in a process similar to
-that of long division.
-
-For example:
-
+Some examples:
+%
 \begin{code}
 ps0, ps1, ps2 :: (Eq a, Field a) => PowerSeries a
 ps0  = 1 / (1 - x)
@@ -848,8 +848,8 @@ ps2  = (x^2 - 2 * x + 1) / (x - 1)
 \end{code}
 %
 Every |ps| is the result of a division of polynomials: the first two
-return power series, the third is a polynomial (even though it ends up having a
-trailing |0.0|).
+return power series, the third is a polynomial (even though it ends up
+having a trailing zero).
 
 \begin{code}
 example0 :: (Eq a, Field a) => PowerSeries a
@@ -864,19 +864,17 @@ hand''.
 We let |p = [1]| and |q=[1,-1]| and seek |r = p/q|.
 %
 \begin{spec}
-  divPS p q                                   =  {- def. of |p| and |q| -}
-  divPS [1]      (1:[-1])                     =  {- 3rd case of |divPS| -}
-  divPS (1:[0])  (1:[-1])                     =  {- 4th case of |divPS| -}
-  (1/1) : divPS ([0] - [1] * [-1])  (1:[-1])  =  {- simplification, def. of |(*)| -}
-  1 : divPS ([0] - [-1]) (1:[-1])             =  {- def. of |(-)| -}
-  1 : divPS [1] (1:[-1])                      =  {- def. of |p| and |q| -}
-  1 : divPS p q
+  divL p q                                  =  {- def. of |p| and |q| -}
+  divL (1:[])  (1:[-1])                     =  {- last case of |divL| -}
+  (1/1) : divL ([] - [1] * [-1])  (1:[-1])  =  {- simplification, def. of |(*)|, |(-)| -}
+  1 : divL [1] (1:[-1])                     =  {- def. of |p| and |q| -}
+  1 : divL p q
 \end{spec}
 %
 Thus, the answer |r| starts with |1| and continues with |r|!
 %
-In other words, we have that |1/[1,-1] = [1,1..]| as infinite lists of
-coefficients and \(\frac{1}{1-x} = \sum_{i=0}^{\infty} x^i\) in the
+In other words, we have that |1/[1,-1] = [1,1..]| as an infinite list
+of coefficients and \(\frac{1}{1-x} = \sum_{i=0}^{\infty} x^i\) in the
 more traditional mathematical notation.
 
 
@@ -884,13 +882,14 @@ more traditional mathematical notation.
 \label{sec:poly-formal-derivative-1}
 Considering the analogy between power series and polynomial functions
 (via polynomials), we can arrive at a formal derivative for power
-series through the folowing computation:
+series through the following computation:
 %
 \begin{equation}
   \label{eq:formalderivative}
 \begin{aligned}
   \left(\sum_{n = 0}^{\infty} a_n * x^n\right)'  &= \sum_{n = 0}^{\infty} (a_n * x^n)'  =  \sum_{n = 0}^{\infty} a_n * (x^n)' = \sum_{n = 0}^{\infty} a_n * (n * x^{n-1})  \\
-  &=  \sum_{n = 0}^{\infty} (n * a_n) * x^{n-1} =  \sum_{n = 1}^{\infty} (n * a_n) * x^{n-1}  =  \sum_{m = 0}^{\infty} ((m+1) * a_{m+1}) * x^m
+  &=  \sum_{n = 0}^{\infty} (n * a_n) * x^{n-1} =  \sum_{n = 1}^{\infty} (n * a_n) * x^{n-1}  \\
+  &=  \sum_{m = 0}^{\infty} ((m+1) * a_{m+1}) * x^m
 \end{aligned}
 \end{equation}
 %
@@ -902,10 +901,12 @@ We can implement this formula, for example, as
 
 \begin{code}
 deriv :: Ring a => Poly a -> Poly a
-deriv (Poly [])   =  Poly []
-deriv (Poly (a:as))  =  Poly (deriv' as 1)
-  where  deriv' []      n  =  []
-         deriv' (a:as)  n  =  (n * a) : (deriv' as (n+1))
+deriv (Poly as) = Poly (derivL as)
+derivL :: Ring a => [a] -> [a]
+derivL []      = []
+derivL (_:as)  = zipWith (*) oneUp as
+oneUp :: Ring a => [a]
+oneUp = one : map (one+) oneUp
 \end{code}
 
 Side note: we cannot in general implement a decidable (Boolean) equality test for
@@ -916,7 +917,7 @@ compute |True| in finite time by comparing the coefficients of the two
 power series.
 
 \begin{code}
-checkDeriv :: Integer -> Bool
+checkDeriv :: Int -> Bool
 checkDeriv n  =  takePoly n (deriv ps0) == takePoly n (ps1 :: Poly Rational)
 \end{code}
 
@@ -939,7 +940,7 @@ serious'' \cite{mcilroy1999functional}.
 
 \begin{code}
 instance Functor Poly where
-  fmap = mapPoly
+  fmap = polyMap
 
 po1 :: (Eq a, Field a) => Poly a
 po1 = 1 + x^2 - 3*x^4
@@ -956,29 +957,27 @@ type Nat = Integer
 
 degree :: (Eq a, Ring a) => Poly a -> Maybe Nat
 degree (Poly []) = Nothing
-degree (Poly (x:xs)) = maxd (if x == 0 then Nothing else Just 1) (fmap (1+) (degree (Poly xs)))
-  where  maxd x        Nothing   = x
-         maxd Nothing  (Just d)  = Just d
-         maxd (Just a) (Just b)  = Just (max a b)
+degree (Poly (x:xs)) = mayMax  (if x == 0 then Nothing else Just 0)
+                               (fmap (1+) (degree (Poly xs)))
+
+mayMax :: Ord a => Maybe a -> Maybe a -> Maybe a
+mayMax x        Nothing   = x
+mayMax Nothing  (Just d)  = Just d
+mayMax (Just a) (Just b)  = Just (max a b)
 
 degreeAlt :: (Eq a,AddGroup a) => Poly a -> Maybe Nat
-degreeAlt = maximumd . coefIndices
+degreeAlt = mayMaximum . coefIndices
 
 coefIndices :: (Eq a,AddGroup a) => Poly a -> [Nat]
 coefIndices (Poly as) = [i | (a,i) <- zip as [1..], a  /= zero]
 
-maximumd :: Ord a => [a] -> Maybe a
-maximumd [] = Nothing
-maximumd (x:xs) = maxd (Just x) (maximumd xs)
-  where  maxd x        Nothing   = x
-         maxd Nothing  (Just d)  = Just d
-         maxd (Just a) (Just b)  = Just (max a b)
-
+mayMaximum :: Ord a => [a] -> Maybe a
+mayMaximum []      = Nothing
+mayMaximum (x:xs)  = mayMax (Just x) (mayMaximum xs)
 
 checkDegree0 = degree (unit :: Poly Integer) == unit
 checkDegreeM :: Poly Integer -> Poly Integer -> Bool
 checkDegreeM p q = degree (p*q) == op (degree p) (degree q)
-
 \end{code}
 
 %include E5.lhs

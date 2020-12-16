@@ -661,7 +661,7 @@ If we were using instead a set of basis polynomials |bn| which are
 orthogonal using the above semantic-oriented definition of |dot|, then
 we could compute it by multiplying pointwise and summing as before,
 and this would be a lot more efficient than to compute the integral by
-1. computing the product using |polyMul| 2. integrating using
+1. computing the product using |mulPoly| 2. integrating using
 |integ|. 3. using |eval| on the end points of the domain.
 
 Let us consider as a base the functions |bn = sin (n*x)|, prove
@@ -708,7 +708,7 @@ start, |eval bi 0 == 0| for every |i|, and thus linear
 combinations can only ever be zero at the origin.
 
 But if we were to include  |cos (n*x) / sqrt pi| in the set of base vectors, it would remain orthogonal, and the
-space would cover all periodic functions with period $2 \pi$.  This 
+space would cover all periodic functions with period $2 \pi$.  This
 representation is called the Fourier series. Let us define a meaningful
 index (|G|) for the basis:
 
@@ -725,8 +725,8 @@ vectors. Indeed:\footnote{The proof can be easily adapted to infinite sums.}
 \begin{spec}
      v           = sum [vi *^ bi | i <- finiteDomain]
 =>   v `dot` bj  = sum [vi *^ bi | i <- finiteDomain] `dot` bj
-=>   v `dot` bj  = sum [vi *^ (bi `dot` bj) | i <- finiteDomain] 
-=>   v `dot` bj  = sum [vi *^ is i j | i <- finiteDomain] 
+=>   v `dot` bj  = sum [vi *^ (bi `dot` bj) | i <- finiteDomain]
+=>   v `dot` bj  = sum [vi *^ is i j | i <- finiteDomain]
 =>   v `dot` bj  = vj
 \end{spec}
 
@@ -1378,7 +1378,7 @@ it follows that all quantum mechanical systems have an invertible dynamics.
 Furthermore, the inverted matrix is also unitary,
 and therefore the inverted system is also valid as a quantum dynamical system.
 
-Here is an example orthogonal (and thus also unitary matrix)  
+Here is an example orthogonal (and thus also unitary matrix)
   \[
   M =
   \bordermatrix{

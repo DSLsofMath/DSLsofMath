@@ -155,7 +155,7 @@ mulStream :: Ring a => Stream a -> Stream a -> Stream a
 mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 \end{code}
 \footnote{This expression is reminiscent of polynomial multiplication
-  (\cref{sec:polyMul}), but it is different from it because here each
+  (\cref{sec:mulPoly}), but it is different from it because here each
   element is implicitly divided by a factorial: we compute bigger
   values.} As in the case of pairs, we find that we do not need any
 properties of functions, other than their |Ring| structure, so the
