@@ -227,11 +227,47 @@ and thus define |Ring| simply as the conjunction of |AddGroup| and
 type Ring a = (AddGroup a, Multiplicative a)
 \end{spec}
 \end{example}
-
+%
 With that, we have completed the structural motivation of our
 replacement for the |Num| class! \jp{Show some instances?}
 \pj{Provide a comparison table / figure relating the operations of
   |Num|, |Fractional|, etc. with those of |Additive|, etc.}
+% If label:=pin then the text will be connected to the rectangle by a short "pin" (line) 17.10.3 in pgfmanual
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+%  \draw[help lines] (-3,-3) grid (3,3);
+  \matrix (mat) [matrix of math nodes,row sep=1ex,cells=right]
+  {
+    \node[draw,pin={[name=AddL]left:|Additive|}]       (AddOps) {|zero|,   |(+)|}; \\
+    \node[draw,pin={[name=SubL]left:|AddGroup|}]       (SubOps) {|negate|, |(-)|}; \\
+    \node[draw,pin={[name=MulL]left:|Multiplicative|}] (MulOps) {|one|,    |(*)|}; \\
+    \node (frIn) {|fromInteger|};                                                  \\
+    \node (abs)  {|abs|, |signum|};                                                \\[0.5ex]
+    \node[draw,pin={[name=DivL]left:|MulGroup|}]       (DivOps) {|recip|,  |(/)|}; \\
+    \node (frRa) {|fromRational|};                                                 \\
+  };
+  \node[draw,fit=(AddOps) (SubOps) (MulOps) (abs),
+        inner sep=1ex,rounded corners=2ex,
+        label={[name=NumL]right:|Num|}]
+        (NumR) {};
+  \node[draw,fit=(NumL) (NumR) (DivOps) (frRa),
+        rounded corners=2ex,label=right:|Fractional|]
+        (FracR) {};
+  \node[draw,fit=(AddL) (AddOps) (SubL) (SubOps) (MulL) (MulOps),
+        %inner sep=-0.3ex,
+        rounded corners=2ex,dashed,label=left:|Ring|]
+        (Ring) {};
+  \end{tikzpicture}
+%  In |Real| but not in the book: |toRational|.
+%  Not in the book: |Integral| with |div|, |mod|, \ldots
+  \caption{Comparing the |Num| class hierarchy with the book's hierarchy.}
+  \label{fig:CompNum}
+\end{figure}
+\pj{Somewhere: insert |Num| comparison: \cref{fig:CompNum}}
+\pj{Explain \cref{fig:CompNum}}
+\pj{Fix the figure to indicate that |AddGroup| includes |Additive| and |MulGroup| includes |Multiplicative|.}
+
 
 We note right away that one can have a multiplicative group structure
 as well, whose inverse is called the reciprocal (traditionally
@@ -243,6 +279,7 @@ and reciprocal.
 \begin{spec}
 class Multiplicative a => MulGroup a where
   recip :: a -> a -- reciprocal
+
 \end{spec}
 \begin{code}
 (/) :: MulGroup a => a -> a -> a

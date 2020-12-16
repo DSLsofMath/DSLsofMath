@@ -1164,46 +1164,12 @@ class Multiplicative a where
 class Multiplicative a => MulGroup a where
   recip :: a -> a -- reciprocal
 \end{spec}
-
+%
 The operator names clash with the |Num| class, which we will avoid
 from now on in favour |Additive| and |Multiplicative|.
-
-
-% If label:=pin then the text will be connected to the rectangle by a short "pin" (line) 17.10.3 in pgfmanual
-\begin{figure}
-  \centering
-  \begin{tikzpicture}
-%  \draw[help lines] (-3,-3) grid (3,3);
-  \matrix (mat) [matrix of math nodes,row sep=1ex,cells=right]
-  {
-    \node[draw,pin={[name=AddL]left:|Additive|}]       (AddOps) {|zero|,   |(+)|}; \\
-    \node[draw,pin={[name=SubL]left:|AddGroup|}]       (SubOps) {|negate|, |(-)|}; \\
-    \node[draw,pin={[name=MulL]left:|Multiplicative|}] (MulOps) {|one|,    |(*)|}; \\
-    \node (frIn) {|fromInteger|};                                                  \\
-    \node (abs)  {|abs|, |signum|};                                                \\[0.5ex]
-    \node[draw,pin={[name=DivL]left:|MulGroup|}]       (DivOps) {|recip|,  |(/)|}; \\
-    \node (frRa) {|fromRational|};                                                 \\
-  };
-  \node[draw,fit=(AddOps) (SubOps) (MulOps) (abs),
-        inner sep=1ex,rounded corners=2ex,
-        label={[name=NumL]right:|Num|}]
-        (NumR) {};
-  \node[draw,fit=(NumL) (NumR) (DivOps) (frRa),
-        rounded corners=2ex,label=right:|Fractional|]
-        (FracR) {};
-  \node[draw,fit=(AddL) (AddOps) (SubL) (SubOps) (MulL) (MulOps),
-        %inner sep=-0.3ex,
-        rounded corners=2ex,dashed,label=left:|Ring|]
-        (Ring) {};
-  \end{tikzpicture}
-%  In |Real| but not in the book: |toRational|.
-%  Not in the book: |Integral| with |div|, |mod|, \ldots
-  \caption{Comparing the |Num| class hierarchy with the book's hierarchy.}
-  \label{fig:CompNum}
-\end{figure}
-\pj{Somewhere: insert |Num| comparison: \cref{fig:CompNum}}
-\pj{Explain \cref{fig:CompNum}}
-\pj{Fix the figure to indicate that |AddGroup| includes |Additive| and |MulGroup| includes |Multiplicative|.}
+%
+In \cref{sec:ring-like-classes} we will get back to these classes and
+in present a comparison in \cref{fig:CompNum}.
 
 \begin{exercise}
   Consider the exponentiation operator, which we can write |(^)|.
@@ -1223,8 +1189,8 @@ from now on in favour |Additive| and |Multiplicative|.
 % as \(4 + 2.5\).
 % TODO: here we also use defaulting at the same time, which is 1. not principled and 2. does not work with custom classes.
 
-Given these definitions, both expressions $4 + 3$ and $3.4 + 3.2$
-typecheck.
+\pj{Perhaps end subsect with some connecting back to the start}
+%Given these definitions, both expressions $4 + 3$ and $3.4 + 3.2$ typecheck.
 
 
 \subsection{Overloaded integer literals}
