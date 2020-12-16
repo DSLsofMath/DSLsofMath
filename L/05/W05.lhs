@@ -216,9 +216,10 @@ To proceed further, we need to consider the various cases in the
 definition of |evalPoly|.
 %
 We give here the computation for the last case, dropping the |Poly|
-constructor for brevity.
+constructor and writing |eval = evalPoly| for brevity.
 %
-\pj{Perhaps also drop ``oly'' to fit within the margins.}
+%{
+%format evalPoly = eval
 \begin{spec}
 evalPoly (a : as) x  +  evalPoly (b : bs) x  =  evalPoly ((a : as)  +  (b : bs)) x
 \end{spec}
@@ -226,16 +227,17 @@ evalPoly (a : as) x  +  evalPoly (b : bs) x  =  evalPoly ((a : as)  +  (b : bs))
 For the left-hand side, we have:
 %
 \begin{spec}
-  evalPoly (a : as) x  +  evalPoly (b : bs) x      =  {- def. |evalPoly| -}
+  evalPoly (a : as) x  +  evalPoly (b : bs) x        =  {- def. |evalPoly| -}
 
-  (a + x * evalPoly as x) + (b + x * evalPoly bs x)    =  {- properties of |+|, valid in any ring -}
+  (a + x * evalPoly as x) + (b + x * evalPoly bs x)  =  {- arithmetic (ring laws) -}
 
-  (a + b) + x * (evalPoly as x + evalPoly bs x)    =  {- homomorphism condition -}
+  (a + b) + x * (evalPoly as x + evalPoly bs x)      =  {- homomorphism condition -}
 
-  (a + b) + x * (evalPoly (as + bs) x)             =  {- def. |evalPoly| -}
+  (a + b) + x * (evalPoly (as + bs) x)               =  {- def. |evalPoly| -}
 
   evalPoly ((a + b) : (as + bs)) x
 \end{spec}
+%}
 
 The homomorphism condition will hold for every |x| if we define
 %
@@ -265,25 +267,34 @@ instance Ring a => Multiplicative (Poly a) where
 instance AddGroup a => AddGroup (Poly a) where
   negate = polyNeg
 
-polyCons x (Poly xs) = Poly (x:xs)
 polyAdd :: Additive a => Poly a -> Poly a -> Poly a
-polyAdd as (Poly [])  = as
-polyAdd (Poly []) as  = as
-polyAdd (Poly (a:as))  (Poly (b:bs))  =  polyCons (a + b) (polyAdd (Poly as) (Poly bs))
+polyAdd (Poly xs) (Poly ys) = Poly (listAdd xs ys)
+
+listAdd :: Additive a => [a] -> [a] -> [a]
+listAdd = zipWithLonger (+)
+
+zipWithLonger :: (a->a->a) -> ([a] -> [a] -> [a])
+zipWithLonger op  []      bs      = bs  -- |0+bs == bs|
+zipWithLonger op  as      []      = as  -- |as+0 == as|
+zipWithLonger op  (a:as)  (b:bs)  = op a b : zipWithLonger op as bs
 
 polyMul :: Ring a => Poly a -> Poly a -> Poly a
-polyMul (Poly []) _ = Poly []
-polyMul _ (Poly []) = Poly []
-polyMul (Poly (a:as))  (Poly (b:bs)) =  polyCons (a * b) (polyAdd  (polyMul (Poly as) (Poly (b:bs)))
-                                                                   (polyMul (Poly [a]) (Poly bs)))
+polyMul (Poly xs) (Poly ys) = Poly (listMul xs ys)
+
+listMul :: Ring a => [a] -> [a] -> [a]
+listMul  []      _       =  []    -- |0*bs == 0|
+listMul  _       []      =  []    -- |as*0 == 0|
+listMul  (a:as)  (b:bs)  =  (a * b) :  listAdd  (listMul [a]  bs)
+                                                (listMul as   (b:bs))
 polyNeg :: AddGroup a => Poly a -> Poly a
 polyNeg = mapPoly negate
 
 mapPoly :: (a->b) -> (Poly a -> Poly b)
 mapPoly f (Poly as)   = Poly (map f as)
+
+polyCons :: a -> Poly a -> Poly a
+polyCons x (Poly xs) = Poly (x:xs)
 \end{code}
-\pj{Clean up the code a bit: separate the Poly level from the list level.}
-%
 Therefore, we \emph{can} define a |Ring| structure on |Poly a|, and we
 have arrived at the canonical definition of polynomials, as found in
 any algebra book (see, for example, \cite{rotman2006first} for a very
