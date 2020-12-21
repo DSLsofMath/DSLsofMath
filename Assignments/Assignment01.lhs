@@ -11,6 +11,8 @@
 %include ../L/dslm.format
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
+% See https://github.com/jgm/pandoc/issues/5801
+\renewcommand{\linethickness}{0.5pt}
 \providecommand{\textepsilon}{\ensuremath{\epsilon}}
 \begin{document}
 \title{DSLsofMath 2020: Assignment 1}
@@ -38,13 +40,13 @@ In this assignment you will build up a domain-specific language (a DSL)
 for finite sets. The domain you should model is pure set theory where
 all members are sets.
 
-Define a datatype |SET v| for the abstract syntax of set expressions with
+Define a datatype |TERM v| for the abstract syntax of set expressions with
 variables of type |v| and a datatype |PRED v| for predicates over pure set
 expressions.
 
 \begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
 
-\paragraph{Part 1.} |SET| should have constructors for
+\paragraph{Part 1.} |TERM| should have constructors for
 
 \begin{itemize}
 
@@ -55,7 +57,7 @@ expressions.
 
   \item you can also try |Powerset|
   \end{itemize}
-\item set-valued variables (|Var :: v -> SET v|)
+\item set-valued variables (|Var :: v -> TERM v|)
 \end{itemize}
 
 |PRED| should have contructors for
@@ -77,7 +79,7 @@ newtype Set = S [Set]
 Implement the evaluation functions
 
 \begin{code}
-eval   :: Eq v => Env v Set ->  SET v   -> Set
+eval   :: Eq v => Env v Set ->  TERM v   -> Set
 check  :: Eq v => Env v Set ->  PRED v  -> Bool
 \end{code}
 
@@ -85,7 +87,7 @@ check  :: Eq v => Env v Set ->  PRED v  -> Bool
 type Env var dom = [(var , dom)]
 \end{code}
 
-Note that the type parameter |v| to |SET| is for the type of variables
+Note that the type parameter |v| to |TERM| is for the type of variables
 in the set expressions, not the type of elements of the sets. (You can
 think of pure set theory as ``untyped'' or ``unityped''.)
 
