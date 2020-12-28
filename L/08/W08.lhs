@@ -3,7 +3,7 @@
 
 \section{The Exponential Function}
 \label{sec:exp}
-
+%if False
 \begin{code}
 {-# LANGUAGE RebindableSyntax #-}
 module DSLsofMath.W08 where
@@ -13,6 +13,7 @@ import DSLsofMath.W06
 import DSLsofMath.Algebra
 import qualified Data.Complex as Predefined
 \end{code}
+%endif
 
 In one of the classical analysis textbooks, \citet{rudin1987real}
 starts with a prologue on the exponential function.
