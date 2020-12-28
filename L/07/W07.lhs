@@ -1,5 +1,6 @@
 \chapter{Elements of Linear Algebra}
 \label{sec:LinAlg}
+%if False
 \begin{code}
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE GADTs, FlexibleInstances, UndecidableInstances #-}
@@ -11,6 +12,7 @@ import Data.List(nub)
 type REAL = Double
 type ℕ = Int
 \end{code}
+%endif
 
 Often, especially in engineering textbooks, one encounters the
 following definition: a vector is an \(n+1\)-tuple of real or complex
@@ -28,60 +30,76 @@ a \emph{field} (\cref{sec:fields-defintion}).
 %
 
 However, following our theme, we will first characterize vectors
-algebraically.  From this perpective a \emph{vector space} is an
-algebraic structure that captures a set of vectors, with zero,
-a commutative addition, and scaling by a set of scalars (i.e., elements of the
-field). In terms of typeclasses, we can characterize this structure as
+algebraically.
+%
+From this perpective a \emph{vector space} is an algebraic structure
+that captures a set of vectors, with zero, a commutative addition, and
+scaling by a set of scalars (i.e., elements of the field).
+%
+In terms of typeclasses, we can characterize this structure as
 follows:
 \begin{spec}
 class (Field s, AddGroup v) => VectorSpace v s where
   (*^) :: s -> v -> v
 \end{spec}
-Additionally, vector scaling (|s *^|) must be a homomorphism over (from and to)
-the additive group structure of |v|:
+Additionally, vector scaling (|s *^|) must be a homomorphism over
+(from and to) the additive group structure of |v|:
 \begin{spec}
   s *^ (a + b)     = s *^ a + s *^ b
   s *^ zero        = zero
   s *^ (negate a)  = negate (s *^ a)
 \end{spec}
-And, on the other side, |(*^ a)| is a homomorphism from the additive group structure of |s| to the group structure of |v|:
+And, on the other side, |(*^ a)| is a homomorphism from the additive
+group structure of |s| to the group structure of |v|:
 \begin{spec}
-  (s + t) *^ a     = s *^ a + t *^ a
-  zero *^ a        = zero
-  negate s *^ a    = negate (s *^ a)
+  (s + t)   *^ a   = s *^ a + t *^ a
+  zero      *^ a   = zero
+  negate s  *^ a   = negate (s *^ a)
 \end{spec}
-The multiplicative monoid of |s| maps to the monoid of endofunctions (See \cref{ex:endofunction}) as follows:
+The multiplicative monoid of |s| maps to the monoid of endofunctions
+(See \cref{ex:endofunction}) as follows:
 \begin{spec}
   one      *^ a    = id                  a  =  a
   (s * t)  *^ a    = ((s *^) . (t *^))   a  =  s *^ (t *^ a)
 \end{spec}
-\footnote{Traditionally some of the above laws are omitted because they are consequences of other laws.}
+Traditionally some of the above laws are omitted because they are
+consequences of other laws.
 
-An important consequence of the algebraic structure of vectors is
-that they can be expressed as a simple sort of
-combination of other special vectors.  More precisely, we can \emph{uniquely}
-represent any vector |v| in the space in terms of a fixed set of
-\emph{basis} vectors |{b0, ..., bn}| which cover the whole space and are \emph{linearly
-  independent}:
-
+An important consequence of the algebraic structure of vectors is that
+they can be expressed as a simple sort of combination of other special
+vectors.
+%
+More precisely, we can \emph{uniquely} represent any vector |v| in the
+space in terms of a fixed set of \emph{basis} vectors |{b0, ..., bn}|
+which cover the whole space and are \emph{linearly independent}:
+%
 \begin{spec}
   (s0 *^ b0 + ... + sn *^ bn = 0) <=> (s0 = ... = sn = 0)
 \end{spec}
 One can prove the uniqueness of representation as follows.
 \begin{proof}
-  Assume two representations of |v|, given by |si| and |ti|. The difference of those representations is given by |si-ti|. But because they represent the same vector,
-  they must be equal to the zero vector:  |(s0-t0) *^ b0 + ... + (sn-tn) *^ bn = 0|.
-By the basis being linearly independent, we find |si-ti=0|, and |si=ti|.
+  Assume two representations of |v|, given by |si| and |ti|.
+  %
+  The difference of those representations is given by |si-ti|.
+  %
+  But because they represent the same vector, they must be equal to
+  the zero vector: |(s0-t0) *^ b0 + ... + (sn-tn) *^ bn = 0|.
+  %
+  By the bases being linearly independent, we find |si-ti=0|, and
+  |si=ti|.
 \end{proof}
 
 According to our red thread, this representation (coefficients) is
-akin to the notion of ``syntax''. But this is a case where the
-representation is \emph{equivalent} to the algebraic definition: the
-evaluator is not only a homomorphism, but an isomorphism.
+akin to the notion of ``syntax''.
+%
+But this is a case where the representation is \emph{equivalent} to
+the algebraic definition: the evaluator is not only a homomorphism,
+but an isomorphism.
 %
 This equivalence is what justifies the introduction of vectors as
-columns (or rows) of numbers.  Indeed, we can
-define:
+columns (or rows) of numbers.
+%
+Indeed, we can define:
 \[v = \colvec{v} = |v0 *^| \colveccc{1 \\ 0 \\ \vdots \\ 0} +
                    |v1 *^| \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
                    |vn *^| \colveccc{0 \\ 0 \\ \vdots \\ 1}
@@ -97,10 +115,12 @@ In the following we denote by
 %
 \[e_k = \colveccc{0\\\vdots\\0\\1 \makebox[0pt][l]{\qquad $\leftarrow$ position $k$} \\0\\\vdots\\0}\]
 %
-the canonical base vectors, ie. $e_k$ is the vector that is everywhere |0|
-except at position |k|, where it is |1|, so that |v = v0 *^ e0 + ... +
-vn *^ en|. This formula maps the syntax (coefficients) to the
-semantics (a vector).
+the canonical base vectors, i.e. $e_k$ is the vector that is
+everywhere |0| except at position |k|, where it is |1|, so that |v =
+v0 *^ e0 + ... + vn *^ en|.
+%
+This formula maps the syntax (coefficients) to the semantics (a
+vector).
 
 \begin{exercise}
   Define a function which takes as input a vector |v| and a set of
@@ -112,18 +132,22 @@ semantics (a vector).
 In what follows we will systematically use the represention of vectors
 as a linear combination of basis vectors.
 %
-There is a temptation to model the corresponding set of coefficients
-as a lists, or tuples, but a more general (and conceptually simpler)
-way is to view them as \emph{functions} from a set of indices |G|:
+There is a temptation to model the corresponding collection of
+coefficients as a list, or a tuple, but a more general (and
+conceptually simpler) way is to view them as a \emph{function} from a
+set of indices |G|:
 %
 \begin{code}
-newtype Vector s g    = V (g -> s) deriving (Additive,AddGroup)
+newtype Vector s g    = V (g -> s) deriving (Additive, AddGroup)
 \end{code}
-\footnote{The addition of |Vectors| is defined indexwise. Because
-  indexwise addition is already our definition of addition for
-  functions (|g -> s|), we can simply reuse this definition. (Likewise
-  for |zero| and |negate|.) This is what the |deriving| clause amounts
-  to here.}
+\footnote{The addition of |Vectors| is defined indexwise.
+  %
+  Because indexwise addition is already our definition of addition for
+  functions (|g -> s|), we can simply reuse this definition.
+  %
+  (Likewise for |zero| and |negate|.)
+  %
+  This is what the |deriving| clause amounts to here.}
 
 We define right away the notation |a ! i| for the coefficient of the
 canonical base vector |e i|, as follows:
@@ -133,20 +157,24 @@ infix 9 !
 V f ! i = f i
 \end{code}
 
-As discussed above, the |S| parameter in |Vector S| has to be a field (|REAL|,
-or |Complex|, or |Zn|, etc.) for values of type |Vector S G| to
-represent elements of a vector space.
+As discussed above, the |S| parameter in |Vector S| has to be a field
+(|REAL|, or |Complex|, or |Zn|, etc.) for values of type |Vector S G|
+to represent elements of a vector space.
 
 The cardinality of |G|, which we sometimes denote |card G|, is number
-of basis vectors, and thus the dimension of the vector space.  Often
-|G| is finite and in the examples so far we
-have used indices from \(G = \{0, \ldots, n\}\).
+of basis vectors, and thus the dimension of the vector space.
 %
-Thus the dimension of the space
-would be \(n+1\).
+Often |G| is finite and in the examples so far we have used indices
+from \(G = \{0, \ldots, n\}\).
+%
+Thus the dimension of the space would be \(n+1\).
 
-In Haskell finiteness of |G| can be captured by the conjunction of |Bounded| (there is a minimum and a maximum element in |G|)
-and |Enum|erable (there is a notion of enumeration from a given element of |G|) and |Eq|. Hence, the list of all elements of |G| can be extracted:
+In Haskell finiteness of |G| can be captured by the conjunction of
+|Bounded| (there is a minimum and a maximum element in |G|) and
+|Enum|erable (there is a notion of enumeration from a given element of
+|G|) and |Eq|.
+%
+Hence, the list of all elements of |G| can be extracted:
 \begin{code}
 type Finite g = (Bounded g, Enum g, Eq g)
 finiteDomain :: Finite a => [a]
@@ -155,22 +183,27 @@ finiteDomain = [minBound..maxBound]
 
 We know from the previous lectures that if |S| is an instance of
 |AddGroup| then so is |G -> S|, with the pointwise definitions.
+%
 However, multiplication of vectors does not in general work
-pointwise. In fact, attempting to lift multiplication from the |Multiplicative| class would give a homogenous
-multiplication operator |(*) :: v -> v -> v|, but such an operator is
-not part of the definition of vector spaces. Consequently, vector
-spaces are \emph{not} rings.
+pointwise.
+%
+In fact, attempting to lift multiplication from the |Multiplicative|
+class would give a homogenous multiplication operator |(*) :: v -> v
+-> v|, but such an operator is not part of the definition of vector
+spaces.
+%
+Consequently, vector spaces are \emph{not} rings.
 
 Instead, the scaling operator |(*^) :: s -> v -> v|, is inhomogenous:
-the first argument is a scalar and the second one is a vector. For our
-representation it can be defined as follows:
+the first argument is a scalar and the second one is a vector.
+%
+For our representation it can be defined as follows:
 
 \begin{code}
 infixr 7 *^
 (*^) :: Multiplicative s => s -> Vector s g -> Vector s g
-s *^ V a = V $ \i -> s * (a i)
+s *^ V a = V (\i -> s * a i)
 \end{code}
-% $ emacs
 
 The canonical basis vectors are given by
 %
@@ -186,10 +219,9 @@ is :: (Eq g, Ring s) => g -> g -> s
 is i j = if i == j then 1 else 0
 \end{code}
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
-zeros everywhere, except at position |j| where it has a 1.
+zeros everywhere, except at position |i| where it has a |1|.
 
-This way, every |v : G -> S|
-is a linear combination of vectors |e i|:
+This way, every |v : G -> S| is a linear combination of vectors |e i|:
 %
 \begin{spec}
     v =  v 0 *^ e 0 + ... + v n *^ e n
@@ -197,7 +229,8 @@ is a linear combination of vectors |e i|:
 
 \section{Linear transformations}
 
-As we have seen in earlier chapters, morphisms between structures are often important.
+As we have seen in earlier chapters, morphisms between structures are
+often important.
 %
 Vector spaces are no different: if we have two vector spaces |Vector S
 G| and |Vector S G'| for the same set of scalars |S|, we can study
@@ -208,14 +241,17 @@ f v  =  f (v 0 *^ e 0 + ... + v n *^ e n)
 \end{spec}
 % that
 It is particularly interesting to study vector-space homomorphisms,
-which are more commonly called ``linear maps'' (to avoid unnecessary
-confusion with the Haskell |map| function we will refer to them by the
-slightly less common name ``linear transformation''.).  The function
-|f| is a linear transformation if it maps the operations in |Vector S
-G| into operations in |Vector S G'| as follows:
+which are more commonly called ``linear maps''.
+%
+To avoid unnecessary confusion with the Haskell |map| function we will
+refer to vector-space homomorphisms by the slightly less common name
+``linear transformation''.
+%
+The function |f| is a linear transformation if it maps the operations
+in |Vector S G| into operations in |Vector S G'| as follows:
 \begin{spec}
-f (u + v) =  f u + f v
-f (s *^ u) =  s *^ f u
+f (u + v)   =  f u + f v
+f (s *^ u)  =  s *^ f u
 \end{spec}
 Because |v = (v 0 *^ e 0 + ... + v n *^ e n)|, we also have:
 %
@@ -258,19 +294,22 @@ That is, it suffices to know the behaviour of |f| on the basis vectors
 to know its behaviour on the whole vector space.
 
 %
-It is enlightening to compare the above sum with the standard vector-matrix multiplication.
+It is enlightening to compare the above sum with the standard
+vector-matrix multiplication.
+%
 Let us define |M| as follows:
 %
 \begin{spec}
 M = [m 0 | ... | m n]     -- where |m : G -> Vector S G'|
 \end{spec}
 %
-That is, the columns of |M| are the images of the canonical base vectors |e i|
-through |f| (or, in other words, the columns of |M| are |f (e i)|).
+That is, the columns of |M| are the images of the canonical base
+vectors |e i| through |f| (or, in other words, the columns of |M| are
+|f (e i)|).
 %
-Every |m k| has |card G'| elements, and it has become standard
-to write |M i j| to mean the |i|th element of the |j|th column, i.e., |M i
-j = m j i|, so that, with the usual matrix-vector multiplication
+Every |m k| has |card G'| elements, and it has become standard to
+write |M i j| to mean the |i|th element of the |j|th column, i.e., |M
+i j = m j i|, so that, with the usual matrix-vector multiplication
 %
 \begin{spec}
   (M * v) i = sum [M i j * v j | j <- [0 .. n]]
@@ -284,8 +323,10 @@ therefore, one has
   sum [m j i * v j | j <- [0 .. n]]           = -- by |f v g' = sum [m j g' * v j || j <- [0 .. n]]| with |g' = i|
   f v i
 \end{spec}
+\pj{Make equation comment into text to fit within the margins}
 %
-If we take |Matrix| to be just a synonym for functions of type |G -> Vector S G'|:
+If we take |Matrix| to be just a synonym for functions of type |G ->
+Vector S G'|:
 %
 \begin{code}
 type Matrix s g g' = g' -> Vector s g
@@ -306,9 +347,9 @@ mulMV m v  = V (\i -> sum [m i!j  *  v!j | j <- finiteDomain])
 % specification/conceptual level we should perhaps stick to the usual
 % $\sum$ notation.
 
-Note that in the terminology of the earlier chapters we can see |Matrix
-s g g'| as a type of syntax and the linear transformation (of type
-|Vector S G -> Vector S G'|) as semantics.
+Note that in the terminology of the earlier chapters we can see
+|Matrix s g g'| as a type of syntax and the linear transformation (of
+type |Vector S G -> Vector S G'|) as semantics.
 %
 With this view, |mulMV| is just another |eval :: Syntax -> Semantics|.
 %
@@ -326,8 +367,8 @@ representation is unique.
 i.e., |e k| extracts the |k|th column from |M| (hence the notation
 ``e'' for ``extract'').
 
-We have seen how a linear transformation |f| can be fully described by a matrix
-of scalars, |M|.
+We have seen how a linear transformation |f| can be fully described by
+a matrix of scalars, |M|.
 %
 Similarly, in the opposite direction, given an arbitrary matrix |M|,
 we can define
@@ -344,9 +385,12 @@ above for |f| is precisely |M|.
 Exercise~\ref{exc:Mstarcompose}: compute |((M*) . e ) g g'|.
 
 Therefore, every linear transformation is of the form |(M*)| and every
-|(M*)| is a linear transformation. There is a bijection between these two sets.
+|(M*)| is a linear transformation.
 %
-Matrix-matrix multiplication is defined in order to ensure associativity (note here the overloading of the operator |*|):
+There is a bijection between these two sets.
+%
+Matrix-matrix multiplication is defined in order to ensure
+associativity (note here the overloading of the operator |*|):
 %
 \begin{spec}
 (M' * M) * v = M' * (M * v)
@@ -359,17 +403,21 @@ that is
 \end{spec}
 
 Exercise~\ref{exc:Mstarhomomorphismcompose}: work this out in detail.
-\jp{Note that |Matrix| form a category with mulMV being the composition and |e| as the identity.}
+%
+\jp{Note that |Matrix| form a category with mulMV being the
+  composition and |e| as the identity.}
 
-Exercise~\ref{exc:MMmultAssoc}: show that matrix-matrix multiplication is associative.
+Exercise~\ref{exc:MMmultAssoc}: show that matrix-matrix multiplication
+is associative.
+%
 \jp{Not sure what the difference is from the previous exercise.}
 
-A simple vector space is obtained for |G = ()|, the
-singleton index set.
+A simple vector space is obtained for |G = ()|, the singleton index
+set.
 %
 In this case, the vectors |s : () -> S| are functions that can take
-exactly one value as argument, therefore they have exactly one value: |s ()|, so
-they are isomorphic with |S|.
+exactly one value as argument, therefore they have exactly one value:
+|s ()|, so they are isomorphic with |S|.
 %
 But, for any |v : G -> S|, we have a function |fv : G -> (() -> S)|,
 namely
@@ -406,11 +454,10 @@ i.e., the scalar product of the vectors |v| and |w|.
 
 \textbf{Remark:} We have not discussed the geometrical point of view.
 %
-\lnOnly{For the connection between matrices, linear transformations, and
-geometry, I warmly recommend binge-watching the ``Essence of linear
-algebra'' videos on youtube (start here:
-\url{https://www.youtube.com/watch?v=kjBOesZCoqc}).
-}
+\lnOnly{For the connection between matrices, linear transformations,
+  and geometry, I warmly recommend binge-watching the ``Essence of
+  linear algebra'' videos on youtube (start here:
+  \url{https://www.youtube.com/watch?v=kjBOesZCoqc}).  }
 
 %*TODO: Perhaps it would be interesting to show that some linear transformations
 % can also be interpreted as changes of basis.
@@ -423,17 +470,20 @@ An important concept is the dot product between vectors.
 dot :: (Ring s, Finite g) => Vector s g -> Vector s g -> s
 dot v w = sum [v!i * w!i | i <- finiteDomain]
 \end{code}
-\jp{If we take the algebraic view then this definition is only correct if the canonical basis is orthonormal.}
-Dot products have (at least) two aspects. First, they yield a notion of how
-``big'' a vector is, the |norm|.
-
+\jp{If we take the algebraic view then this definition is only correct
+  if the canonical basis is orthonormal.}
+%
+Dot products have (at least) two aspects.
+%
+First, they yield a notion of how ``big'' a vector is, the |norm|.
+%
 \begin{code}
 sqNorm :: (Ring s, Finite g) => Vector s g -> s
 sqNorm v = dot v v
 
 norm v = sqrt (sqNorm v)
 \end{code}
-
+%
 Additionally, the dot product often serves as a measure of how much
 vectors are similar to (or correlated with) each other.
 
@@ -442,13 +492,16 @@ For two non-zero vectors |u| and |v|, we can define:
 similarity u v = dot u v / norm u / norm v
 \end{code}
 Dividing by the norms mean that |abs (similarity u v)| is at most 1
---- in the [-1,1] interval.\jp{For real fields. For complex ones one would use the inner product instead.}
+--- in the [-1,1] interval.
+%
+\jp{For real fields. For complex ones one would use the inner product
+  instead.}
 
 In fact, for Euclidean spaces |similarity u v| is the cosine of the
 angle between |u| and |v|.
-
+%
 For this reason, one says that two vectors are orthogonal when their
-dot product is 0 --- even in non-Euclidean spaces.
+dot product is |0| --- even in non-Euclidean spaces.
 
 \paragraph{Orthogonal transformations}
 
@@ -458,7 +511,9 @@ preserve the dot product.
   dot (f u) (f v) = dot u v
 \end{spec}
 
-In Euclidean spaces, such a transformation preserve angles. In general, they are called orthogonal transformations.
+In Euclidean spaces, such a transformation preserve angles.
+%
+In general, they are called orthogonal transformations.
 
 \begin{exercise}
 Can you express this condition as a homomorphism condition?
@@ -466,35 +521,49 @@ Can you express this condition as a homomorphism condition?
 
 Such transformations necessarily preserve the dimension of the space
 (otherwise at least one base vector would be squished to nothing and
-dot products involving it become zero). (When the dimension is
-preseved, one often uses the term ``linear operator''.) The
-corresponding matrices are square.
+dot products involving it become zero).
+%
+(When the dimension is preseved, one often uses the term ``linear
+operator''.)
+%
+The corresponding matrices are square.
 
 \begin{exercise}
   Prove that orthogonal operators form a monoid.
 \end{exercise}
 
-If angles are preserved what about distances? An isometry |f| is a
-distance-preserving transformation:
-
+If angles are preserved what about distances?
+%
+An isometry |f| is a distance-preserving transformation:
+%
 \begin{spec}
   norm (f v) = norm v
 \end{spec}
-
-We can prove that |f| is orthogonal iff. it is an isometry. The proof
-in the left-to-right direction is easy and left as an exercise. In the
-other direction one uses the equality:
+%
+We can prove that |f| is orthogonal iff.\ it is an isometry.
+%
+The proof in the left-to-right direction is easy and left as an
+exercise.
+%
+In the other direction one uses the equality:
 \begin{spec}
   4 * dot u v = sqNorm (u + v) - sqNorm (u - v)
 \end{spec}
-
+%
 In Euclidean spaces, this means that preserving angles and preserving
 distances go hand-in-hand.
 
-Orthogonal transformations enjoy many more useful properties: we have barely scrached the surface here.
+Orthogonal transformations enjoy many more useful properties: we have
+barely scrached the surface here.
+%
 Among others, their rows (and columns) are orthogonal to each other.
-The are also invertible (and so they form a group), and the inverse is the (conjugate-) transpose of the matrix.
-(In the context of a complex scalar field, one would use the word ``unitary'' instead of ``orthogonal'', but it's a straightforward generalisation.)
+%
+The are also invertible (and so they form a group), and the inverse is
+the (conjugate-) transpose of the matrix.
+%
+(In the context of a complex scalar field, one would use the word
+``unitary'' instead of ``orthogonal'', but it's a straightforward
+generalisation.)
 
 \section{Examples of matrix algebra}
 
@@ -503,19 +572,21 @@ The are also invertible (and so they form a group), and the inverse is the (conj
 We have represented polynomials of degree |n+1| by the list of their
 coefficients.
 %
-This is the same representation as the vectors represented
-by |n+1| coordinates which we referred to in the introduction to this chapter.
+This is the same representation as the vectors represented by |n+1|
+coordinates which we referred to in the introduction to this chapter.
 %
-This suggests that polynomials of degree |n| form a vector space,
-and we could interpret that as |{0, ..., n} -> REAL| (or, more
-generally, |Field a => {0, ..., n} -> a|).
+This suggests that polynomials of degree |n| form a vector space, and
+we could interpret that as |{0, ..., n} -> REAL| (or, more generally,
+|Field a => {0, ..., n} -> a|).
 %
-The operations, |(+)| for vector addition and |(*^)| for vector scaling, are
-defined in the same way as they are for functions.
+The operations, |(+)| for vector addition and |(*^)| for vector
+scaling, are defined in the same way as they are for functions.
 %
 
 To give an intuition for the vector space it is useful to consider the
-interpretation of the canonical base vectors. Recall that they are:
+interpretation of the canonical base vectors.
+%
+Recall that they are:
 %
 \begin{spec}
 e i : {0, ..., n} -> REAL, e i j = i `is` j
@@ -541,8 +612,8 @@ our base vectors |e i|.
 For example, |p x = 2+x^3| is represented by |2 *^ e 0 + e 3|.
 %
 
-In general, the evaluator from the |Vector g s| representation to polynomial
-functions is as follows:
+In general, the evaluator from the |Vector g s| representation to
+polynomial functions is as follows:
 %
 % \begin{code}
 % evalM :: G -> (REAL -> REAL)
@@ -563,7 +634,8 @@ D f|, we know that it is a linear transformation.
 %
 % What is its associated matrix?
 
-The associated matrix will be obtained by appling the linear transformation to every base vector:
+The associated matrix will be obtained by appling the linear
+transformation to every base vector:
 %
 \begin{spec}
 M = [ derive (e 0), derive (e 1), ..., derive (e n) ]
@@ -571,8 +643,8 @@ M = [ derive (e 0), derive (e 1), ..., derive (e n) ]
 %
 where each |derive (e i)| has length |n|.
 %
-The vector |e (i + 1)| represents |\x -> x^(i + 1)| and thus we
-want |derive (e (i + 1))| to represent the derivative of |\x -> x^(i + 1)|:
+The vector |e (i + 1)| represents |\x -> x^(i + 1)| and thus we want
+|derive (e (i + 1))| to represent the derivative of |\x -> x^(i + 1)|:
 %
 \begin{spec}
 evalP (derive (e (i + 1)))  =  {- by spec. -}
@@ -626,46 +698,55 @@ representing the polynomial function |p' x = 2 + 6*x|.
 Exercise~\ref{exc:Dmatrixpowerseries}: write the
 (infinite-dimensional) matrix representing |D| for power series.
 
-Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated with
-integration of polynomials.
+Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated
+with integration of polynomials.
 
 \subsection{\extraMaterial Dot product for functions and Fourier series}
 
 We said before that the dot product yields a notion of norm and
-similarity. Unfortunately, the dot product (as defined above) is not
-very useful in this respect for polynomials represented as monomial
-coefficients: it is not clear what kind of similarity it corresponds
-to. To find a more useful dot product, we can return to the semantics
-of polynomials in terms of functions. But for now we consider them
-over the restricted domain $I = [-\pi,\pi]$.
+similarity.
+%
+Unfortunately, the dot product (as defined above) is not very useful
+in this respect for polynomials represented as monomial coefficients:
+it is not clear what kind of similarity it corresponds to.
+%
+To find a more useful dot product, we can return to the semantics of
+polynomials in terms of functions.
+%
+But for now we consider them over the restricted domain
+$I = [-\pi,\pi]$.
 
-Assume for a moment that we would define the dot product of
-functions $u$ and $v$ as follows:
+Assume for a moment that we would define the dot product of functions
+$u$ and $v$ as follows:
 \[
-  |dotF u v| = \int_I |eval u|x |eval v|x dx
+  |dotF u v| = \int_I |(eval u x)*(eval v x)| dx
 \]
 
 Then, the norm of a function would be a measure of how far it gets from
-zero, using a quadratic mean. Likewise, the corresponding similarity
-measure corresponds to how much the functions ``agree'' on the
-interval.  That is, if the signs of |eval u| and |eval v| are the same
-on a sub-interval |I| then the integral is positive on |I|, and
-negative if they are different.
+zero, using a quadratic mean.
+%
+Likewise, the corresponding similarity measure corresponds to how much
+the functions ``agree'' on the interval.
+%
+That is, if the signs of |eval u| and |eval v| are the same on a
+sub-interval |I| then the integral is positive on |I|, and negative if
+they are different.
 
 As we suspected, using |dot = dotF|, the straightforward
 representation of polynomials as list of coefficients is not an
-orthogonal basis. There is, for example, a positive correlation
-between |x| and |x^3|.
+orthogonal basis.
+%
+There is, for example, a positive correlation between |x| and |x^3|.
 
 If we were using instead a set of basis polynomials |bn| which are
 orthogonal using the above semantic-oriented definition of |dot|, then
 we could compute it by multiplying pointwise and summing as before,
 and this would be a lot more efficient than to compute the integral by
-1. computing the product using |mulPoly| 2. integrating using
-|integ|. 3. using |eval| on the end points of the domain.
+1) computing the product using |mulPoly|, 2) integrating using
+|integ|, 3) using |eval| on the end points of the domain.
 
-Let us consider as a base the functions |bn = sin (n*x)|, prove
-that they are orthogonal.
+Let us consider as a base the functions |bn = sin (n*x)|, prove that
+they are orthogonal.
 
 We first use trigonometry to rewrite the product of bases:
 \begin{spec}
@@ -674,53 +755,69 @@ We first use trigonometry to rewrite the product of bases:
 =  cos ((i-j)*x) - cos ((i+j)*x)
 \end{spec}
 %
-Assuming |i/=j|, we can take the indefinite integral of both sides, safely
-ignoring any constant term:
+Assuming |i/=j|, we can take the indefinite integral of both sides,
+safely ignoring any constant term:
 %
+\pj{Eplain ``safely ignoring''.}
+%{
+%format integral = "\int"
 \begin{spec}
-   2 \int bi bj dx
+   2 * integral bi bj dx
 =  sin ((i-j)*x)/(i-j) - sin ((i+j)*x) / (i+j)
 \end{spec}
-
+%}
+\pj{Some step missing - no |pi| visible above.}
+%
 But |sin (k*pi) = 0| for any integer |k|, and thus the definite
 integral over |I| is also equal to zero.
 
-We can now compute |sqNorm| of |bi|. Trigonometry says:
-
+We can now compute |sqNorm| of |bi|.
+%
+Trigonometry says:
 \begin{spec}
    2 * (bi * bi)
 =  2 * sin (i*x) * sin (i*x)
 =  cos (0*x) - cos (2i*x)
 =  1 - cos (2i*x)
 \end{spec}
-
+%
 When taking the integral on |I|, the cosine disappears using the same
-argument as before, and there remains: |2*sqNorm bi = 2 pi|. Thus to
-normalise the base vectors we need to scale them by |1 / sqrt pi|. In
-sum |b_i = sin (i*x)/sqrt pi| is an orthonormal basis:
+argument as before, and there remains: |2*sqNorm bi = 2 pi|.
+%
+Thus to normalise the base vectors we need to scale them by |1 / sqrt
+pi|.
+%
+In sum |bi = sin (i*x)/sqrt pi| is an orthonormal basis:
 
 \begin{spec}
-  bj `dot` bi = is i j
+  bi `dot` bj = is i j
 \end{spec}
 
-As interesting as it is, this basis does not cover all functions over I. To
-start, |eval bi 0 == 0| for every |i|, and thus linear
-combinations can only ever be zero at the origin.
+As interesting as it is, this basis does not cover all functions over
+I.
+%
+To start, |eval bi 0 == 0| for every |i|, and thus linear combinations
+can only ever be zero at the origin.
 
-But if we were to include  |cos (n*x) / sqrt pi| in the set of base vectors, it would remain orthogonal, and the
-space would cover all periodic functions with period $2 \pi$.  This
-representation is called the Fourier series. Let us define a meaningful
-index (|G|) for the basis:
-
+But if we were to include |cos (n*x) / sqrt pi| in the set of base
+vectors, it would remain orthogonal, and the space would cover all
+periodic functions with period $2 \pi$.
+%
+This representation is called the Fourier series.
+%
+Let us define a meaningful index (|G|) for the basis:
+%
 \begin{code}
 data Periodic where
-  Sin :: ℕ -> Periodic
-  Cos :: ℕ -> Periodic
+  Sin  :: ℕ -> Periodic
+  Cos  :: ℕ -> Periodic
 \end{code}
-
+%
 A useful property of an orthonormal basis is that its representation
-as coefficients can be obtained by taking the dot product with each base
-vectors. Indeed:\footnote{The proof can be easily adapted to infinite sums.}
+as coefficients can be obtained by taking the dot product with each
+base vectors.
+%
+Indeed:\footnote{The proof can be easily adapted to infinite sums.}
 
 \begin{spec}
      v           = sum [vi *^ bi | i <- finiteDomain]
@@ -775,12 +872,13 @@ be the source of exactly one arrow.
 We can take as vectors the characteristic functions of subsets of |G|,
 i.e., |G -> {0, 1}|.
 %
-|{0, 1}| is not a field w.r.t. the standard arithmetical operations
-(it is not even closed w.r.t. addition), and the standard trick to
-workaround this issue is to extend the type of the functions to |REAL|.
+Now, |{0, 1}| is not a field w.r.t. the standard arithmetical
+operations (it is not even closed w.r.t. addition), and the standard
+trick to workaround this issue is to extend the type of the functions
+to |REAL|.
 
-The canonical basis vectors are, as usual,
-|e i = V (is i)|.
+The canonical basis vectors are, as usual, |e i = V (is i)|.
+%
 Each |e i| is the characteristic function of a singleton set, |{i}|.
 
 
@@ -852,13 +950,22 @@ arithmetical ones, for example |min| and |max|.
 However, |({0, 1}, max, min)| is not a field, and neither is
 |(REAL, max, min)|.
 %
-This means that we do not have a vector space, but rather a \emph{module}.
-One can still do a lot with modules: for example the definition of matrix multiplication only demands a |Ring| rather than a |Field| (and none of the |VectorSpace| laws demand scalar division).
-Therefore, having just a module is not a problem if all we want is to compute the evolutions of
-possible states,
-but we cannot apply most of the deeper results of
-linear algebra.\jp{But perhaps we have not defined those so far... Here it begs to say that the behaviour at the limit is given by the
-                   inverted matrix. But where does it fit in the chapter?}
+This means that we do not have a vector space, but rather a
+\emph{module}.
+%
+One can still do a lot with modules:
+%
+for example the definition of matrix multiplication only demands a
+|Ring| rather than a |Field| (and none of the |VectorSpace| laws
+demand scalar division).
+%
+Therefore, having just a module is not a problem if all we want is to
+compute the evolutions of possible states, but we cannot apply most of
+the deeper results of linear algebra.
+%
+\jp{But perhaps we have not defined those so far... Here it begs to
+  say that the behaviour at the limit is given by the inverted
+  matrix. But where does it fit in the chapter?}
 
 %*TODO: (NiBo)
 % But even if we take |(REAL, max, min)|, the problem is that we
@@ -885,29 +992,28 @@ instance Bounded G where
 instance Enum G where
   toEnum          =  G
   fromEnum (G n)  =  n
-
 \end{code}
-Note that the |Ring G| instance is given just for convenient notation (integer literals):
-vector spaces in general do not rely on any numeric structure on the indices (|G|).
 %
-The transition function has type |G -> G| and the following implementation:
+Note that the |Ring G| instance is given just for convenient notation
+(integer literals): vector spaces in general do not rely on any
+numeric structure on the indices (|G|).
+%
+The transition function has type |G -> G| and the following
+implementation:
 %
 \begin{code}
 next1 :: G -> G
-next1 0 = 1; next1 1 = 3; next1 2 = 5; next1 3 = 6; next1 4 = 6; next1 5 = 4; next1 6 = 5
+next1 0  = 1;  next1 1 =  3;  next1 2 = 5;  next1 3 = 6;
+next1 4  = 6;  next1 5 =  4;  next1 6 = 5
 \end{code}
 %
 Its associated matrix is
 %
 \begin{spec}
-m g'
-  = {- |m| is the matrix associated with |f| -}
-V (\ g -> toF (f (e g)) g')
-  = {- by the spec. of |f| -}
-V (\ g -> toF (e (next g)) g')
-  = {- by def. of |e| -}
-V (\ g -> toF (V (is (next g))) g')
-  = {- by def. of |toF| -}
+m g'                                 = {- |m| is the matrix version of |f| -}
+V (\ g -> toF (f (e g)) g')          = {- by the spec. of |f| -}
+V (\ g -> toF (e (next g)) g')       = {- by def. of |e| -}
+V (\ g -> toF (V (is (next g))) g')  = {- by def. of |toF| -}
 V (\ g -> is (next g) g')
 \end{spec}
 %
@@ -1093,15 +1199,15 @@ We need a |Ring| instance for |Bool| (not a field!):
 %
 \begin{code}
 instance Additive Bool where
-  (+)  =  (||)
-  zero = False
+  zero    =  False
+  (+)     =  (||)
 
 instance AddGroup Bool where
-  negate         =  not
+  negate  =  not
 
 instance Multiplicative Bool where
-  one = True
-  (*)  =  (&&)
+  one     =  True
+  (*)     =  (&&)
 \end{code}
 
 Test:
@@ -1198,27 +1304,31 @@ In the case of stochastic systems, the inputs will be
 \end{spec}
 
 If we know the current probability distributions over states, then we
-can compute the next one by using the \emph{total probability formula},
-normally expressed as
+can compute the next one by using the \emph{total probability
+  formula}, normally expressed as
 %
 \begin{spec}
     p a = sum [p (a | b) * p b | b <- G]
 \end{spec}
 %
-This formula in itself is worth a lecture (see \cref{ch:probability-theory}).
+This formula in itself is worth a lecture (see
+\cref{ch:probability-theory}).
 %
 But for now, let's just remark that the notation is extremely suspicious.
 %
 |(a || b)|, which is usually read ``|a|, given |b|'', is clearly not
 of the same type as |a| or |b|, so cannot really be an argument to
-|p|. We discuss this notation at length in \cref{ch:probability-theory}.
+|p|. We discuss this notation at length in
+\cref{ch:probability-theory}.
 %
 Additionally, the |p a| we are computing with this formula is not the
 |p a| which must eventually appear in the products on the right hand
 side.
 %
-We do not know how this notation came about\jp{According to Jaynes in "Probability Theory, The Logic of Science, p. 17. The notation A||B for "A given B" is attributable to Keynes (1921)."}: it is neither in Bayes'
-memoir, nor in Kolmogorov's monograph.\jp{citations needed}
+We do not know how this notation came about\jp{According to Jaynes in
+  "Probability Theory, The Logic of Science, p. 17. The notation A||B
+  for "A given B" is attributable to Keynes (1921)."}: it is neither
+in Bayes' memoir, nor in Kolmogorov's monograph.\jp{citations needed}
 
 Regardless, at this stage, what we need to know is that the
 conditional probability |p (a || b)| gives us the probability that the
@@ -1257,7 +1367,11 @@ probability of being anwhere else is |0|.
 
 Exercise~\ref{exc:StocExample1}: starting from state 0, how many steps
 do you need to take before the probability is concentrated in state 6?
-Reverse again the arrow from 2 to 4.\jp{what does that mean how do we make it so that columns sum to 1? Also NiBo:There are many ways of reversing the arrow from 2 to 4.}
+%
+Reverse again the arrow from 2 to 4.
+%
+\jp{what does that mean how do we make it so that columns sum to 1?
+  Also NiBo:There are many ways of reversing the arrow from 2 to 4.}
 %
 What can you say about the long-term behaviour of the system now?
 
@@ -1268,7 +1382,7 @@ You will need to define:
 The transition function (giving the probability of getting to |g'| from |g|)
 %
 \begin{code}
-f3 :: G -> Vector REAL G   -- but we want only |G -> Vector [0, 1] G|, the unit interval
+f3 :: G -> Vector REAL G
 \end{code}
 %
 and the associated matrix
@@ -1276,6 +1390,8 @@ and the associated matrix
 \begin{code}
 m3 ::  G -> Vector REAL G
 \end{code}
+(We want only |G -> Vector [0, 1] G|, using the unit interval in place of |REAL|.)
+
 
 %**TODO (NiBo):
 % This could go to into the file for the live sessions:
@@ -1349,9 +1465,10 @@ m3 g' = V (\ g -> toF (f3 g) g')
 \subsection{\extraMaterial Quantum Systems}
 
 Instead of real numbers for probabilities, we could consider using
-complex numbers --- one then speaks of ``amplitudes''. An amplitude
-represented by a complex number |z| is converted to a probability by
-taking the square of the modulus of |z|:
+complex numbers --- one then speaks of ``amplitudes''.
+%
+An amplitude represented by a complex number |z| is converted to a
+probability by taking the square of the modulus of |z|:
 \begin{spec}
 p z = conj z * z
 \end{spec}
@@ -1363,22 +1480,26 @@ We can then rewrite the law of total probability as follows:
 =    inner z z
 \end{spec}
 
-Where the |inner| product generalises the dot product for vector spaces
-with complex scalars (the left operand is conjugated indexwise).  Hence, rather
-conveniently, the law of total probability is replaced by conservation
-of the norm of state vectors.
-In particular, norms are conserved if the transition matrix is unitary.
-
-
-The unitary character of the transition matrix
-defines valid systems from the point of view of quantum mechanics.
+Where the |inner| product generalises the dot product for vector
+spaces with complex scalars (the left operand is conjugated
+indexwise).
 %
-Because all unitary matrices are invertible,
-it follows that all quantum mechanical systems have an invertible dynamics.
-Furthermore, the inverted matrix is also unitary,
-and therefore the inverted system is also valid as a quantum dynamical system.
+Hence, rather conveniently, the law of total probability is replaced
+by conservation of the norm of state vectors.
+%
+In particular, norms are conserved if the transition matrix is
+unitary.
 
-Here is an example orthogonal (and thus also unitary matrix)
+The unitary character of the transition matrix defines valid systems
+from the point of view of quantum mechanics.
+%
+Because all unitary matrices are invertible, it follows that all
+quantum mechanical systems have an invertible dynamics.
+%
+Furthermore, the inverted matrix is also unitary, and therefore the
+inverted system is also valid as a quantum dynamical system.
+
+Here is an example real orthogonal (and thus also unitary matrix)
   \[
   M =
   \bordermatrix{
@@ -1393,16 +1514,20 @@ Here is an example orthogonal (and thus also unitary matrix)
   }
 \]
 
-In this example the amplitudes of state 0,1,2 are permuted at every
-step.  States 3 and 4 get mixed into one another, and one can note
-that the sign of their amplitudes may get inverted. A similar
-situation happens between states 5 and 6, but at a higher rate.
+In this example the amplitudes of states 0, 1, and 2 are permuted at
+every step.
+%
+States 3 and 4 get mixed into one another, and one can note that the
+sign of their amplitudes may get inverted.
+%
+A similar situation happens between states 5 and 6, but at a higher
+rate.
 
 \section{\extraMaterial Monadic dynamical systems}
 
 This section is not part of the intended learning outcomes of the
-course, but it presents a useful unified view of the previous
-sections which could help your understanding.
+course, but it presents a useful unified view of the previous sections
+which could help your understanding.
 
 All the examples of dynamical systems we have seen in the previous
 section have a similar structure.
@@ -1426,10 +1551,10 @@ return a structure of possible future states of type |G|:
 \item stochastic: given a state, we compute a probability distribution
   over possible future states.
   %
-  The transition function has the type |f : G -> (G -> Complex)|, the
+  The transition function has the type |f : G -> (G -> REAL)|, the
   structure of the target is the probability distributions over |G|.
-\item quantum: given an observable state, we compute an (orthogonal) superposition
-  of possible future states.
+\item quantum: given an observable state, we compute an (orthogonal)
+  superposition of possible future states.
 \end{itemize}
 
 Therefore:
@@ -1468,8 +1593,8 @@ was in effect:
 %
 So, we apply |f| to every state, as if we were starting from precisely
 that state, obtaining the possible future states starting from that
-state, and then collect all these hypothetical possible future
-states in some way that takes into account the initial uncertainty
+state, and then collect all these hypothetical possible future states
+in some way that takes into account the initial uncertainty
 (represented by |v 0|, ..., |v n|) and the nature of the uncertainty
 (the specific |(+)| and |(*^)|).
 
@@ -1503,7 +1628,7 @@ raises the question: is there a monad underlying matrix-vector
 multiplication, such that the above are instances of it (obtained by
 specialising the scalar type |S|)?
 
-Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|, |Supp|.
+Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|, |Super|.
 
 
 \section{The monad of linear algebra}
@@ -1538,11 +1663,13 @@ instance Ring s => FinMon (Vector s) where
 \end{code}
 %
 Note that, if |v :: Vector S G| and |f :: G -> Vector S G'| then
-both |func f v| and |bind v f| are of type |Vector S G'|. How do
-these operations relate to linear algebra and matrix-vector multiplication?
+both |func f v| and |bind v f| are of type |Vector S G'|.
+%
+How do these operations relate to linear algebra and matrix-vector
+multiplication?
 
-Remember that |e g| is that vector whose components are zero except for
-the |g|th one which is one. In other words
+Remember that |e g| is that vector whose components are zero except
+for the |g|th one which is one. In other words
 %
 \begin{spec}
     e g = V (is g) = embed g
@@ -1551,7 +1678,8 @@ the |g|th one which is one. In other words
 and thus |embed = e|.
 %
 In order to understand how matrix-vector multiplication relates to the
-monadic operations, remember that matrixes are just functions of type |G -> Vector S G'|:
+monadic operations, remember that matrices are just functions of type
+|G -> Vector S G'|:
 %
 \begin{spec}
   type Matrix s g g' = g' -> Vector s g
@@ -1621,12 +1749,12 @@ product
   dot v (V (is g' . f))
 \end{spec}
 %
-This shows that the role of |f| in |func f v| is that of re-distributing
-the values of |v| onto the new vector.
+This shows that the role of |f| in |func f v| is that of
+re-distributing the values of |v| onto the new vector.
 
 \begin{exercise}
-show that if |w = func f v| then the sum of the components of
-|w| is equal to the sum of the components of |v|.
+  show that if |w = func f v| then the sum of the components of |w| is
+  equal to the sum of the components of |v|.
 \end{exercise}
 
 
@@ -1746,7 +1874,7 @@ transpose :: Mat s g g' -> Mat s g' g
 transpose m i j = m j i
 getCol :: Mat s g g' -> g -> Vec s g'
 getCol = transpose
-getRow :: Mat s g g' -> g' -> Vec s g
+getRow :: Mat s g g' -> g' -> Vec s gabbled
 getRow = id
 \end{code}
 

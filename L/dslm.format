@@ -119,6 +119,7 @@
 %format ck = c "_" k
 %format ai = a "_" i
 %format bi = b "_" i
+%format bj = b "_" j
 %format ci = c "_" i
 %format cn = c "_" n
 %format Ci = C "_" i
@@ -147,15 +148,20 @@
 %format p4
 %format r1
 %format r2
+%format s0
 %format s1
 %format s2
 %format s3
 %format s4
 %format s5
+%format si = s "_i"
+%format sn = s "_n"
 %format t0
 %format t1
 %format t2
 %format t3
+%format ti = t "_i"
+%format tn = t "_n"
 %format v0
 %format v1
 %format vn = v "_n"
@@ -196,6 +202,7 @@
 %format di = d "_{i}"
 %format xi = x "_{i}"
 %format vi = v "_{i}"
+%format vj = v "_{j}"
 %format e0
 %format en = e "_n"
 %format Orn = Or "_{n}"

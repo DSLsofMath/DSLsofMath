@@ -800,15 +800,15 @@ instance AddGroup a => AddGroup (a, a) where
 
 instance Ring a => Multiplicative (a,a) where
   (f, f') * (g, g')  = (f * g,  f' * g + f * g')
-  one = (one,zero)
+  one                = (one,zero)
 
 instance Field a => MulGroup (a, a) where
   (f, f') / (g, g')  = (f / g,  (f' * g - g' * f) / (g * g))
 
 instance Transcendental a => Transcendental (a, a) where
-  exp (f, f')        = (exp f,  (exp f) * f')
-  sin (f, f')        = (sin f,  cos f * f')
-  cos (f, f')        = (cos f,  -(sin f) * f')
+  exp  (f, f')       = (exp f,  (exp f) * f')
+  sin  (f, f')       = (sin f,  cos f * f')
+  cos  (f, f')       = (cos f,  -(sin f) * f')
 \end{code}
 
 \jp{What about log?}
