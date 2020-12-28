@@ -155,16 +155,32 @@ class Functor f where
   \label{ex:maximum-homo}
   Can the function |maximum :: [ℤ] -> ℤ| be defined a homomorphism?
 \end{exercise}
- 
+
 \begin{solution}
-  The homomorphism conditions are |maximum (xs ++ ys) = max (maximum
-  xs) (maximum ys)| and |maximum = inf|, for some operation |op| and
-  a constant |unit|, forming a monoid.
+  Some information is lacking, but we assume a monoid homomorphism is
+  requested.
+  %
+  The source type (lists) is a monoid with |op=(++)| and |unit=[]| and
+  we are looking for a monoid structure on |ℤ|.
+  %
+  The homomorphism conditions are then |maximum (xs ++ ys) = op
+  (maximum xs) (maximum ys)| and |maximum [] = unit|, for some
+  operation |op : ℤ -> ℤ -> ℤ| and a constant |unit : ℤ|, forming a
+  monoid.
 
-  Because of what maximum does, we must pick |op = max|. The |unit|
-  must act like an identity for |max|: |max unit x = x|. This is
-  possible only if |unit ≤ x| for every |x|. But, this is not
-  possible: there is no lower bound in |ℤ| (|-∞| is not in |ℤ|).
-
+  Because of what maximum does, we must pick |op = max|.
+  %
+  The |unit| must act like an identity for |max|:
+  %
+  |max unit x = x|.
+  %
+  This is possible only if |unit ≤ x| for every |x|.
+  %
+  But, this is not possible: there is no lower bound in |ℤ|.
+  %
+  Thus, |maximum| is \emph{not} a (monoid) homomorphism from |[ℤ]| to |ℤ|.
+  %
+  (If we create another type |ℤ'| with |-∞| added to |ℤ| we could
+  define another |maximum' : [ℤ] -> ℤ'|).
 \end{solution}
 %TODO: more exercises!

@@ -1,3 +1,4 @@
+%if False
 \begin{code}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE RebindableSyntax #-}
@@ -10,26 +11,31 @@ import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..))
 import Prelude (abs)
 import Data.Complex
 \end{code}
+%endif
 
 \chapter{Higher-order Derivatives and their Applications}
 \label{sec:deriv}
 
 In this chapter we make heavy use of concepts from \cref{sec:CompSem}
 and thus we urge the reader to verify their understanding of
-\cref{sec:homomophism-roadmap} and do \cref{exc:findFunExp0} if their
-might have skipped it. We have seen in particular that we can give a
-numeric (|Field|, etc.) structure not only to functions, but also to
-pairs of functions and their derivatives (|Field x => Field (a -> x, a
--> x)|). But why stop there?  Why not compute a (lazy) list of a
-function together with its derivative, second derivative, etc.:
+\cref{sec:homomophism-roadmap} and do \cref{exc:findFunExp0} if they
+might have skipped it.
+%
+We have seen in particular that we can give a numeric (|Field|, etc.)
+structure not only to functions, but also to pairs of functions and
+their derivatives (|Field x => Field (a -> x, a -> x)|).
+%
+But why stop there?
+%
+Why not compute a (lazy) list of a function together with its
+derivative, second derivative, etc.:
 %
 \begin{spec}
 [f, f', f'', ...] :: [a -> a]
 \end{spec}
-
 %
 The above then represents the evaluation of an expression (of one
-variable $x$) as a function, and all its derivatives. We can write
+variable |x|) as a function, and all its derivatives. We can write
 this evaluation as an explicit function:
 %
 \begin{code}
@@ -54,10 +60,11 @@ Thus |evalAll (derive e) == tail (evalAll e)| which can be written
 %
 Thus |evalAll| is a homomorphism from |derive| to |tail|, or in other
 words, we have |H1(evalAll,derive,tail)| (|H1| was defined in
-\cref{exc:homomorphisms}) --- this is our specification for what follows.
+\cref{exc:homomorphisms}) --- this is our specification for what
+follows.
 
-We want to define the other operations on lists of functions in such a way
-that |evalAll| is such a homomorphism.
+We want to define the other operations on lists of functions in such a
+way that |evalAll| is such a homomorphism.
 %
 For example:
 %
@@ -65,15 +72,15 @@ For example:
 evalAll (e1 :*: e2) = evalAll e1 * evalAll e2
 \end{spec}
 %
-where the |(*)| sign stands for the multiplication of infinite lists of
-functions --- the operation we are trying to determine.
+where the |(*)| sign stands for the multiplication of infinite lists
+of functions --- an operation we are trying to determine.
 %
-We assume that we have already derived the definition of |+| for these
-lists (it is |zipWith (+)| --- and because the lists are infinite one
-needs not worry about differing lengths).
+We assume that we have already derived the definition of |(+)| for
+these lists (it is |zipWith (+)| --- and because the lists are
+infinite one needs not worry about differing lengths).
 
-We have the following derivation (writing |eval| for |evalFunExp| and |d| for |derive| in order
-to save ink):
+We have the following derivation (writing |eval| for |evalFunExp| and
+|d| for |derive| in order to save ink):
 %
 \begin{spec}
     LHS
@@ -93,7 +100,7 @@ Similarly, starting from the other end we get
 %
 \begin{spec}
     evalAll e1 * evalAll e2
-=
+= {- def. of |evalAll|, twice -}
     (eval e1 : evalAll (d e1)) * (eval e2 : evalAll (d e2))
 \end{spec}
 %
@@ -134,8 +141,8 @@ We also have |evalAll . d = tail . evalAll| which leads to:
     help a b (tail (evalAll e1)) (tail (evalAll e2))
 \end{spec}
 %
-Finally we rename common subexpressions:
-let |a:as = evalAll e1| and |b:bs = evalAll e2|.
+Finally we rename common subexpressions: let |a:as = evalAll e1| and
+|b:bs = evalAll e2|.
 \begin{spec}
     tail (a:as) * (b:bs)  +  (a:as) * tail (b:bs)
 =?
@@ -148,16 +155,18 @@ This equality is clearly solved by defining |help| as follows:
 help a b as bs = as * (b : bs) + (a : as) * bs
 \end{code}
 %
-Thus, we can eliminate |help| to arrive at a definition for multiplication:
+Thus, we can eliminate |help| to arrive at a definition for
+multiplication\footnote{This expression is reminiscent of polynomial multiplication
+  (\cref{sec:mulPoly}), but it is different from it because here each
+  element is implicitly divided by a factorial: we compute bigger
+  values.}:
 %
 \begin{code}
 mulStream :: Ring a => Stream a -> Stream a -> Stream a
 mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 \end{code}
-\footnote{This expression is reminiscent of polynomial multiplication
-  (\cref{sec:mulPoly}), but it is different from it because here each
-  element is implicitly divided by a factorial: we compute bigger
-  values.} As in the case of pairs, we find that we do not need any
+%
+As in the case of pairs, we find that we do not need any
 properties of functions, other than their |Ring| structure, so the
 definitions apply to any infinite list of |a| (with |Ring|) which, for
 a lack of more specific name at this point, we call a |Stream|:
@@ -184,7 +193,7 @@ Note that it may make more sense to declare a |newtype| for |Stream a|
 instead of using |[a]|, for at least two reasons.
 %
 First, because the type |[a]| also contains finite lists, but we use |Stream|
-here to represent only the infinite lists (also known as... streams).
+here to represent only the infinite lists.
 %
 Second, because there are competing possibilities for |Ring| instances
 for infinite lists, for example applying all the operations
@@ -197,30 +206,32 @@ with the newtype constructors.
 
 %
 \begin{exercise}
-Write a general derivative computation, similar to |drv|\jp{dangling reference} functions
-above:
-%
-\begin{code}
-drvList k f x = undefined    -- |k|th derivative of |f| at |x|
-\end{code}
+  Write a general derivative computation: |drv k f x = | the |k|th
+  derivative of |f| at |x|.
 \end{exercise}
 
-\begin{exercise}
-  Compare the efficiency of different ways of computing derivatives.
-  \jp{This is a pretty tough exercise...}
-\end{exercise}
+% \begin{exercise}
+%   Compare the efficiency of different ways of computing derivatives.
+%   \jp{This is a pretty tough exercise...}
+% \end{exercise}
 
 
 \section{Taylor series}
 \label{sec:taylor-series}
 
-We have arrived at the instances for |Stream| by reasoning on lists of
-functions. But everywhere we needed to manipulate functions, we
-ended up using their numerical structure directly (assuming instances such as
-|Ring (x -> a)|, rather than treating them at functions) So, the |Stream| instances hold for \emph{any} numeric type
-|a|. Effectively, we have used implicitly the |apply| homomorphism, as
-we did in \cref{sec:applyFD}. So we can view |Stream a| as series of
-higher-order derivatives applied to the same point |a|:
+We have arrived at the instances for |Stream| by reasoning about lists
+of functions.
+%
+But everywhere we needed to manipulate functions, we ended up using
+their numerical structure directly (assuming instances such as |Ring
+(x -> a)|, rather than treating them at functions) So, the |Stream|
+instances hold for \emph{any} numeric type |a|.
+%
+Effectively, we have implicitly used the |apply| homomorphism, as we
+did in \cref{sec:applyFD}.
+%
+So we can view |Stream a| as series of higher-order derivatives taken
+at the same point |a|:
 
 \begin{spec}
 [f(a), f'(a), f''(a), ...]
@@ -256,18 +267,19 @@ Therefore
 \end{spec}
 
 That is, there is a simple mapping between the representation of |f|
-as a power series (the coefficients |a_k|), and the value of all
+as a power series (the coefficients |ak|), and the value of all
 derivatives of |f| at |0|.
 
-The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]| is
-called the Taylor series centred in |0|, or the Maclaurin series.
+The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n),
+...]| is called the Taylor series centred at |0|, or the Maclaurin
+series.
 \begin{code}
 type Taylor a = Stream a
 \end{code}
 
 
-We can perform the above mapping (between a power series to the maclaurin
-series) efficiently as follows:
+We can perform the above mapping (between a power series to the
+Maclaurin series) efficiently as follows:
 
 \begin{code}
 toMaclaurin :: Ring a => PowerSeries a -> Taylor a
@@ -275,15 +287,18 @@ toMaclaurin (Poly as) = zipWith (*) as factorials
 
 fromMaclaurin :: Field a => Taylor a -> PowerSeries a
 fromMaclaurin as = Poly (zipWith (/) as factorials)
+\end{code}
 
--- List of all factorials (starting from 0)
+List of all factorials (starting from 0):
+\begin{code}
 factorials :: Ring a => [a]
 factorials = factorialsFrom 0 1
-  where factorialsFrom n factn = factn : factorialsFrom (n+1) (factn * (n + 1))
-
-
--- remember that |x = Poly [0,1]|
-ex3,ex4 :: Taylor Double
+factorialsFrom :: Ring a => a -> a -> [a]
+factorialsFrom n factn = factn : factorialsFrom (n+1) (factn * (n + 1))
+\end{code}
+Remember that |x = Poly [0,1]|:
+\begin{code}
+ex3, ex4 :: (Eq a, Field a) => Taylor a
 ex3 = toMaclaurin (x^3 + 2 * x)
 ex4 = toMaclaurin sinx
 \end{code}
@@ -298,72 +313,74 @@ power series!
 
 What if we want the value of the derivatives at some other point |a|
 (different from zero)?
-
+%
 We then need the power series of the ``shifted'' function g:
-
+%
 \begin{spec}
 g x  =  f (x + a)  <=>  g = f . (+ a)
 \end{spec}
-
+%
 If we can represent |g| as a power series, say |[b0, b1, ...]|, then
 we have
-
+%
 \begin{spec}
 {-"g^{(k)} "-} 0  =  fact k * bk  =  {-"f^{(k)} "-} a
 \end{spec}
-
+%
 In particular, we would have
-
+%
 \begin{spec}
 f x  =  g (x - a)  =  {-"\sum"-} bn * (x - a){-"^n"-}
 \end{spec}
-
+%
 which is called the Taylor expansion of |f| at |a|.
 
 Example:
-
+%
 We have that |idx = [0, 1]|, thus giving us indeed the values
-
+%
 \begin{spec}
 [id 0, id' 0, id'' 0, ...]
 \end{spec}
-
+%
 In order to compute the values of
-
+%
 \begin{spec}
 [id a, id' a, id'' a, ...]
 \end{spec}
-
+%
 for |a /= 0|, we compute
-
+%
 \begin{code}
-ida a = (toMaclaurin (evalP (X :+: Const a)))
+ida a = toMaclaurin (evalP (X :+: Const a))
 \end{code}
 
-More generally, if we want to compute the derivatives of a function |f|
-constructed with |FunExp| grammar, at a point |a|, we can use the power
-series of |g x = f (x + a)| (we additionally restrict ourselves to the first 10 derivatives):
-
+More generally, if we want to compute the derivatives of a function
+|f| constructed with |FunExp| grammar, at a point |a|, we can use the
+power series of |g x = f (x + a)| (we additionally restrict ourselves
+to the first 10 derivatives):
+%
 \begin{code}
 d f a = take 10 (toMaclaurin (evalP (f (X :+: Const a))))
 \end{code}
 
 Use, for example, our |f x = sin x + 2 * x| above.
-
+%
 As before, we can use power series directly to construct the input:
-
+%
 \begin{code}
 dP f a = toMaclaurin (f (idx + Poly [a]))
 \end{code}
 
-\section{Derivatives and Integral for Maclaurin series}
+\section{Derivatives and Integrals for Maclaurin series}
 
 Since the Maclaurin series represents |[f(0), f'(0), f''(0), ...]|,
- the tail of the list is equivalent to the derivative of |f|.
+the tail of the list is equivalent to the derivative of |f|.
 
-To see that one can substitute |f| by |f'| in the above. Another way
-to see it is to remarks that we started with the equation |evalAll
-. derive = tail . evalAll|; but now our input represention is
+To see that one can substitute |f| by |f'| in the above.
+%
+Another way to see it is to remarks that we started with the equation
+|evalAll . derive = tail . evalAll|; but now our input represention is
 \emph{already} a Maclaurin series so |evalAll = id|, and in turn
 |derive = tail|.
 
@@ -372,8 +389,9 @@ In sum:
 head  f    = eval f 0            -- value of |f| at |0|
 tail  f    = deriv f             -- derivative of |f|
 \end{spec}
-Additionally, integration is can be defined simply as cons (with the
-first argument fixing the value of |f| at 0):
+Additionally, integration can be defined simply as the list
+constructor ``cons'' with the first argument being the value of |f| at
+0:
 \begin{spec}
 integ :: a -> Taylor a -> Taylor a
 integ = (:)
@@ -392,10 +410,10 @@ or, in traditional notation:
   f(x) = f(0) + \int_0^x f'(t) \text{d}t
 \]
 
-... which is the fundamental theorem of calculus.  In sum, we find
-that our definition of |integ| is exactly that needed to comply with
-calculus laws.
-
+which is the fundamental theorem of calculus.
+%
+In sum, we find that our definition of |integ| is exactly that needed
+to comply with calculus laws.
 
 \section{Integral for Formal Power series}
 \label{sec:integral-power-series}
@@ -412,25 +430,28 @@ deriv (Poly (a:as))  =  Poly (deriv' as 1)
 \end{spec}
 
 With our insight regarding Taylor series, we can now see that |deriv =
-fromMaclaurin . tail . toMaclaurin|.  We can apply the same recipe to
-obtain integration for power series:
+fromMaclaurin . tail . toMaclaurin|.
+%
+We can apply the same recipe to obtain integration for power series:
 
 \begin{code}
 integ  ::  Field a => a -> PowerSeries a -> PowerSeries a
-integ  a0 (Poly as)  =  Poly (a0:(integ' as 1))
+integ  a0 (Poly as)  =  Poly (a0 : integ' as 1)
   where  integ' []      n  =  []
          integ' (a:as)  n  =  (a / n) : (integ' as (n+1))
 \end{code}
 %
-Remember that |a0| is the constant that we need due to indefinite integration.
+Remember that |a0| is the constant that we need due to indefinite
+integration.
 %
 
 These operations work on the type |PowerSeries a| which we can see as
 the syntax of power series, often called ``formal power series''.
 %
 The intended semantics of a formal power series |a| is, as we saw in
-Chapter~\ref{sec:poly}, an infinite sum\jp{Probably the following should go in \cref{sec:power-series}, nothing about derivatives here.
-}
+Chapter~\ref{sec:poly}, an infinite sum\jp{Probably the following
+  should go in \cref{sec:power-series}, nothing about derivatives
+  here.  }
 %
 \begin{spec}
 eval a : REAL -> REAL
@@ -466,7 +487,7 @@ Many first-order differential equations have the structure
 f' x = g f x, {-"\qquad"-} f 0 = f0
 \end{spec}
 %
-i.e., they are defined in terms of the higher-order function |g|.
+i.e., they are defined in terms of the higher-order function |g| and initial value |f0|.
 
 The fundamental theorem of calculus gives us\jp{Refer to adams2010calculus}
 %
@@ -507,6 +528,8 @@ Which functions |g| commute with |eval|?
 %
 All the ones in |Num|, |Fractional|, |Transcendental|, by construction;
 additionally, as above, |deriv| and |integ|.
+%
+\pj{Perhaps use |Ring|, |Field|, etc. instead of |Num|, |Fractional| here.}
 
 Therefore, we can implement a general solver for these simple
 equations:
@@ -516,54 +539,61 @@ solve :: Field a => a -> (PowerSeries a -> PowerSeries a) -> PowerSeries a
 solve f0 g = f              -- solves |f' = g f|, |f 0 = f0|
   where f = integ f0 (g f)
 \end{code}
-On the face of it, the solution |f| appears not well defined, because its definition depends on itself.
+On the face of it, the solution |f| appears not well defined, because
+its definition depends on itself.
 %
-We come back to this point soon, but first we observe |solve| in action on simple instances of |g|,
-starting with |const 1| and |id|:
-\jp{It'd be helpful to restate what the differential equation looks like using usual mathematical notation.}
+We come back to this point soon, but first we observe |solve| in
+action on simple instances of |g|, starting with |const 1| and |id|:
+\jp{It'd be helpful to restate what the differential equation looks
+  like using usual mathematical notation.}
 \begin{code}
 idx  ::  Field a => PowerSeries a
 idx  =   solve 0 (\f -> 1)
 idf  ::  Field a => a -> a
 idf  =   eval 100 idx
 
-expx :: Field a => PowerSeries a
-expx = solve 1 (\f -> f)
-expf :: Field a => a -> a
-expf = eval 100 expx
+expx  ::  Field a => PowerSeries a
+expx  =   solve 1 (\f -> f)
+expf  ::  Field a => a -> a
+expf  =   eval 100 expx
 \end{code}
 \jp{|eval| was declared |REAL -> REAL| above. Which eval is this referring to? Say so explicitly.}
 \begin{exercise}
-  Write |expx| as a recursive equation (inline |solve| in the definition above).
+  Write |expx| as a recursive equation (inline |solve| in the
+  definition above).
 \end{exercise}
 %
-The first solution, |idx| is just the polynomial |[0,1]| --- i.e. just $x$ in usual mathematical notation.
+The first solution, |idx| is just the polynomial |[0,1]| --- i.e. just
+$x$ in usual mathematical notation.
 %
 We can easily check that its derivative is constantly |1| and its
 value at |0| is |0|.
 %
 The function |idf| is just there to check that the semantics behaves
-as expected.\jp{So let's look at it by evaluating it at several points?}
+as expected.\jp{So let's look at it by evaluating it at several
+  points?}
 
 The second solution |expx| is a formal power series representing the
 exponential function.
 %
 It is equal to its derivative and it starts at |1|.
 %
-The function |expf| is a good approximation of the semantics for small values of its argument.
+The function |expf| is a good approximation of the semantics for small
+values of its argument.
 
 \begin{code}
 testExp :: Double
-testExp = maximum $ map diff [0,0.001..1::Double]
+testExp = maximum (map diff [0,0.001..1::Double])
   where diff = abs (expf - exp)  -- using the function instances for |abs| and |exp|
 testExpUnits :: Double
 testExpUnits =  testExp / epsilon
 epsilon :: Double  -- one bit of |Double| precision
-epsilon = last $ takeWhile (\x -> 1 + x /= 1) (iterate (/2) 1)
+epsilon = last (takeWhile (\x -> 1 + x /= 1) (iterate (/2) 1))
 \end{code}
 
-We can also\jp{why ``also''?} use mutual recursion to define sine and cosine in terms of
-each other:
+As an alternative to using |solve| we can use recursion directly.
+%
+For example, we can define sine and cosine in terms of each other:
 %
 \begin{code}
 sinx = integ 0 cosx
@@ -579,15 +609,16 @@ sinf, cosf :: Field a =>  a -> a
   using usual mathematical notation.
 \end{exercise}
 %
-The reason that these definitions produce an output instead of entering an infinite
-loop is because Haskell is a lazy language: |integ| can immediately returns the first element of
-the stream before requesting any information about its first input.
+The reason that these definitions produce an output instead of
+entering an infinite loop is because Haskell is a lazy language:
+|integ| can immediately returns the first element of the stream before
+requesting any information about its first input.
 %
 It is instructive to mimic part of what the lazy evaluation machinery
 is doing by hand, as follows.
 %
-We know that both |sinx| and |cosx| are streams, thus we can start
-by filling in just the very top level structure:
+We know that both |sinx| and |cosx| are streams, thus we can start by
+filling in just the very top level structure:
 \begin{spec}
 sx = sh : st
 cx = ch : ct
@@ -606,8 +637,8 @@ cx  =  1  :  ct
 %format neg x = "\text{-}" x
 %
 At this stage we only know the constant term of each power series, but
-that is enough for the next step: the head of |st| is |frac 1 1| and the
-head of |ct| is |frac (neg 0) 1|:
+that is enough for the next step: the head of |st| is |frac 1 1| and
+the head of |ct| is |frac (neg 0) 1|:
 %
 \begin{spec}
 sx  =  0  :  1      : _
@@ -627,7 +658,9 @@ cx = 1  :  neg 0  :  frac (neg 1) 2  :  0               :  error "TODO"
 
 \section{Exponentials and trigonometric functions for |PowerSeries|}
 
-Can we compute |exp as|?\jp{Compute in what sense? We already have |expx| in the above section. Does this mean using the differential rather than the integral? I don't get the point.}
+Can we compute |exp as|?\jp{Compute in what sense? We already have
+  |expx| in the above section. Does this mean using the differential
+  rather than the integral? I don't get the point.}
 
 Specification:
 
@@ -662,18 +695,18 @@ Note: we cannot use |solve| here, because the |g| function uses both
 \jp{So what's happening now? Why this code suddenly?}
 \begin{code}
 instance (Eq a, Transcendental a) => Transcendental (PowerSeries a) where
-  pi   =  Poly [pi]
-  exp  =  expPS
-  sin  =  sinPS
-  cos  =  cosPS
+   pi   =  Poly [pi]
+   exp  =  expPS
+   sin  =  sinPS
+   cos  =  cosPS
 
 expPS, sinPS, cosPS :: (Eq a, Transcendental a) => PowerSeries a -> PowerSeries a
-expPS  fs  =  integ  (exp  (val fs))  (exp fs   * deriv fs)
-sinPS  fs  =  integ  (sin  (val fs))  (cos fs   * deriv fs)
-cosPS  fs  =  integ  (cos  (val fs))  (-sin fs  * deriv fs)
+expPS  fs  = integ  (exp  (val fs))  (exp fs   * deriv fs)
+sinPS  fs  = integ  (sin  (val fs))  (cos fs   * deriv fs)
+cosPS  fs  = integ  (cos  (val fs))  (-sin fs  * deriv fs)
 
 val ::  PowerSeries a  ->  a
-val     (Poly (a:as))     =   a
+val     (Poly (a:as))  =   a
 \end{code}
 
 In fact, we can implement \emph{all} the operations needed for
@@ -685,14 +718,11 @@ evalP (Const x)    =  Poly [fromRational (toRational x)]
 evalP (e1 :+: e2)  =  evalP e1 + evalP e2
 evalP (e1 :*: e2)  =  evalP e1 * evalP e2
 evalP (e1 :/: e2)  =  evalP e1 / evalP e2
-evalP X           =  idx
+evalP X            =  idx
 evalP (Exp e)      =  exp (evalP e)
 evalP (Sin e)      =  sin (evalP e)
 evalP (Cos e)      =  cos (evalP e)
-
-
 \end{code}
-
 
 \section{Associated code}
 
@@ -718,8 +748,8 @@ derive     (Sin e)        =  Cos e :*: derive e
 derive     (Cos e)        =  Const (-1) :*: Sin e :*: derive e
 
 instance Additive FunExp where
-  (+)  =  (:+:)
-  zero = Const 0
+  (+)   =  (:+:)
+  zero  = Const 0
 
 instance AddGroup FunExp where
   negate x  = Const (-1) * x
@@ -732,29 +762,29 @@ instance MulGroup FunExp where
   (/)  =  (:/:)
 
 instance Transcendental FunExp where
-  exp        =  Exp
-  sin        =  Sin
-  cos        =  Cos
+  exp  =  Exp
+  sin  =  Sin
+  cos  =  Cos
 \end{code}
 
 \subsection{Not included to avoid overlapping instances}
 
 \begin{spec}
 instance Num a => Num (FD a) where
-  (f, f') + (g, g')  = (f + g, f' + g')
-  zero = (zero, zero)
+  (f, f') + (g, g')  = (f + g,  f' + g')
+  zero               = (zero,   zero)
 
 instance Multiplicative (FD a) where
-  (f, f') * (g, g')  = (f * g, f' * g + f * g')
-  one = (one, zero)
+  (f, f') * (g, g')  = (f * g,  f' * g + f * g')
+  one                = (one,    zero)
 
 instance Field a => MulGroup (FD a) where
-  (f, f') / (g, g')  = (f / g, (f' * g - g' * f) / (g * g))
+  (f, f') / (g, g')  = (f / g,  (f' * g - g' * f) / (g * g))
 
 instance Transcendental a => Transcendental (FD a) where
-  exp (f, f')        =  (exp f, (exp f) * f')
-  sin (f, f')        =  (sin f, (cos f) * f')
-  cos (f, f')        =  (cos f, -(sin f) * f')
+  exp (f, f')        = (exp f,  (exp f) * f')
+  sin (f, f')        = (sin f,  (cos f) * f')
+  cos (f, f')        = (cos f,  -(sin f) * f')
 \end{spec}
 
 \subsection{This is included instead}
@@ -762,31 +792,26 @@ instance Transcendental a => Transcendental (FD a) where
 
 \begin{code}
 instance Additive a => Additive (a, a) where
-  (f, f') + (g, g')  = (f + g, f' + g')
-  zero = (zero,zero)
+  (f, f') + (g, g')  = (f + g,  f' + g')
+  zero               = (zero,   zero)
 
 instance AddGroup a => AddGroup (a, a) where
-  negate (f, f') = (negate f, negate f')
+  negate (f, f')     = (negate f, negate f')
 
 instance Ring a => Multiplicative (a,a) where
-  (f, f') * (g, g')  = (f * g, f' * g + f * g')
+  (f, f') * (g, g')  = (f * g,  f' * g + f * g')
   one = (one,zero)
 
 instance Field a => MulGroup (a, a) where
-  (f, f') / (g, g')  = (f / g, (f' * g - g' * f) / (g * g))
+  (f, f') / (g, g')  = (f / g,  (f' * g - g' * f) / (g * g))
 
 instance Transcendental a => Transcendental (a, a) where
-  exp (f, f')        =  (exp f, (exp f) * f')
-  sin (f, f')        =  (sin f, cos f * f')
-  cos (f, f')        =  (cos f, -(sin f) * f')
+  exp (f, f')        = (exp f,  (exp f) * f')
+  sin (f, f')        = (sin f,  cos f * f')
+  cos (f, f')        = (cos f,  -(sin f) * f')
 \end{code}
 
 \jp{What about log?}
 \jp{What about adding composition to the language of functions? See attempt in Taylor.hs}
-
-
-
-
-\section{Higher-order derivatives}
 
 %include E6.lhs
