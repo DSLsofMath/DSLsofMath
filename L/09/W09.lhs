@@ -763,7 +763,7 @@ testBoth  = measure (prod d6 d6 >>= isTrue . \xy -> p1 xy && p2 xy)    -- 19
 prob21    = condProb (prod d6 d6) p2 p1                                -- 19/21
 \end{code}
 
-\section{Drug test}
+\subsection{Drug test}
 The above drug test problem \ref{ex:drugtest} is often used as an
 illustration for the Bayes theorem. We can solve it in exactly the
 same fashion as the Dice problem.
@@ -796,7 +796,7 @@ Perhaps surprisingly, we never needed the Bayes theorem to solve the
 problem. Indeed, the Bayes theorem is already incorporated in our
 defintion of |probability|.
 
-\section{Monty Hall}
+\subsection{Monty Hall}
 We can model the Monty Hall problem as follows: A correct model is
 the following:
 \begin{code}
@@ -848,7 +848,7 @@ a door before the player made its first choice.
 
 
 
-\section{Advanced problem}
+\subsection{Advanced problem}
 Consider the following problem: how many times must one throw a coin
 before one obtains 3 heads in a row.
 
