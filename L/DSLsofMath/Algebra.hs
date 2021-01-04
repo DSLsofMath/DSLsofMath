@@ -178,7 +178,7 @@ instance Transcendental Double where
 
 
 instance Additive a => Additive (Complex a) where
-  (x :+ y) + (x' :+ y') = (x + x') :+ (y+y') 
+  (x :+ y) + (x' :+ y') = (x + x') :+ (y+y')
   zero = zero :+ zero
 
 instance AddGroup a => AddGroup (Complex a) where
@@ -193,13 +193,29 @@ instance Field a => MulGroup (Complex a) where
 
 
 instance (Algebraic a, Prelude.RealFloat a) =>  Algebraic (Complex a) where
-   sqrt = Prelude.sqrt
+  sqrt = Prelude.sqrt
 
-instance (Transcendental a, Prelude.RealFloat a) =>  Transcendental (Complex a) where
-   pi = Prelude.pi
-   sin =  Prelude.sin
-   cos =  Prelude.cos
-   exp =  Prelude.exp
+instance (Transcendental a) => Transcendental (Complex a) where
+  pi = pi :+ zero
+  exp = expC
+  sin = sinC
+  cos = cosC
+
+expC   (x:+y)  =  expx * cos y :+ expx * sin y
+  where expx = exp x
+sinC   (x:+y)  =  sin x * cosh y :+ cos x * sinh y
+cosC   (x:+y)  =  cos x * cosh y :+ negate (sin x * sinh y)
+sinhC  (x:+y)  =  cos y * sinh x :+ sin y * cosh x
+coshC  (x:+y)  =  cos y * cosh x :+ sin y * sinh x
+
+
+cosh, sinh :: Transcendental a => a -> a
+cosh x = (exp x + exp (negate x))/two
+sinh x = (exp x - exp (negate x))/two
+
+two :: Ring a => a
+two = one+one
+
 
 ---------------------------------
 -- For RebindableSyntax

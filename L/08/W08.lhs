@@ -9,9 +9,10 @@
 module DSLsofMath.W08 where
 import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
 import DSLsofMath.W05
-import DSLsofMath.W06
+import qualified DSLsofMath.W06
+import DSLsofMath.W06 (integ, sinx, cosx)
 import DSLsofMath.Algebra
-import qualified Data.Complex as Predefined
+import Data.Complex
 \end{code}
 %endif
 
@@ -28,111 +29,95 @@ Rudin goes on
 
 \begin{quote}
 It is defined, for every complex number |z|, by the formula
-\begin{spec}
-         exp z  =  Sigma (z^n) / n!
-\end{spec}
+\[
+         exp(z)  =  \sum_{n=0}^{\infty} \frac{z^n}{n!}
+\]
 \end{quote}
 %
 We, on the other hand, have defined the exponential function as the
 solution of a differential equation, which can be represented by
 a power series:
-\begin{spec}
-expx :: Fractional a => PowerSeries a
+\begin{code}
+expx :: Field a => PowerSeries a
 expx = integ 1 expx
-\end{spec}
+\end{code}
 
 and approximated by
 
-\begin{spec}
-expf :: Fractional a => a -> a
+\begin{code}
+expf :: Field a => a -> a
 expf = eval 100 expx
-\end{spec}
+\end{code}
 
 It is easy to see, using the definition of |integ| that the power
 series |expx| is, indeed
 \begin{spec}
-expx = [1, 1/1, 1/(1*2), 1/(1*2*3), ..., 1 / (1*2*3* ... *n), ..]
+expx = Poly [1, 1/1, 1/2, 1/6, ..., 1 / (1*2*3* ... *n), ..]
 \end{spec}
 
 We can compute the exponential for complex values if we can give an
-instance of |Fractional| for complex numbers.
+instance of |Field| for complex numbers.
 %
-We could use the datatype |Data.Complex| from the Haskell standard
-library, but we prefer to roll our own in order to recall the basic
-operations on complex numbers.\jp{but it does not seem that this is done anyway?}
-
-As we saw in \cref{sec:DSLComplex}, complex values can be represented
-as pairs of real values.
-
+We use the datatype |Data.Complex| from the Haskell standard library,
+which is isomorphic to the implementation from \cref{sec:DSLComplex}.
+%
+In |Data.Complex| a complex value |z| is represented by two values,
+the real and the imaginary part, connected by an infix constructor: |z
+= re :+ im|.
+%
 \begin{code}
-newtype Complex r = C (r , r)    deriving (Eq, Show)
-
 i :: Ring a => Complex a
-i = C (0, 1)
+i = zero :+ one
 \end{code}
 
-Therefore we can define, for example, the exponential of the imaginary unit:
-
+Therefore we can define, for example, the exponential of the imaginary
+unit:
+%
 \begin{code}
 ex1 :: Field a => Complex a
 ex1 = expf i
 \end{code}
-
-And we have |ex1 = C (0.5403023058681398,0.8414709848078965)|.
+%
+And we have |ex1 == 0.5403023058681398 :+ 0.8414709848078965|.
 %
 Observe at the same time:
-
+%
 \begin{spec}
 cosf 1  =  0.5403023058681398
 sinf 1  =  0.8414709848078965
 \end{spec}
-
-and therefore |expf i == C (cosf 1, sinf 1)|.
+%
+and therefore |expf i == cosf 1 :+ sinf 1|.
 %
 This is not a coincidence, as we shall see.
 
-Instead of evaluating the sum of the terms |an * z^n|, let us instead
-collect the terms in a series:
-
+We can define the function \(f(x) = e^{i x}\) as follows, using the
+power series instance
 \begin{code}
-terms :: MulGroup t => Poly t -> t -> Poly t
-terms (Poly as) z = Poly (terms1 as z 0)  where
-  terms1 (a:as) z n  =  a * z^n : terms1 as z (n+1)
+expix :: (Eq a, Transcendental a) => PowerSeries (Complex a)
+expix = exp (j * x)
+ where  j  = Poly [i]
+        x  = Poly [zero,one]
+
+cosxisinx :: (Eq a, Transcendental a) => PowerSeries (Complex a)
+cosxisinx = cos x + j * sin x
+  where  j = Poly [i]
+         x = Poly [zero,one]
+
+ex2, ex2' :: (Eq a, Transcendental a) => PowerSeries (Complex a)
+ex2   = takePoly 10 expix
+ex2'  = takePoly 10 cosxisinx
 \end{code}
+\TODO{also possible: convert using toMacLaurin to get rid of factorial}
 
-We obtain
-
-\jp{Why not use series directly? see alternatives below}
-
-
-Alternative from here (does not need 'terms'):
-
-%%%%%%
-We can define the function \(f(x) = e^{i x}\)  as follows, using the power series instance
-\begin{code}
-expix :: PowerSeries (Predefined.Complex Double)
-expix = exp (i * x)
- where i = Poly [0 Predefined.:+ 1]
-       x = Poly [0,1]
-
-ex2alt = takePoly 10 expix
-
-cosxisinx :: PowerSeries (Predefined.Complex Double)
-cosxisinx = cos x + i * sin x
- where i = Poly [0 Predefined.:+ 1]
-       x = Poly [0,1]
-
-ex2'alt = takePoly 10 cosxisinx -- also possible: convert using toMacLaurin to get rid of factorial
-
--- >>> ex2alt
--- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
-
--- >>> ex2'alt
--- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
-
-\end{code}
+% -- >>> ex2alt
+% -- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
+%
+% -- >>> ex2'alt
+% -- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
+%
+% \end{code}
 ends here
-
 
 Yet another Alternative from here; but does not work due to lack of Transcendental instance for Stream/MacLaurin
 
@@ -150,53 +135,46 @@ cosxisinx3 = cos x + i * sin x
        x = [0,1]
 
 ex2'alt3 = take 10 cosxisinx3 -- also possible: convert using toMacLaurin to get rid of factorial
-
--- >>> ex2alt
--- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
-
--- >>> ex2'alt
--- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
-
 \end{spec}
 ends here
 
-\begin{code}
-ex2   ::  Field a => PowerSeries (Complex a)
-ex2    =  takePoly 10 (terms expx i)
-\end{code}
-As the code is polymorphic in the underlying number type, we can use rationals here to be able to test for equality without rounding problems.
-\begin{code}
-ex2' :: [Complex Rational]
-ex2' =  [  C (     1  ,          0), {-"\qquad"-}    C (0,     1     ),
-           C (  -  1  /  2,      0), {-"\qquad"-}    C (0,  -  1  /  6),
-           C (     1  /  24,     0), {-"\qquad"-}    C (0,     1  /  120),
-           C (  -  1  /  720,    0), {-"\qquad"-}    C (0,  -  1  /  5040),
-           C (     1  /  40320,  0), {-"\qquad"-}    C (0,     1  /  362880)]
-
-check = toList ex2 == ex2'
-  where toList (Poly x) = x
-\end{code}
-
-% [  C (1.0,                     0.0), {-"\qquad"-} C (0.0,  1.0                     )
-% ,  C (-0.5,                    0.0), {-"\qquad"-} C (0.0,  -0.16666666666666666    )
-% ,  C (4.1666666666666664e-2,   0.0), {-"\qquad"-} C (0.0,  8.333333333333333e-3    )
-% ,  C (-1.3888888888888887e-3,  0.0), {-"\qquad"-} C (0.0,  -1.9841269841269839e-4  )
-% ,  C (2.4801587301587298e-5,   0.0), {-"\qquad"-} C (0.0,  2.7557319223985884e-6   )
-% ]
-
-We can see that the real part of this series is the same as
-
-\begin{code}
-ex2R :: Poly Rational
-ex2R = takePoly 10 (terms cosx 1)
-\end{code}
-
-and the imaginary part is the same as
-
-\begin{code}
-ex2I :: Poly Rational
-ex2I = takePoly 10 (terms sinx 1)
-\end{code}
+% \begin{code}
+% ex2   ::  Field a => PowerSeries (Complex a)
+% ex2    =  takePoly 10 (terms expx i)
+% \end{code}
+% As the code is polymorphic in the underlying number type, we can use rationals here to be able to test for equality without rounding problems.
+% \begin{code}
+% ex2' :: [Complex Rational]
+% ex2' =  [     1            :+ 0, {-"\qquad"-}  0 :+     1     ,
+%           (-  1  /  2)     :+ 0, {-"\qquad"-}  0 :+ (-  1  /  6),
+%               1  /  24     :+ 0, {-"\qquad"-}  0 :+     1  /  120,
+%           (-  1  /  720)   :+ 0, {-"\qquad"-}  0 :+ (-  1  /  5040),
+%               1  /  40320  :+ 0, {-"\qquad"-}  0 :+     1  /  362880]
+%
+% check = toList ex2 == ex2'
+%   where toList (Poly x) = x
+% \end{code}
+%
+% % [  C (1.0,                     0.0), {-"\qquad"-} C (0.0,  1.0                     )
+% % ,  C (-0.5,                    0.0), {-"\qquad"-} C (0.0,  -0.16666666666666666    )
+% % ,  C (4.1666666666666664e-2,   0.0), {-"\qquad"-} C (0.0,  8.333333333333333e-3    )
+% % ,  C (-1.3888888888888887e-3,  0.0), {-"\qquad"-} C (0.0,  -1.9841269841269839e-4  )
+% % ,  C (2.4801587301587298e-5,   0.0), {-"\qquad"-} C (0.0,  2.7557319223985884e-6   )
+% % ]
+%
+% We can see that the real part of this series is the same as
+%
+% \begin{code}
+% ex2R :: Poly Rational
+% ex2R = takePoly 10 (terms cosx 1)
+% \end{code}
+%
+% and the imaginary part is the same as
+%
+% \begin{code}
+% ex2I :: Poly Rational
+% ex2I = takePoly 10 (terms sinx 1)
+% \end{code}
 
 %
 But the terms of a series evaluated at |1| are the coefficients of the
@@ -276,54 +254,6 @@ using the standard notation |a+i*b| for some |z = C (a, b)|:
 Thus, we see that |exp| is periodic, because |exp z = exp (z + T)|
 with |T = i*tau|, for all |z|.
 \jp{Question: are all periodic functions also periodic in the tayor series space?}
-\subsection{Exponential function: Associated code}
-
-%TODO: Perhaps import from W01 - but it also useful to remind the reader. Alternatively, back-port this code to W01.
-
-
-\begin{code}
-instance Additive r => Additive (Complex r) where
-  (+) = addC
-  zero = toC zero
-
-instance AddGroup r => AddGroup (Complex r) where
-  negate (C (a , b))= C (negate a, negate b)
-
-instance Ring r => Multiplicative (Complex r) where
-  (*) = mulC
-  one = toC one
-
---  abs = absC  -- requires Floating r as context
-
-toC :: Additive r => r -> Complex r
-toC x = C (x,zero)
-
-addC :: Additive r =>  Complex r -> Complex r -> Complex r
-addC (C (a , b)) (C (x , y))  =  C ((a + x) , (b + y))
-
-mulC :: Ring r =>  Complex r -> Complex r -> Complex r
-mulC (C (ar, ai)) (C (br, bi))  =  C (ar*br - ai*bi, ar*bi + ai*br)
-
-modulusSquaredC :: Ring r => Complex r -> r
-modulusSquaredC (C (x, y)) = x^+2 + y^+2
-
--- TODO: usually not important (at all)
--- absC :: Floating r => Complex r -> Complex r
--- absC = toC . sqrt . modulusSquaredC
-
-scaleC :: Multiplicative r => r -> Complex r -> Complex r
-scaleC a (C (x, y)) = C (a * x, a * y)
-
-conj :: AddGroup r => Complex r -> Complex r
-conj (C (x, y))   = C (x, -y)
-
-instance Field r => MulGroup (Complex r) where
-  (/) = divC
-
-divC :: Field a => Complex a -> Complex a -> Complex a
-divC x y = scaleC (1/modSq) (x * conj y)
-  where  modSq  =  modulusSquaredC y
-\end{code}
 
 \section{The Laplace transform}
 

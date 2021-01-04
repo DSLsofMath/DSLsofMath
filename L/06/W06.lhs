@@ -1,5 +1,6 @@
 %if False
 \begin{code}
+{-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE TypeSynonymInstances #-}
@@ -298,8 +299,9 @@ factorialsFrom n factn = factn : factorialsFrom (n+1) (factn * (n + 1))
 \end{code}
 Remember that |x = Poly [0,1]|:
 \begin{code}
-ex3, ex4 :: (Eq a, Field a) => Taylor a
-ex3 = toMaclaurin (x^3 + 2 * x)
+ex3, ex4 :: Field a => Taylor a
+ex3 = undefined
+-- ex3 = toMaclaurin (x^3 + two * x)
 ex4 = toMaclaurin sinx
 \end{code}
 
@@ -694,6 +696,7 @@ Note: we cannot use |solve| here, because the |g| function uses both
 
 \jp{So what's happening now? Why this code suddenly?}
 \begin{code}
+
 instance (Eq a, Transcendental a) => Transcendental (PowerSeries a) where
    pi   =  Poly [pi]
    exp  =  expPS
