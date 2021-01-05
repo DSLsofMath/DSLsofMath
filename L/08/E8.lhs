@@ -14,9 +14,9 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
   Find the Laplace transforms of the following functions:
 %
   \begin{enumerate}
-    \item $\lambda t. \, 3*e^{5 * t}$
-    \item $\lambda t. \, e^{\alpha * t} - \beta$
-    \item $\lambda t. \, e^{(t + \frac{\pi}{6})}$
+    \item |\t ->  3*pow e (5*t)|
+    \item |\t ->  pow e (alpha * t) - beta|
+    \item |\t ->  pow e (t + frac pi 6)|
   \end{enumerate}
 
 \end{exercise}
@@ -26,8 +26,8 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
    %
     \item Show that: \label{exc:sincosexp}
       \begin{itemize}
-        \item $\sin t = \frac{1}{2*i} \left(  e^{i*t} - e^{-i*t}\right)$
-        \item $\cos t = \frac{1}{2} \left(  e^{i*t} + e^{-i*t}\right)$
+        \item |sin t = frac 1 (2*i) * (  pow e (i*t) -  pow e (-i*t)  )|
+        \item |cos t = frac 1 2     * (  pow e (i*t) +  pow e (-i*t)  )|
       \end{itemize}
 
     \item Find the Laplace transforms |ℒ sin| and |ℒ cos| using the
@@ -46,12 +46,12 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
 
   Consider the following differential equation:
 
-  $$f''\, t - 2 * f'\, t + f\, t = e^{2 * t},\quad f\, 0 = 2,\quad f'\, 0 = 3$$
+  $$f''\, t - 2 ⋅ f'\, t + f\, t = e^{2 ⋅ t},\quad f\, 0 = 2,\quad f'\, 0 = 3$$
 
   Solve the equation using the Laplace transform.  You
   should need only one formula (and linearity):
 
-  $$\mathcal{L}\, (\lambda t.\, e^{\alpha*t})\, s  = 1 / (s - \alpha)$$
+  $$\mathcal{L}\, (\lambda t.\, e^{\alpha⋅t})\, s  = 1 / (s - \alpha)$$
 \end{exercise}
 
 
@@ -60,12 +60,12 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
 
   Consider the following differential equation:
 
-  $$f''\, t - 5 * f'\, t + 6 * f\, t = e^t,\quad f\, 0 = 1,\quad f'\, 0 = 4$$
+  $$f''\, t - 5 ⋅ f'\, t + 6 ⋅ f\, t = e^t,\quad f\, 0 = 1,\quad f'\, 0 = 4$$
 
   Solve the equation using the Laplace transform.  You
   should need only one formula (and linearity):
 
-  $$\mathcal{L}\, (\lambda t.\, e^{\alpha*t})\, s  = 1 / (s - \alpha)$$
+  $$\mathcal{L}\, (\lambda t.\, e^{\alpha⋅t})\, s  = 1 / (s - \alpha)$$
 \end{exercise}
 
 \begin{exercise}
@@ -73,12 +73,12 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
 
   Consider the following differential equation:
 
-  $$f''\, t - 2 * f'\, t + f\, t - 2 = 3 * e^{2 * t},\quad f\, 0 = 5,\quad f'\, 0 = 6$$
+  $$f''\, t - 2 ⋅ f'\, t + f\, t - 2 = 3 ⋅ e^{2 ⋅ t},\quad f\, 0 = 5,\quad f'\, 0 = 6$$
 
   Solve the equation using the Laplace transform.  You
   should need only one formula (and linearity):
 
-  $$\mathcal{L}\, (\lambda t.\, e^{\alpha*t})\, s  = 1 / (s - \alpha)$$
+  $$\mathcal{L}\, (\lambda t.\, e^{\alpha⋅t})\, s  = 1 / (s - \alpha)$$
 \end{exercise}
 
 \begin{exercise}
@@ -86,14 +86,14 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
 
   Consider the following differential equation:
 
-  $$f'' \,t + 4*f\, t = 6*\cos\, t, \quad f\, 0 = 0,\quad f'\, 0 = 0$$
+  $$f'' \,t + 4⋅f\, t = 6⋅\cos\, t, \quad f\, 0 = 0,\quad f'\, 0 = 0$$
 
   Solve the equation using the Laplace transform.  You
   should need only two formulas (and linearity):
 
-  $$\mathcal{L}\, (\lambda t.\, e^{\alpha*t})\, s  = 1 / (s - \alpha)$$
+  $$\mathcal{L}\, (\lambda t.\, e^{\alpha⋅t})\, s  = 1 / (s - \alpha)$$
 
-  $$2 * \cos \,t = e^{i*t} + e^{-i*t}$$
+  $$2 ⋅ \cos \,t = e^{i⋅t} + e^{-i⋅t}$$
 \end{exercise}
 
 
@@ -102,10 +102,10 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
 
   Consider the following differential equation:
 
-  $$f'' \,t -3 \sqrt{2} * f' \, t + 4 * f \, t = 0, \quad f\, 0 = 2,\quad f'\, 0 = 3 \sqrt{2}$$
+  $$f'' \,t -3 \sqrt{2} ⋅ f' \, t + 4 ⋅ f \, t = 0, \quad f\, 0 = 2,\quad f'\, 0 = 3 \sqrt{2}$$
 
   Solve the equation using the Laplace transform.  You
   should need only one formula (and linearity):
 
-  $$\mathcal{L}\, (\lambda t.\, e^{\alpha*t})\, s  = 1 / (s - \alpha)$$
+  $$\mathcal{L}\, (\lambda t.\, e^{\alpha⋅t})\, s  = 1 / (s - \alpha)$$
 \end{exercise}

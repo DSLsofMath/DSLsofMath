@@ -91,121 +91,96 @@ and therefore |expf i == cosf 1 :+ sinf 1|.
 %
 This is not a coincidence, as we shall see.
 
-We can define the function \(f(x) = e^{i x}\) as follows, using the
-power series instance
+First we define a helper function |compScale| specified by |eval
+(compScale as c) x = eval as (c*x)|.
+%
+Then we define the power series representing the function
+\(f(x) = e^{i x}\) as |compScale expx i|.
 \begin{code}
-expix :: (Eq a, Transcendental a) => PowerSeries (Complex a)
-expix = exp (j * x)
- where  j  = Poly [i]
-        x  = Poly [zero,one]
+compScale :: Ring a => Poly a -> a -> Poly a
+compScale (Poly as) c = Poly (zipWith (*) as (iterate (c*) 1))
 
-cosxisinx :: (Eq a, Transcendental a) => PowerSeries (Complex a)
-cosxisinx = cos x + j * sin x
-  where  j = Poly [i]
-         x = Poly [zero,one]
+expix :: Field a => PowerSeries (Complex a)
+expix = compScale expx i
 
-ex2, ex2' :: (Eq a, Transcendental a) => PowerSeries (Complex a)
-ex2   = takePoly 10 expix
-ex2'  = takePoly 10 cosxisinx
+cosxisinx :: Field a => PowerSeries (Complex a)
+cosxisinx = cosx + Poly [i] * sinx
+
+ex2, ex2' :: Field a => PowerSeries (Complex a)
+ex2   = takePoly 8 expix
+ex2'  = takePoly 8 cosxisinx
+
+test2 :: Bool
+test2 = (ex2 :: PowerSeries (Complex Rational)) == ex2'
 \end{code}
-\TODO{also possible: convert using toMacLaurin to get rid of factorial}
 
-% -- >>> ex2alt
-% -- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
+As the code is polymorphic in the underlying number type, we can use
+rationals here to be able to test for equality without rounding
+problems.
 %
-% -- >>> ex2'alt
-% -- Poly [1.0 :+ 0.0,0.0 :+ 1.0,(-0.5) :+ 0.0,(-0.0) :+ (-0.16666666666666666),4.1666666666666664e-2 :+ 0.0,0.0 :+ 8.333333333333333e-3,(-1.3888888888888887e-3) :+ 0.0,(-0.0) :+ (-1.9841269841269839e-4),2.4801587301587298e-5 :+ 0.0,0.0 :+ 2.7557319223985884e-6]
-%
-% \end{code}
-ends here
+We can see that every second coefficient is real and every second is
+imaginary:
+\begin{code}
+coeff2 :: [Complex Rational]
+coeff2 =  [     1            :+ 0, {-"\qquad"-}  0 :+     1     ,
+            (-  1  /  2)     :+ 0, {-"\qquad"-}  0 :+ (-  1  /  6),
+                1  /  24     :+ 0, {-"\qquad"-}  0 :+     1  /  120,
+            (-  1  /  720)   :+ 0, {-"\qquad"-}  0 :+ (-  1  /  5040)]
 
-Yet another Alternative from here; but does not work due to lack of Transcendental instance for Stream/MacLaurin
+check2 = ex2 == Poly coeff2
+\end{code}
 
-\begin{spec}
-expix3 :: Taylor (Predefined.Complex Double)
-expix3 = exp (i * x)
- where i = [0 Predefined.:+ 1]
-       x = [0,1]
+% Yet another Alternative from here; but does not work due to lack of Transcendental instance for Stream/MacLaurin
+%
+% \begin{spec}
+% expix3 :: Taylor (Predefined.Complex Double)
+% expix3 = exp (i * x)
+%  where i = [0 Predefined.:+ 1]
+%        x = [0,1]
+%
+% ex2alt3 = take 10 expix3
+%
+% cosxisinx3 :: Taylor (Predefined.Complex Double)
+% cosxisinx3 = cos x + i * sin x
+%  where i = [0 Predefined.:+ 1]
+%        x = [0,1]
+%
+% ex2'alt3 = take 10 cosxisinx3 -- also possible: convert using toMacLaurin to get rid of factorial
+% \end{spec}
+% ends here
+%
+%
 
-ex2alt3 = take 10 expix3
-
-cosxisinx3 :: Taylor (Predefined.Complex Double)
-cosxisinx3 = cos x + i * sin x
- where i = [0 Predefined.:+ 1]
-       x = [0,1]
-
-ex2'alt3 = take 10 cosxisinx3 -- also possible: convert using toMacLaurin to get rid of factorial
-\end{spec}
-ends here
-
-% \begin{code}
-% ex2   ::  Field a => PowerSeries (Complex a)
-% ex2    =  takePoly 10 (terms expx i)
-% \end{code}
-% As the code is polymorphic in the underlying number type, we can use rationals here to be able to test for equality without rounding problems.
-% \begin{code}
-% ex2' :: [Complex Rational]
-% ex2' =  [     1            :+ 0, {-"\qquad"-}  0 :+     1     ,
-%           (-  1  /  2)     :+ 0, {-"\qquad"-}  0 :+ (-  1  /  6),
-%               1  /  24     :+ 0, {-"\qquad"-}  0 :+     1  /  120,
-%           (-  1  /  720)   :+ 0, {-"\qquad"-}  0 :+ (-  1  /  5040),
-%               1  /  40320  :+ 0, {-"\qquad"-}  0 :+     1  /  362880]
-%
-% check = toList ex2 == ex2'
-%   where toList (Poly x) = x
-% \end{code}
-%
-% % [  C (1.0,                     0.0), {-"\qquad"-} C (0.0,  1.0                     )
-% % ,  C (-0.5,                    0.0), {-"\qquad"-} C (0.0,  -0.16666666666666666    )
-% % ,  C (4.1666666666666664e-2,   0.0), {-"\qquad"-} C (0.0,  8.333333333333333e-3    )
-% % ,  C (-1.3888888888888887e-3,  0.0), {-"\qquad"-} C (0.0,  -1.9841269841269839e-4  )
-% % ,  C (2.4801587301587298e-5,   0.0), {-"\qquad"-} C (0.0,  2.7557319223985884e-6   )
-% % ]
-%
-% We can see that the real part of this series is the same as
-%
-% \begin{code}
-% ex2R :: Poly Rational
-% ex2R = takePoly 10 (terms cosx 1)
-% \end{code}
-%
-% and the imaginary part is the same as
-%
-% \begin{code}
-% ex2I :: Poly Rational
-% ex2I = takePoly 10 (terms sinx 1)
-% \end{code}
-
-%
-But the terms of a series evaluated at |1| are the coefficients of the
-series.
+We can see that the real part of this series is the same as
+\begin{code}
+ex2R :: Poly Rational
+ex2R = takePoly 8 cosx
+\end{code}
+and the imaginary part is the same as
+\begin{code}
+ex2I :: Poly Rational
+ex2I = takePoly 8 sinx
+\end{code}
 %
 Therefore, the coefficients of |cosx| are
-
 \begin{spec}
 [1, 0, -1/2!, 0, 1/4!, 0, -1/6!, ...]
 \end{spec}
-
 In other words, the power series representation of the coefficients for |cos| is
 %
 \begin{spec}
 cosa (2 * n)  = (-1)^n / (2 * n)!
 cosa (2*n+1)  = 0
 \end{spec}
-
 and the terms of |sinx| are
-
 \begin{spec}
 [0, 1, 0, -1/3!, 0, 1/5!, 0, -1/7!, ...]
 \end{spec}
-
 i.e., the corresponding function for |sin| is
-
 \begin{spec}
 sina (2 * n)  = 0
 sina (2*n+1)  = (-1)^n / (2*n+1)!
 \end{spec}
-
 This can be proven from the definitions of |cosx| and |sinx|.
 %
 From this we obtain \emph{Euler's formula}:
@@ -215,21 +190,20 @@ exp (i*x) = cos x + i*sin x
 \end{spec}
 
 One thing which comes out of Euler's formula is the fact that the
-exponential is a \emph{periodic function} on the imaginary axis.
+exponential is a \emph{periodic function} along the imaginary axis.
 %
 A function |f : A -> B| is said to be periodic if there exists |T ∈ A|
 such that
-
 \begin{spec}
 f x = f (x + T)  --  |∀ x ∈ A|
 \end{spec}
-
 (therefore, for this definition to make sense, we need addition on
 |A|; in fact we normally assume at least a group structure, i.e.,
-addition and subtraction together with a zero and the appropriate laws).
+addition and subtraction together with a zero and the appropriate
+laws).
 
 Since |sin| and |cos| are periodic, with period |tau = 2 * pi|, we have,
-using the standard notation |a+i*b| for some |z = C (a, b)|:
+using the standard notation |a+i*b| for some |z = a :+ b|:
 
 \begin{spec}
   exp(z + i*tau)                              = {- Def. of |z| -}
@@ -250,15 +224,23 @@ using the standard notation |a+i*b| for some |z = C (a, b)|:
 
   exp z
 \end{spec}
-\jp{Was it ever proven that exp is a homomorphism in this way?}
+%\jp{Was it ever proven that exp is a homomorphism in this way? No - but not all proofs are included anyway.}
 Thus, we see that |exp| is periodic, because |exp z = exp (z + T)|
 with |T = i*tau|, for all |z|.
-\jp{Question: are all periodic functions also periodic in the tayor series space?}
+%\jp{Question: are all periodic functions also periodic in the taylor series space?}
 
 \section{The Laplace transform}
 
 This material was inspired by \citet{quinn2008discovering}, which is
 highly recommended reading.
+%{
+%format * = "\mathbin{\cdot}"
+%%format convolution = "\mathbin{\ast}"
+%format convolution = "\mathbin{\circledast}"
+%
+In this section we typeset multiplication as |(*)| to avoid visual
+confusion with the convolution operator |(convolution)|.
+
 
 Consider the differential equation
 
@@ -269,20 +251,22 @@ f'' x - 3 * f' x + 2 * f x = exp (3 * x),  f 0 = 1,  f' 0 = 0
 We can solve such equations with the machinery of power series:
 
 \begin{code}
-fs :: (Eq a, Transcendental a) => PowerSeries a
+fs :: Field a => PowerSeries a
 fs = integ 1 fs'
-   where fs' = integ 0 fs''
-         fs'' = (exp (3*x)) + 3 * fs' - 2 * fs
+   where  fs'   = integ 0 fs''
+          fs''  = exp3x + 3 * fs' - 2 * fs
+exp3x :: Field a => PowerSeries a
+exp3x = compScale expx 3
 \end{code}
-\jp{We're sweeping under the rug that we never defined |exp (k*x)|. Perhaps we should do it and simplify the exposition of exp (ix) at the same time.}
 We have done this by ``zooming in'' on the function |f| and representing
 it by a power series, |f x = Sigma an * x^n|.
 %
 This allows us to reduce the problem of finding a function |f : ℝ → ℝ|
 to that of finding a list of coefficients |an|, or equivalently a
-function |a : ℕ → ℝ|. Or even, if one wants an approximation only,
-finding a list of sufficiently many |a|-values for a good
-approximation.
+function |a : ℕ → ℝ|.
+%
+Or even, if one wants an approximation only, finding a list of
+sufficiently many |a|-values for a good approximation.
 
 Still, recursive equations are not always easy to solve (especially
 without a computer), so it's worth looking for alternatives.
@@ -291,34 +275,38 @@ When ``zooming in'' we go from |f| to |a|, but we can also look at it
 in the other direction: we have ``zoomed out'' from |a| to |f| via an
 infinite series:
 
+\newcommand{\sumanxn}{|{-"\sum"-} an * pow x n|}
+\newcommand{\intftxt}{|{-"\int"-} (f t) * pow x t dt|}
 \begin{tikzcd}
-  |a : ℕ → ℝ| \arrow[r, "\sum a_n * x^n"] & |f : ℝ → ℝ|
+  |a : ℕ → ℝ| \arrow{r}{\sumanxn} & |f : ℝ → ℝ|
 \end{tikzcd}
 
 We would like to go one step further
 
 \begin{tikzcd}
-  |a : ℕ → ℝ| \arrow[r, "\sum a_n * x^n"] & |f : ℝ → ℝ| \arrow[r, "??"] & |F : ??|
+  |a : ℕ → ℝ| \arrow{r}{\sumanxn} & |f : ℝ → ℝ| \arrow{r}{??} & |F : ??|
 \end{tikzcd}
 
 That is, we are looking for a transformation from |f| to some |F| in a
 way which resembles the transformation from |a| to |f|.
 %
-The analogue of ``sum of an infinite series'' for a continuous function is an integral:
+The analogue of ``sum of an infinite series'' for a continuous
+function is an integral:
 
 \begin{tikzcd}
-  |a : ℕ → ℝ| \arrow[r, "\sum a_n * x^n"] & |f : ℝ → ℝ| \arrow[r, "\int (f t) * x^t dt"] & |F : ??|
+  |a : ℕ → ℝ| \arrow{r}{\sumanxn} & |f : ℝ → ℝ| \arrow{r}{\intftxt} & |F : ??|
 \end{tikzcd}
 
-We note that, for the integral |Integ (f t) * x^t dt| to converge for
-a larger class of functions (say, bounded functions\jp{We never explained what a bounded function is}), we have to limit
-ourselves to |absBar x < 1|.
+We note that, for the integral |Integ (f t) * pow x t dt| to converge for
+a larger class of functions (say, bounded functions\jp{We never
+  explained what a bounded function is}), we have to limit ourselves
+to |absBar x < 1|.
 %
 Both this condition and the integral make sense for |x ∈ ℂ|, so we
 could take
 
 \begin{tikzcd}
-  |a : ℕ → ℝ| \arrow[r, "\sum a_n * x^n"] & |f : ℝ → ℝ| \arrow[r, "\int (f t) * x^t dt"] & |F : {z || absBar z < 1} → ℂ|
+  |a : ℕ → ℝ| \arrow{r}{\sumanxn} & |f : ℝ → ℝ| \arrow{r}{\intftxt} & |F : {z || bsBar z < 1} → ℂ|
 \end{tikzcd}
 
 but let us stick to |ℝ| for now.
@@ -340,18 +328,22 @@ We have
 ℒ f' x = Integ (f' t) * x^t dt
 \end{spec}
 
-Remember that |D (f * g) = D f * g + f * D g|, therefore\jp{Random remark: it's unfortunate that |*| looks like the convolution operator, especially annoying in the context of laplace transforms. Is there any way to typeset this better?}
+Remember that |D (f * g) = D f * g + f * D g|, which we use with |g t
+= x^t| so that |D g t = log x * x^t| (|t| is the variable here, not
+|x|).
 %
 \begin{spec}
-  ℒ f' x                                                       =  {- |g t = x^t|; |g' t = log x * x^t| (|t| is the variable here, not |x|) -}
+  ℒ f' x                                                       =  {- Def. of |ℒ|-}
+
+  Integ (D f t) * x^t dt                                       =
 
   Integ (D (f t * x^t)) - f t * log x * x^t dt                 =  {- Linearity of integration -}
 
   Integ (D (f t * x^t)) dt  -  Integ f t * log x * x^t dt      =
 
-  {-"lim_{t \to \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt  = {- abs x < 1-}
+  {-"\lim_{t \to \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt  = {- |abs x < 1| -}
 
-  -f 0 - log x * Integ f t * x^t dt                           =
+  -f 0 - log x * Integ f t * x^t dt                            =
 
   -f 0 - log x * ℒ f x
 \end{spec}
@@ -451,16 +443,19 @@ integral, we have that, for any |f| and |g| for which the
 transformation is defined, and for any constants |alpha| and |beta|
 
 \begin{spec}
-ℒ (alpha *^ f + beta *^g)  =  alpha *^ ℒ f  + beta *^ ℒ g
+ℒ (alpha *^ f + beta *^ g)  =  alpha *^ ℒ f  + beta *^ ℒ g
 \end{spec}
 
 Note that this is an equality between functions.
 %
 Indeed, recalling \cref{sec:LinAlg}, we are working here with the
-vector space of functions (|f| and |g| are elements of it). The
-operator |(*^)| refers to scaling in a vector space --- here scaling
-functions. The above equation says that |ℒ| is a linear transformation
-in that space.\jp{So what is its ``matrix'' representation?}
+vector space of functions (|f| and |g| are elements of it).
+%
+The operator |(*^)| refers to scaling in a vector space --- here
+scaling functions.
+%
+The above equation says that |ℒ| is a linear transformation in that
+space.
 
 Applying this linearity property to the left-hand side of (1), we have
 for any |s|:
@@ -479,7 +474,12 @@ for any |s|:
 = {- |f 0 = 1|, |f' 0 = 0| -}
 
   (s^2 - 3 * s + 2) * ℒ f s - s + 3
+
+= {- Factoring -}
+
+  (s - 1) * (s - 2) * ℒ f s - s + 3
 \end{spec}
+
 
 For the right-hand side, we apply the definition:
 
@@ -495,21 +495,18 @@ For the right-hand side, we apply the definition:
   frac 1 (s - 3)
 \end{spec}
 
-Therefore, we have, writing |F| for |ℒ f|
-
+Therefore, we have, writing |F| for |ℒ f|:
+%
 \begin{spec}
-(s^2 - 3 * s + 2) * F s - s + 3 = frac 1 (s-3)
+(s - 1) * (s - 2) * F s - s + 3 = frac 1 (s-3)
 \end{spec}
-
-and therefore
-
-\begin{spec}
-  F s                                                = {- Solve for |F s| -}
-
-  frac (frac 1 (s - 3) + s - 3) (s^2 - 3 * s + 2)    =  {- |s^2 - 3 * s + 2 = (s - 1) * (s - 2)| -}
-
-  frac (10 - 6 * s + s^2) ((s-1)*(s-2)*(s-3))        {-" "-}
-\end{spec}
+%
+and therefore, by solving for |F s| we get
+%
+\[
+  |F s| = |frac (frac 1 (s - 3) + s - 3) ((s - 1)*(s - 2)| =
+  |frac (10 - 6 * s + s^2) ((s-1)*(s-2)*(s-3))|
+\]
 
 We now have the problem of ``recovering'' the function |f| from its
 Laplace transform.
@@ -520,7 +517,7 @@ sum of functions with known inverse transforms.
 We know one such function:
 
 \begin{spec}
-exp (alpha * t)  {- is the inverse Laplace transform of -}  1 / (s - alpha)
+exp (alpha * t)  {- is the inverse Laplace transform of -}  (frac 1 (s - alpha))
 \end{spec}
 
 In fact, in our case, this is all we need.
@@ -530,11 +527,12 @@ denominators |s - 1|, |s - 2|, and |s - 3| respectively, i.e., to find
 |A|, |B|, and |C| such that
 
 \begin{spec}
-A / (s - 1) + B / (s - 2) + C / (s - 3) =  (10 - 6 * s + s^2) / ((s - 1) * (s - 2) * (s - 3))
+frac A (s - 1) + frac B (s - 2) + frac C (s - 3) =  frac (10 - 6 * s + s^2) ((s - 1) * (s - 2) * (s - 3))
 
-=>
+=> {- Multiply both sides by |(s - 1) * (s - 2) * (s - 3)| -}
 
-A * (s - 2) * (s - 3) + B * (s - 1) * (s - 3) + C * (s - 1) * (s - 2)  = 10 - 6 * s + s^2                                                     -- (2)
+A * (s - 2) * (s - 3) + B * (s - 1) * (s - 3) + C * (s - 1) * (s - 2)
+  = 10 - 6 * s + s^2                                                     -- (2)
 \end{spec}
 
 We need this equality (2) to hold for values |s > 3|.
@@ -544,31 +542,68 @@ A \emph{sufficient} condition for this is for (2) to hold for \emph{all} |s|.
 A \emph{necessary} condition for this is for (2) to hold for the
 specific values |1|, |2|, and |3|.
 
-
-
 \begin{spec}
-{-"\text{For }"-} s = 1:    A * (-1) * (-2)  = 10 - 6 + 1   =>  A = 2.5
+{-"\text{For }"-} s = 1:    A * (-1) * (-2)  = 10 - 6 + 1   =>  A = frac 5 2
 {-"\text{For }"-} s = 2:    B * 1 * (-1)     = 10 - 12 + 4  =>  B = -2
-{-"\text{For }"-} s = 3:    C * 2 * 1        = 10 - 18 + 9  =>  C = 0.5
+{-"\text{For }"-} s = 3:    C * 2 * 1        = 10 - 18 + 9  =>  C = frac 1 2
 \end{spec}
 
 It is now easy to check that, with these values, (2) does indeed hold,
 and therefore that we have
 
 \begin{spec}
-F s = 2.5 * (1 / (s - 1)) - 2 * (1 / (s - 2)) + 0.5 * (1 / (s - 3))
+F s = frac 5 2 * frac 1 (s - 1) - 2 * frac 1 (s - 2) + frac 1 2 * frac 1 (s - 3)
 \end{spec}
 
 The inverse transform is now easy:
 
 \begin{spec}
-f t = 2.5 * exp t - 2 * exp (2 * t) + 0.5 * exp (3 * t)
+f t = frac 5 2 * exp t - 2 * exp (2 * t) + frac 1 2 * exp (3 * t)
 \end{spec}
 
 Our mix of necessary and sufficient conditions makes it necessary to
 check that we have, indeed, a solution for the differential equation.
 %
-The verification is in this case trivial.
+To do this we compute the first and second derivatives of |f|:
+\begin{spec}
+f' t   = frac 5 2 * exp t - 4 * exp (2 * t) + frac 3 2 * exp (3 * t)
+f'' t  = frac 5 2 * exp t - 8 * exp (2 * t) + frac 9 2 * exp (3 * t)
+\end{spec}
+We then check the main equation:
+\begin{spec}
+  LHS
+=
+  f'' x - 3 * f' x + 2 * f x
+= {- Fill in the computed definitions of |f|, |f'|, and |f''|. -}
+        frac 5 2 * exp x - 8 * exp (2 * x) + frac 9 2 * exp (3 * x)
+  -3*(  frac 5 2 * exp x - 4 * exp (2 * x) + frac 3 2 * exp (3 * x)  )
+  +2*(  frac 5 2 * exp x - 2 * exp (2 * x) + frac 1 2 * exp (3 * x)  )
+= {- Collect common terms -}
+     (1-3+2)*              * frac 5 2  *  exp x
+  +  (-8-3*(-4)+2*(-2))    *              exp (2 * x)
+  +  (9-3*3+2*1)           * frac 1 2  *  exp (3 * x)
+= {- Arithmetics -}
+  frac 2 2 * exp (3 * x)
+=
+  RHS
+\end{spec}
+Finally, we check the initial conditions: |f 0 = 1| and |f' 0 = 0|.
+%
+Here we use that |exp (alpha * 0) = exp 0 = 1| for all |alpha|:
+\begin{spec}
+  f 0   = frac 5 2 * exp 0 - 2 * exp (2 * 0) + frac 1 2 * exp (3 * 0)
+        = frac 5 2 - 2 + frac 1 2
+        = 1
+
+  f' 0  = frac 5 2 * exp 0 - 4 * exp (2 * 0) + frac 3 2 * exp (3 * 0)
+        = frac 5 2 - 4 + frac 3 2
+        = 0
+\end{spec}
+Thus we can conclude that our |f| does indeed solve the differential equation.
+%
+The checking may seem overly pedantic, but when solving these
+equations by hand it is often these last checks which help catching
+mistakes along the way.
 
 \section{Laplace and other transforms}
 \label{sec:LaplaceSum}
@@ -600,3 +635,4 @@ Fourier analysis is a common tool in courses on Transforms, Signals
 and Systems.
 
 %include E8.lhs
+%}
