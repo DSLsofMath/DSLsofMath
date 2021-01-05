@@ -155,7 +155,7 @@ We have already proved the base case P([]) in b) above.
 
 Now for the step case we assume the induction hypothesis IH=P(as) and
     prove P(a:as) for a free x by calculation from the
-    RHS = ((eval as) . (eval bs)) x .
+    RHS = ((eval (a:as)) . (eval bs)) x .
 
 We start with the Step Lemma:
 
