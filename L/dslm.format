@@ -241,3 +241,5 @@
 
 %format *^ = "\mathbin{\triangleleft\,}"
 % %format *^ = "\mathbin{\circledast}" % could be for convolution, but which text rep.?
+
+%format <$> = "\mathbin{{<}\!{\$}\!{>}}"

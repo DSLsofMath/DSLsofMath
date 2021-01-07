@@ -385,7 +385,7 @@ integrator (Sigma a f)    g =  integrator a      $ \x ->
                                g (x,y)
 integrator (Project f a)  g =  integrator a (g . f)
 \end{code}
-
+%
 % integr :: (a -> REAL) -> Space a -> REAL
 % integr g (Finite a)     = bigsum a g
 % integr g (RealLine)     = integral g
@@ -455,7 +455,7 @@ properties of spaces.
 \TODO{Format the lemmas}
 \TODO{Name the lemmas}
 
-\textbf{integrator/bind lemma}: |integrator (s >>= f) g == integrator s $ \x -> integrator (f x) g|
+\textbf{integrator/bind lemma}: |integrator (s >>= f) g == integrator s (\x -> integrator (f x) g)|
 \begin{spec}
   integrator (s >>= f) g
 = {- by Def. of bind |(>>=)| -}
@@ -463,13 +463,13 @@ properties of spaces.
 = {- by Def. of integrator/project -}
   integrator (Sigma s f) (g . snd)
 = {- by Def. of integrator/Sigma -}
-  integrator s $ \x -> integrator (f x) $ \y -> (g . snd) (x,y)
+  integrator s (\x -> integrator (f x) (\y -> (g . snd) (x,y)))
 = {- snd/pair -}
-  integrator s $ \x -> integrator (f x) $ \y -> g y
+  integrator s (\x -> integrator (f x) (\y -> g y))
 = {- composition -}
-  integrator s $ \x -> integrator (f x) g
+  integrator s (\x -> integrator (f x) g)
 \end{spec}
-The same in |do| notation: |integrator (do x <- s; t) g == integrator s $ \x -> integrator t g|
+The same in |do| notation: |integrator (do x <- s; t) g == integrator s (\x -> integrator t g)|
 
 \textbf{integrator/return lemma}: |integrator (return x) g == g x|
 \begin{spec}
@@ -496,7 +496,9 @@ The same in |do| notation: |integrator (do x <- s; t) g == integrator s $ \x -> 
   integrator s (g . f)
 \end{spec}
 
-% $ emacs
+Note that using the integrator/fmap lemma with |g==id| we can always
+push the weight function of the integrator into the space: |integrator
+s f == integrator (fmap f s) id|.
 
 Linearity of integrator:
 
@@ -529,20 +531,17 @@ g (integrator a $ \x -> (integrator (f x) $ \y -> h (x,y))
 g (integrator (Sigma a f) h)
 \end{spec}
 
-As a corrolary, |fmap| is linear as well:
-%
-if |f| is linear, then |integrator (fmap f s) g = f (integrator s g)|
+%**TODO this does not make sense type-wise in general, only for Num-values spaces
+% As a corrolary, |fmap| is linear as well:
+% %
+% if |f| is linear, then |integrator (fmap f s) g = f (integrator s g)|
 
 \paragraph{Properties of |measure|}
 
 \begin{itemize}
 \item |measure (pure x) == 1|
-\item If |f| is a constant function such that |f x = t|, then |measure
-  (Sigma s f) == measure s * measure t|.
-\item |measure (s >>= f) == measure s * measure (f k)|, under the same
-  condition.
-  %
-  \TODO{|k| is unbound}
+\item |measure (Sigma s (const t)) == measure s * measure t|.
+\item |measure (s >>= const t) == measure s * measure t|.
 \item[|>>=|/distribution] If |s| is a distribution and |f x| is a
   distribution for every |x|, then |s >>= f| is a distribution
 \item[fmap/distribution] Corollary: |s| is a distribution iff.\ |fmap
@@ -551,21 +550,18 @@ if |f| is linear, then |integrator (fmap f s) g = f (integrator s g)|
 
 The proof of the second item is as follows:
 \begin{spec}
-   measure (Sigma s f)
+   measure (Sigma s (const t))
 == {- By definition of measure -}
-   integrator (Sigma s f) (const 1)
+   integrator (Sigma s (const t)) (const 1)
 == {- By definition of integrator for |Sigma| -}
-   integrator s $ \x -> integrator (f x) (const 1)
-== {- By definition of of measure -}
-   integrator s $ \x -> (measure (f x))
-== {- By assumption -}
-   integrator s $ \x -> (measure (f k))
+   integrator s $ \x -> integrator (const t x) (const 1)
+== {- By definition of of measure, const -}
+   integrator s $ \x -> measure t
 == {- By linearity of integrator -}
-   measure (f k) * (integrator s $ \x -> 1)
+   measure t * integrator s (const 1)
 == {- By definition of measure -}
-   measure (f k) * measure s
+   measure t * measure s
 \end{spec}
-\TODO{In step 4: what assumption? Where does |k| come from?}
 
 Exercise: using the above lemmas, prove |integrator (bernoulli p) f ==
 p * integrator f + (1-p) * integrator f|.
@@ -655,11 +651,10 @@ expectedValue :: Space a -> (a -> REAL) -> REAL
 expectedValue s f = integrator s f / measure s
 \end{code}
 
-For instance, we can use the above to compute the expected value of
-the sum of two dice throws:
+For instance, we can use the above to compute the expected value (7)
+of the sum of two dice throws:
 \begin{code}
--- |>>> expectedValue twoDice (\ (x,y) -> fromIntegral (x+y))|
--- 7.0
+expect2D6 = expectedValue twoDice (\ (x,y) -> fromIntegral (x+y))
 \end{code}
 
 Essentially, what the above does is computing the weighted
@@ -672,34 +667,53 @@ Exercise: define various statistical moments (variance, skew,
 curtosis, etc.)
 
 
-\paragraph{Theorem: Linearity of expected value}
 
-Furthermore, if |f| is linear, then
+%**TODO: Perhaps come back to this with correct formulation: something like
+% If (g1.f1) =.= (f2.g2) then |expectedValue (fmap f1 s) g1 == f2 (expectedValue s g2)|
+% with additional conditions.
+% \paragraph{Theorem: Linearity of expected value}
+% %
+% Furthermore, if |f| is linear, then
+% %
+% |expectedValue (f <$> s) g| |==| |f (expectedValue s g)|
+% % emacs $
 %
-|expectedValue (f <$> s) = f (expectedValue s)|
-% emacs $
-
-\begin{spec}
-expectedValue (f <$> s) g
-  == {- By definition of expected value -}
-integrator (f <$> s) g / measure (f <$> s)
-  == {- By linearity of |integrator| over |fmap| -}
-integrator s (g . f) / measure s
-  == {- By definition of expected value -}
-expectedValue s (g . f)
-\end{spec}
-% emacs $
+% \begin{spec}
+% expectedValue (f <$> s) g
+%   == {- By definition of expected value -}
+% integrator (f <$> s) g / measure (f <$> s)
+%   == {- By linearity of |integrator| over |fmap| -}
+% integrator s (g . f) / measure s
+%   == {- By definition of expected value -}
+% expectedValue s (g . f)
+% \end{spec}
+% % emacs $
+%
+% %if False
+% \begin{code}
+% checkTypes f s g =
+%   [
+%     expectedValue (f <$> s) g
+%   , -- == {- By definition of expected value -}
+%     integrator (f <$> s) g / measure (f <$> s)
+%   , -- == {- By linearity of |integrator| over |fmap| -}
+%     integrator s (g . f) / measure s
+%   , --  == {- By definition of expected value -}
+%     expectedValue s (g . f)
+%   ]
+% \end{code}
+% %endif
 
 \section{Events and probability}
 
-In textbooks, one typically finds the notation |P(e)| for the
+In textbooks, one typically finds the notation $P(e)$ for the
 probability of an \emph{event} |e|.
 %
 Again, the space of situations |s| is implicit as well as the
 dependency between |e| and |s|.
 
 Here, we define events as \emph{boolean-valued} random variables.
-
+%
 Thus an event |e| can be defined as a boolean-valued function |e : a
 -> Bool| over a space |s : Space a|.
 %
@@ -743,7 +757,11 @@ We can show that if |s| has a non-zero measure, then the two
 definitions are equivalent:
 
 Lemma: |measure s * probability s e = measure (Sigma s (isTrue . e))|
-Proof:
+
+Proof: (where we shorten |indicator| to |ind| and |integrator| to |int|)
+%{
+%format indicator = ind
+%format integrator = int
 \begin{spec}
   probability1 s e
 = {- Def. of |probability1| -}
@@ -758,9 +776,10 @@ Proof:
   integrator s (\x -> integrator (Factor (indicator (e x))) (\y -> const 1 (x,y))) / measure s
 = {- Def. of |isTrue| -}
   integrator s (\x -> integrator (isTrue (e x)) (\y -> const 1 (x,y))) / measure s
-= {- Def. of |integrator| -}
+= {- Def. of |integrator| for |Sigma| -}
   measure (Sigma s (isTrue . e)) / measure s
 \end{spec}
+%}
 
 It will often be convenient to define a space whose underlying set is
 a boolean value and compute the probability of the identity event:
@@ -770,8 +789,8 @@ probability d = expectedValue d indicator
 \end{code}
 
 Sometimes one even finds in the literature and folklore the notation
-|P(v)|, where |v| is a value, which stands for |P(t=v)|, for an
-implicit random variable |t|.
+$P(v)$, where $v$ is a value, which stands for $P(t=v)$, for an
+implicit random variable $t$.
 %
 Here even more creativity is required from the reader, who must not
 only infer the space of outcomes, but also which random variable the
@@ -782,10 +801,10 @@ author means.
 Another important notion in probability theory is conditional
 probability, written $P(F ∣ G)$ and read ``probability of |f| given
 |g|''.
-
+%
 We can define the conditional probability of |f| given |g| by taking
 the probability of |f| in the sub space where |g| holds:
-
+%
 \begin{code}
 condProb :: Space a -> (a -> Bool) -> (a -> Bool) -> REAL
 condProb s f g = probability1 (subspace g s) f
@@ -799,6 +818,9 @@ Lemma:  |condProb s f g == probability s (\y -> f y && g y) / probability s g|
 
 Proof:
 \TODO{Possibly split into helper lemma(s) to avoid diving ``too deep''.}
+%{
+%format indicator = ind
+%format integrator = int
 \begin{spec}
   condProb s f g
 = {- Def of condProb -}
@@ -823,13 +845,15 @@ Proof:
   (1/probability s g) * probability1 s (\y -> g y &&  f y)
 \end{spec}
 % emacs wakeup $
+%}
 
 \section{Examples}
 
 \subsection{Dice problem}
 
 We will use the monadic interface to define the experiment, hiding all
-random variables except the outcome that we care about (is the product greater than 10?):
+random variables except the outcome that we care about (is the product
+greater than 10?):
 \begin{code}
 diceSpace :: Space Bool
 diceSpace = do
@@ -847,7 +871,9 @@ diceProblem = probability diceSpace
 -- 0.9047619047619047
 \end{code}
 
-Some helpers: \TODO{Merge with text above to explain more}
+To illustrate the use of the various combinators from above to explore
+a sample space we can compute a few partial results explaining the
+|diceProblem|:
 \begin{code}
 p1 (x,y) = x+y >= 7
 p2 (x,y) = x*y >= 10
@@ -856,6 +882,9 @@ test2     = measure (prod d6 d6 >>= isTrue . p2)                       -- 19
 testBoth  = measure (prod d6 d6 >>= isTrue . \xy -> p1 xy && p2 xy)    -- 19
 prob21    = condProb (prod d6 d6) p2 p1                                -- 19/21
 \end{code}
+We can see that 21 possibities give a sum |>=7|, that 19 possibilities
+give a product |>=10| and that all of those 19 satisfy both
+requirements.
 
 \subsection{Drug test}
 The above drug test problem \ref{ex:drugtest} is often used as an
@@ -885,10 +914,16 @@ userProb = probability drugSpace
 -- |>>> userProb|
 -- 0.33221476510067116
 \end{code}
+%
+Thus a randomly selected individual with a positive test is a drug
+user with probability around one third (thus two thirds are false
+positives).
 
 Perhaps surprisingly, we never needed the Bayes theorem to solve the
-problem. Indeed, the Bayes theorem is already incorporated in our
-defintion of |probability|.
+problem.
+%
+Indeed, the Bayes theorem is already incorporated in our defintion of
+|probability|.
 
 \subsection{Monty Hall}
 We can model the Monty Hall problem as follows: A correct model is
@@ -898,14 +933,15 @@ doors :: [Int]
 doors = [1,2,3]
 montySpace :: Bool -> Space Bool
 montySpace changing = do
-  winningDoor      <-  uniformDiscrete doors  -- any door can be the winning one
+  winningDoor      <-  uniformDiscrete doors  -- random door is winning
   pickedDoor       <-  uniformDiscrete doors  -- player picks door blindly
-  montyPickedDoor  <-  uniformDiscrete        -- Monty cannot pick the same door, nor a winning door.
+  montyPickedDoor  <-  uniformDiscrete
                          (doors \\ [pickedDoor, winningDoor])
+    -- Monty cannot pick the same door, nor a winning door.
   let newPickedDoor =
         if changing
         then head (doors \\ [pickedDoor, montyPickedDoor])
-        -- player takes a door which is NOT the previously picked, nor the showed door.
+          -- player takes the third door
         else pickedDoor
   return (newPickedDoor == winningDoor)
 
@@ -915,16 +951,22 @@ montySpace changing = do
 -- |>>> probability (montySpace True)|
 -- 0.6666666666666666
 \end{code}
+Thus, the ``changing door'' strategy has twice the expected winning
+probability.
 
 The Monty Hall is sometimes considered paradoxical: it is strange that
-changing one's mind can change the outcome. The crucial point is that
-Monty can never show a door which contains the prize. To illustrate,
-an \emph{incorrect} way to model the Monty Hall problem, which still
-appears to follow the example point by point, is the following:
+changing one's mind can change the outcome.
+%
+The crucial point is that Monty can never show a door which contains
+the prize.
+%
+To illustrate, an \emph{incorrect} way to model the Monty Hall
+problem, which still appears to follow the example point by point, is
+the following:
 \begin{code}
 montySpaceIncorrect :: Bool -> Space Bool
 montySpaceIncorrect changing = do
-  winningDoor <- uniformDiscrete [1::Int,2,3]    -- any door can be the winning one
+  winningDoor <- uniformDiscrete [1::Int,2,3]    -- radom door is winning
   let pickedDoor = 1                             -- player picks door 1.
   let montyPickedDoor = 3                        -- monty opens door 3.
   isTrue (montyPickedDoor /= winningDoor)        -- door 3 is not winning
@@ -939,8 +981,6 @@ montySpaceIncorrect changing = do
 \end{code}
 The above is incorrect, because everything happens as if Monty chooses
 a door before the player made its first choice.
-
-
 
 \subsection{Advanced problem}
 Consider the following problem: how many times must one throw a coin
@@ -964,10 +1004,17 @@ example' = threeHeads <$> coins
 % emacs $
 
 Attempting to evaluate |probability1 threeHeads' (< 5)| does not
-terminate. Indeed, we have an infinite list, which translates in
-infinitely many cases to consider. So the evaluator cannot solve this
-problem.  We have to resort to a symbolic method.  First, we can
-unfold the definitions of |coins| in |threeHeads|, and obtain:
+terminate.
+%
+Indeed, we have an infinite list, which translates to infinitely many
+cases to consider.
+%
+So the evaluator cannot solve this problem in finite time.
+%
+We have to resort to a symbolic method.
+%
+First, we can unfold the definitions of |coins| in |threeHeads|, and
+obtain:
 
 \begin{code}
 threeHeads' = helper 3
@@ -976,45 +1023,56 @@ helper 0 = return 0
 helper m = do
   h <- coin
   (1 +) <$> if h
-    then helper (m-1)
-    else helper 3 -- when we have a tail, we start from scratch
+    then  helper (m-1)
+    else  helper 3 -- when we have a tail, we start from scratch
 \end{code}
 % emacs $
-Evaluating the probability still does not terminate: we no longer have
-an infinite list, but we still have infinitely many possibilities to
-consider: however small, there is always a probability to get a
-``tail'' at the wrong moment, and the evaluation must continue.
+Evaluating the probability still does not terminate:
+%
+we no longer have an infinite list, but we still have infinitely many
+possibilities to consider:
+%
+however small, there is always a probability to get a ``tail'' at the
+wrong moment, and the evaluation must continue.
 
 We can start by showing that |helper m| is a distribution (its measure
-is 1). The proof is by induction on |m|:
+is 1).
+%
+The proof is by induction on |m|:
 \begin{itemize}
 \item for the base case |measure (helper 0) = measure (pure 0) = 1|
-\item induction: assume that |helper m| is a distribution. Then |if h
-  then helper m else helper 3| for every |h|. The result is obtained
-  by using the |>>=|/distribution lemma.
+\item induction: assume that |helper m| is a distribution.
+  %
+  Then |if h then helper m else helper 3| for every |h|.
+  %
+  The result is obtained by using the |>>=|/distribution lemma.
 \end{itemize}
 
-Then, we can symbolically compute the integrator of |helper|. We won't
-be using the base case.  In the recursive case, we have:
+Then, we can symbolically compute the integrator of |helper|.
+%
+We won't be using the base case.
+%
+In the recursive case, we have:
 
 \begin{spec}
-integrator (helper (m+1)) f
+integrator (helper (m+1)) id
 == {- By def. of |helper| -}
-integrator (coin $ \h -> (1+) <$> if h then helper m else helper 3) f
+integrator (coin $ \h -> (1+) <$> if h then helper m else helper 3) id
 == {- By integrator/bind -}
-integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) f
+integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) id
 == {- By |integrator| of linear function (|fmap| case) -}
-integrator coin $ \h -> 1 + integrator (if h then helper m else helper 3) f
+integrator coin $ \h -> 1 + integrator (if h then helper m else helper 3) id
 == {- By case analysis -}
-integrator coin $ \h -> 1 + (if h then integrator (helper m) f else integrator (helper 3) f)
+integrator coin $ \h -> 1 + (if h then integrator (helper m) id else integrator (helper 3) id)
 == {- By linearity of |integrator| -}
-1 + (integrator coin $ \h -> if h then integrator (helper m) f else integrator (helper 3) f)
+1 + (integrator coin $ \h -> if h then integrator (helper m) id else integrator (helper 3) id)
 == {- By integrator/bernouilli (exercise) -}
-1 + 0.5 * integrator (helper m) f + 0.5 * integrator (helper 3) f
+1 + 0.5 * integrator (helper m) id + 0.5 * integrator (helper 3) id
 \end{spec}
 % $ emacs
 
-If we let |h m = expectedValueOfDistr (helper m)|, and using the above lemma, then we find:
+If we let |h m = expectedValueOfDistr (helper m)|, and using the above
+lemma, then we find:
 
 \begin{spec}
 h (m+1)  == 1 + 0.5 * h m + 0.5 * h 3
@@ -1025,13 +1083,29 @@ which we can rewrite as:
 \end{spec}
 and expand for |m = 0| to |m = 2|:
 \begin{spec}
-2 * h 1 = 2 + h 3
-2 * h 2 = 2 + h 1 + h 3
-2 * h 3 = 2 + h 2 + h 3
+2 * h 1 = 2 +        h 3
+2 * h 2 = 2 + h 1 +  h 3
+2 * h 3 = 2 + h 2 +  h 3
 \end{spec}
 This leaves us with a system of linear equations with three unknowns
-|h 1|, |h 2| and |h 3|, which admits a single solution with |h 3 =
-14|, giving the final solution to the initial problem.
+|h 1|, |h 2| and |h 3|, which admits a single solution with |h 1 = 8|,
+|h 2 = 12|, and finally |h 3 = 14|, giving the answer to the initial
+problem: we can expect to need 14 coin flips to get three heads in a
+row.
+
+%Simplify + eliminate |h 3 = 2*h 1 - 2 |:
+% 2 * h 2 = 2 + h 1 +  2*h 1 - 2 = 3 * h 1
+% 2 * h 1 - 2 = 2 + h 2
+%Simplify
+% 3 * h 1 = 2 * h 2
+% 2 * h 1 = 4 + h 2
+%Eliminate |h 2 = 2*h 1 - 4|
+% 3 * h 1 = 2 * (2*h 1 - 4) = 4*h 1 - 8
+%Simplify and substitute back
+% h 1 =  8
+% h 2 = 12
+% h 3 = 14
+
 
 
 % To solve such problems symbolically, we define a so-called ``generator
