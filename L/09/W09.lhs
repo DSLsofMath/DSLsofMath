@@ -1171,14 +1171,12 @@ row.
 % can obtain a system of recurrent equations which would yield a
 % solution to the problem.
 
-% TODO: the above can be solved using a system of equations involving
-% ONLY expected values of helper m for m in [0..3]. To do in one needs
-% lemmas about expected values directly.
-
 \section{Independent events}
-One possible way to define for independent events is as follows.  $E$
-is independent from $F$ iff $P(E ∣ F) = P(E)$.  We can express this
-definition in our DSL as follows:
+One possible way to define for independent events is as follows.
+%
+$E$ is independent from $F$ iff $P(E ∣ F) = P(E)$.
+%
+We can express this definition in our DSL as follows:
 
 \begin{code}
 independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
@@ -1186,12 +1184,12 @@ independentEvents s e f = probability1 s e == condProb s e f
 \end{code}
 
 According to \citet{IntroProb_Grinstead_Snell_2003}, two events
-independent iff.  $P(E ∩ F) = P(E) · P(F)$.
-
+independent iff.\ $P(E ∩ F) = P(E) · P(F)$.
+%
 Using our language, we would write instead:
-
+%
 \begin{spec}
-probability1 s (\x -> e x && f e) == probability1 s e * probability1 s f
+probability1 s (\x -> e x && f x) == probability1 s e * probability1 s f
 \end{spec}
 
 Proof.
@@ -1207,9 +1205,9 @@ In the left to right direction:
 
 This part of the proof is written like so using our DSL:
 \begin{spec}
-probability1 s (\x -> e x && f e)
-= condProb s e f * probability1 s f
-= probability1 s e * probability1 s f
+probability1 s (\x -> e x && f x)
+= condProb s e f    * probability1 s f
+= probability1 s e  * probability1 s f
 \end{spec}
 
 We note that at this level of abstraction, the proofs follow the same
@@ -1230,9 +1228,8 @@ In the right to left direction:
 
 Exercise: express the rest of the proof using our DSL
 
-
-\TODO{In addition to a  semantics based on integrators, one can program a semantics based on monte carlo sampling}
-
+\TODO{In addition to a semantics based on integrators, one can program
+  a semantics based on monte carlo sampling}
 
 % \section{Continuous spaces and equality}
 % TODO

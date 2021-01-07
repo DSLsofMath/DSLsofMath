@@ -1,4 +1,4 @@
-\section{End}
+\chapter{End}
 
 TODO: sum up and close
 
@@ -38,6 +38,11 @@ Linear algebra, vector spaces, matrices, bases
 
 Chapter~\ref{sec:Laplace}:
 |exp|, |Laplace|
+
+Chapter~\ref{ch:probability-theory}:
+Probability spaces
+
+
 
 
 You have reached the end --- rejoice!
