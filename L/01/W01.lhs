@@ -15,16 +15,29 @@ We will implement certain concepts in the functional programming
 language Haskell and
 %
 the code for this lecture is placed in a module called
-|DSLsofMath.W01| that starts here\footnote{As mentioned already in the introduction, the code is available on \href{https://github.com/DSLsofMath/DSLsofMath}{GitHub}.}:
-\TODO{It would also be useful to split up these imports into those needed early (|Natural|, |Ratio|) and those (|CSem|) only needed in subsection \cref{sec:complexcase} (to be introduced later).}
+|DSLsofMath.W01| that starts here.
+%
+As mentioned earlier, the code is available on
+\href{https://github.com/DSLsofMath/DSLsofMath}{GitHub}.
+%
+\TODO{It would also be useful to split up these imports into those
+  needed early (|Natural|, |Ratio|) and those (|CSem|) only needed in
+  subsection \cref{sec:complexcase} (to be introduced later).}
 
-\begin{code}
-{-# LANGUAGE InstanceSigs #-}
+\begin{spec}
 module DSLsofMath.W01 where
-import DSLsofMath.CSem (ComplexSem(CS), (.+.), (.*.))
+import Numeric.Natural (Natural)
+import Data.Ratio (Ratio, (%))
+\end{spec}
+
+%if False
+\begin{code}
+module DSLsofMath.W01 where
+import DSLsofMath.CSem (Complex(C), addC, mulC, Ring)
 import Numeric.Natural (Natural)
 import Data.Ratio (Ratio, (%))
 \end{code}
+%endif
 
 These lines constitute the module header which usually starts a Haskell
 file.
@@ -33,8 +46,8 @@ We will not go into details of the module header syntax here but the
 purpose is to ``name'' the module itself (here |DSLsofMath.W01|) and
 to |import| (bring into scope) definitions from other modules.
 %
-As an example, the second to last line imports types for rational
-numbers and the infix operator |(%)| used to construct ratios
+As an example, the last line imports types for rational numbers and
+the infix operator |(%)| used to construct ratios
 (|1%7| is Haskell notation for $\frac{1}{7}$, etc.).
 
 \section{Types of |data| and functions}
@@ -77,19 +90,22 @@ of real numbers.
 %
 
 So far the syntax is trivial --- just names for certain sets --- but
-we can also combine these, and for our purposes the most important construction is the
-function type.
+we can also combine these, and for our purposes the most important
+construction is the function type.
 %
 \subsection{Functions}
 For any two type expressions |A| and |B| we can form the function type
 |A -> B|.
 %
-Its semantics is the set of (semantic) functions from the
-  semantics of |A| to the semantics of |B|.\jp{In fact we don't write this for other types. Is this really necessary?}
-\footnote{The only way to be precise about semantics
-  is to use a formal language, and so semantics sometimes does not
-  seem to be that much different from syntax, as in this example.
-  Fortunately, in the rest of this \course{}, we will be describing domains where the semantics is gives more insight than here.}
+Its semantics is the set of (semantic) functions from the semantics of
+|A| to the semantics of |B|.\jp{In fact we don't write this for other
+  types. Is this really necessary?}%
+\footnote{The only way to be precise about semantics is to use a
+  formal language, and so semantics sometimes does not seem to be that
+  much different from syntax, as in this example.
+  %
+  Fortunately, in the rest of this \course{}, we will be describing
+  domains where the semantics is gives more insight than here.}
 %
 As an example, the semantics of |BB -> BB| is a set of four functions:
 |{const False, id, not, const True}| where |not : BB -> BB| is boolean
@@ -142,8 +158,10 @@ For small |n| special names are often used: binary means arity 2 (like
 %*TODO: perhaps add something about tupling, currying and arity
 
 We can also construct functions which manipulate functions.
-They are called \emph{higher-order} functions and as a first example we present |flip|
-which ``flips'' the two arguments of a binary operator.
+%
+They are called \emph{higher-order} functions and as a first example
+we present |flip| which ``flips'' the two arguments of a binary
+operator.
 %
 \begin{code}
 flip :: (a -> b -> c) -> (b -> a -> c)
@@ -190,8 +208,6 @@ directed edges.
 \caption{Function composition diagrams: in general, and two examples}
 \label{fig:funcomp}
 \end{figure}
-\TODO{Explain operator section somewhere: it is used as |(%1)| in Fig.~\ref{fig:funcomp}.}
-
 In Haskell we get the following type:
 
 \begin{spec}
@@ -199,6 +215,14 @@ In Haskell we get the following type:
 \end{spec}
 %
 which may take a while to get used to.
+
+In the figure we use ``operator sections'': |(%1) :: ZZ -> QQ| is the
+function that the embeds an integer |n| as the ratio |frac n 1|.
+%
+Other convenient examples include |(+1) :: ZZ -> ZZ| for the ``add
+one'' function, and |(2*)| for the ``double'' function.
+
+
 
 \paragraph{Partial and total functions}
 
@@ -413,8 +437,10 @@ In the example of the Laplace transformation, this leads to
 Lap : (T -> CC) -> (S -> CC)
 \end{spec}
 %
-where |T = REAL| and |S = CC|.
-\jp{But we use the variable name ('s','t') as a type name. This is perhaps also confusing?}
+where the types |T = REAL| and |S = CC|.
+\jp{But we use the variable name ('s','t') as a type name.
+%
+  This is perhaps also confusing?}
 %
 Note that the function type constructor |(->)| is used three times
 here: once in |T -> CC|, once in |S -> CC| and finally at the top
@@ -474,17 +500,17 @@ construct as a stronger version of |type|.
 
 \begin{code}
 newtype Population       = Pop  Int  -- Population count
-newtype Ftabovesealevel  = Hei  Int  -- Elevation in feet above sea level
+newtype Elevation        = Hei  Int  -- Elevation in feet above sea level
 newtype Established      = Est  Int  -- Year of establishment
 
 -- Example values of the new types
 pop :: Population;       pop  = Pop   562;
-hei :: Ftabovesealevel;  hei  = Hei  2150;
+hei :: Elevation;        hei  = Hei  2150;
 est :: Established;      est  = Est  1951;
 \end{code}
 
 This example introduces three new types, |Population|,
-|Ftabovesealevel|, and |Established|, which all are internally
+|Elevation|, and |Established|, which all are internally
 represented by an |Int| but which are good to keep apart.
 %
 The syntax also introduces \emph{constructor functions} |Pop :: Int ->
@@ -530,19 +556,20 @@ Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
 
 
 The |data| keyword will be used throughout the \course{} to define
-(inductive) datatypes of syntax trees for different kinds of expressions: simple
-arithmetic expressions, complex number expressions, etc.
+(inductive) datatypes of syntax trees for different kinds of
+expressions: simple arithmetic expressions, complex number
+expressions, etc.
 %
 But it can also be used for non-inductive datatypes, like |data Bool =
-False || True|, or |data TownData = Town String Population Established|.
+False || True|, or |data TwoDice = TD ZZ ZZ|.
 %
 The |Bool| type is the simplest example of a \emph{sum type}, where
 each value uses either of the two variants |False| and |True| as the
 constructor.
 %
-The |TownData| type is an example of a \emph{product type}, where each
-value uses the same constructor |Town| and records values for the
-name, population, and year of establishment of the town modelled.
+The |TwoDice| type is an example of a \emph{product type}, where each
+value uses the same constructor |TD| and records values for the values
+of two rolled dice.
 %
 (See Exercise~\ref{exc:counting} for the intuition behind the terms
 ``sum'' and ``product'' used here.)
@@ -581,7 +608,6 @@ or a |b| (a sum type).\jp{Why do we give the semantics of functions but not the 
 \begin{spec}
 data Either p q = Left p | Right q
 \end{spec}
-
 
 \section{Notation and abstract syntax for sequences}
 \label{sec:infseq}
@@ -673,7 +699,8 @@ First, with this syntax, the $\lim_{i\to\infty} x_i$ expression form
 binds |i| in the expression |xi|.
 %
 We could just as well say that |lim| takes a function |x :: Nat -> X|
-as its only argument.\jp{This is explained in \cref{sec:functions-and-scoping}}
+as its only argument (this is further explained in
+\cref{sec:functions-and-scoping}).
 %
 Second, an arbitrary sequence |x|, may or may not have a limit.
 %
@@ -1090,7 +1117,8 @@ algebraic operations to arrive at a \emph{deep embedding} as seen in
 the next section.
 %
 Both shallow and deep embeddings will be further explained in
-\cref{sec:evalD,sec:expressions-of-one-var}.\footnote{And several other places: this is a recurrent idea of the \course{}}
+\cref{sec:evalD,sec:expressions-of-one-var} (and several other places:
+this is a recurrent idea of the \course{}).
 
 At this point we can sum up the ``evolution'' of the datatypes introduced so far.
 %
@@ -1132,7 +1160,7 @@ This kind of representation is often called a ``shallow embedding''.
 %
 Now we turn to the study of the \emph{syntax} instead (``deep embedding'').
 
-We want a datatype |ComplexE| for the abstract syntax tree of
+We want a datatype |ComplexE| for the abstract syntax tree (AST) of
 expressions.
 %
 The syntactic expressions can later be evaluated to semantic values:
@@ -1153,15 +1181,16 @@ the symbol |i|, an embedding from |REAL|, plus and times.
 We make these four \emph{constructors} in one recursive datatype as
 follows:
 %
+\pj{Perhaps rename |Plus| to |Add| and |Times| to |Mul| for coherence.}
+%
 %**TODO rename |ImagUnit| to just |I| (and adapt explanation)
 \begin{code}
-data ComplexE  =  ImagUnit  -- syntax for |i|, not to be confused with the type |ImagUnits|
+data ComplexE  =  ImagUnit  -- syntax for |i|, not the type |ImagUnits|
                |  ToComplex REAL
                |  Plus   ComplexE  ComplexE
                |  Times  ComplexE  ComplexE
  deriving (Eq, Show)
 \end{code}
-%
 Note that, in |ComplexA| above, we also had a constructor for
 ``plus'' (|CPlus1|), but it was playing a different role.
 %
@@ -1170,7 +1199,7 @@ numbers as arguments, while |Plus| here takes two
 complex expressions as arguments.
 
 Here are two examples of type |ComplexE| as Haskell code and as
-abstract syntax trees:
+ASTs:
 \begin{code}
 testE1 = Times ImagUnit ImagUnit
 testE2 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
@@ -1234,11 +1263,16 @@ assume that there exists a corresponding semantic function.
 The next step is to implement these functions, but let us first list
 their types and compare them with the types of the syntactic constructors:
 %
-\begin{code}
-imagUnitD :: ComplexD                        -- |ComplexE|
-toComplexD :: REAL -> ComplexD               -- |REAL -> ComplexE|
-timesD  :: ComplexD -> ComplexD -> ComplexD  -- |ComplexE -> ComplexE -> ComplexE|
-\end{code}
+\begin{spec}
+ImagUnit    :: ComplexE
+imagUnitD   :: ComplexD
+
+ToComplex   :: REAL -> ComplexE
+toComplexD  :: REAL -> ComplexD
+
+Times       :: ComplexE  -> ComplexE  -> ComplexE
+timesD      :: ComplexD  -> ComplexD  -> ComplexD
+\end{spec}
 %plusD   :: ComplexD -> ComplexD -> ComplexD  -- |ComplexE -> ComplexE -> ComplexE|
 As we can see, each use of |ComplexE| has been replaced be a use of |ComplexD|.
 %
@@ -1282,7 +1316,7 @@ is ``forall inputs, this should return |True|''.
 %
 This idea is at the core of \emph{property based testing} (pioneered
 by \citet{claessen_quickcheck_2000}) and conveniently available in the
-library QuickCheck.
+Haskell library QuickCheck.
 %
 
 %
@@ -1304,6 +1338,14 @@ The new operator |(===)| corresponds to semantic equality, that is,
 equality \emph{after evaluation}:
 %
 
+%{
+%format .=. = ===
+\begin{code}
+(.=.) :: ComplexE -> ComplexE -> Bool
+z .=. w {-"\quad"-} = {-"\quad"-} evalE z == evalE w
+\end{code}
+%}
+
 %if false
 Unfortunately we have not explained classes yet.
 \begin{code}
@@ -1315,12 +1357,9 @@ instance SemEq Int where
 instance SemEq Double where
   (===) = (==)
 instance SemEq ComplexE where
+  (===) = (.=.)
 \end{code}
 %endif
-\begin{code}
-  (===) :: ComplexE -> ComplexE -> Bool
-  z === w {-"\quad"-} = {-"\quad"-} evalE z == evalE w
-\end{code}
 
 Another law is that |fromCD| is an embedding: if we start from a
 semantic value, embed it back into syntax, and evaluate that syntax we
@@ -1383,8 +1422,9 @@ We do this by abstraction: we make one more
 version of the complex number type, which is parameterised on the underlying
 representation type for~|REAL|.
 %
-At the same time\jp{why though?} we combine |ImagUnit| and |ToComplex| to
-|ToComplexCart|, which corresponds to the primitive from |a + bi| discussed above:
+At the same time, to reduce the number of constructors, we combine
+|ImagUnit| and |ToComplex| to |ToComplexCart|, which corresponds to
+the primitive form |a + bi| discussed above:
 %*TODO: perhaps explain more about the generalisation step.
 
 %TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
@@ -1399,15 +1439,15 @@ toComplexSyn :: Num a => a -> ComplexSyn a
 toComplexSyn x = ToComplexCart x 0
 \end{code}
 %
-From Appendix~\ref{app:CSem} we import |newtype ComplexSem r = CS (r ,
-r) deriving Eq| and the semantic operations |(.+.)| and |(.*.)|
+From Appendix~\ref{app:CSem} we import |newtype Complex r = C (r ,
+r) deriving Eq| and the semantic operations |addC| and |mulC|
 corresponding to |plusD| and |timesD|.
 %
 \begin{code}
-evalCSyn :: Num r => ComplexSyn r -> ComplexSem r
-evalCSyn (ToComplexCart x y)  = CS (x , y)
-evalCSyn (l  :+:  r)          = evalCSyn l  .+.  evalCSyn r
-evalCSyn (l  :*:  r)          = evalCSyn l  .*.  evalCSyn r
+evalCSyn :: Ring r => ComplexSyn r -> Complex r
+evalCSyn (ToComplexCart x y)  = C (x , y)
+evalCSyn (l  :+:  r)          = addC  (evalCSyn l)  (evalCSyn r)
+evalCSyn (l  :*:  r)          = mulC  (evalCSyn l)  (evalCSyn r)
 \end{code}
 %
 %if False
@@ -1434,11 +1474,11 @@ fromIntegerCS = toComplexSyn . fromInteger
 % \end{exercise}
 
 With this parameterised type we can test the code for ``complex
-rationals''\footnote{The reason why math textbooks never talk about
-  this version of complex numbers is because complex numbers are used
-  to handle roots of all numbers uniformly, and roots are in general
-  irrational.} to avoid rounding errors.
+rationals'' to avoid rounding errors.
 %**TODO: add concrete example
+(The reason why math textbooks rarely talk about complex rationals is
+because complex numbers are used to handle roots of all numbers
+uniformly, and roots are in general irrational.)
 
 %TODO: perhaps include
 % We can also state and check properties relating the semantic and the syntactic operations:

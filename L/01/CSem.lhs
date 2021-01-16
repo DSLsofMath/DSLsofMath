@@ -2,9 +2,16 @@
 \label{app:CSem}
 
 \begin{code}
-module DSLsofMath.CSem where
+module DSLsofMath.CSem (module DSLsofMath.CSem, module DSLsofMath.Algebra) where
 import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
 import DSLsofMath.Algebra
+  (  Additive (zero, (+))
+  ,  AddGroup (negate), (-)
+  ,  Multiplicative (one, (*)), (^+)
+  ,  MulGroup ((/))
+  ,  Ring
+  ,  Field
+  )
 
 newtype Complex r = C (r , r)    deriving Eq
 \end{code}
