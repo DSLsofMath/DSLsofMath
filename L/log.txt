@@ -1,3 +1,7 @@
+2021-01-16: Time to set the license: CC-by-nc-sa
+
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+
 2019-01-19: Debugging spacing
 
 I'd like the spacing before and after a code block to be the

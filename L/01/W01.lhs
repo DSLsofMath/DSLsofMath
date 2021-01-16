@@ -349,7 +349,6 @@ Fortunately, in mathematics and in Haskell all functions are pure.
 %}
 
 %**TODO: Perhaps more about cartesian product, etc.
-%*TODO forward pointer to exercises about cardinality~\ref{exc:counting}
 %*TODO explain the e : t syntax (and mention e `elem` t)
 
 %\subsection{Functions}
@@ -1430,9 +1429,9 @@ fromIntegerCS = toComplexSyn . fromInteger
 \end{code}
 %endif
 
-\begin{exercise}
-  Add a few more operations (hint: extend |ComplexSyn| as well) and extend |eval| appropriately.
-\end{exercise}
+% \begin{exercise}
+%   Add a few more operations (hint: extend |ComplexSyn| as well) and extend |eval| appropriately.
+% \end{exercise}
 
 With this parameterised type we can test the code for ``complex
 rationals''\footnote{The reason why math textbooks never talk about
@@ -1483,11 +1482,13 @@ The property is also polymorphic: it works for many different types |a| (all
 types which have an |===| operator).
 
 Thus we can specialise it to |Plus|, |Times| and any other binary
-operator, and obtain some of the earlier laws (|propAssocPlus|, |propAssocTimes|).
+operator, and obtain some of the earlier laws (|propAssocPlus|,
+|propAssocTimes|).
+%
 The same can be done with distributivity.
-Doing so we learnt that the underlying set
-matters: |(+)| for |REAL| has some properties, but |(+)| for |Double|
-has others.
+%
+Doing so we learnt that the underlying set matters: |(+)| for |REAL|
+has some properties, but |(+)| for |Double| has others.
 %
 When formalising math as DSLs, approximation is sometimes convenient, but makes many
 laws false.
@@ -1501,9 +1502,9 @@ parameter to make the degree of approximation tunable (|Int|,
 %Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
 % Answer: |max|
 
-\begin{exercise}
-Find other pairs of operators satisfying a distributive law.
-\end{exercise}
+It is a good exercise to find other pairs of operators satisfying
+distributive laws.
+
 
 
 %if False

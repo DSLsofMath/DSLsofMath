@@ -2,7 +2,7 @@
 
 [GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related to a BSc course at Chalmers and GU.
 
-The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/8975)
+The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/12458)
 
 Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
@@ -15,10 +15,11 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865
 * Main author, examiner, lecturer: Patrik Jansson (patrikj AT)
 * First version (and continued support): Cezar Ionescu (cezar AT)
 * Teaching assistants:
+  * 2021: Maximilian Algehed (algehed AT) and Víctor López Juan (opezv AT)
   * 2020: Sólrún Einarsdóttir (slrn AT) and Víctor López Juan (opezv AT)
   * 2019: Maximilian Algehed (algehed AT) and Abhiroop Sarkar (sarkara AT)
-  * 2017–2018: Daniel Schoepe (schoepe AT)
-  * 2017: Frederik Hanghøj Iversen (hanghj AT student)
+  * 2018: Daniel Schoepe (schoepe AT)
+  * 2017: Frederik Hanghøj Iversen (hanghj AT student) and Daniel Schoepe (schoepe AT)
   * 2016: Irene Lobo Valbuena (lobo AT)
 * Project assistants: Daniel Heurlin, Sólrún Einarsdóttir, Adam Sandberg Ericsson (saadam AT)
 
@@ -212,3 +213,7 @@ Some important references:
   understanding differential geometry.  Similar in spirit to the course,
   but more advanced and very different in form.  An earlier version
   appeared as an [AIM report](http://web.mit.edu/wisdom/www/AIM-2005-003.pdf).
+
+# License: CC-BY-NC-SA 4.0
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
