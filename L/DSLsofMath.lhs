@@ -33,6 +33,7 @@
 \RequirePackage[utf8]{inputenc}
 \usepackage{newunicodechar}
 %include newunicodedefs.tex
+\usepackage[type={CC},modifier={by-nc-sa},version={4.0}]{doclicense}
 \RequirePackage{amsfonts}
 \usepackage[capitalize]{cleveref} % \cref
 \usepackage{tikz}
@@ -129,8 +130,10 @@
 %           {\texttt{cezar@@chalmers.se}}
 \date{WORK IN PROGRESS: DRAFT OF \today}
 \begin{document}
+\frontmatter
 \maketitle
-
+%\begin{abstract}
+\paragraph{Abstract}
 %if lectureNotes
 
   These notes aim to cover the lectures and exercises of the recently
@@ -156,7 +159,13 @@
   and, finally, to organize the resulting functions and types in
   domain-specific languages.
 
+\vfill
+
+\paragraph{License} \doclicenseThis
+
+
 \tableofcontents
+\mainmatter
 
 %include 00/Intro.lhs
 %include 01/W01.lhs
