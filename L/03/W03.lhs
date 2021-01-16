@@ -84,12 +84,18 @@ making sure that
 scope (otherwise one informally says that there is a ``clash'').
 
 To clarify this situation, we will now formalise expressions of one
-variables as a DSL. For simplicity we will focus on arithmetic
-expressions only. Therefore we have constructors for addition,
-multiplication and constants, as in \cref{sec:complex-arithmetic}.
+variables as a DSL.
+%
+For simplicity we will focus on arithmetic expressions only.
+%
+Therefore we have constructors for addition, multiplication and
+constants, as in \cref{sec:complex-arithmetic}.
+%
 Additionally, we have the all-important constructor for variables,
-which we will call |X| here. We can implement all this in a datatype
-as follows:\jp{Rename FunExp -> Exp1V or similar?}
+which we will call |X| here.
+%
+We can implement all this in a datatype as follows:\jp{Rename FunExp
+  -> Exp1V or similar?}
 
 \subsubsection{Deep embedding}
 \label{sec:FunExp}
@@ -191,7 +197,7 @@ argument) is a recurring technique in this \course{}.
 %
 To start, we can use it to assign types to big operators.
 
-\subsection{Scoping and Typing big operators}
+\subsection{Scoping and typing big operators}
 \label{sec:big-operators}
 Consider the mathematical expression
 %

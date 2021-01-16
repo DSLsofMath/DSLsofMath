@@ -108,9 +108,16 @@ addition to an engineering curriculum.
 Our key idea is to apply the DSL approach to a rich source of domains and
 applications: mathematics.
 %
-Indeed, mathematics offers countless examples of DSLs: the language of
-group theory, say, or the language of probability theory, embedded in
-that of measure theory\jp{forward references to chapters (and update text here to better fit actual content)}.
+Indeed, mathematics offers countless examples of DSLs: in this book we cover
+complex arithmetics        (\cref{sec:DSLComplex}), %Ch1
+sets and logic             (\cref{sec:logic}),      %Ch2
+functions and derivatives  (\cref{sec:types}),      %Ch3
+algebras and morphisms     (\cref{sec:CompSem}),    %Ch4
+power series               (\cref{sec:poly}),       %Ch5
+differential equations     (\cref{sec:deriv}),      %Ch6
+linear algebra             (\cref{sec:LinAlg}),     %Ch7
+Laplace transforms         (\cref{sec:Laplace}),    %Ch8
+probability theory         (\cref{ch:probability-theory}). %Ch9
 %
 The idea that the various branches of mathematics are in fact DSLs
 embedded in the ``general purpose language'' of set theory was (even
@@ -130,14 +137,15 @@ formal than usual, as least from a linguistic perspective.
 The increased formality is justified by the need to implement
 (parts of) the languages.
 %
-\jp{There seem to be a paragraph missing about the benefits for the CS
-  student}
-%TODO: one aspect is to bring the "computer aided learning" present in feedback from the compiler from programming to also help in mathematics.
-We provide a wide range of applications of the DSLs introduced,
-so that the new concepts can be seen ``in action'' as soon as
-possible.
+We provide a wide range of applications of the DSLs introduced, so
+that the new concepts can be seen ``in action'' as soon as possible.
+%
+For the computer science students, one aspect is to bring the
+``computer aided learning'' present in feedback from the compiler from
+programming to also help in mathematics.
 
-In our view a course based on this textbook should have two major learning outcomes.
+In our view a course based on this textbook should have two major
+learning outcomes.
 %
 First, the students should be able to design and implement a DSL in a
 new domain.
@@ -173,18 +181,14 @@ computer science perspective.
         mathematical concepts
   \end{itemize}
 \end{itemize}
-  \caption{Learning outcomes for this \course}
+  \caption{Learning outcomes}
   \label{fig:LearningOutcomes}
 \end{wrapfigure}
 
 To achieve these objectives, the course consists of a sequence of case
-studies in which a mathematical area is first presented (for
-example,\pj{update the list to match contents, and perhaps include
-  chapter references} a fragment of linear algebra, probability
-theory, interval analysis, or differential equations), followed by a
+studies in which a mathematical area is first presented, followed by a
 careful analysis that reveals the domain elements needed to build a
 language for that domain.
-%**TODO: adjust to real areas covered.
 %
 The DSL is first used informally, in order to ensure that it is
 sufficient to account for intended applications (for example, solving
@@ -196,15 +200,16 @@ area.
 %
 The DSL is then implemented in Haskell.
 %**TODO: add these comparisons, or update the text
-The resulting implementation can be compared with existing ones, such
-as Matlab in the case of linear algebra, or R in the case of
-statistical computations.
+%The resulting implementation can be compared with existing ones, such
+%as Matlab in the case of linear algebra, or R in the case of
+%statistical computations.
 %
 Finally, limitations of the DSL are assessed and the possibility for
 further improvements discussed.
 
 In the first instances, the course is an elective course for the
-second year within programmes such as CSE\footnote{CSE = Computer Science \& Engineering = Datateknik = D}, SE, and Math.
+second year within programmes such as CSE\footnote{CSE = Computer
+  Science \& Engineering = Datateknik = D}, SE, and Math.
 %
 The potential students will have all taken first-year mathematics
 courses, and the only prerequisite which some of them will not satisfy
@@ -381,10 +386,7 @@ consisting of a mix of mathematics and computer science.
 
 Working knowledge of functional programming is helpful, but it should
 be possible to pick up quite a bit of Haskell along the way.
-
-
 % \section{Roadmap}
-
 %TODO: write about the book plan and internal dependencies
 \jp{Reading guide as dependency graph}
 
@@ -451,7 +453,6 @@ The aim is to improve the reader's skills in understanding, modelling,
 and implementing mathematical text.
 
 \section{Common pitfalls with traditional mathematical notation}
-\jp{BLOAT: this should go in intro chapter.}
 \label{sec:pitfalls}
 
 \subsection{A function or the value at a point?}
