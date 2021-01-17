@@ -84,7 +84,7 @@ instance Num CB where
   fromInteger n = CB (fromInteger n) 0
 \end{code}
 
-We also did a few examples with integer exponents: i^4, etc. and noted (as an
+We also did a few examples with integer exponents: i^4, etc.\ and noted (as an
 aside) that there are three "power" operators in Haskell, with different types:
 (^), used here, (^^), and (**).
 

@@ -669,32 +669,40 @@ To sum up, partial derivative operators which mention symbols (such as
 |∂ / ∂ x| or ``prime subscript $x$'') do act on an representation of
 functions which uses symbols for the variables (not positions), such
 as presented in \cref{sec:ArithExp}.
-This is why we mostly see \(∂f/∂x\), \(∂f/∂y\), \(∂f/∂z\) etc. when, in the
-  context, the function \(f\) has been given a definition of the form
-  \(f (x, y, z) = \ldots\).
-This kind of approach presents
-several difficulties:
+%
+This is why we mostly see \(∂f/∂x\), \(∂f/∂y\), \(∂f/∂z\) etc.\ when,
+in the context, the function \(f\) has been given a definition of the
+form \(f (x, y, z) = \ldots\).
+%
+This kind of approach presents several difficulties:
 
 \begin{enumerate}
 \item it makes it hard to rename variables (which can be a problem if
   one is renaming variables, for example for the purpose of
   integration)
 \item Further confusion can be created when a variable (such as $z$
-  above) depends on other variables. Tracing dependencies can
-  become daunting and it is easy to make errors of name when doing
-  calculations.
+  above) depends on other variables.
+  %
+  Tracing dependencies can become daunting and it is easy to make
+  errors of name when doing calculations.
 \item it makes it difficult to assign a higher order type to the
-  partial derivatives. Indeed, as we have seen in
-  \cref{sec:big-operators}, doing this means that the operator binds
-  the name of the variable. But it is often awkward to make partial
-  differentiation bind a variable.
+  partial derivatives.
+  %
+  Indeed, as we have seen in \cref{sec:big-operators}, doing this
+  means that the operator binds the name of the variable.
+  %
+  But it is often awkward to make partial differentiation bind a
+  variable.
 \end{enumerate}
 
 One possibility would be to use the following type:
-\(∂/∂x_i : (ℝⁿ → ℝ) → (ℝⁿ → ℝ)\) But it still assume as input a vector
-of variables $x$.  Hence we prefer a notation which doesn't rely on
-the names given to the arguments whatsoever. It was popularised by
-\citet{landau1934einfuhrung} (English edition
+\(∂/∂x_i : (ℝⁿ → ℝ) → (ℝⁿ → ℝ)\), but it still assume as input a
+vector of variables $x$.
+%
+Hence we prefer a notation which doesn't rely on the names given to
+the arguments whatsoever.
+%
+It was popularised by \citet{landau1934einfuhrung} (English edition
 \cite{landau2001differential}): \(D₁\) for the partial derivative with
 respect to the first argument, \(D_2\) for the partial derivative with
 respect to the second argument, etc.
@@ -1146,7 +1154,7 @@ instances of |Eq|: |Char|, |[Char]|, |[[Char]]|, etc.
 
 \subsection{Numeric operations}
 Haskell also provides a |Num| class, containing various numeric types
-(|Int|, |Double|, etc) with several operators (|+|,|*|, etc).
+(|Int|, |Double|, etc.) with several operators (|+|,|*|, etc.).
 %
 Unfortunately, the |Num| class was designed with more regard for
 implementation quirks than mathematical structure, and thus it is a
@@ -1396,7 +1404,7 @@ useful, is that all the above instances are of the form |C a => C (x
 %
 This means that, for example, given the instance |Additive a =>
 Additive (x -> a)| and the instance |Additive REAL|, we have that the
-types |a->REAL|, |a->(b->REAL)|, etc. are all instances of |Additive|.
+types |a->REAL|, |a->(b->REAL)|, etc.\ are all instances of |Additive|.
 %
 Consequently, we can use the usual mathematical operators for
 functions taking any number of arguments --- provided that they match

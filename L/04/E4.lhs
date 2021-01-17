@@ -285,7 +285,7 @@ Prove or disprove the following claims:
 
 
     \item Implement a function |deriv2| such that, for any
-      \pj{Include translation between Num, Fractional, etc. and Additive, etc.}
+      \pj{Include translation between Num, Fractional, etc.\ and Additive, etc.}
 %
       |f : Fractional a => a -> a| constructed with the grammar of
       |FunExp| and any |x| in the domain of |f|, we have that |deriv2

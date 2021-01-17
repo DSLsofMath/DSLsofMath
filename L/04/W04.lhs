@@ -231,7 +231,7 @@ type Ring a = (AddGroup a, Multiplicative a)
 With that, we have completed the structural motivation of our
 replacement for the |Num| class! \jp{Show some instances?}
 \pj{Provide a comparison table / figure relating the operations of
-  |Num|, |Fractional|, etc. with those of |Additive|, etc.}
+  |Num|, |Fractional|, etc.\ with those of |Additive|, etc.}
 % If label:=pin then the text will be connected to the rectangle by a short "pin" (line) 17.10.3 in pgfmanual
 \begin{figure}
   \centering
@@ -632,7 +632,7 @@ Note that |even| throws away lots of information: the domain is
 infinite and the range is a two-element set.
 %
 This information loss could make it difficult to define the helper functions |evenAdd|,
-etc. because they only get to work on the small range.
+etc.\ because they only get to work on the small range.
 %
 Still, in this case we are lucky: we can use the ``parity rules''
 taught in elementary school: even plus even is even, etc.

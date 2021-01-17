@@ -51,7 +51,7 @@ Continuing in this manner we can build |s2 = S s1|, also of
 cardinality 1, and so on.
 %
 Now we can combine different sets (like |s1| and |s2|) with |Union| to
-build sets of cardinality 2: |s3 = Union s1 s2|, |s4 = Union s2 s3|, etc..
+build sets of cardinality 2: |s3 = Union s1 s2|, |s4 = Union s2 s3|, etc.
 %
 And we can at any point apply |S| to get back a new set of cardinality
 1, like |s5 = S s3|.

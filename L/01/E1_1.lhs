@@ -9,7 +9,7 @@ data Exp  =  Con Integer
   deriving (Eq, Show)
 \end{code}
   %
-  Note the use of ``backticks'' around |Plus| etc. which makes it
+  Note the use of ``backticks'' around |Plus| etc.\ which makes it
   possible to use a name as an infix operator.
   %
   \begin{enumerate}

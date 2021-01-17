@@ -530,7 +530,7 @@ Which functions |g| commute with |eval|?
 All the ones in |Num|, |Fractional|, |Transcendental|, by construction;
 additionally, as above, |deriv| and |integ|.
 %
-\pj{Perhaps use |Ring|, |Field|, etc. instead of |Num|, |Fractional| here.}
+\pj{Perhaps use |Ring|, |Field|, etc.\ instead of |Num|, |Fractional| here.}
 
 Therefore, we can implement a general solver for these simple
 equations:
