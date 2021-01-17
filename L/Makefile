@@ -1,5 +1,7 @@
 default: DSLsofMathBook.pdf
 # default: DSLsofMathNotes.pdf
+.PHONY: default
+
 
 nix::
 	nix-shell --run "make"
@@ -18,14 +20,19 @@ DSLM_A5.tex: DSLsofMathNotes.tex
 	cp DSLsofMathNotes.tex DSLM_A5.tex
 	patch < A5_landscape.patch
 
-BOOKDEPS=DSLsofMath.lhs dslm.format ref.bib \
-             newunicodedefs.tex \
-             00/Intro.lhs                     \
-             01/W01.lhs 01/CSem.lhs 01/E1.lhs 01/E1_1.lhs 01/E1_2.lhs 01/E1_from_exams.lhs \
+BOOKDEPS=DSLsofMath.lhs dslm.format ref.bib  \
+             newunicodedefs.tex              \
+             00/Intro.lhs                    \
+             01/W01.lhs                      \
+                01/CSem.lhs                  \
+                01/Either.lhs		     \
+                01/E1.lhs                    \
+                   01/E1_1.lhs		     \
+                   01/E1_2.lhs		     \
+                   01/E1_from_exams.lhs      \
              02/W02.lhs                      \
                 02/SetTheory.lhs	     \
                 02/PropositionalLogic.lhs    \
-                  02/Either.lhs		     \
                 02/FOL.lhs		     \
                 02/Examples.lhs		     \
                 02/CalculusConcepts.lhs      \
@@ -41,6 +48,11 @@ BOOKDEPS=DSLsofMath.lhs dslm.format ref.bib \
 
 %.tex: %.lhs $(BOOKDEPS)
 	lhs2TeX --poly $< > $@
+
+%.tex: %.lhs
+	lhs2TeX --poly $< > $@
+
+DSLsofMath.tex:: $(BOOKDEPS)
 
 build:
 	cabal v2-build

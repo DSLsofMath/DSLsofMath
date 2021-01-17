@@ -57,7 +57,7 @@
 \providecommand\mathbbm{\mathbb}
 
 
-%let submit = False
+%let submit = True
 %if submit
 \newcommand{\todo}[2][?]{}
 %else
