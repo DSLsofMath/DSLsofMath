@@ -1,5 +1,7 @@
 \def\commentbegin{\{{-}~}
 
+%format && = "\mathbin{\wedge}"
+%format || = "\mathbin{\vee}"
 %format >>>                     = ">\!\!>\!\!>"
 %format =~=			= "\stackrel{\text{def}}{=}"
 % %format ComplexA                =  Complex "_A"

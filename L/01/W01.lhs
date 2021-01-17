@@ -605,9 +605,13 @@ Two other examples of, often used, parameterised types are |(a,b)| for
 the type of pairs (a product type) and |Either a b| for either an |a|
 or a |b| (a sum type).\jp{Why do we give the semantics of functions but not the semantics of other types?}
 %
-\begin{spec}
-data Either p q = Left p | Right q
-\end{spec}
+% \begin{spec}
+% data Either p q = Left p | Right q
+% \end{spec}
+%
+For reference, the either type is defined as follows in Haskell:
+%include Either.lhs
+
 
 \section{Notation and abstract syntax for sequences}
 \label{sec:infseq}
@@ -1370,7 +1374,8 @@ propFromCD :: ComplexD -> Bool
 propFromCD s =  evalE (fromCD s) == s
 \end{code}
 
-Other desirable laws are that |+| and |*| should be associative and commutative and |*| should distribute over |+|:
+Other desirable laws are that |+| and |*| should be associative and
+commutative and |*| should distribute over |+|:
 %if false
 \begin{code}
 propAssocPlus :: (Num a, SemEq a) => a -> a -> a -> Bool
@@ -1385,17 +1390,21 @@ propDistTimesPlus x y z {-"\quad"-}  =              x * (y + z)    ===  (x * y) 
 \end{code}
 
 These laws actually fail, but not due to any mistake in the
-implementation of |evalE| in itself. To see this, let us consider
-associativity at different types:
+implementation of |evalE| in itself.
+%
+To see this, let us consider associativity at different types:
 
 \begin{code}
 propAssocInt     = propAssocPlus ::  Int     -> Int     -> Int     -> Bool
 propAssocDouble  = propAssocPlus ::  Double  -> Double  -> Double  -> Bool
 \end{code}
 %
-The first property is fine, but the second fails. Why?
+The first property is fine, but the second fails.
 %
-QuickCheck can be used to find small examples --- this one is perhaps the best one:
+Why?
+%
+QuickCheck can be used to find small examples --- this one is perhaps
+the best one:
 %
 \begin{code}
 notAssocEvidence :: (Double , Double , Double , Bool)
@@ -1416,11 +1425,12 @@ For completeness: these are the values:
 We can now see the underlying reason why some of the laws failed for
 complex numbers: the approximative nature of |Double|.
 %
-Therefore, to ascertain that there is no other bug hiding, we need to move away from the
-implementation of |REAL| as |Double|.
-We do this by abstraction: we make one more
-version of the complex number type, which is parameterised on the underlying
-representation type for~|REAL|.
+Therefore, to ascertain that there is no other bug hiding, we need to
+move away from the implementation of |REAL| as |Double|.
+%
+We do this by abstraction: we make one more version of the complex
+number type, which is parameterised on the underlying representation
+type for~|REAL|.
 %
 At the same time, to reduce the number of constructors, we combine
 |ImagUnit| and |ToComplex| to |ToComplexCart|, which corresponds to
@@ -1530,13 +1540,12 @@ The same can be done with distributivity.
 Doing so we learnt that the underlying set matters: |(+)| for |REAL|
 has some properties, but |(+)| for |Double| has others.
 %
-When formalising math as DSLs, approximation is sometimes convenient, but makes many
-laws false.
+When formalising math as DSLs, approximation is sometimes convenient,
+but makes many laws false.
 %
 Thus, we should attempt to do it late, and if possible, leave a
 parameter to make the degree of approximation tunable (|Int|,
 |Integer|, |Float|, |Double|, |QQ|, syntax trees, etc.).
-
 
 %**TODO: hide or give hints / method (otherwise too hard and a bit off topic)
 %Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
@@ -1544,8 +1553,6 @@ parameter to make the degree of approximation tunable (|Int|,
 
 It is a good exercise to find other pairs of operators satisfying
 distributive laws.
-
-
 
 %if False
 \section{Some helper functions (can be skipped)}

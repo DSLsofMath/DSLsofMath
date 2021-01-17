@@ -22,9 +22,9 @@ module DSLsofMath.W02 where
 \end{code}
 %endif
 
-%include SetTheory.lhs
 %include PropositionalLogic.lhs
 %include FOL.lhs
+%include SetTheory.lhs
 %include Examples.lhs
 %include CalculusConcepts.lhs
 

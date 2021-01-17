@@ -12,16 +12,19 @@ deriving instance Eq Prop
 \section{Propositional Calculus}
 \label{sec:PropFrag} % yep, the propositional calculus is a propositional fragment of other logics, such as FOL.
 
-\pj{If section \ref{sec:PureSet} is not moved again, this ``first'' is second.}
 Our first DSL for this chapter is the language of \emph{propositional
-  calculus} (or propositional logic), modelling simple propositions with the usual
-combinators for and, or, implies, etc.
+  calculus} (or propositional logic), modelling simple propositions
+with the usual combinators for and, or, implies, etc.
 %
-\lnOnly{(The Swedish translation is ``satslogik'' and some more Swe-Eng
-translations are collected on the GitHub page of these lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)}%
+\lnOnly{(The Swedish translation is ``satslogik'' and some more
+  Swe-Eng translations are collected on the GitHub page of these
+  lecture notes\footnote{\url{https://github.com/DSLsofMath/DSLsofMath/wiki/Translations-for-mathematical-terms}}.)}%
 %
-When reading a logic book, one will encounter several concrete syntactic constructs related to propositional logic, which are collected in
-Table~\ref{tab:PropCalc}. Each row lists common synonyms and their arity (number of arguments).
+When reading a logic book, one will encounter several concrete
+syntactic constructs related to propositional logic, which are
+collected in Table~\ref{tab:PropCalc}.
+%
+Each row lists common synonyms and their arity.
 %
 \begin{table}[htbp]
   \centering
@@ -33,25 +36,27 @@ Table~\ref{tab:PropCalc}. Each row lists common synonyms and their arity (number
 \\ |Or|       & $\vee$         & |bar|  & binary
 \\ |Implies|  & $\supset$      & |=>|   & binary
 \end{tabular}
-\caption{Syntax for propositions. In addition, |a|, |b|, |c|, \ldots are used as names of propositions}
+\caption{Syntactic constructors for propositions.}
+% In addition, |a|, |b|, |c|, \ldots are used as names of propositions
 \label{tab:PropCalc}
 \end{table}
 
-Some example propositions are \(|p1| = a \wedge (\neg a)\),
-\(|p2| = a \vee (\neg a)\), \(|p3| = a \Rightarrow b\),
-\(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).
+Some example propositions are |p1 = a && (not a)|, |p2 = a |||| (not
+a)|, |p3 = a => b|, |p4 = (a && b) => (b && a)|.
 %
 The names |a|, |b|, |c|, \ldots are ``propositional variables'': they
-can be substituted for any proposition. We could call them ``variables'', but in upcoming sections we will add
+can be substituted for any proposition.
+%
+We could call them ``variables'', but in upcoming sections we will add
 another kind of variables (and quantification over them) to the
 calculus --- so we keep calling them ``names'' to avoid mixing them
 up.
 
 
 % simple arithmetic in \sref{sec:ch1ex}
-Just as we did with with complex number %\sref{sec:complex-arithmetic}
-expressions in \cref{sec:DSLComplex}, we can model the abstract
-syntax of propositions as a datatype:
+Just as we did with with complex number expressions in
+\cref{sec:complex-arithmetic},%\cref{sec:DSLComplex}
+we can model the abstract syntax of propositions as a datatype:
 \begin{code}
 data Prop  =  Con      Bool
            |  Not      Prop
@@ -95,8 +100,8 @@ eval (Name n)       env = env n
 eval (Con t)        env = t
 
 (==>) :: Bool -> Bool -> Bool
-False  ==> _  = True
-True   ==> p  = p
+False  ==> _ {-"\quad"-}  = True
+True   ==> p              = p
 \end{code}
 %
 The function |eval| translates from the syntactic domain to the semantic
@@ -111,16 +116,15 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
 %
 \subsection{Truth tables and tautologies}
 
-\pj{\refFig{fig:F2a} uses a different notation from \refFig{fig:F2a}: |F => a| is not the header.}
 \begin{figure}[tbp]\centering
   \begin{subfigure}[b]{0.2\textwidth}\centering
-    \begin{tabular}{||l||l||}
-        \hline   |a| & |t| % |F => a|
-      \\\hline  |F|& |T|
-      \\        |T|& |T|
+    \begin{tabular}{|| *{2}{c@@{~}} l||}
+        \hline  |F| & |=>| & |a|
+      \\\hline  |F| & |T| & |F|
+      \\        |F| & |T| & |T|
       \\\hline
     \end{tabular}
-    \caption{|F => a|}
+    \caption{|t = F => a|}
     \label{fig:F2a}
   \end{subfigure}
   \begin{subfigure}[b]{0.3\textwidth}\centering
@@ -137,7 +141,7 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
   \end{subfigure}
   \begin{subfigure}[b]{0.3\textwidth}\centering
     \begin{tabular}{|| *{6}{c@@{~}} l||}
-        \hline   |a| & |&| & |b| & |=>| & |b| & |&| & |a|
+        \hline   |a| & |&&| & |b| & |=>| & |b| & |&&| & |a|
       \\\hline   |F| & |F| & |F| & |T|  & |F| & |F| & |F|
       \\         |F| & |F| & |T| & |T|  & |T| & |F| & |F|
       \\         |T| & |F| & |F| & |T|  & |F| & |F| & |T|
@@ -158,13 +162,13 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
 As a first example of a truth table, consider the proposition |F => a|
 which we call |t| here.
 %
-% We will use the shorter notation with just |T| for true and |F| for
-% false.
-%
 The truth table semantics of |t| is usually drawn as in~\refFig{fig:F2a}:
 %
-one column for the name |a| listing all combinations of |T| and |F|,
-and one column for the result of evaluating the expression.
+one column for each symbol, filled with the truth value of the expression ``rooted'' at that symbol.
+%
+Thus, here we have one column for the name |a| listing all
+combinations of |T| and |F|, one (boring) column for |F|, and one
+column in the middle for the result of evaluating the expression.
 %
 This table shows that no matter what value assignment we try for the
 only variable |a|, the semantic value is |T = True|.
@@ -200,11 +204,11 @@ names in a proposition \pj{Haskell notation for list comprehensions
   not introduced}
 \begin{code}
 envs :: [Name] -> [Name -> Bool]
-envs []     =  [error "envs: never used"]
-envs (n:ns) =  [  \n' -> if n == n' then b else e n'
-               |  b  <-  [True,False]
-               ,  e  <-  envs ns
-               ]
+envs []      =  [error "envs: never used"]
+envs (n:ns)  =  [  \n' -> if n == n' then b else e n'
+                |  b  <-  [False, True]
+                ,  e  <-  envs ns
+                ]
 
 freeNames :: Prop -> [Name]
 freeNames = error "exercise"
@@ -218,9 +222,13 @@ check: for |n| names we get $2^n$ different rows in a truth table.
 Define the function |freeNames|.
 \end{exercise}
 
-There are much better algorithms to evaluate truth values than the naive one we just showed,
-but we will not go this route.  Rather, we can introduce the notion of \emph{proof}.
-(And in fact, the best (known) algorithms remain exponential in the number of variables.)
+There are much better algorithms to evaluate truth values than the
+naive one we just showed, but we will not go this route.
+%
+Rather, we can introduce the notion of \emph{proof}.
+%
+(And in fact, the best (known) algorithms remain exponential in the
+number of variables.)
 
 
 \subsection{Proofs for Propositional Logic}
@@ -270,11 +278,6 @@ OrIntroL :: Proof -> Proof
 OrIntroR :: Proof -> Proof
 \end{spec}
 %
-\pj{At first point of use: introduce the |Either| type:
-For reference, the either type is defined as follows in the Haskell prelude:
-% include Either.lhs
-}
-
 There are a couple of possible approaches to deal with negation.
 %
 One approach is to define it as de Morgan dualisation:
@@ -304,37 +307,40 @@ formula.
 There is no syntax to introduce falsity (|⊥|), otherwise we'd have an
 inconsistent logic!
 %
-\pj{Fix formatting of the rule for truth.}
-Finally we can introduce "Truth", with no premiss: \(\frac{}{⊤}\).
+Finally we can introduce "Truth", with no premiss: \[\frac{\phantom{hello}}{⊤}\]
 %
-The proof has no information either |TruthIntro :: Proof|.
+The proof has no information either: |TruthIntro :: Proof|.
 
 To complete the system, in addition to introduction rules (where the
 connective appears as conclusion), we also need elimination rules
 (where the connective appears as premiss).
 %
-For conjuction (|And|), we have two eliminations rules: $\frac{P ∧ Q}{P}$ and
-$\frac{P ∧ Q}{Q}$.
+For conjuction (|And|), we have two eliminations rules:
+%
+\[\frac{P ∧ Q}{P} \qquad \text{and} \qquad \frac{P ∧ Q}{Q}\]
 %
 So we represent them by |AndElim1 :: Proof -> Prop -> Proof| (and
 |AndElim2| symmetrically), where the extra |Prop| argument corresponds
 to~|Q|.
 
-Our elimination rule for disjunction (|Or|) is
-$\frac {P ∨ Q \quad P → R \quad Q → R} R$.
-%
-The idea here is that if we know that \(P ∨ Q\) holds, then we have
-two cases: either |P| holds or |Q| holds.
+For disjunction (|Or|) the idea is that if we know that \(P ∨ Q\)
+holds, then we have two cases: either |P| holds or |Q| holds.
 %
 If only we can find a proposition |R| which is a consequence of both
 |P| and |Q|, then, regardless of which case we are facing, we know
 that |R| will hold.
+%
+As an elimination rule for we get
+%
+\[\frac {P ∨ Q \quad P → R \quad Q → R} R\]
+
 
 Our elimination for negation is $\frac {¬ ¬ P} P$.
 %
 It simply says that two negations cancel.
 
-Finally we can eliminate falsity as follows: $\frac {⊥} P$.
+Finally we can eliminate falsity as follows:
+\[\frac {⊥} P\]
 %
 This rule goes some times by its descriptive latin name \textit{ex
   falso quodlibet} --- from falsehood, anything (follows).
@@ -379,33 +385,55 @@ proofs which prove it.
 
 \subsection{Implication, hypothetical derivations, contexts}
 
-We have so far omitted to deal with |Implies|. One reason is that we
-can use the so-called material implication definition which we invoked
-earlier in truth tables. It means to define |Implies a b = (Not a)
-`Or` b| --- and this equality means that there is no need to deal
-specially with |Implies|. However this approach does not bring any new
-insight. In particular, this view is hard to transport to more
-complicated logics (such as second-order logic).
+We have so far omitted to deal with |Implies|.
+%
+One reason is that we can use the so-called material implication
+definition which we invoked earlier in truth tables.
+%
+It means to define |Implies a b = (Not a) `Or` b| --- and this
+equality means that there is no need to deal specially with
+|Implies|.
+%
+However this approach does not bring any new insight.
+%
+In particular, this view is hard to transport to more complicated
+logics (such as second-order logic).
 
-Thus we take our usual approach and give rules for it. The introduction rule is sometimes written in this way in logic texts: \[\frac{\begin{array}{c}P \\ \vdots \\ Q \end{array}}{P → Q}\]
-Such a notation can, however, be terribly confusing. We were used to the fact that proofs above the line had to be continued, so what can the dots possibly mean?
-The intended meaning of this notation is that, to prove that $P → Q$, it suffices to prove $Q$, but one is also allowed to use $P$ as an assumption in this (local) proof of $Q$.
+Thus we take our usual approach and give rules for it.
+%
+The introduction rule is sometimes written in this way in logic
+texts: \[\frac{\begin{array}{c}P \\ \vdots \\ Q \end{array}}{P → Q}\]
+Such a notation can, however, be terribly confusing.
+%
+We were used to the fact that proofs above the line had to be
+continued, so what can the dots possibly mean?
+%
+The intended meaning of this notation is that, to prove that $P → Q$,
+it suffices to prove $Q$, but one is also allowed to use $P$ as an
+assumption in this (local) proof of $Q$.
 
 We can use our DSL to formalise this rule as Haskell data, by adding a
 constructor corresponding to implication introduction: |ImplyIntro ::
-(Proof -> Proof) -> Proof|.  The fact that the premiss can depend on
-the assumption |Q| is represented by a function whose parameter is the
-proof of |Q| in question.
+(Proof -> Proof) -> Proof|.
+%
+The fact that the premiss can depend on the assumption |Q| is
+represented by a function whose parameter is the proof of |Q| in
+question.
 %
 In other words, to prove the formula |P -> Q| we assume a proof |t| of
-|P| and derive a proof |u| of |Q|. So, a proof of an implication is a
-function from proofs to proofs.
+|P| and derive a proof |u| of~|Q|.
+%
+So, a proof of an implication is a function from proofs to proofs.
 
-The eliminator for implication (also known as the hard-to-translate
-phrase \textit{modus ponens}) is \(\frac{P → Q \quad P} Q\). We
-formalise it as |ImplyElim :: Proof -> Proof -> Prop -> Proof|\footnote{The
-proposition |P| is a not given by the conclusion and thus has to be
-provided as part of the proof.}.
+The eliminator for implication (also known as \textit{modus ponens})
+is
+%
+\[\frac{P → Q \quad P} Q\]
+%
+We formalise it as |ImplyElim :: Proof -> Proof -> Prop ->
+Proof|\footnote{The proposition |P| is not given by the conclusion
+  and thus is provided as part of the proof.}.
+%
 And we can finally complete our proof checker as follows:
 
 \restorecolumns
@@ -416,7 +444,8 @@ checkProof (ImplyElim t u p)    q                =   checkProof t (p `Implies` q
                                                  &&  checkProof u p
 checkProof _                    _                =   False -- incorrect proof
 \end{code}
-\pj{I feel the |Prop| arguments should come first in the constructors as they do (implicitly) when they are modelled as types later.}%
+\pj{I feel the |Prop| arguments should come first in the constructors
+  as they do (implicitly) when they are modelled as types later.}%
 %
 And, for reference, the complete DSL for proofs is given by the
 following datatype:
@@ -434,18 +463,23 @@ data Proof  =  TruthIntro                   |  FalseElim Proof
 
 \paragraph{Aside}
 The |Assume| constructor may make the reader somewhat uneasy: how
-come that we can simply assume anything? The intent is that this
-constructor is \emph{private} to the |checkProof| function (or
-module). No user-defined proof can use it. The most worried readers
-can also define the following version of |checkProof|, which uses an
-extra context to check that assumption have been rightfully introduced
-earlier.  \footnote{This kind of presentation of the checker matches
-  well the sequent calculus presentation of the proof system.}
+come that we can simply assume anything?
+%
+The intent is that this constructor is \emph{private} to the
+|checkProof| function (or module).
+%
+No user-defined proof can use it.
+%
+The most worried readers can also define the following version of
+|checkProof|, which uses an extra context to check that assumption
+have been rightfully introduced earlier.\footnote{This kind of
+  presentation of the checker matches well the sequent calculus
+  presentation of the proof system.}
 
 \begin{spec}
-checkProof :: Context -> Proof -> Prop -> Bool
-checkProof ctx  (ImplyIntro t)  (p `Implies` q)  = checkProof' (p:ctx) t q
-checkProof ctx  Assume          p                = p `elem` ctx
+checkProof' :: Context -> Proof -> Prop -> Bool
+checkProof' ctx  (ImplyIntro t)  (p `Implies` q)  = checkProof' (p:ctx) t q
+checkProof' ctx  Assume          p                = p `elem` ctx
 \end{spec}
 \jp{Is there something missing on the last line or has |Assume| been implicitly redefined?}
 
@@ -454,11 +488,11 @@ We can put our proof-checker to the test by writing some proofs and
 verifying them.
 
 \begin{code}
-conjunctionCommutative :: Prop
-conjunctionCommutative = p4
+conjunctionComm :: Prop
+conjunctionComm = p4
 
-conjunctionCommutativeProof :: Proof
-conjunctionCommutativeProof = ImplyIntro step
+conjunctionCommProof :: Proof
+conjunctionCommProof = ImplyIntro step
   where  step :: Proof -> Proof
          step evAB =  AndIntro  (AndElimR  evAB  (Name "a"  ))
                                 (AndElimL  evAB  (Name "b"  ))
@@ -466,11 +500,11 @@ conjunctionCommutativeProof = ImplyIntro step
 where |evAB| stands for ``evidence for |A| and |B|''.
 %
 We can then run the checker and verify:
-|checkProof conjunctionCommutativeProof conjunctionCommutative == True|
+|checkProof conjunctionCommProof conjunctionComm == True|
 
 %if False
 \begin{code}
--- >>> checkProof conjunctionCommutativeProof conjunctionCommutative
+-- >>> checkProof conjunctionCommProof conjunctionComm
 -- True
 \end{code}
 %endif
@@ -480,13 +514,13 @@ We can then run the checker and verify:
   happen and why?
 %if False
 \begin{code}
-conjunctionCommutativeProof2 :: Proof
-conjunctionCommutativeProof2 =
+conjunctionCommProof2 :: Proof
+conjunctionCommProof2 =
   ImplyIntro (\evAB ->
   AndIntro  (AndElimL evAB (Name "b"))
             (AndElimR evAB (Name "a")) )
 
--- >>> checkProof conjunctionCommutativeProof2 conjunctionCommutative
+-- >>> checkProof conjunctionCommProof2 conjunctionComm
 -- False
 \end{code}
 
@@ -501,8 +535,8 @@ built-in in the Haskell compiler. Let us clarify what we mean, using
 the same example, but adapt it to let the type-checker do the work:
 
 \begin{code}
-conjunctionCommutativeProof' :: Implies (And a b) (And b a)
-conjunctionCommutativeProof' = implyIntro step
+conjunctionCommProof' :: Implies (And a b) (And b a)
+conjunctionCommProof' = implyIntro step
   where  step :: And a b -> And b a
          step evAB =  andIntro  (andElimR  evAB)
                                 (andElimL  evAB)
