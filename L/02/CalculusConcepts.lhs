@@ -167,7 +167,8 @@ noLim : (getq : Q) → RPos
 such that |let ε = noLim getq in absBar (getq ε - p) >= ε|.
 
 Note that |noLim| is a \emph{higher-order} function: it takes a
-function |getq| as an argument.\jp{We explain this in \cref{sec:functions-and-scoping}}
+function |getq| as an argument.\jp{We explain this in
+  \cref{sec:functions-and-scoping}}
 %
 How can we analyse this function to find a suitable |ε|?
 %

@@ -255,8 +255,8 @@ universal quantification is \(\frac{A(x) \quad \text{\(x\) fresh
 The corresponding constructor can be |AllIntro :: (RatSem ->
 Proof) -> Proof|.
 %
-\pj{Perhaps use |ForallIntro| instead of |AllIntro|. At least explain
-  the ``textual'' syntax as well as the ``math''-rendering of \verb+AllIntro+ (|AllIntro|) and \verb+AllElim+ (|AllElim|).}
+(In Haskell we would use the textual syntax \(\Varid{AllIntro}\) for
+|AllIntro|) and \(\Varid{AllElim}\) for |AllElim|.)
 
 % TODO: A simple example might also be a good idea, where we end up
 % with a function f where f t is a proof of P t for all terms t.
@@ -279,11 +279,12 @@ A typical example is the notation for equations: for instance |x^2 +
 %
 We write ``roughly'' here because in math texts the scope of |x| very
 often extends to some text after the equation where something more is
-said about the solution |x|.
-%
+said about the solution |x|.%
 \footnote{This phenomena seems to be borrowed the behaviour of
-  quantifiers in natural language. See for example
-  \citep{bernardy_computational_2020} for a discussion.}
+  quantifiers in natural language.
+  %
+  See for example \citep{bernardy_computational_2020} for a
+  discussion.}
 
 Let us now consider the elimination rule for universal
 quantification.
@@ -303,19 +304,18 @@ So, in fact, the proof constructor must contain the general form
 |AllElim :: (RatSem -> Prop) -> Proof -> Proof|.
 
 Let us sketch the proof-checker cases corresponding to universal
-quantification:
+quantification.
 %
-\pj{I added the ``prime'' to avoid confusion / unintended recursion.}
+The introduction rule uses a new concept: |subst x a p|, which
+replaces the variable |x| by |a| in |p|, but otherwise follows closely
+our informal explanation:
+%
 \begin{spec}
 proofChecker (AllIntro f a) (Forall x p) = proofChecker (f a') (subst x a' p)
   where a' = freshFor [a, Forall x p]
 proofChecker (AllElim f t) p = checkUnify (f x') p && proofChecker t (Forall x' (f x'))
   where x' = freshFor [f x, p]
 \end{spec}
-%
-The introduction rule uses a new concept: |subst x a p|, which
-replaces the variable |x| by |a| in |p|, but otherwise follows closely
-our informal explanation.
 %
 The eliminator uses |checkUnify| which verifies that |f x| is indeed a
 generalisation of the formula to prove, |p|.
@@ -374,10 +374,8 @@ prove |R| when we encounter some family member:
 The constructors for proofs can be |ExistsIntro :: RatSem -> Proof ->
 Proof| and |ExistsElim :: (RatSem -> Prop) -> Proof -> Proof|.
 %
-In this case we'd have |i| as the first argument of |ExistsProof| and
+In this case we'd have |i| as the first argument of |ExistsIntro| and
 a proof of |A(i)| as its second argument.
-%
-\pj{What is |ExistsProof|? Is it |ExistsIntro|?}
 
 \begin{exercise}
   Sketch the |proofChecker| cases for universal quantification.
@@ -431,7 +429,9 @@ We can try and draw parrellels with a hypothetical programming
 language corresponding to FOL.
 %
 In such a programming language, we expect to be able to encode proof
-rules as follows:
+rules as follows (we must use a \emph{dependent} function type here,
+|(a:A) → B|, see below)
+
 \begin{spec}
   allIntro    :: ((a : Individual) -> P a) -> (Forall x (P x))
   allElim     :: (Forall x (P x)) -> ((a : Individual) -> P a)
@@ -439,8 +439,7 @@ rules as follows:
   existIntro  :: (a : Individual) -> P a -> Exists x (P x)
   existsElim  :: ((a:Individual) -> P a `Implies` R) -> (Exists x (P x)) `Implies` R
 \end{spec}
-%
-(We must write the above using a \emph{dependent} function type |(a:A) → B|, see below.).
+
 
 Taking the intuitionistic version of FOL (with the same treatment of
 negation as for propositional logic), we additionally expect to be

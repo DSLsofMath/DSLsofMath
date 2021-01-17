@@ -294,8 +294,8 @@ However, we will instead apply the same treatment to negation as to
 other constructions, and define a suitable introduction rule:
 \[ \frac{P → Q \quad P → ¬Q}{¬P} \]
 %
-We can represent it by the constructor |NegIntro :: Prop -> Proof -> Proof ->
-Proof|.
+We can represent it by the constructor |NotIntro :: Prop -> Proof ->
+Proof -> Proof|.
 %
 Because we have inductive proofs (described from the bottom up), we
 have the additional difficulty that this rule conjures-up a new
@@ -319,8 +319,8 @@ For conjuction (|And|), we have two eliminations rules:
 %
 \[\frac{P ∧ Q}{P} \qquad \text{and} \qquad \frac{P ∧ Q}{Q}\]
 %
-So we represent them by |AndElim1 :: Proof -> Prop -> Proof| (and
-|AndElim2| symmetrically), where the extra |Prop| argument corresponds
+So we represent them by |AndElimL :: Prop -> Proof -> Proof| (and
+|AndElimR| symmetrically), where the extra |Prop| argument corresponds
 to~|Q|.
 
 For disjunction (|Or|) the idea is that if we know that \(P ∨ Q\)
@@ -353,11 +353,11 @@ checkProof (AndIntro t u)    (And p q)    =   checkProof t p
                                           &&  checkProof u q
 checkProof (OrIntroL t)      (Or p q)     =   checkProof t p
 checkProof (OrIntroR u)      (Or p q)     =   checkProof u q
-checkProof (NotIntro t u q)  (Not p)      =   checkProof t (p `Implies` q)
+checkProof (NotIntro q t u)  (Not p)      =   checkProof t (p `Implies` q)
                                           &&  checkProof u (p `Implies` Not q)
-checkProof (AndElimL t q)       p  =   checkProof  t  (p `And` q)
-checkProof (AndElimR t p)       q  =   checkProof  t  (p `And` q)
-checkProof (OrElim t u v p q)   r  =   checkProof  t  (p `Implies` r)
+checkProof (AndElimL q t)       p  =   checkProof  t  (p `And` q)
+checkProof (AndElimR p t)       q  =   checkProof  t  (p `And` q)
+checkProof (OrElim p q t u v)   r  =   checkProof  t  (p `Implies` r)
                                    &&  checkProof  u  (q `Implies` r)
                                    &&  checkProof  v  (Or p q)
 checkProof (NotElim t)          p  =   checkProof  t  (Not (Not p))
@@ -430,9 +430,9 @@ is
 %
 \[\frac{P → Q \quad P} Q\]
 %
-We formalise it as |ImplyElim :: Proof -> Proof -> Prop ->
-Proof|\footnote{The proposition |P| is not given by the conclusion
-  and thus is provided as part of the proof.}.
+We formalise it as |ImplyElim :: Prop -> Proof -> Proof ->
+Proof|\footnote{The proposition |P| is not given by the conclusion and
+  thus is provided as part of the proof.}.
 %
 And we can finally complete our proof checker as follows:
 
@@ -440,24 +440,22 @@ And we can finally complete our proof checker as follows:
 \begin{code}
 checkProof (Assume p')          p                =   p == p'
 checkProof (ImplyIntro f)       (p `Implies` q)  =   checkProof (f (Assume p)) q
-checkProof (ImplyElim t u p)    q                =   checkProof t (p `Implies` q)
+checkProof (ImplyElim p t u)    q                =   checkProof t (p `Implies` q)
                                                  &&  checkProof u p
 checkProof _                    _                =   False -- incorrect proof
 \end{code}
-\pj{I feel the |Prop| arguments should come first in the constructors
-  as they do (implicitly) when they are modelled as types later.}%
 %
 And, for reference, the complete DSL for proofs is given by the
 following datatype:
 \begin{code}
 data Proof  =  TruthIntro                   |  FalseElim Proof
             |  AndIntro  Proof  Proof
-            |  AndElimL  Proof  Prop        |  AndElimR  Proof  Prop
+            |  AndElimL  Prop   Proof       |  AndElimR  Prop  Proof
             |  OrIntroL  Proof              |  OrIntroR  Proof
-            |  OrElim Proof Proof Proof Prop Prop
-            |  NotIntro Proof Proof Prop    |  NotElim Proof
+            |  OrElim Prop Prop Proof Proof Proof
+            |  NotIntro Prop Proof Proof    |  NotElim Proof
             |  Assume Prop
-            |  ImplyIntro (Proof -> Proof)  |  ImplyElim  Proof Proof Prop
+            |  ImplyIntro (Proof -> Proof)  |  ImplyElim  Prop  Proof Proof
 \end{code}
 \jp{Props are like having lemmas}
 
@@ -494,8 +492,8 @@ conjunctionComm = p4
 conjunctionCommProof :: Proof
 conjunctionCommProof = ImplyIntro step
   where  step :: Proof -> Proof
-         step evAB =  AndIntro  (AndElimR  evAB  (Name "a"  ))
-                                (AndElimL  evAB  (Name "b"  ))
+         step evAB =  AndIntro  (AndElimR  (Name "a")  evAB  )
+                                (AndElimL  (Name "b")  evAB  )
 \end{code}
 where |evAB| stands for ``evidence for |A| and |B|''.
 %
@@ -510,15 +508,16 @@ We can then run the checker and verify:
 %endif
 
 \begin{exercise}
-  Try to swap |AndElimL| and |AndElimR| in the above proof. What will
-  happen and why?
+  Try to swap |AndElimL| and |AndElimR| in the above proof.
+  %
+  What will happen and why?
 %if False
 \begin{code}
 conjunctionCommProof2 :: Proof
 conjunctionCommProof2 =
   ImplyIntro (\evAB ->
-  AndIntro  (AndElimL evAB (Name "b"))
-            (AndElimR evAB (Name "a")) )
+  AndIntro  (AndElimL (Name "b") evAB)
+            (AndElimR (Name "a") evAB) )
 
 -- >>> checkProof conjunctionCommProof2 conjunctionComm
 -- False
@@ -756,7 +755,7 @@ programs. This principle goes beyond propositional logic (and first
 order logic, etc.): it applies to all sorts of logics and programming
 languages, with various levels of expressivity and features.
 
-\subsection{|Or| is the dual of |And|.}
+\subsection{|Or| is the dual of |And|}
 Before moving on to our next topic, we make a final remark on |And| and |Or|.
 %
 Most of the properties of |And| have corresponding properties for

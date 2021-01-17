@@ -35,8 +35,8 @@
   (Can you express this as a homomorphism --- seen in \cref{sec:CompSem}?)
 
   The simplest operation to represent is |And| which becomes
-  multiplication: |P And Q| translates to \(p q\) as can be easily
-  checked.
+  multiplication: the predicate |And P Q| translates to |p*q| as can
+  be easily checked.
   %
   Note that |p+q| does not represent any proposition, because its
   value would be |2| for |p=q=1|, but |2| does not represent any
