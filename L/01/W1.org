@@ -1,6 +1,82 @@
 DSLsofMath week 1: a short summary
+* Intro / admin
+** Technology / tooling
++ [[https://chalmers.instructure.com/courses/12458][Canvas]]     for the course "room" (homepage)
++ [[https://github.com/DSLsofMath/DSLsofMath][github]]     for the "book" (lecture notes) + code
++ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/01/Live1_2021.lhs][emacs]]      for live coding, etc. (org-mode)
++ [[https://chalmers.zoom.us/j/64966657479][Zoom]]       for delivering the lectures
++ [[https://jamboard.google.com/d/1LgE3Hke1KSvgU6Kdraec5ESB77ITDv44879PjDpu-9w/edit?usp=sharing][Jamboard]]   for "drawing on the whiteboard"
++ OBS studio for video recording
++ [[https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-][YouTube]]    for video archiving
+** Examination
++ Weekly exercises     -> Bonus points for the exam
++ 2 Assignments (labs) -> Pass/fail grade
++ Written Exam         -> grade U/3/4/5 (Chalmers), U/G/VG (GU)
+** Reminder about spending time on the course:
++ Advice from last years' students:
+  spending time on the course pays off.
+  It is not enough to just focus on the labs.
++ Patrik's advice: please try to solve all the exercises in the book.
+** Course evaluation: student representatives
+| Prg | Namn               |
+|-----+--------------------|
+| D   | Simon Johansson    |
+| D   | Fredrik Österström |
+| TM  | Mats Richardson    |
+| IT  | *TODO* rep. wanted |
+| DV  | *TODO* rep. wanted |
 
-[[https://jamboard.google.com/d/1LgE3Hke1KSvgU6Kdraec5ESB77ITDv44879PjDpu-9w/edit?usp=sharing][Jamboard]]
+** Learning outcomes (for the whole course, english version)
+*** KU = Knowledge and Understanding
++ KU.DSL      = design and implement a DSL for a new domain
++ KU.Org      = organize areas of mathematics in DSL terms
++ KU.Explain  = explain main concepts of elementary real and complex analysis, algebra, and linear algebra
+*** SA = Skills and Abilities
++ SA.Notation = develop adequate notation for mathematical concepts
++ SA.Calc     = perform calculational proofs
++ SA.Power    = use power series for solving differential equations
++ SA.Laplace  = use Laplace transforms for solving differential equations
+*** JA = Judgement and Approach
++ JA = discuss and compare different software implementations of mathematical concepts
+
+** Lärmål (efter fullgjord kurs ska studenten kunna)
+*** Kunskap och förståelse
++ designa och implementera ett domänspecifikt språk (DSL) för en ny domän
++ strukturera delområden inom matematik i termer av DSL
++ förklara de centrala begreppen i grudläggande reell och komplex analys, algebra och linjär algebra
+*** Färdighet och förmåga
++ utveckla lämplig notation för matematiska koncept
++ genomföra och kalkylera bevis
++ använda potensserier för att lösa differentialekvationer
++ använda Laplace-transformer för att lösa differentialekvationer
+*** Värderingsförmåga och förhållningssätt
++ diskutera och jämföra olika implementationer av matematiska begrepp
+** First break-out rooms to start the discussion
++ brief presentation round
++ how do you learn mathematics cmp. to programming?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 * L1.1 learning outcomes:
 ** What is a Domain-Specific Language (DSL)
 A DSL has four components:
@@ -18,26 +94,12 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** Haskell interpreter use and interp. of error messages [interactive live coding]
 ** Syntax trees
 ** First evaluator: |eval :: E -> (String -> Int) -> Int|
-* Lärmål (efter fullgjord kurs ska studenten kunna)
-** Kunskap och förståelse
-+ designa och implementera ett domänspecifikt språk (DSL) för en ny domän
-+ strukturera delområden inom matematik i termer av DSL
-+ förklara de centrala begreppen i grudläggande reell och komplex analys, algebra och linjär algebra
-** Färdighet och förmåga
-+ utveckla lämplig notation för matematiska koncept
-+ genomföra och kalkylera bevis
-+ använda potensserier för att lösa differentialekvationer
-+ använda Laplace-transformer för att lösa differentialekvationer
-** Värderingsförmåga och förhållningssätt
-+ diskutera och jämföra olika implementationer av matematiska begrepp
+
 * E1.1 learning outcomes:
 ** a Haskell environment up and running
 ** syntax trees with constructor for variables
 ** definition and use of |Env|
 ** laws, properties, and testing
-* Reminder about spending time on the course:
-** Advice from last years' students: spending time on the course pays off. It is not enough to just focus on the labs.
-** Patrik's advice: please try to solve all the exercises
 * L1.2 learning outcomes:
 ** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
 ** Active reading of mathematical text [Complex number case study]
@@ -46,12 +108,6 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 *** |Nat|, |ImagUnits|, |CA|, |CB|, |CE|
 ** Syntax and semantics
 ** |eval| for complex number expressions
-* Course evaluation: student representatives
-D  Simon Johansson
-D  Fredrik Österström
-TM Mats Richardson
-IT *TODO* representant sökes
-DV *TODO* representant sökes
 * E1.2 learning outcomes:
 ** syntax trees for |ComplexSyn r|, the "complex numbers extension" of a type |r|
 ** more use of |Env| and |lookup|
@@ -64,18 +120,3 @@ DV *TODO* representant sökes
 ** E1.1 means week 1, exercise session 1 (the presentation / live coding part)
 ** E1.2 means week 1, exercise session 2 (the presentation / live coding part)
 ** The format of the file is Emacs Org-mode
-
-
-
-* Reminder about learning outcomes (for the whole course, english version)
-** KU = Knowledge and understanding
-*** KU.DSL      = design and implement a DSL for a new domain
-*** KU.Org      = organize areas of mathematics in DSL terms
-*** KU.Explain  = explain main concepts of elementary real and complex analysis, algebra, and linear algebra
-** SA = Skills and abilities
-*** SA.Notation = develop adequate notation for mathematical concepts
-*** SA.Calc     = perform calculational proofs
-*** SA.Power    = use power series for solving differential equations
-*** SA.Laplace  = use Laplace transforms for solving differential equations
-** JA = Judgement and approach
-*** JA = discuss and compare different software implementations of mathematical concepts

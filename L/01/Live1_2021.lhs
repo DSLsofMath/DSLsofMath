@@ -34,7 +34,7 @@ Fractional has the operations from Num and also division (/).
 
 \begin{code}
 g :: Fractional a => a -> a
-g x = x / x
+g x = x / x    -- 1 om x/=0, annars?
 \end{code}
 
 Float and Double have
@@ -74,23 +74,32 @@ data nedan definierar den nya typen E och tre nya konstruerare: Add, Con, och Va
 
 \begin{code}
 data E  =  Add E  E  -- konstruerare följt av typerna på argumenten
+        |  Mul E  E
         |  Con Integer
         |  Var String
   deriving (Eq, Show)
 \end{code}
 
 |E| is a type of syntax trees.
-
+parseE "1+2*3" == e1
 \begin{code}
--- e1, e2 :: E
--- e1 =
--- e2 =
+e1, e2 :: E
+e1 = Add (Con 1) (Mul (Con 2) (Con 3))
+e2 = Add (Var "x") (Con 1)
 \end{code}
 With a "symbol table" we can evaluate an E:
+
+-- DSL för enkla arithemtiska uttryck
+eval  ::  Syntax  ->  Semantik
+eval  ::  E       -> (Table -> Integer)
+-- Semantiken är en funktion från en tabell till ett värde.
 \begin{code}
 type Table = String -> Integer
-eval :: E -> Table -> Integer
-eval = undefined
+eval :: E  -> Table    ->  Integer
+eval (Con c)    tab =  c
+eval (Var v)    tab =  tab v
+eval (Add x y)  tab =  (eval x tab)  +  (eval y tab)
+eval (Mul x y)  tab =  (eval x tab)  *  (eval y tab)
 
 testTab :: Table
 testTab "x" = 3
