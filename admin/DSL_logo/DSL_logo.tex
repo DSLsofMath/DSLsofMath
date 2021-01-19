@@ -1,0 +1,11 @@
+\documentclass[tikz,border=1ex]{standalone}
+\usetikzlibrary{fit,positioning}
+\usepackage{amssymb}
+\begin{document}
+\begin{tikzpicture}[text={blue!30},rotate=20,transform shape]
+  \node[black] (payload) {\Large \(\mathit{DSL}\to\delta\sigma\!\lambda\)};
+  \node[black,below=2ex of payload] (DSLM) {DSLs\textcolor{blue!30}{of}Math};
+  \node[circle,draw=blue!30,thick,fit=(payload) (DSLM)] (circle) {};
+\end{tikzpicture}
+\end{document}
+\end{document}
