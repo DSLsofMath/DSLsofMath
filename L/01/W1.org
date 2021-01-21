@@ -1,5 +1,5 @@
 DSLsofMath week 1: a short summary
-* Intro / admin
+* L1.1 Intro / admin
 ** Technology / tooling
 + [[https://chalmers.instructure.com/courses/12458][Canvas]]     for the course "room" (homepage)
 + [[https://github.com/DSLsofMath/DSLsofMath][github]]     for the "book" (lecture notes) + code
@@ -75,8 +75,6 @@ DSLsofMath week 1: a short summary
 
 
 
-
-
 * L1.1 learning outcomes:
 ** What is a Domain-Specific Language (DSL)
 A DSL has four components:
@@ -86,28 +84,68 @@ A DSL has four components:
 + Semantics: a function from AbsSyn to Sem
 https://en.wikipedia.org/wiki/Domain-specific_language
 ** Variable scope and binding in mathematical expressions [integral, fun.def.]
-** Haskell type system:
-*** |type|, |newtype|, |data|
-*** types and their constructors
-*** |data|: choice, recursion, parameters
-*** datatype of syntax trees of simple arith. expr.
 ** Haskell interpreter use and interp. of error messages [interactive live coding]
 ** Syntax trees
++ datatype of syntax trees of simple arith. expr.
 ** First evaluator: |eval :: E -> (String -> Int) -> Int|
-
 * E1.1 learning outcomes:
 ** a Haskell environment up and running
 ** syntax trees with constructor for variables
 ** definition and use of |Env|
 ** laws, properties, and testing
+* L1.2 Intro / admin
+** First eval meeting (with student representatives) done
+| Prg | Namn               |
+|-----+--------------------|
+| D   | Simon Johansson    |
+| D   | Fredrik Österström |
+| TM  | Mats Richardson    |
+| IT  | *TODO* rep. wanted |
+| DV  | *TODO* rep. wanted |
+
+** Weekly exercises (bonusuppgifter)
+** Exercise sessions (övningar): be prepared with questions
+   2h*2 föreläsning = 4h
+   2h*2 övning = 4h
+   totalt 8h per vecka "schemalagt"
+   Men, 7.5hp = 200h vi har 8 läsveckor -> 200/8 = 25h/vecka "studietid"
+   17h kvar för eget arbete.
+** Read the book! Chapter N = study week N
+** Student communication: Canvas discussion forum
+** Explore the canvas page:
++ Home = Syllabus = "Kurs-pm"
++ Assignments = all deadlines and where you hand in exercises and labs
++ People = where you can find lab groups, etc.
++ Pages = useful information about different parts of the course
++ Files = the book and other (mostly older) material
++ Discussions = a forum for student discussions and questions
++ Announcements = where the teaching teams broadcasts messages
+
+
+
+
+
 * L1.2 learning outcomes:
 ** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
++ When equations meet types
 ** Active reading of mathematical text [Complex number case study]
 ** Modelling (different versions of) Complex in Haskell
-** More examples of |data| and |newtype|
+** The DSL of types in Haskell:
+*** |type|, |newtype|, |data|
+*** types and their constructors
+*** |data|: choice, recursion, parameters
+*** datatype of syntax trees of simple arith. expr.
 *** |Nat|, |ImagUnits|, |CA|, |CB|, |CE|
 ** Syntax and semantics
 ** |eval| for complex number expressions
+* [[file:Live2_2021.lhs::module Live2 where][Live coding]] & [[https://jamboard.google.com/d/1AzorMN1Lzq2ZC3f0kowkmyxxAwV_qOLzthROKjKe9wQ/edit?usp=sharing][Jamboard]]
+
+
+
+
+
+
+
 * E1.2 learning outcomes:
 ** syntax trees for |ComplexSyn r|, the "complex numbers extension" of a type |r|
 ** more use of |Env| and |lookup|
