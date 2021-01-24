@@ -104,8 +104,8 @@ data FunExp  =  Const REAL
              |  X
              |  FunExp  :+:  FunExp
              |  FunExp  :*:  FunExp
-             |  Exp FunExp
 \end{code}
+%             |  Exp FunExp
 
 We could encode our examples as follows:
 \begin{itemize}
@@ -115,7 +115,7 @@ We could encode our examples as follows:
 We no longer have a third example: we can only ever represent one
 variable, as |X|, and thus we skip the last example, equal to the second.
 
-We can now evaluate the value of these expressions.
+We can now evaluate the values of these expressions.
 %
 The meaning of operators and constants is as in
 \cref{sec:complex-arithmetic}.
@@ -158,10 +158,10 @@ type FunExpS = REAL -> REAL
 Then we can define the operators directly on functions, as follows:
 %
 \begin{spec}
-funConst alpha   = \x -> alpha
-funX             = \x -> x
-funPlus   f g    = \x -> f x  +  g x
-funTimes  f g    = \x -> f x  *  g x
+funConst alpha   = \x -> alpha               -- thus |funConst = const|
+funX             = \x -> x                   -- and |funX = id|
+funAdd  f g      = \x -> f x  +  g x         {-" "-}
+funMul  f g      = \x -> f x  *  g x
 \end{spec}
 %
 Again, we have two possible intuitive readings of the above
@@ -178,7 +178,7 @@ of the operands, etc.
 
 The second reading is that we can define an arithmetic structure
 (|*|,|+|, etc.) on functions, by lifting the operators to work
-pointwise.\jp{This vocabulary is probably unknown at this point.}
+pointwise (as we did in \cref{def:pointwise}).
 
 To wrap it up, if we're so inclined, we can re-define the evaluator of
 the deep-embedding using the operators of the shallow embedding:
@@ -186,8 +186,8 @@ the deep-embedding using the operators of the shallow embedding:
 eval  ::  FunExp         ->  (REAL -> REAL)
 eval      (Const alpha)  =   funConst alpha
 eval      X              =   funX
-eval      (e1 :+: e2)    =   funPlus   (eval e1) (eval e2)
-eval      (e1 :*: e2)    =   funTimes  (eval e1) (eval e2)
+eval      (e1 :+: e2)    =   funAdd  (eval e1)  (eval e2)
+eval      (e1 :*: e2)    =   funMul  (eval e1)  (eval e2)
 \end{spec}
 
 Representing expressions of one variable as functions (of one
@@ -274,7 +274,7 @@ Doing so allows us to
 1. use lambda notation to bind (and name) the variable name of the
 summation however we wish (in this case |i| and |j|) and
 %
-2. freely use any haskell function of type |ℤ → ℝ| as the summand.
+2. freely use any Haskell function of type |ℤ → ℝ| as the summand.
 %
 In particular, this function can be any lambda-expression returning
 |ℝ|, and this expression can include summation itself.
@@ -291,10 +291,9 @@ take a glimpse in \cref{sec:multiple-variables}.
 Sticking conveniently to the shallow embedding, we can apply the same
 kind of reasoning to other big operators, and obtain the following
 typings:
-
+%
 \begin{itemize}
-\item |lim : (ℕ → ℝ) → ℝ| for \(\lim_{n → ∞} \{a_n\}\)
-\pj{It is a bit confusing with the ``for'' in the middle and the expression for |lim a| }
+\item |lim : (ℕ → ℝ) → ℝ| for the mathematical expression \(\lim_{n → ∞} \{a_n\}\)
 \item \(d/dt : (ℝ → ℝ) → (ℝ → ℝ)\)
   \begin{itemize}
   \item sometimes, instead of \(df/dt\) one sees \(f'\) or \(\dot{f}\) or |D f|
@@ -337,78 +336,74 @@ variables, giving the \emph{name} of the variable.
 %
 Here we use a string, so we have an infinite supply of variables.
 %
-\jp{rename type/constructors to match single variable expressions}
-%
-\jp{There does not seem to be sense or rhyme in the name of data types
-  and constructors.}
-%
 \begin{code}
-data AE = V String | P AE AE | T AE AE
+data MVExp = Va String | Ad MVExp MVExp | Mu MVExp MVExp
 \end{code}
 
-The above declaration introduces:\jp{move this kind of consideration
-  much earlier. Haskell primer?}
-\begin{itemize}
-\item a new type |AE| for simple arithmetic expressions,
-\item a constructor |V :: String -> AE| to represent variables,
-\item a constructor |P :: AE -> AE -> AE| to represent plus, and
-\item a constructor |T :: AE -> AE -> AE| to represent times.
-\end{itemize}
-
-Example values include |x = V "x"|, |e1 = P x x|, and |e2 = T e1 e1|.
-
-If you want a constructor to be used as an infix operator you need to use
-symbol characters and start with a colon:
-
-\begin{spec}
-data AE' = V' String | AE' :+ AE' | AE' :* AE'
-\end{spec}
-
-Example values are then |y = V' "y"|, |e1 = y :+ y| and |e2 = x :* e1|.
-
-Finally, you can add one or more type parameters to make a whole
-family of datatypes in one go:\jp{move this kind of consideration much
-  earlier. Haskell primer?}
-
-\begin{code}
-data AE' v = V' v | AE' v :+ AE' v | AE' v :* AE' v
-\end{code}
+% The above declaration introduces:\jp{move this kind of consideration
+%   much earlier. Haskell primer?}
+% \begin{itemize}
+% \item a new type |MVExp| for multi-variable arithmetic expressions,
+% \item a constructor |Va :: String -> MVExp| for variables,
+% \item a constructor |Ad :: MVExp -> MVExp -> MVExp| for addition, and
+% \item a constructor |Mu :: MVExp -> MVExp -> MVExp| for multiplication.
+% \end{itemize}
 %
-The purpose of the parameter |v| here is to enable a free choice of
-type for the variables (be it |String| or |Int| or something else).
+Example values include |x = Va "x"|, |e1 = Ad x x|, and |e2 = Mu e1 e1|.
 
-The careful reader will note that the same Haskell module cannot
-contain both these definitions of |AE'|.
+\pj{Add some text in an earlier chapter about |:+| colon-operators, parameterised datatypes, more than one defintion variant in one file, etc. }
+% If you want a constructor to be used as an infix operator you need to use
+% symbol characters and start with a colon:
 %
-\jp{move this kind of consideration much earlier. Haskell primer?}
+% \begin{spec}
+% data MVExp' = V' String | MVExp' :+ MVExp' | MVExp' :* MVExp'
+% \end{spec}
 %
-This is because the name of the type and the names of the constructors
-are clashing.
+% Example values are then |y = V' "y"|, |e1 = y :+ y| and |e2 = x :* e1|.
 %
-The typical ways around this are either to define the types in different
-modules, or rename one of them (often by adding primes as in |AE'|).
+% Finally, you can add one or more type parameters to make a whole
+% family of datatypes in one go:\jp{move this kind of consideration much
+%   earlier. Haskell primer?}
 %
-In this \course{} we often take the liberty of presenting more than one
-version of a datatype without changing the names, to avoid multiple
-modules or too many primed names.
+% \begin{code}
+% data MVExp' v = V' v | MVExp' v :+ MVExp' v | MVExp' v :* MVExp' v
+% \end{code}
+% %
+% The purpose of the parameter |v| here is to enable a free choice of
+% type for the variables (be it |String| or |Int| or something else).
+%
+% The careful reader will note that the same Haskell module cannot
+% contain both these definitions of |MVExp'|.
+% %
+% \jp{move this kind of consideration much earlier. Haskell primer?}
+% %
+% This is because the name of the type and the names of the constructors
+% are clashing.
+% %
+% The typical ways around this are either to define the types in different
+% modules, or rename one of them (often by adding primes as in |MVExp'|).
+% %
+% In this \course{} we often take the liberty of presenting more than one
+% version of a datatype without changing the names, to avoid multiple
+% modules or too many primed names.
 
 Together with a datatype for the syntax of arithmetic expressions we
 want to define an evaluator of the expressions.
 
-In the evaluator for |AE| we take this idea one step further: given an
+In the evaluator for |MVExp| we take this idea one step further: given an
 environment |env| and the syntax of an arithmetic expression |e| we
 compute the value of that expression.
 %
-Hence, the semantics of |AE| is a function of type |Env String Integer
+Hence, the semantics of |MVExp| is a function of type |Env String Integer
 -> Maybe Integer|.
 %
-%*TODO: perhaps switch Times to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
+%*TODO: perhaps switch Mul to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
 %**TODO explain more for those not used to Haskell
 \begin{code}
-evalAE :: AE -> (Env String Integer -> Maybe Integer)
-evalAE (V x)      env   =  evalEnv env x
-evalAE (P e1 e2)  env   =  mayP  (evalAE e1 env)  (evalAE e2 env)
-evalAE (T e1 e2)  env   =  mayT  (evalAE e1 env)  (evalAE e2 env)
+evalMVExp :: MVExp -> (Env String Integer -> Maybe Integer)
+evalMVExp (Va x)      env   =  evalEnv env x
+evalMVExp (Ad e1 e2)  env   =  mayP  (evalMVExp e1 env)  (evalMVExp e2 env)
+evalMVExp (Mu e1 e2)  env   =  mayT  (evalMVExp e1 env)  (evalMVExp e2 env)
 
 mayP :: Maybe Integer -> Maybe Integer -> Maybe Integer
 mayP (Just a) (Just b)  =  Just (a+b)
@@ -419,44 +414,45 @@ mayT (Just a) (Just b)  =  Just (a*b)
 mayT _        _         =  Nothing
 \end{code}
 
-The corresponding code for |AE'| is more general and you don't need to
-understand it at this stage, but it is left here as an example for
-those with a stronger Haskell background.\jp{Actually the AE/AE'
-  generalisation has nothing to do with the change in code.}
+% The corresponding code for |MVExp'| is more general and you don't need to
+% understand it at this stage, but it is left here as an example for
+% those with a stronger Haskell background.\jp{Actually the MVExp/MVExp'
+%   generalisation has nothing to do with the change in code.}
+% %
+% \begin{code}
+% evalMVExp' ::  (Eq v, Additive sem, Multiplicative sem) =>
+%             (Env v sem) -> (MVExp' v -> Maybe sem)
+% evalMVExp' env (V' x)      =  evalEnv env x
+% evalMVExp' env (e1 :+ e2)  =  liftM (+)   (evalMVExp' env e1)  (evalMVExp' env e2)
+% evalMVExp' env (e1 :* e2)  =  liftM (*)   (evalMVExp' env e1)  (evalMVExp' env e2)
 %
-\begin{code}
-evalAE' :: (Eq v, _) =>  (Env v sem) -> (AE' v -> Maybe sem)
-evalAE' env (V' x)      =  evalEnv env x
-evalAE' env (e1 :+ e2)  =  liftM (+)   (evalAE' env e1)  (evalAE' env e2)
-evalAE' env (e1 :* e2)  =  liftM (*)   (evalAE' env e1)  (evalAE' env e2)
-
-liftM :: (a -> b -> c) -> (Maybe a -> Maybe b -> Maybe c)
-liftM op   (Just a)  (Just b)  =  Just (op a b)
-liftM _op  _         _         =  Nothing
-\end{code}
+% liftM :: (a -> b -> c) -> (Maybe a -> Maybe b -> Maybe c)
+% liftM op   (Just a)  (Just b)  =  Just (op a b)
+% liftM _op  _         _         =  Nothing
+% \end{code}
 
 The approach taken above is to use a |String| to name each variable:
-indeed, |Env String REAL| is like a tuple of several variables values.
+indeed, |Env String REAL| is like a table of several variables and their values.
 %
-However, in other situations, it is better to refer to variables by
-position.
-
-For example, we can pick out any variable and make it a function of
-said variable like so:
+% However, in other situations, it is better to refer to variables by
+% position.
 %
-\pj{Too abstract without explanation.}
-\begin{code}
-fun1 :: (Env k v -> r) -> Env k v -> k -> v -> r
-fun1 funMultiple env variable value = funMultiple ((variable,value):env)
-\end{code}
-
-\begin{exercise}
-  Assume a function |f| of 3 variables, named |"x"|, |"y"| and |"y"|,
-  and given the type |Env String REAL -> REAL|.
-  %
-  Turn it into a function |g| of type |REAL -> REAL -> REAL -> REAL|
-  with the same intended meaning.
-\end{exercise}
+% For example, we can pick out any variable and make it a function of
+% said variable like so:
+% %
+% \pj{Too abstract without explanation.}
+% \begin{code}
+% fun1 :: (Env k v -> r) -> Env k v -> k -> v -> r
+% fun1 funMultiple env variable value = funMultiple ((variable,value):env)
+% \end{code}
+%
+% \begin{exercise}
+%   Assume a function |f| of 3 variables, named |"x"|, |"y"| and |"y"|,
+%   and given the type |Env String REAL -> REAL|.
+%   %
+%   Turn it into a function |g| of type |REAL -> REAL -> REAL -> REAL|
+%   with the same intended meaning.
+% \end{exercise}
 \jp{Talk some about variable capture?}
 
 %*TODO: Perhaps add simple exercises on renaming and variable capture
@@ -569,10 +565,9 @@ textbook definitions.
 Our example here is by
 \citet[page~169]{maclane1986mathematics}, where we read
 
-\pj{The math spacing in |f(x,y)| is a bit ugly (too large).}
 \begin{linenumbers}
 \begin{quote}
-  [...] a function |z = f (x, y)| for all points |(x, y)| in some open
+  [...] a function $z = f (x, y)$ for all points |(x, y)| in some open
   set |U| of the cartesian |(x, y)|-plane.
 %
   [...] If one holds |y| fixed, the quantity |z| remains just a
@@ -619,8 +614,11 @@ translate to
 %
 |∀ (x, y) ∈ U| as a formula fragment.
 
-The variable |h| is a non-zero real number. The use of the word ``for'' might lead one to believe that it is bound by a
-universal quantifier (``for |h ≠ 0|'' on line 4), but that is incorrect.
+The variable |h| is a non-zero real number.
+%
+The use of the word ``for'' might lead one to believe that it is bound
+by a universal quantifier (``for |h ≠ 0|'' on line 4), but that is
+incorrect.
 %
 In fact, |h| is used as a local variable introduced in the subscript
 of $\lim$.
@@ -1100,7 +1098,7 @@ We explore the mathematical reasons in more detail in
 functional programming of this problem: one way to understand
 overloading is via \emph{type classes}.
 
-In Haskell both $4 == 3$ and $3.4 == 3.2$ typecheck because both
+In Haskell both |4 == 3| and |3.4 == 3.2| typecheck because both
 integers and floating point values are member of the |Eq| class, which
 we can safely assume to be defined as follows:
 
@@ -1299,22 +1297,22 @@ As an example we have that
 \subsection{Structuring DSLs around type classes}
 Type classes are related to mathematical structures which, in turn,
 are related to DSLs.
-
+%
 As an example, consider again the DSL of expressions of one variables.
 %
 We saw that such expressions can be represented by the type |REAL ->
 REAL| in the shallow embedding.
 %
 Using type classes, we can use the usual operators names instead of
-|evalPlus|, |evalTimes|, etc.
+|funAdd|, |funMul|, etc.
 %
 We could write:
 \begin{spec}
 instance Additive (REAL -> REAL) where
-  f + g        =  \x -> f x + g x
-  zero         =  const zero
+  (+)        =  funAdd
+  zero       =  funConst zero
 \end{spec}
-
+%
 The instance declaration of the method |zero| above looks recursive,
 but is not: |zero| is used at a different type on the left- and
 right-hand-side of the equal sign, and thus refers to two different
@@ -1323,37 +1321,41 @@ definitions.
 One the left-hand-side we define |zero :: REAL -> REAL|, while on the
 right-hand-side we use |zero :: REAL|.
 
+%
+\begin{figure}[htpb]
+\begin{spec}
+instance Additive a        => Additive        (x -> a) where
+   (+)        =  funAdd
+   zero       =  funConst zero
+
+instance Multiplicative a  => Multiplicative  (x -> a) where
+   (*)        =  funMul
+   one        =  funConst one
+
+instance AddGroup a        => AddGroup        (x -> a) where
+   negate f   =  negate . f
+
+instance MulGroup a        => MulGroup        (x -> a) where
+   recip f    =  recip . f
+
+instance Algebraic a       => Algebraic       (x -> a) where
+   sqrt f     =  sqrt . f
+
+instance Transcendental a  => Transcendental  (x -> a) where
+   pi =  const pi
+   sin f = sin . f; {-"\quad"-}    cos f = cos . f; {-"\quad"-}  exp f = exp . f
+\end{spec}
+  \caption{Numeric instances lifted to functions (|module FunNumInst|).}
+  \label{fig:FunNumInst}
+\end{figure}
+\label{sec:FunNumInst}
+%
 However, as one may suspect, for functions, we can use any domain and
 any numeric co-domain in place of |REAL|.
 %
-Therefore we prefer to define the following, more general instances:
-\label{sec:FunNumInst}
-
-\begin{spec}
-instance Additive a => Additive (x -> a) where
-   f + g        =  \x -> f x + g x
-   zero         =  const zero
-
-instance Multiplicative a => Multiplicative (x -> a) where
-   f * g        =  \x -> f x * g x
-   one          =  const one
-
-instance AddGroup a => AddGroup (x -> a) where
-   negate f     =  negate . f
-
-instance MulGroup a => MulGroup (x -> a) where
-   recip f      =  recip . f
-
-instance Algebraic a => Algebraic (x -> a) where
-   sqrt f       =  sqrt . f
-
-instance Transcendental a => Transcendental (x -> a) where
-   pi     =  const pi
-   sin f  =  sin . f
-   cos f  =  cos . f
-   exp f  =  exp . f
-\end{spec}
-
+Therefore we prefer to define the more general instances in
+\cref{fig:FunNumInst}.
+%
 Here we extend our set of type-classes to cover algebraic and
 transcendental numbers.
 %
@@ -1369,10 +1371,10 @@ multiplication).
 
 These instances for functions allow us to write expressions which are
 very commonly used in math books, such as |f+g| for the sum of two
-functions |f| and |g|, say |sin + cos :: Double -> Double|.
+functions |f| and |g|, say |sin + cos :: REAL -> REAL|.
 %
-Somewhat less common notations, like |sq * double :: Integer ->
-Integer| are also possible.
+Somewhat less common notations, like |sq * double :: ZZ -> ZZ| are
+also possible.
 %
 They have a consistent meaning: the same argument is passed to all
 functions in an expression.
@@ -1491,10 +1493,12 @@ specific language (a DSL) of expressions (representing functions in
 one variable).
 %
 Hence we can then implement the derivative of |FunExp| expressions
-using the rules of derivatives. Because the specification of
-derivation rules is already in the right format, the way to obtain
-this implementation may seem obvious, but we will go through the steps
-as a way to show the process in a simple case.
+(from \cref{sec:FunExp}) using the rules of derivatives.
+%
+Because the specification of derivation rules is already in the right
+format, the way to obtain this implementation may seem obvious, but we
+will go through the steps as a way to show the process in a simple
+case.
 
 \label{sec:derive}
 Our goal is to implement a function |derive :: FunExp -> FunExp| which
@@ -1518,7 +1522,8 @@ In turn, this means that for any expression |e :: FunExp|, we want
      eval (derive e)  =  D (eval e)
 \end{spec}
 
-For example, let us calculate the |derive| function for |Exp e|:
+For example, let us calculate the |derive| function for |Exp e|:%
+\footnote{We have added a constructor |Exp :: FunExp -> FunExp| for this example.}
 %
 \begin{spec}
      eval (derive (Exp e))                          =  {- specification of |derive| above -}
@@ -1548,13 +1553,17 @@ derive (Exp e) = Exp e :*: derive e
 
 Similarly, we obtain
 %
+\begin{joincode}
 \begin{code}
 derive     (Const alpha)  =  Const 0
 derive     X              =  Const 1
 derive     (e1 :+: e2)    =  derive e1  :+:  derive e2
 derive     (e1 :*: e2)    =  (derive e1  :*:  e2)  :+:  (e1  :*:  derive e2)
-derive     (Exp e)        =  Exp e :*: derive e
 \end{code}
+\begin{spec}
+derive     (Exp e)        =  Exp e :*: derive e
+\end{spec}
+\end{joincode}
 %
 \begin{exercise}
   Complete the |FunExp| type and the |eval| and |derive| functions.

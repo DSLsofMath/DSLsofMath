@@ -127,6 +127,7 @@
 %format Ci = C "_" i
 %format e1
 %format e2
+%format e3
 %format f0
 %format f1
 %format f2

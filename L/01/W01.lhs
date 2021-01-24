@@ -657,6 +657,7 @@ What operations can be performed on sequences?
 We have seen the first one: given a value |c| we can generate a
 constant sequence with |conSeq c|.
 %
+\label{def:pointwise}
 We can also add sequences componentwise (also called ``pointwise''):
 %
 \begin{code}
