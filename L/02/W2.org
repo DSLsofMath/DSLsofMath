@@ -1,0 +1,50 @@
+* Admin:
+** Course book (lecture notes) and github
++ new draft uploaded (minor fixes in Chapter 3)
++ don't trust copy/paste from the PDF - some problems with special characters and spacing
++ get the code from github instead, or type it in "by hand"
+  Example: [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/01/E1_1.lhs][Exercise 1.1]] ([[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/01/ExerciseSolutions/E1_1.lhs][solution]]), etc.
++ Strong recommendation: Read every word! (Week N = Chapter N)
+** Mid-course evaluation meeting and course representatives
+The mid-course evaluation meeting will take place 2021-02-03 at 13.15 in Zoom.
+
+Student representatives:
+
+| Prg | Namn               |
+|-----+--------------------|
+| D   | Simon Johansson    |
+| D   | Fredrik Österström |
+| TM  | Mats Richardson    |
+
+Contact them (or the teaching team) if you want to provide feedback
+about the course.
+
+** Weekly exercises: (bonusuppgifter)
++ Week 1 Grading done (49 pass / 51 submitted) - good work!
++ Week 2 online
++ Week 3 online
+** [[https://chalmers.instructure.com/courses/12458/assignments/30083][Assignment 1]]: (deadline 2021-02-02)
++ Group formation done
++ Tuesday 2020-02-02: Deadline
+** Extra Haskell lectures online
++ based on student questions last week I added 3 new YouTube videos
+  about Haskell and "type driven development": polymorphic functions,
+  product types |(a,b)| and sum types |Either a b|
+* Lecture 2.1 ([[https://jamboard.google.com/d/1Yr8Fy9-dfnN6gjX6bFaJH7M31Ue_JrJUEOlqTab5648/edit?usp=sharing][Jamboard L2.1]])
+** Prop = Propositional Calculus (Satslogik)
++ syntax examples
++ truth tables
++ eval : Prop -> Table -> Bool
+  type Table = Name -> Bool
+** Proofs
++ proof rules
+** Pure set theory (useful for [[https://chalmers.instructure.com/courses/12458/assignments/30083][Assignment 1]])
++ "untyped sets", "just sets all the way down"
++ Empty set, Singleton set constructor, {braces around enumeration}
++ Cardinality (number of elements)
++ Membership: x ∈ S
++ Union, Intersection - connection to logic through membership
+* Lecture 2.2
+** FOL = First Order Logic
++ extend Prop with predicates and quantifiers
+** Proof examples
