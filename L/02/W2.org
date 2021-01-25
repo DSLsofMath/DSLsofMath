@@ -44,6 +44,8 @@ about the course.
 + Cardinality (number of elements)
 + Membership: x ∈ S
 + Union, Intersection - connection to logic through membership
++ Enumerating some sets (to get thinking started)
+** [[file:Live_2_1_2021.lhs][Live coding (Prop)]] [if there is time]
 * Lecture 2.2
 ** FOL = First Order Logic
 + extend Prop with predicates and quantifiers
