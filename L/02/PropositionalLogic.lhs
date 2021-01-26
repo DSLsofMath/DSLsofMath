@@ -130,7 +130,7 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
   \begin{subfigure}[b]{0.3\textwidth}\centering
     \begin{tabular}{|| *{2}{c@@{~}} l||}
         \hline   |a| & |=>|& |b|
-      \\\hline   |F| & |T| & |T|
+      \\\hline   |F| & |T| & |F|
       \\         |F| & |T| & |T|
       \\         |T| & |F| & |F|
       \\         |T| & |T| & |T|
