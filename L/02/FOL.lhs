@@ -346,7 +346,7 @@ to obtain |Exists i (A i)|.
 The elimination and introduction rules for existential quantification are:
 
 \[
-  \frac{P(a)}{∃i. P(i)}\hspace{10em}\frac{\text{for every \(a\),~}{P(a) → R}  \quad \quad ∃i. A(i)}{R}
+  \frac{P(a)}{∃i. P(i)}\hspace{10em}\frac{{∀x.P(x) → R}  \quad \quad ∃i. P(i)}{R}
 \]
 The introduction rule says that to prove the existential
 quantification, we only need exhibit one witness ($a$) and one proof
@@ -372,13 +372,13 @@ If we can prove |R| for each member of the family, we can be sure to
 prove |R| when we encounter some family member:
 
 The constructors for proofs can be |ExistsIntro :: RatSem -> Proof ->
-Proof| and |ExistsElim :: (RatSem -> Prop) -> Proof -> Proof|.
+Proof| and |ExistsElim :: Proof -> Proof -> Proof|.
 %
 In this case we'd have |i| as the first argument of |ExistsIntro| and
 a proof of |A(i)| as its second argument.
 
 \begin{exercise}
-  Sketch the |proofChecker| cases for universal quantification.
+  Sketch the |proofChecker| cases for existential quantification.
 \end{exercise}
 
 \subsection{Typed quantification}
