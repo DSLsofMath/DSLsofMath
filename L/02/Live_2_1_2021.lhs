@@ -20,100 +20,64 @@ p2 = Or   (Name "a")  (Not (Name "a"))
 p3 = Implies  (Name "a")  (Name "b")
 p4 = Implies  (And a b)   (And b a)
   where a = Name "a"; b = Name "b"
+
+
+type Syn = Prop
+type Sem' = Bool
+type Sem = Tab -> Sem'
+type Tab = Name -> Bool
+eval :: Syn -> Sem
+eval (Con b)          = conS b
+eval (Not      e)     = notS  (eval e)
+eval (And      e1 e2) = andS  (eval e1) (eval e2)
+eval (Or       e1 e2) = orS   (eval e1) (eval e2)
+eval (Implies  e1 e2) = impS  (eval e1) (eval e2)
+eval (Name n)         = nameS n
+
+-- eval "byter C mot cS" för alla C i {Con, Not, And, Or, Implies}
+
+conS' :: Bool -> Sem'      -- Sem'=Bool
+conS' = id
+notS' :: Sem' -> Sem'      -- Bool -> Bool
+notS' = not
+andS' :: Sem' -> Sem' -> Sem'
+andS' = (&&)
+orS'  :: Sem' -> Sem' -> Sem'
+orS' = (||)
+impS' :: Sem' -> Sem' -> Sem'
+impS' = (==>)
+
+-- andS ::      Sem'  ->         Sem'  ->         Sem'
+andS :: (Tab -> Sem') -> (Tab -> Sem') -> (Tab -> Sem')
+andS = lift2 andS'
+orS  = lift2 orS'
+impS = lift2 impS'
+conS :: Bool -> Tab -> Bool
+conS = lift0
+notS = lift1 notS'
+nameS :: Name -> Sem
+nameS n tab = tab n
+
+-- generalisera!
+
+lift0 ::  a            -> (t -> a)
+lift1 :: (a -> b)      -> (t -> a) -> (t -> b)
+lift2 :: (a -> b -> c) -> (t -> a) -> (t -> b) -> (t -> c)
+
+lift0 nuOp      = \_ -> nuOp
+lift1 unOp  f   = \x -> unOp  (f x)
+lift2 binOp f g = \x -> binOp (f x) (g x)
+
+(==>) :: Bool -> Bool -> Bool
+False ==> _ = True
+True  ==> x = x
+
+testTab "a" = True
+testTab "b" = False
+testTab _   = False
+
+test1 = eval p1 testTab
+test2 = eval p2 testTab
+test3 = eval p3 testTab
+test4 = eval p4 testTab
 \end{code}
-
-TODO eval :: Syn -> Sem
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-\begin{spec}
-type Nam = String
-data PC where
-  And   :: PC -> PC -> PC
-  Or    :: PC -> PC -> PC
-  Impl  :: PC -> PC -> PC
-  Not   :: PC       -> PC
-  Name  :: Nam      -> PC
-  Con   :: Bool     -> PC
-
-e3 :: PC
-e3 = And (Name "a") (Not (Name "a"))
-e3' = Con False
-
-eval :: PC -> Sem
-eval (And x y)  = ands  (eval x) (eval y)
-eval (Or  x y)  = ors   (eval x) (eval y)
-eval (Impl x y) = impls (eval x) (eval y)
-eval (Not x )   = nots  (eval x)
-eval (Name n)   = names n -- lookup n in the table
-eval (Con  c)   = cons c
-
-
--- type Table = [(Nam, Bool)] -- translate names to Booleans
-type Table = Nam -> Bool
-type Sem = Table -> Bool  -- (Nam -> Bool) -> Bool
-impls :: Sem -> Sem -> Sem
-impls f g = \l -> impl (f l) (g l)
-    -- f :: Sem = Table -> Bool
-    -- l :: Table = Nam -> Bool, _ :: Bool
-
-[ors, ands, nots] = error "TODO: ors, ands, nots"
-
-        -- PC -> PC -> PC
-impl :: Bool -> Bool -> Bool
-impl False  x = True
-impl True   x = x
-
-
-names :: Nam -> Sem   -- Sem = Table -> Bool
-names n = \l -> l n    -- l :: Table = Nam -> Bool
--- names n l = l n    -- l :: Table = Nam -> Bool
-
-cons :: Bool -> Sem
-cons b = \_ -> b
-
---  And   :: PC -> PC -> PC
---  Or    :: PC -> PC -> PC
-
---  Not   :: PC       -> PC
---  Name  :: Nam      -> PC
---  Con   :: Bool     -> PC
-
-
-\end{spec}

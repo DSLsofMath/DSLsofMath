@@ -274,8 +274,8 @@ Therefore, we introduce two proof-term constructors:
 % \pj{A symmetric treatment would use |(,)| for |AndIntro| and |Either| for |OrIntro|, or it would use two arguments (as now) for |AndIntro| and |OrIntroL| and |OrIntroR| instead of |OrIntro|.}
 %
 \begin{spec}
-OrIntroL :: Proof -> Proof
-OrIntroR :: Proof -> Proof
+OrIntroL  :: Proof -> Proof
+OrIntroR  :: Proof -> Proof
 \end{spec}
 %
 There are a couple of possible approaches to deal with negation.
