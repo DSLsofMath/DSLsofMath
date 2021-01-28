@@ -46,10 +46,10 @@ type TriFun a  = Tri (a->a)   -- = |(a->a, a->a, a->a)|
 type FunTri a  = a -> Tri a   -- = |a -> (a, a, a)|
 \end{code}
 
-Define instances of |Additive|, |AddGroup|, |Multiplicative|, |MulGroup|, |Algebraic|, and
-|Transcendental|, for |Tri a| and define a homomorphism |evalDD| from |FunExp|
-to |FunTri a| (for any type |a| in |Transcendental|). You don't need to prove that it
-is a homomorphism in this part.
+Define instances of |Additive|, |AddGroup|, |Multiplicative|, |MulGroup|,
+|Algebraic|, and |Transcendental|, for |Tri a| and define a homomorphism
+|evalDD| from |FunExp| to |FunTri a| (for any type |a| in |Field|). You don't
+need to prove that it is a homomorphism in this part.
 
 \item Show that |evalDD| is a homomorphism for the case of
 multiplication.
