@@ -46,7 +46,15 @@ about the course.
 + Union, Intersection - connection to logic through membership
 + Enumerating some sets (to get thinking started)
 ** [[file:Live_2_1_2021.lhs][Live coding (Prop)]] [if there is time]
-* Lecture 2.2
+* Lecture 2.2: First order logic (FOL) (as a new DSL, extending Prop)
 ** FOL = First Order Logic
-+ extend Prop with predicates and quantifiers
-** Proof examples
+** adding a term language (for rationals, or sets, or ...)
+** extend names to n-ary predicates over terms
+** quantifiers: Forall and Exists
+** Typed quantification
+** Pushing negation through other constructors
+** Case study: sqrt 3 is not rational [proof by contradiction]
+** Case study: p^q can be rational even when neither p nor q is [proof by cases]
+** [Did not fit: Perhaps: Case study: the limit of a function [from maths text to types and logic]]
+** Live coding (towards a DSL for proof terms )
++ building proof terms (Tru, Fals, And, Or, Impl (->))
