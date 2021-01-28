@@ -130,7 +130,7 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
   \begin{subfigure}[b]{0.3\textwidth}\centering
     \begin{tabular}{|| *{2}{c@@{~}} l||}
         \hline   |a| & |=>|& |b|
-      \\\hline   |F| & |T| & |T|
+      \\\hline   |F| & |T| & |F|
       \\         |F| & |T| & |T|
       \\         |T| & |F| & |F|
       \\         |T| & |T| & |T|
@@ -274,8 +274,8 @@ Therefore, we introduce two proof-term constructors:
 % \pj{A symmetric treatment would use |(,)| for |AndIntro| and |Either| for |OrIntro|, or it would use two arguments (as now) for |AndIntro| and |OrIntroL| and |OrIntroR| instead of |OrIntro|.}
 %
 \begin{spec}
-OrIntroL :: Proof -> Proof
-OrIntroR :: Proof -> Proof
+OrIntroL  :: Proof -> Proof
+OrIntroR  :: Proof -> Proof
 \end{spec}
 %
 There are a couple of possible approaches to deal with negation.
