@@ -19,7 +19,7 @@
     \put(7,14){\line(1,0){25}} \put(45,14){\line(1,0){25}}
   \end{picture}}}
 \begin{document}
-\title{DSLsofMath 2020: Assignment 2}
+\title{DSLsofMath 2021: Assignment 2}
 \date{}
 \maketitle
 \section*{Optimisation using Newton's method}
@@ -48,7 +48,7 @@ type FunTri a  = a -> Tri a   -- = |a -> (a, a, a)|
 
 Define instances of |Additive|, |AddGroup|, |Multiplicative|, |MulGroup|, |Algebraic|, and
 |Transcendental|, for |Tri a| and define a homomorphism |evalDD| from |FunExp|
-to |FunTri a| (for any type |a| in |Floating|). You don't need to prove that it
+to |FunTri a| (for any type |a| in |Transcendental|). You don't need to prove that it
 is a homomorphism in this part.
 
 \item Show that |evalDD| is a homomorphism for the case of
@@ -112,7 +112,7 @@ variation |newtonList|:
 \begin{spec}
 newton f eps x = last (newtonList f eps x)
 
-newtonList :: (Fractional a, Ord a) => (a->a) -> a -> a -> [a]
+newtonList :: (AddGroup a, MulGroup a, Ord a) => (a->a) -> a -> a -> [a]
 newtonList f eps x = x : if ... then [] else ...
 \end{spec}
 \end{enumerate}
@@ -159,7 +159,7 @@ method at point 2.
 \item [Submission:] Assignments are to be submitted via Canvas
 \item [Deadline:] 2021-03-05
 \item [Grading:] Discussions with each of the teams during one of the
-  slots 2020-03-08.
+  slots 2021-03-08.
 \end{description}
 \bibliographystyle{abbrvnat}
 \bibliography{../L/ref}
