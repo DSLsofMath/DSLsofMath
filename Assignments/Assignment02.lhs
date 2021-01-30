@@ -163,30 +163,15 @@ method at point 2.
   slots 2021-03-08.
 \end{description}
 \section*{Skeleton code}
-Here is some useful Haskell code to start from, and the |Algebra|
-module (defining the numeric classes) is available on
-\href{https://github.com/DSLsofMath/DSLsofMath/blob/master/L/DSLsofMath/Algebra.hs}{github}.
-\begin{code}
-{-# LANGUAGE FlexibleContexts, FlexibleInstances, TypeSynonymInstances #-}
-import Prelude
-  hiding ((+), (-), (*), (/), negate, recip, (^), fromInteger, sin, pi, cos, exp)
-import DSLsofMath.Algebra
-
-instance Additive a        => Additive (Tri a)        where  (+)  = addTri;   zero  = zeroTri
-instance (Additive a, Multiplicative a)
-                           => Multiplicative (Tri a)  where  (*)  = mulTri;   one   = oneTri
-
-instance AddGroup a        => AddGroup (Tri a)        where  negate  = negateTri
-instance (AddGroup a, MulGroup a)
-                           => MulGroup (Tri a)        where  recip   = recipTri
-
-(addTri, zeroTri, mulTri, oneTri, negateTri, recipTri) = undefined
-
-instance Transcendental a  => Transcendental (Tri a)  where
-  pi = piTri;   sin = sinTri;   cos = cosTri;   exp = expTri
-
-(piTri, sinTri, cosTri, expTri) = undefined
-\end{code}
+Here is some useful
+\href{https://github.com/DSLsofMath/DSLsofMath/blob/master/L/A2_Skeleton.lhs}{skeleton
+  Haskell code} to start from, and the
+\href{https://github.com/DSLsofMath/DSLsofMath/blob/master/L/DSLsofMath/Algebra.hs}{|Algebra|}
+and
+\href{https://github.com/DSLsofMath/DSLsofMath/blob/master/L/DSLsofMath/FunExp.lhs}{|FunExp|}
+modules are also available on
+\href{https://github.com/DSLsofMath/DSLsofMath/}{github}.
+%include ../L/A2_Skeleton.lhs
 
 \bibliographystyle{abbrvnat}
 \bibliography{../L/ref}
