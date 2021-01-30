@@ -158,7 +158,7 @@ method at point 2.
 \section*{Formalities}
 \begin{description}
 \item [Submission:] Assignments are to be submitted via Canvas
-\item [Deadline:] 2021-03-05
+\item [Deadline:] 2021-03-02
 \item [Grading:] Discussions with each of the teams during one of the
   slots 2021-03-08.
 \end{description}
