@@ -5,7 +5,7 @@
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 module DSLsofMath.W06 where
-import DSLsofMath.FunExp hiding (eval, f)
+import DSLsofMath.FunExp hiding (eval, f, derive)
 import DSLsofMath.W05
 import DSLsofMath.Algebra
 import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..))

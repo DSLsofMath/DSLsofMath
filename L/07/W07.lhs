@@ -1874,7 +1874,7 @@ transpose :: Mat s g g' -> Mat s g' g
 transpose m i j = m j i
 getCol :: Mat s g g' -> g -> Vec s g'
 getCol = transpose
-getRow :: Mat s g g' -> g' -> Vec s gabbled
+getRow :: Mat s g g' -> g' -> Vec s g
 getRow = id
 \end{code}
 

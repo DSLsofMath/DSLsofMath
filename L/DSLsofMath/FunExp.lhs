@@ -1,10 +1,11 @@
 \begin{code}
 module DSLsofMath.FunExp where
-import DSLsofMath.FunNumInst
+import DSLsofMath.Algebra
+import Prelude (Eq((==)), Show, Bool, Double, id, const, (.), toRational)
 
 type REAL = Double
 
-data FunExp  =  Const REAL         -- |Rational| does not work with |Floating|
+data FunExp  =  Const REAL
              |  X
              |  FunExp :+: FunExp
              |  FunExp :*: FunExp
@@ -17,33 +18,27 @@ data FunExp  =  Const REAL         -- |Rational| does not work with |Floating|
   deriving (Eq, Show)
 \end{code}
 
-Example:
-
 \begin{code}
-expr1 :: FunExp
-expr1 = (Const 2) :*: (Exp (Exp X))
-\end{code}
+eval :: Transcendental a => FunExp -> a -> a
+eval (Const alpha)  =  const (fromRational (toRational alpha))
+eval X              =  id
+eval (e1 :+: e2)    =  eval e1 + eval e2
+eval (e1 :*: e2)    =  eval e1 * eval e2
+eval (Negate e)     =  negate (eval e)
+eval (Exp e)        =  exp (eval e)      -- = exp . (eval e) !
+eval (Sin e)        =  sin (eval e)
+eval (Cos e)        =  cos (eval e)
 
-What is the function corresponding to this expression?
+derive  ::  FunExp        ->  FunExp
+derive      (Const alpha)  =  Const 0
+derive      X              =  Const 1
+derive      (e1 :+: e2)    =  derive e1 :+: derive e2
+derive      (e1 :*: e2)    =  (derive e1 :*: e2) :+: (e1 :*: derive e2)
+derive      (Negate e)     =  Negate (derive e)
+derive      (Exp e)        =  Exp e :*: derive e
+derive      (Sin e)        =  Cos e :*: derive e
+derive      (Cos e)        =  Negate (Sin e) :*: derive e
 
-\begin{code}
-f x  = 2 * exp (exp x)
-
-type Func = REAL -> REAL
-eval  ::  FunExp          ->  Func
-eval      (Const alpha)    =  const alpha
-eval      X               =  id
-eval      (e1 :+: e2)      =  eval e1 + eval e2
-eval      (e1 :*: e2)      =  eval e1 * eval e2
-eval      (Negate e)       =  negate (eval e)
-eval      (Exp e)          =  exp (eval e)      -- = exp . (eval e) !
-eval      (Sin e)          =  sin (eval e)
-eval      (Cos e)          =  cos (eval e)
-\end{code}
-
-Test:
-
-\begin{code}
-test1 :: Bool
-test1 = eval expr1 2 == f 2
+eval' :: Transcendental a => FunExp -> a -> a
+eval' =  eval . derive
 \end{code}

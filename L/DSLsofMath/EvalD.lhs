@@ -1,3 +1,4 @@
+> {-# LANGUAGE FlexibleContexts #-}
 > module DSLsofMath.EvalD (module DSLsofMath.FunExp, module DSLsofMath.EvalD) where
 > import DSLsofMath.FunExp
 > import DSLsofMath.Derive

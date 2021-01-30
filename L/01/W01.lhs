@@ -1379,7 +1379,8 @@ Other desirable laws are that |+| and |*| should be associative and
 commutative and |*| should distribute over |+|:
 %if false
 \begin{code}
-propAssocPlus :: (Num a, SemEq a) => a -> a -> a -> Bool
+propAssocPlus      :: (Num a, SemEq a) => a -> a -> a -> Bool
+propDistTimesPlus  :: (Num a, SemEq a) => a -> a -> a -> Bool
 \end{code}
 %endif
 \begin{code}

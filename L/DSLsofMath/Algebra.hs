@@ -1,12 +1,13 @@
-{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE ConstraintKinds #-}
 module DSLsofMath.Algebra where
 
 import qualified Data.Ratio
 
 import qualified Prelude
-import Prelude (Int,Integer,Float,Double, Foldable (..), (==), Monoid(..), Ord(..) ,Real(..), Enum(..), snd, Rational, Functor(..), Eq(..), Bool(..), Semigroup(..), const, (.))
+import Prelude (Double, Rational, Int, Integer, Bool(..), otherwise,
+                Foldable(foldr), (.), const, (==), (<), error)
 import Data.Complex
 
 -------------------------------
@@ -25,8 +26,8 @@ sum :: (Foldable t, Additive a) => t a -> a
 sum = foldr (+) zero
 
 times :: Additive a => Integer -> a -> a
-times n0 = if n0 < 0  then Prelude.error "Algebra.Classes.times: negative number of times"
-                      else go n0
+times n0 = if n0 < 0  then  error "Algebra.Classes.times: negative number of times"
+                      else  go n0
   where go 0 _ = zero
         go 1 x = x
         go n x = if r == 0 then twoy else x + twoy
@@ -47,10 +48,13 @@ class Multiplicative a where
   one :: a
   (*) :: a -> a -> a
 
+two :: (Additive a, Multiplicative a) => a
+two = one+one
+
 (^+) :: Multiplicative a => a -> Int -> a
 
-x0 ^+ n0 = if n0 < 0  then Prelude.error "Algebra.Classes.^: negative exponent"
-                      else go n0 x0
+x0 ^+ n0 = if n0 < 0  then  error "Algebra.Classes.^: negative exponent"
+                      else  go n0 x0
   where go 0 _ = one
         go 1 x = x
         go n x = if r == 0 then y2 else x * y2
@@ -72,150 +76,113 @@ class Multiplicative a => MulGroup a where
   x / y           =  x * recip y
 
 (^) :: MulGroup a => a -> Int -> a
-a ^ b | b < 0 = recip (a ^+ (negate b))
-      | True = (a ^+ b)
-
+a ^ b | b < 0      = recip (a ^+ (negate b))
+      | otherwise  = (a ^+ b)
 
 type Field a = (Ring a, MulGroup a)
 
-fromRational :: (Field a) => Data.Ratio.Ratio Integer -> a
+fromRational :: Field a => Data.Ratio.Ratio Integer -> a
 fromRational x  =  fromInteger (Data.Ratio.numerator x) / fromInteger (Data.Ratio.denominator x)
 
 class Field a => Algebraic a where
   sqrt :: a -> a
 
-class Field a => Transcendental a where -- normally it should be "Algebraic" instead of "Field" but we're lazy like that. (Also Transcendental is a terrible name; taken from the "numeric prelude")
-  pi :: a
+-- normally it should be "Algebraic" instead of "Field" but we're lazy like that.
+--   (Also Transcendental is a terrible name; taken from the "numeric prelude".)
+class Field a => Transcendental a where
+  pi  :: a
   exp :: a -> a
   sin :: a -> a
   cos :: a -> a
-
----------------------------------
--- Instances
-
-instance AddGroup Int where
-  negate = Prelude.negate
-
-
-instance Additive Int where
-  (+) = (Prelude.+)
-  zero = 0
-instance Multiplicative Int where
-  (*) = (Prelude.*)
-  one = 1
-
-
-
-instance Additive Integer where
-  (+) = (Prelude.+)
-  zero = 0
-instance AddGroup Integer where
-  negate = Prelude.negate
-
-instance Multiplicative Integer where
-  (*) = (Prelude.*)
-  one = 1
-
-
-instance Additive Rational where
-  (+) = (Prelude.+)
-  zero = 0
-instance AddGroup Rational where
-  negate = Prelude.negate
-instance MulGroup Rational where
-  (/) = (Prelude./)
-  recip = Prelude.recip
-instance Multiplicative Rational where
-  (*) = (Prelude.*)
-  one = 1
-
-instance Additive a => Additive (x -> a) where
-   f + g        =  \x -> f x + g x
-   zero = const zero
-
-instance Multiplicative a => Multiplicative (x -> a) where
-   f * g        =  \x -> f x * g x
-   one = const one
-
-instance AddGroup a => AddGroup (x -> a) where
-   negate f     =  negate . f
-
-instance MulGroup a => MulGroup (x -> a) where
-   recip f     =  recip . f
-
-instance Algebraic a => Algebraic (x -> a) where
-   sqrt f     =  sqrt . f
-
-instance Transcendental a => Transcendental (x -> a) where
-   pi = const pi
-   sin f =  sin . f
-   cos f =  cos . f
-   exp f =  exp . f
-
-instance Additive Double where
-  (+) = (Prelude.+)
-  zero = 0
-
-instance AddGroup Double where
-  negate = Prelude.negate
-
-instance MulGroup Double where
-  (/) = (Prelude./)
-  recip = Prelude.recip
-
-instance Multiplicative Double where
-  (*) = (Prelude.*)
-  one = 1
-
-instance Algebraic Double where
-   sqrt = Prelude.sqrt
-
-instance Transcendental Double where
-   pi = Prelude.pi
-   sin =  Prelude.sin
-   cos =  Prelude.cos
-   exp =  Prelude.exp
-
-
-instance Additive a => Additive (Complex a) where
-  (x :+ y) + (x' :+ y') = (x + x') :+ (y+y')
-  zero = zero :+ zero
-
-instance AddGroup a => AddGroup (Complex a) where
-  negate (a :+ b) = negate a :+ negate b
-
-instance Ring a => Multiplicative (Complex a) where
-  (a :+ b) * (a' :+ b') = (a * a' - b * b') :+ (a * b' + b * a')
-  one = one :+ zero
-
-instance Field a => MulGroup (Complex a) where
-  recip (a :+ b) = (a / m)  :+ (negate b / m) where m = a*a + b*b
-
-
-instance (Algebraic a, Prelude.RealFloat a) =>  Algebraic (Complex a) where
-  sqrt = Prelude.sqrt
-
-instance (Transcendental a) => Transcendental (Complex a) where
-  pi = pi :+ zero
-  exp = expC
-  sin = sinC
-  cos = cosC
-
-expC   (x:+y)  =  expx * cos y :+ expx * sin y
-  where expx = exp x
-sinC   (x:+y)  =  sin x * cosh y :+ cos x * sinh y
-cosC   (x:+y)  =  cos x * cosh y :+ negate (sin x * sinh y)
-sinhC  (x:+y)  =  cos y * sinh x :+ sin y * cosh x
-coshC  (x:+y)  =  cos y * cosh x :+ sin y * sinh x
-
 
 cosh, sinh :: Transcendental a => a -> a
 cosh x = (exp x + exp (negate x))/two
 sinh x = (exp x - exp (negate x))/two
 
-two :: Ring a => a
-two = one+one
+---------------------------------
+-- Instances
 
+instance Additive        Int       where  (+)  = (Prelude.+);  zero  = 0
+instance Additive        Integer   where  (+)  = (Prelude.+);  zero  = 0
+instance Additive        Rational  where  (+)  = (Prelude.+);  zero  = 0
+instance Additive        Double    where  (+)  = (Prelude.+);  zero  = 0
+
+instance AddGroup        Int       where  negate = Prelude.negate
+instance AddGroup        Integer   where  negate = Prelude.negate
+instance AddGroup        Rational  where  negate = Prelude.negate
+instance AddGroup        Double    where  negate = Prelude.negate
+
+instance Multiplicative  Int       where  (*)  = (Prelude.*);  one   = 1
+instance Multiplicative  Integer   where  (*)  = (Prelude.*);  one   = 1
+instance Multiplicative  Rational  where  (*)  = (Prelude.*);  one   = 1
+instance Multiplicative  Double    where  (*)  = (Prelude.*);  one   = 1
+
+instance MulGroup        Rational  where  (/)  = (Prelude./);  recip = Prelude.recip
+instance MulGroup        Double    where  (/)  = (Prelude./);  recip = Prelude.recip
+
+lift0 ::  a         ->  (x->a)
+lift1 :: (a->b)     ->  (x->a) -> (x->b)
+lift2 :: (a->b->c)  ->  (x->a) -> (x->b) -> (x->c)
+lift0 = const
+lift1 = (.)
+lift2 op2 f g = \x -> op2 (f x) (g x)
+
+instance Additive a        => Additive        (x -> a) where (+)  = lift2 (+);  zero  = const zero
+instance Multiplicative a  => Multiplicative  (x -> a) where (*)  = lift2 (*);  one   = const one
+
+instance AddGroup a   => AddGroup   (x -> a)  where   negate  =  lift1 negate
+instance MulGroup a   => MulGroup   (x -> a)  where   recip   =  lift1 recip
+instance Algebraic a  => Algebraic  (x -> a)  where   sqrt    =  lift1 sqrt
+
+instance Transcendental a => Transcendental (x -> a) where
+   pi = const pi;  sin = lift1 sin;  cos = lift1 cos;  exp = lift1 exp
+
+instance Algebraic       Double where   sqrt = Prelude.sqrt
+instance Transcendental  Double where
+   pi = Prelude.pi;  sin = Prelude.sin;  cos = Prelude.cos;  exp = Prelude.exp
+
+instance Additive a  => Additive        (Complex a) where  (+) = addC;  zero  = zeroC
+instance Ring a      => Multiplicative  (Complex a) where  (*) = mulC;  one   = oneC
+instance AddGroup a  => AddGroup        (Complex a) where  negate  = negateC
+instance Field a     => MulGroup        (Complex a) where  recip   = recipC
+
+addC :: Additive a => Complex a -> Complex a -> Complex a
+addC (x :+ y) (x' :+ y') = (x + x') :+ (y+y')
+
+negateC :: AddGroup a => Complex a -> Complex a
+negateC (a :+ b) = negate a :+ negate b
+
+mulC :: Ring a => Complex a -> Complex a -> Complex a
+mulC (a :+ b) (a' :+ b') = (a * a' - b * b') :+ (a * b' + b * a')
+
+toC :: Additive a => a -> Complex a
+toC x = x :+ zero
+
+zeroC :: Additive a => Complex a
+zeroC = toC zero
+
+oneC :: (Additive a, Multiplicative a) => Complex a
+oneC = toC one
+
+recipC (a :+ b) = (a / m)  :+ (negate b / m)
+  where m = a*a + b*b
+
+instance (Algebraic a, Prelude.RealFloat a) =>  Algebraic (Complex a) where
+  sqrt = Prelude.sqrt
+
+instance (Transcendental a) => Transcendental (Complex a) where
+  pi = piC;  exp = expC;  sin = sinC;  cos = cosC
+
+piC :: Transcendental a => Complex a
+piC = toC pi
+
+expC, sinC, cosC, sinhC, coshC :: Transcendental a => Complex a -> Complex a
+expC   (x:+y)  =  expx  * cos y  :+ expx * sin y  where expx = exp x
+sinC   (x:+y)  =  sin x * cosh y :+ cos x * sinh y
+cosC   (x:+y)  =  cos x * cosh y :+ negate (sin x * sinh y)
+
+sinhC  (x:+y)  =  cos y * sinh x :+ sin y * cosh x
+coshC  (x:+y)  =  cos y * cosh x :+ sin y * sinh x
 
 ---------------------------------
 -- For RebindableSyntax

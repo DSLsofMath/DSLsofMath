@@ -10,9 +10,9 @@
 {-# LANGUAGE ConstraintKinds, RebindableSyntax #-}
 module DSLsofMath.W04 where
 import Prelude hiding (Monoid, even, Num(..), recip, sin, cos, exp, (^))
-import DSLsofMath.FunExp hiding (eval)
+import DSLsofMath.FunExp hiding (eval, eval')
 import DSLsofMath.Algebra
-import DSLsofMath.Derive (derive)
+-- import DSLsofMath.Derive (derive)
 -- import DSLsofMath.W03 (derive)
 type ℝ = REAL
 \end{code}
@@ -1276,6 +1276,7 @@ and instantiate |twoexp| to either syntax or semantics:
 testFE :: FunExp
 testFE = twoexp
 
+type Func = REAL -> REAL
 testFu :: Func
 testFu = twoexp
 \end{code}

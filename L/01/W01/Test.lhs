@@ -1,6 +1,6 @@
 > module DSLsofMath.W01.Test where
 > import DSLsofMath.W01
-> import DSLsofMath.CSem
+> import DSLsofMath.CSem hiding ((/))
 > import Test.QuickCheck
 > import Prelude hiding (flip)
 
@@ -8,17 +8,17 @@ We may also need the Haskell standard library version for some testing later:
 
 > import qualified Data.Complex as DC
 
-> fromCS (CS (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
+> fromC (C (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
 
-> instance (Num r, Arbitrary r) => Arbitrary (ComplexSem r) where
->   arbitrary = arbitraryCS arbitrary
->   shrink = shrinkCS shrink
+> instance (Num r, Arbitrary r) => Arbitrary (Complex r) where
+>   arbitrary = arbitraryC arbitrary
+>   shrink = shrinkC shrink
 
-> arbitraryCS :: Gen (r , r) -> Gen (ComplexSem r)
-> arbitraryCS arb = CS <$> arb
+> arbitraryC :: Gen (r , r) -> Gen (Complex r)
+> arbitraryC arb = C <$> arb
 
-> shrinkCS :: Num r => ((r , r) -> [(r , r)]) -> (ComplexSem r -> [ComplexSem r])
-> shrinkCS shr (CS (p@(x, y))) = [CS (0, 0), CS (x,0), CS (0, y)] ++ map CS (shr p)
+> shrinkC :: Num r => ((r , r) -> [(r , r)]) -> (Complex r -> [Complex r])
+> shrinkC shr (C (p@(x, y))) = [C (0, 0), C (x,0), C (0, y)] ++ map C (shr p)
 
 > instance Arbitrary ComplexE where
 >   arbitrary = sized arbitraryCESized
@@ -27,7 +27,7 @@ We may also need the Haskell standard library version for some testing later:
 > arbitraryCESized :: Int -> Gen ComplexE
 > arbitraryCESized n | n <= 0 = oneof [ return ImagUnit
 >                                     , ToComplex <$> arbitrary
->                                     , fromCS <$> arbitrary
+>                                     , fromC <$> arbitrary
 >                                     ]
 >                    | otherwise = do
 >   op <- elements [Plus, Times]
@@ -49,15 +49,15 @@ We may also need the Haskell standard library version for some testing later:
 
 > main = do
 >   quickCheck propFromCD
->   quickCheck $ expectFailure propAssocPlus
->   quickCheck $ expectFailure propAssocTimes
->   quickCheck $ expectFailure propDistTimesPlus
+>   quickCheck $ expectFailure (propAssocPlus     :: REAL->REAL->REAL->Bool)
+>   quickCheck $ expectFailure (propAssocTimes    :: REAL->REAL->REAL->Bool)
+>   quickCheck $ expectFailure (propDistTimesPlus :: REAL->REAL->REAL->Bool)
 
 > propAssocSmall :: Int -> Int -> Int -> Bool
-> propAssocSmall m n k = propAssocAdd (fromIntegral m) (fromIntegral n) (1/fromIntegral k)
+> propAssocSmall m n k = propAssocAdd (fromIntegral m) (fromIntegral n) ((1/fromIntegral k) :: Double)
 
 > instance Arbitrary ComplexD where
->   arbitrary = fmap (\(CS p) -> CD p) arbitrary
+>   arbitrary = fmap (\(C p) -> CD p) arbitrary
 
 
 

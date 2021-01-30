@@ -2,7 +2,8 @@
 \usepackage{amsmath}
 \usepackage{a4wide}
 \usepackage{natbib}
-\usepackage{url}
+\usepackage{hyperref}
+%\usepackage{url}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8x]{inputenc}
 \RequirePackage{ucs}
@@ -46,7 +47,7 @@ type TriFun a  = Tri (a->a)   -- = |(a->a, a->a, a->a)|
 type FunTri a  = a -> Tri a   -- = |a -> (a, a, a)|
 \end{code}
 
-Define instances of |Additive|, |AddGroup|, |Multiplicative|, |MulGroup|,
+Define instances of the classes |Additive|, |AddGroup|, |Multiplicative|, |MulGroup|,
 |Algebraic|, and |Transcendental|, for |Tri a| and define a homomorphism
 |evalDD| from |FunExp| to |FunTri a| (for any type |a| in |Field|). You don't
 need to prove that it is a homomorphism in this part.
@@ -89,10 +90,10 @@ in order to obtain the appropriate value for |f' x|.
 Test your implementation on the following functions:
 %
 \begin{code}
-test0 x = x^2                   -- one (double) zero, in |0|
-test1 x = x^2 - 1               -- two zeros, in |-1| and |1|
-test2 = sin                     -- many, many zeros (|n*pi|)
-test3 n x y = y^n - constTri x  -- |test3 n x| specifies the nth root of |x|
+test0 x = x^2                   -- one (double) zero, in zero
+test1 x = x^2 - one             -- two zeros, in +-one
+test2 x = sin x                 -- many, many zeros (in |n*pi| for all |n :: ZZ|)
+test3 n x y = y^n - constTri x  -- |test3 n x|, has zero in "nth roots of |x|"
   -- where |constTri| is the embedding of |Const|
 \end{code}
 
@@ -106,13 +107,13 @@ starting points from a sensible interval.  For example:
 but be aware that the method might not always converge!
 %
 
-For debugging is advisable to implement |newton| in terms of the minor
-variation |newtonList|:
+For debugging is advisable to implement |newton| in terms of
+|newtonList|, a minor variation which returns a list of the
+approximations encountered on the way to the final answer:
 %
 \begin{spec}
 newton f eps x = last (newtonList f eps x)
 
-newtonList :: (AddGroup a, MulGroup a, Ord a) => (a->a) -> a -> a -> [a]
 newtonList f eps x = x : if ... then [] else ...
 \end{spec}
 \end{enumerate}
@@ -121,7 +122,7 @@ newtonList f eps x = x : if ... then [] else ...
   interval by finding the zeros of its derivative on that interval,
   and checking the second derivative.
 %
-  If |x0| is a zero of |f'|, then
+  If |f' x0| is zero, then
   \begin{itemize}
   \item if |f'' x0 < 0|, then |x0| is a maximum
   \item if |f'' x0 > 0|, then |x0| is a minimum
@@ -135,11 +136,11 @@ newtonList f eps x = x : if ... then [] else ...
   point 2.
 %
   That is, implement a function
-
+%
 \begin{spec}
 optim :: (Tri REAL -> Tri REAL) -> REAL -> REAL -> Result REAL
 \end{spec}
-
+%
 so that |optim f eps x| uses Newton's method to find a zero of |f'|
 starting from |x|.
 %
@@ -161,6 +162,32 @@ method at point 2.
 \item [Grading:] Discussions with each of the teams during one of the
   slots 2021-03-08.
 \end{description}
+\section*{Skeleton code}
+Here is some useful Haskell code to start from, and the |Algebra|
+module (defining the numeric classes) is available on
+\href{https://github.com/DSLsofMath/DSLsofMath/blob/master/L/DSLsofMath/Algebra.hs}{github}.
+\begin{code}
+{-# LANGUAGE FlexibleContexts, FlexibleInstances, TypeSynonymInstances #-}
+import Prelude
+  hiding ((+), (-), (*), (/), negate, recip, (^), fromInteger, sin, pi, cos, exp)
+import DSLsofMath.Algebra
+
+instance Additive a        => Additive (Tri a)        where  (+)  = addTri;   zero  = zeroTri
+instance (Additive a, Multiplicative a)
+                           => Multiplicative (Tri a)  where  (*)  = mulTri;   one   = oneTri
+
+instance AddGroup a        => AddGroup (Tri a)        where  negate  = negateTri
+instance (AddGroup a, MulGroup a)
+                           => MulGroup (Tri a)        where  recip   = recipTri
+
+(addTri, zeroTri, mulTri, oneTri, negateTri, recipTri) = undefined
+
+instance Transcendental a  => Transcendental (Tri a)  where
+  pi = piTri;   sin = sinTri;   cos = cosTri;   exp = expTri
+
+(piTri, sinTri, cosTri, expTri) = undefined
+\end{code}
+
 \bibliographystyle{abbrvnat}
 \bibliography{../L/ref}
 \end{document}
