@@ -1,5 +1,5 @@
 %-*-Latex-*-
-\documentclass{beamer}
+\documentclass[aspectratio=1610]{beamer}
 \usetheme{Madrid}
 % Hide navigation symbols
 \setbeamertemplate{navigation symbols}{}
@@ -26,7 +26,7 @@
 \title[DSLM.Ch3.LimFun]{DSLs of Mathematics: limit of functions}
 \date{Lecture 3.1, 2021-02-02}
 \author{Patrik Jansson}
-\institute[FP, Chalmers]{Functional Programming division, Chalmers University of Technology}
+\institute[FP, Chalmers]{Functional Programming, Chalmers University of Technology}
 \begin{document}
 \begin{frame}
 \maketitle
@@ -40,8 +40,8 @@
 \frametitle{Course goal and focus}
 
 \begin{block}{Goal}
-  Encourage students to approach mathematical domains from a
-  functional programming perspective.
+  Encourage students to approach mathematical domains \\
+  from a functional programming perspective.
 \end{block}
 
 \begin{block}{Course focus}

@@ -79,7 +79,7 @@
 \subtitle{the Lagrangian Equations}
 \author[Jansson \& Ionescu]{Patrik Jansson \and Cezar Ionescu}
 \institute[FP div., Chalmers]{Functional Programming division, Chalmers University of Technology}
-\date{2020-02-06}
+\date{2021-02-04}
 % {Chalmers University of Technology, Sweden}
 %           {\texttt{patrikj@@chalmers.se}}
 %           {\texttt{cezar@@chalmers.se}}
