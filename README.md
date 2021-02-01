@@ -15,8 +15,8 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865
 * Main author, examiner, lecturer: Patrik Jansson (patrikj AT)
 * First version (and continued support): Cezar Ionescu (cezar AT)
 * Teaching assistants:
-  * 2021: Maximilian Algehed (algehed AT) and Víctor López Juan (opezv AT)
-  * 2020: Sólrún Einarsdóttir (slrn AT) and Víctor López Juan (opezv AT)
+  * 2021: Maximilian Algehed (algehed AT) and Víctor López Juan (lopezv AT)
+  * 2020: Sólrún Einarsdóttir (slrn AT) and Víctor López Juan (lopezv AT)
   * 2019: Maximilian Algehed (algehed AT) and Abhiroop Sarkar (sarkara AT)
   * 2018: Daniel Schoepe (schoepe AT)
   * 2017: Frederik Hanghøj Iversen (hanghj AT student) and Daniel Schoepe (schoepe AT)
