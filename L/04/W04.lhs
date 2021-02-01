@@ -173,20 +173,21 @@ classes, one for the additive and one for the multiplicative monoids,
 as follows.
 \label{sec:ring-like-classes}
 \pj{Perhaps use two one-liners to see the matching structure?}
-% class Additive a        where  zero  :: a;   (+)  :: a -> a -> a
-% class Multiplicative a  where  one   :: a;   (*)  :: a -> a -> a
 \begin{spec}
-class Additive a where
-  zero :: a
-  (+) :: a -> a -> a
-
-class Multiplicative a where
-  one :: a
-  (*) :: a -> a -> a
+class Additive a        where {-"\qquad"-}  zero  :: a; {-"\qquad"-}  (+)  :: a -> a -> a
+class Multiplicative a  where               one   :: a;               (*)  :: a -> a -> a
 \end{spec}
+% class Additive a where
+%   zero :: a
+%   (+) :: a -> a -> a
+%
+% class Multiplicative a where
+%   one :: a
+%   (*) :: a -> a -> a
 This is what we have done in \cref{sec:numeric-classes}.
 
-\begin{example}\textbf{Groups and rings}
+%\begin{example}
+\subsection{Groups and rings}
   Another important structure are groups, which are monoids augmented with an
   inverse.
   %
@@ -204,13 +205,13 @@ group) act like an inverse.
 Namely, applying the operation to an element and its inverse should
 yield the unit of the group.
 %
-Thus, for the additive group, the laws look like this:
-
+Thus, for the additive group, the laws are:
+%
 \begin{spec}
-negate a + a = zero
-a + negate a = zero
+Forall a (negate a + a = zero)
+Forall a (a + negate a = zero)
 \end{spec}
-
+%
 And thus we can define subtraction as
 \begin{spec}
 (-) :: AddGroup a => a -> a -> a
@@ -226,12 +227,12 @@ and thus define |Ring| simply as the conjunction of |AddGroup| and
 \begin{spec}
 type Ring a = (AddGroup a, Multiplicative a)
 \end{spec}
-\end{example}
+%\end{example}
 %
 With that, we have completed the structural motivation of our
-replacement for the |Num| class! \jp{Show some instances?}
-\pj{Provide a comparison table / figure relating the operations of
-  |Num|, |Fractional|, etc.\ with those of |Additive|, etc.}
+replacement for the |Num| class!
+%
+Example instances: |Nat| is |Additive|; |ZZ|, |QQ|, |REAL| are also a |Ring|s.
 % If label:=pin then the text will be connected to the rectangle by a short "pin" (line) 17.10.3 in pgfmanual
 \begin{figure}
   \centering
@@ -264,14 +265,12 @@ replacement for the |Num| class! \jp{Show some instances?}
   \caption{Comparing the |Num| class hierarchy with the book's hierarchy.}
   \label{fig:CompNum}
 \end{figure}
-\pj{Somewhere: insert |Num| comparison: \cref{fig:CompNum}}
-\pj{Explain \cref{fig:CompNum}}
 \pj{Fix the figure to indicate that |AddGroup| includes |Additive| and |MulGroup| includes |Multiplicative|.}
 
 
 We note right away that one can have a multiplicative group structure
-as well, whose inverse is called the reciprocal (traditionally
-abbreviated as |recip| in Haskell).
+as well, whose inverse is called the reciprocal (abbreviated as
+|recip| in Haskell).
 %
 With that in place, division can be defined is terms of multiplication
 and reciprocal.
@@ -286,8 +285,7 @@ class Multiplicative a => MulGroup a where
 a / b = a * recip b
 \end{code}
 \end{joincode}
-Often the multiplicative group is added to a |Ring|, and one has a |Field|:
-\label{sec:fields-defintion}
+Often the multiplicative group structure is added to a |Ring|, and one has a |Field|:\label{sec:fields-defintion}
 \begin{code}
 type Field a = (Ring a, MulGroup a)
 \end{code}
@@ -295,6 +293,13 @@ For fields, the reciprocal is not defined at |0|.
 %
 We will not capture this precondition in types: it would cause too
 much notational awkwardness.
+%
+Example instance of |Field| are |QQ| and |REAL|.
+%
+
+\cref{fig:CompNum} provides a graphical illustration of some of the
+relations between the Haskell |Num| class hierarchy and the
+corresponding numerical classes we use in this book.
 
 \section{Homomorphisms}
 The Wikipedia definition of homomorphism states that ``A homomorphism
@@ -409,15 +414,14 @@ right the belong to |(B, unitB, opB)|.
 \end{example}
 
 \begin{example}
-  Hence, the function |exp| is a monoid homomorphism from (|Real|,0,+)
+  Hence, the function |exp| is a monoid homomorphism from (|REAL|,0,+)
   to (|RPos|,1,*).
   \begin{spec}
   exp  :  REAL  ->  RPos
   exp  0        =   1                 --  \(e^0 = 1\)
   exp  (a + b)  =   exp a  *  exp b   --  \(e^{a+b} = e^a e^b\)
   \end{spec}
-\end{example}
-%
+\end{example}%
 In the above example, we have simply checked the homomorphism
 conditions for the exponential function.
 %
@@ -635,7 +639,7 @@ This information loss could make it difficult to define the helper functions |ev
 etc.\ because they only get to work on the small range.
 %
 Still, in this case we are lucky: we can use the ``parity rules''
-taught in elementary school: even plus even is even, etc.
+taught in elementary school: even + even is even, etc.
 %
 In code we simply get:\footnote{A perhaps more natural alternative would be to taken |odd| instead of |even| as the homomorphism. You can try it out as an exercise.}
 %
@@ -1094,7 +1098,7 @@ algebra for |Ring|.
 
 \subsection{Free Structures}
 
-Another useful way of constructing type is through ``free structures''.
+Another useful way of constructing types is through ``free structures''.
 %
 They are similar to initial structures, but they also allow to embed
 an arbitrary set of \emph{generators} |G|.
@@ -1387,7 +1391,7 @@ example = embed 1 `op` embed 10 `op` unit `op` embed 11
 \end{code}
 
 \begin{exercise}
-  Show that |Free Ring ()| is in bijection with |FunExp|.
+  Show that |Free Ring ()| covers most of the type |FunExp|.
 \pj{Which version of |FunExp|? Surely not the one with |Sin|, |Cos|, |Exp|.}
 \end{exercise}
 
@@ -1396,7 +1400,7 @@ example = embed 1 `op` embed 10 `op` unit `op` embed 11
 \label{sec:evalD}
 %
 As discussed in \cref{sec:OneVarExp-class}, it can sometimes be
-economical to use the |OneVarExp a => a| representation rather than
+good to use the representation |OneVarExp a => a| rather than
 the |FunExp| data type.
 %
 However, in \cref{sec:computingDerivatives} we argued that the rules
@@ -1452,7 +1456,7 @@ Let us consider the |Exp| case:
      exp f * f'
 \end{spec}
 Thus, given \emph{only} the derivative |f' = eval' e|, it is
-impossible to compute |eval' (Exp e)|.
+not possible to compute |eval' (Exp e)|.
 %
 Another example of the problem is |derive (f :*: g)| where the
 result involves not only |derive f| and |derive g|, but also |f| and
@@ -1684,31 +1688,19 @@ Hint: Something very similar can be used for Assignment 2.
 
 \section{Summary}
 
-The following correspondence table summarises the discussion so far:
-\pj{Merge table + jp comment into a few sentences}
-\begin{center}
-\begin{tabular}{ll}
-      Computer Science      &   Mathematics
-\\\hline
-\\    DSL                   &   structure (category, algebra, ...)
-\\    deep embedding, abstract syntax        &   initial algebra
-\\    shallow embedding     &   any other algebra
-\\    semantics             &   homomorphism from the initial algebra
-\end{tabular}
-\end{center}
-\jp{I disagree with this table.
-
-  1. Initial algebras can be constructed without reference to data types (|Class a => a|)
-
-  2. Shallow embeddings can be initial algebras (|Class a => x -> a| is an initial algebra of |Class| + unit generator.)
-
-  3. We saw that homomorphisms are not necessarily judicious semantics.
-
-  4. And isn't a DSL akin to a mathematical domain?
-}
-The underlying theory of this table is a fascinating topic but mostly
-out of scope for this \course{}.
+In this chapter we have compared and contrasted a number of
+mathematical concepts and their computer science representations or
+alternative interpretations.
 %
+Mathematical structures can often be use to capture the core of a DSL,
+initial algebras can be used (with |data|-types) for abstract syntax
+(deep embeddings) but can also be constructed with type classes
+(|Class a => a|) without reference to concrete |data|.
+%
+Other algebras capture different shallow embeddings, and semantics
+(the semantic function |eval|) is normally a homomorphism from the
+initial algebra.
+
 %if lectureNotes
 See
 \href{http://wiki.portal.chalmers.se/cse/pmwiki.php/CTFP14/CoursePlan}{Category
@@ -1833,5 +1825,237 @@ upcoming chapters we will expose right here their co-algebraic
 structure.
 
 %include AbstractStream.lhs
+
+\section{A solved exercise}
+\label{exc:findFunExp0}
+
+We have seen three different ways to use a generic |f :: Transcendental a =>
+a -> a| to compute the derivative at some point (say, at 2.0, |f' 2|):
+%
+\begin{itemize}
+\item fully symbolic (using |FunExp|),
+\item using pairs of functions (|FD|),
+\item or just pairs of values.
+\end{itemize}
+
+Given the following definition of |f|, compute |f' 2|.
+
+\begin{code}
+f :: Transcendental a => a -> a
+f x = sin x + 2 * x
+\end{code}
+%
+(So, we have: |f 0 = 0|, |f 2 = 4.909297426825682|, etc.)
+
+\begin{solution}
+
+\begin{enumerate}
+\item Using |FunExp|
+
+Recall expressions (or functions) of one variables, from \cref{sec:FunExp}:
+%
+\begin{spec}
+data FunExp  =  Const Rational
+             |  X
+             |  FunExp :+: FunExp
+             |  FunExp :*: FunExp
+             |  FunExp :/: FunExp
+             |  Exp FunExp
+             |  Sin FunExp
+             |  Cos FunExp
+                -- and so on
+  deriving (Eq, Show)
+\end{spec}
+%
+What is the expression |e| for which |f = eval e|?
+
+We have
+%
+\begin{spec}
+        eval e x = f x
+<=>     eval e x = sin x + 2 * x
+<=>     eval e x = eval (Sin X) x + eval (Const 2 :*: X) x
+<=>     eval e x = eval ((Sin X) :+: (Const 2 :*: X)) x
+<==     e = Sin X :+: (Const 2 :*: X)
+\end{spec}
+%
+Finally, we can apply |derive| and obtain
+%
+\begin{code}
+e = Sin X :+: (Const 2 :*: X)
+f' 2 = evalFunExp (derive e) 2
+\end{code}
+%
+This can hardly be called ``automatic'', look at all the work we did in
+deducing |e|!\jp{But |f| was provided syntactically anyway?}
+%
+However, consider this definition:
+%
+\begin{code}
+e2 :: FunExp
+e2 = f X
+\end{code}
+%
+As |X :: FunExp|, the Haskell interpreter will look for |FunExp| instances of |Num|
+and other numeric classes and build the syntax tree for |f| instead of computing its
+semantic value.
+%
+
+In general, to find the derivative of a function |f :: Transcendental a => a -> a|, we can use
+%
+\begin{code}
+drv f = evalFunExp (derive (f X))
+\end{code}
+\jp{|derive| was defined in \cref{sec:derive}}
+\item Using |FD| (pairs of functions)
+
+Recall
+%
+\begin{code}
+type FD a = (a -> a, a -> a)
+
+applyFD x (f, g) = (f x, g x)
+\end{code}
+%
+The operations (the numeric type class instances) on |FD a| are such that, if |eval e = f|, then
+%
+\begin{spec}
+(eval e, eval' e) = (f, f')
+\end{spec}
+%
+We are looking for |(g, g')| such that
+%
+\begin{spec}
+f (g, g') = (f, f')   -- (*)
+\end{spec}
+%
+so we can then do
+%
+\begin{spec}
+f' 2 = snd (applyFD 2 (f (g, g')))
+\end{spec}
+%
+We can fullfill (*) if we can find a pair |(g, g')| that is a sort of
+``unit'' for |FD a|:
+%
+\begin{spec}
+sin (g, g') = (sin, cos)
+exp (g, g') = (exp, exp)
+\end{spec}
+%
+and so on.
+
+In general, the chain rule gives us
+%
+\begin{spec}
+f (g, g') = (f . g, (f' . g) * g')
+\end{spec}
+%
+Therefore, we need: |g = id| and |g' = const 1|.
+
+Finally
+%
+\begin{spec}
+f' 2 = snd (applyFD 2 (f (id, const 1)))
+\end{spec}
+%
+In general
+%
+\begin{code}
+drvFD f x = snd (applyFD x (f (id, const 1)))
+\end{code}
+%
+computes the derivative of |f| at |x|.
+%
+\begin{code}
+f1 :: FD Double -> FD Double
+f1  = f
+\end{code}
+
+\item Using pairs.
+
+We have |instance Transcendental a => Transcendental (a, a)|, moreover, the
+instance declaration looks exactly the same as that for |FD a|:
+%
+\begin{spec}
+instance Transcendental a => Transcendental (FD a) where  -- pairs of functions
+  exp (f, f')       =  (exp f, (exp f) * f')
+  sin (f, f')       =  (sin f, (cos f) * f')
+  cos (f, f')       =  (cos f, -(sin f) * f')
+
+instance Transcendental a => Transcendental (a, a) where  -- just pairs
+  exp (f, f')       =  (exp f,  (exp f) * f')
+  sin (f, f')       =  (sin f,   cos f  * f')
+  cos (f, f')       =  (cos f, -(sin f) * f')
+\end{spec}
+%
+In fact, the latter (just pairs) represents a generalisation\jp{Isn't it equivalent? (The isomorphism is |c -> (a,b)| iso. |(c -> b, c -> b)|)} of the former (pairs of functions).
+%
+To see this, note that if we have a |Transcendental| instance for some |A|,
+we get a floating instance for |x->A| for all |x| from the module |FunNumInst|\jp{What is this module? Was it ever introduced?}.
+%
+Then from the instance for pairs we get an instance for any type of
+the form |(x->A, x->A)|.
+%
+As a special case when |x=A| this includes all |(A->A, A->A)| which is
+|FD A|.
+%
+Thus it is enough to have |FunNumInst| and the pair instance to get
+the ``pairs of functions'' instance (and more).
+
+The pair instance is also the ``maximally general'' such
+generalisation.
+
+Still, we need to use this machinery.\jp{Use it for what? I never know what the goal was?}
+%
+We are now looking for a pair of values |(g, g')| such that
+%
+\begin{spec}
+f (g, g') = (f 2, f' 2)
+\end{spec}
+%
+In general
+%
+\begin{spec}
+f (g, g') = (f g, (f' g) * g')
+\end{spec}
+%
+Therefore
+%
+\begin{spec}
+      f (g, g') = (f 2, f' 2)
+
+<=>   (f g, (f' g) * g') = (f 2, f' 2)
+<==   g = 2, g' = 1
+\end{spec}
+%
+Introducing
+%
+\begin{code}
+var x = (x, 1)
+\end{code}
+%
+we can, as in the case of |FD|, simplify matters a little:
+%
+\begin{spec}
+f' x = snd (f (var x))
+\end{spec}
+%
+In general
+%
+\begin{code}
+drvP f x  =  snd (f (x, 1))
+\end{code}
+%
+computes the derivative of |f| at |x|.
+%
+\begin{code}
+f2 :: (Double, Double) -> (Double, Double)
+f2  = f
+\end{code}
+
+\end{enumerate}
+\end{solution}
+
 
 %include E4.lhs
