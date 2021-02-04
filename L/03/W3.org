@@ -1,0 +1,30 @@
+* Week 3, Lecture 2, admin
+** A1 = Assignment 1
++ hand-in was on Tuesday,
++ Q&A session on Monday ("oral examination")
+  Main goal: ensure that all lab group participants have been active
+  and understand the submitted solution.
++ Schedule: each group (one participant) books a slot
++ There will be one Zoom meeting ongoing, with a waiting room. Please
+  connect 5min before your slot and make sure all your group members
+  are also ready.
++ We reuse the "Tuesday lecture" Zoom link for this [link and password
+  in canvas].
+** A2 = Assignment 2
++ Uppgiften är upplagd i Canvas (sedan i måndags)
++ Ett av kursens lärmål (under "Värderingsförmåga och förhållningssätt") är:
+  *diskutera och jämföra olika implementationer av matematiska begrepp*
++ Vi har styrd gruppindelning här - *inte samma som för A1*.
++ Vi vet att det kan innebära vissa utmaningar med att få kontakt,
+  "sätta igång" arbetet och "schemalägga" gemensamma arbetsmöten.
++ Därför vill be be er alla att (individuellt) senast måndag kväll
+  (*2021-02-08*) fylla i en "enkät" (Quiz) via canvas med några korta
+  frågor som visar att ni vet vilka vi ska jobba med, hur ni håller
+  kontakt (kanske Canvas, eller Messenger, eller discord, eller Zoom,
+  eller ...), hur ni planerar "träffas", etc.
+
+* Lecture "slides" (Jamboard)
++ Partial derivatives
++ Lagrange Eq's
++ Lagrange example
+* [[file:Live_3_2_2021.lhs::Week & chapter 3: Types in mathematics][Live coding]]
