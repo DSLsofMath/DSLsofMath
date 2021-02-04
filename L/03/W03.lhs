@@ -1553,7 +1553,7 @@ derive (Exp e) = Exp e :*: derive e
 
 Similarly, we obtain
 %
-\begin{joincode}
+\begin{joincode}%
 \begin{code}
 derive     (Const alpha)  =  Const 0
 derive     X              =  Const 1

@@ -107,12 +107,12 @@
     and Function} (page 182):
 
    \begin{quote}
-     In these cases one tries to find not the values of |x| which
-     make a given function |y = f(x)| a minimum, but the values of a given
-     function |f(x)| which make a given quantity a minimum.  Typically,
+     In these cases one tries to find not the values of \(x\) which
+     make a given function \(y = f(x)\) a minimum, but the values of a given
+     function \(f(x)\) which make a given quantity a minimum.  Typically,
      that quantity is usually measured by an integral whose integrand is
-     some expression |F| involving both |x|, values of the function |y =
-     f(x)| at interest and the values of its derivatives - say an
+     some expression \(F\) involving both \(x\), values of the function \(y =
+     f(x)\) at interest and the values of its derivatives -- say an
      integral
 %
      \[∫_a^b F(y, y', x)dx,\quad y = f(x).\]
