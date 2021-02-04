@@ -42,20 +42,26 @@ above.
 % a*b  :  (map (a*) bs) + as*q) =
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise}\label{exc:evalLSpec}
 
-  Show (by induction) that the evaluation function |evalL| gives the
-  same result as the formula \[P(x) = a_n x^n + a_{n-1} x^{n - 1} +
-  \cdots + a_1 x + a_0\].
-
+  Show (by induction) that the evaluation function |evalL| (from page
+  \pageref{def:evalL}) gives the same result as the formula
+  \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\] from
+  the quote on that same page.
 \end{exercise}
 
-\begin{exercise}
-  Prove that, with the definition of |x = [0, 1]| we really have
+\begin{exercise}\label{exc:polySpecList}
+  Prove that, with the definitions |x = [0, 1]| and |as = [a0, a1,
+  ..., an]|, we really have
 %
+%{
+%format .* = "\mathbin{\cdot}"
   \begin{spec}
-    as = a0 + a1 * x + a2 * x^2 + ... + an * x^n
+    as = a0 .* x^0 + a1 .* x^1 + a2 .* x^2 + ... + an .* x^n
   \end{spec}
+  where |(+)| is addition of coefficient lists and |(.*)| is an infix version of
+  |scaleList|.
+%}
 \end{exercise}
 
 \begin{exercise}\label{ex:chebyshev}\textbf{Chebyshev polynomials.}
@@ -112,7 +118,7 @@ To prove this, here are a few hints:
   % blackboard/W5/20170213_114418.jpg
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise}\label{exc:Poly'}
   What are the ring operations on |Poly' A| where
 %
   \begin{spec}
@@ -127,12 +133,13 @@ Prove the |degree| law
 \end{spec}
 for polynomials.
 \end{exercise}
-\begin{exercise}
+
+\begin{exercise}\label{exc:degreeMonoidHomomorphism}
 Check all the |Monoid| and homomorphism properties in this claim:
 ``|degree| is a monoid homomorphism from |(Poly a, 1, *)| to |(Maybe Nat, Just 0, opMaybe)|''.
 \end{exercise}
-\begin{exercise}
 
+\begin{exercise}
   The helper function |mapPoly :: (a->b) -> (Poly a -> Poly b)| that
   was used in the implementation of |polyNeg| is a close relative of
   the usual |map :: (a->b) -> ([a] -> [b])|.
@@ -148,7 +155,6 @@ class Functor f where
   Chapter 1 and for |Rat| from Chapter 2.
 
   Is |fmap f| a homomorphism?
-
 \end{exercise}
 
 \begin{exercise}

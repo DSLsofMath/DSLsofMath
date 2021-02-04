@@ -71,6 +71,7 @@ counting up).
 %
 Then the evaluation function is:
 %
+\label{def:evalL}
 \begin{spec}
 evalL ::  [REAL] ->  REAL  ->  REAL
 evalL     []         x     =   0
@@ -82,9 +83,8 @@ and thus identify |[REAL]| as the type for the (abstract) syntax (for
 polynomials) and |(REAL -> REAL)| as the type of the semantics (for
 polynomial functions).
 %
-\begin{exercise}
-Show that this evaluation function gives the same result as the formula above.
-\end{exercise}
+Exercise~\ref{exc:evalLSpec}: Show that this evaluation function gives
+the same result as the formula above.
 
 Using the |Ring| instance for functions we can rewrite |eval| into a
 one-argument function (returning a polynomial function):
@@ -98,6 +98,7 @@ evalL (a:as)  = const a  +  id * evalL as
 As an example, the polynomial which is usually written just |x| is
 represented by the list |[0, 1]| and the polynomial function |\x -> x^2-1| is
 represented by the list |[-1,0,1]|.
+
 
 It is worth noting that the definition of what we call a ``polynomial
 function'' is semantic, not syntactic.
@@ -119,11 +120,10 @@ not look like a sum of powers:
 And yet, it can be shown that \(T_n\) is a polynomial function of
 degree |n| (on the interval |[-1,1]|).
 %
-(Exercise~\ref{ex:chebyshev} guides you to a proof.
+Exercise~\ref{ex:chebyshev} guides you to a proof.
 %
 At this point you could just compute \(T_0\), \(T_1\), and \(T_2\) by
 hand to get a feeling for how it works.
-)
 
 % TODO: perhaps talk about an alternative, recursive, definition of polynomial function, closer to the implementation of |eval| blackboard/W5/20170213_114415.jpg
 
@@ -317,25 +317,20 @@ function'' for its semanics (the function |evalPoly as : A -> A|).
 \textbf{Caveat:} The canonical representation of polynomials in
 algebra does not use finite lists, but the equivalent
 
-\begin{quote}
-  \begin{spec}
-    Poly' A = { a : ℕ → A | {- |a| has only a finite number of non-zero values -} }
-  \end{spec}
-\end{quote}
+\begin{spec}
+  Poly' A = { a : ℕ → A | {- |a| has only a finite number of non-zero values -} }
+\end{spec}
 
-\begin{exercise}
-  What are the ring operations on |Poly' A|?
-  %
-  Hint: they are not all the same as the operations on arbitrary functions
-  |X -> A|.
-\end{exercise}
-
+Exercise~\ref{exc:Poly'}: What are the ring operations on |Poly' A|?
 %
 For example, here is the specification of addition:
 %
 \begin{spec}
   a + b = c  <=>  Forall (n : ℕ) (a n + b n = c n)
 \end{spec}
+%
+Hint: they are not all the same as the operations on arbitrary
+functions |X -> A|.
 
 Remark: Using functions from |ℕ| in the definition has certain
 technical advantages over using finite lists.
@@ -353,8 +348,9 @@ The formula for the |ci| must now be given via a case distinction:
 since |bi| does not exist for values greater than |m|.
 
 Compare this with the above formula for functions from |ℕ|, where no case
-distinction necessary.  The advantage is even clearer in the case of
-multiplication.
+distinction necessary.
+%
+The advantage is even clearer in the case of multiplication.
 
 \textbf{Observations:}
 
@@ -414,13 +410,15 @@ x = Poly [0,1]
 
 Then for any polynomial |as = Poly [a0, a1, ..., an]| we have
 
-\begin{spec}
-as = a0 + a1 * x + a2 * x^2 + ... + an * x^n
-\end{spec}
-
-\begin{exercise}
-Prove the above equality.
-\end{exercise}
+%{
+%format .* = "\mathbin{\cdot}"
+  \begin{spec}
+    as = a0 .* x^0 + a1 .* x^1 + a2 .* x^2 + ... + an .* x^n
+  \end{spec}
+  where |(+)| is addition of coefficient lists and |(.*)| is an infix version of
+  |scaleList|.
+%}
+Exercise~\ref{exc:polySpecList}: Prove the above equality.
 
 This equality justifies the standard notation
 
@@ -571,9 +569,8 @@ opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
 Thus, to sum up, |degree| is a monoid homomorphism from |(Poly a, 1,
 *)| to |(Maybe Nat, Just 0, opMaybe)|.
 
-\begin{exercise}
-Check all the Monoid and homomorphism properties.
-\end{exercise}
+Exercise~\ref{exc:degreeMonoidHomomorphism}: Check all the Monoid and
+homomorphism properties.
 
 \section{Power Series}
 \label{sec:power-series}
