@@ -11,7 +11,13 @@ data E2 a  =  Con a
   deriving(Eq, Show)
 \end{code}
 %
-The type has now been parametrized, so that it is no longer limited to representing expressions with integers, but can instead represent expressions with any type. For instance, we could have an |E2 Double| to represent expressions with doubles, or an |E2 ComplexD| to represent expressions with complex numbers.
+The type has now been parametrized, so that it is no longer limited to
+representing expressions with integers, but can instead represent
+expressions with any type.
+%
+For instance, we could have an |E2 Double| to represent expressions
+with doubles, or an |E2 ComplexD| to represent expressions with
+complex numbers.
 %
 \begin{enumerate}
 %

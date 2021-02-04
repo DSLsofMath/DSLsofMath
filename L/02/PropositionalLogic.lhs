@@ -590,11 +590,12 @@ False|:
 \begin{code}
 type Not p = p `Implies` False
 \end{code}
-The intuition behind this definition is the principle of proof by contradiction: if assuming |p| leads to a contradition (|False|),
-then |p| must be false; so |Not p| should hold.
+The intuition behind this definition is the principle of proof by
+contradiction: if assuming |p| leads to a contradition (|False|), then
+|p| must be false; so |Not p| should hold.
 
-When doing this kind of definition, one gives up on |notElim|: there is no way to eliminate
-(double) negation.
+When doing this kind of definition, one gives up on |notElim|: there
+is no way to eliminate (double) negation.
 \begin{code}
 notElim = error "not possible as such in intuitionistic logic"
 \end{code}
@@ -611,29 +612,34 @@ notIntro (evPimpQ, evPimpNotQ) = implyIntro $ \evP ->
 % $ -- resync emacs mode parser
 \label{sec:curry-howard}
 By focusing on intuitionistic logic, we can give a \emph{typed}
-representation for each of the formula constructors. Let us consider
-implication first.  The proof rules |impIntro| and |impElim| seem to
-be conversion from and to functions, and so it should be clear that
-the representation of the implication formula is a function:
-
+representation for each of the formula constructors.
+%
+Let us consider implication first.
+%
+The proof rules |impIntro| and |impElim| seem to be conversion from
+and to functions, and so it should be clear that the representation of
+the implication formula is a function:
+%
 \begin{code}
 type Implies p q = p -> q
 implyElim   f = f
 implyIntro  f = f
 \end{code}
-
+%
 Conjunction is represented as pairs; that is, if |p : P| and |q : Q|
-then the proof of |And P Q| should be a pair of |p| and |q|. The
-elimination rules are projections. In code:
+then the proof of |And P Q| should be a pair of |p| and |q|.
+%
+The elimination rules are projections.
+%
+In code:
 \begin{code}
 type And p q = (p,q)
 andIntro t u = (t,u)
 andElimL  = fst
 andElimR  = snd
 \end{code}
-Similarly, disjuction is represented as |Either|:
-if |p : P| then |Left p : Or P Q| and if |q : Q| then |Right q : Or P
-Q|.
+Similarly, disjuction is represented as |Either|: if |p : P| then
+|Left p : Or P Q| and if |q : Q| then |Right q : Or P Q|.
 \begin{code}
 type Or a b = Either a b
 orIntroL  = Left
@@ -667,17 +673,29 @@ fragment is called the simply-typed lambda calculus (STLC) with sum and products
 
 \paragraph{The law of the excluded middle}
 \label{sec:excluded-middle}
-As an example of how intuitionism twists usual law, consider the law of the excluded middle,
-which states that, for any proposition |P|, either |P| or |Not P| holds. For example, either
-it rains or it does not rain. There is no ``middle ground''.
-If we attempt to prove |Or P (Not P)| in intuitionitic logic, we quickly find ourselves in a dead end.
-Clearly, we cannot prove |P| for any |P|. Likewise |Not P|, or equivalently |P -> False| cannot be deduced.
+As an example of how intuitionism twists usual law, consider the law
+of the excluded middle, which states that, for any proposition |P|,
+either |P| or |Not P| holds.
+%
+For example, either it rains or it does not rain.
+%
+There is no ``middle ground''.
+%
+If we attempt to prove |Or P (Not P)| in intuitionitic logic, we
+quickly find ourselves in a dead end.
+%
+Clearly, we cannot prove |P| for any |P|.
+%
+Likewise |Not P|, or equivalently |P -> False| cannot be deduced.
 
 What we have to do is to account for the fact that we cannot use
 negation elimination, and so we have to make-do with proving |Not (Not
-Q)| instead of~|Q|. This is exactly what we have to do to (almost)
-prove the law of excluded middle.  We can then provide this
-Haskell-encoded proof:
+Q)| instead of~|Q|.
+%
+This is exactly what we have to do to (almost) prove the law of
+excluded middle.
+%
+We can then provide this Haskell-encoded proof:
 
 \begin{code}
 excludedMiddle :: Not (Not (p `Or` Not p)) -- to prove this, we can ...
@@ -759,11 +777,16 @@ languages, with various levels of expressivity and features.
 Before moving on to our next topic, we make a final remark on |And| and |Or|.
 %
 Most of the properties of |And| have corresponding properties for
-|Or|.  This can be explained one way by observing that they are de
-Morgan duals. Another explanation is that one can swap the direction
-of the arrows in the types of the the role between introduction and
-elimination. (Using our presentation, doing so requires applying
-isomorphisms.)
+|Or|.
+%
+This can be explained one way by observing that they are de Morgan
+duals.
+%
+Another explanation is that one can swap the direction of the arrows
+in the types of the the role between introduction and
+elimination.
+%
+(Using our presentation, doing so requires applying isomorphisms.)
 
 %
 %

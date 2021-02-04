@@ -394,6 +394,8 @@ In the evaluator for |MVExp| we take this idea one step further: given an
 environment |env| and the syntax of an arithmetic expression |e| we
 compute the value of that expression.
 %
+\pj{It would look better with |Integer| replaced by |ZZ|.}
+%
 Hence, the semantics of |MVExp| is a function of type |Env String Integer
 -> Maybe Integer|.
 %
@@ -432,7 +434,7 @@ mayT _        _         =  Nothing
 % \end{code}
 
 The approach taken above is to use a |String| to name each variable:
-indeed, |Env String REAL| is like a table of several variables and their values.
+indeed, |Env String Integer| is like a table of several variables and their values.
 %
 % However, in other situations, it is better to refer to variables by
 % position.
@@ -513,18 +515,17 @@ argument.
 To be more explicit we write |phi x h = frac (f(x+h) - f x) h| and take
 the limit of |phi x| at 0.
 %
-So, to sum up, |D f x = lim (phi x) 0|.
+So, to sum up, |D f x = lim 0 (phi x)|.
 %
 \footnote{We could go one step further by noting that |f| is in the scope of |phi| and used in its definition.
 %
 Thus the function |psi f x h = phi x h|, or |psi f = phi|, is used.
 %
-With this notation, and |limAt x f = lim f x|, we obtain a point-free
-definition that can come in handy:
+With this notation we obtain a point-free definition that can come in
+handy:
 %
-|D f = limAt 0 . psi f|.}
-\jp{But in chapter 2 lim was a predicate? Check.}
-\pj{Perhaps also make |limAt| the name and arg. order from the start.}
+|D f = lim 0 . psi f|.}%
+%
 The key here is that we name, type, and specify the operation of
 computing the derivative (of a one-argument function).
 %
@@ -633,15 +634,14 @@ That function, which we can name |phi|, has the type |phi : U ->
 phi (x, y) h = (f (x + h, y) - f (x, y)) / h
 \end{spec}
 %
-The limit is then written |lim (phi (x, y)) 0|.
+The limit is then written |lim 0 (phi (x, y))|.
 %
 Note that |0| is a limit point of |ℝ-{0}|, so the type of |lim| is the
 one we have discussed:
 %
 \begin{spec}
-lim : (X -> ℝ) -> {p | p ∈ ℝ, Limp p X } -> ℝ
+lim : {p | p ∈ ℝ, Limp p X } -> (X -> ℝ) -> ℝ
 \end{spec}
-\pj{If |lim| is changed to |limAt| this use also needs to swap arg. order.}
 
 On line 1, |z = f (x, y)| probably does not mean that we let |z| be a
 fixed value in |ℝ|, although the phrase ``the quantity |z|'' (on line

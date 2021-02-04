@@ -4,15 +4,18 @@
 \end{code}
 
 %
-Our second DSL is that of \emph{First Order Logic\lnOnly{\footnote{Swedish: Första ordningens logik = predikatlogik}}},
-or FOL for short, and also known as Predicate Logic.
+Our second DSL is that of \emph{First Order
+  Logic\lnOnly{\footnote{Swedish: Första ordningens logik =
+      predikatlogik}}}, or FOL for short, and also known as Predicate
+Logic.
 
 %TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
 
 Compared to propositional logic, the main addition is
-\emph{quantification over individuals}. Additionally, one adds a
-language of terms --- its semantic domain being the individuals which
-we quantify over.
+\emph{quantification over individuals}.
+%
+Additionally, one adds a language of terms --- its semantic domain
+being the individuals which we quantify over.
 
 Let us study terms first.
 %

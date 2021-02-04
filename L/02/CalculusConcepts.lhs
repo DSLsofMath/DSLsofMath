@@ -301,7 +301,8 @@ limit of a function of type |REAL -> REAL| from
 \begin{quote}
   \textbf{A formal definition of limit}
 
-  We say that \(f(x)\) \textbf{approaches the limit} \(L\) as \(x\) \textbf{approaches} \(a\), and we write
+  We say that \(f(x)\) \textbf{approaches the limit} \(L\) as \(x\)
+  \textbf{approaches} \(a\), and we write
 
   \[\lim_{x\to a} f(x) = L,\]
 
@@ -321,21 +322,22 @@ The |lim| notation has four components: a variable name |x|, a point
 %
 The variable name and the expression can be combined into just the
 function |f|\jp{This is explained in \cref{sec:functions-and-scoping}}
-and this leaves us with three essential components: |f|,
-|a|, and |L|.
+and this leaves us with three essential components: |a|, |f|, and |L|.
 %
 Thus, |lim| can be seen as a ternary (3-argument) predicate which is
 satisfied if the limit of |f| exists at |a| and equals |L|.
 %
-If we apply our logic toolbox we can define |lim| starting something like this:
+If we apply our logic toolbox we can define |lim| starting something
+like this:
 %
 \begin{spec}
-lim f a L  =  Forall (epsilon > 0) (Exists (delta > 0) (P epsilon delta))
+lim a f L  =  Forall (epsilon > 0) (Exists (delta > 0) (P epsilon delta))
 \end{spec}
 %
 when |P| is a predicate yet to define.
-Indeed, it is often useful to introduce a local name (like |P| here) to help
-break the definition down into more manageable parts.
+%
+Indeed, it is often useful to introduce a local name (like |P| here)
+to help break the definition down into more manageable parts.
 %
 If we now naively translate the last part we get this ``definition''
 for |P|:
@@ -344,7 +346,7 @@ for |P|:
 {-"\quad"-}  where  P epsilon delta = (0 < absBar (x - a) < delta) => (x `elem` Dom f  && absBar (f x - L) < epsilon))
 \end{spec}
 %
-Note that there is a scoping problem: we have |f|, |a|, and |L| from
+Note that there is a scoping problem: we have |a|, |f|, and |L| from
 the ``call'' to |lim| and we have |epsilon| and |delta| from the two
 quantifiers, but where did |x| come from?
 %
@@ -359,10 +361,10 @@ lim a f L  =  Forall (epsilon > 0) (Exists (delta > 0) (Forall x (P epsilon delt
 \end{spec}
 %
 The predicate |lim| can be shown to be a partial function of two
-arguments, |f| and |a|.
+arguments, |a| and |f|.
 %
-This means that each function |f| can have \emph{at most} one limit
-|L| at a point |a|.
+This means that at a point |a| each function |f| can have \emph{at
+  most} one limit |L|.
 %
 (This is not evident from the definition and proving it is a good
 exercise.)
