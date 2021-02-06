@@ -1439,7 +1439,7 @@ In a diagram:
 \end{tikzcd}
 
 %
-Let us consider the |Exp| case:
+Let us consider the |Exp| case (the |eval'Exp|-lemma):
 %
 \begin{spec}
      eval' (Exp e)                      =  {- def. |eval'|, function composition -}
@@ -1492,7 +1492,7 @@ Exercise~\ref{exc:tuplingE1} in case you have not done so already.)
 \begin{code}
 type FD a = (a -> a, a -> a)
 
-evalD ::  FunExp  ->  FD Double
+evalD ::  FunExp  ->  FD REAL
 evalD     e       =   (eval e, eval' e)
 \end{code}
 %
@@ -1504,9 +1504,9 @@ We compute, for example:
 \begin{spec}
      evalD (Exp e)                           =  {- specification of |evalD| -}
 
-     (eval (Exp e), eval' (Exp e))           =  {- def. |eval| for |Exp| and reusing the computation above -}
+     (eval (Exp e), eval' (Exp e))           =  {- def. |eval| for |Exp| + |eval'Exp|-lemma -}
 
-     (exp (eval e), exp (eval e) * eval' e)  =  {- introduce names for subexpressions -}
+     (exp (eval e), exp (eval e) * eval' e)  =  {- introduce local names -}
 
      let  f   = eval e
           f'  = eval' e
@@ -1519,7 +1519,7 @@ We compute, for example:
 This semantics \emph{is} compositional and the |Exp| case is as follows:
 %
 \begin{code}
-evalDExp ::  FD Double  ->  FD Double
+evalDExp ::  FD REAL  ->  FD REAL
 evalDExp     (f, f')  =   (exp f, exp f * f')
 \end{code}
 
@@ -1539,15 +1539,21 @@ computation of functions and derivatives, using the numerical type
 classes.
 %
 \begin{code}
-instance Additive a => Additive (a -> a, a -> a) where
-  zero = (const zero, const zero)
-  (f, f')  +  (g, g')  =  (f  +  g,  f'      +  g'      )
+instance Additive a                      => Additive (FD a)        where
+  zero  = zeroFD;  (+)  = addFD
+instance (Additive a, Multiplicative a)  => Multiplicative (FD a)  where
+  one   = oneFD;   (*)  = mulFD
 
-oneFD :: (Additive a, Multiplicative a) => FD a
-oneFD = (const one, const zero)
-instance (Additive a, Multiplicative a) => Multiplicative (a -> a, a -> a) where
-  one = oneFD
-  (f, f')  *  (g, g')  =  (f  *  g,  f' * g  +  f * g'  )
+zeroFD  ::    Additive a                     => FD a
+oneFD   :: (  Additive a, Multiplicative a)  => FD a
+zeroFD  = (const zero,  const zero)
+oneFD   = (const one,   const zero)
+
+addFD   ::    Additive a                     => Dup a -> Dup a -> Dup a
+mulFD   :: (  Additive a, Multiplicative a)  => Dup a -> Dup a -> Dup a
+
+addFD  (f, f') (g, g')  =  (f  +  g,  f'      +       g'  )
+mulFD  (f, f') (g, g')  =  (f  *  g,  f' * g  +  f *  g'  )
 \end{code}
 %
 \begin{exercise}
@@ -1715,9 +1721,9 @@ See
 Homomorphisms are key to describe mathematical structure, specify
 programs, and derive of correct programs.
 %
-The relation |h : S1 -> S2| (standing for for ``h is an isomorphism
-from |S1| to |S2|''), can be used in many ways, depending on what is
-known and what is unknown.
+The relation |h : S1 -> S2| (standing for ``h is a homomorphism from
+|S1| to |S2|''), can be used in many ways, depending on what is known
+and what is unknown.
 
 \begin{itemize}
 \item |?? : S1 -> S2|.
@@ -1898,9 +1904,9 @@ fe :: FunExp
 fe = f X
 \end{code}
 %
-As |X :: FunExp|, the Haskell interpreter will look for |FunExp| instances of |Num|
-and other numeric classes and build the syntax tree for |f| instead of computing its
-semantic value.
+As |X :: FunExp|, the Haskell interpreter will look for |FunExp|
+instances of |Additive| and other numeric classes and build the syntax
+tree for |f| instead of computing its semantic value.
 %
 
 In general, to find the derivative of a function |f :: Transcendental a => a -> a|, we can use
@@ -1970,7 +1976,7 @@ drvFD f x = snd (applyFD x (f (id, const 1)))
 computes the derivative of |f| at |x|.
 %
 \begin{code}
-f1 :: FD Double -> FD Double
+f1 :: FD REAL -> FD REAL
 f1  = f
 \end{code}
 
@@ -1983,18 +1989,20 @@ instance declaration looks exactly the same as that for |FD a|:
 instance Transcendental a => Transcendental (FD a) where  -- pairs of functions
   exp (f, f')       =  (exp f, (exp f) * f')
   sin (f, f')       =  (sin f, (cos f) * f')
-  cos (f, f')       =  (cos f, -(sin f) * f')
+  -- ...
 
 instance Transcendental a => Transcendental (a, a) where  -- just pairs
-  exp (f, f')       =  (exp f,  (exp f) * f')
-  sin (f, f')       =  (sin f,   cos f  * f')
-  cos (f, f')       =  (cos f, -(sin f) * f')
+  exp (x, x')       =  (exp x,  (exp x) * x')
+  sin (x, x')       =  (sin x,   cos x  * x')
+  -- ...
 \end{spec}
 %
 In fact, the latter (just pairs) represents a generalisation\jp{Isn't it equivalent? (The isomorphism is |c -> (a,b)| iso. |(c -> b, c -> b)|)} of the former (pairs of functions).
 %
-To see this, note that if we have a |Transcendental| instance for some |A|,
-we get a floating instance for |x->A| for all |x| from the module |FunNumInst|\jp{What is this module? Was it ever introduced?}.
+To see this, note that if we have a |Transcendental| instance for some
+|A|, we get a |Transcendental| instance for |x->A| for all |x| from
+the module |FunNumInst|\jp{What is this module? Was it ever
+  introduced?}.
 %
 Then from the instance for pairs we get an instance for any type of
 the form |(x->A, x->A)|.
@@ -2016,7 +2024,7 @@ We are now looking for a pair of values |(g, g')| such that
 f (g, g') = (f 2, f' 2)
 \end{spec}
 %
-In general
+In general we have the chain rule:
 %
 \begin{spec}
 f (g, g') = (f g, (f' g) * g')
@@ -2034,7 +2042,7 @@ Therefore
 Introducing
 %
 \begin{code}
-var x = (x, 1)
+var x = (x, one)
 \end{code}
 %
 we can, as in the case of |FD|, simplify matters a little:
@@ -2046,13 +2054,13 @@ f' x = snd (f (var x))
 In general
 %
 \begin{code}
-drvP f x  =  snd (f (x, 1))
+drvP f x  =  snd (f (var x))
 \end{code}
 %
 computes the derivative of |f| at |x|.
 %
 \begin{code}
-f2 :: (Double, Double) -> (Double, Double)
+f2 :: (REAL, REAL) -> (REAL, REAL)
 f2  = f
 \end{code}
 
@@ -2064,11 +2072,11 @@ For reference: the rest of the instance declarations for |Dup| (the
 |Multiplicative| instance was provided above):
 \begin{code}
 instance Additive a => Additive (Dup a) where
-  zero = zeroDup
-  (+) = addDup
+  zero = zeroDup;  (+) = addDup
 
 zeroDup :: Additive a => Dup a
 zeroDup = (zero, zero)
+
 addDup :: Additive a => Dup a -> Dup a -> Dup a
 addDup (x,x') (y,y') = (x+y,x'+y')
 
@@ -2091,14 +2099,11 @@ instance Transcendental a => Transcendental (Dup a) where
 
 piDup :: Transcendental a => Dup a
 piDup = (pi, zero)
+
 sinDup, cosDup, expDup :: Transcendental a => Dup a -> Dup a
 sinDup  (x,x') =  (sin x,           cos x   * x')
 cosDup  (x,x') =  (cos x, negate (  sin x)  * x')
 expDup  (x,x') =  (exp x,           exp x   * x')
 \end{code}
-
-
-
-
 
 %include E4.lhs
