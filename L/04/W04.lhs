@@ -4,13 +4,16 @@
 \label{sec:CompSem}
 
 %if False
+%TODO perhaps use {-# LANGUAGE RebindableSyntax #-} to make fromInteger work for integer literals. Currently disabled to make sure it is clear where it is used.
 \begin{code}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE FlexibleInstances, GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE ConstraintKinds, RebindableSyntax #-}
+{-# LANGUAGE ConstraintKinds #-}   -- , RebindableSyntax
 module DSLsofMath.W04 where
-import Prelude hiding (Monoid, even, Num(..), recip, sin, cos, exp, (^))
+import Prelude hiding (Monoid, even, Num(..), recip, pi, sin, cos, exp, (^), (+))
+import qualified Prelude (pi)
 import DSLsofMath.FunExp hiding (eval, eval')
+import qualified DSLsofMath.FunExp as FunExp
 import DSLsofMath.Algebra
 -- import DSLsofMath.Derive (derive)
 -- import DSLsofMath.W03 (derive)
@@ -218,8 +221,9 @@ And thus we can define subtraction as
 a - b = a + negate b
 \end{spec}
 
-When the additive monoid is abelian (commutative) and addition
-distributes over multiplication, we have a |Ring|.
+When the additive monoid is abelian (commutative) and multiplication
+distributes over addition (|x*(y+z) == (x*y)+(x*z)|), we have a
+|Ring|.
 %
 As always we cannot conveniently specify laws in Haskell typeclasses
 and thus define |Ring| simply as the conjunction of |AddGroup| and
@@ -238,17 +242,14 @@ Example instances: |Nat| is |Additive|; |ZZ|, |QQ|, |REAL| are also a |Ring|s.
   \centering
   \begin{tikzpicture}
 %  \draw[help lines] (-3,-3) grid (3,3);
-  \matrix (mat) [matrix of math nodes,row sep=1ex,cells=right]
+  \matrix (mat) [matrix of math nodes,row sep=1ex,column sep=1em,cells=right]
   {
-    \node[draw,pin={[name=AddL]left:|Additive|}]       (AddOps) {|zero|,   |(+)|}; \\
-    \node[draw,pin={[name=SubL]left:|AddGroup|}]       (SubOps) {|negate|, |(-)|}; \\
-    \node[draw,pin={[name=MulL]left:|Multiplicative|}] (MulOps) {|one|,    |(*)|}; \\
-    \node (frIn) {|fromInteger|};                                                  \\
-    \node (abs)  {|abs|, |signum|};                                                \\[0.5ex]
-    \node[draw,pin={[name=DivL]left:|MulGroup|}]       (DivOps) {|recip|,  |(/)|}; \\
-    \node (frRa) {|fromRational|};                                                 \\
+    \node[draw,pin={[name=AddL]left:|Additive|}]       (AddOps) {|(+)|, |zero|  }; \\
+    \node[draw,pin={[name=SubL]left:|AddGroup|}]       (SubOps) {|(-)|, |negate|}; & \node (abs)  {|abs|, |signum|};\\
+    \node[draw,pin={[name=MulL]left:|Multiplicative|}] (MulOps) {|(*)|, |one|   }; & \node (frIn) {|fromInteger|};  \\[0.5ex]
+    \node[draw,pin={[name=DivL]left:|MulGroup|}]       (DivOps) {|(/)|, |recip| }; & \node (frRa) {|fromRational|}; \\
   };
-  \node[draw,fit=(AddOps) (SubOps) (MulOps) (abs),
+  \node[draw,fit=(AddOps) (SubOps) (MulOps) (frIn) (abs),
         inner sep=1ex,rounded corners=2ex,
         label={[name=NumL]right:|Num|}]
         (NumR) {};
@@ -266,7 +267,6 @@ Example instances: |Nat| is |Additive|; |ZZ|, |QQ|, |REAL| are also a |Ring|s.
   \label{fig:CompNum}
 \end{figure}
 \pj{Fix the figure to indicate that |AddGroup| includes |Additive| and |MulGroup| includes |Multiplicative|.}
-
 
 We note right away that one can have a multiplicative group structure
 as well, whose inverse is called the reciprocal (abbreviated as
@@ -414,8 +414,8 @@ right the belong to |(B, unitB, opB)|.
 \end{example}
 
 \begin{example}
-  Hence, the function |exp| is a monoid homomorphism from (|REAL|,0,+)
-  to (|RPos|,1,*).
+  Hence, the function |exp| is a monoid homomorphism from (|REAL|,0,|(+)|)
+  to (|RPos|,1,|(*)|).
   \begin{spec}
   exp  :  REAL  ->  RPos
   exp  0        =   1                 --  \(e^0 = 1\)
@@ -616,7 +616,7 @@ But to practice the definition of homomorphism we will here check if
 |even| or |isPrime| is a homomorphism from |E| to |Bool|.
 
 Let's try to define |even : E ->
-Bool| with the usual induction pattern
+Bool| with the usual induction pattern%
 %if lectureNotes
 (``wishful thinking'')
 %endif
@@ -676,7 +676,7 @@ As before, if we can define |isPrimeAdd|, we will get
 But it is not possible for |isPrime| to both satisfy its specification
 and |H2(isPrime,Add,isPrimeAdd)|.
 %
-(To shorten the calculation we write just |n| for |Con n|.)
+To shorten the calculation we write just |n| for |Con n|.
 %
 \begin{spec}
   False
@@ -697,7 +697,8 @@ and |H2(isPrime,Add,isPrimeAdd)|.
 But because we also know that |False /= True|, we have a contradiction.
 %
 Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
-to |Bool|, regardless of the choice of the operator corresponding to addition.
+to |Bool|, regardless of the choice of the operator (on the the
+boolean side) corresponding to addition.
 
 
 \section{Folds}
@@ -1207,7 +1208,7 @@ and variables is the free |Ring| with the set of variables as
 generator set.
 
 Let us consider again our deep-embedding for expressions of one
-variable \cref{sec:FunExp}.
+variable from \cref{sec:FunExp}.
 %
 According to our analysis, it should be a free structure, and because
 we have only one variable, we can take the generator set (|G|) to be
@@ -1233,7 +1234,7 @@ instance Transcendental FunExp where pi = Const (Prelude.pi); exp = Exp; sin = S
 
 \begin{exercise}
   Implement |FunExp| instances for |AddGroup|, |MulGroup|, and
-  |Transcendental| (possibly extending the datatype).
+  (possibly extending the datatype) for |Transcendental| .
 
   \pj{Perhaps add hints here.}
   Remark: to translate the |Const :: REAL -> FunExp| constructor we
@@ -1271,7 +1272,7 @@ For example, we can define
 varX :: OneVarExp a => a
 varX = generate ()
 twoexp :: OneVarExp a => a
-twoexp = 2 * exp varX -- recall the implicit |fromInteger|
+twoexp = two * exp varX
 \end{code}
 %
 and instantiate |twoexp| to either syntax or semantics:
@@ -1297,7 +1298,7 @@ pattern.
 This is because the datatype |FunExp| is an initial |OneVarExp|.
 %
 Working with |OneVarExp a => a| can be more economical than using
-|FunExp|: one does not need any |eval|.
+|FunExp|: one does not need any (visible) |eval|.
 
 The DSL of expressions, whose syntax is given by the type |FunExp|,
 turns out to be almost identical to the DSL defined via type classes
@@ -1842,7 +1843,7 @@ Given the following definition of |f|, compute |f' 2|.
 
 \begin{code}
 f :: Transcendental a => a -> a
-f x = sin x + 2 * x
+f x = sin x + two * x
 \end{code}
 %
 (So, we have: |f 0 = 0|, |f 2 = 4.909297426825682|, etc.)
@@ -1881,9 +1882,10 @@ We have
 %
 Finally, we can apply |derive| and obtain
 %
+
 \begin{code}
 e = Sin X :+: (Const 2 :*: X)
-f' 2 = evalFunExp (derive e) 2
+f' 2 = FunExp.eval (derive e) 2
 \end{code}
 %
 This can hardly be called ``automatic'', look at all the work we did in
@@ -1892,8 +1894,8 @@ deducing |e|!\jp{But |f| was provided syntactically anyway?}
 However, consider this definition:
 %
 \begin{code}
-e2 :: FunExp
-e2 = f X
+fe :: FunExp
+fe = f X
 \end{code}
 %
 As |X :: FunExp|, the Haskell interpreter will look for |FunExp| instances of |Num|
@@ -1904,18 +1906,18 @@ semantic value.
 In general, to find the derivative of a function |f :: Transcendental a => a -> a|, we can use
 %
 \begin{code}
-drv f = evalFunExp (derive (f X))
+drv f = FunExp.eval (derive (f X))
 \end{code}
 \jp{|derive| was defined in \cref{sec:derive}}
 \item Using |FD| (pairs of functions)
 
 Recall
 %
-\begin{code}
+\begin{spec}
 type FD a = (a -> a, a -> a)
 
-applyFD x (f, g) = (f x, g x)
-\end{code}
+applyFD c (f, g) = (f c, g c)
+\end{spec}
 %
 The operations (the numeric type class instances) on |FD a| are such that, if |eval e = f|, then
 %
@@ -2055,7 +2057,48 @@ f2  = f
 \end{code}
 
 \end{enumerate}
+
 \end{solution}
+\section{Numeric instances for |Dup|}
+For reference: the rest of the instance declarations for |Dup| (the
+|Multiplicative| instance was provided above):
+\begin{code}
+instance Additive a => Additive (Dup a) where
+  zero = zeroDup
+  (+) = addDup
+
+zeroDup :: Additive a => Dup a
+zeroDup = (zero, zero)
+addDup :: Additive a => Dup a -> Dup a -> Dup a
+addDup (x,x') (y,y') = (x+y,x'+y')
+
+instance AddGroup a => AddGroup (Dup a) where
+  negate = negateDup
+
+negateDup :: AddGroup a => Dup a -> Dup a
+negateDup (x, x') = (negate x, negate x')
+
+instance (AddGroup a, MulGroup a) => MulGroup (Dup a) where
+  recip = recipDup
+
+recipDup :: (AddGroup a, MulGroup a) => Dup a -> Dup a
+recipDup (x, x') = (y, y')
+  where  y   = recip x
+         y'  = negate (y*y) * x'
+
+instance Transcendental a => Transcendental (Dup a) where
+  pi   = piDup;  sin  = sinDup;  cos  = cosDup;  exp  = expDup
+
+piDup :: Transcendental a => Dup a
+piDup = (pi, zero)
+sinDup, cosDup, expDup :: Transcendental a => Dup a -> Dup a
+sinDup  (x,x') =  (sin x,           cos x   * x')
+cosDup  (x,x') =  (cos x, negate (  sin x)  * x')
+expDup  (x,x') =  (exp x,           exp x   * x')
+\end{code}
+
+
+
 
 
 %include E4.lhs
