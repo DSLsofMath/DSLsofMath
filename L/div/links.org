@@ -1,0 +1,2 @@
+Complex, lim, differentiable in terms of lim and in terms of continuity + nice calc. proof of derivative of product.
+https://github.com/DSLsofMath/tfpie2015/tree/master/WG2.1

@@ -1,0 +1,5 @@
+* "Domain-specific language" is the correct spelling
+  [Wikipedia entry]
+  DSL_def.txt
+* "Domain Specific Language" is used in the course title in the Chalmers database
+  https://student.portal.chalmers.se/en/chalmersstudies/courseinformation/pages/searchcourse.aspx?course_id=24230&parsergrp=3

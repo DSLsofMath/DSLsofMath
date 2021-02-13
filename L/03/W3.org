@@ -28,3 +28,18 @@
 + Lagrange Eq's
 + Lagrange example
 * [[file:Live_3_2_2021.lhs::Week & chapter 3: Types in mathematics][Live coding]]
+* Links
+** 2021-01-31:
+
+  D (^2) = (2*)
+  D (f .+ g) = D f .+ D g
+
+https://chalmers.instructure.com/courses/12458/files/folder/Blackboard/Week3?preview=1055036
+
+https://chalmers.instructure.com/courses/12458/files/folder/Blackboard/Week3?preview=1055035
+
+https://chalmers.instructure.com/courses/12458/files/folder/Blackboard/Week3?preview=1055034
+
+Live-kodning av FunExp och delar av dess eval samt dess deriv
+
+https://chalmers.instructure.com/courses/12458/files/folder/Blackboard/Week3?preview=1055031
