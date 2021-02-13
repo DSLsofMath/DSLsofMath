@@ -5,12 +5,12 @@
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE TypeSynonymInstances #-}
 module DSLsofMath.W06 where
-import DSLsofMath.FunExp hiding (eval, f, derive)
+import DSLsofMath.FunExp hiding (eval, derive)
 import DSLsofMath.W05
 import DSLsofMath.Algebra
 import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..))
 import Prelude (abs)
-import Data.Complex
+import Data.Complex ()
 \end{code}
 %endif
 
@@ -81,7 +81,7 @@ these lists (it is |zipWith (+)| --- and because the lists are
 infinite one needs not worry about differing lengths).
 
 We have the following derivation (writing |eval| for |evalFunExp| and
-|d| for |derive| in order to save ink):
+|d| for |derive| in order to get a better overview):
 %
 \begin{spec}
     LHS
@@ -123,17 +123,21 @@ Now we can solve part of the problem by defining |(*)| as
 The remaining part is then
 %
 \begin{spec}
-    evalAll (d e1 :*: e2) + evalAll (e1 * d e2)
+    evalAll (d e1 :*: e2) + evalAll (e1 :*: d e2)
 =?
     help a b (evalAll (d e1)) (evalAll (d e2))
 \end{spec}
 
-Informally, we can refer to (co-)induction\jp{co-induction is not a
-  concept which can be assumed to be known at an informal level (since
-  we define lots of other simpler things much more precisely.)} at
-this point and rewrite |evalAll (d e1 :*: e2)| to |evalAll (d e1) *
-evalAll e2|.
+We now have two terms of the same form as we started out from: calls
+of |evalAll| on the constructor |(:*:)|.
 %
+If we assume the homomorphism condition holds for these two calls we
+can rewrite |evalAll (d e1 :*: e2)| to |evalAll (d e1) * evalAll e2|
+and similarly for the second term.
+%
+(For a formal proof we also need to check that this assumption can be
+discharged.\pj{Do the formal proof - perhaps in appendix.})
+
 We also have |evalAll . d = tail . evalAll| which leads to:
 %
 \begin{spec}
@@ -150,7 +154,7 @@ Finally we rename common subexpressions: let |a:as = evalAll e1| and
     help a b (tail (a:as)) (tail (b:bs))
 \end{spec}
 %
-This equality is clearly solved by defining |help| as follows:
+This equality is clearly satisfied if we define |help| as follows:
 %
 \begin{code}
 help a b as bs = as * (b : bs) + (a : as) * bs
@@ -167,19 +171,19 @@ mulStream :: Ring a => Stream a -> Stream a -> Stream a
 mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 \end{code}
 %
-As in the case of pairs, we find that we do not need any
-properties of functions, other than their |Ring| structure, so the
-definitions apply to any infinite list of |a| (with |Ring|) which, for
-a lack of more specific name at this point, we call a |Stream|:
+As in the case of pairs, we find that we do not need any properties of
+functions, other than their |Ring| structure, so the definitions apply
+to any infinite list of |Ring| values which, for a lack of more
+specific name at this point, we call a |Stream|:
 %
 \begin{code}
 type Stream a = [a]
 instance Additive a => Additive (Stream a) where
-  zero = repeat zero
-  (+) = addStream
+  zero  = repeat zero
+  (+)   = addStream
 instance Ring a => Multiplicative (Stream a) where
-  one = 1 : zero
-  (*) = mulStream
+  one   = one : zero
+  (*)   = mulStream
 
 addStream :: Additive a => Stream a -> Stream a -> Stream a
 addStream (a : as)  (b : bs)  =  (a + b)  :  (as + bs)
@@ -256,17 +260,17 @@ We derive:
 \end{spec}
 
 In general:
-
+%
 \begin{spec}
    {-"f^{(k)} "-} 0  =  fact k * ak
 \end{spec}
-
+%
 Therefore
-
+%
 \begin{spec}
    f      =  eval [f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n), ...]
 \end{spec}
-
+%
 That is, there is a simple mapping between the representation of |f|
 as a power series (the coefficients |ak|), and the value of all
 derivatives of |f| at |0|.
@@ -318,7 +322,7 @@ What if we want the value of the derivatives at some other point |a|
 We then need the power series of the ``shifted'' function g:
 %
 \begin{spec}
-g x  =  f (x + a)  <=>  g = f . (+ a)
+g x  =  f (a + x)  <=>  g = f . (a+)
 \end{spec}
 %
 If we can represent |g| as a power series, say |[b0, b1, ...]|, then
@@ -375,7 +379,7 @@ dP f a = toMaclaurin (f (idx + Poly [a]))
 
 \section{Derivatives and Integrals for Maclaurin series}
 
-Since the Maclaurin series represents |[f(0), f'(0), f''(0), ...]|,
+Since the Maclaurin series represents |[f 0, f' 0, f'' 0, ...]|,
 the tail of the list is equivalent to the derivative of |f|.
 
 To see that one can substitute |f| by |f'| in the above.
@@ -425,7 +429,7 @@ as add and multiply):
 \begin{spec}
 deriv :: Ring a => PowerSeries a -> PowerSeries a
 deriv (Poly [])      =  Poly []
-deriv (Poly (a:as))  =  Poly (deriv' as 1)
+deriv (Poly (_:as))  =  Poly (deriv' as 1)
   where  deriv' []      n  =  []
          deriv' (a:as)  n  =  (n * a) : (deriv' as (n+1))
 \end{spec}
@@ -438,7 +442,7 @@ We can apply the same recipe to obtain integration for power series:
 \begin{code}
 integ  ::  Field a => a -> PowerSeries a -> PowerSeries a
 integ  a0 (Poly as)  =  Poly (a0 : integ' as 1)
-  where  integ' []      n  =  []
+  where  integ' []      _  =  []
          integ' (a:as)  n  =  (a / n) : (integ' as (n+1))
 \end{code}
 %
@@ -450,19 +454,17 @@ These operations work on the type |PowerSeries a| which we can see as
 the syntax of power series, often called ``formal power series''.
 %
 The intended semantics of a formal power series |a| is, as we saw in
-Chapter~\ref{sec:poly}, an infinite sum\jp{Probably the following
-  should go in \cref{sec:power-series}, nothing about derivatives
-  here.  }
+Chapter~\ref{sec:poly}, an infinite sum
 %
 \begin{spec}
 eval a : REAL -> REAL
 eval a = \x ->  lim s   where   s n = {-" \sum_{i = 0}^n a_i * x^i "-}
 \end{spec}
-
+%
 For any |n|, the prefix sum, |s n|, is finite and it is easy to see
 that the derivative and integration operations are well defined.
 %
-We we take the limit, however, the sum may fail to converge for
+When we take the limit, however, the sum may fail to converge for
 certain values of |x|.
 %
 Fortunately, we can often ignore that, because seen as operations from
@@ -549,7 +551,7 @@ action on simple instances of |g|, starting with |const 1| and |id|:
   like using usual mathematical notation.}
 \begin{code}
 idx  ::  Field a => PowerSeries a
-idx  =   solve 0 (\f -> 1)
+idx  =   solve 0 (\_f -> 1)
 idf  ::  Field a => a -> a
 idf  =   eval 100 idx
 
@@ -585,7 +587,7 @@ values of its argument.
 \begin{code}
 testExp :: Double
 testExp = maximum (map diff [0,0.001..1::Double])
-  where diff = abs (expf - exp)  -- using the function instances for |abs| and |exp|
+  where diff = abs . (expf - exp)  -- using the function instance for |exp|
 testExpUnits :: Double
 testExpUnits =  testExp / epsilon
 epsilon :: Double  -- one bit of |Double| precision
@@ -707,23 +709,27 @@ expPS  fs  = integ  (exp  (val fs))  (exp fs   * deriv fs)
 sinPS  fs  = integ  (sin  (val fs))  (cos fs   * deriv fs)
 cosPS  fs  = integ  (cos  (val fs))  (-sin fs  * deriv fs)
 
-val ::  PowerSeries a  ->  a
-val     (Poly (a:as))  =   a
+val ::  Additive a => PowerSeries a  ->  a
+val (Poly (a:_))   =   a
+val _              =   zero
 \end{code}
 
 In fact, we can implement \emph{all} the operations needed for
-evaluating |FunExp| functions as power series! \jp{Wasn't it done already when first talking about power series? There does not seem to be anything pertaining derivatives here.}
+evaluating |FunExp| functions as power series! \jp{Wasn't it done
+  already when first talking about power series? There does not seem
+  to be anything pertaining derivatives here.}
 
 \begin{code}
 evalP :: (Eq r, Transcendental r) => FunExp -> PowerSeries r
 evalP (Const x)    =  Poly [fromRational (toRational x)]
 evalP (e1 :+: e2)  =  evalP e1 + evalP e2
 evalP (e1 :*: e2)  =  evalP e1 * evalP e2
-evalP (e1 :/: e2)  =  evalP e1 / evalP e2
 evalP X            =  idx
-evalP (Exp e)      =  exp (evalP e)
-evalP (Sin e)      =  sin (evalP e)
-evalP (Cos e)      =  cos (evalP e)
+evalP (Negate e)   =  negate  (evalP e)
+evalP (Recip e)    =  recip   (evalP e)
+evalP (Exp e)      =  exp     (evalP e)
+evalP (Sin e)      =  sin     (evalP e)
+evalP (Cos e)      =  cos     (evalP e)
 \end{code}
 
 \section{Associated code}
@@ -736,15 +742,20 @@ evalFunExp  (Const alpha)  =   const (fromRational (toRational alpha))
 evalFunExp  X              =   id
 evalFunExp  (e1 :+: e2)    =   evalFunExp e1  +  evalFunExp e2    -- note the use of ``lifted |+|''
 evalFunExp  (e1 :*: e2)    =   evalFunExp e1  *  evalFunExp e2    -- ``lifted |*|''
-evalFunExp  (Exp e1)       =   exp (evalFunExp e1)                -- and ``lifted |exp|''
-evalFunExp  (Sin e1)       =   sin (evalFunExp e1)
-evalFunExp  (Cos e1)       =   cos (evalFunExp e1)
+evalFunExp  (Exp e)        =   exp     (evalFunExp e)             -- and ``lifted |exp|''
+evalFunExp  (Sin e)        =   sin     (evalFunExp e)
+evalFunExp  (Cos e)        =   cos     (evalFunExp e)
+evalFunExp  (Recip e)      =   recip   (evalFunExp e)
+evalFunExp  (Negate e)     =   negate  (evalFunExp e)
+
 -- and so on
 
-derive     (Const alpha)  =  Const 0
+derive     (Const _)      =  Const 0
 derive     X              =  Const 1
 derive     (e1 :+: e2)    =  derive e1  :+:  derive e2
 derive     (e1 :*: e2)    =  (derive e1  :*:  e2)  :+:  (e1  :*:  derive e2)
+derive     (Recip e)      =  let re = Recip e in Negate (re:*:re) :*: derive e
+derive     (Negate e)     =  Negate (derive e)
 derive     (Exp e)        =  Exp e :*: derive e
 derive     (Sin e)        =  Cos e :*: derive e
 derive     (Cos e)        =  Const (-1) :*: Sin e :*: derive e
@@ -761,9 +772,10 @@ instance Multiplicative FunExp where
   one  = Const 1
 
 instance MulGroup FunExp where
-  (/)  =  (:/:)
+  recip = Recip
 
 instance Transcendental FunExp where
+  pi   =  Const pi
   exp  =  Exp
   sin  =  Sin
   cos  =  Cos
@@ -784,6 +796,7 @@ instance Field a => MulGroup (FD a) where
   (f, f') / (g, g')  = (f / g,  (f' * g - g' * f) / (g * g))
 
 instance Transcendental a => Transcendental (FD a) where
+  pi = (pi, zero)
   exp (f, f')        = (exp f,  (exp f) * f')
   sin (f, f')        = (sin f,  (cos f) * f')
   cos (f, f')        = (cos f,  -(sin f) * f')
@@ -808,6 +821,7 @@ instance Field a => MulGroup (a, a) where
   (f, f') / (g, g')  = (f / g,  (f' * g - g' * f) / (g * g))
 
 instance Transcendental a => Transcendental (a, a) where
+  pi = (pi, zero)
   exp  (f, f')       = (exp f,  (exp f) * f')
   sin  (f, f')       = (sin f,  cos f * f')
   cos  (f, f')       = (cos f,  -(sin f) * f')
