@@ -1,0 +1,48 @@
+\begin{code}
+  f 0 = c    -- later c=1
+
+  f' x + 2*f x = exp(-x)
+=
+  f' + 2*f = exp . negate
+
+Laplace
+  L (f' + 2*f) s == L (exp . negate) s
+=
+  L f' s + 2*L f s == L (exp . negate) s
+= -- let F s = L f s
+  -f 0 + s*F s + 2*F s == ...
+
+  -c + (s+2)*F s == 1/(s+1)
+==
+  (s+2)*F s == 1/(s+1) + c
+==
+  F s == 1/(s+1)/(s+2) + c/(s+2)
+
+  F s == 1/(s+1)/(s+2) + c/(s+2)
+
+-- Assume F s = A/(s+1) + B/(s+2)
+
+  A/(s+1) + B/(s+2) == 1/(s+1)/(s+2) + c/(s+2)
+
+
+  A(s+2) + B(s+1) == 1 + c*(s+1)
+-- s==-1 => A == 1
+-- s==-2 => -B == 1-c => B = c-1
+
+Let c = 1
+
+=> F s = 1/(s+1)
+
+=> f x = exp(-x)
+
+
+
+
+
+
+
+
+
+
+
+\end{code}
