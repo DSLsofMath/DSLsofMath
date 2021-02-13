@@ -8,7 +8,6 @@
 {-# LANGUAGE TypeApplications #-}
 module DSLsofMath.W05 where
 import Prelude hiding (Num(..),(/),(^))
-import DSLsofMath.FunNumInst
 import DSLsofMath.Algebra
 type REAL = Double
 \end{code}
@@ -40,7 +39,7 @@ the zero polynomial?'' (and why isn't its degree defined).
 The types of the elements involved in the definition appear to be
 %
 \begin{quote}
-  $n ∈ ℕ$, $P : ℝ → ℝ$, $x ∈ ℝ$, $a_0$, \ldots, $a_n ∈ ℝ$ with $a_n ≠ 0$ if $n > 0$
+  $P : ℝ → ℝ$; $x : ℝ$; $n : ℕ$; $a_0$, \ldots, $a_n : ℝ$ with $a_n ≠ 0$ if $n > 0$
 \end{quote}
 %
 The phrasing should be ``whose value at \emph{any} $x$ is''.
@@ -56,11 +55,11 @@ Thus, what is meant is
 %
 \begin{quote}
   A \textbf{polynomial} is a function $P : ℝ → ℝ$ which either is the
-  constant zero, or there exist $a_0$, \ldots, $a_n$ ∈ ℝ with
-  $a_n ≠ 0$ (called \textbf{coefficients}) such that, for every $x ∈ ℝ$
+  constant zero function, or there exist $a_0$, \ldots, $a_n$ : ℝ with
+  $a_n ≠ 0$ (called \textbf{coefficients}) such that, for every $x : ℝ$
 
   \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
-  For the constant zero, the degree of the polynomial is not defined.
+  For the constant zero polynomial the degree is not defined.
   Otherwise, the degree is $n$.
 \end{quote}
 Given the coefficients $a_i$ we can evaluate $P$ at any given $x$.
@@ -154,7 +153,7 @@ undefined.
 So we can further improve the definition as follows:
 \begin{quote}
   A \textbf{polynomial} is a function $P : ℝ → ℝ$ such that
-  there exist $a_0$, \ldots, $a_n$ ∈ ℝ and for any $x ∈ ℝ$
+  there exist $a_0$, \ldots, $a_n$ : ℝ and for any $x : ℝ$
   \[P(x) = a_n x^n + a_{n-1} x^{n - 1} + \cdots + a_1 x + a_0\]
   The degree of the polynomial is the largest $i$ such that $a_i≠0$.
 \end{quote}
@@ -165,13 +164,13 @@ Perhaps surprisingly, there is no longer any need to single out the
 zero polynomial to define the degree.
 %
 Indeed, when the polynomial is zero, $a_i=0$ for every $i$, and we
-have an empty set of indices $a_i≠0$.
+have an empty set of indices where $a_i≠0$.
 %
 The largest element of this set is undefined (by definition of
 largest, see also \cref{ex:maximum-homo}), and we have the intended
 definition.
 
-So, we can symply use any list of coefficients to \emph{represent} a
+So, we can simply use any list of coefficients to \emph{represent} a
 polynomial:
 \begin{code}
 newtype Poly a = Poly [a] deriving (Show,Eq)
@@ -182,7 +181,7 @@ evaluator to an arbitrary |Ring| type.
 %
 \begin{code}
 evalPoly :: Ring a => Poly a -> (a -> a)
-evalPoly (Poly [])        x   =  0
+evalPoly (Poly [])        _   =  0
 evalPoly (Poly (a:as))    x   =  a + x * evalPoly (Poly as) x
 \end{code}
 %
@@ -197,9 +196,17 @@ For example, the homomorphism condition gives for |(+)|
 \begin{spec}
 evalPoly as + evalPoly bs = evalPoly (as + bs)
 \end{spec}
+%
+Note that this equation uses |(+)| at two different type: on the left
+hand side (lhs) two functions of type |a->a| are added (pointwise) and
+on the right hand side (rhs) two |Poly a| (lists of coefficients) are
+added.
+%
+We are using the homomorphism condition to find requirements on the
+definition of |(+)| on |Poly a|.
 
-Both sides are functions, they are equal iff.\ they are equal for
-every argument.
+Both sides (lhs and rhs) are functions, thus they are equal if and
+only if they are equal for every argument.
 %
 For an arbitrary |x|
 
@@ -207,16 +214,16 @@ For an arbitrary |x|
 \begin{spec}
   (evalPoly as + evalPoly bs) x = evalPoly (as + bs) x
 
-<=> {- |+| on functions is defined point-wise -}
+<=> {- |(+)| on functions is defined point-wise -}
 
   evalPoly as x + evalPoly bs x = evalPoly (as + bs) x
 \end{spec}
 
 To proceed further, we need to consider the various cases in the
-definition of |evalPoly|.
+definition of |evalPoly| and use list induction.
 %
-We give here the computation for the last case, dropping the |Poly|
-constructor and writing |eval = evalPoly| for brevity.
+We give here the computation for the step case, dropping the |Poly|
+constructor and writing |eval cs = evalPoly (Poly cs)| for brevity.
 %
 %{
 %format evalPoly = eval
@@ -224,6 +231,7 @@ constructor and writing |eval = evalPoly| for brevity.
 evalPoly (a : as) x  +  evalPoly (b : bs) x  =  evalPoly ((a : as)  +  (b : bs)) x
 \end{spec}
 
+We use the homomorphism condition for |as| and |bs|
 For the left-hand side, we have:
 %
 \begin{spec}
@@ -274,8 +282,8 @@ addList :: Additive a => [a] -> [a] -> [a]
 addList = zipWithLonger (+)
 
 zipWithLonger :: (a->a->a) -> ([a] -> [a] -> [a])
-zipWithLonger op  []      bs      = bs  -- |0+bs == bs|
-zipWithLonger op  as      []      = as  -- |as+0 == as|
+zipWithLonger _   []      bs      = bs  -- |0+bs == bs|
+zipWithLonger _   as      []      = as  -- |as+0 == as|
 zipWithLonger op  (a:as)  (b:bs)  = op a b : zipWithLonger op as bs
 
 mulPoly :: Ring a => Poly a -> Poly a -> Poly a
@@ -311,14 +319,14 @@ readable text):
 %
 Note that from here on we will use the term ``polynomial'' for the
 abstract syntax (the list of coefficients, |as|) and ``polynomial
-function'' for its semanics (the function |evalPoly as : A -> A|).
+function'' for its semantics (the function |evalPoly as : A -> A|).
 
 
 \textbf{Caveat:} The canonical representation of polynomials in
 algebra does not use finite lists, but the equivalent
 
 \begin{spec}
-  Poly' A = { a : ℕ → A | {- |a| has only a finite number of non-zero values -} }
+  Poly' A = { a : ℕ → A | {- |a| has a finite number of non-zero values -} }
 \end{spec}
 
 Exercise~\ref{exc:Poly'}: What are the ring operations on |Poly' A|?
@@ -347,12 +355,12 @@ The formula for the |ci| must now be given via a case distinction:
 \noindent
 since |bi| does not exist for values greater than |m|.
 
-Compare this with the above formula for functions from |ℕ|, where no case
-distinction necessary.
+Compare this with the formula for functions from |ℕ|, where no case
+distinction is necessary.
 %
 The advantage is even clearer in the case of multiplication.
 
-\textbf{Observations:}
+\paragraph{Observations:}
 
 \label{sec:polynotpolyfun}
 \begin{enumerate}
@@ -376,7 +384,7 @@ The advantage is even clearer in the case of multiplication.
   %
   Thus
   \begin{spec}
-    evalPoly [0, 1, 1] = p = const 0 = evalPoly []  {-"\quad"-}-- in |ℤ₂ -> ℤ₂|
+    eval [0, 1, 1] = p = const 0 = eval []  {-"\quad"-}-- in |ℤ₂ -> ℤ₂|
   \end{spec}
 
   but
@@ -417,35 +425,43 @@ Then for any polynomial |as = Poly [a0, a1, ..., an]| we have
   \end{spec}
   where |(+)| is addition of coefficient lists and |(.*)| is an infix version of
   |scaleList|.
-%}
 Exercise~\ref{exc:polySpecList}: Prove the above equality.
 
 This equality justifies the standard notation
 
-\[as = \sum_{i = 0}^n a_i * x^i\]
+\begin{spec}
+  as = {-"\sum_{i = 0}^n"-} ai .* x^i
+\end{spec}
+%}
 
 \end{enumerate}
 
 \section{Aside: division and the degree of the zero polynomial}
 
 Recall the fundamental property of division that we learned in high school:
-
+\begin{quote}
 For all naturals |a|, |b|, with |b ≠ 0|, there exist \emph{unique}
 integers |q| and |r|, such that
-
-< a = b * q + r{-"\text{, with }"-} 0 <= r < b
-
+%
+\begin{spec}
+a = b * q + r,{-"\qquad\text{with}\quad"-} 0 <= r < b
+\end{spec}
+%
 When |r = 0|, |a| is divisible by |b|.
+\end{quote}
 %
 Questions of divisibility are essential in number theory and its
 applications (including cryptography).
-
-A similar theorem holds for polynomials (see, for example, \cite{adams2010calculus} page 40):
-
+%
+A similar theorem holds for polynomials (see, for example, \cite[page 40]{adams2010calculus}):
+\begin{quote}
 For all polynomials |as|, |bs|, with |bs ≠ 0|, there exist \emph{unique} polynomials |qs| and |rs|, such that
-
-< as = bs * qs + rs, with degree rs < degree bs
-
+%
+\begin{spec}
+as = bs * qs + rs,{-"\qquad\text{with}\quad"-} degree rs < degree bs
+\end{spec}
+\end{quote}
+%
 The condition |r < b| is replaced by |degree rs < degree bs|.
 %
 However, we now have a problem.
@@ -463,8 +479,8 @@ For this reason, it is either considered undefined (as in
 \footnote{Likewise we could define the largest element of the empty
   set to be |-∞|.}
 %
-The next section examines this question from a different point of
-view, that of homomorphisms.
+The next section examines this question from the point of view of
+homomorphisms.
 
 \section{Polynomial degree as a homomorphism}
 
@@ -500,7 +516,7 @@ also straighforward to prove (try it as an exercise).
 %
 But we run into trouble with one special case: the zero polynomial.
 
-Looking back at the definition from \cite{adams2010calculus}, page 55
+Looking back at the definition from \cite[page 55]{adams2010calculus}
 it says that the degree of the zero polynomial is not defined.
 %
 Let's see why that is the case and how we might ``fix'' it.
@@ -549,8 +565,8 @@ instance Monoid' a => Monoid' (Maybe a) where
   op    = opMaybe
 
 opMaybe :: Monoid' a => Maybe a -> Maybe a -> Maybe a
-opMaybe Nothing    m          = Nothing    -- |(-Inf) + m  = -Inf|
-opMaybe m          Nothing    = Nothing    -- |m + (-Inf)  = -Inf|
+opMaybe Nothing    _m         = Nothing    -- |(-Inf) + m  = -Inf|
+opMaybe _m         Nothing    = Nothing    -- |m + (-Inf)  = -Inf|
 opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
 \end{code}
 %}
@@ -822,12 +838,13 @@ divPS :: (Eq a, Field a) => PowerSeries a -> PowerSeries a -> PowerSeries a
 divPS (Poly as) (Poly bs) = Poly (divL as bs)
 
 divL :: (Eq a, Field a) => [a] -> [a] -> [a]
-divL []      bs      =  []                             -- case |0/q|
+divL []      _bs     =  []                             -- case |0/q|
 divL (0:as)  (0:bs)  =  divL as bs                     -- case |xp/xq|
 divL (0:as)  bs      =  0 : divL as bs                 -- case |xp/q|
 divL as      [b]     =  scaleList (1 / b) as           -- case |p/c|
 divL (a:as)  (b:bs)  =  c : divL (addList as (scaleList (-c) bs)) (b:bs)
                         where c = a/b
+divL _       []      = error "divL: division by zero"
 \end{code}
 
 This definition allow us to also use division on polynomials, but the
@@ -839,22 +856,23 @@ Some examples:
 %
 \begin{code}
 ps0, ps1, ps2 :: (Eq a, Field a) => PowerSeries a
-ps0  = 1 / (1 - x)
-ps1  = 1 / (1 - x)^2
-ps2  = (x^2 - 2 * x + 1) / (x - 1)
+ps0  = 1 / (1 - x)                    -- |ps0 == Poly [1, 1, 1, 1, ...]|
+ps1  = 1 / (1 - x)^2                  -- |ps1 == Poly [1, 2, 3, 4, ...]|
+ps2  = (x^2 - 2 * x + 1) / (x - 1)    -- |ps2 == Poly [-1,1,0]|
 \end{code}
 %
 Every |ps| is the result of a division of polynomials: the first two
 return power series, the third is a polynomial (even though it ends up
 having a trailing zero).
-
+%
+%if False
 \begin{code}
-example0 :: (Eq a, Field a) => PowerSeries a
+example0, example01 :: (Eq a, Field a) => PowerSeries a
 example0   = takePoly 10 ps0
-example01 :: (Eq a, Field a) => PowerSeries a
 example01  = takePoly 10 (ps0 * (1-x))
 \end{code}
-
+%endif
+%
 We can get a feeling for the definition by computing |ps0| ``by
 hand''.
 %
@@ -862,7 +880,7 @@ We let |p = [1]| and |q=[1,-1]| and seek |r = p/q|.
 %
 \begin{spec}
   divL p q                                  =  {- def. of |p| and |q| -}
-  divL (1:[])  (1:[-1])                     =  {- last case of |divL| -}
+  divL (1:[])  (1:[-1])                     =  {- main case of |divL| -}
   (1/1) : divL ([] - [1] * [-1])  (1:[-1])  =  {- simplification, def. of |(*)|, |(-)| -}
   1 : divL [1] (1:[-1])                     =  {- def. of |p| and |q| -}
   1 : divL p q
@@ -931,30 +949,25 @@ serious'' \cite{mcilroy1999functional}.
 % TODO: perhaps textify DSL/
 
 
-
-
+%if False
 \section{Helpers}
 
 \begin{code}
-instance Functor Poly where
-  fmap = polyMap
-
-po1 :: (Eq a, Field a) => Poly a
-po1 = 1 + x^2 - 3*x^4
+instance Functor Poly where  fmap = polyMap
 
 instance Ring a => Monoid' (Poly a) where
-  unit = Poly [one]
-  op = (*)
+  unit  = Poly [one]
+  op    = (*)
 
 instance Monoid' Integer where
-  unit = 0
-  op = (+)
+  unit  = 0
+  op    = (+)
 
 type Nat = Integer
 
 degree :: (Eq a, Ring a) => Poly a -> Maybe Nat
 degree (Poly []) = Nothing
-degree (Poly (x:xs)) = mayMax  (if x == 0 then Nothing else Just 0)
+degree (Poly (x:xs)) = mayMax  (if x == zero then Nothing else Just 0)
                                (fmap (1+) (degree (Poly xs)))
 
 mayMax :: Ord a => Maybe a -> Maybe a -> Maybe a
@@ -976,5 +989,6 @@ checkDegree0 = degree (unit :: Poly Integer) == unit
 checkDegreeM :: Poly Integer -> Poly Integer -> Bool
 checkDegreeM p q = degree (p*q) == op (degree p) (degree q)
 \end{code}
+%endif
 
 %include E5.lhs

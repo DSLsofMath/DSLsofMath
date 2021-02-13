@@ -66,19 +66,19 @@ above.
 
 \begin{exercise}\label{ex:chebyshev}\textbf{Chebyshev polynomials.}
 Let
-\(T_n(x) = \cos (n*\arccos(x))\).
+\(T_n(x) = \cos (n*\arccos(x))\) for |x| in the interval |[-1,1]|.
 %
 Compute \(T_0\), \(T_1\), and \(T_2\) by hand to get a
 feeling for how it works.
 %
-Note that they all turn out to be (simple) polynomial functions.
+Note that they all turn out to be polynomial functions.
 %
 In fact, \(T_n\) is a polynomial function of degree |n| for all |n|.
 %
 To prove this, here are a few hints:
-
+%
 \begin{itemize}
-\item \(cos(\alpha)+cos(\beta)=2\cos((\alpha+\beta)/2)\cos((\alpha-\beta)/2)\)
+\item \(cos(\alpha)+cos(\beta)=2*\cos(\frac{\alpha+\beta}{2})*\cos(\frac{\alpha-\beta}{2})\)
 \item let \(\alpha = (n+1)*\arccos(x)\) and \(\beta = (n-1)*\arccos(x)\)
 \item Simplify \(T_{n+1}(x)+T_{n-1}(x)\) to relate it to \(T_n(x)\).
 \item Note that the relation can be seen as an inductive definition of \(T_{n+1}(x)\).
@@ -122,7 +122,7 @@ To prove this, here are a few hints:
   What are the ring operations on |Poly' A| where
 %
   \begin{spec}
-    Poly' A = { a : ℕ → A | {- |a| has only a finite number of non-zero values -} }
+    Poly' A = { a : ℕ → A | {- |a| has a finite number of non-zero values -} }
   \end{spec}
 \end{exercise}
 
@@ -135,8 +135,8 @@ for polynomials.
 \end{exercise}
 
 \begin{exercise}\label{exc:degreeMonoidHomomorphism}
-Check all the |Monoid| and homomorphism properties in this claim:
-``|degree| is a monoid homomorphism from |(Poly a, 1, *)| to |(Maybe Nat, Just 0, opMaybe)|''.
+Check all the |Monoid| and homomorphism properties in the claim:
+|degree| is a monoid homomorphism from |(Poly a, 1, *)| to |(Maybe Nat, Just 0, opMaybe)|.
 \end{exercise}
 
 \begin{exercise}
@@ -153,13 +153,13 @@ class Functor f where
 %
   Implement an instance of |Functor| for |Maybe| and |ComplexSyn| from
   Chapter 1 and for |Rat| from Chapter 2.
-
+%
   Is |fmap f| a homomorphism?
 \end{exercise}
 
 \begin{exercise}
   \label{ex:maximum-homo}
-  Can the function |maximum :: [ℤ] -> ℤ| be defined a homomorphism?
+  Can the function |maximum :: [ℤ] -> ℤ| be defined as a homomorphism?
 \end{exercise}
 
 \begin{solution}
