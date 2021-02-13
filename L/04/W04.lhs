@@ -20,6 +20,7 @@ import DSLsofMath.Algebra
 type ℝ = REAL
 \end{code}
 %endif
+%format FunExp.eval = eval
 %
 
 Algebraic structures are fundamental to the structuralist point of
@@ -138,8 +139,8 @@ addNatural Zero      m = m
 addNatural (Succ n)  m = Succ (addNatural n m)
 
 mulNatural :: Natural -> Natural -> Natural
-mulNatural Zero      m     = zero
-mulNatural n         Zero  = zero
+mulNatural Zero      _m    = zero
+mulNatural _n        Zero  = zero
 mulNatural (Succ n)  m     = addNatural m (mulNatural n m)
 
 instance Additive Natural        where zero = Zero;      (+) = addNatural
@@ -665,10 +666,15 @@ In this case it is enough to just focus on one of the cases to already
 see the problem:
 %
 \begin{code}
-isPrime (Add x y)  =  isPrimeAdd (isPrime x) (isPrime y)
 isPrimeAdd :: Bool -> Bool -> Bool
 isPrimeAdd = error "Can this be done?"
+isPrime (Add x y)  =  isPrimeAdd (isPrime x) (isPrime y)
 \end{code}
+%if False
+\begin{code}
+isPrime _ = error "isPrime: Not a homomorphism"
+\end{code}
+%endif
 %
 As before, if we can define |isPrimeAdd|, we will get
 |H2(isPrime,Add,isPrimeAdd)| ``by construction''.
@@ -932,12 +938,12 @@ prVersions :: E -> ThreeVersions
 prVersions = foldE prVerAdd prVerMul prVerCon
 
 prVerAdd :: ThreeVersions -> ThreeVersions -> ThreeVersions
-prVerAdd (xTop, xInA, xInM) (yTop, yInA, yInM) =
+prVerAdd (_xTop, xInA, _xInM) (_yTop, yInA, _yInM) =
   let s = xInA ++ "+" ++ yInA  -- use |InA| because we are ``in |Add|''
   in (s, paren s, paren s)     -- parens needed except at top level
 
 prVerMul :: ThreeVersions -> ThreeVersions -> ThreeVersions
-prVerMul (xTop, xInA, xInM) (yTop, yInA, yInM) =
+prVerMul (_xTop, _xInA, xInM) (_yTop, _yInA, yInM) =
   let s = xInM ++ "*" ++ yInM  -- use |InM| because we are ``in |Mul|''
   in (s, s, paren s)           -- parens only needed inside |Mul|
 
@@ -1153,9 +1159,9 @@ Once given a function |f :: G -> a| (which we call an ``assignment
 function''), the homomorphism condition forces |evalM| to be a fold:
 %
 \begin{code}
-evalM  f  Unit           =  unit
-evalM  f  (Op e1 e2)     =  op (evalM f e1) (evalM f e2)
-evalM  f  (Generator x)  =  f x
+evalM  _   Unit           =  unit
+evalM  f   (Op e1 e2)     =  op (evalM f e1) (evalM f e2)
+evalM  f   (Generator x)  =  f x
 \end{code}
 
 However, before being completely satisfied, we must note that the
@@ -1225,8 +1231,8 @@ and so on for the other numeric classes.
 
 %if False
 \begin{code}
-instance AddGroup FunExp where negate = Negate
-instance MulGroup FunExp where (/) = (:/:)
+instance AddGroup  FunExp where negate  = Negate
+instance MulGroup  FunExp where recip   = Recip
 instance Transcendental FunExp where pi = Const (Prelude.pi); exp = Exp; sin = Sin; cos = Cos
 \end{code}
 %endif
@@ -1250,18 +1256,26 @@ instance Transcendental FunExp where pi = Const (Prelude.pi); exp = Exp; sin = S
 We can then check that the evaluator is compositional.
 For instance, we have
 %
+%{
+%format evalIncomplete = eval
 \begin{code}
-eval (e1 :*: e2)  =  eval e1 * eval e2
-eval (Exp e)      =  exp (eval e)
+evalIncomplete (e1 :*: e2)  =  evalIncomplete e1 * evalIncomplete e2
+evalIncomplete (Exp e)      =  exp (evalIncomplete e)
 \end{code}
 etc.
+%if False
+\begin{code}
+evalIncomplete _ = error "Implemented elsewhere"
+\end{code}
+%endif
 
 We can now also generalise the type of evaluator as follows:
 \pj{It is only ``OneVar'' in a context where |G=()|. Otherwise it allows for any number of variables.}
 \begin{code}
 type OneVarExp a = (Generate a, Transcendental a)
-eval :: OneVarExp a  =>  FunExp -> a
+evalIncomplete :: OneVarExp a  =>  FunExp -> a
 \end{code}
+%}
 
 With this class in place we can define generic expressions using generic
 constructors just like in the case of |IntExp| above.
@@ -1426,7 +1440,7 @@ below:
 \begin{code}
 type DummyFunc = ℝ -> ℝ
 eval'  ::  FunExp -> Func
-eval'  =   eval . derive
+eval'  =   FunExp.eval . derive
 \end{code}
 %}
 In a diagram:
@@ -1493,7 +1507,7 @@ Exercise~\ref{exc:tuplingE1} in case you have not done so already.)
 type FD a = (a -> a, a -> a)
 
 evalD ::  FunExp  ->  FD REAL
-evalD     e       =   (eval e, eval' e)
+evalD     e       =   (FunExp.eval e, eval' e)
 \end{code}
 %
 
@@ -1889,10 +1903,10 @@ We have
 Finally, we can apply |derive| and obtain
 %
 
-\begin{code}
+\begin{spec}
 e = Sin X :+: (Const 2 :*: X)
 f' 2 = FunExp.eval (derive e) 2
-\end{code}
+\end{spec}
 %
 This can hardly be called ``automatic'', look at all the work we did in
 deducing |e|!\jp{But |f| was provided syntactically anyway?}
@@ -1986,14 +2000,14 @@ We have |instance Transcendental a => Transcendental (a, a)|, moreover, the
 instance declaration looks exactly the same as that for |FD a|:
 %
 \begin{spec}
-instance Transcendental a => Transcendental (FD a) where  -- pairs of functions
-  exp (f, f')       =  (exp f, (exp f) * f')
-  sin (f, f')       =  (sin f, (cos f) * f')
+instance Transcendental a => Transcendental (FD a) where
+  exp  (f, f')       =  (exp  f,  (exp  f)  * f')   -- pairs of functions
+  sin  (f, f')       =  (sin  f,  (cos  f)  * f')
   -- ...
 
-instance Transcendental a => Transcendental (a, a) where  -- just pairs
-  exp (x, x')       =  (exp x,  (exp x) * x')
-  sin (x, x')       =  (sin x,   cos x  * x')
+instance Transcendental a => Transcendental (a, a) where
+  exp  (x, x')       =  (exp  x,  (exp  x)  * x')  -- just pairs
+  sin  (x, x')       =  (sin  x,  (cos  x)  * x')
   -- ...
 \end{spec}
 %

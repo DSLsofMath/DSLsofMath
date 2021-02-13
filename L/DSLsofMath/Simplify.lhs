@@ -88,8 +88,8 @@ More work is needed to handle constants well.
 \begin{code}
 simpMul :: SimpleExp -> SimpleExp -> SimpleExp
 simpMul (Const a)  (Const b)  = Const (a*b)
-simpMul (Const 0)  x          = Const 0
-simpMul x          (Const 0)  = Const 0
+simpMul (Const 0)  _x         = Const 0
+simpMul _x         (Const 0)  = Const 0
 simpMul (Const 1)  x          = x
 simpMul x          (Const 1)  = x
 simpMul (x:*:y)    z          = simpMul x (y:*:z)
@@ -134,4 +134,16 @@ x3''' = derive x3''
 t1 = simplify x3'
 t2 = simplify x3''
 t3 = simplify x3'''
+\end{code}
+
+\begin{code}
+size :: FunExp -> Int
+size (f:+:g) = 1 + size f + size g
+size (f:*:g) = 1 + size f + size g
+size (Const _) = 1 -- or 2
+size X         = 1
+size (Negate f)= 1 + size f
+size (Sin f)   = 1 + size f
+size (Cos f)   = 1 + size f
+size (Exp f)   = 1 + size f
 \end{code}

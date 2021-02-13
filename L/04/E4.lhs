@@ -1,6 +1,11 @@
 \newpage
 \section{Exercises}
-
+%if False
+\begin{code}
+import DSLsofMath.FunExp
+import DSLsofMath.Simplify
+\end{code}
+%endif
 
 \begin{exercise}\label{exc:homomorphisms}
 \textbf{Homomorphisms.}
@@ -167,82 +172,77 @@ Prove or disprove the following claims:
 
   \lnOnly{(Closely related to exam question)}
 
-  A \textit{ring} is a set |A| together with two constants (or nullary
-  operations), |0| and |1|, one unary operation, |negate|, and two
-  binary operations, |+| and |*|, such that
+  A \textit{ring} is a set |A| together with two constants, |0| and
+   |1|, one unary operation, |negate|, and two binary operations,
+   |(+)| and |(*)|, such that
 
-  \begin{enumerate}
-
-    \item |0| is the neutral element of |+|
-
+  \begin{enumerate}[label=\alph*.,itemsep=0ex]
+  \item |0| is the neutral element of |(+)|
+  \label{item:addZero}
+%
       \begin{spec}
         Forall (x ∈ A)      (x + 0 = 0 + x = x)
       \end{spec}
-
-    \item |+| is associative
-
+%
+  \item |(+)| is associative
+  \label{item:addAssoc}
+%
       \begin{spec}
         Forall (x, y, z ∈ A)     (x + (y + z) = (x + y) + z)
       \end{spec}
-
-    \item |negate| inverts elements with respect to addition
-
+%
+  \item |negate| inverts elements with respect to addition
+  \label{item:addNeg}
+%
       \begin{spec}
         Forall (x ∈ A)      (x + negate x = negate x + x = 0)
       \end{spec}
-
-    \item |+| is commutative
-
+%
+  \item |(+)| is commutative
+  \label{item:addComm}
+%
       \begin{spec}
         Forall (x, y ∈ A)      (x + y = y + x)
       \end{spec}
-
-    \item |1| is the unit of |*|
-
+%
+  \item |1| is the unit (neutral element) of |(*)|
+  \label{item:mulOne}
+%
       \begin{spec}
         Forall (x ∈ A)     (x * 1 = 1 * x = x)
       \end{spec}
-
-    \item |*| is associative
-
+%
+  \item |(*)| is associative
+  \label{item:mulAssoc}
+%
       \begin{spec}
         Forall (x, y, z ∈ A)      (x * (y * z) = (x * y) * z)
       \end{spec}
-
-    \item |*| distributes over |+|
-
+%
+  \item |(*)| distributes over |(+)|
+%
       \begin{spec}
         Forall (x, y, z ∈ A)      (x * (y + z)  =  (x * y) + (x * z))
         Forall (x, y, z ∈ A)      ((x + y) * z  =  (x * z) + (y * z))
       \end{spec}
-
-
+%
   \end{enumerate}
-
+%
   Remarks:
-
-  %TODO: make letters into labels.
-  \begin{itemize}
-  \item a. and b. say that |(A, 0, +)| is a monoid
-  \item a--c. say that |(A, 0, +, negate)| is a group
-  \item a--d.  say that |(A, 0, +, negate)| is a commutative group
-  \item e. and f. say that |(A, 1, *)| is a monoid
+  \begin{itemize}[itemsep=0ex]
+  \item \ref{item:addZero} -- \ref{item:addAssoc} say that |(A, 0, +)| is a monoid and \ref{item:mulOne} -- \ref{item:mulAssoc} that |(A, 1, *)| is a monoid
+  \item \ref{item:addZero} -- \ref{item:addNeg} say that |(A, 0, +, negate)| is a group
+  \item \ref{item:addZero} -- \ref{item:addComm} say that |(A, 0, +, negate)| is a commutative (Abelian) group
   \end{itemize}
 
-{
-  \begin{enumerate}[label=\roman*]
-  %\renewcommand*{\theenumi}{\textbf{\roman{enumi}}}
+  \begin{enumerate}[label=\roman*,itemsep=0ex]
   \item Define a type class |Ring| that corresponds to the ring
     structure.
-
   \item Define a datatype for the language of ring expressions
     (including variables) and define a |Ring| instance for it.
-
   \item \label{point:otherinstances} Find two other instances of the |Ring| class.
-
   \item Define a general evaluator for |Ring| expressions on the basis
-    of a given assignment function.
-
+    of a given assignment function (mapping variables to semantic values).
   \item Specialise the evaluator to the two |Ring| instances defined
     at point~\ref{point:otherinstances}.
     %
@@ -250,7 +250,6 @@ Prove or disprove the following claims:
     compute the results of evaluating, in each case, the three
     expressions.
   \end{enumerate}
-}
 \end{exercise}
 
 \begin{exercise}
@@ -258,29 +257,29 @@ Prove or disprove the following claims:
 
   Recall the type of expressions of one variable from \cref{sec:FunExp}.
 
-  \begin{code}
-  data FunExp  =  Const Rational           |  X
-               |  FunExp  :+:  FunExp      |  Exp  FunExp
-               |  FunExp  :*:  FunExp      |  Sin  FunExp
-               |  FunExp  :/:  FunExp      |  Cos  FunExp
-               -- and so on
-               deriving Show
-  \end{code}
+\begin{spec}
+data FunExp  =  Const Rational           |  X
+             |  FunExp  :+:  FunExp      |  Exp  FunExp
+             |  FunExp  :*:  FunExp      |  Sin  FunExp
+             |  FunExp  :/:  FunExp      |  Cos  FunExp
+             -- and so on
+             deriving Show
+\end{spec}
 
   and consider the function
 
-  \begin{code}
-    f :: REAL -> REAL
-    f x = exp (sin x) + x
-  \end{code}
+\begin{code}
+f :: REAL -> REAL
+f x = exp (sin x) + x
+\end{code}
 
   \begin{enumerate}
 
-    \item Find an expression |e| such that |eval e == f| and show this using
+  \item Find an expression |e| such that |eval e == f| and show this using
       equational reasoning.
 
 
-    \item Implement a function |deriv2| such that, for any
+  \item Implement a function |deriv2| such that, for any
 
 %
       |f : Fractional a => a -> a| constructed with the grammar of
@@ -316,22 +315,23 @@ Prove or disprove the following claims:
 
 \begin{exercise}
   Write a function
-  \begin{code}
-  simplify :: FunExp -> FunExp
-  \end{code}
+\begin{spec}
+simplify :: FunExp -> FunExp
+\end{spec}
   %
   to simplify the expression resulted from |derive|.
   %
   For example, the following tests should work:
-  \begin{spec}
-  simplify (Const 0 :*: Exp X)    ==  Const 0
-  simplify (Const 0 :+: Exp X)    ==  Exp X
-  simplify (Const 2 :*: Const 1)  ==  Const 2
-  simplify (derive (X:*:X))       ==  Const 2 :*: X
-  \end{spec}
+\begin{code}
+testSimplify = -- all evaluate to |True|
+  [  simplify  (Const 0  :*:  Exp X)    ==  Const 0
+  ,  simplify  (Const 0  :+:  Exp X)    ==  Exp X
+  ,  simplify  (Const 2  :*:  Const 1)  ==  Const 2
+  ,  simplify  (derive (X:*:X))         ==  Const 2 :*: X
+  ]
+\end{code}
 
-  As a motivating example, note that |derive (X:*:X)| evalutes to
-  |(Const 1.0 :*: X) :+: (X :*: Const 1.0)| without |simplify|, and
-  that the second derivative looks even worse.
-
+As a motivating example, note that without |simplify| we have |derive
+(X:*:X)| |==| |(Const 1 :*: X) :+: (X :*: Const 1)|, and that the
+syntax tree of the second derivative is twice that size.
 \end{exercise}
