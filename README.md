@@ -8,6 +8,8 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865
 
 ## News
 
+* [Lecture note snapshots](L/snapshots/) with the full course book
+* [YouTube playlist](https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-) with the recorded lectures (most in Swedish, some in English)
 * Tuesday 2020-01-21: First lecture of the 2020 course instance
 
 ## Contributors
