@@ -1,7 +1,7 @@
 \begin{code}
 module DSLsofMath.FunExp where
 import DSLsofMath.Algebra
-import Prelude (Eq, Show, Double, id, const, (.), toRational)
+import Prelude (Eq, Ord, Show, Double, id, const, (.), toRational)
 
 type REAL = Double
 
@@ -15,7 +15,7 @@ data FunExp  =  Const REAL
              |  Sin FunExp
              |  Cos FunExp
                 -- and so on
-  deriving (Eq, Show)
+  deriving (Eq, Ord, Show)
 \end{code}
 
 \begin{code}

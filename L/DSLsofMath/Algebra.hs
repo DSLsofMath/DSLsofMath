@@ -127,15 +127,15 @@ lift0 = const
 lift1 = (.)
 lift2 op2 f g = \x -> op2 (f x) (g x)
 
-instance Additive a        => Additive        (x -> a) where (+)  = lift2 (+);  zero  = const zero
-instance Multiplicative a  => Multiplicative  (x -> a) where (*)  = lift2 (*);  one   = const one
+instance Additive a        => Additive        (x -> a) where (+)  = lift2 (+);  zero  = lift0 zero
+instance Multiplicative a  => Multiplicative  (x -> a) where (*)  = lift2 (*);  one   = lift0 one
 
 instance AddGroup a   => AddGroup   (x -> a)  where   negate  =  lift1 negate
 instance MulGroup a   => MulGroup   (x -> a)  where   recip   =  lift1 recip
 instance Algebraic a  => Algebraic  (x -> a)  where   sqrt    =  lift1 sqrt
 
 instance Transcendental a => Transcendental (x -> a) where
-   pi = const pi;  sin = lift1 sin;  cos = lift1 cos;  exp = lift1 exp
+   pi = lift0 pi;  sin = lift1 sin;  cos = lift1 cos;  exp = lift1 exp
 
 instance Algebraic       Double where   sqrt = Prelude.sqrt
 instance Transcendental  Double where

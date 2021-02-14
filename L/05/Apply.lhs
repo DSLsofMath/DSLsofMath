@@ -1,78 +1,96 @@
-Some "left-overs" from Week 4.
+Continuing on from Week 4.
 
 \begin{code}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE RebindableSyntax #-}
 module Live_5_1a_2020 where
 import DSLsofMath.FunExp
-import DSLsofMath.FunNumInst
+import DSLsofMath.FunExpInst ()
+import DSLsofMath.Simplify
+import qualified Prelude
+import Prelude (Eq, Show, id, map, Int, Integer, iterate, take)
+import DSLsofMath.Algebra
+\end{code}
+
+
+\begin{code}
 newtype FD a = FD (a->a, a->a)   -- Function + Derivative
-newtype Bi a = Bi (a, a) deriving (Eq, Show)  -- Place + Speed
+newtype Bi a = Bi (a, a)         -- Position + Speed
+  deriving (Eq, Show)
 
 -- forall c. H2(applyFD c, mulFD, mulBi)
 applyFD :: a -> FD a -> Bi a
 applyFD c (FD (f, f')) = Bi (f c, f' c)
 
-e1 :: FD REAL
-e1 = FD (\x -> (x-1)^2, \x -> 2*(x-1))
+fd1 :: Ring a => FD a
+fd1 = FD (\x -> (x-1)^+2, \x -> 2*(x-1))
 
-idFD :: FD REAL
-idFD = FD (id, 1)
+xFD :: Ring a => FD a
+xFD = FD (id, one)
 
-e2 :: Num a => a -> a
-e2 x = (x-1)^2
+e2 :: Ring a => a -> a
+e2 x = (x-1)^+2
 
-test2 = let fd = e2 idFD
-        in map (\c-> applyFD c fd) [-1..2]
+e2FD :: Ring a => FD a
+e2FD = e2 xFD
 
-idBi :: Num a => a -> Bi a
-idBi c = Bi (c, 1)
+test2 :: Ring a => a -> Bi a
+test2 c = applyFD c e2FD
 
+list2 :: Ring a => [Bi a]
+list2 = map test2 (countUp 4 zero)
 
-instance Num a => Num (FD a) where
-  (+) = addFD; (*) = mulFD; negate = negateFD; fromInteger = fromIntegerFD
+testSyn = map simpBi list2
 
-addFD :: Num a => FD a -> FD a -> FD a
+countUp :: Ring a => Int -> a -> [a]
+countUp steps start = take steps (iterate (one+) start)
+
+idBi :: Ring a => a -> Bi a
+idBi c = Bi (c, one)
+
+instance Additive a   => Additive (FD a) where  (+) = addFD;  zero = zeroFD
+instance Ring a => Multiplicative (FD a) where  (*) = mulFD;  one = oneFD
+instance AddGroup a   => AddGroup (FD a) where  negate = negateFD
+
+addFD :: Additive a => FD a -> FD a -> FD a
 addFD (FD (f, f')) (FD (g, g')) = FD (f+g, f'+g')
 
-mulFD :: Num a => FD a -> FD a -> FD a
+zeroFD :: Additive a => FD a
+zeroFD = FD (zero, zero)
+
+oneFD :: Ring a => FD a
+oneFD = FD (one, zero)
+
+mulFD :: Ring a => FD a -> FD a -> FD a
 mulFD (FD (f, f')) (FD (g, g')) = FD (f*g, f*g' + f'*g)
 
 -- unary minus
-negateFD :: Num a => FD a -> FD a
+negateFD :: AddGroup a => FD a -> FD a
 negateFD (FD (f, f')) = FD (negate f, negate f')
+\end{code}
 
-fromIntegerFD :: Num a => Integer -> FD a
-fromIntegerFD c = FD (const (fromInteger c), const 0)
+The same for |Bi|.
+\begin{code}
+instance Additive a   => Additive (Bi a) where  (+) = addBi;  zero = zeroBi
+instance Ring a => Multiplicative (Bi a) where  (*) = mulBi;  one = oneBi
+instance AddGroup a   => AddGroup (Bi a) where  negate = negateBi
 
-absFD :: Num a => FD a -> FD a  -- Not really defined at 0
-absFD (FD (f, f')) = FD (abs f, signum f * f')
-
-signumFD :: Num a => FD a -> FD a  -- Not really defined at 0
-signumFD (FD (f, f')) = FD (signum f, 0)
-
-
-instance Num a => Num (Bi a) where
-  (*) = mulBi; (+) = addBi; negate = negateBi
-  fromInteger = fromIntegerBi; abs = absBi; signum = signumBi
 
 -- Spec.: forall c. H2(applyFD c, mulFD, mulBi)
-mulBi :: Num a => Bi a -> Bi a -> Bi a
+mulBi :: Ring a => Bi a -> Bi a -> Bi a
 mulBi (Bi (f,f')) (Bi (g,g')) = Bi (f*g, f*g' + f'*g)
 
-addBi :: Num a => Bi a -> Bi a -> Bi a
+addBi :: Additive a => Bi a -> Bi a -> Bi a
 addBi (Bi (f,f')) (Bi (g,g')) = Bi (f+g, f'+g')
 
-negateBi :: Num a => Bi a -> Bi a
+negateBi :: AddGroup a => Bi a -> Bi a
 negateBi (Bi (f,f')) = Bi (negate f, negate f')
 
-fromIntegerBi :: Num a => Integer -> Bi a
-fromIntegerBi i = Bi (fromInteger i, fromInteger 0)
+zeroBi :: Additive a => Bi a
+zeroBi = Bi (zero, zero)
 
-absBi :: Num a => Bi a -> Bi a
-absBi (Bi (f, f')) = Bi (abs f, signum f * f')
-
-signumBi :: Num a => Bi a -> Bi a
-signumBi (Bi (f, f')) = Bi (signum f, 0)
-
+oneBi :: Ring a => Bi a
+oneBi = Bi (one, zero)
 \end{code}
 
 H2(applyFD c, mulFD, mulBi)
@@ -97,3 +115,23 @@ forall fd1, fd2. applyFD c (mulFD fd1 fd2) == mulBi (applyFD c fd1) (applyFD c f
   applyFD c (mulFD (FD (f, f') (g, g'))
 == -- exp.
   applyFD c (mulFD fd1 fd2)
+
+
+\begin{code}
+instance Field a      => MulGroup (FD a) where  recip = recipFD
+instance Field a      => MulGroup (Bi a) where  recip = recipBi
+
+recipFD :: Field a => FD a -> FD a
+recipFD (FD (f, f')) = let rf = recip f in FD (rf, negate (rf*rf) * f')
+
+recipBi :: Field a => Bi a -> Bi a
+recipBi (Bi (f, f')) = let rf = recip f in Bi (rf, negate (rf*rf) * f')
+
+----------------
+
+xBi :: Ring a => a -> Bi a
+xBi x = Bi (x, 1)
+
+simpBi :: Bi FunExp -> Bi FunExp
+simpBi (Bi (f, f')) = Bi (simplify f, simplify f')
+\end{code}
