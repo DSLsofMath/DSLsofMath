@@ -140,8 +140,8 @@ Check all the |Monoid| and homomorphism properties in the claim:
 \end{exercise}
 
 \begin{exercise}
-  The helper function |mapPoly :: (a->b) -> (Poly a -> Poly b)| that
-  was used in the implementation of |polyNeg| is a close relative of
+  The helper function |polyMap :: (a->b) -> (Poly a -> Poly b)| that
+  was used in the implementation of |negPoly| is a close relative of
   the usual |map :: (a->b) -> ([a] -> [b])|.
 %
   Both these are members of a typeclass called |Functor|:
@@ -152,7 +152,7 @@ class Functor f where
 \end{spec}
 %
   Implement an instance of |Functor| for |Maybe| and |ComplexSyn| from
-  Chapter 1 and for |Rat| from Chapter 2.
+  Chapter 1.
 %
   Is |fmap f| a homomorphism?
 \end{exercise}
