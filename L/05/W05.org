@@ -1,5 +1,5 @@
 Week 5: Polynomials and Power Series
-* Recap of homomorphisms
+* Recap of homomorphisms (also on Jamboard)
 ** H2
 Homomorphism2(h,opA,opB) = forall x, y. h (opA x y) == opB (h x) (h y)
   where  h   :: A -> B
@@ -53,7 +53,7 @@ Note that the last line is fulfilled by h = eval where
 * Homomorphism examples related to A2 (Apply.hs)
 ** apply   :: a -> (a->b) -> b
 ** applyFD :: a -> FD a -> Bi a
-* Polynomials (Live_5_1_2020.lhs)
+* Polynomials (Jamboard)
 
 \begin{quote}
 P is a polynomial function if
