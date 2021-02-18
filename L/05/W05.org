@@ -84,7 +84,7 @@ https://chalmers.instructure.com/courses/8975/files/folder/Blackboard/Week5?prev
 ** Radius of convergence
 ** Live coding (Live_5_2_2020.lhs)
 + evalPS
-+ instance Num (Poly a)
++ numeric instances (Poly a)
 + scale, negate, fromInteger, x
 + degree :: Poly a -> Maybe Int
 + Examples: hej=1:hej

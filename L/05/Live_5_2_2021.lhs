@@ -6,25 +6,28 @@ import Prelude (Eq, Show, id, (.), map, Int, Integer, iterate, take, error, zipW
 import DSLsofMath.FunExp
 import DSLsofMath.FunExpInst ()
 import DSLsofMath.Algebra
+\end{code}
 
+The Ring of polynomials (as lists of coefficients).
+
+\begin{code}
 newtype Poly a = Poly [a] deriving (Show,Eq)
 
 evalP :: Ring a => Poly a -> (a -> a)
-evalP (Poly p) = evalL p
+evalP = error "TODO"
 
 evalL :: Ring a => [a] -> a -> a
-evalL []      x = zero
-evalL (a0:as) x = a0 + x*evalL as x
+evalL = error "TODO"
 
 -- Example polynomials
 constP :: a -> Poly a
-constP c = Poly [c]
+constP = error "TODO"
 
 xP :: Ring a => Poly a
-xP = Poly [zero, one]
+xP = error "TODO"
 
 xm12 :: Ring a => Poly a
-xm12 = (xP-one)^+2
+xm12 = (xP-one)^+2          -- (x-1)²
 
 instance Additive a => Additive (Poly a) where
   (+) = addP; zero = zeroP
@@ -36,27 +39,29 @@ addP :: Additive a => Poly a -> Poly a -> Poly a
 addP (Poly as) (Poly bs) = Poly (addL as bs)
 
 addL :: Additive a => [a]->[a]->[a]
-addL = zipWithLonger (+)
+addL = error "TODO"
 
 zeroP :: Poly a
-zeroP = Poly []
+zeroP = error "TODO"
 
 oneP :: Multiplicative a => Poly a
-oneP = Poly [one]
+oneP = error "TODO"
 
 mulP :: Ring a => Poly a -> Poly a -> Poly a
 mulP (Poly as) (Poly bs) = Poly (mulL as bs)
 
--- mulL as bs = error "TODO"
 mulL :: Ring a => [a] -> [a] -> [a]
-mulL p [] = []
 mulL [] p = []
-mulL (a:as) (b:bs) = (a*b) : addL (scaleL a bs)
-                                  (mulL as (b:bs))
+mulL (a:as) (b:bs) = (a*b) : addL  (scaleL a bs)
+                                   (mulL as (b:bs))
 
--- scaleL :: Num a => a -> Poly a -> Poly a
 scaleL :: Multiplicative a => a -> [a] -> [a]
-scaleL a = map (a*)
+scaleL = error "TODO"
+
+zipWithLonger :: (a->a->a) -> [a] -> [a] -> [a]
+zipWithLonger op [] bs = error "TODO"  -- 0+p == p
+zipWithLonger op as [] = error "TODO"  -- p+0 == p
+zipWithLonger op (a:as) (b:bs) = error "TODO"
 
 instance AddGroup a => AddGroup (Poly a) where
   negate = negateP
@@ -66,53 +71,27 @@ negateP (Poly as) = Poly (negateL as)
 
 negateL :: AddGroup a => [a] -> [a]
 negateL = map negate
-
-zipWithLonger :: (a->a->a) -> [a] -> [a] -> [a]
-zipWithLonger op [] bs = bs  -- 0+p == p
-zipWithLonger op as [] = as  -- p+0 == p
-zipWithLonger op (a:as) (b:bs) = op a b : zipWithLonger op as bs
 \end{code}
-
-\begin{spec}
-degree :: Poly a -> Maybe Int
-degree []      = Nothing
-degree (a:as)  = Just (length as)
-
-mapMaybe :: (a->b) -> (Maybe a -> Maybe b)
-mapMaybe f Nothing = Nothing
-mapMaybe f (Just x)= Just (f x)
-
-type PS a = Poly a
-
-evalPS :: Num a => Int -> PS a -> (a -> a)
-evalPS n as x = evalL (take n as) x
-
-hej :: Num a => PS a
-hej = 1 : hej
-haj :: Num a => PS a
-haj = 0 : map (1+) haj
-
-\end{spec}
 
 Några algebraiska egenskaper:
 
+  evalL [a]    x = a
+  evalL (0:as) x = x*evalL as
+
   a:as = [a] + 0:as
 
-eval [a] = const a
-eval (0:as) = \x-> x * eval as x = id*eval as
-eval (a:as) = eval ([a] + (0:as))
-            = eval [a] + id * eval as
-            = const a + id * eval as
 
+Power Series
 
--- Computing a definition for mulL
-  (a:as)*(b:bs)
-= ([a] + 0:as)*(b:bs)
-= [a]*(b:bs) + (0:as)*(b:bs)
-= scale a (b:bs)  +  (0: (as*(b:bs)))
-= ((a*b):scale a bs)  +  (0:(as*q))
-= ((a*b)+0) : ((scale a bs) + (as*q))
-= (a*b) : (scale a bs + as*q)
+\begin{code}
+type PS = Poly
+
+evalPS :: Ring a => Int -> PS a -> a -> a
+evalPS n = evalP . takeP n
+
+takeP :: Int -> PS a -> Poly a
+takeP n (Poly as) = Poly (take n as)
+\end{code}
 
 Spec. of derL:
   forall cs. eval (derL cs) = D (eval cs)
@@ -122,8 +101,8 @@ derP :: Ring a => Poly a -> Poly a
 derP (Poly as) = Poly (derL as)
 
 derL :: Ring a => [a] -> [a]
-derL []      = []
-derL (_:as)  = zipWith (*) (countUp one) as
+derL []      = error "TODO"
+derL (_:as)  = error "TODO"
 
 countUp :: Ring a => a -> [a]
 countUp = iterate (one+)
@@ -136,23 +115,50 @@ integ :: Field a => a -> Poly a -> Poly a
 integ c (Poly cs) = Poly (intL c cs)
 
 intL :: Field a => a -> [a] -> [a]
-intL c cs = c : zipWith (/) cs (countUp one)
+intL c cs = error "TODO"
 
 expP :: Field a => Poly a
-expP = integ one expP
+expP = error "TODO"
 
 sinP, cosP :: Field a => Poly a
-sinP = integ zero cosP            -- sin' =  cos && sin 0 = 0
-cosP = integ one  (negate sinP)   -- cos' = -sin && cos 0 = 1
-
-type PS = Poly
-takeP :: Int -> PS a -> Poly a
-takeP n (Poly as) = Poly (take n as)
-
-evalPS :: Ring a => Int -> PS a -> a -> a
-evalPS n = evalP . takeP n
-
+sinP = error "TODO"  -- sin' =  cos && sin 0 = 0
+cosP = error "TODO"  -- cos' = -sin && cos 0 = 1
 \end{code}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{spec}
+degree :: Poly a -> Maybe Int
+degree []      = Nothing
+degree (a:as)  = Just (length as)
+
+mapMaybe :: (a->b) -> (Maybe a -> Maybe b)
+mapMaybe f Nothing = Nothing
+mapMaybe f (Just x)= Just (f x)
+
+hej :: Num a => PS a
+hej = 1 : hej
+haj :: Num a => PS a
+haj = 0 : map (1+) haj
+
+\end{spec}
+
 
 
   zipWith (*) [1..] (tail (intL c cs)) = cs
