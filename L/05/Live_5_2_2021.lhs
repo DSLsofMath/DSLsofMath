@@ -1,5 +1,6 @@
 \begin{code}
 {-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE RebindableSyntax #-}
 module Live_5_2_2021 where
 import qualified Prelude
 import Prelude (Eq((==)), Show, id, (.), map, Int, Integer, iterate, take, error, zipWith, Rational)
@@ -61,6 +62,9 @@ mulL :: Ring a => [a] -> [a] -> [a]
 mulL [] p = []
 mulL (a:as) (b:bs) = (a*b) : addL  (scaleL a bs)
                                    (mulL as (b:bs))
+
+scaleP :: Multiplicative a => a -> PS a -> PS a
+scaleP s (Poly as) = Poly (scaleL s as)
 
 scaleL :: Multiplicative a => a -> [a] -> [a]
 scaleL s = map (s*)
@@ -150,6 +154,45 @@ cosP = integ one (negate sinP)
 -- cos = I (-sin) && cos 0 = 1
 \end{code}
 
+Solve   f'' + 2*f' + f = sin,  f 0 = 2, f' 0 = 1
+
+Step 0: solve for the highest derivative: f'' = sin - 2*f' - f
+Step 1: Ansatz: f = eval as; f' = eval as'; f'' = eval as''
+Step 2: transform to power series
+Step 3: fill in "integ-equations" for as' and as
+Step 4: If you do this by hand: fill in the coefficient lists step by step.
+\begin{code}
+as, as', as'' :: Field a => PS a
+as'' = error "TODO"
+as'  = error "TODO"
+as   = error "TODO"
+
+lhs :: Field a => Int -> a -> a
+
+lhs n = f'' + 2*f' + f
+  where f   = evalPS n as
+        f'  = evalPS n as'
+        f'' = evalPS n as''
+rhs :: Transcendental a => Int -> a -> a
+rhs n = evalPS n sinP
+
+testEq n x = lhs n x - rhs n x -- should be close to zero
+\end{code}
+
+Don't forget to check the original equation (often catches simple
+ mistakes).
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -169,42 +212,8 @@ cosP = integ one (negate sinP)
 
 
 \begin{spec}
-degree :: Poly a -> Maybe Int
-degree []      = Nothing
-degree (a:as)  = Just (length as)
-
-mapMaybe :: (a->b) -> (Maybe a -> Maybe b)
-mapMaybe f Nothing = Nothing
-mapMaybe f (Just x)= Just (f x)
-
-hej :: Num a => PS a
-hej = 1 : hej
-haj :: Num a => PS a
-haj = 0 : map (1+) haj
-
+as, as', as'' :: Field a => PS a
+as'' = sinP - scaleP 2 as' - as
+as'  = integ 1 as''
+as   = integ 2 as'
 \end{spec}
-
-
-
-  zipWith (*) [1..] (tail (intL c cs)) = cs
-
-
-  zipWith (*) [1..] (tail (intL c cs))
-=
-  zipWith (*) [1..] (tail (c : zipWith (/) cs [1..]))
-=
-  zipWith (*) [1..] (zipWith (/) cs [1..])
-= let cs = x:xs
-  zipWith (*) [1..] ((x/1) : zipWith (/) xs [2..])
-=
-  (x*1) : zipWith (*) [2..] (zipWith (/) xs [2..])
-=
-  x : (2*(x2/2)) : zipWith (*) [3..] (zipWith (/) xs2 [3..])
-
-
-
-
-intL c [3,2,1] --  I (\x->3+2*x+x^2) = \x->3*x+x^2+(1/3)*x^3+c
- == [c,3,1,1/3]
-
-----------------
