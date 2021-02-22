@@ -722,31 +722,31 @@ approximative |eval|, by evaluating the polynomial initial segment
 of the power series.
 
 \begin{code}
-eval :: Ring a => Int -> PowerSeries a -> (a -> a)
-eval n as = evalPoly (takePoly n as)
+evalPS :: Ring a => Int -> PowerSeries a -> (a -> a)
+evalPS n as = evalPoly (takePoly n as)
 
 takePoly :: Int -> PowerSeries a -> Poly a
 takePoly n (Poly xs) = Poly (take n xs)
 \end{code}
 %TODO: perhaps explain with plain lists: |takeP :: Nat -> PS r -> P r| with |takeP n (PS as) = P (take n as)|
 %
-Note that |eval n| is not a homomorphism: for example:
+Note that |evalPS n| is not a homomorphism: for example:
 %
 \begin{spec}
-  eval 2 (x*x) 1                     =
+  evalPS 2 (x*x) 1                     =
   evalPoly (takePoly 2 [0, 0, 1]) 1  =
   evalPoly [0,0] 1                   =
   0
 \end{spec}
 but
 \begin{spec}
-  (eval 2 x 1)                    =
+  (evalPS 2 x 1)                    =
   evalPoly (takePoly 2 [0, 1]) 1  =
   evalPoly [0, 1] 1               =
   1
 \end{spec}
 %
-and thus |eval 2 (x*x) 1 = 0 /= 1 = 1*1 = (eval 2 x 1) * (eval 2 x
+and thus |evalPS 2 (x*x) 1 = 0 /= 1 = 1*1 = (evalPS 2 x 1) * (evalPS 2 x
 1)|.
 
 

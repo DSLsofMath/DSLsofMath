@@ -553,14 +553,14 @@ action on simple instances of |g|, starting with |const 1| and |id|:
 idx  ::  Field a => PowerSeries a
 idx  =   solve 0 (\_f -> 1)
 idf  ::  Field a => a -> a
-idf  =   eval 100 idx
+idf  =   evalPS 100 idx
 
 expx  ::  Field a => PowerSeries a
 expx  =   solve 1 (\f -> f)
 expf  ::  Field a => a -> a
-expf  =   eval 100 expx
+expf  =   evalPS 100 expx
 \end{code}
-\jp{|eval| was declared |REAL -> REAL| above. Which eval is this referring to? Say so explicitly.}
+
 \begin{exercise}
   Write |expx| as a recursive equation (inline |solve| in the
   definition above).
@@ -601,8 +601,8 @@ For example, we can define sine and cosine in terms of each other:
 \begin{code}
 sinx = integ 0 cosx
 cosx = integ 1 (-sinx)
-sinf = eval 100 sinx
-cosf = eval 100 cosx
+sinf = evalPS 100 sinx
+cosf = evalPS 100 cosx
 
 sinx, cosx :: Field a =>  PowerSeries a
 sinf, cosf :: Field a =>  a -> a

@@ -14,7 +14,7 @@ Learning outcomes:
 + f' + 2f = sin, f 0 = 1
   fs' = si - 2*fs
   fs  = integ 1 fs'
-* evalAll: a stream of all derivatives
+* derAll: a stream of all derivatives
 see Live_6_1_2020.lhs
 * Week 6 Lecture 2: Maclaurin series
 
