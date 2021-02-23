@@ -123,16 +123,28 @@ Lemma1:
 Thus, if we just make the "TODO" step true by definition of mul we
   have (informally) proved H2(evalAll,(:*:),mul).
 
+
+
+
+
+derAll (Mul f g) = mul (derAll f) (derAll g)
+
 \begin{code}
 type MulFun = DS Func
--- mul :: MulFun->MulFun->MulFun
--- mul (f:fs) (g:gs) = (f*g) :  addDS  (mul (f:fs)  gs)
---                                     (mul fs  (g:gs))
-
 
 mul :: Ring a => DS a -> DS a -> DS a
-mul (f:fs) (g:gs) = (f*g) : ((mul (f:fs)  gs) +
-                             (mul fs  (g:gs))  )
+mul fs@(f:fs') gs@(g:gs') = m:ms'
+  where  m   = f*g
+         ms' = (mul fs' gs) + (mul fs gs')   -- :: DS a
+mul []         gs  = []
+mul fs         []  = []
+
+-- (+) :: DS a -> DS a -> DS a
+-- (+) = zipWithLonger (+)
+
+
+  -- f    = head fs;
+  -- fs'  = tail fs = derAll (derive f)
 
 constDS :: Additive a => a -> DS a
 constDS c = c : repeat zero

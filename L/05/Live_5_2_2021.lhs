@@ -156,16 +156,17 @@ cosP = integ one (negate sinP)
 
 Solve   f'' + 2*f' + f = sin,  f 0 = 2, f' 0 = 1
 
-Step 0: solve for the highest derivative: f'' = sin - 2*f' - f
+Step 0: solve for the highest derivative:
+  f'' = sin - f - 2*f'
 Step 1: Ansatz: f = eval as; f' = eval as'; f'' = eval as''
 Step 2: transform to power series
 Step 3: fill in "integ-equations" for as' and as
 Step 4: If you do this by hand: fill in the coefficient lists step by step.
 \begin{code}
 as, as', as'' :: Field a => PS a
-as'' = error "TODO"
-as'  = error "TODO"
-as   = error "TODO"
+as'' = sinP - as - scaleP 2 as'
+as'  = integ 1 as''   -- uttryck f' som integral av f''
+as   = integ 2 as'
 
 lhs :: Field a => Int -> a -> a
 
