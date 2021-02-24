@@ -81,8 +81,7 @@
 
 \begin{exercise}
   In the chapter, we saw that a representation |expx :: PowerSeries| of the
-  exponential function can be implemented using |solve| as |expx = solve 1 (\f ->
-  f)|. Use the same method to implement power series representations of the
+  exponential function can be implemented using |solve| as |expx = solve 1 id|. Use the same method to implement power series representations of the
   following functions:
 
   \begin{enumerate}

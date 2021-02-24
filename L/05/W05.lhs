@@ -917,9 +917,11 @@ We can implement this formula, for example, as
 \begin{code}
 deriv :: Ring a => Poly a -> Poly a
 deriv (Poly as) = Poly (derivL as)
+
 derivL :: Ring a => [a] -> [a]
 derivL []      = []
 derivL (_:as)  = zipWith (*) oneUp as
+
 oneUp :: Ring a => [a]
 oneUp = one : map (one+) oneUp
 \end{code}

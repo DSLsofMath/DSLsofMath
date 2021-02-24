@@ -45,9 +45,7 @@ addP :: Additive a => Poly a -> Poly a -> Poly a
 addP (Poly as) (Poly bs) = Poly (addL as bs)
 
 addL :: Additive a => [a]->[a]->[a]
-addL = zipWithLonger (+) -- varning - inte riktigt rätt
-
--- zipWith (+) [] xs == [] /= xs -
+addL = zipWithLonger (+)
 
 zeroP :: Poly a
 zeroP = Poly []

@@ -28,29 +28,30 @@ their derivatives (|Field x => Field (a -> x, a -> x)|).
 %
 But why stop there?
 %
-Why not compute a (lazy) list of a function together with its
-derivative, second derivative, etc.:
+Why not compute a (lazy) list (also called a stream) of a function
+together with its derivative, second derivative, etc.:
 %
 \begin{spec}
 [f, f', f'', ...] :: [a -> a]
 \end{spec}
 %
-The above then represents the evaluation of an expression (of one
-variable |x|) as a function, and all its derivatives. We can write
-this evaluation as an explicit function:
+The above then represents the evaluation of a 1-variable expression as
+a function, and all its derivatives.
+%
+We can write this evaluation as an explicit function:
 %
 \begin{code}
 evalAll :: Transcendental a => FunExp -> [a -> a]
 evalAll e = (evalFunExp e) : evalAll (derive e)
 \end{code}
 %
-Notice that, if
+Notice that, if we look at our stream of derivatives,
 %
 \begin{spec}
 [f, f', f'', ...] = evalAll e
 \end{spec}
 %
-then
+then the tail is also such a stream, but starting from |f'|:
 %
 \begin{spec}
 [f', f'', ...] = evalAll (derive e)
@@ -64,8 +65,9 @@ words, we have |H1(evalAll,derive,tail)| (|H1| was defined in
 \cref{exc:homomorphisms}) --- this is our specification for what
 follows.
 
-We want to define the other operations on lists of functions in such a
-way that |evalAll| is such a homomorphism.
+We want to define the other numeric operations on streams of
+derivatives in such a way that |evalAll| is a homomorphism in each of
+them.
 %
 For example:
 %
@@ -73,12 +75,12 @@ For example:
 evalAll (e1 :*: e2) = evalAll e1 * evalAll e2
 \end{spec}
 %
-where the |(*)| sign stands for the multiplication of infinite lists
-of functions --- an operation we are trying to determine.
+where the |(*)| sign stands for the multiplication of derivative
+streams --- an operation we are trying to determine.
 %
 We assume that we have already derived the definition of |(+)| for
-these lists (it is |zipWith (+)| --- and because the lists are
-infinite one needs not worry about differing lengths).
+these streams (it is |zipWithLonger (+)|, or just |zipWith (+)| if we
+stick to infinite streams only).
 
 We have the following derivation (writing |eval| for |evalFunExp| and
 |d| for |derive| in order to get a better overview):
@@ -92,7 +94,7 @@ We have the following derivation (writing |eval| for |evalFunExp| and
 = {- def. of |eval| for |(:*:)| -}
     (eval e1 * eval e2) : evalAll (d (e1 :*: e2))
 = {- def. of |derive| for |(:*:)| -}
-    (eval e1 * eval e2) : evalAll (d e1 :*: e2 :+: e1 * d e2)
+    (eval e1 * eval e2) : evalAll ((d e1 :*: e2) :+: (e1 * d e2))
 = {- we assume |H2(evalAll, (:+:), (+))| -}
     (eval e1 * eval e2) : (evalAll (d e1 :*: e2) + evalAll (e1 :*: d e2))
 \end{spec}
@@ -173,8 +175,7 @@ mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
 %
 As in the case of pairs, we find that we do not need any properties of
 functions, other than their |Ring| structure, so the definitions apply
-to any infinite list of |Ring| values which, for a lack of more
-specific name at this point, we call a |Stream|:
+to any infinite list of |Ring| values which we call a |Stream|:
 %
 \begin{code}
 type Stream a = [a]
@@ -224,13 +225,14 @@ with the newtype constructors.
 \section{Taylor series}
 \label{sec:taylor-series}
 
-We have arrived at the instances for |Stream| by reasoning about lists
-of functions.
+We have arrived at the instances for |Stream (a->a)| by reasoning
+about lists of functions.
 %
 But everywhere we needed to manipulate functions, we ended up using
 their numerical structure directly (assuming instances such as |Ring
-(x -> a)|, rather than treating them at functions) So, the |Stream|
-instances hold for \emph{any} numeric type |a|.
+(x -> a)|, rather than treating them at functions).
+%
+So, the |Stream| instances hold for \emph{any} numeric type |a|.
 %
 Effectively, we have implicitly used the |apply| homomorphism, as we
 did in \cref{sec:applyFD}.
@@ -252,11 +254,11 @@ We derive:
    f'     =  eval (deriv [a0, a1, ..., an, ...])
           =  eval ([1 * a1, 2 * a2, 3 * a3, ..., n * an, ...])
 =>
-   f' 0   =  a1
-   f''    =  eval (deriv [a1, 2 * a2, ..., n * an, ...])
-          =  eval ([2 * a2, 3 * 2 * a3, ..., n * (n - 1) * an, ...])
+   f' 0   =  1 * a1
+   f''    =  eval (deriv [1 * a1, 2 * a2, ..., n * an, ...])
+          =  eval ([2 * 1 * a2, 3 * 2 * a3, ..., n * (n - 1) * an, ...])
 =>
-   f'' 0  =  2 * a2
+   f'' 0  =  2 * 1 * a2
 \end{spec}
 
 In general:
@@ -275,17 +277,16 @@ That is, there is a simple mapping between the representation of |f|
 as a power series (the coefficients |ak|), and the value of all
 derivatives of |f| at |0|.
 
-The series |[f 0, f' 0, f'' 0 / 2, ..., {-"f^{(n)} "-} 0 / (fact n),
-...]| is called the Taylor series centred at |0|, or the Maclaurin
-series.
+The power series represented by |[f 0, f' 0, f'' 0 / 2, ...,
+{-"f^{(n)} "-} 0 / (fact n), ...]| is called the Taylor series centred
+at |0|, or the Maclaurin series.
 \begin{code}
 type Taylor a = Stream a
 \end{code}
 
-
-We can perform the above mapping (between a power series to the
+We can perform the above mapping (between a power series and its
 Maclaurin series) efficiently as follows:
-
+%
 \begin{code}
 toMaclaurin :: Ring a => PowerSeries a -> Taylor a
 toMaclaurin (Poly as) = zipWith (*) as factorials
@@ -293,11 +294,12 @@ toMaclaurin (Poly as) = zipWith (*) as factorials
 fromMaclaurin :: Field a => Taylor a -> PowerSeries a
 fromMaclaurin as = Poly (zipWith (/) as factorials)
 \end{code}
-
-List of all factorials (starting from 0):
+%
+using a list of all factorials (starting from 0):
 \begin{code}
 factorials :: Ring a => [a]
 factorials = factorialsFrom 0 1
+
 factorialsFrom :: Ring a => a -> a -> [a]
 factorialsFrom n factn = factn : factorialsFrom (n+1) (factn * (n + 1))
 \end{code}
@@ -396,7 +398,7 @@ tail  f    = deriv f             -- derivative of |f|
 \end{spec}
 Additionally, integration can be defined simply as the list
 constructor ``cons'' with the first argument being the value of |f| at
-0:
+|0|:
 \begin{spec}
 integ :: a -> Taylor a -> Taylor a
 integ = (:)
@@ -429,21 +431,26 @@ as add and multiply):
 \begin{spec}
 deriv :: Ring a => PowerSeries a -> PowerSeries a
 deriv (Poly [])      =  Poly []
-deriv (Poly (_:as))  =  Poly (deriv' as 1)
-  where  deriv' []      n  =  []
-         deriv' (a:as)  n  =  (n * a) : (deriv' as (n+1))
+deriv (Poly (_:as))  =  Poly (zipWith (*) oneUp as)
+
+oneUp :: Ring a => [a]
+oneUp = countUp one
+
+countUp :: Ring a => a -> [a]
+countUp = iterate (one+)
 \end{spec}
 
 With our insight regarding Taylor series, we can now see that |deriv =
 fromMaclaurin . tail . toMaclaurin|.
 %
 We can apply the same recipe to obtain integration for power series:
-
+%
 \begin{code}
 integ  ::  Field a => a -> PowerSeries a -> PowerSeries a
-integ  a0 (Poly as)  =  Poly (a0 : integ' as 1)
-  where  integ' []      _  =  []
-         integ' (a:as)  n  =  (a / n) : (integ' as (n+1))
+integ  a0 (Poly as)  =  Poly (integL a0 as)
+
+integL :: Field a => a -> [a] -> [a]
+integL c cs = c : zipWith (/) cs oneUp
 \end{code}
 %
 Remember that |a0| is the constant that we need due to indefinite
@@ -491,8 +498,8 @@ f' x = g f x, {-"\qquad"-} f 0 = f0
 \end{spec}
 %
 i.e., they are defined in terms of the higher-order function |g| and initial value |f0|.
-
-The fundamental theorem of calculus gives us\jp{Refer to adams2010calculus}
+%
+The fundamental theorem of calculus \cite[Sect.\ 5.5]{adams2010calculus} gives us
 %
 \begin{spec}
 f x = f0 + {-"\int_0^x "-} (g f t) dt
@@ -529,11 +536,9 @@ operations, which is implementable in Haskell (for a reasonable |g|).
 
 Which functions |g| commute with |eval|?
 %
-All the ones in |Num|, |Fractional|, |Transcendental|, by construction;
+All the ones in |Ring|, |Field|, |Transcendental|, by construction;
 additionally, as above, |deriv| and |integ|.
 %
-\pj{Perhaps use |Ring|, |Field|, etc.\ instead of |Num|, |Fractional| here.}
-
 Therefore, we can implement a general solver for these simple
 equations:
 %
@@ -547,16 +552,12 @@ its definition depends on itself.
 %
 We come back to this point soon, but first we observe |solve| in
 action on simple instances of |g|, starting with |const 1| and |id|:
-\jp{It'd be helpful to restate what the differential equation looks
-  like using usual mathematical notation.}
 \begin{code}
 idx  ::  Field a => PowerSeries a
-idx  =   solve 0 (\_f -> 1)
-idf  ::  Field a => a -> a
-idf  =   evalPS 100 idx
+idx  =   solve 0 (\_f -> 1)         -- \(f'(x) = 1\), \(f(0) = 0\)
 
 expx  ::  Field a => PowerSeries a
-expx  =   solve 1 (\f -> f)
+expx  =   solve 1 (\f -> f)         -- \(f'(x) = f(x)\), \(f(0) = 1\)
 expf  ::  Field a => a -> a
 expf  =   evalPS 100 expx
 \end{code}
@@ -571,10 +572,6 @@ $x$ in usual mathematical notation.
 %
 We can easily check that its derivative is constantly |1| and its
 value at |0| is |0|.
-%
-The function |idf| is just there to check that the semantics behaves
-as expected.\jp{So let's look at it by evaluating it at several
-  points?}
 
 The second solution |expx| is a formal power series representing the
 exponential function.
@@ -582,14 +579,18 @@ exponential function.
 It is equal to its derivative and it starts at |1|.
 %
 The function |expf| is a good approximation of the semantics for small
-values of its argument.
-
+values of its argument --- the following testing code shows that the
+maximum difference in the interval from 0 to 1 is below \(5*10^{16}\)
+(very close to the precision of |Double|).
+%
 \begin{code}
 testExp :: Double
 testExp = maximum (map diff [0,0.001..1::Double])
   where diff = abs . (expf - exp)  -- using the function instance for |exp|
+
 testExpUnits :: Double
 testExpUnits =  testExp / epsilon
+
 epsilon :: Double  -- one bit of |Double| precision
 epsilon = last (takeWhile (\x -> 1 + x /= 1) (iterate (/2) 1))
 \end{code}
@@ -599,13 +600,13 @@ As an alternative to using |solve| we can use recursion directly.
 For example, we can define sine and cosine in terms of each other:
 %
 \begin{code}
-sinx = integ 0 cosx
-cosx = integ 1 (-sinx)
-sinf = evalPS 100 sinx
-cosf = evalPS 100 cosx
+sinx,  cosx  :: Field a =>  PowerSeries a
+sinx  =  integ 0 cosx
+cosx  =  integ 1 (-sinx)
 
-sinx, cosx :: Field a =>  PowerSeries a
-sinf, cosf :: Field a =>  a -> a
+sinf,  cosf  :: Field a =>  a -> a
+sinf  =  evalPS 100 sinx
+cosf  =  evalPS 100 cosx
 \end{code}
 \begin{exercise}
   Write the differential equations characterising sine and cosine,
@@ -614,8 +615,8 @@ sinf, cosf :: Field a =>  a -> a
 %
 The reason that these definitions produce an output instead of
 entering an infinite loop is because Haskell is a lazy language:
-|integ| can immediately returns the first element of the stream before
-requesting any information about its first input.
+|integ| can immediately return the first element of the stream before
+requesting any information about its second input.
 %
 It is instructive to mimic part of what the lazy evaluation machinery
 is doing by hand, as follows.
@@ -661,41 +662,50 @@ cx = 1  :  neg 0  :  frac (neg 1) 2  :  0               :  error "TODO"
 
 \section{Exponentials and trigonometric functions for |PowerSeries|}
 
-Can we compute |exp as|?\jp{Compute in what sense? We already have
-  |expx| in the above section. Does this mean using the differential
-  rather than the integral? I don't get the point.}
+We have now shown how to compute the power series representations of the functions |exp|, |sin|, and |cos|.
+%
+We have also implemented all the |Field| class operations on power
+series.
+%
+The next step would be to compute the |Transcendental| class
+operations directly on the power series representation.
+%
+For example, can we compute |expPS|?
 
 Specification:
 
 \begin{spec}
-eval (exp as) = exp (eval as)
+eval (expPS as) = exp (eval as)
 \end{spec}
-Differentiating both sides, we obtain\jp{What definition of |D| are we using?}
+Differentiating both sides, we obtain
 
 \begin{spec}
-  D (eval (exp as)) = exp (eval as) * D (eval as)
+  D (eval (expPS as)) = exp (eval as) * D (eval as)
 
 <=>  {- |eval| morphism -}
 
-  eval (deriv (exp as)) = eval (exp as * deriv as)
+  eval (deriv (expPS as)) = eval (expPS as * deriv as)
 
 <==
 
-  deriv (exp as) = exp as * deriv as
+  deriv (expPS as) = expPS as * deriv as
 \end{spec}
-
-Adding the ``initial condition'' |eval (exp as) 0 = exp (head as)|, we
-obtain\jp{What is this coming from? Why suddenly using |head|? I am lost.}
+%
+Now we have reached the form of an ordinary differential equation for
+|expPS as|, and we know how to solve them by integration, given the
+initial condition.
+%
+Using |eval (expPS as) 0 == exp (eval as 0) == exp (head as)|, we
+obtain
 %**TODO: head = val
 \begin{spec}
-exp as = integ (exp (head as)) (exp as * deriv as)
+expPS as = integ (exp (head as)) (expPS as * deriv as)
 \end{spec}
-
+%
 Note: we cannot use |solve| here, because the |g| function uses both
-|exp as| and |as| (it ``looks inside'' its argument).
+|expPS as| and |as| (it ``looks inside'' its argument).
 
-
-\jp{So what's happening now? Why this code suddenly?}
+In the same style we can fill in the |Transcendental| instance declaration for |PowerSeries|:
 \begin{code}
 
 instance (Eq a, Transcendental a) => Transcendental (PowerSeries a) where
@@ -705,20 +715,18 @@ instance (Eq a, Transcendental a) => Transcendental (PowerSeries a) where
    cos  =  cosPS
 
 expPS, sinPS, cosPS :: (Eq a, Transcendental a) => PowerSeries a -> PowerSeries a
-expPS  fs  = integ  (exp  (val fs))  (exp fs   * deriv fs)
-sinPS  fs  = integ  (sin  (val fs))  (cos fs   * deriv fs)
-cosPS  fs  = integ  (cos  (val fs))  (-sin fs  * deriv fs)
+expPS  as  = integ  (exp  (val as))  (exp as   * deriv as)
+sinPS  as  = integ  (sin  (val as))  (cos as   * deriv as)
+cosPS  as  = integ  (cos  (val as))  (-sin as  * deriv as)
 
 val ::  Additive a => PowerSeries a  ->  a
 val (Poly (a:_))   =   a
 val _              =   zero
 \end{code}
 
-In fact, we can implement \emph{all} the operations needed for
-evaluating |FunExp| functions as power series! \jp{Wasn't it done
-  already when first talking about power series? There does not seem
-  to be anything pertaining derivatives here.}
-
+In fact, we can now implement \emph{all} the operations needed for
+evaluating |FunExp| functions as power series!
+%
 \begin{code}
 evalP :: (Eq r, Transcendental r) => FunExp -> PowerSeries r
 evalP (Const x)    =  Poly [fromRational (toRational x)]
@@ -734,7 +742,8 @@ evalP (Cos e)      =  cos     (evalP e)
 
 \section{Associated code}
 
-\jp{Feels like this should be moved upwards as the concepts are introduced}
+Here we collect in one place the definitions of |eval| for |FunExp|, syntactic derivative, and syntactic instance declarations for |FunExp|.
+
 
 \begin{code}
 evalFunExp  ::  Transcendental a => FunExp -> a -> a
