@@ -1,15 +1,19 @@
-* Implement some of the numeric type classes "from scratch"
-* Implement some instances for functions
-* Implement some instances for power series
-* Implement some instances for derivative streams
-
 \begin{code}
 {-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE FlexibleContexts #-}
 module DSLsofMath.Algebra where
 import qualified Prelude -- hide everything by default
 import Prelude (Bool(..), Eq(..), Show(..), fromInteger, error, const, id, map)
 type REAL = Prelude.Double
 \end{code}
+
+Plan:
++ Implement some of the numeric type classes "from scratch"
++ Implement some instances for functions
++ Implement some instances for power series
++ Implement some instances for derivative streams
+
 infixl 6 +
 
 

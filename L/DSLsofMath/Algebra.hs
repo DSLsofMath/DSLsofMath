@@ -2,9 +2,7 @@
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE ConstraintKinds #-}
 module DSLsofMath.Algebra where
-
 import qualified Data.Ratio
-
 import qualified Prelude
 import Prelude (Double, Rational, Int, Integer, Bool(..), otherwise,
                 Foldable(foldr), (.), const, (==), (<), error)
