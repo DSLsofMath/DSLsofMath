@@ -1322,6 +1322,7 @@ One the left-hand-side we define |zero :: REAL -> REAL|, while on the
 right-hand-side we use |zero :: REAL|.
 
 %
+\label{sec:FunNumInst}
 \begin{figure}[htpb]
 \begin{spec}
 instance Additive a        => Additive        (x -> a) where

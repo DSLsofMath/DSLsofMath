@@ -116,8 +116,8 @@ In the following we denote by
 %
 \[e_k = \colveccc{0\\\vdots\\0\\1 \makebox[0pt][l]{\qquad $\leftarrow$ position $k$} \\0\\\vdots\\0}\]
 %
-the canonical base vectors, i.e. $e_k$ is the vector that is
-everywhere |0| except at position |k|, where it is |1|, so that |v =
+the canonical base vectors, i.e.\ $e_k$ is the vector that is
+everywhere zero except at position |k|, where it is one, so that |v =
 v0 *^ e0 + ... + vn *^ en|.
 %
 This formula maps the syntax (coefficients) to the semantics (a
@@ -141,14 +141,15 @@ set of indices |G|:
 \begin{code}
 newtype Vector s g    = V (g -> s) deriving (Additive, AddGroup)
 \end{code}
-\footnote{The addition of |Vectors| is defined indexwise.
-  %
-  Because indexwise addition is already our definition of addition for
-  functions (|g -> s|), we can simply reuse this definition.
-  %
-  (Likewise for |zero| and |negate|.)
-  %
-  This is what the |deriving| clause amounts to here.}
+%
+The addition of |Vectors| is defined indexwise.
+%
+Because indexwise addition is already our definition of addition for
+functions (|g -> s|), we can simply reuse this definition.
+%
+(Likewise for |zero| and |negate|.)
+%
+This is what the |deriving| clause amounts to here.
 
 We define right away the notation |a ! i| for the coefficient of the
 canonical base vector |e i|, as follows:
@@ -159,7 +160,7 @@ V f ! i = f i
 \end{code}
 
 As discussed above, the |S| parameter in |Vector S| has to be a field
-(|REAL|, or |Complex|, or |Zn|, etc.) for values of type |Vector S G|
+(|REAL|, or |CC|, or |Zp|, etc.) for values of type |Vector S G|
 to represent elements of a vector space.
 
 The cardinality of |G|, which we sometimes denote |card G|, is number
@@ -182,7 +183,7 @@ finiteDomain :: Finite a => [a]
 finiteDomain = [minBound..maxBound]
 \end{code}
 
-We know from the previous lectures that if |S| is an instance of
+We know from \cref{sec:FunNumInst} that if |S| is an instance of
 |AddGroup| then so is |G -> S|, with the pointwise definitions.
 %
 However, multiplication of vectors does not in general work
@@ -200,6 +201,7 @@ the first argument is a scalar and the second one is a vector.
 %
 For our representation it can be defined as follows:
 
+\pj{This should be a |VectorSpace| class instance.}
 \begin{code}
 infixr 7 *^
 (*^) :: Multiplicative s => s -> Vector s g -> Vector s g
@@ -220,7 +222,7 @@ is :: (Eq g, Ring s) => g -> g -> s
 is i j = if i == j then one else zero
 \end{code}
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
-zeros everywhere, except at position |i| where it has a |1|.
+zeros everywhere, except at position |i| where it has a one.
 
 This way, every |v : G -> S| is a linear combination of vectors |e i|:
 %
