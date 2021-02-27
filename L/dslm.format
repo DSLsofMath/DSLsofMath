@@ -10,6 +10,7 @@
 %format BB                      =  "\mathbb{B}"
 %format ZZ                      =  "\mathbb{Z}"
 %format Zn                      =  ZZ "_n"
+%format Zp                      =  ZZ "_p"
 %format QQ                      =  "\mathbb{Q}"
 %format QQP                     =  QQ "^{+}"
 %format Nat                     =  "\mathbb{N}"
@@ -246,3 +247,6 @@
 % %format *^ = "\mathbin{\circledast}" % could be for convolution, but which text rep.?
 
 %format <$> = "\mathbin{{<}\!{\$}\!{>}}"
+%format next1 = next "_1"
+%format next2 = next "_2"
+%format next3 = next "_3"

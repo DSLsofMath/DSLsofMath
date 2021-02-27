@@ -3,9 +3,9 @@
 %if False
 \begin{code}
 {-# LANGUAGE ConstraintKinds #-}
-{-# LANGUAGE GADTs, FlexibleInstances, UndecidableInstances #-}
+{-# LANGUAGE MultiParamTypeClasses #-}
+{-# LANGUAGE GADTs, FlexibleInstances, FlexibleContexts #-}
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
--- {-# LANGUAGE RebindableSyntax #-}
 module DSLsofMath.W07 where
 import DSLsofMath.Algebra
 import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
@@ -39,10 +39,10 @@ scaling by a set of scalars (i.e., elements of the field).
 %
 In terms of typeclasses, we can characterize this structure as
 follows:
-\begin{spec}
+\begin{code}
 class (Field s, AddGroup v) => VectorSpace v s where
   (*^) :: s -> v -> v
-\end{spec}
+\end{code}
 Additionally, vector scaling (|s *^|) must be a homomorphism over
 (from and to) the additive group structure of |v|:
 \begin{spec}
@@ -158,6 +158,9 @@ infix 9 !
 (!) :: Vector s g -> g -> s
 V f ! i = f i
 \end{code}
+%
+We sometimes omit the constructor |V| and the indexing |(!)|,
+treating vectors as functions without the |newtype|.
 
 As discussed above, the |S| parameter in |Vector S| has to be a field
 (|REAL|, or |CC|, or |Zp|, etc.) for values of type |Vector S G|
@@ -202,12 +205,31 @@ the first argument is a scalar and the second one is a vector.
 For our representation it can be defined as follows:
 
 \pj{This should be a |VectorSpace| class instance.}
+%{
+%format *^^ = *^
 \begin{code}
 infixr 7 *^
-(*^) :: Multiplicative s => s -> Vector s g -> Vector s g
-s *^ V a = V (\i -> s * a i)
+(*^^) :: Multiplicative s => s -> Vector s g -> Vector s g
+s *^^ V a = V (\i -> s * a i)
 \end{code}
+% Equivalent definition: s *^^ v = V (\i -> s * v ! i)
+%}
+%if False
+\begin{code}
+instance Field s => VectorSpace (Vector s g) s where (*^) = (*^^)
+-- Overlapping instances:
+-- instance VectorSpace v s => VectorSpace (Vector v g) s where (*^) = scaleVec
+-- scaleVec :: VectorSpace v s => s -> Vector v g -> Vector v g
+-- scaleVec s (V a) = V (\i -> s *^ a i)
+instance Field s => VectorSpace s s where (*^) = (*)
+-- Overlapping instances:
+-- instance VectorSpace v s => VectorSpace (t->v) s where (*^) = scaleFun
+-- scaleFun :: VectorSpace v s => s -> (t->v) -> (t->v)
+-- scaleFun s f = \x-> s*^f x
+\end{code}
+%endif
 
+%
 The canonical basis vectors are given by
 %
 \begin{code}
@@ -229,6 +251,28 @@ This way, every |v : G -> S| is a linear combination of vectors |e i|:
 \begin{spec}
     v =  v 0 *^ e 0 + ... + v n *^ e n
 \end{spec}
+%
+As we will work with many such linear combinations we introduce a
+helper function |linComb|:
+%
+\begin{code}
+linComb :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
+linComb a v = sum (map (\j -> a j *^ v j) finiteDomain)
+\end{code}
+Using |linComb| the characterising equation for vectors reads:
+%
+\begin{spec}
+    v = linComb v e
+\end{spec}
+%if False
+\begin{code}
+linComb1 :: (Finite g, Ring s) => (g->s) -> (g->s) -> s
+linComb1 as vs = sum [as j * vs j | j <- finiteDomain]
+
+linComb2 :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
+linComb2 as vs = sum [as j *^ vs j | j <- finiteDomain]
+\end{code}
+%endif
 
 \section{Linear transformations}
 
@@ -256,11 +300,57 @@ in |Vector S G| into operations in |Vector S G'| as follows:
 f (u + v)   =  f u + f v
 f (s *^ u)  =  s *^ f u
 \end{spec}
-Because |v = (v 0 *^ e 0 + ... + v n *^ e n)|, we also have:
+Because |v = linComb v e = (v 0 *^ e 0 + ... + v n *^ e n)|, we also have:
 %
 \begin{spec}
-f v =  f (v 0 *^ e 0 + ... + v n *^ e n) = v 0 *^ f (e 0) + ... + v n *^ f (e n)
+f v =  f (  v 0 *^ e 0      + ... +  v n *^ e n)     = {- |f| is linear -}
+    =       v 0 *^ f (e 0)  + ... +  v n *^ f (e n)  = {- def. of |linComb| -}
+    =  linComb v (f . e)
 \end{spec}
+%if False
+\begin{code}
+linLaw :: (Finite g,
+           Eq v',
+           VectorSpace v s,
+           VectorSpace v' s) =>
+  (g -> v) -> (v -> v') -> (g -> s) -> Bool
+linLaw e f v = f (linComb v e) == linComb v (f . e)
+
+linLaw' ::
+  (Finite g, Field s, VectorSpace v' s, Eq v') =>
+  (Vector s g -> v') -> (g -> s) -> Bool
+linLaw' f v = linLaw e f v
+
+linLawS ::
+  (Finite g, Field s, Eq s) =>
+  (Vector s g -> s) -> (g -> s) -> Bool
+linLawS = linLaw'
+
+linLawV ::
+  (Finite g, Field s, Eq (Vector s g')) =>
+  (Vector s g -> Vector s g') -> (g -> s) -> Bool
+linLawV = linLaw'
+
+checkTypes :: (Finite g, Field s, Eq s) =>
+  (Vector s g -> Vector s g') -> Vector s g -> g' -> [s]
+checkTypes f (V v) g' =
+  let m = f . e in
+  [   f (V v) ! g'
+  ,   (linComb v m) ! g'
+  ,   linComb v (\g -> m g ! g')
+  ,   linComb v (\g -> f (e g) ! g')
+  ]
+
+
+checkTypes2 :: (Finite g, Field s) => Matrix s g g -> g -> g -> [s]
+checkTypes2 m k i = let V ek = e k in
+  [ (mulMV m (V ek)) ! i
+  , (linComb ek (transpose m)) ! i
+  , m i ! k
+  ]
+
+\end{code}
+%endif
 %
 But this means that we can determine the values of
 %
@@ -277,21 +367,19 @@ Let |m = f . e|.
 Then
 %
 \begin{spec}
-f v =  v 0 *^ m 0 + ... + v n *^ m n
+f v = linComb v m = v 0 *^ m 0 + ... + v n *^ m n
 \end{spec}
 %
 Each of the |m k| is a |Vector S G'|, as is the resulting |f v|.
 %
-We have
+If we look at component |g'| of |f v| we have
 %
 \begin{spec}
-  f v g'                                             = {- as above -}
+  f v g'                           = {- as above -}
 
-  (v 0 *^ m 0 + ... + v n *^ m n) g'                 = {- Def. of |(*^)| and |(+)| -}
+  (linComb v m) g'                 = {- |linComb|, |(*^)|, |(+)| are all linear -}
 
-  v 0 * m 0 g' + ... + v n * m n g'                  = {- using |sum|, and |(*)| commutative -}
-
-  sum [m j g' * v j | j <- [0 .. n]]
+  linComb v (\g -> m g g')         {-"\ "-}
 \end{spec}
 That is, it suffices to know the behaviour of |f| on the basis vectors
 to know its behaviour on the whole vector space.
@@ -312,21 +400,22 @@ vectors |e i| through |f| (or, in other words, the columns of |M| are
 %
 Every |m k| has |card G'| elements, and it has become standard to
 write |M i j| to mean the |i|th element of the |j|th column, i.e., |M
-i j = m j i|, so that, with the usual matrix-vector multiplication
+i j = m j i|, so that, if we denote the usual matrix-vector
+multiplication by |mulMV|:
 %
 \begin{spec}
-  (M * v) i = sum [M i j * v j | j <- [0 .. n]]
+(mulMV M v) i = linComb v (M i)
 \end{spec}
-%
+% (M*v) i =
 therefore, one has
 %
 \begin{spec}
-  (M * v) i                                   = -- by def. of matrix-vector multiplication
-  sum [M i j * v j | j <- [0 .. n]]           = -- by def. of M i j
-  sum [m j i * v j | j <- [0 .. n]]           = -- by |f v g' = sum [m j g' * v j || j <- [0 .. n]]| with |g' = i|
-  f v i
+(mulMV M v) i                            = -- by def. of |mulMV|
+linComb v (M i)                          = -- by def. of |M i j|
+linComb v (\j -> m j i)                  = -- earlier computation (linearity)
+f v i
 \end{spec}
-\pj{Make equation comment into text to fit within the margins}
+%|f v g' = sum [m j g' * v j || j <- [0 .. n]]| with |g' = i|
 %
 If we take |Matrix| to be just a synonym for functions of type |G ->
 Vector S G'|:
@@ -338,11 +427,13 @@ type Matrix s g g' = g' -> Vector s g
 then we can implement matrix-vector multiplication as follows:
 %
 \begin{code}
-mulMV ::  (Finite g, Ring s) => Matrix s g g'  ->  Vector s g  ->  Vector s g'
-mulMV m v  = V (\i -> sum [m i!j  *  v!j | j <- finiteDomain])
+mulMV :: (Finite g, Field s) => Matrix s g g'  ->  Vector s g  ->  Vector s g'
+mulMV m (V v)  =  linComb v (transpose m)
+
+transpose :: Matrix s i j -> Matrix s j i
+transpose m i = V (\j -> m j ! i)
 \end{code}
 %
-
 %*TODO:
 % I think we might end up with a mixture of definitions given in terms of
 % |sum map| and definitions given in terms of list comprehension, at the
@@ -363,12 +454,13 @@ representation is unique.
 \begin{example}
   Consider the multiplication of a matrix with a basis vector:
 \begin{spec}
-(M * e k) i = sum [M i j * e k j | j <- [0 .. n]] = sum [M i k] = M i k
+(M * e k) ! i = (linComb (is k) (transpose M)) ! i = M i ! k
 \end{spec}
-\end{example}
-%
+%  (M * e k) i = sum [M i j * e k j | j <- [0 .. n]] = sum [M i k] = M i k
 i.e., |e k| extracts the |k|th column from |M| (hence the notation
 ``e'' for ``extract'').
+\end{example}
+%
 
 We have seen how a linear transformation |f| can be fully described by
 a matrix of scalars, |M|.
@@ -470,8 +562,8 @@ i.e., the scalar product of the vectors |v| and |w|.
 An important concept is the dot product between vectors.
 %
 \begin{code}
-dot :: (Ring s, Finite g) => Vector s g -> Vector s g -> s
-dot v w = sum [v!i * w!i | i <- finiteDomain]
+dot :: (Field s, Finite g) => Vector s g -> Vector s g -> s
+dot (V v) (V w) = linComb v w
 \end{code}
 \jp{If we take the algebraic view then this definition is only correct
   if the canonical basis is orthonormal.}
@@ -481,7 +573,7 @@ Dot products have (at least) two aspects.
 First, they yield a notion of how ``big'' a vector is, the |norm|.
 %
 \begin{code}
-sqNorm :: (Ring s, Finite g) => Vector s g -> s
+sqNorm :: (Field s, Finite g) => Vector s g -> s
 sqNorm v = dot v v
 
 norm v = sqrt (sqNorm v)
@@ -494,14 +586,14 @@ For two non-zero vectors |u| and |v|, we can define:
 \begin{code}
 similarity u v = dot u v / norm u / norm v
 \end{code}
-Dividing by the norms mean that |abs (similarity u v)| is at most 1
---- in the [-1,1] interval.
+Dividing by the norms mean that |abs (similarity u v)| is at most |1|
+--- the similarity is always in the interval |[-1,1]|.
 %
 \jp{For real fields. For complex ones one would use the inner product
   instead.}
-
-In fact, for Euclidean spaces |similarity u v| is the cosine of the
-angle between |u| and |v|.
+%
+In fact, for Euclidean spaces the similarity is the cosine of the
+angle between the two vectors.
 %
 For this reason, one says that two vectors are orthogonal when their
 dot product is |0| --- even in non-Euclidean spaces.
@@ -519,15 +611,16 @@ In Euclidean spaces, such a transformation preserve angles.
 In general, they are called orthogonal transformations.
 
 \begin{exercise}
-Can you express this condition as a homomorphism condition?
+  Can you express this condition as a homomorphism condition?
+  % H2(f,dot,dot)
 \end{exercise}
 
 Such transformations necessarily preserve the dimension of the space
 (otherwise at least one base vector would be squished to nothing and
 dot products involving it become zero).
 %
-(When the dimension is preseved, one often uses the term ``linear
-operator''.)
+When the dimension is preseved, one often uses the term ``linear
+operator''.
 %
 The corresponding matrices are square.
 
@@ -618,13 +711,20 @@ For example, |p x = 2+x^3| is represented by |2 *^ e 0 + e 3|.
 In general, the evaluator from the |Vector g s| representation to
 polynomial functions is as follows:
 %
-% \begin{code}
-% evalM :: G -> (REAL -> REAL)
-% evalM (G i) = \x -> x^i
-%
-% evalP :: Vector REAL G -> (REAL -> REAL)
-% evalP (V v) x = sum (map (\i -> v i * evalM i x) finiteDomain)
-% \end{code}
+%if False
+\begin{code}
+evalM :: G -> (REAL -> REAL)
+evalM (G i) = \x -> x^i
+
+evalP, evalP' :: Vector REAL G -> (REAL -> REAL)
+evalP (V v) x = sum (map (\i -> v i * evalM i x) finiteDomain)
+
+evalP' (V v) = linComb v evalM
+instance VectorSpace (REAL->REAL) REAL where
+  (*^) = scaleR2R
+scaleR2R s f = (s*).f
+\end{code}
+%endif
 %
 \begin{spec}
 evalP :: Vector REAL {0, ..., n} -> (REAL -> REAL)
@@ -748,12 +848,12 @@ and this would be a lot more efficient than to compute the integral by
 1) computing the product using |mulPoly|, 2) integrating using
 |integ|, 3) using |eval| on the end points of the domain.
 
-Let us consider as a base the functions |bn = sin (n*x)|, prove that
+Let us consider as a base the functions |bn x = sin (n*x)|, prove that
 they are orthogonal.
 
 We first use trigonometry to rewrite the product of bases:
 \begin{spec}
-   2 * (bi * bj)
+   2 * (bi x * bj x)
 =  2 * sin (i*x) * sin (j*x)
 =  cos ((i-j)*x) - cos ((i+j)*x)
 \end{spec}
@@ -790,10 +890,10 @@ argument as before, and there remains: |2*sqNorm bi = 2 pi|.
 Thus to normalise the base vectors we need to scale them by |1 / sqrt
 pi|.
 %
-In sum |bi = sin (i*x)/sqrt pi| is an orthonormal basis:
+In sum |bi x = sin (i*x)/sqrt pi| is an orthonormal basis:
 
 \begin{spec}
-  bi `dot` bj = is i j
+  bi `dotF` bj = is i j
 \end{spec}
 
 As interesting as it is, this basis does not cover all functions over
@@ -822,6 +922,7 @@ base vectors.
 %
 Indeed:\footnote{The proof can be easily adapted to infinite sums.}
 
+\pj{Check if |linComb| can be used here.}
 \begin{spec}
      v           = sum [vi *^ bi | i <- finiteDomain]
 =>   v `dot` bj  = sum [vi *^ bi | i <- finiteDomain] `dot` bj
@@ -890,7 +991,7 @@ basis vectors |e 0, ..., e 6| of |Vector REAL G| under the
 transformation
 %
 \begin{spec}
-f : Vector REAL G -> Vector REAL G
+f :: Vector REAL G -> Vector REAL G
 f (e i) = e (next i)
 \end{spec}
 
@@ -932,7 +1033,7 @@ We obtain |{f 2, f 4} = {5, 6}|, the image of |{2, 4}| through |f|.
 In a sense, we can say that the two transitions happened in
 parallel.
 %
-But that is not quite accurate: if start with |{3, 4}|, we no longer
+But that is not quite accurate: if we start with |{3, 4}|, we no longer
 get the characteristic function of |{f 3, f 4} = {6}|, instead, we get
 a vector that does not represent a characteristic function at all:
 |[0, 0, 0, 0, 0, 0, 2] = 2 *^ e 6|.
@@ -1007,54 +1108,69 @@ implementation:
 %
 \begin{code}
 next1 :: G -> G
-next1 (G 0)  = G 1;  next1 (G 1) =  G 3;  next1 (G 2) = G 5;  next1 (G 3) = G 6;
-next1 (G 4)  = G 6;  next1 (G 5) =  G 4;  next1 (G 6) = G 5
+next1 (G 0)  = G 1;  {-"\qquad"-}  next1 (G 1) =  G 3;
+next1 (G 2)  = G 5;                next1 (G 3) =  G 6;
+next1 (G 4)  = G 6;                next1 (G 5) =  G 4;
+next1 (G 6)  = G 5
 \end{code}
 %
 Its associated matrix is
 %
 \begin{spec}
-m g'                                 = {- |m| is the matrix version of |f| -}
-V (\ g -> toF (f (e g)) g')          = {- by the spec. of |f| -}
-V (\ g -> toF (e (next g)) g')       = {- by def. of |e| -}
-V (\ g -> toF (V (is (next g))) g')  = {- by def. of |toF| -}
-V (\ g -> is (next g) g')
+m g'                                 {-"\qquad"-}  {- |m| is the matrix version of |f| -}
+V (\ g -> (f (e g))           ! g')                {- by the spec. of |f| -}
+V (\ g -> (e (next1 g))       ! g')                {- by def. of |e| -}
+V (\ g -> (V (is (next1 g)))  ! g')                {- by def. of |(!)| -}
+V (\ g -> is (next1 g) g')                         {- |is| is symmetric -}
+V (\ g -> is g' (next1 g))                         {- by def. of |(.)| -}
+V (is g' . next1)
 \end{spec}
 %
-where
-%
+%if False
 \begin{code}
-toF :: Vector s g -> g -> s
-toF (V v) = v
+proofSteps m g' =
+  let  f :: Vector REAL G -> Vector REAL G
+       f (V v) = linComb v (e . next1)
+  in
+  [ m g'                                   {- |m| is the matrix version of |f| -}
+  , V (\ g -> (f (e g))           ! g')    {- by the spec. of |f| -}
+  , V (\ g -> (e (next1 g))       ! g')    {- by def. of |e| -}
+  , V (\ g -> (V (is (next1 g)))  ! g')    {- by def. of |(!)| -}
+  , V (\ g -> is (next1 g) g')
+  , V (\ g -> is g' (next1 g))
+  , V (is g' . next1)
+  ]
+
+testProofSteps = proofSteps m1
 \end{code}
-\jp{This is the same as indexing |(!)|}
+%endif
 %
 Thus we can implement |m| as:
 %
 \begin{code}
 m1 :: Ring s => G -> Vector s G
-m1 g' = V (\ g -> (next1 g) `is` g')
+m1 g' = V (is g' . next1)
 \end{code}
 
+%if False
 Test:
 %
 \begin{code}
-t1' :: Vector Int G
+t1' :: Vector REAL G
 t1'  = mulMV m1 (e (G 3) + e (G 4))
 t1   = toL t1'               -- |[0,0,0,0,0,0,2]|
 \end{code}
-\jp{Fold this implementation in the text}
-
+%endif
 
 %**TODO (NiBo):
 %if False
 % This could go to into the file for the live sessions:
 %
 \begin{code}
-poss :: (Finite g, Ring s) => Int -> Matrix s g g -> Vector s g -> [Vector s g]
+poss :: (Finite g, Field s) => Int -> Matrix s g g -> Vector s g -> [Vector s g]
 poss n m v = take (n + 1) (iterate (mulMV m) v)
 
-testPoss0 :: [Vector Int G]
+testPoss0 :: [Vector REAL G]
 testPoss0 = poss 6 m1 (e (G 3) + e (G 4))
 \end{code}
 %
@@ -1088,8 +1204,9 @@ testPoss1' = poss1' 6 next1 [G 3, G 4]
 Another interpretation of the application of |M| to characteristic
 functions of a subset is the following: assuming that all I know is
 that the system is in one of the states of the subset, where can it
-end up after one step?  (this assumes the |max|-|min| algebra as
-above).
+end up after one step?
+%
+(This assumes the |max|-|min| algebra as above.)
 %
 
 The general idea for non-deterministic systems, is that the result of
@@ -1108,7 +1225,7 @@ R g'| if |g'| is a potential successor of |g|.
 Endo-relations can also be pictured as graphs, but the restriction
 that every node should be the source of exactly one arrow is lifted.
 %
-Every node can be the source of one, none, or many arrows.
+Every node can be the source of zero, one, or many arrows.
 
 For example:
 
@@ -1168,8 +1285,8 @@ What changes?
 %
 Can you prove it?
 
-Implementation:
-
+\paragraph{Implementation:}
+%
 The transition relation has type |G -> (G -> Bool)|:
 %
 \begin{code}
@@ -1199,7 +1316,8 @@ m2 g' = V (\ g -> f2 g g')
 % TODO (by DaHe): Should probably elaborate on why we needed a field before, and
 % now a Ring instance
 %
-We need a |Ring| instance for |Bool| (not a field!):
+Even though |Bool| is not a |Field| (not even a |Ring|) the
+computations we need go through with these instances:
 %
 \begin{code}
 instance Additive Bool where
@@ -1207,20 +1325,22 @@ instance Additive Bool where
   (+)     =  (||)
 
 instance AddGroup Bool where
-  negate  =  not
+  negate  =  error "negate: not used"
 
 instance Multiplicative Bool where
   one     =  True
   (*)     =  (&&)
+
+instance MulGroup Bool where
+  recip   =  id
 \end{code}
 
-Test:
+As a test we compute the state after one step from ``either 3 or 4'':
 %
 \begin{code}
 t2' = mulMV m2 (e (G 3) + e (G 4))
 t2 = toL t2'  -- |[False,True,False,False,False,False,True]|
 \end{code}
-\jp{Fold in the text}
 
 %**TODO (NiBo):
 % This could go to into the file for the live sessions:
@@ -1329,12 +1449,12 @@ Additionally, the |p a| we are computing with this formula is not the
 |p a| which must eventually appear in the products on the right hand
 side.
 %
-We do not know how this notation came about\jp{According to Jaynes in
-  "Probability Theory, The Logic of Science, p. 17. The notation A||B
-  for "A given B" is attributable to Keynes (1921)."}: it is neither
-in Bayes' memoir, nor in Kolmogorov's monograph.\jp{citations needed}
+% We do not know how this notation came about\jp{According to Jaynes in
+%   "Probability Theory, The Logic of Science, p. 17. The notation A||B
+%   for "A given B" is attributable to Keynes (1921)."}: it is neither
+% in Bayes' memoir, nor in Kolmogorov's monograph.\jp{citations needed}
 
-Regardless, at this stage, what we need to know is that the
+In any case, at this stage, what we need to know is that the
 conditional probability |p (a || b)| gives us the probability that the
 next state is |a|, given that the current state is |b|.
 %
@@ -1347,8 +1467,6 @@ formula is identical to a matrix-vector multiplication.
 As usual, we write the associated matrix by looking at how the
 canonical base vectors are transformed.
 %
-% TODO (by DaHe): Again, I find this a little confusing: If e = is, then how is
-% e i the probability distribution concentrated in i? PaJa: show that the type is right and the sum is 1.
 In this case, the canonical base vector |e i = \ j -> i `is` j| is the
 probability distribution \emph{concentrated} in |i|.
 %
@@ -1372,10 +1490,9 @@ probability of being anwhere else is |0|.
 Exercise~\ref{exc:StocExample1}: starting from state 0, how many steps
 do you need to take before the probability is concentrated in state 6?
 %
-Reverse again the arrow from 2 to 4.
-%
-\jp{what does that mean how do we make it so that columns sum to 1?
-  Also NiBo:There are many ways of reversing the arrow from 2 to 4.}
+Reverse again the arrow from 2 to 4 (so that |2->5| has probability
+|1|, |4->2| probability |0.7|, |4->6| and |4->1| have probability
+|0.15| each.
 %
 What can you say about the long-term behaviour of the system now?
 
@@ -1423,7 +1540,7 @@ f3' (G 4) = mkV [(G 1, 0.4), (G 6, 0.4), (G 2, 0.2)] 0.0
 f3' (G 5) = mkV [(G 4, 1.0)] 0.0
 f3' (G 6) = mkV [(G 6, 1.0)] 0.0
 
-m3 g' = V (\ g -> toF (f3 g) g')
+m3 g' = V (\ g -> (f3 g) ! g')
 \end{code}
 
 *DSLsofMath.W07> |last (poss 6 m3 (e (G 0)))|
@@ -1638,7 +1755,7 @@ specialising the scalar type |S|)?
 Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|, |Super|.
 
 
-\section{The monad of linear algebra}
+\section{*The monad of linear algebra}
 \jp{Todo: connect this with the monad of probability theory chapter.}
 The answer is yes, up to a point.
 %
@@ -1664,9 +1781,15 @@ The idea is that vectors on finite types are finite functors and monads:
 instance Ring s => FinFunc (Vector s) where
   func f (V v) = V (\ g' -> sum [v g | g <- finiteDomain, g' == f g])
 
-instance Ring s => FinMon (Vector s) where
-  embed g       =  V (is g)
-  bind (V v) f  =  V (\ g' -> sum [toF (f g) g' * v g | g <- finiteDomain])
+instance Field s => FinMon (Vector s) where
+  embed  = embedFinM
+  bind   = bindFinM
+
+embedFinM :: (Eq a, Ring s) => a -> Vector s a
+embedFinM g = V (is g)
+
+bindFinM :: (Field s, Finite a) => Vector s a -> (a -> Vector s b) -> Vector s b
+bindFinM (V v) f  =  V (\ g' -> linComb v (\g -> f g ! g'))
 \end{code}
 %
 Note that, if |v :: Vector S G| and |f :: G -> Vector S G'| then
@@ -1691,103 +1814,162 @@ monadic operations, remember that matrices are just functions of type
 \begin{spec}
   type Matrix s g g' = g' -> Vector s g
 \end{spec}
-
+% a -> Vector s b = Matrix s b a
 According to our earlier definition, we can rewrite matrix-vector
-multiplication in terms of dot products
+multiplication in terms of |linComb|
 %
 \begin{spec}
-
-  mulMV m v
+  mulMV m (V v)
 
 = {- earlier definition -}
 
-  V (\i -> sum [(m i ! j) * (v!j) | j <- finiteDomain])
-
-= {- def. of |dot| -}
-
-  V (\i -> dot (m i') v)
-
+  linComb v (transpose m)
 \end{spec}
-%
-Now, with
-%
+%if False
 \begin{code}
-toMatrix :: (g -> Vector s g') -> Matrix s g g'
-toMatrix f = \ g' -> V (\ g -> toF (f g) g')
+testBindCalc1 :: (Finite i, Field s) => Matrix s i j -> Vector s i -> [Vector s j]
+testBindCalc1 m (V v) =
+  [ mulMV m (V v)
+  , linComb v (transpose m)
+  ]
+testBindCalc2 m (V v) =
+  [ mulMV m (V v)
+  , linComb v (transpose m)
+  , linComb v (\i -> V (\j -> m j ! i))
+  , linComb v (\i -> V (\j -> m j ! i))
+  , V (\ j -> linComb v (\i -> f i ! j))
+  ]
+  where f = transpose m
+
+-- ``poor man's proofs'' of the |linComb|-|V| lemma
+qq :: (Finite j, Field s) => (j -> s) -> (j -> Vector s i) -> [Vector s i]
+qq a v = let v0 = linComb a v in map (\v -> v - v0) $
+  [ linComb a v                                             -- def. |linComb|
+  , sum (map (\j -> a j *^ v j) finiteDomain)               -- def. |(*^)|
+  , sum (map (\j -> V (\i -> a j * v j ! i)) finiteDomain)  -- lemma |qq2|
+  ]
+  ++
+    qq2 a (\j i -> v j ! i) finiteDomain
+  ++
+  [ V (\i -> sum (map (\j -> a j *  v j ! i) finiteDomain)) -- def. |(*^)| for |REAL|
+  , V (\i -> sum (map (\j -> a j *^ v j ! i) finiteDomain)) -- def. |linComb|
+  , V (\i -> linComb a (\j -> v j ! i))
+  ]
+
+qq2 :: Ring s => (j->s) -> (j->i->s) -> [j] -> [Vector s i]
+qq2 a f js = let y j = \i -> a j * f j i in
+  [ sum (map (\j -> V (\i -> a j * f j i))  js)  -- introduce shorthand |y|
+  , sum (map (\j -> V (y j))                js)  -- def. map for (:)
+  , V (\i -> sum (map (\j -> y j i)         js)) -- def. |y|
+  , V (\i -> sum (map (\j -> a j * f j i)   js))
+  ]
+
+qq3 :: Additive s => (j -> i -> s) -> [j] -> [Vector s i]
+-- qq3 y js =
+--       sum (map (\j -> V (y j)) js)
+--    == V (\i -> sum (map (\j -> y j i) js))
+qq3 y [] = let q1 j = V (\i -> y j i)
+               q2 i = \j -> y j i      in
+  [ sum (map q1 [])                -- def. |map| for |[]|
+  , sum []                         -- def. |sum| for |[]|
+  , zero                           -- def. |zero| for |Vector|
+  , V zero                         -- def. |zero| for functions
+  , V (\i -> zero)                 -- def. |sum| for |[]|
+  , V (\i -> sum [])               -- def. |map| for |[]|
+  , V (\i -> sum (map (q2 i) []))  -- def. |map| for |[]|
+  ]
+qq3 y (j:js) =
+  [ sum (map (\j -> V (y j)) (j:js))                -- def. |map| for |(:)|
+  , sum (V (y j) : map (\j -> V (y j)) js)          -- def. |sum| for |(:)|
+  , V (y j) + sum (map (\j -> V (y j)) js)          -- ind. hyp
+  , V (y j) + V (\i -> sum (map (\j -> y j i) js))  -- def. |(+)| for Vector
+  , V (y j  +  \i -> sum (map (\j -> y j i) js))    -- def. |(+)| for functions
+  , V (\i -> y j i + sum (map (\j -> y j i) js))    -- def. |sum| for |(:)|
+  , V (\i -> sum (y j i : map (\j -> y j i) js))    -- def. |map| for |(:)|
+  , V (\i -> sum (map (\j -> y j i) (j:js)))
+  ]
 \end{code}
+%endif
 %
-we have:
+Now we have:
 %
 \begin{spec}
-
-  mulMV (toMatrix f) (V v)
+  mulMV (transpose m) (V v)
 
 = {- def. of |mulMV| -}
 
-  V (\ g' -> dot ((toMatrix f) g') (V v))
+  linComb v (transpose (transpose m))
 
-= {- def. of |toMatrix| -}
+= {- Property of |transpose| -}
 
-  V (\ g' -> dot (V (\ g -> toF (f g) g')) (V v))
+  linComb v m
 
-= {- def. of |dot| -}
+= {- |linComb|-|V| lemma -}
 
-  V (\ g' -> sum [toF (f g) g' * v g | g <- finiteDomain])
+  V (\i -> linComb v (\j -> m j ! i))
 
 = {- def. of |bind| -}
 
-  bind (V v) f
-
+  bind (V v) m
 \end{spec}
 %
 Thus we see that |bind v f| is ``just'' a matrix-vector
 multiplication.
 
-Perhaps for extra exercises:\jp{clarify status}
-
-It is worth pointing out the role of |f| in |func f v|.
+The |linComb|-|V| lemma says that for |a :: j -> s| and |v :: j ->
+Vector s i| we have |linComb a v == V (\i -> linComb a (\j -> v j !
+i))|.
 %
-We can rewrite the |g'|th component of |func f v| in terms of the dot
-product
-%
-\begin{spec}
-  dot v (V (\ g -> is g' (f g)))
-=
-  dot v (V (is g' . f))
-\end{spec}
-%
-This shows that the role of |f| in |func f v| is that of
-re-distributing the values of |v| onto the new vector.
+The proof uses the definitions of |linComb|, |(*^)|, and the
+|Additive| instances for |Vector| and functions but is omitted here
+for brevity.
+\pj{Show parts of the proof which is in |qq|, |qq2|, |qq3| above.}
 
-\begin{exercise}
-  show that if |w = func f v| then the sum of the components of |w| is
-  equal to the sum of the components of |v|.
-\end{exercise}
-
-
-\begin{exercise}
-\begin{enumerate}
-\item Prove that the functor laws hold, i.e.
+% Perhaps for extra exercises:\jp{clarify status}
 %
-\begin{spec}
-func id       =  id
-func (g . f)  =  func g . func f
-\end{spec}
-
-\item Prove that the monad laws hold, i.e.
+% It is worth pointing out the role of |f| in |func f v|.
+% %
+% We can rewrite the |g'|th component of |func f v| in terms of the dot
+% product
+% %
+% \begin{spec}
+%   dot v (V (\ g -> is g' (f g)))
+% =
+%   dot v (V (is g' . f))
+% \end{spec}
+% %
+% This shows that the role of |f| in |func f v| is that of
+% re-distributing the values of |v| onto the new vector.
 %
-\begin{spec}
-bind v return      =  v
-bind (return g) f  =  f g
-bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
-\end{spec}
-
-\item What properties of |S| have you used to prove these properties?
+% \begin{exercise}
+%   show that if |w = func f v| then the sum of the components of |w| is
+%   equal to the sum of the components of |v|.
+% \end{exercise}
 %
-  Define a new type class |GoodClass| that accounts for these (and
-  only these) properties.
-\end{enumerate}
-\end{exercise}
+%
+% \begin{exercise}
+% \begin{enumerate}
+% \item Prove that the functor laws hold, i.e.
+% %
+% \begin{spec}
+% func id       =  id
+% func (g . f)  =  func g . func f
+% \end{spec}
+%
+% \item Prove that the monad laws hold, i.e.
+% %
+% \begin{spec}
+% bind v return      =  v
+% bind (return g) f  =  f g
+% bind (bind v f) h  =  bind v (\ g' -> bind (f g') h)
+% \end{spec}
+%
+% \item What properties of |S| have you used to prove these properties?
+% %
+%   Define a new type class |GoodClass| that accounts for these (and
+%   only these) properties.
+% \end{enumerate}
+% \end{exercise}
 
 %*TODO: Proving that |func| preserves composition and that |bind|
 % associates gets very messy if one directly operates with their
@@ -1805,12 +1987,12 @@ Conversions and |Show| functions so that we can actually see our vectors.
 toL :: Finite g => Vector s g -> [s]
 toL (V v) = map v finiteDomain
 
-
 instance (Finite g, Show s) => Show (g->s)        where  show = showFun
 instance (Finite g, Show s) => Show (Vector s g)  where  show = showVector
 
 showVector :: (Finite g, Show s) => Vector s g -> String
 showVector (V v) = showFun v
+
 showFun :: (Finite a, Show b) => (a->b) -> String
 showFun f = show (map f finiteDomain)
 \end{code}
@@ -1822,17 +2004,17 @@ multiplication:
 %
 \begin{code}
 dot' ::  (Finite g, Ring s) =>
-        (g->s) -> (g->s) -> s
+         (g->s) -> (g->s) -> s
 dot' v w = sum (map (v * w) finiteDomain)
 \end{code}
 %
-Note that |v * w :: g -> s| is using the |FunNumInst|.
+Note that |v * w :: g -> s| is using the function instance of |Multiplicative|.
 
 Using it we can shorten the definition of |mulMV|
 
 \begin{spec}
   mulMV m v g'
-= -- Earlier definition
+= -- Classical definition
   sum [m g' g * v g | g <- finiteDomain]
 = -- replace list comprehension with |map|
   sum (map (\g -> m g' g * v g) finiteDomain)
@@ -1866,6 +2048,7 @@ to end up at
 mulMV' ::  (Finite g, Ring s) =>
            Mat s g g' ->  Vec s g  ->  Vec s g'
 mulMV' m v  =  dot' v . m
+
 type Mat s r c = c -> r -> s
 type Vec s r = r -> s
 \end{code}
@@ -1877,10 +2060,12 @@ mulMM' ::  (Finite b, Ring s) =>
            Mat s b c   ->  Mat s a b  ->  Mat s a c
 mulMM' m1 m2 = \r c -> mulMV' m1 (getCol m2 c) r
 
-transpose :: Mat s g g' -> Mat s g' g
-transpose m i j = m j i
+transpos :: Mat s g g' -> Mat s g' g
+transpos m i j = m j i
+
 getCol :: Mat s g g' -> g -> Vec s g'
-getCol = transpose
+getCol = transpos
+
 getRow :: Mat s g g' -> g' -> Vec s g
 getRow = id
 \end{code}
