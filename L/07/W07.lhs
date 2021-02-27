@@ -4,7 +4,8 @@
 \begin{code}
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE GADTs, FlexibleInstances, UndecidableInstances #-}
-{-# LANGUAGE GeneralizedNewtypeDeriving, RebindableSyntax #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+-- {-# LANGUAGE RebindableSyntax #-}
 module DSLsofMath.W07 where
 import DSLsofMath.Algebra
 import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
@@ -216,7 +217,7 @@ In linear algebra textbooks, the function |is| is often referred to as
 the Kronecker-delta function and |is i j| is written $\delta_{i,j}$.
 \begin{code}
 is :: (Eq g, Ring s) => g -> g -> s
-is i j = if i == j then 1 else 0
+is i j = if i == j then one else zero
 \end{code}
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
 zeros everywhere, except at position |i| where it has a |1|.
@@ -982,8 +983,9 @@ the deeper results of linear algebra.
 
 In the example above, we have:
 %
+% newtype G = G Int deriving (Eq, Show, Additive, Multiplicative, AddGroup)
 \begin{code}
-newtype G = G Int deriving (Eq, Show, Additive, Multiplicative, AddGroup)
+newtype G = G Int deriving (Eq, Show)
 
 instance Bounded G where
   minBound  =  G 0
@@ -1003,8 +1005,8 @@ implementation:
 %
 \begin{code}
 next1 :: G -> G
-next1 0  = 1;  next1 1 =  3;  next1 2 = 5;  next1 3 = 6;
-next1 4  = 6;  next1 5 =  4;  next1 6 = 5
+next1 (G 0)  = G 1;  next1 (G 1) =  G 3;  next1 (G 2) = G 5;  next1 (G 3) = G 6;
+next1 (G 4)  = G 6;  next1 (G 5) =  G 4;  next1 (G 6) = G 5
 \end{code}
 %
 Its associated matrix is
@@ -1036,7 +1038,7 @@ Test:
 %
 \begin{code}
 t1' :: Vector Int G
-t1'  = mulMV m1 (e 3 + e 4)
+t1'  = mulMV m1 (e (G 3) + e (G 4))
 t1   = toL t1'               -- |[0,0,0,0,0,0,2]|
 \end{code}
 \jp{Fold this implementation in the text}
@@ -1051,7 +1053,7 @@ poss :: (Finite g, Ring s) => Int -> Matrix s g g -> Vector s g -> [Vector s g]
 poss n m v = take (n + 1) (iterate (mulMV m) v)
 
 testPoss0 :: [Vector Int G]
-testPoss0 = poss 6 m1 (e 3 + e 4)
+testPoss0 = poss 6 m1 (e (G 3) + e (G 4))
 \end{code}
 %
 %
@@ -1065,12 +1067,12 @@ testPoss0 = poss 6 m1 (e 3 + e 4)
 poss1 :: Int -> (a -> a) -> [a] -> [[a]]
 poss1 n next xs  = take (n + 1) (iterate (map next) xs)
 
-testPoss1 = poss1 6 next1 [3, 4]
+testPoss1 = poss1 6 next1 [G 3, G 4]
 
 poss1' :: (Eq a) => Int -> (a -> a) -> [a] -> [[a]]
 poss1' n next xs = take (n + 1) (iterate (nub . map next) xs)
 
-testPoss1' = poss1' 6 next1 [3, 4]
+testPoss1' = poss1' 6 next1 [G 3, G 4]
 \end{code}
 %
 % *DSLsofMath.W07> |poss1 6 next1 [3, 4]|
@@ -1170,13 +1172,13 @@ The transition relation has type |G -> (G -> Bool)|:
 %
 \begin{code}
 f2 :: G -> (G -> Bool)
-f2 0 g      =   g == 1 || g == 2
-f2 1 g      =   g == 3
-f2 2 g      =   g == 4 || g == 5
-f2 3 g      =   g == 6
-f2 4 g      =   g == 1 || g == 6
-f2 5 g      =   g == 4
-f2 6 g      =   False
+f2 (G 0) (G g)      =   g == 1 || g == 2
+f2 (G 1) (G g)      =   g == 3
+f2 (G 2) (G g)      =   g == 4 || g == 5
+f2 (G 3) (G g)      =   g == 6
+f2 (G 4) (G g)      =   g == 1 || g == 6
+f2 (G 5) (G g)      =   g == 4
+f2 (G 6) (G g)      =   False
 \end{code}
 %
 The associated matrix:
@@ -1213,7 +1215,7 @@ instance Multiplicative Bool where
 Test:
 %
 \begin{code}
-t2' = mulMV m2 (e 3 + e 4)
+t2' = mulMV m2 (e (G 3) + e (G 4))
 t2 = toL t2'  -- |[False,True,False,False,False,False,True]|
 \end{code}
 \jp{Fold in the text}
@@ -1398,28 +1400,31 @@ m3 ::  G -> Vector REAL G
 
 %if False
 \begin{code}
+mkV :: Eq g => [(g,s)] -> s -> Vector s g
+mkV tab def = V (\g -> maybe def id (lookup g tab))
+
 -- f3 :: G -> Vector REAL G
-f3 0 = V (\ g -> if g == 1 then 0.4 else if g == 2 then 0.6 else 0.0)
-f3 1 = V (\ g -> if g == 3 then 1.0 else 0.0)
-f3 2 = V (\ g -> if g == 4 then 0.7 else if g == 5 then 0.3 else 0.0)
-f3 3 = V (\ g -> if g == 6 then 1.0 else 0.0)
-f3 4 = V (\ g -> if g == 1 then 0.5 else if g == 6 then 0.5 else 0.0)
-f3 5 = V (\ g -> if g == 4 then 1.0 else 0.0)
-f3 6 = V (\ g -> if g == 6 then 1.0 else 0.0)
+f3 (G 0) = mkV [(G 1, 0.4), (G 2, 0.6)] 0
+f3 (G 1) = mkV [(G 3, 1.0)] 0
+f3 (G 2) = mkV [(G 4, 0.7), (G 5, 0.3)] 0
+f3 (G 3) = mkV [(G 6, 1.0)] 0
+f3 (G 4) = mkV [(G 1, 0.5), (G 6, 0.5)] 0
+f3 (G 5) = mkV [(G 4, 1.0)] 0
+f3 (G 6) = mkV [(G 6, 1.0)] 0
 
 f3' :: G -> Vector REAL G
-f3' 0 = V (\ g -> if g == 1 then 0.4 else if g == 2 then 0.6 else 0.0)
-f3' 1 = V (\ g -> if g == 3 then 1.0 else 0.0)
-f3' 2 = V (\ g -> if g == 5 then 1.0 else 0.0)
-f3' 3 = V (\ g -> if g == 6 then 1.0 else 0.0)
-f3' 4 = V (\ g -> if g == 1 then 0.4 else if g == 6 then 0.4 else if g == 2 then 0.2 else 0.0)
-f3' 5 = V (\ g -> if g == 4 then 1.0 else 0.0)
-f3' 6 = V (\ g -> if g == 6 then 1.0 else 0.0)
+f3' (G 0) = mkV [(G 1, 0.4), (G 2, 0.6)] 0.0
+f3' (G 1) = mkV [(G 3, 1.0)] 0.0
+f3' (G 2) = mkV [(G 5, 1.0)] 0.0
+f3' (G 3) = mkV [(G 6, 1.0)] 0.0
+f3' (G 4) = mkV [(G 1, 0.4), (G 6, 0.4), (G 2, 0.2)] 0.0
+f3' (G 5) = mkV [(G 4, 1.0)] 0.0
+f3' (G 6) = mkV [(G 6, 1.0)] 0.0
 
 m3 g' = V (\ g -> toF (f3 g) g')
 \end{code}
 
-*DSLsofMath.W07> |last (poss 6 m3 (e 0))|
+*DSLsofMath.W07> |last (poss 6 m3 (e (G 0)))|
 
 %endif
 
@@ -1431,13 +1436,13 @@ m3 g' = V (\ g -> toF (f3 g) g')
 %
 % \begin{code}
 % next3 :: G -> [(G, REAL)]
-% next3 0 = [(1,0.4), (2,0.6)]
-% next3 1 = [(3,1.0)]
-% next3 2 = [(4,0.7), (5,0.3)]
-% next3 3 = [(6,1.0)]
-% next3 4 = [(1,0.5), (6,0.5)]
-% next3 5 = [(4,1.0)]
-% next3 6 = [(6,1.0)]
+% next3 (G 0) = [(1,0.4), (2,0.6)]
+% next3 (G 1) = [(3,1.0)]
+% next3 (G 2) = [(4,0.7), (5,0.3)]
+% next3 (G 3) = [(6,1.0)]
+% next3 (G 4) = [(1,0.5), (6,0.5)]
+% next3 (G 5) = [(4,1.0)]
+% next3 (G 6) = [(6,1.0)]
 %
 % step :: (Eq a) => (a -> [(a, REAL)]) -> [(a, REAL)] -> [(a, REAL)]
 % step sys aps = concat (map g (map f aps))
