@@ -2052,6 +2052,29 @@ mulMV' m v  =  dot' v . m
 type Mat s r c = c -> r -> s
 type Vec s r = r -> s
 \end{code}
+%if False
+\begin{code}
+linComb' :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
+linComb' a v = sum (map (\j -> a j *^ v j) finiteDomain)
+
+mulMV'' ::  (Finite g, Field s) =>
+           Mat s g g' ->  Vec s g  ->  Vec s g'
+mulMV'' m v  =  linComb' v . m
+
+checkTypes3 :: (Finite b, Field s) => Mat s a b -> Mat s b c -> a -> [Vec s c]
+checkTypes3 m1 m2 i =
+  [ getCol (mulM m2 m1) i
+  , evalMV m2 (getCol m1 i)
+  ]
+
+mulM :: (Finite b, Field s) => Mat s b c -> Mat s a b -> Mat s a c
+mulM m2 m1 = flip (evalMV m2 . flip m1)
+
+evalMV :: (Finite a, Field s) => Mat s a b -> Vec s a -> Vec s b
+evalMV m v = linComb v . m
+
+\end{code}
+%endif
 
 Similarly, we can define matrix-matrix multiplication:
 %

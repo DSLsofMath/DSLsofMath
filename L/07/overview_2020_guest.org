@@ -20,7 +20,7 @@ Lecture Notes: [[file:W07.lhs::\label{sec:LinAlg}][sec:LinAlg]]
  + scale :: s->(v->v)
  laws:  0+v==v==v+0
        (a+b)+c==a+(b+c)
-       H2(scale,(*),(.)) -- epand and explain
+       H2(scale,(*),(.)) -- expand and explain
 *** Exempel på vektorer och enkla operationer
 *** Back to the representation: G -> S (index to scalars)
 + zero = const 0
