@@ -306,7 +306,7 @@ Both this condition and the integral make sense for |x ∈ ℂ|, so we
 could take
 
 \begin{tikzcd}
-  |a : ℕ → ℝ| \arrow{r}{\sumanxn} & |f : ℝ → ℝ| \arrow{r}{\intftxt} & |F : {z || bsBar z < 1} → ℂ|
+  |a : ℕ → ℝ| \arrow{r}{\sumanxn} & |f : ℝ → ℝ| \arrow{r}{\intftxt} & |F : {z || absBar z < 1} → ℂ|
 \end{tikzcd}
 
 but let us stick to |ℝ| for now.
