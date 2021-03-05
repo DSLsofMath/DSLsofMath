@@ -17,6 +17,9 @@ stdenv.mkDerivation {
                        collection-fontsrecommended
                        comment
                        cleveref
+                       ccicons
+                       csquotes
+                       doclicense
                        enumitem
                        environ
                        fontaxes
