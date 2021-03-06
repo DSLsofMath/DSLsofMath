@@ -31,7 +31,7 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
       \end{itemize}
 
     \item Find the Laplace transforms |ℒ sin| and |ℒ cos| using the
-     transform for the exponentials and the result from \ref{exc:sincosexp}.
+     transform for the exponentials and the result from \cref{exc:sincosexp}.
 
   \end{enumerate}
 \end{exercise}

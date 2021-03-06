@@ -10,7 +10,7 @@ module DSLsofMath.W08 where
 import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
 import DSLsofMath.W05
 import qualified DSLsofMath.W06
-import DSLsofMath.W06 (integ, sinx, cosx)
+import DSLsofMath.W06 (integ, sinx, sinf, cosx, cosf)
 import DSLsofMath.Algebra
 import Data.Complex
 \end{code}
@@ -46,7 +46,7 @@ and approximated by
 
 \begin{code}
 expf :: Field a => a -> a
-expf = eval 100 expx
+expf = evalPS 100 expx
 \end{code}
 
 It is easy to see, using the definition of |integ| that the power
@@ -100,18 +100,19 @@ Then we define the power series representing the function
 compScale :: Ring a => Poly a -> a -> Poly a
 compScale (Poly as) c = Poly (zipWith (*) as (iterate (c*) 1))
 
-expix :: Field a => PowerSeries (Complex a)
+type PSC a = PowerSeries (Complex a)
+expix :: Field a => PSC a
 expix = compScale expx i
 
-cosxisinx :: Field a => PowerSeries (Complex a)
+cosxisinx :: Field a => PSC a
 cosxisinx = cosx + Poly [i] * sinx
 
-ex2, ex2' :: Field a => PowerSeries (Complex a)
+ex2, ex2' :: Field a => PSC a
 ex2   = takePoly 8 expix
 ex2'  = takePoly 8 cosxisinx
 
 test2 :: Bool
-test2 = (ex2 :: PowerSeries (Complex Rational)) == ex2'
+test2 = ex2 == (ex2' :: PSC Rational)
 \end{code}
 
 As the code is polymorphic in the underlying number type, we can use
@@ -121,13 +122,15 @@ problems.
 We can see that every second coefficient is real and every second is
 imaginary:
 \begin{code}
-coeff2 :: [Complex Rational]
-coeff2 =  [     1            :+ 0, {-"\qquad"-}  0 :+     1     ,
-            (-  1  /  2)     :+ 0, {-"\qquad"-}  0 :+ (-  1  /  6),
-                1  /  24     :+ 0, {-"\qquad"-}  0 :+     1  /  120,
-            (-  1  /  720)   :+ 0, {-"\qquad"-}  0 :+ (-  1  /  5040)]
-
-check2 = ex2 == Poly coeff2
+check2 :: Bool
+check2 = ex2 == coeff2
+\end{code}
+\begin{code}
+coeff2 ::  PSC Rational
+coeff2 =   Poly [      1            :+ 0, {-"\qquad"-}  0 :+     1,
+                   (-  1  /  2)     :+ 0, {-"\qquad"-}  0 :+ (-  1  /  6),
+                       1  /  24     :+ 0, {-"\qquad"-}  0 :+     1  /  120,
+                   (-  1  /  720)   :+ 0, {-"\qquad"-}  0 :+ (-  1  /  5040)]
 \end{code}
 
 % Yet another Alternative from here; but does not work due to lack of Transcendental instance for Stream/MacLaurin
@@ -197,20 +200,18 @@ such that
 \begin{spec}
 f x = f (x + T)  --  |∀ x ∈ A|
 \end{spec}
-(therefore, for this definition to make sense, we need addition on
-|A|; in fact we normally assume at least a group structure, i.e.,
-addition and subtraction together with a zero and the appropriate
-laws).
+Therefore, for this definition to make sense, we need addition on
+|A|; in fact we normally assume at least |AddGroup A|.
 
 Since |sin| and |cos| are periodic, with period |tau = 2 * pi|, we have,
 using the standard notation |a+i*b| for some |z = a :+ b|:
-
+%
 \begin{spec}
   exp(z + i*tau)                              = {- Def. of |z| -}
 
-  exp((a + i * b) + i*tau)                    = {- Rearranging -}
+  exp((a + i * b) + i*tau)                    = {- Assoc. + distrib. -}
 
-  exp(a + i * (b + tau))                      = {- |exp| is a homomorphism from |(+)| to |(*)| -}
+  exp(a + i * (b + tau))                      = {- |H2(exp, (+), (*))| -}
 
   exp a * exp (i * (b + tau)  )               = {- Euler's formula -}
 
@@ -297,10 +298,11 @@ function is an integral:
   |a : ℕ → ℝ| \arrow{r}{\sumanxn} & |f : ℝ → ℝ| \arrow{r}{\intftxt} & |F : ??|
 \end{tikzcd}
 
-We note that, for the integral |Integ (f t) * pow x t dt| to converge for
-a larger class of functions (say, bounded functions\jp{We never
-  explained what a bounded function is}), we have to limit ourselves
-to |absBar x < 1|.
+We note that, for the integral |Integ (f t) * pow x t dt| to converge
+for a larger class of functions (say, bounded functions\footnote{A
+  function is bounded if there exists a bound |B| such that forall
+  |x|, |absBar (f x) <= B|.}), we have to limit ourselves to |absBar x
+< 1|.
 %
 Both this condition and the integral make sense for |x ∈ ℂ|, so we
 could take
@@ -312,38 +314,39 @@ could take
 but let us stick to |ℝ| for now.
 
 Writing, somewhat optimistically
-
+%
 \begin{spec}
 ℒ f x = Integ (f t) * x^t dt
 \end{spec}
-
+%
 we can ask ourselves what |ℒ f'| looks like.
 %
 After all, we want to solve \emph{differential} equations by ``zooming
 out''.
 %
 We have
-
+%
 \begin{spec}
 ℒ f' x = Integ (f' t) * x^t dt
 \end{spec}
 
 Remember that |D (f * g) = D f * g + f * D g|, which we use with |g t
-= x^t| so that |D g t = log x * x^t| (|t| is the variable here, not
-|x|).
+= x^t| so that |D g t = log x * x^t| (note that |t| is the variable
+here, not |x|).
 %
 \begin{spec}
   ℒ f' x                                                       =  {- Def. of |ℒ|-}
 
-  Integ (D f t) * x^t dt                                       =
+  Integ (D f t) * x^t dt                                       =  {- Derivative of product -}
 
   Integ (D (f t * x^t)) - f t * log x * x^t dt                 =  {- Linearity of integration -}
 
-  Integ (D (f t * x^t)) dt  -  Integ f t * log x * x^t dt      =
+  Integ (D (f t * x^t)) dt  -  log x * Integ f t * x^t dt      =  {- Def. of integral to \(\infty\). -}
 
-  {-"\lim_{t \to \infty} "-} (f t * x^t) - (f 0 * x^0)  - log x * Integ f t * x^t dt  = {- |abs x < 1| -}
+  {-"\lim_{t \to \infty} "-} (f t * x^t) - (f 0 * x^0)
+             - log x * Integ f t * x^t dt                      =  {- |absBar x < 1| -}
 
-  -f 0 - log x * Integ f t * x^t dt                            =
+  -f 0 - log x * Integ f t * x^t dt                            =  {- Def. of |ℒ| -}
 
   -f 0 - log x * ℒ f x
 \end{spec}
@@ -351,8 +354,10 @@ Remember that |D (f * g) = D f * g + f * D g|, which we use with |g t
 The factor |log x| is somewhat awkward.
 %
 Let us therefore return to the definition of |ℒ| and operate a change
-of variables:
-
+of variables.
+%
+First some rewriting:
+%
 \begin{spec}
   ℒ f x = Integ (f t) * x^t dt                <=>  {- |x = exp (log x)| -}
 
@@ -360,7 +365,7 @@ of variables:
 
   ℒ f x = Integ (f t) * exp (log x *t) dt
 \end{spec}
-
+%
 Since |log x < 0| for |absBar x < 1|, we make the substitution |-s = log
 x|.
 %
