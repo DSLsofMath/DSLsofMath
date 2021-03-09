@@ -943,7 +943,7 @@ Derive |derive| for this representation.
 
 Simple deterministic systems are given by endo-functions%
 \footnote{An \emph{endo-function} is a function from a set |X| to
-  itself: |f : X -> X|.}%
+  itself: |f : X -> X|.}
 on a finite set |next : G -> G|.
 %
 They can often be conveniently represented as a graph, for example
