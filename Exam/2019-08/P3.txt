@@ -1,0 +1,61 @@
+T = Forall a (U a)
+U a = Forall (L₁ : ℝ) (Forall (L₂ : ℝ) ( Q a L₁ ∧ L₁ ≠ L₂  →  ¬ Q a L₂) )
+Q a L = Forall (ε > 0) (P a L ε)
+P a L ε = Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (abs (a n - L) < ε)))
+
+-- 3a
+
+  nQ a L₂
+= -- def.
+  ¬ Q a L₂
+= -- def. of Q
+  ¬ (Forall (ε > 0) (P a L₂ ε))
+= -- Push ¬ through Forall
+  Exists (ε > 0) (¬ (P a L₂ ε))
+= -- Def. of P and push ¬ through Exists
+  Exists (ε > 0) (Forall N (¬ Forall (n : ℕ) ((n ≥ N) → (abs (a n - L₂) < ε)))
+= -- Push ¬ through Forall
+  Exists (ε > 0) (Forall N (Exists n (¬ ((n ≥ N) → (abs (a n - L₂) < ε)))))
+= -- ¬(P=>Q) = P & ¬Q,  ¬(a<b) = a>=b
+  Exists (ε > 0) (Forall N (Exists n ((n ≥ N) & (abs (a n - L₂) >= ε))))
+
+-- 3b
+
+prf : nQ a L₂
+prf = (ε, \N -> (n, (pr1, pr2)))
+  where  pr1 : (n ≥ N)
+         pr2 : (abs (a n - L₂) >= ε)
+
+-- 3c
+
+t : Forall a (U a)
+t a L₁ L₂ (q, neq) = prf
+  where  q : Forall (ε > 0) (P a L₁ ε)
+         neq : L₁ ≠ L₂
+	 diff = abs (L₁ - L₂)  -- we know diff > 0 because of neq
+	 ε = diff / 2          -- still > 0
+	 prf : nQ a L₂
+	 prf = (ε, foo)
+         help : P a L₁ ε
+         help = q ε
+	 (N₁, bar) = help
+         foo N₂ = (n, (pr1, pr2))
+	   where n = max N₁ N₂
+                 pr1 : (max N₁ N₂ ≥ N₂)
+	         pr1 = trivial
+		 pr2 : (abs (a n - L₂) >= ε)
+		 pr2 = see below:
+
+below:
+  Here we reason as follow:
+    abs (a n - L₂)
+  = -- arithmetics
+    abs ((L₁ - L₂) + (a n - L₁))
+  >= -- use the triangle inequality: abs (x+y) >= abs x - abs y
+    abs (L₁ - L₂) - abs (a n - L₁)
+  = -- def. of diff and ε
+    2*ε - abs (a n - L₁)
+  > -- we know that abs (a n - L₁) < ε
+    2*ε - ε
+  =
+    ε
