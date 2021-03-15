@@ -1,0 +1,42 @@
+f    : I -> J
+x    : I
+f(x) : J      -- or I->J or FunExp
+I    : Pow REAL  -- an interval - a subset of the REALs
+J    : Pow REAL  -- some subset of REALs
+\int f(x) dx  :  I -> REAL    -- or FunExp
+F    : I -> REAL
+F'   : I -> J
+
+----------------
+
+There are two main problems with the notation:
+1. \int f(x) dx "looks" like a value, not a function of x : I
+2. the right hand side is not uniquely determined by the left (the
+   notation is not well defined)
+
+One way to fix 1. is to use (\int f) as notation, where
+  \int : (I->J) -> (I->REAL).
+
+One way to fix 2. is to choose an antiderivative F such that
+  (\int f) i = F i = 0 for i being the left endpoint of I.
+
+Then the statement becomes
+
+  Forall F. IndefInt I f F =>
+    Exists C.
+      Forall x:I.
+        (\int f) x = F x + C
+
+----------------
+
+IndefInt I f F = Forall x:I. F'(x) = f(x)
+
+----------------
+
+|IndefInt I f F| and |IndefInt I f G| implies Exists C:REAL. Forall x:I. F(x)-G(x)=C
+
+----------------
+
+|IndefInt I f f| means that f x = A*exp(x).
+f(0)=-1 means that A=-1
+Thus f x = -exp(x)
