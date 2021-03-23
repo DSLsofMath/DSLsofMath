@@ -187,9 +187,9 @@ However, as soon as we encounter quantifiers, we have a problem.
 To evaluate |EXISTS x p| (at least in certain contexts) we may need to
 evaluate |p| for each possible value of |x|.
 %
+\label{sec:fol-undecidability}
 But, unfortunately, there are infinitely many such possible values,
 and so we can never know if the formula is a tautology.%
-\label{sec:fol-undecidability}
 \footnote{FOL experts will scoff at this view, because they routinely
   use much more sophisticated methods of evaluation, which handle
   quantifiers in completely different ways.  Their methods are even
@@ -201,14 +201,14 @@ and so we can never know if the formula is a tautology.%
   limitation, but rather a fundamental one, which boils down to the
   presence of quantifier over an infinite domain.}
 %
-So, if we were to try to run the evaluator, it would not
+So, if we were to try and run the evaluator, it would not
 terminate.
 %
 Hence, the best that we can ever do is, given a hand-written proof of
 the formula, check if the proof is valid.
 %
 Fortunately, we have already studied the notion of proof in the
-section on propositional logic, and it only needs to be extended to
+section on propositional logic, and it can be extended to
 support quantifiers.
 
 \subsection{Universal quantification}

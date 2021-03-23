@@ -226,7 +226,7 @@ one'' function, and |(2*)| for the ``double'' function.
 
 
 \paragraph{Partial and total functions}
-
+\label{sec:partial-and-total-functions}
 There are some differences between functions in the usual mathematical sense, and
 Haskell functions.
 %

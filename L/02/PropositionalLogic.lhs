@@ -49,8 +49,7 @@ can be substituted for any proposition.
 %
 We could call them ``variables'', but in upcoming sections we will add
 another kind of variables (and quantification over them) to the
-calculus --- so we keep calling them ``names'' to avoid mixing them
-up.
+calculus --- so we keep calling them ``names'' to avoid confusing them.
 
 
 % simple arithmetic in \sref{sec:ch1ex}
@@ -227,7 +226,8 @@ naive one we just showed, but we will not go this route.
 %
 Rather, we can introduce the notion of \emph{proof}.
 %
-(And in fact, the best (known) algorithms remain exponential in the
+(And in fact, the complexity of the best (known) algorithms for
+checking that a proposition is a tautology remain exponential in the
 number of variables.)
 
 
@@ -280,7 +280,7 @@ OrIntroR  :: Proof -> Proof
 %
 There are a couple of possible approaches to deal with negation.
 %
-One approach is to define it as de Morgan dualisation:
+One approach is to use de Morgan dualisation:
 %
 \begin{spec}
 Not (a  `Or`   b)  =  Not a  `And`  Not b
@@ -294,6 +294,7 @@ However, we will instead apply the same treatment to negation as to
 other constructions, and define a suitable introduction rule:
 \[ \frac{P → Q \quad P → ¬Q}{¬P} \]
 %
+(Intuitively, this rule says that to prove \(¬P\), one needs to derive a contradiction from \(P\).)
 We can represent it by the constructor |NotIntro :: Prop -> Proof ->
 Proof -> Proof|.
 %
@@ -304,10 +305,10 @@ proposition, |Q|.
 This is why we need an additional |Prop| argument, which gives the |Q|
 formula.
 
-There is no syntax to introduce falsity (|⊥|), otherwise we'd have an
+There is no rule to introduce falsity (|⊥|) --- otherwise we'd have an
 inconsistent logic!
 %
-Finally we can introduce "Truth", with no premiss: \[\frac{\phantom{hello}}{⊤}\]
+Thus the last introduction rule deals with Truth, with no premiss: \[\frac{\phantom{hello}}{⊤}\]
 %
 The proof has no information either: |TruthIntro :: Proof|.
 
@@ -342,7 +343,7 @@ It simply says that two negations cancel.
 Finally we can eliminate falsity as follows:
 \[\frac {⊥} P\]
 %
-This rule goes some times by its descriptive latin name \textit{ex
+This rule goes sometimes by its descriptive latin name \textit{ex
   falso quodlibet} --- from falsehood, anything (follows).
 
 We can then write our proof checker as follows:
@@ -370,14 +371,14 @@ Any other combination of proof/prop is an incorrect combination: the proof is no
 checkProof _ _ = False -- incorrect proof
 \end{spec}
 
-At this point it can be interesting to see |checkProof| as an
-evaluator again by flipping its arguments: |flip checkProof ::
+Once more, it can be interesting to view |checkProof| as an
+evaluator. This can be made plain by flipping its arguments: |flip checkProof ::
 Prop -> (Proof -> Bool)|.
 %
 This way, one can understand |Proof -> Bool|, a subset of proofs, as
 the semantic domain of |Prop|.
 %
-In other words, a proposition can be interpreted at the subset of
+In other words, a proposition can be interpreted as the subset of
 proofs which prove it.
 %
 \pj{Make the identification of ``subset of A'' with ``predicate on A'' explicit earlier.}
@@ -542,7 +543,8 @@ conjunctionCommProof' = implyIntro step
 \end{code}
 
 That is, instead of writing propositions, we write types (|And|, |Or|,
-|Implies|).  Instead of using |Proof| constructors, we use functions
+|Implies| --- which we leave abstract for now).
+Instead of using |Proof| constructors, we use functions
 whose types capture rules:
 %
 \begin{code}
@@ -567,7 +569,7 @@ Because the proof is correct, we get no type-error.
 \end{exercise}
 %
 
-This style of propositional logic proof is very advantageous, because
+This style of propositional logic proof is very economical, because
 not only the checker comes for free, but we additionally get all
 the engineering tools of the Haskell tool-chain.
 
@@ -575,7 +577,9 @@ One should be careful however that Haskell is not designed with
 theorem-proving in mind.  For this reason it is easily possible make
 the compiler accept invalid proofs. The main two sources of invalid
 proofs are 1. non-terminating programs and 2. exception-raising
-programs.
+programs. In sum, the issue is that Haskell allows the programmer to
+define partial functions (instead of total ones, see
+\cref{sec:partial-and-total-functions}).
 
 
 \subsection{Intuitionistic Propositional Logic and Simply Typed
@@ -599,7 +603,7 @@ is no way to eliminate (double) negation.
 \begin{code}
 notElim = error "not possible as such in intuitionistic logic"
 \end{code}
-On the other hand the introduction for negation becomes a theorem of the logic.
+On the other hand the introduction rule for negation becomes a theorem of the logic.
 The formulation of the theorem is:
 \begin{spec}
 notIntro :: (p `Implies` q) `And` (p `Implies` Not q) -> Not p
@@ -673,7 +677,7 @@ fragment is called the simply-typed lambda calculus (STLC) with sum and products
 
 \paragraph{The law of the excluded middle}
 \label{sec:excluded-middle}
-As an example of how intuitionism twists usual law, consider the law
+As an example of how intuitionism affects logic, consider the law
 of the excluded middle, which states that, for any proposition |P|,
 either |P| or |Not P| holds.
 %
@@ -769,8 +773,8 @@ After erasing the colon (:) sign and what comes before it, we obtain
 
 The \emph{Curry--Howard correspondence} is a general principle that
 says that we can think of propositions as types, and proofs as
-programs. This principle goes beyond propositional logic (and first
-order logic, etc.): it applies to all sorts of logics and programming
+programs. This principle goes beyond propositional logic (and even first
+order logic): it applies to all sorts of logics and programming
 languages, with various levels of expressivity and features.
 
 \subsection{|Or| is the dual of |And|}
