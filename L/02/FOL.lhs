@@ -189,6 +189,7 @@ evaluate |p| for each possible value of |x|.
 %
 But, unfortunately, there are infinitely many such possible values,
 and so we can never know if the formula is a tautology.%
+\label{sec:fol-undecidability}
 \footnote{FOL experts will scoff at this view, because they routinely
   use much more sophisticated methods of evaluation, which handle
   quantifiers in completely different ways.  Their methods are even

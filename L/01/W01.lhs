@@ -89,19 +89,19 @@ Other common types are |ZZ| of integers, |QQ| of rationals, and |REAL|
 of real numbers.
 %
 
-So far the syntax is trivial --- just names for certain sets --- but
-we can also combine these, and for our purposes the most important
-construction is the function type.
+So far the syntax is trivial --- just names. Every time, the semantic
+is a (constant) set. But we can also combine these names to form more
+complex types. For our purposes the most important construction is the
+function type.
 %
 \subsection{Functions}
 For any two type expressions |A| and |B| we can form the function type
 |A -> B|.
 %
 Its semantics is the set of (semantic) functions from the semantics of
-|A| to the semantics of |B|.\jp{In fact we don't write this for other
-  types. Is this really necessary?}%
+|A| to the semantics of |B|.
 \footnote{The only way to be precise about semantics is to use a
-  formal language, and so semantics sometimes does not seem to be that
+  formal language, which itself comes with its own syntax. So semantics sometimes does not seem to be that
   much different from syntax, as in this example.
   %
   Fortunately, in the rest of this \course{}, we will be describing
@@ -109,7 +109,7 @@ Its semantics is the set of (semantic) functions from the semantics of
 %
 As an example, the semantics of |BB -> BB| is a set of four functions:
 |{const False, id, not, const True}| where |not : BB -> BB| is boolean
-negation.\pedantic{Additionally in Haskell one has to deal with
+negation.\pedantic{Additionally, in Haskell, one has to deal with
   diverging computations. These induce very subtle difficulties which
   we mention later. Fortunately, in the rest of this \course{}, we can
   largely ignore those subtleties.}
@@ -118,7 +118,7 @@ The function type construction is very powerful, and can be used to
 model a wide range of concepts in mathematics (and the real world).
 %
 Because function types are really important, we immediately introduce a few basic
-building blocks which are as useful for functions as zero and one are
+building blocks to construct functions. They are as useful for functions as zero and one are
 for numbers.
 
 \paragraph{Identity function}
@@ -131,15 +131,16 @@ id :: a -> a
 id x = x
 \end{code}
 %
+In Haskell, a type name starting with a lowercase letter is a \emph{type variable}.
 When a type variable (here |a|) is used in a type signature it is
-implicitly quantified (bound) as if preceded by ``for all types |a|''.
+implicitly quantified (bound) as if preceded by ``for any type |a|''.
 %
 This use of type variables is called ``parametric polymorphism'' and
 the compiler gives more help when implementing functions with such
 types.
 %
-Another ``function building block'' is |const| which has two type
-variables and two arguments:
+Another building block for functions is |const|. Its type mentions two type
+variables, and it is a function of two arguments:
 %
 \begin{code}
 const :: a -> b -> a
@@ -184,7 +185,7 @@ As an exercise it is good to experiment a bit with these building
 blocks to see how they fit together and what types their combinations
 have.
 
-The type is perhaps best illustrated by a diagram (see
+The type of function composition is perhaps best illustrated by a diagram (see
 \cref{fig:funcomp}) with types as nodes and functions (arrows) as
 directed edges.
 %
@@ -204,7 +205,7 @@ directed edges.
   |ZZ| \arrow{d}[swap]{|(%1)|} \arrow{rd}[dashed]{|inv . (%1)|} &  \\
   |QQ|   \arrow{r}{|inv|}            & |Maybe QQ|
 \end{tikzcd}
-
+\jp{|Maybe| should be mentioned in the text. Its definition comes much later.}
 \caption{Function composition diagrams: in general, and two examples}
 \label{fig:funcomp}
 \end{figure}
@@ -226,7 +227,7 @@ one'' function, and |(2*)| for the ``double'' function.
 
 \paragraph{Partial and total functions}
 
-There are some differences between ``mathematical'' functions and
+There are some differences between functions in the usual mathematical sense, and
 Haskell functions.
 %
 Some Haskell ``functions'' are not defined for all inputs --- they are
@@ -236,34 +237,35 @@ Simple examples include |head :: [a] -> a| which is not defined for
 the empty list and |(1/) :: REAL -> REAL| which is not defined for
 zero.
 %
-A proper mathematical function is called \emph{total}: it is defined
-for all its inputs, that is, it terminates and returns a value.
+A proper mathematical function is said to be \emph{total}: it is defined
+for all its inputs. In Haskell totality can be compromised by omitting cases (like |head|), by raising
+exceptions (like division) or by non termination (like |inf = 1 + inf|).
 
-There are basically two ways of ``fixing'' a partial function: limit
-the type of the inputs (the domain) to avoid the ``bad'' inputs, or
-extend the type of the output (the range) to include ``default'' or ``error''
-values\footnote{or better yet, meaningful values, as we shall see later}.
+There are two ways of turning a partial function to a total function. One can limit
+the type of the inputs (the domain) to avoid the inputs where the function is undefined (or non-terminating, etc.), or
+extend the type of the output (the range) to represent ``default'' or ``error''
+values explicitly\footnote{or better yet, meaningful values, as we shall see later}.
 %
 As an example, |sqrt|, the square root function, is partial if
-considered as a function from |REAL| to |REAL| but total if the domain
-is restricted to |RPosz|.
+considered as a function from |REAL| to |REAL|. It can be made total if the domain
+is restricted to |RPosz|, or if the range is extended to complex numbers.
 %
-In most programming languages the range is extended instead; |sqrt ::
-Double -> Double| where |sqrt (-1)| returns the ``error value'' |NaN|
+In most programming languages the range is extended in another way. The type is
+|Double -> Double| and |sqrt (-1)| returns the value |NaN : Double|
 (Not a Number).
 %
 Similarly, |(1/) :: Double -> Double| returns |Infinity :: Double|
 when given zero as an input.
 %
-Thus |Double| is a mix of ``normal'' numbers and ``special
-quantities'' like |NaN| and |Infinity|.
+Thus |Double| is a mix of rational numbers and special
+quantities like |NaN| and |Infinity|.
 %
 Often the type |Maybe a| with values |Nothing| and |Just a| (for all
 |x::a|) is used as the target of functions.
 
 There are also mathematical functions which cannot be implemented at
-all (uncomputable functions), but we will not deal with that in this
-course.
+all (uncomputable functions). We will only briefly encounter such a
+case in \cref{sec:fol-undecidability}.
 
 \paragraph{Partial functions with finite domain}
 \pj{Look over the paragraphs and subsections - perhaps restructure}
@@ -485,7 +487,7 @@ type safety, just readability (if used wisely).
 The |Env| example shows that a type synonym can have type parameters.
 %
 Note that |Env v s| is a type (for any types |v| and |s|), but |Env|
-itself is not a type but a \emph{type constructor}.
+on its own is not a type but a \emph{type constructor}.
 
 \paragraph{|newtype| -- more protection}
 
@@ -549,7 +551,7 @@ This declaration introduces
 \item a constructor |Z :: N| to represent zero, and
 \item a constructor |S :: N -> N| to represent the successor.
 \end{itemize}
-The semantics of |N| is the infinite set |{Z, S Z, S (S Z), ...}|
+The semantics of |N| is the infinite set |{Z, S Z, S (S Z), ...}|\jp{In the rest of the book, this sort of semantics is call ed the set of syntax trees.}
 which is isomorphic to |Nat|.
 %
 Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
@@ -603,7 +605,7 @@ inv r  = Just (1/r)
 %*TODO: perhaps move cartesian product earlier (to math / set part)
 Two other examples of, often used, parameterised types are |(a,b)| for
 the type of pairs (a product type) and |Either a b| for either an |a|
-or a |b| (a sum type).\jp{Why do we give the semantics of functions but not the semantics of other types?}
+or a |b| (a sum type).\jp{Give the semantics functions but not the semantics of other types?}
 %
 % \begin{spec}
 % data Either p q = Left p | Right q
@@ -615,7 +617,7 @@ For reference, the either type is defined as follows in Haskell:
 
 \section{Notation and abstract syntax for sequences}
 \label{sec:infseq}
-\jp{Seems like an odd place to talk about this. Why not put it together with the limits section?}
+\jp{Seems like an odd place to talk about this. Why not put it together with the limits section? This is also strangely more difficult than any thing before.}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
 As preparation for the language of sequences and limits
@@ -824,7 +826,7 @@ only know that |i| is not a real number.
 %
 Moreover, we do not know what operations are possible on |i|, only
 that |square i| is another name for |-1| (but it is not obvious that,
-say |i * i| is related in any way with |square i|, since the
+say |i * i| is related in way with |square i|, since the
 operations of multiplication and squaring have only been introduced so
 far for numerical types such as |Nat| or |REAL|, and not for
 ``symbols'').
@@ -853,6 +855,7 @@ showIU ::  ImagUnits       ->  String
 showIU     I               =   "i"
 \end{code}
 
+\jp{Here we could also redifine sqrt so that sqrt(-1) = I. This would force a changing types. (But Adam and Essex only say we 'can' do it.)}
 
 Next, in the book, we find the following definition:
 %
@@ -916,7 +919,7 @@ Given that the last two examples seem to introduce shorthand for
 various complex numbers, let us assume that this one does as well, and
 that |a - bi| can be understood as an abbreviation of |a + (-b)i|.
 %
-With this provision, in our notation the examples are written as in
+With this provision, in our Haskell encoding the examples are written as in
 \cref{tab:CompleSyntaxExamplesMathHaskell}.
 %
 \begin{table}[tbph]
@@ -1038,7 +1041,7 @@ prefer to obtain an equivalent definition using the shorter |deriving
 Eq| clause upon defining the type.)
 %*TODO: explain more about deriving - perhaps in a \footnote{}
 
-This shows that the set of complex numbers is, in fact, isomorphic\jp{have we ever defined isomorphism?}
+This shows that the set of complex numbers is, in fact, isomorphic\jp{do we ever defined isomorphism in the book?}
 with the set of pairs of real numbers, a point which we can make
 explicit by re-formulating the definition in terms of a |newtype|:
 %
@@ -1237,7 +1240,7 @@ recursive datatype (like |ComplexE|).
 One way to overcome this difficulty is through what may seem at first glance ``wishful thinking'':
 assume that all but one case have been implemented already.
 %
-All you need is to focus on that one remaining case, and you can
+All you need to do is to focus on that one remaining case, and you can
 freely call the function (that you are implementing) recursively, as
 long as you do it for subexpressions (subtrees of the abstract syntax
 tree datatype). This pattern is called \emph{structural induction}.
@@ -1252,7 +1255,7 @@ there is a function |plusD :: ComplexD -> ComplexD -> ComplexD| taking
 care of this step (in fact, we implemented it earlier in
 \refSec{sec:complexcase}).
 %
-Continuing in this direction (by structural induction or ``wishful
+Continuing in this direction (by structural induction; or ``wishful
 thinking'') we arrive at the following implementation.
 %
 \begin{code}
@@ -1528,7 +1531,7 @@ propAssoc (⊛) x y z =  (x ⊛ y) ⊛ z === x ⊛ (y ⊛ z)
 \end{code}
 %
 Note that |propAssocA| is a higher order function: it takes a function |(⊛)|
-(written as a binary operator) as its first parameter, and tests if it is associative.
+(declared as a binary operator) as its first parameter, and tests if it is associative.
 %
 The property is also polymorphic: it works for many different types |a| (all
 types which have an |===| operator).
