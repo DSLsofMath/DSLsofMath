@@ -249,6 +249,16 @@ and use it for our example as follows:
 \begin{spec}
 sumOfSquares n = summation 1 n (powTo 2)
 \end{spec}
+equivalently, we can use a lambda expression for the summand, to give
+a name to the summation variable:
+\begin{spec}
+sumOfSquares n = summation 1 n (\i -> i `powTo` 2)
+\end{spec}
+%
+(A lambda expression is a local function definition which is not given
+a name, in this case it maps \(i\) to \(i `powTo` 2\)).\jp{Is there a
+  point to properly introduce lambdas?}
+
 %TODO: perhaps mention types: skipped here because of |ℤ|, |ℝ| mismatch.
 
 As another example, let us represent the following nested sum
@@ -280,7 +290,7 @@ In particular, this function can be any lambda-expression returning
 |ℝ|, and this expression can include summation itself.
 %
 This freedom is an advantage of shallow embeddings: if we were to use
-the deep embedding, then we'd need a whole lot more work to ensure
+the deep embedding, then we'd need a whole lot more machinery to ensure
 that we can represent summation within the deep embedding.
 %
 In particular we need a way to embed variable binding itself.
@@ -296,7 +306,7 @@ typings:
 \item |lim : (ℕ → ℝ) → ℝ| for the mathematical expression \(\lim_{n → ∞} \{a_n\}\)
 \item \(d/dt : (ℝ → ℝ) → (ℝ → ℝ)\)
   \begin{itemize}
-  \item sometimes, instead of \(df/dt\) one sees \(f'\) or \(\dot{f}\) or |D f|
+  \item sometimes, instead of \(d/dt f\)  one sees \(f'\) or \(\dot{f}\) or |D f|
   \end{itemize}
 \end{itemize}
 
@@ -494,6 +504,7 @@ in the definition is a postfix prime.
 To make it easier to see we use a prefix |D| instead and we can
 thus write |D : (X->REAL) -> (Y->REAL)|.
 %
+\jp{|Y| is typeset rather stangely? (calligraphic font?) why?}
 We will often assume that |X = Y| (|f| is differentiable everywhere)
 so that we can can see |D| as preserving the type of its argument.
 
@@ -675,8 +686,7 @@ form \(f (x, y, z) = \ldots\).
 This kind of approach presents several difficulties:
 
 \begin{enumerate}
-\item it makes it hard to rename variables (which can be a problem if
-  one is renaming variables, for example for the purpose of
+\item it makes it hard to rename variables (for example for the purpose of
   integration)
 \item Further confusion can be created when a variable (such as $z$
   above) depends on other variables.
@@ -686,16 +696,15 @@ This kind of approach presents several difficulties:
 \item it makes it difficult to assign a higher order type to the
   partial derivatives.
   %
-  Indeed, as we have seen in \cref{sec:big-operators}, doing this
+  Indeed, as we have seen in \cref{sec:big-operators}, the \(∂f/∂x\) style
   means that the operator binds the name of the variable.
-  %
-  But it is often awkward to make partial differentiation bind a
-  variable.
+  % 
+  % But it is often awkward to make partial differentiation bind a variable. % But, we are precisely listing reason why it's awkward here. This sentence is circular reasoning.
 \end{enumerate}
 
 One possibility would be to use the following type:
-\(∂/∂x_i : (ℝⁿ → ℝ) → (ℝⁿ → ℝ)\), but it still assume as input a
-vector of variables $x$.
+\(∂/∂x_i : (ℝⁿ → ℝ) → (ℝⁿ → ℝ)\), but it still assumes as input a
+vector of variables $x$.\jp{It does mention x, but the types seems to assume independency wrt. to the variable names? Seems inconsistent.}
 %
 Hence we prefer a notation which doesn't rely on the names given to
 the arguments whatsoever.
@@ -703,7 +712,7 @@ the arguments whatsoever.
 It was popularised by \citet{landau1934einfuhrung} (English edition
 \cite{landau2001differential}): \(D₁\) for the partial derivative with
 respect to the first argument, \(D_2\) for the partial derivative with
-respect to the second argument, etc.
+respect to the second argument, etc. \jp{Can we at least get the types of those?}
 
 Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
 
@@ -747,7 +756,7 @@ system state (time, coordinates, and velocities)''.
 %
 So, if we let ``coordinates'' be just one coordinate, then there is
 also a single velocity\footnote{A bit of domain knowledge is necessary
-  here} and so we can take |i = 3|:
+  here: if \(q\) is a position of a particle, then \(\dot q\) is its velocity.} and so we can take |i = 3|:
 %
 \begin{spec}
   L : ℝ³ → ℝ
@@ -886,11 +895,12 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
   \begin{spec}
     (∂L / ∂q) . (expand w)  :  T -> ℝ
   \end{spec}
-  %
+  %\jp{This is mixing two conventions. If we use this kind of typing, q should not be mentioned.}
+
   which is used inside |d / dt|.
 
 \item We now move to using |D| for |d / dt|, |D₂| for |∂ / ∂q|, and
-  |D₃| for |∂ / ∂dotq|.
+  |D₃| for |∂ / ∂dotq|.\jp{Types of those? |D₂ L, D₃ L  : (T, Q, V) -> R|, |D : (T -> ℝ) -> (T -> ℝ)|}
   %
   In combination with |expand w| we find these type correct
   combinations for the two terms in the equation:
@@ -924,15 +934,15 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
   used for the definition of the predicate.
 \end{enumerate}
 
-So, we have figured out what the equation ``means'', in terms of
+So, we have figured out what the equation means in terms of
 operators that we recognise.
 %
 If we zoom out slightly we see that the quoted text means something
 like:
 %
-If we can describe the mechanical system in terms of ``a Lagrangian''
+If we can describe the mechanical system in terms of a ``Lagrangian''
 (|L : S -> ℝ| where |S = (T, Q, V)|), then we can use the equation to check if a particular
-candidate path |w : T → ℝ| qualifies as a possible ``motion of the system'' or
+candidate path |w : T → ℝ| qualifies as an allowed ``motion of the system'' or
 not.
 %
 The unknown of the equation is the path |w|, and as the equation
@@ -943,8 +953,8 @@ We will not dig into how to solve such PDEs, but they are widely used
 in physics.
 
 \section{Incremental analysis with types}
-So far we have worked on typing mathematics ``by hand'', but we can
-actually get the Haskell interpreter to help a bit even when we are
+So far we have worked on typing mathematics, but without the help of any tool. However we can
+in fact get the Haskell interpreter to help a bit even when we are
 still at the specification stage.
 %
 It is often useful to collect the known (or assumed) facts about types
@@ -994,16 +1004,16 @@ not know anything about values of those types.
 %
 Similarly, |f| has a type, but no proper implementation.
 %
-We will declare types for the rest of the variables as well, and as we
-are not implementing any of them right now, we can just make one
-``dummy'' implementation of a few of them in one go:
+We will declare types for the rest of the variables as well, and because we
+are not implementing any of them right now, we can just make provide
+a dummy definition for a few of them in one go:
 %
 \begin{code}
 (x, deriv, ff, a, b, int) = undefined
 \end{code}
 %
 We write |ff| for the capital |F| (to satisfy Haskell rules for
-variable names), |deriv| for the postfix prime, and |int| for the
+variable names), |deriv| for the postfix\jp{Prefix?} prime, and |int| for the
 integral operator.
 %
 On line~\ref{line:exam1603_x} ``values of |x|'' hints at the type |X|
@@ -1487,14 +1497,14 @@ functions or expressions: abstract syntax trees \emph{representing}
 the (semantic) functions.
 
 We observe that we can compute derivatives for any expression made out
-of arithmetical functions, standard functions, and their compositions.
+of arithmetic functions, standard\jp{what's that?} functions, and their compositions.
 %
 In other words, the computation of derivatives is based on a domain
 specific language (a DSL) of expressions (representing functions in
 one variable).
 %
-Hence we can then implement the derivative of |FunExp| expressions
-(from \cref{sec:FunExp}) using the rules of derivatives.
+This means that we can in fact implement the derivative of |FunExp| expressions
+(from \cref{sec:FunExp}), using the rules of derivatives.
 %
 Because the specification of derivation rules is already in the right
 format, the way to obtain this implementation may seem obvious, but we
