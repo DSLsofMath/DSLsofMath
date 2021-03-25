@@ -499,7 +499,7 @@ Thus, the operation which maps |f| to |f'| has type |(X->REAL) ->
 (Y->REAL)|.
 %
 Unfortunately, the only notation for this operation given (implicitly)
-in the definition is a postfix prime.
+in the definition is a prime symbol (|'|), written postfix.
 %
 To make it easier to see we use a prefix |D| instead and we can
 thus write |D : (X->REAL) -> (Y->REAL)|.
@@ -1013,7 +1013,7 @@ a dummy definition for a few of them in one go:
 \end{code}
 %
 We write |ff| for the capital |F| (to satisfy Haskell rules for
-variable names), |deriv| for the postfix\jp{Prefix?} prime, and |int| for the
+variable names), |deriv| for the derivation operator (|D| above), and |int| for the
 integral operator.
 %
 On line~\ref{line:exam1603_x} ``values of |x|'' hints at the type |X|
