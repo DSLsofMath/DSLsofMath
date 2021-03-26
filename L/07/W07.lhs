@@ -128,6 +128,13 @@ vector).
   (non-canonical) basis vectors $b_i$ and returns the coefficients of
   |v| in that basis.
 \end{exercise}
+% One way to go would be to take projections on each base vector, one at a time. If the coefficients of v in the new basis are x_i, then:
+% x_0 =  v · b_0
+% v_0 =  v  -  x_0 *^ b_0
+% x_1 =  v_0 · b_1
+% v_1 =  v_0 - x_1 *^ b_1
+% ...
+
 
 \section{Representing vectors as functions}
 In what follows we will systematically use the represention of vectors
