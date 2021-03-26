@@ -1,3 +1,3 @@
 %let book = True
-%let submit = True
+%let submit = False
 %include DSLsofMath.lhs
