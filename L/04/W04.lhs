@@ -41,7 +41,7 @@ group (like integers) which have (among others) an order structure and
 monotonicity.
 
 Furthermore, mappings or (translations) between such structures
-becomes an important topic of study.
+become an important topic of study.
 %
 When such mappings preserve the structure, they are called
 \emph{homomorphisms}.
@@ -99,7 +99,7 @@ class Monoid a where
     op    ::  a -> a -> a
 \end{code}
 %
-The laws cannot easily be captured in the class, but can be formulated
+The laws cannot easily be captured in the Haskell class, but can be formulated
 as the following propositions:
 %
 \begin{spec}
@@ -126,7 +126,7 @@ as the following propositions:
 \end{exercise}
 
 \begin{example}
-  To make this a bit more concrete, here are two examples of monoids
+  To make this concept a bit more concrete, here are two examples of monoids
   in Haskell: the additive monoid |ANat| and the multiplicative monoid
   |MNat|.
 %
@@ -237,7 +237,10 @@ type Ring a = (AddGroup a, Multiplicative a)
 With that, we have completed the structural motivation of our
 replacement for the |Num| class!
 %
-Example instances: |Nat| is |Additive|; |ZZ|, |QQ|, |REAL| are also a |Ring|s.
+\begin{exercise}
+  Prove that |Nat| admits the usual |Additive| instance.  Likewise for |Ring| instances of |ZZ|, |QQ|, and |REAL|.
+\end{exercise}
+
 % If label:=pin then the text will be connected to the rectangle by a short "pin" (line) 17.10.3 in pgfmanual
 \begin{figure}
   \centering
@@ -264,16 +267,16 @@ Example instances: |Nat| is |Additive|; |ZZ|, |QQ|, |REAL| are also a |Ring|s.
   \end{tikzpicture}
 %  In |Real| but not in the book: |toRational|.
 %  Not in the book: |Integral| with |div|, |mod|, \ldots
-  \caption{Comparing the |Num| class hierarchy with the book's hierarchy.}
+  \caption{Comparing the Haskell Prelude class hierarchy (|Num|, |Fractional|) with the book's hierarchy.}
   \label{fig:CompNum}
 \end{figure}
 \pj{Fix the figure to indicate that |AddGroup| includes |Additive| and |MulGroup| includes |Multiplicative|.}
-
+\jp{Also, |Field|}
 We note right away that one can have a multiplicative group structure
 as well, whose inverse is called the reciprocal (abbreviated as
 |recip| in Haskell).
 %
-With that in place, division can be defined is terms of multiplication
+With that in place, division can be defined in terms of multiplication
 and reciprocal.
 \begin{joincode}%class Multiplicative is defined earlier
 \begin{spec}
@@ -281,6 +284,7 @@ class Multiplicative a => MulGroup a where
   recip :: a -> a -- reciprocal
 
 \end{spec}
+
 \begin{code}
 (/) :: MulGroup a => a -> a -> a
 a / b = a * recip b
@@ -309,7 +313,7 @@ same type''.
 
 \subsection{(Homo)morphism on one operation}
 
-As a stepping stone to capture this idea, we can define a
+As a stepping stone to capture the idea of homomorphism, we can define a
 ternary predicate |H2|. The first argument |h|, is the map. The second
 (|Op|) and third (|op|) arguments correspond to the algebraic structures.
 %
@@ -331,7 +335,7 @@ We have seen several examples in earlier chapters:
 \item in \refSec{sec:complexcase} we saw that |evalE : ComplexE ->
   ComplexD| is a homomorphism from the syntactic operator |Plus| to
   the corresponding semantic operator |plusD|.
-\item in \refSec{sec:logic} we saw de Morgan's laws, which says that
+\item in \refSec{sec:logic} we saw de Morgan's laws, which say that
   ``not'' (|not|) is a homomorphism in two ways: |H2(not,(&&),(||||))|
   and |H2(not,(||||),(&&))|.
 \item in \refSec{sec:FunExp} we saw that |eval : FunExp -> Func| is a
@@ -446,7 +450,7 @@ h (x + y)  = h x * h y  -- for all |x| and |y|
 For example |h (x + x) = h x * h x = (h x) ^ 2| which for |x = 1|
 means that |h 2 = h (1 + 1) = (h 1) ^ 2|.
 
-More generally, every natural number can is equal to the sum of |n| ones:
+More generally, every natural number is equal to the sum of |n| ones:
 |1 + 1 + ... + 1|.
 %
 Therefore
@@ -1107,7 +1111,7 @@ algebra for |Ring|.
 
 Another useful way of constructing types is through ``free structures''.
 %
-They are similar to initial structures, but they also allow to embed
+They are similar to initial structures, but they also allows one to embed
 an arbitrary set of \emph{generators} |G|.
 %
 That is, it is as if we would throw an additional |generate| function
@@ -1119,7 +1123,7 @@ class Generate a where
 \end{code}
 %
 (We could parameterize the class over an abstract generator set |g|,
-but will refain from it to avoid needless complications.)
+but will refain from doing so to avoid needless complications.)
 
 \subsubsection{Free Monoid}
 
@@ -1133,7 +1137,7 @@ op        :: a -> a -> a
 \end{spec}
 
 As a first version, we can convert each function to a constructor and
-obtain the type:
+obtain the following type:
 \begin{code}
 data FreeMonoid g   =  Unit
                     |  Op (FreeMonoid g) (FreeMonoid g)
@@ -1168,7 +1172,7 @@ However, before being completely satisfied, we must note that the
 |FreeMonoid| representation is ignoring monoid laws.
 %
 By following the same kind of reasoning as before, we find that we
-only have in fact only two distinct forms for the elements of the free
+have in fact only two distinct forms for the elements of the free
 monoid:
 %
 \begin{itemize}
@@ -1312,7 +1316,7 @@ pattern.
 This is because the datatype |FunExp| is an initial |OneVarExp|.
 %
 Working with |OneVarExp a => a| can be more economical than using
-|FunExp|: one does not need any (visible) |eval|.
+|FunExp|: one does not need any explicit |eval| function.
 
 The DSL of expressions, whose syntax is given by the type |FunExp|,
 turns out to be almost identical to the DSL defined via type classes
@@ -1475,7 +1479,7 @@ not possible to compute |eval' (Exp e)|.
 %
 Another example of the problem is |derive (f :*: g)| where the
 result involves not only |derive f| and |derive g|, but also |f| and
-|g|.
+|g| on their own.
 %
 In general, the problem is that some of the rules for computing the
 derivative depend not only on the derivative of the subexpressions,
@@ -1487,7 +1491,7 @@ Consequently, |eval'| is in fact non-compositional (just like
 There is no way to implement |eval' :: FunExp -> Func| as a fold
 \emph{if |Func| is the target type}.
 %
-One way of expressing this is to say that in order to implement |eval'
+One way of expressing this fact is to say that in order to implement |eval'
 :: FunExp -> Func| we need to also compute |eval :: FunExp -> Func|.
 %
 Thus we need to implement a pair of |eval|-functions |(eval, eval')|
@@ -1732,7 +1736,7 @@ See
 
 \subsection{Homomorphism as roadmaps}
 \label{sec:homomophism-roadmap}
-Homomorphisms are key to describe mathematical structure, specify
+Homomorphisms are key to describe mathematical structures, specify
 programs, and derive of correct programs.
 %
 The relation |h : S1 -> S2| (standing for ``h is a homomorphism from
