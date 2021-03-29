@@ -338,7 +338,7 @@ For example, here is the specification of addition:
 \end{spec}
 %
 Hint: they are not all the same as the operations on arbitrary
-functions |X -> A|.
+functions |X -> A| defined in \cref{sec:FunNumInst}.
 
 Remark: Using functions from |ℕ| in the definition has certain
 technical advantages over using finite lists.
@@ -806,7 +806,7 @@ Note that this equation holds when we interpret both sides as formal
 power series, but not necessarily if we try to evaluate the
 expressions for a particular~|x|.
 %
-Indeed, the RHS will converge for |absBar x < 1| but not for |x=2|, for example.
+Indeed, the RHS will converge if |absBar x < 1| but not for |x=2|, for example.
 
 For a more general case of power series division, consider |p/q| with |p =
 a:as|, |q = b:bs|, and assume that |a * b ≠ 0|.
@@ -847,7 +847,7 @@ divL (a:as)  (b:bs)  =  c : divL (addList as (scaleList (-c) bs)) (b:bs)
 divL _       []      = error "divL: division by zero"
 \end{code}
 
-This definition allow us to also use division on polynomials, but the
+This definition allows us to also use division on polynomials, but the
 result will, in general, be a power series, not a polynomial.
 %
 The different cases can be calculated from the specification.
