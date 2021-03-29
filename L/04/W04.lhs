@@ -240,7 +240,6 @@ replacement for the |Num| class!
 \begin{exercise}
   Prove that |Nat| admits the usual |Additive| instance.  Likewise for |Ring| instances of |ZZ|, |QQ|, and |REAL|.
 \end{exercise}
-
 % If label:=pin then the text will be connected to the rectangle by a short "pin" (line) 17.10.3 in pgfmanual
 \begin{figure}
   \centering
@@ -283,8 +282,7 @@ and reciprocal.
 class Multiplicative a => MulGroup a where
   recip :: a -> a -- reciprocal
 
-\end{spec}
-
+\end{spec}% changing the blank line breaks compilation (?!!)
 \begin{code}
 (/) :: MulGroup a => a -> a -> a
 a / b = a * recip b
