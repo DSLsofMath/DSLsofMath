@@ -44,8 +44,14 @@ We can write this evaluation as an explicit function:
 evalAll :: Transcendental a => FunExp -> [a -> a]
 evalAll e = (evalFunExp e) : evalAll (derive e)
 \end{code}
-%
-Notice that, if we look at our stream of derivatives,
+
+However |evalAll| is a non-compositional way of computing this
+stream. We will now proceed to define a specification of |evalAll| (as
+a homomorphism), and then derive a compositional implementation. Along
+the way we will continue to build insight about such streams of
+derivatives.
+
+Notice that if we look at our stream of derivatives,
 %
 \begin{spec}
 [f, f', f'', ...] = evalAll e
@@ -165,8 +171,8 @@ help a b as bs = as * (b : bs) + (a : as) * bs
 Thus, we can eliminate |help| to arrive at a definition for
 multiplication\footnote{This expression is reminiscent of polynomial multiplication
   (\cref{sec:mulPoly}), but it is different from it because here each
-  element is implicitly divided by a factorial: we compute bigger
-  values.}:
+  element is implicitly divided by a factorial, as we shall see below. Hence we compute several terms many times
+  here, and sum them together.}:
 %
 \begin{code}
 mulStream :: Ring a => Stream a -> Stream a -> Stream a
@@ -208,7 +214,7 @@ indexwise.\footnote{These can be obtained applying the the
   |(x -> a)|}
 %
 We used just a type synonym here to avoid cluttering the definitions
-with the newtype constructors.
+with the |newtype| constructors.
 
 %
 \begin{exercise}
@@ -218,7 +224,8 @@ with the newtype constructors.
 
 % \begin{exercise}
 %   Compare the efficiency of different ways of computing derivatives.
-%   \jp{This is a pretty tough exercise...}
+%   \jp{This is a pretty tough exercise... See the footnote on exponentials.}
+
 % \end{exercise}
 
 
@@ -371,7 +378,7 @@ to the first 10 derivatives):
 d f a = take 10 (toMaclaurin (evalP (f (X :+: Const a))))
 \end{code}
 
-Use, for example, our |f x = sin x + 2 * x| above.
+Use, for example, our |f x = sin x + 2 * x| from \cref{exc:findFunExp0}.
 %
 As before, we can use power series directly to construct the input:
 %
@@ -383,10 +390,10 @@ dP f a = toMaclaurin (f (idx + Poly [a]))
 
 Since the Maclaurin series represents |[f 0, f' 0, f'' 0, ...]|,
 the tail of the list is equivalent to the derivative of |f|.
-
-To see that one can substitute |f| by |f'| in the above.
 %
-Another way to see it is to remarks that we started with the equation
+To prove that fact, one can substitute |f| by |f'| in the above.
+%
+Another way to see it is to remark that we started with the equation
 |evalAll . derive = tail . evalAll|; but now our input represention is
 \emph{already} a Maclaurin series so |evalAll = id|, and in turn
 |derive = tail|.
@@ -614,7 +621,7 @@ cosf  =  evalPS 100 cosx
 \end{exercise}
 %
 The reason that these definitions produce an output instead of
-entering an infinite loop is because Haskell is a lazy language:
+entering an infinite loop is that Haskell is a lazy language:
 |integ| can immediately return the first element of the stream before
 requesting any information about its second input.
 %
