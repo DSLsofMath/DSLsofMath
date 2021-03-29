@@ -570,54 +570,74 @@ i.e., the scalar product of the vectors |v| and |w|.
 %*TODO: Perhaps it would be interesting to show that some linear transformations
 % can also be interpreted as changes of basis.
 
-\section{Dot products}
+\section{Inner products}
 
-
-An important concept is the dot product between vectors.
-%
+An important concept is the inner product between vectors. We define
+inner product space as a vector space equipped with an inner product,
+as follows:
 \begin{code}
-dot :: (Field s, Finite g) => Vector s g -> Vector s g -> s
-dot (V v) (V w) = linComb v w
+class VectorSpace v s => InnerSpace v s where
+  inner :: v -> v -> s
 \end{code}
-\jp{If we take the algebraic view then this definition is only correct
-  if the canonical basis is orthonormal.}
+
 %
-Dot products have (at least) two aspects.
+Inner products have (at least) two aspects.
 %
 First, they yield a notion of how ``big'' a vector is, the |norm|.
 %
 \begin{code}
-sqNorm :: (Field s, Finite g) => Vector s g -> s
-sqNorm v = dot v v
+sqNorm v = inner v v
 
 norm v = sqrt (sqNorm v)
 \end{code}
 %
-Additionally, the dot product often serves as a measure of how much
+Additionally, the inner product often serves as a measure of how much
 vectors are similar to (or correlated with) each other.
 
 For two non-zero vectors |u| and |v|, we can define:
 \begin{code}
-similarity u v = dot u v / norm u / norm v
+similarity u v = inner u v / norm u / norm v
 \end{code}
 Dividing by the norms mean that |abs (similarity u v)| is at most |1|
 --- the similarity is always in the interval |[-1,1]|.
 %
-\jp{For real fields. For complex ones one would use the inner product
-  instead.}
-%
-In fact, for Euclidean spaces the similarity is the cosine of the
-angle between the two vectors.
-%
+
+For example, in Euclidean spaces, one defines the inner product to be
+the product of the cosine of the angle between the vectors and their
+norms. Consequently, similarity is the cosine of the angle betwen
+vectors.
+
 For this reason, one says that two vectors are orthogonal when their
-dot product is |0| --- even in non-Euclidean spaces.
+inner product is |0| --- even in non-Euclidean spaces.
+
+
+\paragraph{Dot product}
+
+An often use inner product is the dot product, defined as follows:
+\begin{code}
+dot :: (Field s, Finite g) => Vector s g -> Vector s g -> s
+dot (V v) (V w) = linComb v w
+\end{code}
+
+We should note that the dot product acts on the representations
+(syntax). This means that it will \emph{change} dependending on the
+basis chosen to represent vectors. As such, the dot product is a
+syntactic concept, that one should avoid. This can be somewhat
+counterintuitive, because so far it was fine to use representations
+(they were unique).
+%
+To further confuse matters, in Euclidean spaces (which are often used
+as illustration) if the basis vectors are orthogonal, then the dot
+product coincides with the inner product.
+
+
 
 \paragraph{Orthogonal transformations}
 
 An important subclass of the linear transformations are those which
-preserve the dot product.
+preserve the inner product.
 \begin{spec}
-  dot (f u) (f v) = dot u v
+  inner (f u) (f v) = inner u v
 \end{spec}
 
 In Euclidean spaces, such a transformation preserve angles.
@@ -626,12 +646,12 @@ In general, they are called orthogonal transformations.
 
 \begin{exercise}
   Can you express this condition as a homomorphism condition?
-  % H2(f,dot,dot)
+  % H2(f,inner,inner)
 \end{exercise}
 
 Such transformations necessarily preserve the dimension of the space
 (otherwise at least one base vector would be squished to nothing and
-dot products involving it become zero).
+inner products involving it become zero).
 %
 When the dimension is preseved, one often uses the term ``linear
 operator''.
@@ -657,7 +677,7 @@ exercise.
 %
 In the other direction one uses the equality:
 \begin{spec}
-  4 * dot u v = sqNorm (u + v) - sqNorm (u - v)
+  4 * inner u v = sqNorm (u + v) - sqNorm (u - v)
 \end{spec}
 %
 In Euclidean spaces, this means that preserving angles and preserving
@@ -818,25 +838,25 @@ Exercise~\ref{exc:Dmatrixpowerseries}: write the
 Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated
 with integration of polynomials.
 
-\subsection{\extraMaterial Dot product for functions and Fourier series}
+\subsection{\extraMaterial Inner product for functions and Fourier series}
 
-We said before that the dot product yields a notion of norm and
+We said before that the inner product yields a notion of norm and
 similarity.
 %
-Unfortunately, the dot product (as defined above) is not very useful
-in this respect for polynomials represented as monomial coefficients:
-it is not clear what kind of similarity it corresponds to.
+Can we use the dot product as inner product for power series (if the base is |e i = x ^ i|  )?
+We could, but then it would not be very useful.
+For example, it would not yield a useful notion of similarity between the represented function.
 %
-To find a more useful dot product, we can return to the semantics of
-polynomials in terms of functions.
+To find a more useful inner product, we can return to the semantics of
+power series in terms of functions.
 %
 But for now we consider them over the restricted domain
 $I = [-\pi,\pi]$.
 
-Assume for a moment that we would define the dot product of functions
+Assume for a moment that we would define the inner product of functions
 $u$ and $v$ as follows:
 \[
-  |dotF u v| = \int_I |(eval u x)*(eval v x)| dx
+  |innerF u v| = \int_I |(eval u x)*(eval v x)| dx
 \]
 
 Then, the norm of a function would be a measure of how far it gets from
@@ -849,16 +869,16 @@ That is, if the signs of |eval u| and |eval v| are the same on a
 sub-interval |I| then the integral is positive on |I|, and negative if
 they are different.
 
-As we suspected, using |dot = dotF|, the straightforward
+As we suspected, using |inner = innerF|, the straightforward
 representation of polynomials as list of coefficients is not an
 orthogonal basis.
 %
 There is, for example, a positive correlation between |x| and |x^3|.
 
 If we were using instead a set of basis polynomials |bn| which are
-orthogonal using the above semantic-oriented definition of |dot|, then
-we could compute it by multiplying pointwise and summing as before,
-and this would be a lot more efficient than to compute the integral by
+orthogonal using the above definition of |inner|, then
+we could simply let |inner = dot|,
+this would be a lot more efficient than to compute the integral by
 1) computing the product using |mulPoly|, 2) integrating using
 |integ|, 3) using |eval| on the end points of the domain.
 
@@ -907,7 +927,7 @@ pi|.
 In sum |bi x = sin (i*x)/sqrt pi| is an orthonormal basis:
 
 \begin{spec}
-  bi `dotF` bj = is i j
+  bi `innerF` bj = is i j
 \end{spec}
 
 As interesting as it is, this basis does not cover all functions over
@@ -931,7 +951,7 @@ data Periodic where
 \end{code}
 %
 A useful property of an orthonormal basis is that its representation
-as coefficients can be obtained by taking the dot product with each
+as coefficients can be obtained by taking the inner product with each
 base vectors.
 %
 Indeed:\footnote{The proof can be easily adapted to infinite sums.}
@@ -939,14 +959,14 @@ Indeed:\footnote{The proof can be easily adapted to infinite sums.}
 \pj{Check if |linComb| can be used here.}
 \begin{spec}
      v           = sum [vi *^ bi | i <- finiteDomain]
-=>   v `dot` bj  = sum [vi *^ bi | i <- finiteDomain] `dot` bj
-=>   v `dot` bj  = sum [vi *^ (bi `dot` bj) | i <- finiteDomain]
-=>   v `dot` bj  = sum [vi *^ is i j | i <- finiteDomain]
-=>   v `dot` bj  = vj
+=>   v `inner` bj  = sum [vi *^ bi | i <- finiteDomain] `inner` bj
+=>   v `inner` bj  = sum [vi *^ (bi `inner` bj) | i <- finiteDomain]
+=>   v `inner` bj  = sum [vi *^ is i j | i <- finiteDomain]
+=>   v `inner` bj  = vj
 \end{spec}
 
 Thus, in our application, given a periodic function |f|, one can
-compute its Fourier series by taking the |dotF| product of it with
+compute its Fourier series by taking the |innerF| product of it with
 each of |sin (n*x) / sqrt pi| and |cos (n*x) / sqrt pi|.
 
 \begin{exercise}
@@ -1618,9 +1638,9 @@ We can then rewrite the law of total probability as follows:
 =    inner z z
 \end{spec}
 
-Where the |inner| product generalises the dot product for vector
-spaces with complex scalars (the left operand is conjugated
-indexwise).
+Indeed, for 
+spaces with complex scalars, one should conjugate
+coefficients (of an orthonormal basis) when computing the inner products.
 %
 Hence, rather conveniently, the law of total probability is replaced
 by conservation of the norm of state vectors.
@@ -2014,7 +2034,7 @@ showFun f = show (map f finiteDomain)
 %*TODO: perhaps convert to using the |newtype Vector|.
 
 The scalar product of two vectors is a good building block for matrix
-multiplication:
+multiplication:\jp{Is it? matrix multiplication is a more primitive notion than dot product? Isn't linComb a much better choice?}
 %
 \begin{code}
 dot' ::  (Finite g, Ring s) =>
