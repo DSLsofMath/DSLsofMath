@@ -205,7 +205,6 @@ directed edges.
   |ZZ| \arrow{d}[swap]{|(%1)|} \arrow{rd}[dashed]{|inv . (%1)|} &  \\
   |QQ|   \arrow{r}{|inv|}            & |Maybe QQ|
 \end{tikzcd}
-\jp{|Maybe| should be mentioned in the text. Its definition comes much later.}
 \caption{Function composition diagrams: in general, and two examples}
 \label{fig:funcomp}
 \end{figure}
@@ -261,7 +260,7 @@ Thus |Double| is a mix of rational numbers and special
 quantities like |NaN| and |Infinity|.
 %
 Often the type |Maybe a| with values |Nothing| and |Just a| (for all
-|x::a|) is used as the target of functions.
+|x::a|) is used as the target of functions. The definition of |Maybe| is given in full in \cref{sec:Maybe}.
 
 There are also mathematical functions which cannot be implemented at
 all (uncomputable functions). We will only briefly encounter such a
@@ -551,7 +550,7 @@ This declaration introduces
 \item a constructor |Z :: N| to represent zero, and
 \item a constructor |S :: N -> N| to represent the successor.
 \end{itemize}
-The semantics of |N| is the infinite set |{Z, S Z, S (S Z), ...}|\jp{In the rest of the book, this sort of semantics is call ed the set of syntax trees.}
+The semantics of |N| is the infinite set |{Z, S Z, S (S Z), ...}|\jp{In the rest of the book, this sort of semantics is called the set of syntax trees.}
 which is isomorphic to |Nat|.
 %
 Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
@@ -582,6 +581,7 @@ It is very often possible to describe a family of types using a type parameter.
 %
 One simple example is the type constructor |Maybe|:
 %
+\label{sec:Maybe}
 \begin{spec}
 data Maybe a = Nothing | Just a
 \end{spec}
@@ -605,7 +605,7 @@ inv r  = Just (1/r)
 %*TODO: perhaps move cartesian product earlier (to math / set part)
 Two other examples of, often used, parameterised types are |(a,b)| for
 the type of pairs (a product type) and |Either a b| for either an |a|
-or a |b| (a sum type).\jp{Give the semantics functions but not the semantics of other types?}
+or a |b| (a sum type).
 %
 % \begin{spec}
 % data Either p q = Left p | Right q
@@ -617,7 +617,6 @@ For reference, the either type is defined as follows in Haskell:
 
 \section{Notation and abstract syntax for sequences}
 \label{sec:infseq}
-\jp{Seems like an odd place to talk about this. Why not put it together with the limits section? This is also strangely more difficult than any thing before.}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
 As preparation for the language of sequences and limits
@@ -722,7 +721,6 @@ is |(Nat -> X) -> Maybe X| and
 %
 We will return to limits and their proofs in
 \cref{par:LimitOfSequence} after we have reviewed some logic.
-\jp{Again, awkward back-and-forth}
 
 Here we just define one more common operation: the sum of a sequence
 (like \(\sigma = \sum_{i=0}^{\infty} 1/i!\)\footnote{Here |n! =
@@ -743,13 +741,13 @@ The function |sums| is perhaps best illustrated by examples:
 \end{spec}
 The general pattern is to start at zero and accumulate the sum of
 initial prefixes of the input sequence (we leave the defintion of
-|scan| as an exercise to the reader).
+|scan| as an exercise to the reader)\jp{yikes. Why not give a simple definition for sums?}.
 
-%if False
+%if False % scan never comes up again. Let's not generalise.
 %
 % The definition of |sums| uses |scan| which is a generalisation which
 % ``sums'' with a user-supplied operator |(⊛)| starting from an
-% arbitrary value |z| (instead of zero).\jp{|scan| never comes up again. Let's not generalise.}
+% arbitrary value |z| (instead of zero).
 % %
 \begin{code}
 scan :: (b->a->b) -> b -> Seq a -> Seq b
@@ -855,7 +853,7 @@ showIU ::  ImagUnits       ->  String
 showIU     I               =   "i"
 \end{code}
 
-\jp{Here we could also redifine sqrt so that sqrt(-1) = I. This would force a changing types. (But Adam and Essex only say we 'can' do it.)}
+\jp{Here we could also redefine sqrt so that sqrt(-1) = I. This would force a changing types. (But Adam and Essex only say we 'can' do it.)}
 
 Next, in the book, we find the following definition:
 %
