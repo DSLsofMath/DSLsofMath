@@ -499,7 +499,7 @@ Thus, the operation which maps |f| to |f'| has type |(X->REAL) ->
 (Y->REAL)|.
 %
 Unfortunately, the only notation for this operation given (implicitly)
-in the definition is a prime symbol (|'|), written postfix.
+in the definition is a prime symbol (apostrophe), written postfix.
 %
 To make it easier to see we use a prefix |D| instead and we can
 thus write |D : (X->REAL) -> (Y->REAL)|.
