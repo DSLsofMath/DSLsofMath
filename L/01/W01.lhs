@@ -522,13 +522,13 @@ The semantics of |Population| is the set of values of the form |Pop i|
 for every value |i :: Int|.
 %
 It is not the same as the semantics of |Int| but it is isomorphic
-(there is a one-to-one correspondence between the sets).
 %
 \pedantic{Usually an isomorphism cares not only about the elements of
   the sets, but some structure involving operations defined on this
-  set (otherwise the term ``bijection'' is more typical). Here we have
-  not talked about these operations (yet). If we were to, we'd be able
-  to establish a more useful isomorphism. (And we only introduce algebraic structures in \cref{sec:CompSem}.)}
+  set (otherwise the term ``bijection'' is more typical). At this point we have
+  not talked about these operations (yet). If we had, we might have been able
+  to establish a more useful isomorphism. We talk about algebraic structures in \cref{sec:CompSem}.
+}
 
 Later in this chapter we use a newtype for the semantics of complex
 numbers as a pair of numbers in the Cartesian representation but it

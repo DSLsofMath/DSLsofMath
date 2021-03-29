@@ -58,7 +58,7 @@ group structure of |s| to the group structure of |v|:
   negate s  *^ a   = negate (s *^ a)
 \end{spec}
 The multiplicative monoid of |s| maps to the monoid of endofunctions
-(See \cref{ex:endofunction}) as follows:
+(see \cref{ex:endofunction}) homomorphically:
 \begin{spec}
   one      *^ a    = id                  a  =  a
   (s * t)  *^ a    = ((s *^) . (t *^))   a  =  s *^ (t *^ a)
@@ -71,8 +71,9 @@ they can be expressed as a simple sort of combination of other special
 vectors.
 %
 More precisely, we can \emph{uniquely} represent any vector |v| in the
-space in terms of a fixed set of \emph{basis} vectors |{b0, ..., bn}|
-which cover the whole space and are \emph{linearly independent}:
+space in terms of a fixed set of \emph{basis} vectors |{b0, ..., bn}|.
+By definition, basis vectors
+cover the whole space\jp{what does that mean} and are \emph{linearly independent}:
 %
 \begin{spec}
   (s0 *^ b0 + ... + sn *^ bn = 0) <=> (s0 = ... = sn = 0)
@@ -91,11 +92,12 @@ One can prove the uniqueness of representation as follows.
 \end{proof}
 
 According to our red thread, this representation (coefficients) is
-akin to the notion of ``syntax''.
+akin to the notion of syntax.
 %
 But this is a case where the representation is \emph{equivalent} to
 the algebraic definition: the evaluator is not only a homomorphism,
 but an isomorphism.
+
 %
 This equivalence is what justifies the introduction of vectors as
 columns (or rows) of numbers.
@@ -134,7 +136,6 @@ vector).
 % x_1 =  v_0 · b_1
 % v_1 =  v_0 - x_1 *^ b_1
 % ...
-
 
 \section{Representing vectors as functions}
 In what follows we will systematically use the represention of vectors
@@ -280,6 +281,12 @@ linComb2 :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
 linComb2 as vs = sum [as j *^ vs j | j <- finiteDomain]
 \end{code}
 %endif
+
+\begin{exercise}
+  Using the elements defined above, sketch the isomorphism between an
+  abtract vector space and its representation. Recall the definition
+  of isomorphism in \cref{sec:isomorphism}.
+\end{exercise}
 
 \section{Linear transformations}
 

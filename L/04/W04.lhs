@@ -571,9 +571,27 @@ and
    \end{spec}
 \end{solution}
 
+\subsection{\extraMaterial Isomorphisms}
+\label{sec:isomorphism}
+Two homomorphisms which are inverse of each other define an
+\emph{isomorphism}. If an isomorphism exist between two sets, we say
+that they are isomorphic.  For example, the exponential and the
+logarithm witness an isomorphism between |RPos| and |REAL|.
+
 \begin{exercise}
-  Extend the exponential-logarithm morphism to relate |AddGroup| and |MulGroup|.
+Show that exponential and logarithm are inverse of each other.
 \end{exercise}
+
+\begin{exercise}
+Extend the exponential-logarithm isomorphism to relate
+|AddGroup| and |MulGroup|.
+\end{exercise}
+
+\begin{exercise} Sketch the isomorphism between IPC and STLC seen in
+\cref{sec:curry-howard}. What are the structures? What are mappings
+(functions)?
+\end{exercise}
+
 
 \section{Compositional semantics}
 
@@ -841,8 +859,6 @@ function signatures end with |... -> t|.
 When this condition is satisfied, we say that the class is an
 \emph{algebra} --- not just any algebraic structure.%
 \footnote{Indeed, this terminology can be confusing.}
-
-
 
 \subsection{Even folds can be wrong!}
 %
