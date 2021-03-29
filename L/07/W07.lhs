@@ -171,13 +171,13 @@ We sometimes omit the constructor |V| and the indexing |(!)|,
 treating vectors as functions without the |newtype|.
 
 As discussed above, the |S| parameter in |Vector S| has to be a field
-(|REAL|, or |CC|, or |Zp|, etc.) for values of type |Vector S G|
+(|REAL|, or |CC|, or |Zp|, etc.)\jp{|Zp| is never introduced? (and division is not immediately obvious)} for values of type |Vector S G|
 to represent elements of a vector space.
 
-The cardinality of |G|, which we sometimes denote |card G|, is number
+The cardinality of |G|, which we sometimes denote |card G|, is the number
 of basis vectors, and thus the dimension of the vector space.
 %
-Often |G| is finite and in the examples so far we have used indices
+Often |G| is finite, and in the examples so far we have used indices
 from \(G = \{0, \ldots, n\}\).
 %
 Thus the dimension of the space would be \(n+1\).
@@ -205,9 +205,9 @@ class would give a homogenous multiplication operator |(*) :: v -> v
 -> v|, but such an operator is not part of the definition of vector
 spaces.
 %
-Consequently, vector spaces are \emph{not} rings.
+Consequently, vector spaces are in general \emph{not} rings.
 
-Instead, the scaling operator |(*^) :: s -> v -> v|, is inhomogenous:
+Indeed, the scaling operator |(*^) :: s -> v -> v|, is inhomogenous:
 the first argument is a scalar and the second one is a vector.
 %
 For our representation it can be defined as follows:
@@ -267,7 +267,7 @@ helper function |linComb|:
 linComb :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
 linComb a v = sum (map (\j -> a j *^ v j) finiteDomain)
 \end{code}
-Using |linComb| the characterising equation for vectors reads:
+Using |linComb| the characterising equation for vectors reads:\jp{v occuring both on left and right of the equation is confusing}
 %
 \begin{spec}
     v = linComb v e
@@ -301,10 +301,9 @@ functions |f : Vector S G -> Vector S G'|:
 f v  =  f (v 0 *^ e 0 + ... + v n *^ e n)
 \end{spec}
 % that
-It is particularly interesting to study vector-space homomorphisms,
-which are more commonly called ``linear maps''.
-%
-To avoid unnecessary confusion with the Haskell |map| function we will
+It is particularly interesting to study such functions when they preserve the vector space structure: vector-space homomorphisms.
+Such functions are more commonly called ``linear maps'', but
+to avoid unnecessary confusion with the Haskell |map| function we will
 refer to vector-space homomorphisms by the slightly less common name
 ``linear transformation''.
 %
@@ -366,18 +365,19 @@ checkTypes2 m k i = let V ek = e k in
 \end{code}
 %endif
 %
-But this means that we can determine the values of
+But this means that we can determine
 %
 |f : Vector S G -> Vector S G'|
 %
-from just the values of
+from just
 %
 |f . e : G -> Vector S G'|,
 %
 which has a much smaller domain.
 %
-Let |m = f . e|.
-%
+Let |m = f . e|
+That is, each |m i| is the image of the canonical base
+vector |e i| through |f|.
 Then
 %
 \begin{spec}
@@ -408,9 +408,8 @@ Let us define |M| as follows:
 M = [m 0 | ... | m n]     -- where |m : G -> Vector S G'|
 \end{spec}
 %
-That is, the columns of |M| are the images of the canonical base
-vectors |e i| through |f| (or, in other words, the columns of |M| are
-|f (e i)|).
+That is, the columns of |M| are |m 0| to |m n|, or, in other words, the columns of |M| are
+|f (e i)|.
 %
 Every |m k| has |card G'| elements, and it has become standard to
 write |M i j| to mean the |i|th element of the |j|th column, i.e., |M
@@ -455,11 +454,11 @@ transpose m i = V (\j -> m j ! i)
 % specification/conceptual level we should perhaps stick to the usual
 % $\sum$ notation.
 
-Note that in the terminology of the earlier chapters we can see
+In the terminology of the earlier chapters, we can see
 |Matrix s g g'| as a type of syntax and the linear transformation (of
 type |Vector S G -> Vector S G'|) as semantics.
 %
-With this view, |mulMV| is just another |eval :: Syntax -> Semantics|.
+With this view, |mulMV| is just another evaluation function from syntax to semantics.
 %
 However, again, given a fixed basis we have an isomorphism rather than
 a mere homomorphism: for a given linear transformation, the matrix
@@ -572,6 +571,7 @@ i.e., the scalar product of the vectors |v| and |w|.
 % can also be interpreted as changes of basis.
 
 \section{Dot products}
+
 
 An important concept is the dot product between vectors.
 %
