@@ -18,8 +18,8 @@ import Data.Complex ()
 \label{sec:deriv}
 
 In this chapter we make heavy use of concepts from \cref{sec:CompSem}
-and thus we urge the reader to verify their understanding of
-\cref{sec:homomophism-roadmap} and do \cref{exc:findFunExp0} if they
+and thus we urge readers to verify their understanding of
+\cref{sec:homomophism-roadmap,exc:findFunExp0} in case they
 might have skipped it.
 %
 We have seen in particular that we can give a numeric (|Field|, etc.)
