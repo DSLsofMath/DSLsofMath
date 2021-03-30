@@ -621,14 +621,17 @@ dot (V v) (V w) = linComb v w
 
 We should note that the dot product acts on the representations
 (syntax). This means that it will \emph{change} dependending on the
-basis chosen to represent vectors. As such, the dot product is a
-syntactic concept, that one should avoid. This can be somewhat
-counterintuitive, because so far it was fine to use representations
-(they were unique).
+basis chosen to represent vectors. Thus, the dot product is a
+syntactic concept, and it should be clearly identified as such. This
+can be somewhat counterintuitive, because so far it was fine to use
+representations (they were unique given the basis). 
 %
 To further confuse matters, in Euclidean spaces (which are often used
 as illustration) if the basis vectors are orthogonal, then the dot
-product coincides with the inner product.
+product coincides with the inner product. But, according to our
+methodology, one should start by defining a suitable inner product,
+and then check if the dot product is equivalent to it. See
+\cref{sec:inner-product-fourier} for an example.
 
 
 
@@ -839,7 +842,7 @@ Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated
 with integration of polynomials.
 
 \subsection{\extraMaterial Inner product for functions and Fourier series}
-
+\label{sec:inner-product-fourier}
 We said before that the inner product yields a notion of norm and
 similarity.
 %
