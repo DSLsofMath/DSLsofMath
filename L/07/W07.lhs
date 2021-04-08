@@ -1714,8 +1714,8 @@ return a structure of possible future states of type |G|:
   %
   The transition function has the type |f : G -> (G -> REAL)|, the
   structure of the target is the probability distributions over |G|.
-\item quantum: given an observable state, we compute an (orthogonal)
-  superposition of possible future states.
+\item quantum: given an observable state, we compute a
+  superposition of possible orthogonal future states. 
 \end{itemize}
 
 Therefore:
@@ -1724,7 +1724,7 @@ Therefore:
 \item deterministic: |f : G -> Id G|
 \item non-deterministic: |f : G -> Powerset G|, where |Powerset G = G -> {0, 1}|
 \item stochastic: |f : G -> Prob G|, where |Prob G = G -> [0, 1]|
-\item quantum: |f : G -> Super G|, where |Super G = G -> Complex|
+\item quantum: |f : G -> Super G|, where |Super G = G -> Complex|. (Additionally |f| must be invertible)
 \end{itemize}
 
 We have represented the elements of the various structures as vectors.
@@ -1792,7 +1792,7 @@ specialising the scalar type |S|)?
 Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|, |Super|.
 
 
-\section{*The monad of linear algebra}
+\section{\extraMaterial The monad of linear algebra}
 \jp{Todo: connect this with the monad of probability theory chapter.}
 The answer is yes, up to a point.
 %
