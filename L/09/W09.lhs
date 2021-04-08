@@ -135,20 +135,15 @@ But this is not always the case.
 %
 Hence we need a way to represent this. We use the following
 combinator:%
-\footnote{This is in fact scaling, as defined in the LinAlg Chapter
+\footnote{This is in fact scaling, as defined in \cref{sec:LinAlg}
   --- the spaces over a given domain form a vector space.
   %
   However, we choose not to use this point of view, because we are
   generally not interested in the vector space structure of
   probability spaces.
   %
-  Furthermore, using this terminology risks adding more confusion than
-  otherwise.
-  %
-  In particular, the word ``scale'' could be misunderstood as scaling
-  the \emph{value} of a numerical variable.
-  %
-  Instead here we scale densites, and use |Factor| for this purpose.
+  Additionally ``Factor'' does not scale the points in the space.
+  What it does is to scale the probability mass associated with each such points.
 }
 \begin{spec}
 Factor :: REAL -> Space ()
@@ -244,31 +239,31 @@ data Space a where
   RealLine  :: Space REAL
 \end{code}
 
-\section{Bind and return}
-
-Very often, one will be interested only in a particular projection
-only.
-%
-Hence, it is useful to combine |Sigma| and |Project| in a single
-combinator, as follows:
-
-\begin{code}
-bind :: Space a -> (a -> Space b) -> Space b
-bind a f = Project snd (Sigma a f)
-\end{code}
-
-This means that |Space| has a monadic structure:
-\TODO{explain this somewhere in the book}
-%format <*> = "\mathbin{" < "\!\!" * "\!\!" > "}"
-\begin{code}
-instance Functor Space where
-  fmap f  = (pure f <*>)
-instance Applicative Space where
-  pure x  = Finite [x]
-  (<*>)   = ap
-instance Monad Space where
-  (>>=)   = bind
-\end{code}
+% \section{Bind and return}
+% 
+% Very often, one will be interested only in a particular projection
+% only.
+% %
+% Hence, it is useful to combine |Sigma| and |Project| in a single
+% combinator, as follows:
+% 
+% \begin{code}
+% bind :: Space a -> (a -> Space b) -> Space b
+% bind a f = Project snd (Sigma a f)
+% \end{code}
+% 
+% This means that |Space| has a monadic structure:
+% \TODO{explain this somewhere in the book}
+% %format <*> = "\mathbin{" < "\!\!" * "\!\!" > "}"
+% \begin{spec}
+% instance Functor Space where
+%   fmap    = Project
+% instance Applicative Space where
+%   pure x  = Finite [x]
+%   (<*>)   = ap
+% instance Monad Space where
+%   (>>=)   = bind
+% \end{spec}
 
 \section{Distributions}
 
@@ -297,18 +292,29 @@ Let us define a few useful distributions.
 First, we present the uniform distribution among a finite set of
 elements.
 %
-It is essentially the same as the |Finite| space, but we scale every
-element so that the total measure comes down to |1|.
+It is essentially the same as the |Finite| space, but we scale it
+so that the total measure comes down to |1|.
 %
 \begin{code}
-factorWith :: (a -> REAL) -> Space a -> Space a
-factorWith f s = do {x <- s; Factor (f x); return x}
-scale :: REAL -> Space a -> Space a
-scale c = factorWith (const c)
-
 uniformDiscrete :: [a] -> Distr a
 uniformDiscrete xs = scale  (1.0 / fromIntegral (length xs))
                             (Finite xs)
+\end{code}
+
+Scaling is defined as follows:
+\begin{code}
+scaleWith :: (a -> REAL) -> Space a -> Space a
+scaleWith f s = Project fst (Sigma s (\x -> Factor (f x)))
+
+scale :: REAL -> Space a -> Space a
+scale c = scaleWith (const c)
+\end{code}
+Where |scaleWith| applies a factor to every element, and ignores the
+unit type associated with |Factor|. If the scaling is all-or-nothing,
+we have the following version, which will be useful later.
+\begin{code}
+filterWith :: (a -> Bool) -> Space a -> Space a
+filterWith f = scaleWith (indicator . f)
 \end{code}
 
 The distribution of the balanced die can then be represented as
@@ -327,7 +333,7 @@ It is a distribution whose value is |True| with probability |p| and
 Hence it can be used to represent a biased coin toss.
 \begin{code}
 bernoulli :: REAL -> Distr Bool
-bernoulli p = factorWith  (\b -> if b then p else 1-p)
+bernoulli p = scaleWith  (\b -> if b then p else 1-p)
                           (Finite [False,True])
 \end{code}
 
@@ -337,7 +343,7 @@ Finally we can define the normal distribution with average |mu| and
 standard deviation |sigma|.
 \begin{code}
 normal :: REAL -> REAL -> Distr REAL
-normal mu sigma = factorWith (normalMass mu sigma) RealLine
+normal mu sigma = scaleWith (normalMass mu sigma) RealLine
 
 normalMass :: Floating r =>  r -> r -> r -> r
 normalMass mu sigma x = exp(- ( ((x - mu)/sigma)^2 / 2)) / (sigma * sqrt (2*pi))
@@ -455,52 +461,28 @@ properties of spaces.
 \TODO{Format the lemmas}
 \TODO{Name the lemmas}
 
-\textbf{integrator/bind lemma}: |integrator (s >>= f) g == integrator s (\x -> integrator (f x) g)|
-\begin{spec}
-  integrator (s >>= f) g
-= {- by Def. of bind |(>>=)| -}
-  integrator (Project snd (Sigma s f)) g
-= {- by Def. of integrator/project -}
-  integrator (Sigma s f) (g . snd)
-= {- by Def. of integrator/Sigma -}
-  integrator s (\x -> integrator (f x) (\y -> (g . snd) (x,y)))
-= {- snd/pair -}
-  integrator s (\x -> integrator (f x) (\y -> g y))
-= {- composition -}
-  integrator s (\x -> integrator (f x) g)
-\end{spec}
-The same in |do| notation: |integrator (do x <- s; t) g == integrator s (\x -> integrator t g)|
+% \textbf{integrator/bind lemma}: |integrator (s >>= f) g == integrator s (\x -> integrator (f x) g)|
+% \begin{spec}
+%   integrator (s >>= f) g
+% = {- by Def. of bind |(>>=)| -}
+%   integrator (Project snd (Sigma s f)) g
+% = {- by Def. of integrator/project -}
+%   integrator (Sigma s f) (g . snd)
+% = {- by Def. of integrator/Sigma -}
+%   integrator s (\x -> integrator (f x) (\y -> (g . snd) (x,y)))
+% = {- snd/pair -}
+%   integrator s (\x -> integrator (f x) (\y -> g y))
+% = {- composition -}
+%   integrator s (\x -> integrator (f x) g)
+% \end{spec}
+% The same in |do| notation: |integrator (do x <- s; t) g == integrator s (\x -> integrator t g)|
 
-\textbf{integrator/return lemma}: |integrator (return x) g == g x|
-\begin{spec}
-  integrator (return x) g
-= {- by Def. of |return| -}
-  integrator (Finite [x]) g
-= {- integrator/Finite -}
-  sum (map g) [x]
-= {- by Def. of sum/map -}
-  g x
-\end{spec}
 
-\textbf{integrator/fmap lemma}: |integrator (fmap f s) g == integrator s (g . f)|
+% Note that using the definition of integrator/Project lemma with |g==id| we can always
+% push the weight function of the integrator into the space: |integrator
+% s f == integrator (Project f s) id|.
 
-\begin{spec}
-  integrator (fmap f s) g
-= {- by Def. of |fmap| -}
-  integrator (s >>= (return . f)) g
-= {- by integrator/bind lemma -}
-  integrator s $ \x -> integrator (return (f x)) g
-= {- by integrator/return lemma -}
-  integrator s $ \x -> g (f x)
-= {- definition of |(.)| -}
-  integrator s (g . f)
-\end{spec}
-
-Note that using the integrator/fmap lemma with |g==id| we can always
-push the weight function of the integrator into the space: |integrator
-s f == integrator (fmap f s) id|.
-
-Linearity of integrator:
+\paragraph{Linearity of integrator}
 
 If |g| is a linear function (addition or multiplication by a
 constant), then:
@@ -532,20 +514,18 @@ g (integrator (Sigma a f) h)
 \end{spec}
 
 %**TODO this does not make sense type-wise in general, only for Num-values spaces
-% As a corrolary, |fmap| is linear as well:
+% As a corrolary, |Project| is linear as well:
 % %
-% if |f| is linear, then |integrator (fmap f s) g = f (integrator s g)|
+% if |f| is linear, then |integrator (Project f s) g = f (integrator s g)|
 
 \paragraph{Properties of |measure|}
 
 \begin{itemize}
-\item |measure (pure x) == 1|
+\item |measure (Finite [x]) == 1|
 \item |measure (Sigma s (const t)) == measure s * measure t|.
-\item |measure (s >>= const t) == measure s * measure t|.
-\item[|>>=|/distribution] If |s| is a distribution and |f x| is a
-  distribution for every |x|, then |s >>= f| is a distribution
-\item[fmap/distribution] Corollary: |s| is a distribution iff.\ |fmap
-  f s| is a distribution.
+\item If |s| is a distribution and |f x| is a
+  distribution for every |x|, then |Sigma s f| is a distribution
+\item |s| is a distribution iff. |Project f s| is a distribution.
 \end{itemize}
 
 The proof of the second item is as follows:
@@ -563,12 +543,15 @@ The proof of the second item is as follows:
    measure t * measure s
 \end{spec}
 
-Exercise: using the above lemmas, prove |integrator (bernoulli p) f ==
+\begin{exercise}
+  \label{ex:integrator-bernouilli}
+Using the above lemmas, prove |integrator (bernoulli p) f ==
 p * integrator f + (1-p) * integrator f|.
+\end{exercise}
 
 \section{Random Variables}
-Even though we have already studied variables in detail (in Chapter
-\ref{sec:types}), it is good to come back to them for a moment before
+Even though we have already studied variables in detail (in
+\cref{sec:types}), it is good to come back to them for a moment before
 returning to \emph{random} variables proper.
 
 According to Wikipedia, a variable has a different meaning in computer
@@ -585,7 +568,7 @@ science and in mathematics:
 
 By now we have a pretty good grip on variables in computer science.
 %
-In Chapter \ref{sec:types} we have described a way to reduce
+In \cref{sec:types} we have described a way to reduce
 mathematical variables (position \(q\) and velocity \(v\) in
 lagrangian mechanics) to computer science variables.
 %
@@ -657,19 +640,21 @@ of the sum of two dice throws:
 expect2D6 = expectedValue twoDice (\ (x,y) -> fromIntegral (x+y))
 \end{code}
 
-Essentially, what the above does is computing the weighted
-sum/integral of |f(x)| for every point |x| in the space.
+Essentially, what the above definition of expected value does is to
+compute the weighted sum/integral of |f(x)| for every point |x| in the
+space.
 %
-Because |s| is a space (not a distribution), we must normalise the
+And because |s| is a space (not a distribution), we must normalise the
 result by dividing by its measure.
 
-Exercise: define various statistical moments (variance, skew,
+\begin{exercise}
+Define various statistical moments (variance, skew,
 curtosis, etc.)
-
+\end{exercise}
 
 
 %**TODO: Perhaps come back to this with correct formulation: something like
-% If (g1.f1) =.= (f2.g2) then |expectedValue (fmap f1 s) g1 == f2 (expectedValue s g2)|
+% If (g1.f1) =.= (f2.g2) then |expectedValue (Project f1 s) g1 == f2 (expectedValue s g2)|
 % with additional conditions.
 % \paragraph{Theorem: Linearity of expected value}
 % %
@@ -682,7 +667,7 @@ curtosis, etc.)
 % expectedValue (f <$> s) g
 %   == {- By definition of expected value -}
 % integrator (f <$> s) g / measure (f <$> s)
-%   == {- By linearity of |integrator| over |fmap| -}
+%   == {- By linearity of |integrator| over |Project| -}
 % integrator s (g . f) / measure s
 %   == {- By definition of expected value -}
 % expectedValue s (g . f)
@@ -693,16 +678,18 @@ curtosis, etc.)
 % \begin{code}
 % checkTypes f s g =
 %   [
-%     expectedValue (f <$> s) g
+%     expectedValue (Project f s) g
 %   , -- == {- By definition of expected value -}
-%     integrator (f <$> s) g / measure (f <$> s)
-%   , -- == {- By linearity of |integrator| over |fmap| -}
+%     integrator (Project f s) g / measure (f <$> s)
+%   , -- == {- By linearity of |integrator| over |Project| -}
 %     integrator s (g . f) / measure s
 %   , --  == {- By definition of expected value -}
 %     expectedValue s (g . f)
 %   ]
 % \end{code}
 % %endif
+
+% $ emacs
 
 \section{Events and probability}
 
@@ -856,11 +843,10 @@ random variables except the outcome that we care about (is the product
 greater than 10?):
 \begin{code}
 diceSpace :: Space Bool
-diceSpace = do
-  x <- d6  -- balanced die 1
-  y <- d6  -- balanced die 2
-  isTrue (x + y >= 7)  -- observe that the sum is >= 7
-  return (x * y >= 10) -- consider only the event ``product >= 10''
+diceSpace = Project (\(x,y) -> (x * y >= 10)) (filterWith (\(x,y) -> (x + y >= 7)) twoDice)
+  -- (x,y) <- twoDice  -- balanced die 1
+  -- isTrue   -- observe that the sum is >= 7
+  -- return  -- consider only the event ``product >= 10''
 \end{code}
 Then we can compute its probability:
 \begin{code}
@@ -877,10 +863,10 @@ a sample space we can compute a few partial results explaining the
 \begin{code}
 p1 (x,y) = x+y >= 7
 p2 (x,y) = x*y >= 10
-test1     = measure (prod d6 d6 >>= isTrue . p1)                       -- 21
-test2     = measure (prod d6 d6 >>= isTrue . p2)                       -- 19
-testBoth  = measure (prod d6 d6 >>= isTrue . \xy -> p1 xy && p2 xy)    -- 19
-prob21    = condProb (prod d6 d6) p2 p1                                -- 19/21
+test1     = measure (filterWith p1 twoDice)                       -- 21
+test2     = measure (filterWith p2 twoDice)                       -- 19
+testBoth  = measure (filterWith (\xy -> p1 xy && p2 xy) twoDice)  -- 19
+prob21    = condProb (prod d6 d6) p2 p1                           -- 19/21
 \end{code}
 We can see that 21 possibities give a sum |>=7|, that 19 possibilities
 give a product |>=10| and that all of those 19 satisfy both
@@ -899,12 +885,14 @@ all variables, caring only about |isUser|.
 
 \begin{code}
 drugSpace :: Space Bool
-drugSpace = do
-  isUser <- bernoulli 0.005  -- model the distribution of drug users
-  testPositive <- bernoulli (if isUser then 0.99 else 0.01)
-    -- model test accuracy
-  isTrue testPositive        -- we have ``a positive test'' by assumption
-  return isUser              -- we're interested in |isUser|.
+drugSpace = 
+  Project fst  $     -- we're interested the posterior distribution of isUser (ignoring the result of the test).
+  filterWith snd $   -- we have ``a positive test'' by assumption (second component of the pair)
+  Sigma (bernoulli 0.005) -- model the distribution of drug users
+        (\isUser ->
+           bernoulli (if isUser then 0.99 else 0.01))
+              -- model test accuracy
+
 \end{code}
 The probability is computed as usual:
 \begin{code}
@@ -932,18 +920,20 @@ the following:
 doors :: [Int]
 doors = [1,2,3]
 montySpace :: Bool -> Space Bool
-montySpace changing = do
-  winningDoor      <-  uniformDiscrete doors  -- random door is winning
-  pickedDoor       <-  uniformDiscrete doors  -- player picks door blindly
-  montyPickedDoor  <-  uniformDiscrete
-                         (doors \\ [pickedDoor, winningDoor])
-    -- Monty cannot pick the same door, nor a winning door.
-  let newPickedDoor =
-        if changing
-        then head (doors \\ [pickedDoor, montyPickedDoor])
-          -- player takes the third door
-        else pickedDoor
-  return (newPickedDoor == winningDoor)
+montySpace changing = 
+  Project (\((winningDoor,initiallyPickedDoor),montyPickedDoor) ->
+           let newPickedDoor =
+                 if changing
+                 then head (doors \\ [initiallyPickedDoor, montyPickedDoor])
+                   -- player takes another door
+                 else initiallyPickedDoor
+           in (newPickedDoor == winningDoor)) -- won?
+  (Sigma (prod (uniformDiscrete doors)
+              (uniformDiscrete doors)) -- initial a-priori space (the winning door is independent from the door picked by the contestant)
+         (\(winningDoor,pickedDoor) ->
+            uniformDiscrete (doors \\ [pickedDoor, winningDoor])))
+        -- we assume that Monty opens any of the non-winning or non-picked doors, uniformly.
+        
 
 -- |>>> probability (montySpace False)|
 -- 0.3333333333333333
@@ -965,13 +955,17 @@ problem, which still appears to follow the example point by point, is
 the following:
 \begin{code}
 montySpaceIncorrect :: Bool -> Space Bool
-montySpaceIncorrect changing = do
-  winningDoor <- uniformDiscrete [1::Int,2,3]    -- radom door is winning
-  let pickedDoor = 1                             -- player picks door 1.
-  let montyPickedDoor = 3                        -- monty opens door 3.
-  isTrue (montyPickedDoor /= winningDoor)        -- door 3 is not winning
-  let newPickedDoor = if changing then 2 else 1  -- we can change or not
-  return (newPickedDoor == winningDoor)          -- has the player won?
+montySpaceIncorrect changing =
+  Project (\((winningDoor,initiallyPickedDoor),montyPickedDoor) ->
+           let newPickedDoor =
+                 if changing
+                 then head (doors \\ [initiallyPickedDoor, montyPickedDoor])
+                   -- player takes another door
+                 else initiallyPickedDoor
+           in (newPickedDoor == winningDoor)) -- won?
+  (Sigma (prod (uniformDiscrete doors)
+              (uniformDiscrete doors)) -- initial a-priori space (the winning door is independent from the door picked by the contestant)
+         (\(_,pickedDoor) -> uniformDiscrete (doors \\ [pickedDoor])))
 
 -- |>>> probability (montySpace1 False)|
 -- 0.5
@@ -980,7 +974,7 @@ montySpaceIncorrect changing = do
 -- 0.5
 \end{code}
 The above is incorrect, because everything happens as if Monty chooses
-a door before the player made its first choice.
+a door before the player made their first choice.
 
 \subsection{Advanced problem}
 Consider the following problem: how many times must one throw a coin
@@ -990,16 +984,15 @@ We can model the problem as follows:
 \begin{code}
 coin = bernoulli 0.5
 
-coins = do
-  x <- coin
-  xs <- coins
-  return (x:xs)
+coins =
+  Project (\(x,xs) -> x : xs)
+  (prod coin coins)
 
 threeHeads :: [Bool] -> Int
 threeHeads (True:True:True:_) = 3
 threeHeads (_:xs) = 1 + threeHeads xs
 
-example' = threeHeads <$> coins
+example' = Project threeHeads coins
 \end{code}
 % emacs $
 
@@ -1019,12 +1012,13 @@ obtain:
 \begin{code}
 threeHeads' = helper 3
 
-helper 0 = return 0
-helper m = do
-  h <- coin
-  (1 +) <$> if h
-    then  helper (m-1)
-    else  helper 3 -- when we have a tail, we start from scratch
+helper 0 = Finite [0]
+helper m =
+  Project ((1 +) . snd)  
+  (Sigma coin (\h -> if h
+                then  helper (m-1)
+                else  helper 3)) -- when we have a tail, we start from scratch
+              
 \end{code}
 % emacs $
 Evaluating the probability still does not terminate:
@@ -1045,7 +1039,7 @@ The proof is by induction on |m|:
   %
   Then |if h then helper m else helper 3| for every |h|.
   %
-  The result is obtained by using the |>>=|/distribution lemma.
+  The result is obtained by using the distribution property of |Sigma|.
 \end{itemize}
 
 Then, we can symbolically compute the integrator of |helper|.
@@ -1057,16 +1051,16 @@ In the recursive case, we have:
 \begin{spec}
 integrator (helper (m+1)) id
 == {- By def. of |helper| -}
-integrator (coin $ \h -> (1+) <$> if h then helper m else helper 3) id
-== {- By integrator/bind -}
-integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) id
-== {- By |integrator| of linear function (|fmap| case) -}
-integrator coin $ \h -> 1 + integrator (if h then helper m else helper 3) id
-== {- By case analysis -}
-integrator coin $ \h -> 1 + (if h then integrator (helper m) id else integrator (helper 3) id)
+integrator (Project ((1 +) . snd) (Sigma coin (\h -> if h then  helper (m-1) else  helper 3))) id
+== {- By integrator def -}
+integrator (Sigma coin (\h -> if h then  helper (m-1) else  helper 3)) ((1 +) . snd)
+== {- By integrator def -}
+integrator coin $ \h -> integrator (if h then helper m else helper 3) (1 +)
 == {- By linearity of |integrator| -}
+1 + integrator coin $ \h -> integrator (if h then helper m else helper 3) id
+== {- By case analysis -}
 1 + (integrator coin $ \h -> if h then integrator (helper m) id else integrator (helper 3) id)
-== {- By integrator/bernouilli (exercise) -}
+== {- By integrator/bernouilli (\cref{ex:integrator-bernouilli}) -}
 1 + 0.5 * integrator (helper m) id + 0.5 * integrator (helper 3) id
 \end{spec}
 % $ emacs
@@ -1124,33 +1118,6 @@ row.
 % |[0,1,2,3]|).
 
 
-% We can then evaluate the rhs symbolically;
-% \begin{spec}
-% =  probability1 (helper (m+1)) (== n)
-%  {- Def. of probability1 -}
-%  =  expectedValue (helper (m+1)) (indicator (== n))
-%  {- Def. of expectedValue -}
-% =  integrator (helper (m+1)) (indicator . (== n)) / measure (helper m)
-%  {- By lemma: measure (helper m) = 1 -}
-%  =  integrator (helper (m+1)) (indicator . (== n))
-%  {- By def of helper -}
-% =  integrator (coin >>= \h -> ((1+) <$> if h then helper m else helper 3)) (indicator . (== n))
-%  {- Lemma: integrator / bind -}
-% =  integrator coin $ \h -> integrator ((1+) <$> if h then helper m else helper 3) (indicator . (== n))
-%  {- Lemma: integrator / fmap -}
-% =  integrator coin $ \h -> integrator (if h then helper m else helper 3) (indicator . (== n) . (+1))
-%  {- Lemma: integrator / if -}
-% =  integrator coin $ \h -> if h then integrator (helper m) (indicator . (== n) . (+1)) else integrator (helper 3) (indicator . (== n) . (+1))
-%  {- Def. coin -}
-% =  integrator (bernoulli 0.5) $ \h -> if h then integrator (helper m) (indicator . (== n) . (+1)) else integrator (helper 3) (indicator . (== n) . (+1))
-%  {- Lemma: integrator / bernoulli -}
-% =  0.5 * integrator (helper m) (indicator . (== n) . (+1)) + 0.5 * integrator helper 3 (indicator . (== n) . (+1))
-%  {- Expand composition   and    n==x+1 iff. n-1==x -}
-% =  0.5 * integrator (helper m) (indicator . (== (n-1))) + 0.5 * integrator helper 3 (indicator . (== (n-1))
-%  {- Def of |f m n| -}
-% =  0.5 * f m (n-1) + 0.5 * f 3 (n-1)
-% \end{spec}
-% % $ emacs
 
 % Hence we obtain the following system of recursive equations:
 
