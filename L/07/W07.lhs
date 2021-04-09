@@ -1658,7 +1658,7 @@ quantum mechanical systems have an invertible dynamics.
 Furthermore, the inverted matrix is also unitary, and therefore the
 inverted system is also valid as a quantum dynamical system.
 
-Here is an example real orthogonal (and thus also unitary matrix)
+Here is an example orthogonal (and thus also unitary) matrix
   \[
   M =
   \bordermatrix{
