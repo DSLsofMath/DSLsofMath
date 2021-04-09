@@ -4,14 +4,25 @@
 %if False
 \begin{code}
 {-# LANGUAGE GADTs #-}
+{-# LANGUAGE TupleSections #-}
 module DSLsofMath.W09 where
 
 import Control.Monad (ap)
 import Data.List ((\\))
 
 type REAL = Double -- pretend...
+
+-- poorest man's equational reasoning.
+
+(===) :: a -> a -> a
+_ === y = y
+
+infixl 1 ===
+
 \end{code}
 %endif
+
+
 
 We have by now acquired a firm on DSL notions and several mathematical
 domain.  In this chapter, will apply the DSL methodology once more to
@@ -263,6 +274,7 @@ instance Monad Space where
 \end{code}
 
 \begin{exercise}
+  \label{ex:monad-laws}
   Prove the functor and monad laws for the above definitions. (Use semantic equality.)
 \end{exercise}
 
@@ -748,31 +760,35 @@ subspace e s = Project fst (Sigma s (isTrue . e))
 We can show that if |s| has a non-zero measure, then the two
 definitions are equivalent:
 
-Lemma: |measure s * probability s e = measure (Sigma s (isTrue . e))|
-
-Proof: (where we shorten |indicator| to |ind| and |integrator| to |int|)
+\begin{lemma}
+|measure s * probability s e = measure (Sigma s (isTrue . e))|
+\end{lemma}
+\begin{proof}
+(where we shorten |indicator| to |ind| and |integrator| to |int|)
 %{
 %format indicator = ind
 %format integrator = int
-\begin{spec}
-  probability1 s e
-= {- Def. of |probability1| -}
-  expectedValue s (indicator . e)
-= {- Def. of |expectedValue| -}
-  integrator s (indicator . e) / measure s
-= {- Def. of |(.)| -}
-  integrator s (\x -> indicator (e x)) / measure s
-= {- mutiplication by 1 -}
-  integrator s (\x -> indicator (e x) * const 1 (x,())) / measure s
-= {- Def. of |integrator| -}
-  integrator s (\x -> integrator (Factor (indicator (e x))) (\y -> const 1 (x,y))) / measure s
-= {- Def. of |isTrue| -}
-  integrator s (\x -> integrator (isTrue (e x)) (\y -> const 1 (x,y))) / measure s
-= {- Def. of |integrator| for |Sigma| -}
-  measure (Sigma s (isTrue . e)) / measure s
-\end{spec}
-%}
+\begin{code}
+measure_sigma_equations s e = 
+     probability1 s e
+   === {- Def. of |probability1| -}
+     expectedValue s (indicator . e)
+   === {- Def. of |expectedValue| -}
+     integrator s (indicator . e) / measure s
+   === {- Def. of |(.)| -}
+     integrator s (\x -> indicator (e x)) / measure s
+   === {- mutiplication by 1 -}
+     integrator s (\x -> indicator (e x) * const 1 (x,())) / measure s
+   === {- Def. of |integrator| -}
+     integrator s (\x -> integrator (Factor (indicator (e x))) (\y -> const 1 (x,y))) / measure s
+   === {- Def. of |isTrue| -}
+     integrator s (\x -> integrator (isTrue (e x)) (\y -> const 1 (x,y))) / measure s
+   === {- Def. of |integrator| for |Sigma| -}
+     measure (Sigma s (isTrue . e)) / measure s
+\end{code}
+% }
 
+\end{proof}
 It will often be convenient to define a space whose underlying set is
 a boolean value and compute the probability of the identity event:
 \begin{code}
@@ -812,39 +828,44 @@ notation, in the sense that the underlying space is more explicit.)
 Regardless, the equivalence between the two definitions can be proven,
 by symbolic calculation:
 
-Lemma:  |condProb s f g == probability s (\y -> f y && g y) / probability s g|
 
-Proof:
+\begin{lemma}
+|condProb s f g == probability s (\y -> f y && g y) / probability s g|
+\end{lemma}
+
 \TODO{Possibly split into helper lemma(s) to avoid diving ``too deep''.}
 %{
 %format indicator = ind
 %format integrator = int
-\begin{spec}
-  condProb s f g
-= {- Def of condProb -}
-  probability1 (subspace g s) f
-= {- Def of subspace -}
-  probability1 (Sigma s (isTrue . g)) (f . fst)
-= {- Def of probability1 -}
-  expectedValue (Sigma s (isTrue . g)) (indicator . f . fst)
-= {- Def of expectedValue -}
-  (1/measure(Sigma s (isTrue . g))) * (integrator (Sigma s (isTrue . g)) (indicator . f . fst))
-= {- Def of |integrator| (Sigma) -}
-  (1/measure s/probability s g) * (integrator s $ \x -> integrator (isTrue . g) $ \y -> indicator . f . fst $ (x,y))
-= {- Def of |fst| -}
-  (1/measure s/probability s g) * (integrator s $ \x -> integrator (isTrue . g) $ \y -> indicator . f $ x)
-= {- Def of |isTrue| -}
-  (1/measure s/probability s g) * (integrator s $ \x -> indicator (g x) * indicator (f x))
-= {- Property of |indicator| -}
-  (1/measure s/probability s g) * (integrator s $ \x -> indicator (\y -> g y &&  f y))
-= {- associativity of multiplication -}
-  (1/probability s g) * (integrator s $ \x -> indicator (\y -> g y &&  f y)) / measure s
-= {- Definition of |probability1| -}
-  (1/probability s g) * probability1 s (\y -> g y &&  f y)
-\end{spec}
+\begin{proof}
+\begin{code}
+cond_prob_equations :: Space a -> (a -> Bool) -> (a -> Bool) -> REAL
+cond_prob_equations s f g = 
+      condProb s f g
+    === {- Def of condProb -}
+      probability1 (subspace g s) f
+    === {- Def of subspace -}
+      probability1 (Sigma s (isTrue . g)) (f . fst)
+    === {- Def of probability1 -}
+      expectedValue (Sigma s (isTrue . g)) (indicator . f . fst)
+    === {- Def of expectedValue -}
+      (1/measure(Sigma s (isTrue . g))) * (integrator (Sigma s (isTrue . g)) (indicator . f . fst))
+    === {- Def of |integrator| (Sigma) -}
+      (1/measure s/probability1 s g) * (integrator s $ \x -> integrator (isTrue (g x)) $ \y -> indicator . f . fst $ (x,y))
+    === {- Def of |fst| -}
+      (1/measure s/probability1 s g) * (integrator s $ \x -> integrator (isTrue (g x)) $ \y -> indicator . f $ x)
+    === {- Def of |isTrue| -}
+      (1/measure s/probability1 s g) * (integrator s $ \x -> indicator (g x) * indicator (f x))
+    === {- Property of |indicator| -}
+      (1/measure s/probability1 s g) * (integrator s $ \x -> indicator (g x && f x) )
+    === {- associativity of multiplication -}
+      (1/probability1 s g) * (integrator s $ \x -> indicator (g x && f x)) / measure s
+    === {- Definition of |probability1| -}
+      (1/probability1 s g) * probability1 s (\x -> g x && f x)
+\end{code}
 % emacs wakeup $
 %}
-
+\end{proof}
 \section{Examples}
 
 We are now ready to solve all three problems motivating this chapter.
@@ -1028,42 +1049,69 @@ obtain:
 
 
 \begin{lemma}
-  Project f (Sigma a g) == Project snd (Sigma a (\x -> Project (f . (x,)) g x))
+  |Project f (Sigma a g) == Project snd (Sigma a (\x -> Project (f . (x,)) (g x)))|
+  \label{lem:project/sigma}
 \end{lemma}
 \begin{proof}
-  \begin{spec}
-integrator (Project f (Sigma a g)) h ==
-integrator (Sigma a g) (h . f) ==
-integrator a (\x -> integrator g (\y -> (h . f) (x,y))
-integrator a (\x -> integrator g (h . f . (x,)))
-integrator a (\x -> integrator (Project (f . (x,)) g) h)
-integrator a (\x -> integrator (Project (f . (x,)) g) $ \y -> h y)
-integrator a (\x -> integrator (Project (f . (x,)) g) $ \y -> (h . snd) (x,y))
-integrator a (\x -> integrator (Project (f . (x,)) g) $ \y -> (h . snd) (x,y))
-integrator (Sigma a (\x -> Project (f . (x,)) g x)) (h . snd)
-integrator (Project snd (Sigma a (\x -> Project (f . (x,)) g x))) h
-
-threeHeads' 0 _ = 0
-threeHeads' m (x:xs) = 1 + if x then threeHeads' (m-1) xs else threeHeads' 3 xs
-\end{spec}
+We check the equivalence by using semantic equality:
+  \begin{code}
+project_sigma_equations f a g h = 
+      integrator (Project f (Sigma a g)) h
+  === -- by def
+      integrator (Sigma a g) (h . f)
+  ===  -- by def
+      integrator a (\x -> integrator (g x) (\y -> (h . f) (x,y)))
+  ===  -- rewriting in point-free style
+      integrator a (\x -> integrator (g x) (h . f . (x,)))
+  ===  -- by def of integrator of |Project|
+      integrator a (\x -> integrator (Project (f . (x,)) (g x)) h)
+  ===  -- |h == \y -> h y|
+      integrator a (\x -> integrator (Project (f . (x,)) (g x)) $ \y -> h y)
+  ===  -- taking an explicit (x,y) pair
+      integrator a (\x -> integrator (Project (f . (x,)) (g x)) $ \y -> (h . snd) (x,y))
+  ===  -- by def of integrator of |Sigma|
+      integrator (Sigma a (\x -> Project (f . (x,)) (g x))) (h . snd)
+  ===   -- by def of integrator of |Project|
+      integrator (Project snd (Sigma a (\x -> Project (f . (x,)) (g x)))) h
+\end{code}
 \end{proof}
 
-Unfolding proper
-\begin{spec}
-helper m 
-= Project (threeHeads' m)  coins
-= Project (threeHeads' m . \(x,xs) -> x : xs) coins
-= Project (\(x,xs) -> 1 + if x then threeHeads' (m-1) xs else threeHeads' 3 xs) (pair coin coins)
-= Project (1+) (Project (\(x,xs) -> if x then threeHeads' (m-1) xs else threeHeads' 3 xs) (pair coin coins))
--- by lemma
-= Project (1+) (Project snd (Sigma coin (\x -> Project (\xs -> if x then threeHeads' (m-1) xs else threeHeads' 3 xs)) coins)
-= Project (1+) (Project snd (Sigma coin (\x -> if x then Project (threeHeads' (m-1)) else Project (threeHeads' 3)) coins))
-= Project (1+) (Project snd (Sigma coin (\x -> if x then Project (threeHeads' (m-1)) coins else Project (threeHeads' 3) coins)))
-= Project (1+) (Project snd (Sigma coin (\x -> if x then helper (m-1) coins else helper 3)))
-\end{spec}
+
+Let:
+\begin{code}
+threeHeads' :: Int -> [Bool] -> Int
+threeHeads' 0 _ = 0
+threeHeads' m (x:xs) = 1 + if x then threeHeads' (m-1) xs else threeHeads' 3 xs
+\end{code}
+
+Unfolding proper:
 
 \begin{code}
-threeHeads' = helper 3
+unfolding_equations m = 
+      helper m 
+  === -- by def
+      Project (threeHeads' m)  coins
+  === -- by def
+      Project (threeHeads' m) (Project (\(x,xs) -> x : xs) (prod coin coins))
+  === -- property of |Project| (exercise \cref{ex:monad-laws}, functoriality of |Project|)
+      Project (threeHeads' m . \(x,xs) -> x : xs) (prod coin coins)
+  === -- by def
+      Project (\(x,xs) -> 1 + if x then threeHeads' (m-1) xs else threeHeads' 3 xs) (prod coin coins)
+  === -- by functoriality of |Project|
+      Project (1+) (Project (\(x,xs) -> if x then threeHeads' (m-1) xs else threeHeads' 3 xs) (prod coin coins))
+  === -- by \cref{lem:project/sigma}
+      Project (1+) (Project snd (Sigma coin (\x -> Project (\xs -> if x then threeHeads' (m-1) xs else threeHeads' 3 xs) coins)))
+  === -- by functoriality of |Project|
+      Project ((1+).snd) (Sigma coin (\x -> Project (\xs -> if x then threeHeads' (m-1) xs else threeHeads' 3 xs) coins))
+  === -- by semantics of |if| in Haskell 
+      Project ((1+).snd) (Sigma coin (\x -> (if x then Project (threeHeads' (m-1)) else Project (threeHeads' 3)) coins))
+  === -- by semantics of |if| in Haskell 
+      Project ((1+).snd) (Sigma coin (\x -> if x then Project (threeHeads' (m-1)) coins else Project (threeHeads' 3) coins))
+  === -- by definition of |helper|.
+      Project ((1+).snd) (Sigma coin (\x -> if x then helper (m-1) else helper 3))
+\end{code}
+
+\begin{code}
 
 helper 0 = point 0
 helper m =
