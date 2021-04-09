@@ -592,6 +592,10 @@ Extend the exponential-logarithm isomorphism to relate
 (functions)?
 \end{exercise}
 
+\begin{exercise} Sketch an isomorphism between pairs of natural
+numbers and complex numbers, as suggested in \cref{sec:complexcase}.
+\end{exercise}
+
 
 \section{Compositional semantics}
 

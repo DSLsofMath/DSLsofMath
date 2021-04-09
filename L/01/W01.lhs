@@ -1039,7 +1039,7 @@ prefer to obtain an equivalent definition using the shorter |deriving
 Eq| clause upon defining the type.)
 %*TODO: explain more about deriving - perhaps in a \footnote{}
 
-This shows that the set of complex numbers is, in fact, isomorphic\jp{do we ever defined isomorphism in the book?}
+This shows that the set of complex numbers is, in fact, isomorphic\footnote{See \cref{sec:isomorphism}.}
 with the set of pairs of real numbers, a point which we can make
 explicit by re-formulating the definition in terms of a |newtype|:
 %
