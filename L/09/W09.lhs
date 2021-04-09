@@ -17,7 +17,7 @@ We have by now acquired a firm on DSL notions and several mathematical
 domain.  In this chapter, will apply the DSL methodology once more to
 the area of probability theory. By building a DSL from scratch, we
 will not only clarify notations for (conditional) probabilities, such
-as \(P(A|B)\), but we will also be able to describe and reason about
+as \(P(A ∣ B)\), but we will also be able to describe and reason about
 problems such as those of the following list. Sometimes we can
 even compute the probabilites involved by evaluating the DSL
 expressions.
@@ -79,7 +79,7 @@ We consider the situation at the end of the scenario in question.
 
 Generally textbook problems involving probability involve the
 description of some scenario or experiment, with an explicit
-uncertainty, including the outcome of certain measures, then the
+uncertainty, including the outcome of certain measures. Then the
 student is asked to compute the probability of some event.
 
 It is common to refer to a sample space by the labels \(S\), $\Omega$,
@@ -102,11 +102,12 @@ and model them as a DSL.
 To this end we will use a data type to represent spaces.
 %
 This type is indexed by the underlying Haskell type of possible
-outcomes.
+outcomes. Hence |Space| maps this underlying type to another type:
 %
 \begin{spec}
 Space :: Type -> Type
 \end{spec}
+We will then carry on and define the constructions which can inhabit the abote type.
 
 \paragraph{Finite space}
 In Example~\ref{ex:dice}, we consider dice with 6 faces.
@@ -211,7 +212,7 @@ We can check that the product of spaces is a special case of |Sigma|:
 prod a b = Sigma a (const b)
 \end{code}
 If we compare the above to the usual sum notation, the right-hand-side
-would be \(\sum_{i\in a} b\) which is the sum of |card a| copies of
+would be \(\sum_{i\in a} b\) which is the sum of |card a|\jp{Where was card defined?} copies of
 |b|, thus a kind of ``product'' of |a| and |b|.
 
 \paragraph{Projections}
@@ -222,7 +223,7 @@ For this purpose we use the following combinator:
 \begin{spec}
 Project :: (a -> b) -> Space a -> Space b
 \end{spec}
-A typical use is |Project fst :: Space (a,b) -> Space a|.
+A typical use is |Project fst :: Space (a,b) -> Space a|, ignoring the second component of a pair.
 
 \paragraph{Real line}
 Before we continue, we may also add a way to represent real-valued
@@ -255,25 +256,29 @@ for spaces. The implementation is the following:
 instance Functor Space where
   fmap    = Project
 instance Applicative Space where
-  pure x  = Finite [x]
-  (<*>)   = ap
+  pure    = point
+  (<*>)   = Control.Monad.ap
 instance Monad Space where
   a >>= f = Project snd (Sigma a f)
 \end{code}
 
+\begin{exercise}
+  Prove the functor and monad laws for the above definitions. (Use semantic equality.)
+\end{exercise}
+
 \section{Distributions}
 
-So far we have defined several spaces, not used them to compute any
+So far we have defined several spaces, but we have not used them to compute any
 probability.
 %
 We set out to do this in this section.
 %
-In section~\ref{sec:semanticsOfSpaces} we will see how to compute the
-|measure :: Space a -> REAL| of a space but before that we will talk
+In section~\ref{sec:semanticsOfSpaces} we will see how to compute the total mass (or
+|measure :: Space a -> REAL|) of a space but before that we will talk
 about another important notion in probability theory: that of a
 distribution.
 %
-A distribution is a space whose total mass (or measure) is equal to 1.
+A distribution is a space whose  |measure| is equal to 1.
 \begin{code}
 isDistribution :: Space a -> Bool
 isDistribution s = measure s == 1
@@ -345,7 +350,7 @@ normalMass :: Floating r =>  r -> r -> r -> r
 normalMass mu sigma x = exp(- ( ((x - mu)/sigma)^2 / 2)) / (sigma * sqrt (2*pi))
 \end{code}
 
-In some textbooks, distributions are sometimes called ``random
+In scientific literature, distributions are sometimes called ``random
 variables''.
 %
 However we consider this terminology to be misleading --- random
@@ -358,7 +363,7 @@ statistical moments), but we'll take another route.
 
 \section{Semantics of spaces}\label{sec:semanticsOfSpaces}
 First, we come back to general probability spaces without restriction
-one their |measure|: it does not need to be equal to one.
+on their |measure|: it does not need to be equal to one.
 %
 We define a function |integrator|, which generalises the notions of
 weighted sum, and weighted integral.
@@ -416,10 +421,10 @@ integral = undefined
 \end{code}
 
 The simplest quantity that we can compute using the integrator is the
-measure of the space --- it total ``mass'' or ``volume''.
+measure of the space --- its total ``mass'' or ``volume''.
 %
 To compute the measure of a space, we can simply integrate the
-constant |1| (so only mass matters).
+constant |1| (so only the mass of the space matters).
 \begin{code}
 measure :: Space a -> REAL
 measure d = integrator d (const 1)
@@ -491,8 +496,8 @@ The proof proceeds by structural induction over |s|.
 %
 The hypothesis of linearity is used in the base cases.
 %
-Notably the linearity property of |Finite| and |RealLine| hinge on the
-linearity of sums and integrals.
+Notably the linearity property of |Finite| and |RealLine| hinges on the
+linearity of sums and integrals.\jp{Properly connect with functions being linear spaces; and integration is a linear operator over these spaces}
 %
 The case of |Project| is immediate by definition.
 %
@@ -517,7 +522,7 @@ g (integrator (Sigma a f) h)
 \paragraph{Properties of |measure|}
 
 \begin{itemize}
-\item |measure (Finite [x]) == 1|
+\item |measure (Finite xs) == length xs|
 \item |measure (Sigma s (const t)) == measure s * measure t|.
 \item If |s| is a distribution and |f x| is a
   distribution for every |x|, then |Sigma s f| is a distribution
@@ -587,7 +592,7 @@ definition:
 
 This may be quite confusing at this stage.
 %
-What are those expressions, and where do the experiment occur in the
+What are those expressions, and where does the experiment influence the
 variable?
 %
 Our answer is to use spaces to represent the ``experiments'' that
@@ -595,20 +600,20 @@ Grinstead and Snell mention.
 %
 More specifically, if |s : Space a|, each possible situation at the
 end of the experiment is representable in the type |a| and the space
-will specify the mass of each of them (via the integrator).
+will specify the mass of each of them (formally, \text{via} the integrator).
 
-Then, a |b|-valued random variable |f| related to an experiment
-represented by a space |s : Space a| is a function |f| of type |a ->
+Then, a |b|-valued random variable, observed after an experiment
+represented by a space |s : Space a|, is a function |f| of type |a ->
 b|.
 %
 Then |f x| is the ``expression'' that Grinstead and Snell refer
 to.
 %
-The variable |x| is the outcome, and |s| is represents the experiment
+The (computer science) variable |x| is the outcome, and |s| is represents the experiment
 --- which is most often implicit in a random variable expressions as
 written in a math book.
 
-We finally can define the expected value (and other statistical
+We can finally define the expected value (and other statistical
 moments) of random variable.
 
 In textbooks, one will often find the notation $E[t]$ for the expected
@@ -630,11 +635,15 @@ expectedValue :: Space a -> (a -> REAL) -> REAL
 expectedValue s f = integrator s f / measure s
 \end{code}
 
-For instance, we can use the above to compute the expected value (7)
+For instance, we can use the above function to compute the expected value
 of the sum of two dice throws:
 \begin{code}
 expect2D6 = expectedValue twoDice (\ (x,y) -> fromIntegral (x+y))
 \end{code}
+
+\begin{exercise}
+  Run the above code and check that you obtain the value 7.
+\end{exercise}
 
 Essentially, what the above definition of expected value does is to
 compute the weighted sum/integral of |f(x)| for every point |x| in the
@@ -795,8 +804,13 @@ condProb s f g = probability1 (subspace g s) f
 \end{code}
 
 We find the above defintion more intuitive than the more usual
-definition $P(F∣G) = P(F∩G) / P(G)$. However, this last equality can
-be proven, by calculation:
+definition $P(F∣G) = P(F∩G) / P(G)$. Why? Because it makes clear that,
+in $P(F|G)$, $G$ acts as the subspace upon which the truth of $F$ is
+integrated. (In fact, the $P(F|G)$ is an improvement over the $P(F)$
+notation, in the sense that the underlying space is more explicit.)
+
+Regardless, the equivalence between the two definitions can be proven,
+by symbolic calculation:
 
 Lemma:  |condProb s f g == probability s (\y -> f y && g y) / probability s g|
 
@@ -832,6 +846,8 @@ Proof:
 %}
 
 \section{Examples}
+
+We are now ready to solve all three problems motivating this chapter.
 
 \subsection{Dice problem}
 
@@ -870,9 +886,10 @@ give a product |>=10| and that all of those 19 satisfy both
 requirements.
 
 \subsection{Drug test}
-The above drug test problem \ref{ex:drugtest} is often used as an
-illustration for the Bayes theorem. We can solve it in exactly the
-same fashion as the Dice problem.
+The above drug test problem (item \cref{ex:drugtest} at the start of
+this chapter) is often used as an illustration for the Bayes
+theorem. We can solve it in exactly the same fashion as the Dice
+problem.
 
 We begin by describing the space of situations. To do so we make heavy use
 of the |bernoulli| distribution. First we model the distribution of
@@ -882,13 +899,16 @@ all variables, caring only about |isUser|.
 
 \begin{code}
 drugSpace :: Space Bool
-drugSpace = 
-  Project fst  $     -- we're interested the posterior distribution of isUser (ignoring the result of the test).
-  filterWith snd $   -- we have ``a positive test'' by assumption (second component of the pair)
-  Sigma (bernoulli 0.005) -- model the distribution of drug users
-        (\isUser ->
-           bernoulli (if isUser then 0.99 else 0.01))
-              -- model test accuracy
+drugSpace =
+   -- we're interested the posterior distribution of |isUser|,
+  -- (first component of the pair, ignoring the result of the test).
+  Project fst  $
+  -- we have ``a positive test'' by assumption (second component of the pair)
+  filterWith snd $ 
+  Sigma
+    (bernoulli 0.005) -- model the distribution of drug users
+    (\isUser -> bernoulli (if isUser then 0.99 else 0.01))
+    -- model test results depending on whether we have a drug user
 
 \end{code}
 The probability is computed as usual:
@@ -908,11 +928,11 @@ Perhaps surprisingly, we never needed the Bayes theorem to solve the
 problem.
 %
 Indeed, the Bayes theorem is already incorporated in our defintion of
-|probability|.
+|probability|, so our methodology guarantees that we always respect it.
 
 \subsection{Monty Hall}
 We can model the Monty Hall problem as follows: A correct model is
-the following:
+the following: \jp{(Much) more explanations required}
 \begin{code}
 doors :: [Int]
 doors = [1,2,3]
@@ -975,7 +995,7 @@ a door before the player made their first choice.
 
 \subsection{Advanced problem}
 Consider the following problem: how many times must one throw a coin
-before one obtains 3 heads in a row.
+before one obtains 3 heads in a row?
 
 We can model the problem as follows:
 \begin{code}
@@ -991,7 +1011,7 @@ threeHeads (_:xs) = 1 + threeHeads xs
 
 example' = Project threeHeads coins
 \end{code}
-% emacs $
+% emacs $ $
 
 Attempting to evaluate |probability1 threeHeads' (< 5)| does not
 terminate.
@@ -1006,10 +1026,46 @@ We have to resort to a symbolic method.
 First, we can unfold the definitions of |coins| in |threeHeads|, and
 obtain:
 
+
+\begin{lemma}
+  Project f (Sigma a g) == Project snd (Sigma a (\x -> Project (f . (x,)) g x))
+\end{lemma}
+\begin{proof}
+  \begin{spec}
+integrator (Project f (Sigma a g)) h ==
+integrator (Sigma a g) (h . f) ==
+integrator a (\x -> integrator g (\y -> (h . f) (x,y))
+integrator a (\x -> integrator g (h . f . (x,)))
+integrator a (\x -> integrator (Project (f . (x,)) g) h)
+integrator a (\x -> integrator (Project (f . (x,)) g) $ \y -> h y)
+integrator a (\x -> integrator (Project (f . (x,)) g) $ \y -> (h . snd) (x,y))
+integrator a (\x -> integrator (Project (f . (x,)) g) $ \y -> (h . snd) (x,y))
+integrator (Sigma a (\x -> Project (f . (x,)) g x)) (h . snd)
+integrator (Project snd (Sigma a (\x -> Project (f . (x,)) g x))) h
+
+threeHeads' 0 _ = 0
+threeHeads' m (x:xs) = 1 + if x then threeHeads' (m-1) xs else threeHeads' 3 xs
+\end{spec}
+\end{proof}
+
+Unfolding proper
+\begin{spec}
+helper m 
+= Project (threeHeads' m)  coins
+= Project (threeHeads' m . \(x,xs) -> x : xs) coins
+= Project (\(x,xs) -> 1 + if x then threeHeads' (m-1) xs else threeHeads' 3 xs) (pair coin coins)
+= Project (1+) (Project (\(x,xs) -> if x then threeHeads' (m-1) xs else threeHeads' 3 xs) (pair coin coins))
+-- by lemma
+= Project (1+) (Project snd (Sigma coin (\x -> Project (\xs -> if x then threeHeads' (m-1) xs else threeHeads' 3 xs)) coins)
+= Project (1+) (Project snd (Sigma coin (\x -> if x then Project (threeHeads' (m-1)) else Project (threeHeads' 3)) coins))
+= Project (1+) (Project snd (Sigma coin (\x -> if x then Project (threeHeads' (m-1)) coins else Project (threeHeads' 3) coins)))
+= Project (1+) (Project snd (Sigma coin (\x -> if x then helper (m-1) coins else helper 3)))
+\end{spec}
+
 \begin{code}
 threeHeads' = helper 3
 
-helper 0 = Finite [0]
+helper 0 = point 0
 helper m =
   Project ((1 +) . snd)  
   (Sigma coin (\h -> if h
@@ -1017,7 +1073,7 @@ helper m =
                 else  helper 3)) -- when we have a tail, we start from scratch
               
 \end{code}
-% emacs $
+% emacs $ $
 Evaluating the probability still does not terminate:
 %
 we no longer have an infinite list, but we still have infinitely many
@@ -1026,6 +1082,7 @@ possibilities to consider:
 however small, there is always a probability to get a ``tail'' at the
 wrong moment, and the evaluation must continue.
 
+But we can keep performing our symbolic calculation.
 We can start by showing that |helper m| is a distribution (its measure
 is 1).
 %
