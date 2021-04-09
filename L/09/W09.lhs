@@ -1034,7 +1034,7 @@ example' = Project threeHeads coins
 \end{code}
 % emacs $ $
 
-Attempting to evaluate |probability1 threeHeads' (< 5)| does not
+Attempting to evaluate |probability1 threeHeads (< 5)| does not
 terminate.
 %
 Indeed, we have an infinite list, which translates to infinitely many
@@ -1044,10 +1044,17 @@ So the evaluator cannot solve this problem in finite time.
 %
 We have to resort to a symbolic method.
 %
-First, we can unfold the definitions of |coins| in |threeHeads|, and
-obtain:
+The first step is a creative one, which involves generalising the
+problem to computing the number of throws to obtain \(3-m\) heads in a
+row. For this purpose we define the function |tH|, such that |tH 3 == threeHeads|:
 
-
+\begin{code}
+tH :: Int -> [Bool] -> Int
+tH 0 _ = 0
+tH m (x:xs) = 1 + if x then tH (m-1) xs else tH 3 xs
+\end{code}
+We then define |helper m = Project (tH m) coins|. Computing it symbolically will give our answer. But first, we
+need a lemma which helps us push |Project| inside |Sigma|:
 \begin{lemma}
   |Project f (Sigma a g) == Project snd (Sigma a (\x -> Project (f . (x,)) (g x)))|
   \label{lem:project/sigma}
@@ -1076,43 +1083,34 @@ project_sigma_equations f a g h =
 \end{code}
 \end{proof}
 
-
-Let:
+We can unfold the expression |helper m| by equational reasoning, and see what we get:
 \begin{code}
-threeHeads' :: Int -> [Bool] -> Int
-threeHeads' 0 _ = 0
-threeHeads' m (x:xs) = 1 + if x then threeHeads' (m-1) xs else threeHeads' 3 xs
-\end{code}
-
-Unfolding proper:
-
-\begin{code}
-unfolding_equations m = 
+unfolding_helper_equations m = 
       helper m 
   === -- by def
-      Project (threeHeads' m)  coins
+      Project (tH m)  coins
   === -- by def
-      Project (threeHeads' m) (Project (\(x,xs) -> x : xs) (prod coin coins))
+      Project (tH m) (Project (\(x,xs) -> x : xs) (prod coin coins))
   === -- property of |Project| (\cref{ex:monad-laws}, functoriality of |Project|)
-      Project (threeHeads' m . \(x,xs) -> x : xs) (prod coin coins)
+      Project (tH m . \(x,xs) -> x : xs) (prod coin coins)
   === -- by def
-      Project (\(x,xs) -> 1 + if x then threeHeads' (m-1) xs else threeHeads' 3 xs) (prod coin coins)
+      Project (\(x,xs) -> 1 + if x then tH (m-1) xs else tH 3 xs) (prod coin coins)
   === -- by functoriality of |Project|
-      Project (1+) (Project (\(x,xs) -> if x then threeHeads' (m-1) xs else threeHeads' 3 xs) (prod coin coins))
+      Project (1+) (Project (\(x,xs) -> if x then tH (m-1) xs else tH 3 xs) (prod coin coins))
   === -- by \cref{lem:project/sigma}
-      Project (1+) (Project snd (Sigma coin (\x -> Project (\xs -> if x then threeHeads' (m-1) xs else threeHeads' 3 xs) coins)))
+      Project (1+) (Project snd (Sigma coin (\x -> Project (\xs -> if x then tH (m-1) xs else tH 3 xs) coins)))
   === -- by functoriality of |Project|
-      Project ((1+).snd) (Sigma coin (\x -> Project (\xs -> if x then threeHeads' (m-1) xs else threeHeads' 3 xs) coins))
+      Project ((1+).snd) (Sigma coin (\x -> Project (\xs -> if x then tH (m-1) xs else tH 3 xs) coins))
   === -- by semantics of |if| in Haskell 
-      Project ((1+).snd) (Sigma coin (\x -> (if x then Project (threeHeads' (m-1)) else Project (threeHeads' 3)) coins))
+      Project ((1+).snd) (Sigma coin (\x -> (if x then Project (tH (m-1)) else Project (tH 3)) coins))
   === -- by semantics of |if| in Haskell 
-      Project ((1+).snd) (Sigma coin (\x -> if x then Project (threeHeads' (m-1)) coins else Project (threeHeads' 3) coins))
+      Project ((1+).snd) (Sigma coin (\x -> if x then Project (tH (m-1)) coins else Project (tH 3) coins))
   === -- by definition of |helper|.
       Project ((1+).snd) (Sigma coin (\x -> if x then helper (m-1) else helper 3))
 \end{code}
 
+In summary:
 \begin{code}
-
 helper 0 = point 0
 helper m =
   Project ((1 +) . snd)  
