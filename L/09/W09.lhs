@@ -239,31 +239,22 @@ data Space a where
   RealLine  :: Space REAL
 \end{code}
 
-% \section{Bind and return}
-% 
-% Very often, one will be interested only in a particular projection
-% only.
-% %
-% Hence, it is useful to combine |Sigma| and |Project| in a single
-% combinator, as follows:
-% 
-% \begin{code}
-% bind :: Space a -> (a -> Space b) -> Space b
-% bind a f = Project snd (Sigma a f)
-% \end{code}
-% 
-% This means that |Space| has a monadic structure:
-% \TODO{explain this somewhere in the book}
-% %format <*> = "\mathbin{" < "\!\!" * "\!\!" > "}"
-% \begin{spec}
-% instance Functor Space where
-%   fmap    = Project
-% instance Applicative Space where
-%   pure x  = Finite [x]
-%   (<*>)   = ap
-% instance Monad Space where
-%   (>>=)   = bind
-% \end{spec}
+\section{\extraMaterial Monad Interface}
+
+Seasoned functional programmers will be aware of monadic interfaces.
+For them, it may be useful to know that one can easily provide a monadic interface
+for spaces. The implementation is the following:
+
+%format <*> = "\mathbin{" < "\!\!" * "\!\!" > "}"
+\begin{code}
+instance Functor Space where
+  fmap    = Project
+instance Applicative Space where
+  pure x  = Finite [x]
+  (<*>)   = ap
+instance Monad Space where
+  a >>= f = Project snd (Sigma a f)
+\end{code}
 
 \section{Distributions}
 
