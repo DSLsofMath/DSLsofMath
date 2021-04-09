@@ -1014,10 +1014,9 @@ montySpaceIncorrect changing =
 The above is incorrect, because everything happens as if Monty chooses
 a door before the player made their first choice.
 
-\subsection{Advanced problem}
+\subsection{Solving an advanced problem with equational reasoning}
 Consider the following problem: how many times must one throw a coin
-before one obtains 3 heads in a row?
-
+before one obtains 3 heads in a row? 
 We can model the problem as follows:
 \begin{code}
 coin = bernoulli 0.5
@@ -1034,19 +1033,29 @@ example' = Project threeHeads coins
 \end{code}
 % emacs $ $
 
-Attempting to evaluate |probability1 threeHeads (< 5)| does not
+Even though the problem is easy to \emph{model} using the DSL, it is not easy to solve.
+Indeed, attempting to evaluate |probability1 threeHeads (< 5)| does not
 terminate.
 %
-Indeed, we have an infinite list, which translates to infinitely many
+This is because, we have an infinite list, which translates to infinitely many
 cases to consider.
 %
 So the evaluator cannot solve this problem in finite time.
 %
-We have to resort to a symbolic method.
-%
-The first step is a creative one, which involves generalising the
-problem to computing the number of throws to obtain \(3-m\) heads in a
-row. For this purpose we define the function |tH|, such that |tH 3 == threeHeads|:
+Hence, we have to resort to a symbolic method to solve it. This will
+require extensive symbolic reasoning (perhaps not for the faint of
+heart). One may skip all the equational reasoning in first reading:
+the important point is to realize that one is able to write down the
+kind of proofs that one would do with pen and paper directly within a
+program. (We even use the Haskell type checker to verify that each
+line typechecks--- even though this does not guarantee that the proof
+is sound, we catch most typos this way.)
+
+
+The first step in our computation of the solution is a creative one,
+which involves generalising the problem to computing the number of
+throws to obtain \(3-m\) heads in a row. For this purpose we define
+the function |tH|, such that |tH 3 == threeHeads|:
 
 \begin{code}
 tH :: Int -> [Bool] -> Int
