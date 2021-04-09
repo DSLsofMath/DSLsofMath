@@ -785,11 +785,12 @@ author means.
 
 \section{Conditional probability}
 
-Another important notion in probability theory is conditional
-probability, written $P(F ∣ G)$ and read ``probability of |f| given
-|g|''.
-%
-We can define the conditional probability of |f| given |g| by taking
+In \cref{sec:StocSys}, we encountered the notion of conditional
+probability, traditionally written $P(F ∣ G)$ and read ``probability
+of |f| given |g|''. As suggested in \cref{sec:StocSys} and brushed
+upon in \cref{ex:prob-notation-naive}, it is not the case that
+$(F ∣ G)$ is an event. Rather, conditional probability
+must take both |f| and |g| as arguments. It is defined as
 the probability of |f| in the sub space where |g| holds:
 %
 \begin{code}

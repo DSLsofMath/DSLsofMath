@@ -127,9 +127,10 @@
 
 
 \begin{exercise}
+  \label{ex:prob-notation-naive}
   \fromExam{2016-08-23}
 
-  In the simplest case of probability theory, we start with a
+  In the case of the simplest probability theory, we start with a
   \textit{finite}, non-empty set $\Omega$ of \textit{elementary
     events}.
   %

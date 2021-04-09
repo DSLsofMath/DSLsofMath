@@ -1466,21 +1466,19 @@ In the case of stochastic systems, the inputs will be
 
 If we know the current probability distributions over states, then we
 can compute the next one by using the \emph{total probability
-  formula}, normally expressed as
+  formula}, which can be expressed as
 %
 \begin{spec}
     p a = sum [p (a | b) * p b | b <- G]
 \end{spec}
 %
-This formula in itself is worth a lecture (see
-\cref{ch:probability-theory}).
-%
-But for now, let's just remark that the notation is extremely suspicious.
+We study probability extensively in 
+\cref{ch:probability-theory},
+but for now, let's just remark that the notation is extremely suspicious.
 %
 |(a || b)|, which is usually read ``|a|, given |b|'', is clearly not
 of the same type as |a| or |b|, so cannot really be an argument to
-|p|. We discuss this notation at length in
-\cref{ch:probability-theory}.
+|p|.
 %
 Additionally, the |p a| we are computing with this formula is not the
 |p a| which must eventually appear in the products on the right hand
