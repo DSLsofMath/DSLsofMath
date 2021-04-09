@@ -178,7 +178,7 @@
 \begin{exercise}
   \fromExam{2017-03} (Note that this exam question is now
   included as an example in this chapter, see
-  \refSec{sec:typePartialDerivative}.
+  \cref{sec:typePartialDerivative}.\jp{What about tidying this up? Maybe show the exercise only in the lecture notes?}
 %
 It is kept here in case you want to check if you remember it!)
 
