@@ -762,6 +762,11 @@ instance VectorSpace (REAL->REAL) REAL where
 scaleR2R s f = (s*).f
 \end{code}
 %endif
+\jp{In the latex code, there is an instance VectorSpace (REAL->REAL) REAL which we use! See the tex code.
+I have created a label and used it when we reference this space.
+}
+
+\label{sec:functions-vector-space}
 %
 \begin{spec}
 evalP :: Vector REAL {0, ..., n} -> (REAL -> REAL)

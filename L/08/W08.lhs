@@ -453,8 +453,8 @@ transformation is defined, and for any constants |alpha| and |beta|
 
 Note that this is an equality between functions.
 %
-Indeed, recalling \cref{sec:LinAlg}, we are working here with the
-vector space of functions (|f| and |g| are elements of it).
+Indeed, recalling \cref{sec:LinAlg}, in particular \cref{sec:functions-vector-space}, we are working here with the
+vector space of functions (|f| and |g| are elements of it)
 %
 The operator |(*^)| refers to scaling in a vector space --- here
 scaling functions.

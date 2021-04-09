@@ -509,7 +509,7 @@ The proof proceeds by structural induction over |s|.
 The hypothesis of linearity is used in the base cases.
 %
 Notably the linearity property of |Finite| and |RealLine| hinges on the
-linearity of sums and integrals.\jp{Properly connect with functions being linear spaces; and integration is a linear operator over these spaces}
+linearity of sums and integrals.\footnote{Recall that integration is a linear operator in the space of functions (\cref{sec:functions-vector-space}).}
 %
 The case of |Project| is immediate by definition.
 %
