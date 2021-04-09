@@ -1791,7 +1791,6 @@ Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|, |Super|.
 
 
 \section{\extraMaterial The monad of linear algebra}
-\jp{Todo: connect this with the monad of probability theory chapter.}
 The answer is yes, up to a point.
 %
 Haskell |Monad|s, just like |Functor|s, require |return| and |>>=| to
