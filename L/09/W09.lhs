@@ -1100,50 +1100,14 @@ row.
 % h 2 = 12
 % h 3 = 14
 
-
-
-% To solve such problems symbolically, we define a so-called ``generator
-% function''. In our case |f m n|, equal to the probability that |helper
-% m| returns |n|.
-
-
-% \begin{code}
-% f m n = probability1 (helper m) (== n)
-% \end{code}
-
-% This corresponds to the probability to get |3| heads in a row in |n|
-% steps, if we already have |3-m| heads so far. For example, if |m = 0|
-% then we have 3 heads so far, and thus the probability to succeed in
-% |n| steps is 1 if |n=0| and 0 otherwise. (Note that |m| can only be in
-% |[0,1,2,3]|).
-
-
-
-% Hence we obtain the following system of recursive equations:
-
-% \begin{spec}
-% f 0      0  =  1
-% f (m+1)  0  =  0
-% f 0      n  =  0  -- n ≠ 0
-% f (m+1)  (n+1) = 0.5 * f m n + 0.5 * f 3 n
-% \end{spec}
-% % TODO: what about f (m+1) 0 ?
-
-
-% This function will \emph{still} not terminate. However, there exist
-% mathematical tools to solve such equations. (For example we could
-% cut-off the evaluation once the precision gets good enough.)
-
-% Regardless, the take home message is that, thanks to our formalism we
-% can obtain a system of recurrent equations which would yield a
-% solution to the problem.
-
 \section{Independent events}
-One possible way to define for independent events is as follows.
+
+Another important notion in probability theory is that of independent events.
+One way to define independent events is as follows.
 %
 $E$ is independent from $F$ iff $P(E ∣ F) = P(E)$.
 %
-We can express this definition in our DSL as follows:
+We can express this definition in our DSL:
 
 \begin{code}
 independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
@@ -1158,6 +1122,8 @@ Using our language, we would write instead:
 \begin{spec}
 probability1 s (\x -> e x && f x) == probability1 s e * probability1 s f
 \end{spec}
+
+\jp{Something missing here}
 
 Proof.
 
@@ -1193,7 +1159,9 @@ In the right to left direction:
   P(E)
 \end{spec}
 
-Exercise: express the rest of the proof using our DSL
+\begin{exercise}
+Express the rest of the proof using our DSL
+\end{exercise}
 
 \TODO{In addition to a semantics based on integrators, one can program
   a semantics based on monte carlo sampling}
