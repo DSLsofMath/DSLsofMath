@@ -13,9 +13,14 @@ type REAL = Double -- pretend...
 \end{code}
 %endif
 
-In this chapter, we define a DSL to describe and reason about problems
-such as those of the following list, and sometimes we can even compute
-the probabilites involved by evaluating the DSL expressions.
+We have by now acquired a firm on DSL notions and several mathematical
+domain.  In this chapter, will apply the DSL methodology once more to
+the area of probability theory. By building a DSL from scratch, we
+will not only clarify notations for (conditional) probabilities, such
+as \(P(A|B)\), but we will also be able to describe and reason about
+problems such as those of the following list. Sometimes we can
+even compute the probabilites involved by evaluating the DSL
+expressions.
 
 \begin{enumerate}[label=\arabic*.]
 \item Assume you throw two 6-faced dice, what is the probability that
