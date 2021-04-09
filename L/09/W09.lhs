@@ -821,8 +821,8 @@ condProb s f g = probability1 (subspace g s) f
 
 We find the above defintion more intuitive than the more usual
 definition $P(F∣G) = P(F∩G) / P(G)$. Why? Because it makes clear that,
-in $P(F|G)$, $G$ acts as the subspace upon which the truth of $F$ is
-integrated. (In fact, the $P(F|G)$ is an improvement over the $P(F)$
+in $P(F∣G)$, $G$ acts as the subspace upon which the truth of $F$ is
+integrated. (In fact, the $P(F∣G)$ notation is an improvement over the $P(F)$
 notation, in the sense that the underlying space is more explicit.)
 
 Regardless, the equivalence between the two definitions can be proven,
@@ -1093,7 +1093,7 @@ unfolding_equations m =
       Project (threeHeads' m)  coins
   === -- by def
       Project (threeHeads' m) (Project (\(x,xs) -> x : xs) (prod coin coins))
-  === -- property of |Project| (exercise \cref{ex:monad-laws}, functoriality of |Project|)
+  === -- property of |Project| (\cref{ex:monad-laws}, functoriality of |Project|)
       Project (threeHeads' m . \(x,xs) -> x : xs) (prod coin coins)
   === -- by def
       Project (\(x,xs) -> 1 + if x then threeHeads' (m-1) xs else threeHeads' 3 xs) (prod coin coins)
