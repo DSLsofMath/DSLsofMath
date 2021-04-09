@@ -1153,7 +1153,7 @@ The proof is by induction on |m|:
 
 Then, we can symbolically compute the integrator of |helper|.
 %
-We won't be using the base case.
+The base case is |integrator (helper 0) id == 0|, and left as an exercise to the reader.
 %
 In the recursive case, we have:
 
