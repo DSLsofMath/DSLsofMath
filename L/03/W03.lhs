@@ -1265,7 +1265,6 @@ To see why this is not a recursive definition we need to expand the
 type and to do this I will introduce a name for the right hand side
 (RHS): |fromIntC|.
 
-\jp{Tikz-ify this}
 \begin{verbatim}
 --          ComplexSyn r <---------- r <---------- Integer
 fromIntC =              toComplexSyn . fromInteger
@@ -1367,7 +1366,7 @@ Therefore we prefer to define the more general instances in
 \cref{fig:FunNumInst}.
 %
 Here we extend our set of type-classes to cover algebraic and
-transcendental numbers.
+transcendental numbers. \jp{Where is this introduced?}
 %
 Together, these type classes represent an abstract language of
 abstract and standard operations, abstract in the sense that the exact

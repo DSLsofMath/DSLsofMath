@@ -263,6 +263,10 @@ replacement for the |Num| class!
         %inner sep=-0.3ex,
         rounded corners=2ex,dashed,label=left:|Ring|]
         (Ring) {};
+  \node[draw,fit=(Ring) (DivOps),
+        %inner sep=-0.3ex,
+        rounded corners=2ex,dashed,label=left:|Field|]
+        (Field) {};
   \end{tikzpicture}
 %  In |Real| but not in the book: |toRational|.
 %  Not in the book: |Integral| with |div|, |mod|, \ldots
@@ -1223,12 +1227,12 @@ satisfies the laws.
 This is true in general: folds are always homomorphisms even if the
 datatype representation that they work on ignore laws.
 
-\subsubsection{Functions of one variable as algebras}
+\subsubsection{Functions of one variable as free algebras}
 \label{sec:OneVarExp-class}
 Earlier we have used (many variants of) data types for arithmetic
 expressions.
 %
-Using the free construction, we can easily conceive a suitable type
+Using the \emph{free} construction, we can easily conceive a suitable type
 for any such expression language.
 %
 For example, the type for arithmetic expressions with |(+),(-),(*)|
@@ -1241,19 +1245,22 @@ variable from \cref{sec:FunExp}.
 According to our analysis, it should be a free structure, and because
 we have only one variable, we can take the generator set (|G|) to be
 the unit type.
-
 \begin{code}
 type G = ()
 instance Generate        FunExp where  generate () = X
+\end{code}
+
+We can easily show that |FunExp| is |Additive| and |Multiplicative|:
+\begin{code}
 instance Additive        FunExp where  (+)  = (:+:);  zero  = Const 0
 instance Multiplicative  FunExp where  (*)  = (:*:);  one   = Const 1
 \end{code}
 %
-and so on for the other numeric classes.
+% and so on for the other numeric classes. (Not really "and so on")
 
 %if False
 \begin{code}
-instance AddGroup  FunExp where negate  = Negate
+instance AddGroup  FunExp where negate  = Negate -- multiplication by (-1) is also possble (is Negate redundant?)
 instance MulGroup  FunExp where recip   = Recip
 instance Transcendental FunExp where pi = Const (Prelude.pi); exp = Exp; sin = Sin; cos = Cos
 \end{code}
@@ -1261,41 +1268,35 @@ instance Transcendental FunExp where pi = Const (Prelude.pi); exp = Exp; sin = S
 
 
 \begin{exercise}
-  Implement |FunExp| instances for |AddGroup|, |MulGroup|, and
-  (possibly extending the datatype) for |Transcendental| .
-
-  \pj{Perhaps add hints here.}
-  Remark: to translate the |Const :: REAL -> FunExp| constructor we
-  need a way to map any |REAL| to the above structures.
-%
-  We know how to do that for integers, (|fromInteger|).
-  %
-  For this exercise you can restrict yourself to floating point
-  representation of constants, and use |recip| (from |MulGroup|) to
-  map them to fractions.
+  Implement |FunExp| instances for |AddGroup|,  and
+  (possibly extending the datatype) for |MulGroup| and |Transcendental| .
 \end{exercise}
 
-We can then check that the evaluator is compositional.
-For instance, we have
+We can then define a compositional evaluator. It would start like so:
 %
 %{
 %format evalIncomplete = eval
 \begin{code}
 evalIncomplete (e1 :*: e2)  =  evalIncomplete e1 * evalIncomplete e2
-evalIncomplete (Exp e)      =  exp (evalIncomplete e)
+evalIncomplete (e1 :+: e2)  =  evalIncomplete e1 + evalIncomplete e2
 \end{code}
-etc.
+
+Remark: to translate the |Const :: REAL -> FunExp| constructor we need
+a way to map any |REAL| to the above structures. Here we will restrict
+ourselves to integers.
+
 %if False
 \begin{code}
+-- evalIncomplete (Exp e)      =  exp (evalIncomplete e) --
 evalIncomplete _ = error "Implemented elsewhere"
 \end{code}
 %endif
 
-We can now also generalise the type of evaluator as follows:
+The most general type of evaluator will give us the:
 \pj{It is only ``OneVar'' in a context where |G=()|. Otherwise it allows for any number of variables.}
 \begin{code}
-type OneVarExp a = (Generate a, Transcendental a)
-evalIncomplete :: OneVarExp a  =>  FunExp -> a
+type OneVarExp a = (Generate a, Ring a)
+evalIncomplete :: FunExp -> (OneVarExp a => a)
 \end{code}
 %}
 
@@ -1307,19 +1308,19 @@ For example, we can define
 \begin{code}
 varX :: OneVarExp a => a
 varX = generate ()
-twoexp :: OneVarExp a => a
-twoexp = two * exp varX
+twoX :: OneVarExp a => a
+twoX = two * varX
 \end{code}
 %
 and instantiate |twoexp| to either syntax or semantics:
 %
 \begin{code}
 testFE :: FunExp
-testFE = twoexp
+testFE = twoX
 
 type Func = REAL -> REAL
 testFu :: Func
-testFu = twoexp
+testFu = twoX
 \end{code}
 provided a suitable instance for |Generate Func|:
 \begin{code}
@@ -1331,22 +1332,25 @@ As before, we can always define a homomorphism from |FunExp| to
 \emph{any} instance of |OneVarExp|, in a unique way, using the fold
 pattern.
 %
+
+
 This is because the datatype |FunExp| is an initial |OneVarExp|.
 %
 Working with |OneVarExp a => a| can be more economical than using
 |FunExp|: one does not need any explicit |eval| function.
 
-The DSL of expressions, whose syntax is given by the type |FunExp|,
-turns out to be almost identical to the DSL defined via type classes
-in \cref{sec:typeclasses}\jp{Have we said that we defined a DSL?}.
+
+We now have two DSLs which capture the similar concepts. One
+of them is given by the data type |FunExp|. The other one is given by
+the type class (synonym) |OneVarExp|.
 %
-The correspondence between them is given by the |eval| function.
-%
+In fact, the instances and the evaluator would an isomorphism between |FunExp|
+(the version restricted to integer constants) and |OneVarExp a => a|.
+
 The difference between the two implementations is that the first one
-separates more cleanly from the semantical one.
-%
-For example, |:+:| \emph{stands for} a function, while |+| \emph{is}
-that function.
+separates more cleanly from the semantical one. \jp{What does this
+mean?}  For example, |:+:| \emph{stands for} a function, while |+|
+\emph{is} that function.
 
 \subsection{\extraMaterial A generic Free construction}
 
