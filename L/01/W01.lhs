@@ -428,9 +428,11 @@ with cases such as that of the Hartley transform (a close relative of
 the Fourier transform), which does not change the type of the input
 function, but rather the \emph{interpretation} of that type.
 %
-We prefer to always give explicit typings rather than relying on
-syntactical conventions, and to use type synonyms for the case in
-which we have different interpretations of the same type.
+
+Rather than relying on
+lexical (or syntactical) conventions in the variable names, prefer to explicit use different types.
+When there are several interpretations of the same type, we can define a type synonym
+for each interpretations.
 %
 In the example of the Laplace transformation, this leads to
 %
@@ -439,9 +441,6 @@ Lap : (T -> CC) -> (S -> CC)
 \end{spec}
 %
 where the types |T = REAL| and |S = CC|.
-\jp{But we use the variable name ('s','t') as a type name.
-%
-  This is perhaps also confusing?}
 %
 Note that the function type constructor |(->)| is used three times
 here: once in |T -> CC|, once in |S -> CC| and finally at the top
@@ -732,7 +731,8 @@ But for every sequence we can define a new sequence of partial sums:
 %
 \begin{code}
 sums :: Num a => Seq a -> Seq a
-sums = scan (+) 0
+sums a 0 = 0
+sums a i = sums a (i-1) + a i
 \end{code}
 The function |sums| is perhaps best illustrated by examples:
 \begin{spec}
@@ -740,22 +740,7 @@ The function |sums| is perhaps best illustrated by examples:
   sums (idSeq)     == {0, 0, 1, 3, 6, 10, ...}
 \end{spec}
 The general pattern is to start at zero and accumulate the sum of
-initial prefixes of the input sequence (we leave the defintion of
-|scan| as an exercise to the reader)\jp{yikes. Why not give a simple definition for sums?}.
-
-%if False % scan never comes up again. Let's not generalise.
-%
-% The definition of |sums| uses |scan| which is a generalisation which
-% ``sums'' with a user-supplied operator |(⊛)| starting from an
-% arbitrary value |z| (instead of zero).
-% %
-\begin{code}
-scan :: (b->a->b) -> b -> Seq a -> Seq b
-scan (⊛) z a = s
-  where  s 0 = z
-         s i = s (i-1)  ⊛  a i
-\end{code}
-%endif
+initial prefixes of the input sequence.
 
 By combining |sums| with limits we can state formally that the sum
 of an infinite sequence |a| exists and is |S| iff the limit of |sums a| exists
@@ -852,8 +837,7 @@ syntax as a function |showIU|:
 showIU ::  ImagUnits       ->  String
 showIU     I               =   "i"
 \end{code}
-
-\jp{Here we could also redefine sqrt so that sqrt(-1) = I. This would force a changing types. (But Adam and Essex only say we 'can' do it.)}
+\footnote{Here we could also redefine |sqrt| so that |sqrt(-1) = I|. Doing so would force generalising the codomain. Adam and Essex say that we 'can' do it, but it is unclear if we should, at least at this stage.}
 
 Next, in the book, we find the following definition:
 %
