@@ -1,4 +1,4 @@
-\chapter{Types in Mathematics}
+q\chapter{Types in Mathematics}
 \label{sec:types}
 %if False
 \begin{code}
@@ -350,8 +350,7 @@ Here we use a string, so we have an infinite supply of variables.
 data MVExp = Va String | Ad MVExp MVExp | Mu MVExp MVExp
 \end{code}
 
-% The above declaration introduces:\jp{move this kind of consideration
-%   much earlier. Haskell primer?}
+% The above declaration introduces:
 % \begin{itemize}
 % \item a new type |MVExp| for multi-variable arithmetic expressions,
 % \item a constructor |Va :: String -> MVExp| for variables,
@@ -372,8 +371,7 @@ Example values include |x = Va "x"|, |e1 = Ad x x|, and |e2 = Mu e1 e1|.
 % Example values are then |y = V' "y"|, |e1 = y :+ y| and |e2 = x :* e1|.
 %
 % Finally, you can add one or more type parameters to make a whole
-% family of datatypes in one go:\jp{move this kind of consideration much
-%   earlier. Haskell primer?}
+% family of datatypes in one go:
 %
 % \begin{code}
 % data MVExp' v = V' v | MVExp' v :+ MVExp' v | MVExp' v :* MVExp' v
@@ -385,7 +383,6 @@ Example values include |x = Va "x"|, |e1 = Ad x x|, and |e2 = Mu e1 e1|.
 % The careful reader will note that the same Haskell module cannot
 % contain both these definitions of |MVExp'|.
 % %
-% \jp{move this kind of consideration much earlier. Haskell primer?}
 % %
 % This is because the name of the type and the names of the constructors
 % are clashing.
@@ -704,7 +701,7 @@ This kind of approach presents several difficulties:
 
 One possibility would be to use the following type:
 \(∂/∂x_i : (ℝⁿ → ℝ) → (ℝⁿ → ℝ)\), but it still assumes as input a
-vector of variables $x$.\jp{It does mention x, but the types seems to assume independency wrt. to the variable names? Seems inconsistent.}
+vector of variables $x$--- even though the type assumes independence with respect to the variable names.
 %
 Hence we prefer a notation which doesn't rely on the names given to
 the arguments whatsoever.
@@ -712,7 +709,7 @@ the arguments whatsoever.
 It was popularised by \citet{landau1934einfuhrung} (English edition
 \cite{landau2001differential}): \(D₁\) for the partial derivative with
 respect to the first argument, \(D_2\) for the partial derivative with
-respect to the second argument, etc. \jp{Can we at least get the types of those?}
+respect to the second argument, etc.
 
 Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
 
@@ -895,12 +892,14 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
   \begin{spec}
     (∂L / ∂q) . (expand w)  :  T -> ℝ
   \end{spec}
-  %\jp{This is mixing two conventions. If we use this kind of typing, q should not be mentioned.}
+  \jp{This is mixing two conventions. If we use this kind of typing, q should not be mentioned.}
 
   which is used inside |d / dt|.
 
 \item We now move to using |D| for |d / dt|, |D₂| for |∂ / ∂q|, and
-  |D₃| for |∂ / ∂dotq|.\jp{Types of those? |D₂ L, D₃ L  : (T, Q, V) -> R|, |D : (T -> ℝ) -> (T -> ℝ)|}
+  |D₃| for |∂ / ∂dotq|.
+  %
+  (The type of the partial derivatives |D₂| and  |D₃| is |L  : ((T, Q, V) -> R) -> ((T, Q, V) -> R)|, and here |D : (T -> ℝ) -> (T -> ℝ)|)
   %
   In combination with |expand w| we find these type correct
   combinations for the two terms in the equation:
