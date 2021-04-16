@@ -1344,7 +1344,7 @@ We now have two DSLs which capture the similar concepts. One
 of them is given by the data type |FunExp|. The other one is given by
 the type class (synonym) |OneVarExp|.
 %
-In fact, the instances and the evaluator would an isomorphism between |FunExp|
+In fact, the instances and the evaluator would form an isomorphism between |FunExp|
 (the version restricted to integer constants) and |OneVarExp a => a|.
 
 The difference between the two implementations is that the first one

@@ -1,4 +1,4 @@
-q\chapter{Types in Mathematics}
+\chapter{Types in Mathematics}
 \label{sec:types}
 %if False
 \begin{code}
@@ -695,7 +695,7 @@ This kind of approach presents several difficulties:
   %
   Indeed, as we have seen in \cref{sec:big-operators}, the \(∂f/∂x\) style
   means that the operator binds the name of the variable.
-  % 
+  %
   % But it is often awkward to make partial differentiation bind a variable. % But, we are precisely listing reason why it's awkward here. This sentence is circular reasoning.
 \end{enumerate}
 
