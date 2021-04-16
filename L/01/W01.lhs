@@ -172,6 +172,14 @@ flip op x y = op y x
 As an example |flip (-) 5 10 == 10 - 5| and |flip const x y ==
 const y x == y|.
 
+\paragraph{Lambda expressions}
+\label{sec:lambda-expression}
+It is possible to create values of a function type without naming
+it. The syntax is |\x -> b|, where |b| is any expression. For example,
+the identity function can be written |\x -> x|, and the constant
+function |\x y -> x|.
+
+
 \paragraph{Function composition}
 
 The composition of two functions |f| and |g|, written |f . g| and

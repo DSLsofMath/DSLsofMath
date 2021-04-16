@@ -94,8 +94,7 @@ constants, as in \cref{sec:complex-arithmetic}.
 Additionally, we have the all-important constructor for variables,
 which we will call |X| here.
 %
-We can implement all this in a datatype as follows:\jp{Rename FunExp
-  -> Exp1V or similar?}
+We can implement all this in a datatype as follows:
 
 \subsubsection{Deep embedding}
 \label{sec:FunExp}
@@ -193,7 +192,6 @@ eval      (e1 :*: e2)    =   funMul  (eval e1)  (eval e2)
 Representing expressions of one variable as functions (of one
 argument) is a recurring technique in this \course{}.
 %
-\jp{Link back references to |FunExp| and function instances.}
 %
 To start, we can use it to assign types to big operators.
 
@@ -254,10 +252,7 @@ a name to the summation variable:
 \begin{spec}
 sumOfSquares n = summation 1 n (\i -> i `powTo` 2)
 \end{spec}
-%
-(A lambda expression is a local function definition which is not given
-a name, in this case it maps \(i\) to \(i `powTo` 2\)).\jp{Is there a
-  point to properly introduce lambdas?}
+(Recall the syntax for lambda expressions from \cref{sec:lambda-expression}.)
 
 %TODO: perhaps mention types: skipped here because of |ℤ|, |ℝ| mismatch.
 
@@ -462,7 +457,6 @@ indeed, |Env String Integer| is like a table of several variables and their valu
 %   Turn it into a function |g| of type |REAL -> REAL -> REAL -> REAL|
 %   with the same intended meaning.
 % \end{exercise}
-\jp{Talk some about variable capture?}
 
 %*TODO: Perhaps add simple exercises on renaming and variable capture
 
@@ -501,7 +495,7 @@ in the definition is a prime symbol (apostrophe), written postfix.
 To make it easier to see we use a prefix |D| instead and we can
 thus write |D : (X->REAL) -> (Y->REAL)|.
 %
-\jp{|Y| is typeset rather stangely? (calligraphic font?) why?}
+% {Why |Y| is typeset rather stangely? (calligraphic font?)  Leading idea: this is an effect of the mathpazo package. No format directive, see: |XY|}
 We will often assume that |X = Y| (|f| is differentiable everywhere)
 so that we can can see |D| as preserving the type of its argument.
 
@@ -779,6 +773,17 @@ generalise to more than one coordinate.)
     L     (t, q, v)  =   ...
   \end{spec}
 
+\item Consequently the type of the partial derivatives get specialised as follows:
+
+\begin{spec}
+  (∂/∂q) : ((T, Q, V)  ->  ℝ) -> ((T, Q, V)  ->  ℝ)
+  (∂/∂v) : ((T, Q, V)  ->  ℝ) -> ((T, Q, V)  ->  ℝ)
+\end{spec}
+
+The notation |∂L / ∂q| is equivalent to |(∂/∂q) L|, and even |D2 L|;
+that is, applying the partial derivative with respect to the second
+argument (named |q|) to |L|.
+
 \item therefore, \(∂L / ∂q\) should also be a function of the same
   triple of arguments:
 %
@@ -892,14 +897,13 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
   \begin{spec}
     (∂L / ∂q) . (expand w)  :  T -> ℝ
   \end{spec}
-  \jp{This is mixing two conventions. If we use this kind of typing, q should not be mentioned.}
 
   which is used inside |d / dt|.
 
 \item We now move to using |D| for |d / dt|, |D₂| for |∂ / ∂q|, and
   |D₃| for |∂ / ∂dotq|.
   %
-  (The type of the partial derivatives |D₂| and  |D₃| is |L  : ((T, Q, V) -> R) -> ((T, Q, V) -> R)|, and here |D : (T -> ℝ) -> (T -> ℝ)|)
+  (The type of the partial derivatives |D₂| and |D₃| is |L  : ((T, Q, V) -> R) -> ((T, Q, V) -> R)|, and here |D : (T -> ℝ) -> (T -> ℝ)|)
   %
   In combination with |expand w| we find these type correct
   combinations for the two terms in the equation:
@@ -1366,8 +1370,23 @@ Therefore we prefer to define the more general instances in
 \cref{fig:FunNumInst}.
 %
 Here we extend our set of type-classes to cover algebraic and
-transcendental numbers. \jp{Where is this introduced?}
-%
+transcendental numbers. A simplified version, which is sufficent for
+our purposes looks as follows:
+\begin{spec}
+class Field a => Algebraic a where
+  sqrt :: a -> a
+
+class Field a => Transcendental a where
+  pi  :: a
+  exp :: a -> a
+  sin :: a -> a
+  cos :: a -> a
+\end{spec}
+While classes up to |Field| follow mathematical conventions very
+closely, for |Algebraic| and |Transcendental| we take the pragmatic
+approach and list only the methods which are necessary for our
+development.
+
 Together, these type classes represent an abstract language of
 abstract and standard operations, abstract in the sense that the exact
 nature of the elements involved is not important from the point of
