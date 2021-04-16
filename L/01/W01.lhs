@@ -430,7 +430,7 @@ function, but rather the \emph{interpretation} of that type.
 %
 
 Rather than relying on
-lexical (or syntactical) conventions in the variable names, prefer to explicit use different types.
+lexical (or syntactical) conventions in the variable names, we prefer to explicitly use different types.
 When there are several interpretations of the same type, we can define a type synonym
 for each interpretations.
 %
@@ -549,9 +549,11 @@ This declaration introduces
 \item a constructor |Z :: N| to represent zero, and
 \item a constructor |S :: N -> N| to represent the successor.
 \end{itemize}
-The semantics of |N| is the infinite set |{Z, S Z, S (S Z), ...}|\jp{In the rest of the book, this sort of semantics is called the set of syntax trees.}
-which is isomorphic to |Nat|.
-%
+The semantics of |N| is the set of natural numbers (|Nat|), with the
+semantics of |Z| being |0|, |S Z| being 1, etc. A way to be complete
+about the semantics is to state that the semantics of |S| is ``add
+one''.
+
 Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
 
 
