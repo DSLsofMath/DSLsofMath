@@ -154,6 +154,7 @@ say:
 type FunExpS = REAL -> REAL
 \end{code}
 
+\label{sec:funAdd}
 Then we can define the operators directly on functions, as follows:
 %
 \begin{spec}

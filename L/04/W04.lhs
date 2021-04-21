@@ -531,7 +531,7 @@ it can either be zero, positive or negative.
   take |A=a=REAL| and |B=x->REAL|.
   %
   As |B| is a function type the |(+)| on that side is addition of
-  functions, which we defined in \refSec{sec:FunNumInst}.
+  functions, which we defined in \refSec{sec:FunNumInst} in terms of |funAdd| from \refSec{sec:funAdd}.
   %
   The homomorphism law (that |h| distributes over |(+)|) can be shown
   as follows:
@@ -539,8 +539,9 @@ it can either be zero, positive or negative.
 \begin{spec}
   h (a + b)                     =  {- |h = const| in this case -}
   const (a + b)                 =  {- By def. of |const| -}
-  (\x->  a + b )                =  {- By def. of |const|, twice -}
-  (\x-> const a x + const b x)  =  {- By def. of |(+)| on functions -}
+  (\x->  a + b )                =  {- By def. of |const|, twice, backwards -}
+  (\x-> const a x + const b x)  =  {- By def. of |funAdd|, backwards -}
+  funAdd (const a) (const b)    =  {- By def. of |(+)| on functions -}
   const a  +  const b           =  {- |h = const|, twice -}
   h a + h b
 \end{spec}
@@ -563,7 +564,7 @@ Indeed, writing |h = apply c| for some fixed |c|, we have
 %
 \begin{spec}
      h (f + g)         =  {- def. |apply| -}
-     (f + g) c         =  {- def. |+| for functions -}
+     (f + g) c         =  {- def. |(+)| for functions -}
      f c + g c         =  {- def. |apply| -}
      h f + h g
 \end{spec}
