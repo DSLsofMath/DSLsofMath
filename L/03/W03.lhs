@@ -1359,7 +1359,7 @@ instance Transcendental a  => Transcendental  (x -> a) where
    pi =  const pi
    sin f = sin . f; {-"\quad"-}    cos f = cos . f; {-"\quad"-}  exp f = exp . f
 \end{spec}
-  \caption{Numeric instances lifted to functions (|module Algebra|).}
+  \caption{Numeric instances lifted to functions (Full definitions can be found in |module Algebra| in the repo).}
   \label{fig:FunNumInst}
 \end{figure}
 \label{sec:FunNumInst}
