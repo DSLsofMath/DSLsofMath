@@ -261,9 +261,9 @@ replacement for the |Num| class!
         (FracR) {};
   \node[draw,fit=(AddL) (AddOps) (SubL) (SubOps) (MulL) (MulOps),
         %inner sep=-0.3ex,
-        rounded corners=2ex,dashed,label=left:|Ring|]
+        rounded corners=2ex,dashed,label={[name=RingL]left:|Ring|}]
         (Ring) {};
-  \node[draw,fit=(Ring) (DivOps),
+  \node[draw,fit=(Ring) (DivOps) (RingL),
         %inner sep=-0.3ex,
         rounded corners=2ex,dashed,label=left:|Field|]
         (Field) {};
@@ -274,7 +274,6 @@ replacement for the |Num| class!
   \label{fig:CompNum}
 \end{figure}
 \pj{Fix the figure to indicate that |AddGroup| includes |Additive| and |MulGroup| includes |Multiplicative|.}
-\jp{Also, |Field|}
 We note right away that one can have a multiplicative group structure
 as well, whose inverse is called the reciprocal (abbreviated as
 |recip| in Haskell).
