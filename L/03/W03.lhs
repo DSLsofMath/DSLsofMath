@@ -1359,7 +1359,7 @@ instance Transcendental a  => Transcendental  (x -> a) where
    pi =  const pi
    sin f = sin . f; {-"\quad"-}    cos f = cos . f; {-"\quad"-}  exp f = exp . f
 \end{spec}
-  \caption{Numeric instances lifted to functions (|module FunNumInst|).}
+  \caption{Numeric instances lifted to functions (|module Algebra|).}
   \label{fig:FunNumInst}
 \end{figure}
 \label{sec:FunNumInst}
@@ -1584,6 +1584,7 @@ Similarly, we obtain
 %
 \begin{joincode}%
 \begin{code}
+derive :: FunExp -> FunExp
 derive     (Const alpha)  =  Const 0
 derive     X              =  Const 1
 derive     (e1 :+: e2)    =  derive e1  :+:  derive e2

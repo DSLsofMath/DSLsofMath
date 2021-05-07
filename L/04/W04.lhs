@@ -1347,10 +1347,9 @@ the type class (synonym) |OneVarExp|.
 In fact, the instances and the evaluator would form an isomorphism between |FunExp|
 (the version restricted to integer constants) and |OneVarExp a => a|.
 
-The difference between the two implementations is that the first one
-separates more cleanly from the semantical one. \jp{What does this
-mean?}  For example, |:+:| \emph{stands for} a function, while |+|
-\emph{is} that function.
+The difference is that the first one builds a syntax tree, while the
+other one refers to the semantics (algebraic) value.  For example,
+|:+:| \emph{stands for} a function, while |+| \emph{is} that function.
 
 \subsection{\extraMaterial A generic Free construction}
 
@@ -1926,7 +1925,7 @@ We have
 <==     e = Sin X :+: (Const 2 :*: X)
 \end{spec}
 %
-Finally, we can apply |derive| and obtain
+Finally, we can apply |derive :: FunExp -> FunExp|, defined in \cref{sec:derive}, and obtain
 %
 
 \begin{spec}
@@ -1934,9 +1933,12 @@ e = Sin X :+: (Const 2 :*: X)
 f' 2 = FunExp.eval (derive e) 2
 \end{spec}
 %
-This can hardly be called ``automatic'', look at all the work we did in
-deducing |e|!\jp{But |f| was provided syntactically anyway?}
-%
+This can hardly be called ``automatic'', look at all the work we did
+in deducing |e|!\footnote{Besides, manipulating symbolic
+  representations (even in a program), is not was is usually called
+  automatic differentiation.}
+
+
 However, consider this definition:
 %
 \begin{code}
@@ -1954,7 +1956,6 @@ In general, to find the derivative of a function |f :: Transcendental a => a -> 
 \begin{code}
 drv f = FunExp.eval (derive (f X))
 \end{code}
-\jp{|derive| was defined in \cref{sec:derive}}
 \item Using |FD| (pairs of functions)
 
 Recall
@@ -2037,12 +2038,11 @@ instance Transcendental a => Transcendental (a, a) where
   -- ...
 \end{spec}
 %
-In fact, the latter (just pairs) represents a generalisation\jp{Isn't it equivalent? (The isomorphism is |c -> (a,b)| iso. |(c -> b, c -> b)|)} of the former (pairs of functions).
+In fact, the latter instance (just pairs) a generalisation of the former instance (FD). 
 %
-To see this, note that if we have a |Transcendental| instance for some
+To see this, recall that |FD a = (a -> a, a -> a)|, and note that if we have a |Transcendental| instance for some
 |A|, we get a |Transcendental| instance for |x->A| for all |x| from
-the module |FunNumInst|\jp{What is this module? Was it ever
-  introduced?}.
+\cref{fig:FunNumInst}.
 %
 Then from the instance for pairs we get an instance for any type of
 the form |(x->A, x->A)|.
@@ -2050,13 +2050,13 @@ the form |(x->A, x->A)|.
 As a special case when |x=A| this includes all |(A->A, A->A)| which is
 |FD A|.
 %
-Thus it is enough to have |FunNumInst| and the pair instance to get
+Thus it is enough to have the instance |Transcendental (x->A)| and the pair instance to get
 the ``pairs of functions'' instance (and more).
 
 The pair instance is also the ``maximally general'' such
 generalisation.
 
-Still, we need to use this machinery.\jp{Use it for what? I never know what the goal was?}
+Still, we need to use this machinery to finally compute |f' 2|.
 %
 We are now looking for a pair of values |(g, g')| such that
 %
