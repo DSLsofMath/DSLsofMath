@@ -1,0 +1,109 @@
+P2 [25p] Proofs: Differentiability from continuity
+
+----------------
+
+2a [10p] Prove that |p1| is differentiable at |a| for all |a : V2|
+    through these steps:
+
+What is the type of |phip1|?
+
+We need to find
+
+  phip1 : V2 -> V2 -> Something
+
+such that
+
+  p1 x = p1 a + (x-a) * phip1 a x
+
+where
+
+  (*) : V2 -> V2 -> REAL
+
+As the result of phip1 is used as the (second) input to (*) we find
+that the type Something = V2.
+
+Thus:
+
+  phip1 : V2 -> V2 -> V2
+
+----------------
+What is the definition of |phip1| which satisfies the requirements?
+
+We calculate, starting from
+
+  p1 x = p1 a + (x-a) * phip1 a x
+<=> -- expand the components x = (x1, x2) and a = (a1, a2)
+  p1 (x1, x2) = p1 (a1, a2) + ((x1,x2)-(a1,a2)) * phip1 a x
+<=> -- use definition of p1 and of (-)
+  x1 = a1 + (x1-a1, x2-a2) * phip1 a x
+<=> -- now let (c1, c2) = phip1 a x
+  x1 = a1 + (x1-a1, x2-a2) * (c1, c2)
+<=> -- def. of scalar product (*)
+  x1 = a1 + (x1-a1)*c1 + (x2-a2) * c2
+<=
+  c1 = 1 & c2 = 0
+
+Thus, we can define phip1 x a = (1, 0)
+This constant function is clearly continuous for all x and a.
+
+----------------
+What is the derivative of |p1| at |(x1,x2)|?
+
+The derivative of p1 is
+
+  p1' : V2 -> V2
+  p1' (x1, x2) = phip1 (x1, x2) (x1, x2) = (1, 0)
+
+----------------------------------------------------------------
+
+2b [15p] Prove that if |f| and |g| are both differentiable at |a|,
+   then the product of |f| and |g| is also differentiable at |a|. In
+   other words, use |phif| and |phig| to calculate a definition for
+   |phih| satisfying the equation.  Check that the derivative |h' a =
+   phih a a| comes out as expected.
+
+Let h x = f x * g x and we know
+    f x = f a + (x - a) * phif a x
+    g x = g a + (x - a) * phig a x
+
+We calculate a definition for phih a and show that it is continuous.
+
+  h x
+= -- def. of h
+  f x * g x
+= -- spec. of phif and phig
+  (f a + (x - a) * phif a x) * (g a + (x - a) * phig a x)
+= -- (*) distributes over (+)
+    (f a) * (g a)
+  + (f a) * (x - a) * phig a x
+  + (x - a) * phif a x * (g a) +
+  + (x - a) * phif a x * (x - a) * phig a x
+= -- try to mimic the shape of the specification of h
+  (f a) * (g a) + (x - a) *
+      ( (f a) * phig a x
+      + phif a x * (g a) +
+      + phif a x * (x - a) * phig a x
+      )
+= -- let phih a x = (f a)*phig a x + (g a)*phif a x + (x-a) * phif a x * phig a x
+  h a + (x-a) * phih a x
+
+Now we just need to prove that phih a is continuous at a.
+
+We know that phif a and phig and (\x->x-a) are continuous at a and we
+know that continuity is preserved by (*), (+), and scaling.
+
+Thus phih is also continous at a.
+
+We get
+
+  h' a
+= phih a a
+= (f a)*phig a a + (g a)*phif a a + (a-a) * phif a a * phig a a
+= (f a)*(g' a) + (g a)*(f' a) + 0 * f' a * g' a
+= (f a)*(g' a) + (g a)*(f' a)
+
+or simply
+
+  h' = f*g' + g*f'
+
+which matches with what we know from calculus.

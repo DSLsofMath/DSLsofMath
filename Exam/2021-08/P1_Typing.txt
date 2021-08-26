@@ -1,0 +1,74 @@
+P1 [25p] Typing maths: continuity and differentiability from limits
+----------------
+1a) [7p] Explain the typing and scoping rules for the |lim|
+    construction (what can be written before and after the arrow,
+    etc.).
+
+In the notation
+
+  lim_{e1 -> e2} e3
+
+the expression |e1| is a variable name such that the anonymous
+function |\e1 -> e3| is the one for which the limit is computed at the
+point |e2|. The scope of |e1| is only |e3|, not |e2|.
+
+(Sometimes |e1| can be a more complex pattern, such as |(x,y)| binding
+two variables to the components of a pair or vector.)
+
+In our case the type of the function is |X -> Y| for some subsets |X|
+and |Y| of |REAL|. The expression |e2| should evaluate to a limit
+point of |X|, thus in or "near" |X|.
+
+----------------
+1b) [6p] Give the types of |f|, |f'|, |x|, |h| in the definition of
+    |f' x|.  Explain your reasoning.
+
+We have |f : X -> Y|, |f' : X' -> Y|, |x : X|, |h : REAL|.
+
+The expression |(f (x+h) - f x)/h| indicates that |Y| is a subset of
+|REAL| and the limit |0| for |h| indicates that |h| is also a |REAL|.
+The type |X'| is different from |X| when |f| is not differentiable
+everywhere.
+
+----------------
+1c) [6p] Prove that |s| is differentiable at |x| for all |x : REAL| using
+the definition above, and define a closed form for |s'|.
+
+The expression in the limit is
+
+  (s (x+h) - s x)/h
+= {- if x+h and x are >= 0 -}
+  (x^2+2*x*h+h^2 - x^2)/h
+= (2*x*h+h^2)/h
+= 2*x+h
+
+thus the limit = 2*x for x>=0
+
+Similarly, the limit = -2*x for x<0
+
+Thus s' x = 2*abs x
+
+----------------
+1d) [6p] What is the set of all |x| such that |s'| is differentiable
+at |x| and what is |s''| (the 2nd derivative of |s|)?
+
+Here the expression in the limit is
+
+  (s' (x+h) - s' x)/h
+= {- if x+h and x are >0 -}
+  (2*(x+h) - 2*x)/h
+= 2
+
+and, similarly, if x+h and x are <0,
+= -2
+
+Left to explore is the single point x=0.
+
+  (s' (0+h) - s' 0)/h
+= (2*abs h)/h
+= 2*signum h
+
+Even for h arbitrarily close to zero this expression has two different
+values: +2 and -2 (depending on the sign of h).
+
+Thus s'' x = 2*signum x for all non-zero x.
