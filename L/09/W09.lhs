@@ -24,13 +24,13 @@ infixl 1 ===
 
 
 
-We have by now acquired a firm on DSL notions and several mathematical
-domain.  In this chapter, will apply the DSL methodology once more to
+We have by now acquired a firm grip on DSL notions and several mathematical
+domains.  In this chapter, will apply the DSL methodology once more to
 the area of probability theory. By building a DSL from scratch, we
 will not only clarify notations for (conditional) probabilities, such
 as \(P(A ∣ B)\), but we will also be able to describe and reason about
 problems such as those of the following list. Sometimes we can
-even compute the probabilites involved by evaluating the DSL
+even compute the probabilities involved by evaluating the DSL
 expressions.
 
 \begin{enumerate}[label=\arabic*.]
@@ -63,8 +63,7 @@ expressions.
   %
   Monty says to you “Do you want to pick door 2?”
   %
-  Is it to your advantage to switch your choice of doors?
-% (Remember that, at the time of writing, cars were a highly prized item.)
+  Assuming that the car is more desirable than the goat, is it to your advantage to switch your choice of doors?
 \label{ex:monty}
 \end{enumerate}
 
@@ -81,7 +80,7 @@ for the same mathematical objects.
 The word ``outcome'' evokes some experiment, explicitly performed; and
 the ``outcome'' is the situation after the experiment is over.
 %
-When we use the word ``situation'' there is not necessarily an explict
+When we use the word ``situation'' there is not necessarily an explicit
 experiment, but something happens according to a specific scenario.
 %
 We consider the situation at the end of the scenario in question.
@@ -118,7 +117,7 @@ outcomes. Hence |Space| maps this underlying type to another type:
 \begin{spec}
 Space :: Type -> Type
 \end{spec}
-We will then carry on and define the constructions which can inhabit the abote type.
+We will then carry on and define the constructions which can inhabit the above type.
 
 \paragraph{Finite space}
 In Example~\ref{ex:dice}, we consider dice with 6 faces.
@@ -583,7 +582,7 @@ By now we have a pretty good grip on variables in computer science.
 %
 In \cref{sec:types} we have described a way to reduce
 mathematical variables (position \(q\) and velocity \(v\) in
-lagrangian mechanics) to computer science variables.
+Lagrangian mechanics) to computer science variables.
 %
 This was done by expressing variables as \emph{functions} of a truly
 free variable, time (\(t\)).
@@ -623,7 +622,7 @@ to.
 %
 The (computer science) variable |x| is the outcome, and |s| is represents the experiment
 --- which is most often implicit in a random variable expressions as
-written in a math book.
+written in a mathematics book.
 
 We can finally define the expected value (and other statistical
 moments) of random variable.
@@ -725,7 +724,7 @@ Assuming that the space |s| accurately represents the relative mass of
 all possible situations, there are two ways to define the probability
 of |e|.
 
-The first defintion is as the expected value of |indicator . e|, where
+The first definition is as the expected value of |indicator . e|, where
 |indicator| maps boolean to reals as follows:
 \begin{code}
 indicator :: Bool -> REAL
@@ -819,7 +818,7 @@ condProb :: Space a -> (a -> Bool) -> (a -> Bool) -> REAL
 condProb s f g = probability1 (subspace g s) f
 \end{code}
 
-We find the above defintion more intuitive than the more usual
+We find the above definition more intuitive than the more usual
 definition $P(F∣G) = P(F∩G) / P(G)$. Why? Because it makes clear that,
 in $P(F∣G)$, $G$ acts as the subspace upon which the truth of $F$ is
 integrated. (In fact, the $P(F∣G)$ notation is an improvement over the $P(F)$
@@ -1314,4 +1313,15 @@ Express the rest of the proof using our DSL
 % Local Variables:
 % dante-methods : (bare-ghci)
 % mode: literate-haskell
+% ispell-dictionary: "british"
 % End:
+
+-- LocalWords:  TupleSections DSLsofMath ap equational infixl endif
+-- LocalWords:  DSL arabic href drugtest emph monty twoDice sumAbove
+% LocalWords:  const fst RealLine monadic fmap Applicative snd Distr
+% LocalWords:  isDistribution uniformDiscrete xs fromIntegral sqrt tH
+% LocalWords:  scaleWith filterWith dieDistr bernoulli normalMass iff
+% LocalWords:  distributionDensity bigsum defintions expectedValue
+% LocalWords:  expectedValueOfDistr calculational IntroProb Grinstead
+% LocalWords:  representable curtosis isTrue mutiplication condProb
+% LocalWords:  cond diceSpace threeHeads
