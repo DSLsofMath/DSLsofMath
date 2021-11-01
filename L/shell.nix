@@ -1,5 +1,6 @@
 # with import (fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-18.03.tar.gz) {};
-with import (fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-20.03.tar.gz) {};
+# with import (fetchTarball https://github.com/NixOS/nixpkgs-channels/archive/nixos-20.03.tar.gz) {};
+with import (fetchTarball https://github.com/NixOS/nixpkgs/archive/nixos-21.05.tar.gz) {};
 
 stdenv.mkDerivation {
   name = "docsEnv";
