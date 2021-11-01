@@ -83,8 +83,8 @@ proposition for the assignment in question.
 %
 
 \subsection{An Evaluator for |Prop|}
-Let us formalise this in general, by writing an evaluator which takes
-a |Prop| term to its truth value.
+Let us formalise this idea in general, by writing an evaluator which takes
+a |Prop| to its truth value.
 %
 (The evaluation function for a DSL describing a logic is often called
 |check| instead of |eval| but for consistency we stick to |eval|.)
@@ -246,7 +246,7 @@ But we still have to figure out what consitutes proofs.
 We will build up the ``proof DSL'' one step at a time by looking at
 what we need to prove the different propositions.
 
-To prove |And P Q|, one both a proof of |P| and a proof of |Q|.
+To prove |And P Q|, one needs both a proof of |P| and a proof of |Q|.
 %
 In logic texts, one will often find
 \[ \frac{P \quad Q}{P ∧ Q} \] to represent this fact, which is called the \emph{introduction rule for (∧)}.
@@ -331,7 +331,7 @@ If only we can find a proposition |R| which is a consequence of both
 |P| and |Q|, then, regardless of which case we are facing, we know
 that |R| will hold.
 %
-As an elimination rule for we get
+So, we get the following elimination rule for \(P ∨ Q\):
 %
 \[\frac {P ∨ Q \quad P → R \quad Q → R} R\]
 
@@ -406,10 +406,10 @@ The introduction rule is sometimes written in this way in logic
 texts: \[\frac{\begin{array}{c}P \\ \vdots \\ Q \end{array}}{P → Q}\]
 Such a notation can, however, be terribly confusing.
 %
-We were used to the fact that proofs above the line had to be
+We were already used to the fact that proofs above the line had to be
 continued, so what can the dots possibly mean?
 %
-The intended meaning of this notation is that, to prove that $P → Q$,
+The intended meaning of this notation is that, to prove $P → Q$,
 it suffices to prove $Q$, but one is also allowed to use $P$ as an
 assumption in this (local) proof of $Q$.
 
@@ -471,16 +471,15 @@ No user-defined proof can use it.
 %
 The most worried readers can also define the following version of
 |checkProof|, which uses an extra context to check that assumption
-have been rightfully introduced earlier.\footnote{This kind of
+have been rightfully introduced earlier.\footnote{For the \textit{cognoscenti}, this kind of
   presentation of the checker matches well the sequent calculus
-  presentation of the proof system.}
+  presentation of the proof system} 
 
 \begin{spec}
 checkProof' :: Context -> Proof -> Prop -> Bool
 checkProof' ctx  (ImplyIntro t)  (p `Implies` q)  = checkProof' (p:ctx) t q
-checkProof' ctx  Assume          p                = p `elem` ctx
+checkProof' ctx  (Assume _)      p                = p `elem` ctx
 \end{spec}
-\jp{Is there something missing on the last line or has |Assume| been implicitly redefined?}
 
 \paragraph{Example proof}
 We can put our proof-checker to the test by writing some proofs and
@@ -699,7 +698,7 @@ Q)| instead of~|Q|.
 This is exactly what we have to do to (almost) prove the law of
 excluded middle.
 %
-We can then provide this Haskell-encoded proof:
+Doing so we can then provide this Haskell-encoded proof:
 
 \begin{code}
 excludedMiddle :: Not (Not (p `Or` Not p)) -- to prove this, we can ...

@@ -4,7 +4,7 @@
 \end{code}
 
 %
-Our second DSL is that of \emph{First Order
+Our next DSL is that of \emph{First Order
   Logic\lnOnly{\footnote{Swedish: Första ordningens logik =
       predikatlogik}}}, or FOL for short, and also known as Predicate
 Logic.
@@ -119,7 +119,7 @@ while |+| is a binary function symbol (written |plus| above).
 As before we can model the expression syntax (for FOL, in this case)
 as a datatype.
 %
-We keep the logical connectives |And|, |Or|, |Implies|, |Not| from the
+We keep on using the logical connectives |And|, |Or|, |Implies|, |Not| from the
 type |Prop|, add predicates over terms, and quantification.
 %
 The constructor |Equal| could be eliminated in favour of |PName "Eq"| but
@@ -199,7 +199,7 @@ and so we can never know if the formula is a tautology.%
   running, there is no way to know how close it is to confirming if
   the formula at hand is a tautology or not. This is not a technical
   limitation, but rather a fundamental one, which boils down to the
-  presence of quantifier over an infinite domain.}
+  presence of quantifiers over an infinite domain.}
 %
 So, if we were to try and run the evaluator, it would not
 terminate.
@@ -276,7 +276,7 @@ the end of |b| (but not further).
 %
 
 One common source of confusion in mathematical (and other semi-formal)
-texts is that variable binding sometimes is implicit.
+texts is that variable binding is sometimes implicit.
 %
 A typical example is the notation for equations: for instance |x^2 +
 2*x + 1 == 0| usually means roughly |Exists x (x^2 + 2*x + 1 == 0)|.
