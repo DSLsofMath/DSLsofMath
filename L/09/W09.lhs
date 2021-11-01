@@ -29,8 +29,8 @@ domains.  In this chapter, will apply the DSL methodology once more to
 the area of probability theory. By building a DSL from scratch, we
 will not only clarify notations for (conditional) probabilities, such
 as \(P(A ∣ B)\), but we will also be able to describe and reason about
-problems such as those of the following list. Sometimes we can
-even compute the probabilities involved by evaluating the DSL
+problems such as those in the following list. For them we will even be able to
+compute the probabilities involved by evaluating the DSL
 expressions.
 
 \begin{enumerate}[label=\arabic*.]
@@ -74,23 +74,23 @@ Our method will be to:
 \item Evaluate such probabilities.
 \end{itemize}
 
-Depending on the context, we use the word ``situation'' or ``outcome''
-for the same mathematical objects.
+
+\section{Sample spaces}
+
+Generally, textbook problems involving probability involve the
+description of some scenario or experiment, with an explicit
+uncertainty, including the outcome of certain
+measures.\footnote{Depending on the context, we use the word
+  ``situation'' or ``outcome'' for the same mathematical objects.
 %
 The word ``outcome'' evokes some experiment, explicitly performed; and
 the ``outcome'' is the situation after the experiment is over.
 %
-When we use the word ``situation'' there is not necessarily an explicit
-experiment, but something happens according to a specific scenario.
-%
-We consider the situation at the end of the scenario in question.
-
-\section{Sample spaces}
-
-Generally textbook problems involving probability involve the
-description of some scenario or experiment, with an explicit
-uncertainty, including the outcome of certain measures. Then the
-student is asked to compute the probability of some event.
+When we use the word ``situation'' there is not necessarily an
+explicit experiment, but something happens according to a specific
+scenario.  In this case we call the ``situation'' the state of affairs
+at end of the scenario in question.}  Then the student is asked to
+compute the probability of some event.
 
 It is common to refer to a sample space by the labels \(S\), $\Omega$,
 or \(U\), but in this chapter we will define many such spaces, and
@@ -149,16 +149,16 @@ above.
 %
 But this is not always the case.
 %
-Hence we need a way to represent this. We use the following
+Hence we'll need a way to represent such imbalances. We use the following
 combinator:%
-\footnote{This is in fact scaling, as defined in \cref{sec:LinAlg}
-  --- the spaces over a given domain form a vector space.
+\footnote{This is in fact \emph{scaling}, as defined in \cref{sec:LinAlg}.
+  Indeed, there is a vector space of measurable spaces, where each each space is one vector.
   %
-  However, we choose not to use this point of view, because we are
+  However, we choose not to use this terminology, because we are
   generally not interested in the vector space structure of
   probability spaces.
   %
-  Additionally ``Factor'' does not scale the points in the space.
+  There is also potential for confusion, because ``Factor'' does not scale the points in the space.
   What it does is to scale the probability mass associated with each such points.
 }
 \begin{spec}
@@ -218,12 +218,14 @@ The values of the dice are the same as in |twoDice|, but the density
 of any sum less than 7 is brought down to zero.
 
 We can check that the product of spaces is a special case of |Sigma|:
+%
+\footnote{If we call |card a| the cardinality of the support type of
+  space |a|, then |card (prod a b) = card a × card b|, and in the
+  general case card (Sigma a f) =
+  \(\sum_{i\in support a} card (f i)\).  }
 \begin{code}
 prod a b = Sigma a (const b)
 \end{code}
-If we compare the above to the usual sum notation, the right-hand-side
-would be \(\sum_{i\in a} b\) which is the sum of |card a|\jp{Where was card defined?} copies of
-|b|, thus a kind of ``product'' of |a| and |b|.
 
 \paragraph{Projections}
 In the end we may not be interested in all values and hide some of
@@ -237,15 +239,14 @@ A typical use is |Project fst :: Space (a,b) -> Space a|, ignoring the second co
 
 \paragraph{Real line}
 Before we continue, we may also add a way to represent real-valued
-spaces, with (informally) the same probability for every real number.
+spaces, which assign the same probability for every real number.
 \begin{spec}
 RealLine :: Space REAL
 \end{spec}
 
 \paragraph{Summary}
-In sum, we have a datatype for the abstract syntax of ``space
-expressions'':
-
+We have already completed the description of a DSL for spaces, whose
+abstract syntax is captured by the following datatype:
 \begin{code}
 data Space a where
   Finite    :: [a] -> Space a
@@ -285,7 +286,7 @@ probability.
 We set out to do this in this section.
 %
 In section~\ref{sec:semanticsOfSpaces} we will see how to compute the total mass (or
-|measure :: Space a -> REAL|) of a space but before that we will talk
+|measure :: Space a -> REAL|) of a space. But before that we will talk
 about another important notion in probability theory: that of a
 distribution.
 %
@@ -315,20 +316,24 @@ uniformDiscrete xs = scale  (1.0 / fromIntegral (length xs))
 
 Scaling is defined as follows:
 \begin{code}
-scaleWith :: (a -> REAL) -> Space a -> Space a
-scaleWith f s = Project fst (Sigma s (\x -> Factor (f x)))
+marginaliseWith :: (a -> REAL) -> Space a -> Space a
+marginaliseWith f s = Project fst (Sigma s (\x -> Factor (f x)))
 
 scale :: REAL -> Space a -> Space a
-scale c = scaleWith (const c)
-\end{code}
-Where |scaleWith| applies a factor to every element, and ignores the
-unit type associated with |Factor|. If the scaling is all-or-nothing,
-we have the following version, which will be useful later.
-\begin{code}
-filterWith :: (a -> Bool) -> Space a -> Space a
-filterWith f = scaleWith (indicator . f)
+scale c = marginaliseWith (const c)
 \end{code}
 
+Here, |marginaliseWith| is a function which applies a factor to every
+element, and ignores the unit type associated with |Factor|. In the
+jargon of Bayesian reasoning, this operation is often called
+``marginalisation''. If the scaling is all-or-nothing, we have the
+following version, which will be useful later.
+\begin{code}
+observing :: (a -> Bool) -> Space a -> Space a
+observing f = marginaliseWith (indicator . f)
+\end{code}
+
+ 
 The distribution of the balanced die can then be represented as
 follows:
 \begin{code}
@@ -345,8 +350,8 @@ It is a distribution whose value is |True| with probability |p| and
 Hence it can be used to represent a biased coin toss.
 \begin{code}
 bernoulli :: REAL -> Distr Bool
-bernoulli p = scaleWith  (\b -> if b then p else 1-p)
-                          (Finite [False,True])
+bernoulli p = marginaliseWith  (\b -> if b then p else 1-p)
+                               (Finite [False,True])
 \end{code}
 
 %format mu = "\mu"
@@ -355,7 +360,7 @@ Finally we can define the normal distribution with average |mu| and
 standard deviation |sigma|.
 \begin{code}
 normal :: REAL -> REAL -> Distr REAL
-normal mu sigma = scaleWith (normalMass mu sigma) RealLine
+normal mu sigma = marginaliseWith (normalMass mu sigma) RealLine
 
 normalMass :: Floating r =>  r -> r -> r -> r
 normalMass mu sigma x = exp(- ( ((x - mu)/sigma)^2 / 2)) / (sigma * sqrt (2*pi))
@@ -390,6 +395,10 @@ integration of spaces.
 The weight is given as a second parameter to |integrator|, as a
 function mapping elements of the space to a real value.
 
+In code, we obtain the following:\footnote{You may want to come back
+  to \cref{sec:big-operators} to see how to deal with the integration
+  (or summation) variable and what it means for the type of the
+  integrator.}
 % \TODO{PJ: I'd prefer swapping the argument order.}
 % JPB: It's generally a better idea to put the "continuation" last, because it's usually a much longer argument.
 % Also this is the order of arguments in sum and integrals.
@@ -410,7 +419,6 @@ integrator (Project f a)  g =  integrator a (g . f)
 % integr g (Factor f)     = f * g ()
 % integr g (Sigma a f)    = integr (\x -> integr (\y -> g (x,y)) (f x)) a
 % integr g (Project f a)  = integr (g . f) a
-
 %
 The above definition relies on the usual notions of sum (|bigsum|) and
 |integral|.
@@ -423,7 +431,7 @@ bigsum xs f = sum (map f xs)
 
 We use also the definite integral over the whole real line.
 %
-However we will leave this concept undefined at the Haskell level ---
+However, at the Haskell level, we will leave this concept undefined  ---
 thus whenever using real-valued spaces, our defintions are not usable
 for numerical computations, but for symbolic computations only.
 \begin{code}
@@ -431,7 +439,7 @@ integral :: (REAL -> REAL) -> REAL
 integral = undefined
 \end{code}
 
-The simplest quantity that we can compute using the integrator is the
+The simplest useful quantity that we can compute using the integrator is the
 measure of the space --- its total ``mass'' or ``volume''.
 %
 To compute the measure of a space, we can simply integrate the
@@ -462,16 +470,16 @@ expectedValueOfDistr d = integrator d id
 -- 3.5
 \end{code}
 
-Exercise: compute symbolically the expected value of the |bernoulli|
-distribution.
+\begin{exercise}
+Compute symbolically the expected value of the |bernoulli|
+distribution
+\end{exercise}
 
 \paragraph{Properties of |integrator|}
 
-We can use the definitions to show some useful calculational
-properties of spaces.
+We can use the calculational reasoning to show some useful properties
+of spaces.
 
-\TODO{Format the lemmas}
-\TODO{Name the lemmas}
 
 % \textbf{integrator/bind lemma}: |integrator (s >>= f) g == integrator s (\x -> integrator (f x) g)|
 % \begin{spec}
@@ -494,44 +502,50 @@ properties of spaces.
 % push the weight function of the integrator into the space: |integrator
 % s f == integrator (Project f s) id|.
 
-\paragraph{Linearity of integrator}
+\TODO{Format the lemmas}
+\TODO{Name the lemmas}
 
+\begin{lemma}[Linearity of |integrator|]
+  \label{lem:integrator-linear}
 If |g| is a linear function (addition or multiplication by a
 constant), then:
 \begin{spec}
 integrator s (g . f) == g (integrator s f)
 \end{spec}
 (or, equivalently,  |integrator s (\x -> g (f x)) = g (integrator s f)|)
-
-The proof proceeds by structural induction over |s|.
-%
-The hypothesis of linearity is used in the base cases.
-%
-Notably the linearity property of |Finite| and |RealLine| hinges on the
-linearity of sums and integrals.\footnote{Recall that integration is a linear operator in the space of functions (\cref{sec:functions-vector-space}).}
-%
-The case of |Project| is immediate by definition.
-%
-The case for |Sigma| is proven as follows:
-\begin{spec}
-integrator (Sigma a f) (g . h)
-  = {- By definition -}
-integrator a $ \x -> integrator (f x) $ \y -> g (h (x,y))
-  = {- By induction -}
-integrator a $ \x -> g (integrator (f x) $ \y -> h (x,y)
-  = {- By induction -}
-g (integrator a $ \x -> (integrator (f x) $ \y -> h (x,y))
-  = {- By definition -}
-g (integrator (Sigma a f) h)
-\end{spec}
+\end{lemma}
+\begin{proof}
+  The proof proceeds by structural induction over |s|.
+  % 
+  The hypothesis of linearity is used in the base cases.
+  % 
+  Notably the linearity property of |Finite| and |RealLine| hinges on the
+  linearity of sums and integrals.\footnote{Recall that integration is a linear operator in the space of functions (\cref{sec:functions-vector-space}).}
+  % 
+  The case of |Project| is immediate by definition.
+  % 
+  The case for |Sigma| is proven as follows:
+  \begin{spec}
+    integrator (Sigma a f) (g . h)
+    = {- By definition -}
+    integrator a $ \x -> integrator (f x) $ \y -> g (h (x,y))
+    = {- By induction -}
+    integrator a $ \x -> g (integrator (f x) $ \y -> h (x,y)
+    = {- By induction -}
+    g (integrator a $ \x -> (integrator (f x) $ \y -> h (x,y))
+    = {- By definition -}
+    g (integrator (Sigma a f) h)
+  \end{spec}
+\end{proof}
 
 %**TODO this does not make sense type-wise in general, only for Num-values spaces
 % As a corrolary, |Project| is linear as well:
 % %
 % if |f| is linear, then |integrator (Project f s) g = f (integrator s g)|
 
-\paragraph{Properties of |measure|}
-
+\begin{lemma}[Properties of |measure|]
+\label{lem:measure-properties}  
+~
 \begin{itemize}
 \item |measure (Finite xs) == length xs|
 \item |measure (Sigma s (const t)) == measure s * measure t|.
@@ -539,6 +553,7 @@ g (integrator (Sigma a f) h)
   distribution for every |x|, then |Sigma s f| is a distribution
 \item |s| is a distribution iff. |Project f s| is a distribution.
 \end{itemize}
+\end{lemma}
 
 The proof of the second item is as follows:
 \begin{spec}
@@ -566,8 +581,10 @@ Even though we have already studied variables in detail (in
 \cref{sec:types}), it is good to come back to them for a moment before
 returning to \emph{random} variables proper.
 
-According to Wikipedia, a variable has a different meaning in computer
-science and in mathematics:
+According to
+Wikipedia\footnote{\url{https://en.wikipedia.org/wiki/Variable},
+  retrieved Nov. 1st, 2021.}, a variable has a different meaning in
+computer science and in mathematics:
 \begin{quote}
   Variable may refer to:
   \begin{itemize}
@@ -578,9 +595,9 @@ science and in mathematics:
   \end{itemize}
 \end{quote}
 
-By now we have a pretty good grip on variables in computer science.
+At this stage of the \course{}, we have a pretty good grip on variables in computer science.
 %
-In \cref{sec:types} we have described a way to reduce
+In particular, in \cref{sec:types}, we have described a way to reduce
 mathematical variables (position \(q\) and velocity \(v\) in
 Lagrangian mechanics) to computer science variables.
 %
@@ -603,24 +620,24 @@ definition:
 
 This may be quite confusing at this stage.
 %
-What are those expressions, and where does the experiment influence the
+What are those expressions in our DSL? And where does the experiment influence the
 variable?
 %
 Our answer is to use spaces to represent the ``experiments'' that
 Grinstead and Snell mention.
 %
-More specifically, if |s : Space a|, each possible situation at the
+More specifically, if |s : Space a|, then each possible situation at the
 end of the experiment is representable in the type |a| and the space
 will specify the mass of each of them (formally, \text{via} the integrator).
 
-Then, a |b|-valued random variable, observed after an experiment
-represented by a space |s : Space a|, is a function |f| of type |a ->
+Then, a |b|-valued random variable (observed after an experiment
+represented by a space |s : Space a|) is a function |f| of type |a ->
 b|.
 %
 Then |f x| is the ``expression'' that Grinstead and Snell refer
 to.
 %
-The (computer science) variable |x| is the outcome, and |s| is represents the experiment
+The (computer science) variable |x| is the outcome, and |s| represents the experiment
 --- which is most often implicit in a random variable expressions as
 written in a mathematics book.
 
@@ -657,7 +674,7 @@ expect2D6 = expectedValue twoDice (\ (x,y) -> fromIntegral (x+y))
 \end{exercise}
 
 Essentially, what the above definition of expected value does is to
-compute the weighted sum/integral of |f(x)| for every point |x| in the
+compute the weighted sum/integral of |f x| for every point |x| in the
 space.
 %
 And because |s| is a space (not a distribution), we must normalise the
@@ -724,7 +741,8 @@ Assuming that the space |s| accurately represents the relative mass of
 all possible situations, there are two ways to define the probability
 of |e|.
 
-The first definition is as the expected value of |indicator . e|, where
+
+The first definition of the probability of |e| is the expected value of |indicator . e|, where
 |indicator| maps boolean to reals as follows:
 \begin{code}
 indicator :: Bool -> REAL
@@ -735,8 +753,8 @@ probability1 :: Space a -> (a -> Bool) -> REAL
 probability1 d e = expectedValue d (indicator . e)
 \end{code}
 
-The second definition of probability is as the ratio of the measure of
-the subspace where |e| holds, the measure and the complete space.
+The second definition of probability is the ratio between the measure of
+the subspace where |e| holds, and the measure of the complete space.
 
 \begin{code}
 probability2 :: Space a -> (a -> Bool) -> REAL
@@ -760,7 +778,8 @@ We can show that if |s| has a non-zero measure, then the two
 definitions are equivalent:
 
 \begin{lemma}
-|measure s * probability s e = measure (Sigma s (isTrue . e))|
+  |measure s * probability s e = measure (Sigma s (isTrue . e))|
+  \label{lem:probability-measure}
 \end{lemma}
 \begin{proof}
 (where we shorten |indicator| to |ind| and |integrator| to |int|)
@@ -788,6 +807,11 @@ measure_sigma_equations s e =
 % }
 
 \end{proof}
+
+We can now note that the space |observing e s| is the subspace of |s|
+where the event |e| is observed to be true--- a kind of subspace which
+is often used in textbook problems.
+
 It will often be convenient to define a space whose underlying set is
 a boolean value and compute the probability of the identity event:
 \begin{code}
@@ -799,7 +823,7 @@ Sometimes one even finds in the literature and folklore the notation
 $P(v)$, where $v$ is a value, which stands for $P(t=v)$, for an
 implicit random variable $t$.
 %
-Here even more creativity is required from the reader, who must not
+Here even more imagination is required from the reader, who must not
 only infer the space of outcomes, but also which random variable the
 author means.
 
@@ -807,10 +831,10 @@ author means.
 
 In \cref{sec:StocSys}, we encountered the notion of conditional
 probability, traditionally written $P(F ∣ G)$ and read ``probability
-of |f| given |g|''. As suggested in \cref{sec:StocSys} and brushed
+of $F$ given $G$''. As suggested in \cref{sec:StocSys} and brushed
 upon in \cref{ex:prob-notation-naive}, it is not the case that
-$(F ∣ G)$ is an event. Rather, conditional probability
-must take both |f| and |g| as arguments. It is defined as
+$(F ∣ G)$ is an event. Rather, a conditional probability is a separate concept, which
+takes both |f| and |g| as arguments. It is defined as
 the probability of |f| in the sub space where |g| holds:
 %
 \begin{code}
@@ -820,23 +844,20 @@ condProb s f g = probability1 (subspace g s) f
 
 We find the above definition more intuitive than the more usual
 definition $P(F∣G) = P(F∩G) / P(G)$. Why? Because it makes clear that,
-in $P(F∣G)$, $G$ acts as the subspace upon which the truth of $F$ is
+in $P(F∣G)$, the event $G$ acts as the subspace upon which the truth of $F$ is
 integrated. (In fact, the $P(F∣G)$ notation is an improvement over the $P(F)$
 notation, in the sense that the underlying space is more explicit.)
 
 Regardless, the equivalence between the two definitions can be proven,
 by symbolic calculation:
-
-
 \begin{lemma}
 |condProb s f g == probability s (\y -> f y && g y) / probability s g|
 \end{lemma}
-
 \TODO{Possibly split into helper lemma(s) to avoid diving ``too deep''.}
 %{
 %format indicator = ind
 %format integrator = int
-\begin{proof}
+\begin{proof}~
 \begin{code}
 cond_prob_equations :: Space a -> (a -> Bool) -> (a -> Bool) -> REAL
 cond_prob_equations s f g = 
@@ -850,9 +871,13 @@ cond_prob_equations s f g =
     === {- Def of expectedValue -}
       (1/measure(Sigma s (isTrue . g))) * (integrator (Sigma s (isTrue . g)) (indicator . f . fst))
     === {- Def of |integrator| (Sigma) -}
-      (1/measure s/probability1 s g) * (integrator s $ \x -> integrator (isTrue (g x)) $ \y -> indicator . f . fst $ (x,y))
+      (1/measure s/probability1 s g) * (  integrator s               $ \x ->
+                                          integrator (isTrue (g x))  $ \y ->
+                                          indicator . f . fst $ (x,y))
     === {- Def of |fst| -}
-      (1/measure s/probability1 s g) * (integrator s $ \x -> integrator (isTrue (g x)) $ \y -> indicator . f $ x)
+      (1/measure s/probability1 s g) * (  integrator s               $ \x ->
+                                          integrator (isTrue (g x))  $ \y ->
+                                          indicator . f $ x)
     === {- Def of |isTrue| -}
       (1/measure s/probability1 s g) * (integrator s $ \x -> indicator (g x) * indicator (f x))
     === {- Property of |indicator| -}
@@ -871,15 +896,12 @@ We are now ready to solve all three problems motivating this chapter.
 
 \subsection{Dice problem}
 
-We will use the monadic interface to define the experiment, hiding all
-random variables except the outcome that we care about (is the product
-greater than 10?):
 \begin{code}
 diceSpace :: Space Bool
-diceSpace = Project (\(x,y) -> (x * y >= 10)) (filterWith (\(x,y) -> (x + y >= 7)) twoDice)
-  -- (x,y) <- twoDice  -- balanced die 1
-  -- isTrue   -- observe that the sum is >= 7
-  -- return  -- consider only the event ``product >= 10''
+diceSpace =
+   Project (\(x,y) -> (x * y >= 10))  $  -- consider only the event ``product >= 10''
+   observing (\(x,y) -> (x + y >= 7)) $  -- observe that the sum is >= 7
+   twoDice                               -- sample two balanced die
 \end{code}
 Then we can compute its probability:
 \begin{code}
@@ -890,15 +912,20 @@ diceProblem = probability diceSpace
 -- 0.9047619047619047
 \end{code}
 
+\begin{exercise}
+Use the monadic interface to define the same experiment.
+\end{exercise}
+
+
 To illustrate the use of the various combinators from above to explore
 a sample space we can compute a few partial results explaining the
 |diceProblem|:
 \begin{code}
 p1 (x,y) = x+y >= 7
 p2 (x,y) = x*y >= 10
-test1     = measure (filterWith p1 twoDice)                       -- 21
-test2     = measure (filterWith p2 twoDice)                       -- 19
-testBoth  = measure (filterWith (\xy -> p1 xy && p2 xy) twoDice)  -- 19
+test1     = measure (observing p1 twoDice)                       -- 21
+test2     = measure (observing p2 twoDice)                       -- 19
+testBoth  = measure (observing (\xy -> p1 xy && p2 xy) twoDice)  -- 19
 prob21    = condProb (prod d6 d6) p2 p1                           -- 19/21
 \end{code}
 We can see that 21 possibities give a sum |>=7|, that 19 possibilities
@@ -924,7 +951,7 @@ drugSpace =
   -- (first component of the pair, ignoring the result of the test).
   Project fst  $
   -- we have ``a positive test'' by assumption (second component of the pair)
-  filterWith snd $ 
+  observing snd $ 
   Sigma
     (bernoulli 0.005) -- model the distribution of drug users
     (\isUser -> bernoulli (if isUser then 0.99 else 0.01))
@@ -941,7 +968,7 @@ userProb = probability drugSpace
 \end{code}
 %
 Thus a randomly selected individual with a positive test is a drug
-user with probability around one third (thus two thirds are false
+user with probability around one third (thus about two thirds are false
 positives).
 
 Perhaps surprisingly, we never needed the Bayes theorem to solve the
@@ -951,31 +978,59 @@ Indeed, the Bayes theorem is already incorporated in our defintion of
 |probability|, so our methodology guarantees that we always respect it.
 
 \subsection{Monty Hall}
-We can model the Monty Hall problem as follows: A correct model is
-the following: \jp{(Much) more explanations required}
-\begin{code}
-doors :: [Int]
-doors = [1,2,3]
-montySpace :: Bool -> Space Bool
-montySpace changing = 
-  Project (\((winningDoor,initiallyPickedDoor),montyPickedDoor) ->
-           let newPickedDoor =
-                 if changing
-                 then head (doors \\ [initiallyPickedDoor, montyPickedDoor])
-                   -- player takes another door
-                 else initiallyPickedDoor
-           in (newPickedDoor == winningDoor)) -- won?
-  (Sigma (prod (uniformDiscrete doors)
-              (uniformDiscrete doors)) -- initial a-priori space (the winning door is independent from the door picked by the contestant)
-         (\(winningDoor,pickedDoor) ->
-            uniformDiscrete (doors \\ [pickedDoor, winningDoor])))
-        -- we assume that Monty opens any of the non-winning or non-picked doors, uniformly.
-        
 
--- |>>> probability (montySpace False)|
+We can model the Monty Hall problem as follows. For expository
+purposes, let us define the list of doors:
+\begin{code}
+type Door = Int
+doors :: [Door]
+doors = [1,2,3]
+\end{code}
+
+The event of ``winning'' depends on four variables:
+\begin{itemize}
+\item which door is the winning door (|winningDoor :: Door|)
+\item the initial door choice (|initiallyPickedDoor :: Door||) 
+\item the door which Monty opens (|montyPickedDoor :: Door||)
+\item and finally, whether the player changes their mind after Monty
+  shows that the door has a goat (|changing :: Bool|).
+\end{itemize}
+
+One way to do it is as follows:
+\begin{code}
+haveWon :: Bool -> ((Door, Door), Door) -> Bool
+haveWon changing ((winningDoor,initiallyPickedDoor),montyPickedDoor)
+   = finalChoice == winningDoor
+  where finalChoice = case changing of
+          False   ->  initiallyPickedDoor
+          True    ->  head (doors \\ [initiallyPickedDoor, montyPickedDoor])
+\end{code}
+The player wins if their final choice is the right one. If they do not
+change their mind, then the final choice is equal to the initial one.
+If they do does change their mind, then the final choice is neither
+their inital choice nor Monty's door. (Because there are only three
+doors there is only one door left.)
+
+Then, we need to describe the set of situations, as a triple |((winningDoor,initiallyPickedDoor),montyPickedDoor)|.
+The first two variables are uniform, but the |montyPickedDoor| is uniform in the set |(doors \\ [pickedDoor, winningDoor])|--- note that if
+the |initiallyPickedDoor| is the same as the |winningDoor|, then Monty has two choices. We imagine that Monty is oblivious, and then picks a door at random. This might not be the case in an actual TV show.\footnote{Exercise: check other strategies for Monty.}
+\begin{code}
+montySpace :: Space ((Door, Door), Door)
+montySpace =
+  (Sigma (prod (uniformDiscrete doors)
+               (uniformDiscrete doors)) -- initial a-priori space (the winning door is independent from the door picked by the contestant)
+    (\(winningDoor,pickedDoor) ->
+        uniformDiscrete (doors \\ [pickedDoor, winningDoor])))
+\end{code}
+
+\begin{code}
+montyProblem :: Bool -> Space Bool
+montyProblem changing = Project (haveWon changing) montySpace
+
+-- |>>> probability (montyProblem False)|
 -- 0.3333333333333333
 
--- |>>> probability (montySpace True)|
+-- |>>> probability (montyProblem True)|
 -- 0.6666666666666666
 \end{code}
 Thus, the ``changing door'' strategy has twice the expected winning
@@ -988,38 +1043,29 @@ The crucial point is that Monty can never show a door which contains
 the prize.
 %
 To illustrate, an \emph{incorrect} way to model the Monty Hall
-problem, which still appears to follow the example point by point, is
-the following:
+space of situations is the following:
 \begin{code}
-montySpaceIncorrect :: Bool -> Space Bool
-montySpaceIncorrect changing =
-  Project (\((winningDoor,initiallyPickedDoor),montyPickedDoor) ->
-           let newPickedDoor =
-                 if changing
-                 then head (doors \\ [initiallyPickedDoor, montyPickedDoor])
-                   -- player takes another door
-                 else initiallyPickedDoor
-           in (newPickedDoor == winningDoor)) -- won?
+montySpaceIncorrect :: Space ((Door, Door), Door)
+montySpaceIncorrect =
   (Sigma (prod (uniformDiscrete doors)
-              (uniformDiscrete doors)) -- initial a-priori space (the winning door is independent from the door picked by the contestant)
+               (uniformDiscrete doors))
          (\(_,pickedDoor) -> uniformDiscrete (doors \\ [pickedDoor])))
 
--- |>>> probability (montySpace1 False)|
+-- |>>> probability (Project (haveWon False) montySpaceIncorrect)|
 -- 0.5
 
--- |>>> probability (montySpace1 True)|
--- 0.5
 \end{code}
-The above is incorrect, because everything happens as if Monty chooses
-a door before the player made their first choice.
+The above is incorrect, because it allows Monty to pick the door already chosen by the player.
 
 \subsection{Solving an advanced problem with equational reasoning}
 Consider the following problem: how many times must one throw a coin
 before one obtains 3 heads in a row? 
 We can model the problem as follows:
 \begin{code}
+coin :: Distr Bool
 coin = bernoulli 0.5
 
+coins :: Distr [Bool]
 coins =
   Project (\(x,xs) -> x : xs)
   (prod coin coins)
@@ -1028,13 +1074,14 @@ threeHeads :: [Bool] -> Int
 threeHeads (True:True:True:_) = 3
 threeHeads (_:xs) = 1 + threeHeads xs
 
+example' :: Space Int
 example' = Project threeHeads coins
 \end{code}
 % emacs $ $
 
-Even though the problem is easy to \emph{model} using the DSL, it is not easy to solve.
-Indeed, attempting to evaluate |probability1 threeHeads (< 5)| does not
-terminate.
+Even though the problem is easy to \emph{model} using the DSL, it is
+not easy to compute a solution.  Indeed, attempting to evaluate
+|probability1 threeHeads (< 5)| does not terminate.
 %
 This is because, we have an infinite list, which translates to infinitely many
 cases to consider.
@@ -1320,8 +1367,8 @@ Express the rest of the proof using our DSL
 -- LocalWords:  DSL arabic href drugtest emph monty twoDice sumAbove
 % LocalWords:  const fst RealLine monadic fmap Applicative snd Distr
 % LocalWords:  isDistribution uniformDiscrete xs fromIntegral sqrt tH
-% LocalWords:  scaleWith filterWith dieDistr bernoulli normalMass iff
+% LocalWords:  marginaliseWith observing dieDistr bernoulli normalMass iff
 % LocalWords:  distributionDensity bigsum defintions expectedValue
 % LocalWords:  expectedValueOfDistr calculational IntroProb Grinstead
 % LocalWords:  representable curtosis isTrue mutiplication condProb
-% LocalWords:  cond diceSpace threeHeads
+% LocalWords:  cond diceSpace threeHeads cardinality
