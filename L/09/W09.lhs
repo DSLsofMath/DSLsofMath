@@ -221,8 +221,8 @@ We can check that the product of spaces is a special case of |Sigma|:
 %
 \footnote{If we call |card a| the cardinality of the support type of
   space |a|, then |card (prod a b) = card a × card b|, and in the
-  general case card (Sigma a f) =
-  \(\sum_{i\in support a} card (f i)\).  }
+  general case |card (Sigma a f)| =
+  \(\sum_{i\in \mathit{support(|a|)}} |card (f i)|\).  }
 \begin{code}
 prod a b = Sigma a (const b)
 \end{code}
@@ -503,7 +503,6 @@ of spaces.
 % s f == integrator (Project f s) id|.
 
 \TODO{Format the lemmas}
-\TODO{Name the lemmas}
 
 \begin{lemma}[Linearity of |integrator|]
   \label{lem:integrator-linear}
@@ -852,16 +851,11 @@ Regardless, the equivalence between the two definitions can be proven,
 by symbolic calculation:
 \begin{lemma}
 |condProb s f g == probability s (\y -> f y && g y) / probability s g|
+\label{lem:cond-prob}
 \end{lemma}
 \TODO{Possibly split into helper lemma(s) to avoid diving ``too deep''.}
 %{
 \begin{proof}~
-We'll use the following abbreviations:
-\begin{code}
-ind = indicator
-int = integrator
-\end{code}
-and compute:
 \begin{code}
 cond_prob_equations :: Space a -> (a -> Bool) -> (a -> Bool) -> REAL
 cond_prob_equations s f g = 
@@ -994,8 +988,8 @@ doors = [1,2,3]
 The event of ``winning'' depends on four variables:
 \begin{itemize}
 \item which door is the winning door (|winningDoor :: Door|)
-\item the initial door choice (|initiallyPickedDoor :: Door||) 
-\item the door which Monty opens (|montyPickedDoor :: Door||)
+\item the initial door choice (|initiallyPickedDoor :: Door|) 
+\item the door which Monty opens (|montyPickedDoor :: Door|)
 \item and finally, whether the player changes their mind after Monty
   shows that the door has a goat (|changing :: Bool|).
 \end{itemize}
@@ -1015,16 +1009,21 @@ If they do does change their mind, then the final choice is neither
 their inital choice nor Monty's door. (Because there are only three
 doors there is only one door left.)
 
-Then, we need to describe the set of situations, as a triple |((winningDoor,initiallyPickedDoor),montyPickedDoor)|.
-The first two variables are uniform, but the |montyPickedDoor| is uniform in the set |(doors \\ [pickedDoor, winningDoor])|--- note that if
-the |initiallyPickedDoor| is the same as the |winningDoor|, then Monty has two choices. We imagine that Monty is oblivious, and then picks a door at random. This might not be the case in an actual TV show.\footnote{Exercise: check other strategies for Monty.}
+Then, we need to describe the set of situations, as a triple
+\[|((winningDoor,initiallyPickedDoor),montyPickedDoor)|\].  The first two
+variables are uniform, but the |montyPickedDoor| is uniform in the set
+|(doors \\ [pickedDoor, winningDoor])|. Note that if the
+|initiallyPickedDoor| is the same as the |winningDoor|, then Monty has
+two choices. We then imagine that Monty picks a door
+at random among those, even though this might not be the case in a
+real game.\footnote{Exercise: check other strategies for Monty.}
 \begin{code}
 montySpace :: Space ((Door, Door), Door)
 montySpace =
-  (Sigma (prod (uniformDiscrete doors)
-               (uniformDiscrete doors)) -- initial a-priori space (the winning door is independent from the door picked by the contestant)
-    (\(winningDoor,pickedDoor) ->
-        uniformDiscrete (doors \\ [pickedDoor, winningDoor])))
+  (Sigma  (prod   (uniformDiscrete doors)
+                  (uniformDiscrete doors))
+          (\(winningDoor,pickedDoor) ->
+              uniformDiscrete (doors \\ [pickedDoor, winningDoor])))
 \end{code}
 
 \begin{code}
@@ -1043,7 +1042,7 @@ probability.
 The Monty Hall is sometimes considered paradoxical: it is strange that
 changing one's mind can change the outcome.
 %
-The crucial point is that Monty can never show a door which contains
+The crucial point to see this is that Monty can never show a door which contains
 the prize.
 %
 To illustrate, an \emph{incorrect} way to model the Monty Hall
@@ -1059,7 +1058,8 @@ montySpaceIncorrect =
 -- 0.5
 
 \end{code}
-The above is incorrect, because it allows Monty to pick the door already chosen by the player.
+The above does not correctly model the problem, because it allows
+Monty to pick the door already chosen by the player.
 
 \subsection{Solving an advanced problem with equational reasoning}
 Consider the following problem: how many times must one throw a coin
@@ -1239,8 +1239,9 @@ In the recursive case, we have:
 
 \begin{spec}
 integrator (helper (m+1)) id
-== {- By def. of |helper| -}
-integrator (Project ((1 +) . snd) (Sigma coin (\h -> if h then  helper (m-1) else  helper 3))) id
+== {- By above result regarding |helper| -}
+integrator  (Project ((1 +) . snd)
+            (Sigma coin (\h -> if h then helper (m-1) else  helper 3))) id
 == {- By integrator def -}
 integrator (Sigma coin (\h -> if h then  helper (m-1) else  helper 3)) ((1 +) . snd)
 == {- By integrator def -}
@@ -1296,26 +1297,12 @@ One way to define independent events is as follows.
 %
 $E$ is independent from $F$ iff $P(E ∣ F) = P(E)$.
 %
-We can express this definition in our DSL:
-
-\begin{code}
-independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
-independentEvents s e f = probability1 s e == condProb s e f
-\end{code}
 
 According to \citet{IntroProb_Grinstead_Snell_2003}, two events
 independent iff.\ $P(E ∩ F) = P(E) · P(F)$.
-%
-Using our language, we would write instead:
-%
-\begin{spec}
-probability1 s (\x -> e x && f x) == probability1 s e * probability1 s f
-\end{spec}
 
-\jp{Something missing here}
-
-Proof.
-
+The proof can be written in the traditional notation as follows:
+\begin{proof}
 In the left to right direction:
 \begin{spec}
   P(E ∩ F)
@@ -1324,18 +1311,6 @@ In the left to right direction:
 = {- by def. of independent events -}
   P(E) · P (F)
 \end{spec}
-
-This part of the proof is written like so using our DSL:
-\begin{spec}
-probability1 s (\x -> e x && f x)
-= condProb s e f    * probability1 s f
-= probability1 s e  * probability1 s f
-\end{spec}
-
-We note that at this level of abstraction, the proofs follow the same
-structure as the textbook proofs --- the underlying space |s| is
-constant.
-
 
 In the right to left direction:
 \begin{spec}
@@ -1348,12 +1323,44 @@ In the right to left direction:
   P(E)
 \end{spec}
 
+\end{proof}
+
+Let us now express the same definitions and the same theorem and proof
+in our DSL.  The defintion for independent events is:
+\begin{code}
+independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
+independentEvents s e f = probability1 s e == condProb s e f
+\end{code}
+
+The equivalent formulation is:
+\begin{spec}
+independentEvents2 s e f = probability1 s (\x -> e x && f x) == probability1 s e * probability1 s f
+\end{spec}
+
+\begin{lemma}
+  independentEvents s e f <=> independentEvents2 s e f 
+\end{lemma}
+\begin{proof}
+  Left to right direction:
+  \begin{spec}
+        probability1 s (\x -> e x && f x)
+      ===  {- by \cref{lem:cond-prob} -}
+        condProb s e f    * probability1 s f
+      ===  {- by assumption -}
+        probability1 s e  * probability1 s f
+  \end{spec}
+\end{proof}
+
+We note that at this level of abstraction, the proofs follow the same
+structure as the textbook proofs --- the underlying space |s| is
+constant.
+
 \begin{exercise}
 Express the rest of the proof using our DSL
 \end{exercise}
 
-\TODO{In addition to a semantics based on integrators, one can program
-  a semantics based on monte carlo sampling}
+
+
 
 % \section{Continuous spaces and equality}
 % TODO
@@ -1387,8 +1394,6 @@ Express the rest of the proof using our DSL
 
 % \end{spec}
 
-\TODO{Some related work.}
-
 
 
 % Local Variables:
@@ -1397,8 +1402,8 @@ Express the rest of the proof using our DSL
 % ispell-dictionary: "british"
 % End:
 
--- LocalWords:  TupleSections DSLsofMath ap equational infixl endif
--- LocalWords:  DSL arabic href drugtest emph monty twoDice sumAbove
+% LocalWords:  TupleSections DSLsofMath ap equational infixl endif
+% LocalWords:  DSL arabic href drugtest emph monty twoDice sumAbove
 % LocalWords:  const fst RealLine monadic fmap Applicative snd Distr
 % LocalWords:  isDistribution uniformDiscrete xs fromIntegral sqrt tH
 % LocalWords:  marginaliseWith observing dieDistr bernoulli normalMass iff
