@@ -1142,6 +1142,23 @@ project_sigma_equations f a g h =
 \end{code}
 \end{proof}
 
+
+\begin{lemma}
+  |Project (if c then a else b) s == if c then Project a s else Project b s|
+\end{lemma}
+\begin{proof}
+We check the equivalence by using semantic equality:
+  \begin{code}
+project_sigma_equations f a g h = 
+      integrator (Project (if c then a else b) s) g
+  === -- by def
+      integrator s ((if c then a else b) . g)
+  ===  -- by def
+      integrator (if c then Project a s else Project b s) g
+\end{code}
+\end{proof}
+
+
 We can unfold the expression |helper m| by equational reasoning, and see what we get:
 \begin{code}
 unfolding_helper_equations m = 
@@ -1164,16 +1181,21 @@ unfolding_helper_equations m =
                                                                  else tH 3 xs)
                                                    coins)))
   === -- by functoriality of |Project|
-      Project  ((1+).snd)
+      Project  ((1+) . snd)
                (Sigma  coin (\x -> Project  (\xs -> if x  then tH (m-1) xs
                                                           else tH 3 xs)
                                             coins))
-  === -- by semantics of |if| in Haskell 
-      Project ((1+).snd) (Sigma coin (\x -> (if x then Project (tH (m-1)) else Project (tH 3)) coins))
-  === -- by semantics of |if| in Haskell 
-      Project ((1+).snd) (Sigma coin (\x -> if x then Project (tH (m-1)) coins else Project (tH 3) coins))
+  === -- by semantics of |if| in Haskell
+      Project  ((1+) . snd)
+               (Sigma  coin (\x -> Project  (if x  then (tH (m-1))
+                                                   else (tH 3))
+                                            coins))
+  === -- by semantics of |if| in Haskell
+      Project   ((1+) . snd)
+                (Sigma coin (\x -> if x  then Project (tH (m-1)) coins
+                                         else Project (tH 3) coins))
   === -- by definition of |helper|.
-      Project ((1+).snd) (Sigma coin (\x -> if x then helper (m-1) else helper 3))
+      Project ((1+) . snd) (Sigma coin (\x -> if x then helper (m-1) else helper 3))
 \end{code}
 
 In summary:
