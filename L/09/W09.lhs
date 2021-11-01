@@ -855,9 +855,13 @@ by symbolic calculation:
 \end{lemma}
 \TODO{Possibly split into helper lemma(s) to avoid diving ``too deep''.}
 %{
-%format indicator = ind
-%format integrator = int
 \begin{proof}~
+We'll use the following abbreviations:
+\begin{code}
+ind = indicator
+int = integrator
+\end{code}
+and compute:
 \begin{code}
 cond_prob_equations :: Space a -> (a -> Bool) -> (a -> Bool) -> REAL
 cond_prob_equations s f g = 
@@ -1149,13 +1153,21 @@ unfolding_helper_equations m =
   === -- property of |Project| (\cref{ex:monad-laws}, functoriality of |Project|)
       Project (tH m . \(x,xs) -> x : xs) (prod coin coins)
   === -- by def
-      Project (\(x,xs) -> 1 + if x then tH (m-1) xs else tH 3 xs) (prod coin coins)
+      Project  (\(x,xs) -> 1 + if x then tH (m-1) xs else tH 3 xs)
+               (prod coin coins)
   === -- by functoriality of |Project|
-      Project (1+) (Project (\(x,xs) -> if x then tH (m-1) xs else tH 3 xs) (prod coin coins))
+      Project (1+) (Project  (\(x,xs) -> if x then tH (m-1) xs else tH 3 xs)
+                             (prod coin coins))
   === -- by \cref{lem:project/sigma}
-      Project (1+) (Project snd (Sigma coin (\x -> Project (\xs -> if x then tH (m-1) xs else tH 3 xs) coins)))
+      Project (1+) (Project snd
+                      (Sigma  coin (\x -> Project  (\xs -> if x  then tH (m-1) xs
+                                                                 else tH 3 xs)
+                                                   coins)))
   === -- by functoriality of |Project|
-      Project ((1+).snd) (Sigma coin (\x -> Project (\xs -> if x then tH (m-1) xs else tH 3 xs) coins))
+      Project  ((1+).snd)
+               (Sigma  coin (\x -> Project  (\xs -> if x  then tH (m-1) xs
+                                                          else tH 3 xs)
+                                            coins))
   === -- by semantics of |if| in Haskell 
       Project ((1+).snd) (Sigma coin (\x -> (if x then Project (tH (m-1)) else Project (tH 3)) coins))
   === -- by semantics of |if| in Haskell 
