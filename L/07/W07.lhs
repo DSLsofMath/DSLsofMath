@@ -175,7 +175,7 @@ We sometimes omit the constructor |V| and the indexing |(!)|,
 treating vectors as functions without the |newtype|.
 
 As discussed above, the |S| parameter in |Vector S| has to be a field
-(|REAL|, or |CC|, or |Zp|, etc.)\Footnote{The set |Zp| is the set of
+(|REAL|, or |CC|, or |Zp|, etc.)\footnote{The set |Zp| is the set of
   integer modulo |p|. We let the reader lookup the appropriate notion
   of division for it.} for values of type |Vector S G| to represent
 elements of a vector space.
@@ -2045,7 +2045,14 @@ showFun f = show (map f finiteDomain)
 %*TODO: perhaps convert to using the |newtype Vector|.
 
 The scalar product of two vectors is a good building block for matrix
-multiplication:\jp{Is it? matrix multiplication is a more primitive notion than dot product? Isn't linComb a much better choice?}
+multiplication:\jp{Do we really need to have this? In linear algebra,
+  linear spaces are a more primitive concept than inner product
+  spaces.  So defining matrix multiplication in terms of dot product
+  is bad from an algebraic perspective.  It would be ok to define in
+  terms of |linComb| if we really want some refactoring. We could keep
+  this as an example of a bad idea of a refactoring; but since we're
+  already in the ``associated code'' section, I suggest to just remove
+  this.}
 %
 \begin{code}
 dot' ::  (Finite g, Ring s) =>
