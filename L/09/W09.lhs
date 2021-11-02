@@ -502,8 +502,6 @@ of spaces.
 % push the weight function of the integrator into the space: |integrator
 % s f == integrator (Project f s) id|.
 
-\TODO{Format the lemmas}
-
 \begin{lemma}[Linearity of |integrator|]
   \label{lem:integrator-linear}
 If |g| is a linear function (addition or multiplication by a
