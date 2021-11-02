@@ -73,7 +73,11 @@ vectors.
 More precisely, we can \emph{uniquely} represent any vector |v| in the
 space in terms of a fixed set of \emph{basis} vectors |{b0, ..., bn}|.
 By definition, basis vectors
-cover the whole space\jp{what does that mean} and are \emph{linearly independent}:
+cover the whole space:
+\begin{spec}
+  ∀ |v|, ∃s0, …, sn. v = s0 *^ b0 + ... + sn *^ bn 
+\end{spec}
+They are also \emph{linearly independent}:
 %
 \begin{spec}
   (s0 *^ b0 + ... + sn *^ bn = 0) <=> (s0 = ... = sn = 0)
@@ -171,8 +175,10 @@ We sometimes omit the constructor |V| and the indexing |(!)|,
 treating vectors as functions without the |newtype|.
 
 As discussed above, the |S| parameter in |Vector S| has to be a field
-(|REAL|, or |CC|, or |Zp|, etc.)\jp{|Zp| is never introduced? (and division is not immediately obvious)} for values of type |Vector S G|
-to represent elements of a vector space.
+(|REAL|, or |CC|, or |Zp|, etc.)\Footnote{The set |Zp| is the set of
+  integer modulo |p|. We let the reader lookup the appropriate notion
+  of division for it.} for values of type |Vector S G| to represent
+elements of a vector space.
 
 The cardinality of |G|, which we sometimes denote |card G|, is the number
 of basis vectors, and thus the dimension of the vector space.
@@ -254,11 +260,12 @@ is i j = if i == j then one else zero
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
 zeros everywhere, except at position |i| where it has a one.
 
-This way, every |v : G -> S| is a linear combination of vectors |e i|:
+This way, every |v : G -> S| is a linear combination of vectors |e i|:\jp{v occuring both on left and right of the equation is confusing. What is this even trying to say?}
 %
 \begin{spec}
     v =  v 0 *^ e 0 + ... + v n *^ e n
-\end{spec}
+  \end{spec}
+  \jp{The use of the triangle makes it hard to parse because the precedence is not very usual. Use parentheses?}
 %
 As we will work with many such linear combinations we introduce a
 helper function |linComb|:
@@ -267,7 +274,7 @@ helper function |linComb|:
 linComb :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
 linComb a v = sum (map (\j -> a j *^ v j) finiteDomain)
 \end{code}
-Using |linComb| the characterising equation for vectors reads:\jp{v occuring both on left and right of the equation is confusing}
+Using |linComb| the characterising equation for vectors reads:\jp{v occuring both on left and right of the equation is confusing.}
 %
 \begin{spec}
     v = linComb v e
@@ -512,8 +519,7 @@ that is
 
 Exercise~\ref{exc:Mstarhomomorphismcompose}: work this out in detail.
 %
-\jp{Note that |Matrix| form a category with mulMV being the
-  composition and |e| as the identity.}
+% \jp{We do not note that |Matrix| form a category with mulMV being the composition and |e| as the identity because we have not talked about categories!}
 
 Exercise~\ref{exc:MMmultAssoc}: show that matrix-matrix multiplication
 is associative.
@@ -886,9 +892,9 @@ There is, for example, a positive correlation between |x| and |x^3|.
 If we were using instead a set of basis polynomials |bn| which are
 orthogonal using the above definition of |inner|, then
 we could simply let |inner = dot|,
-this would be a lot more efficient than to compute the integral by
-1) computing the product using |mulPoly|, 2) integrating using
-|integ|, 3) using |eval| on the end points of the domain.
+and this would be a lot more efficient than to compute the integral by the following series of steps:
+1) compute the product using |mulPoly|, 2) integrate using
+|integ|, 3) use |eval| on the end points of the domain.
 
 Let us consider as a base the functions |bn x = sin (n*x)|, prove that
 they are orthogonal.
@@ -900,27 +906,28 @@ We first use trigonometry to rewrite the product of bases:
 =  cos ((i-j)*x) - cos ((i+j)*x)
 \end{spec}
 %
-Assuming |i/=j|, we can take the indefinite integral of both sides,
-safely ignoring any constant term:
-%
-\pj{Eplain ``safely ignoring''.}
+Assuming |i/=j|, we can take the indefinite integral, and find:
 %{
 %format integral = "\int"
 \begin{spec}
-   2 * integral bi bj dx
-=  sin ((i-j)*x)/(i-j) - sin ((i+j)*x) / (i+j)
+sin ((i-j)*x)/(i-j) - sin ((i+j)*x) / (i+j) + K
 \end{spec}
 %}
-\pj{Some step missing - no |pi| visible above.}
+Taking the definite integral over the domain |I| yields:
+\begin{spec}
+  2 * (inner bi bj) =
+       sin ((i-j)*π)/(i-j) - sin ((i+j)*π) / (i+j) + K
+     - sin ((i-j)*π)/(i-j) + sin ((i+j)*π) / (i+j) - K
+\end{spec}
+
 %
-But |sin (k*pi) = 0| for any integer |k|, and thus the definite
-integral over |I| is also equal to zero.
+But |sin (k*pi) = 0| for any integer |k|, and thus |inner bi bj = 0| 
 
 We can now compute |sqNorm| of |bi|.
 %
 Trigonometry says:
 \begin{spec}
-   2 * (bi * bi)
+   2 * (bi x * bi x)
 =  2 * sin (i*x) * sin (i*x)
 =  cos (0*x) - cos (2i*x)
 =  1 - cos (2i*x)
@@ -939,7 +946,7 @@ In sum |bi x = sin (i*x)/sqrt pi| is an orthonormal basis:
 \end{spec}
 
 As interesting as it is, this basis does not cover all functions over
-I.
+|I|.
 %
 To start, |eval bi 0 == 0| for every |i|, and thus linear combinations
 can only ever be zero at the origin.
@@ -948,7 +955,7 @@ But if we were to include |cos (n*x) / sqrt pi| in the set of base
 vectors, it would remain orthogonal, and the space would cover all
 periodic functions with period $2 \pi$.
 %
-This representation is called the Fourier series.
+A representation of a function in this basis is called the Fourier series.
 %
 Let us define a meaningful index (|G|) for the basis:
 %
@@ -1109,9 +1116,8 @@ Therefore, having just a module is not a problem if all we want is to
 compute the evolutions of possible states, but we cannot apply most of
 the deeper results of linear algebra.
 %
-\jp{But perhaps we have not defined those so far... Here it begs to
-  say that the behaviour at the limit is given by the inverted
-  matrix. But where does it fit in the chapter?}
+\footnote{For instance, such deeper result would give ways to easily
+  compute the stable state of a dynamic system.}
 
 %*TODO: (NiBo)
 % But even if we take |(REAL, max, min)|, the problem is that we

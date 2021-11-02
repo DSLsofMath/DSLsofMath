@@ -1292,8 +1292,10 @@ evalIncomplete _ = error "Implemented elsewhere"
 \end{code}
 %endif
 
-The most general type of evaluator will give us the:
-\pj{It is only ``OneVar'' in a context where |G=()|. Otherwise it allows for any number of variables.}
+The most general type of evaluator will give us: \footnote{We call
+  this constraint ``OneVarExp'' because we have fixed |G=()|. In
+  general the number of variables is the cardinality of |G|.}
+%
 \begin{code}
 type OneVarExp a = (Generate a, Ring a)
 evalIncomplete :: FunExp -> (OneVarExp a => a)
@@ -1431,8 +1433,7 @@ example = embed 1 `op` embed 10 `op` unit `op` embed 11
 \end{code}
 
 \begin{exercise}
-  Show that |Free Ring ()| covers most of the type |FunExp|.
-\pj{Which version of |FunExp|? Surely not the one with |Sin|, |Cos|, |Exp|.}
+  Show that |Free Ring ()| covers most of the type |FunExp| from \cref{sec:FunExp}.
 \end{exercise}
 
 \section{Computing Derivatives, reprise.}

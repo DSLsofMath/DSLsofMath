@@ -321,7 +321,7 @@ The |lim| notation has four components: a variable name |x|, a point
 |a|, an expression \(f(x)\) and the limit |L|.
 %
 The variable name and the expression can be combined into just the
-function |f|\jp{This is explained in \cref{sec:functions-and-scoping}}
+function |f|\footnote{To see why this works in the general case of any expression of $x$, read \cref{sec:functions-and-scoping}}
 and this leaves us with three essential components: |a|, |f|, and |L|.
 %
 Thus, |lim| can be seen as a ternary (3-argument) predicate which is

@@ -210,8 +210,8 @@ consider the type of the summand ($i^2$ in the example) first.
 As you may have guessed, it is an expression of one variable
 ($i$).
 %
-You may ask: but surely the body of the summation operator can use
-other variables?
+You may object: but surely the body of the summation operator can use
+other variables!
 %
 You'd be entirely correct.
 %
@@ -300,11 +300,12 @@ typings:
 %
 \begin{itemize}
 \item |lim : (ℕ → ℝ) → ℝ| for the mathematical expression \(\lim_{n → ∞} \{a_n\}\)
-\item \(d/dt : (ℝ → ℝ) → (ℝ → ℝ)\)
-  \begin{itemize}
-  \item sometimes, instead of \(d/dt f\)  one sees \(f'\) or \(\dot{f}\) or |D f|
-  \end{itemize}
-\end{itemize}
+\item \(\frac d {dt} : (ℝ → ℝ) → (ℝ → ℝ)\)
+
+  Note that there are many notations for derivatives. Instead of
+  \(\frac d {dt} f\) one sees also \((d/dt) f\), or \(f'\) or even
+  \(\dot{f}\) if the varable is time (\(t\)).  Below we'll use
+  preferrably the |D f| notation.  \end{itemize}
 
 In sum, the chief difficulty to overcome when assigning types for
 mathematical operators is that they often introduce (bind) variable
@@ -1515,10 +1516,10 @@ functions or expressions: abstract syntax trees \emph{representing}
 the (semantic) functions.
 
 We observe that we can compute derivatives for any expression made out
-of arithmetic functions, standard\jp{what's that?} functions, and their compositions.
+of arithmetic functions, trigonometric functions, the exponential and their compositions.
 %
 In other words, the computation of derivatives is based on a domain
-specific language (a DSL) of expressions (representing functions in
+specific language of expressions (representing functions in
 one variable).
 %
 This means that we can in fact implement the derivative of |FunExp| expressions
