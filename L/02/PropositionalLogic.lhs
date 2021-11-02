@@ -458,7 +458,6 @@ data Proof  =  TruthIntro                   |  FalseElim Proof
             |  Assume Prop
             |  ImplyIntro (Proof -> Proof)  |  ImplyElim  Prop  Proof Proof
 \end{code}
-\jp{Props are like having lemmas}
 
 \paragraph{Aside}
 The |Assume| constructor may make the reader somewhat uneasy: how

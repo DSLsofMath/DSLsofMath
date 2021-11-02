@@ -843,7 +843,4 @@ instance Transcendental a => Transcendental (a, a) where
   cos  (f, f')       = (cos f,  -(sin f) * f')
 \end{code}
 
-\jp{What about log?}
-\jp{What about adding composition to the language of functions? See attempt in Taylor.hs}
-
 %include E6.lhs

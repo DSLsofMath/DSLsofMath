@@ -748,7 +748,7 @@ our base vectors |e i|.
 For example, |p x = 2+x^3| is represented by |2 *^ e 0 + e 3|.
 %
 
-In general, the evaluator from the |Vector g s| representation to
+The evaluator from the |Vector g s| representation to
 polynomial functions is as follows:
 %
 %if False
@@ -765,9 +765,8 @@ instance VectorSpace (REAL->REAL) REAL where
 scaleR2R s f = (s*).f
 \end{code}
 %endif
-\jp{In the latex code, there is an instance VectorSpace (REAL->REAL) REAL which we use! See the tex code.
-I have created a label and used it when we reference this space.
-}
+\jp{In the latex code, there is an instance VectorSpace (REAL->REAL) REAL which we use! See the tex code. I have created a label and used it when we reference this space.
+Should we show this code?}
 \label{sec:functions-vector-space}
 %
 \begin{spec}
