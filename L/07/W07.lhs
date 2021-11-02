@@ -1695,9 +1695,10 @@ rate.
 
 \section{\extraMaterial Monadic dynamical systems}
 
-This section is not part of the intended learning outcomes of the
-course, but it presents a useful unified view of the previous sections
-which could help your understanding.
+This section is meant to give perspective for the readers who are
+already familiar with monads. Even though it can be safely skipped, it
+presents a useful unified view of the previous sections which could
+help understanding the material.
 
 All the examples of dynamical systems we have seen in the previous
 section have a similar structure.
@@ -1780,7 +1781,6 @@ and
     flip (*) : Possible G -> (G -> Possible G) -> Possible G
 \end{spec}
 %
-\jp{We need a proper introduction to monads somewhere}
 you see that they are very similar to the monadic operations
 %
 \begin{spec}
