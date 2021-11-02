@@ -619,7 +619,7 @@ inner product is |0| --- even in non-Euclidean spaces.
 
 \paragraph{Dot product}
 
-An often use inner product is the dot product, defined as follows:
+An often used inner product is the dot product, defined as follows:
 \begin{code}
 dot :: (Field s, Finite g) => Vector s g -> Vector s g -> s
 dot (V v) (V w) = linComb v w
@@ -640,7 +640,6 @@ and then check if the dot product is equivalent to it. See
 \cref{sec:inner-product-fourier} for an example.
 
 
-
 \paragraph{Orthogonal transformations}
 
 An important subclass of the linear transformations are those which
@@ -649,9 +648,8 @@ preserve the inner product.
   inner (f u) (f v) = inner u v
 \end{spec}
 
-In Euclidean spaces, such a transformation preserve angles.
-%
-In general, they are called orthogonal transformations.
+So, Euclidean spaces, such a transformation preserve angles. In the
+context of linear algebra they are called orthogonal transformations.
 
 \begin{exercise}
   Can you express this condition as a homomorphism condition?
@@ -661,14 +659,14 @@ In general, they are called orthogonal transformations.
 Such transformations necessarily preserve the dimension of the space
 (otherwise at least one base vector would be squished to nothing and
 inner products involving it become zero).
-%
-When the dimension is preseved, one often uses the term ``linear
-operator''.
-%
+% %
+% When the dimension is preseved, one often uses the term ``linear
+% operator''.
+% %
 The corresponding matrices are square.
 
 \begin{exercise}
-  Prove that orthogonal operators form a monoid.
+  Prove that orthogonal operators form a monoid with multiplication as an operator.
 \end{exercise}
 
 If angles are preserved what about distances?
@@ -702,7 +700,7 @@ the (conjugate-) transpose of the matrix.
 %
 (In the context of a complex scalar field, one would use the word
 ``unitary'' instead of ``orthogonal'', but it's a straightforward
-generalisation.)
+generalisation once we have define the appropriate inner product.)
 
 \section{Examples of matrix algebra}
 
@@ -733,16 +731,15 @@ e i : {0, ..., n} -> REAL, e i j = i `is` j
 %
 but how do we interpret them as polynomial functions?
 
-When we represented a polynomial by its list of coefficients, we saw
+When we represented a polynomial by its list of coefficients in \cref{sec:poly}, we saw
 that the polynomial function |\x -> x^3| could be represented as
 |[0,0,0,1]|, where |1| is the coefficient of |x^3|.
-%
-Similarly, representing this list of coefficients as a vector (a
-function from |{0, ..., n} -> REAL|), we get the vector |\j -> if j ==
-3 then 1 else 0|, which is |\j -> 3 `is` j| or simply |e 3|.
 
-In general, |\x -> x^i| is represented by |e i|, which is another way
-of saying that |e i| should be interpreted as |\x -> x^i|, a monomial.
+This representation suggests to use as canonical base vectors |e i|
+the monomials |\x -> x^i|.  Representing the above list of
+coefficients as a vectors is then a matter of converting lists to
+functions |{0, ..., n} -> REAL|). This way, the vector |\j -> if j ==
+3 then 1 else 0| is equal to |\j -> 3 `is` j| or simply |e 3|.
 %
 Any other polynomial function |p| equals the linear combination of
 monomials, and can therefore be represented as a linear combination of
@@ -771,7 +768,6 @@ scaleR2R s f = (s*).f
 \jp{In the latex code, there is an instance VectorSpace (REAL->REAL) REAL which we use! See the tex code.
 I have created a label and used it when we reference this space.
 }
-
 \label{sec:functions-vector-space}
 %
 \begin{spec}
