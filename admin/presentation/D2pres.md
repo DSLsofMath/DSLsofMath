@@ -1,10 +1,10 @@
-# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=30199) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
-(Presentation för D2, Fr 2020-11-06 av Patrik Jansson.)
+(Presentation för D2, Fr 2021-11-05 av Patrik Jansson.)
 
 * Patrik Jansson: forskare och lärare inom Funktionell Programmering
     * examinator och kursansvarig för kursen DSLsofMath
-    * XPA för D (2011–13), nu "inspektor" för D-sektionen
+    * XPA för D (2011–13), "inspektor" för D-sektionen (-2021)
 * LP3 i D2: ett första smakprov på programmets valfrihet
     * Vi tror på er förmåga att själva kombinera kurser till en bra helhet
     * Budskap: *Välj både DSLsofMath (i LP3) och PCP (i LP1)*
@@ -34,7 +34,7 @@ matematikstudenter.
 
 Det har under många år funnits en del problem med resultaten på
 kurserna "Transformer" samt "Regler" i D3. Ett av målen med den här
-nya kursen är att se till att förbereda er i D2 så att ni kan ta er an
+kursen är att se till att förbereda er i D2 så att ni kan ta er an
 hösten i trean med ett gott självförtroende på mattesidan.
 
 Ett annat återkommande önskemål från D-studenter är en
@@ -48,6 +48,7 @@ på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
     * 2018: 39 reg., godkända: 89%
     * 2019: 59 reg., godkända: 73%
     * 2020: 50 reg., godkända: 68%
+    * 2021: 67 reg., godkända: 72%
 
 * Resultat i D3 (Transformer samt Regler)
 
@@ -59,24 +60,6 @@ på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
 Dvs. de som tar DSL-kursen får mycket bättre resultat hösten i D3.
 
 \small (Totalt 145 varav 'Valde inte DSL'=92, Valde=53, Godk.=34.)
-
-# Student-citat
-
-* "I feel like I have gotten a better understanding of mathematics, and how to make use of domain-specific languages."
-* "The teachers (and assistants) were very engaging."
-* "I found the 'alternative' perspective on common mathematical subjects in general to be very good. The part about logic and the part about linear algebra were my personal favorites."
-* "Patrik is an excellent lecturer for the course."
-
-"Jag läste DSLofMath för ett par år sedan och hade lite svårt att förstå syftet med kursen. Jag tyckte att den var lite luddig.
-
-Nu har jag läst ... "Advanced Functional Programming", "Programming Language Technology", och "Types for Programs and Proofs", och nu förstår jag.
-
-Kursen har verkligen varit till hjälp, även om jag inte var mogen att förstå det när det begav sig."
-
-
-
-
-
 
 # Aktiva studier
 
@@ -173,7 +156,7 @@ chanser att segla igenom D3 utan att gå på grund.
 
 Välkomna i januari önskar lärarlaget
 
-  Patrik, Sólrún, Victor
+  Patrik, m.fl.
 
 
 \begin{align*}
