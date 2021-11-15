@@ -176,7 +176,7 @@ treating vectors as functions without the |newtype|.
 
 As discussed above, the |S| parameter in |Vector S| has to be a field
 (|REAL|, or |CC|, or |Zp|, etc.)\footnote{The set |Zp| is the set of
-  integer modulo |p|. We let the reader lookup the appropriate notion
+  integers modulo |p|. We let the reader lookup the appropriate notion
   of division for it.} for values of type |Vector S G| to represent
 elements of a vector space.
 
@@ -260,12 +260,12 @@ is i j = if i == j then one else zero
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
 zeros everywhere, except at position |i| where it has a one.
 
-This way, every |v : G -> S| is a linear combination of vectors |e i|:\jp{v occuring both on left and right of the equation is confusing. What is this even trying to say?}
-%
+This way, every |v : G -> S| is a linear combination of vectors |e i| where the coefficient of base vector |e i| is the scalar |v i|:\jp{v occuring both on left and right of the equation is confusing. What is this even trying to say?}
+%**PaJa: It is a property of v: it can be written as a linear combination of base vectors, with "itself" supplying the coefficients. Some more explanation needed I suppose: did this work?
 \begin{spec}
-    v =  v 0 *^ e 0 + ... + v n *^ e n
-  \end{spec}
-  \jp{The use of the triangle makes it hard to parse because the precedence is not very usual. Use parentheses?}
+    v  ==  (v 0 *^ e 0) + ... + (v n *^ e n)
+\end{spec}
+
 %
 As we will work with many such linear combinations we introduce a
 helper function |linComb|:
@@ -277,7 +277,7 @@ linComb a v = sum (map (\j -> a j *^ v j) finiteDomain)
 Using |linComb| the characterising equation for vectors reads:\jp{v occuring both on left and right of the equation is confusing.}
 %
 \begin{spec}
-    v = linComb v e
+    v == linComb v e
 \end{spec}
 %if False
 \begin{code}
@@ -648,7 +648,7 @@ preserve the inner product.
   inner (f u) (f v) = inner u v
 \end{spec}
 
-So, Euclidean spaces, such a transformation preserve angles. In the
+So, in Euclidean spaces, such a transformation preserve angles. In the
 context of linear algebra they are called orthogonal transformations.
 
 \begin{exercise}
@@ -660,7 +660,7 @@ Such transformations necessarily preserve the dimension of the space
 (otherwise at least one base vector would be squished to nothing and
 inner products involving it become zero).
 % %
-% When the dimension is preseved, one often uses the term ``linear
+% When the dimension is preserved, one often uses the term ``linear
 % operator''.
 % %
 The corresponding matrices are square.
@@ -737,7 +737,7 @@ that the polynomial function |\x -> x^3| could be represented as
 
 This representation suggests to use as canonical base vectors |e i|
 the monomials |\x -> x^i|.  Representing the above list of
-coefficients as a vectors is then a matter of converting lists to
+coefficients as a vector is then a matter of converting lists to
 functions |{0, ..., n} -> REAL|). This way, the vector |\j -> if j ==
 3 then 1 else 0| is equal to |\j -> 3 `is` j| or simply |e 3|.
 %
@@ -924,8 +924,8 @@ Trigonometry says:
 \begin{spec}
    2 * (bi x * bi x)
 =  2 * sin (i*x) * sin (i*x)
-=  cos (0*x) - cos (2i*x)
-=  1 - cos (2i*x)
+=  cos (0*x) - cos (2*i*x)
+=  1 - cos (2*i*x)
 \end{spec}
 %
 When taking the integral on |I|, the cosine disappears using the same

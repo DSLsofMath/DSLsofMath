@@ -152,7 +152,7 @@ But this is not always the case.
 Hence we'll need a way to represent such imbalances. We use the following
 combinator:%
 \footnote{This is in fact \emph{scaling}, as defined in \cref{sec:LinAlg}.
-  Indeed, there is a vector space of measurable spaces, where each each space is one vector.
+  Indeed, there is a vector space of measurable spaces, where each space is one vector.
   %
   However, we choose not to use this terminology, because we are
   generally not interested in the vector space structure of
