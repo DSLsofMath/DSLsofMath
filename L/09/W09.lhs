@@ -477,7 +477,7 @@ distribution
 
 \paragraph{Properties of |integrator|}
 
-We can use the calculational reasoning to show some useful properties
+We can use calculational reasoning to show some useful properties
 of spaces.
 
 
