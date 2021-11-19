@@ -219,6 +219,7 @@ the first argument is a scalar and the second one is a vector.
 For our representation it can be defined as follows:
 
 \pj{This should be a |VectorSpace| class instance.}
+\jp{Investigate}
 %{
 %format *^^ = *^
 \begin{code}
@@ -260,12 +261,14 @@ is i j = if i == j then one else zero
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
 zeros everywhere, except at position |i| where it has a one.
 
-This way, every |v : G -> S| is a linear combination of vectors |e i| where the coefficient of base vector |e i| is the scalar |v i|:\jp{v occuring both on left and right of the equation is confusing. What is this even trying to say?}
-%**PaJa: It is a property of v: it can be written as a linear combination of base vectors, with "itself" supplying the coefficients. Some more explanation needed I suppose: did this work?
+This way, every |v : G -> S| is a linear combination of vectors |e i| where the coefficient of base vector |e i| is the scalar |v i|:
 \begin{spec}
     v  ==  (v 0 *^ e 0) + ... + (v n *^ e n)
 \end{spec}
-
+To clarify, the above equation is a property of every vector |v|. Such
+a vector can always be written as a linear combination of base
+vectors. The coefficients come from applying |v| (seen as a function)
+to the possible indices.
 %
 As we will work with many such linear combinations we introduce a
 helper function |linComb|:
@@ -274,11 +277,12 @@ helper function |linComb|:
 linComb :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
 linComb a v = sum (map (\j -> a j *^ v j) finiteDomain)
 \end{code}
-Using |linComb| the characterising equation for vectors reads:\jp{v occuring both on left and right of the equation is confusing.}
+Using |linComb| the characterising equation for vectors reads:
 %
-\begin{spec}
-    v == linComb v e
-\end{spec}
+\begin{equation}
+  \label{eq:vector-lincomb}
+    |v == linComb v e|
+\end{equation}
 %if False
 \begin{code}
 linComb1 :: (Finite g, Ring s) => (g->s) -> (g->s) -> s
@@ -517,12 +521,10 @@ that is
 ((M' * M)*) = (M' *) . (M *)
 \end{spec}
 
-Exercise~\ref{exc:Mstarhomomorphismcompose}: work this out in detail.
+You may want to refer to Exercise~\ref{exc:Mstarhomomorphismcompose}, which asks you to work this out in detail.
 %
 % \jp{We do not note that |Matrix| form a category with mulMV being the composition and |e| as the identity because we have not talked about categories!}
-
-Exercise~\ref{exc:MMmultAssoc}: show that matrix-matrix multiplication
-is associative.
+Additionally, exercise~\ref{exc:MMmultAssoc} is about associativity of matrix-matrix multiplication.
 %
 \jp{Not sure what the difference is from the previous exercise.}
 
@@ -964,15 +966,14 @@ A useful property of an orthonormal basis is that its representation
 as coefficients can be obtained by taking the inner product with each
 base vectors.
 %
-Indeed:\footnote{The proof can be easily adapted to infinite sums.}
-
-\pj{Check if |linComb| can be used here.}
+Indeed, using \cref{eq:vector-lincomb} as a starting point, we can calculate:\footnote{The proof can be easily adapted to infinite sums.}
 \begin{spec}
-     v           = sum [vi *^ bi | i <- finiteDomain]
-=>   v `inner` bj  = sum [vi *^ bi | i <- finiteDomain] `inner` bj
-=>   v `inner` bj  = sum [vi *^ (bi `inner` bj) | i <- finiteDomain]
-=>   v `inner` bj  = sum [vi *^ is i j | i <- finiteDomain]
-=>   v `inner` bj  = vj
+     v           == linComb v b
+=>   v           == sum [vi *^ bi | i <- finiteDomain]
+=>   v `inner` bj  == sum [vi *^ bi | i <- finiteDomain] `inner` bj
+=>   v `inner` bj  == sum [vi *^ (bi `inner` bj) | i <- finiteDomain]
+=>   v `inner` bj  == sum [vi *^ is i j | i <- finiteDomain]
+=>   v `inner` bj  == vj
 \end{spec}
 
 Thus, in our application, given a periodic function |f|, one can
@@ -2047,7 +2048,10 @@ multiplication:\jp{Do we really need to have this? In linear algebra,
   terms of |linComb| if we really want some refactoring. We could keep
   this as an example of a bad idea of a refactoring; but since we're
   already in the ``associated code'' section, I suggest to just remove
-  this.}
+  this.
+
+  Decision: remove.
+}
 %
 \begin{code}
 dot' ::  (Finite g, Ring s) =>

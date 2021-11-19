@@ -144,7 +144,8 @@ can rewrite |evalAll (d e1 :*: e2)| to |evalAll (d e1) * evalAll e2|
 and similarly for the second term.
 %
 (For a formal proof we also need to check that this assumption can be
-discharged.\pj{Do the formal proof - perhaps in appendix.})
+discharged.\pj{Do the formal proof - perhaps in appendix.}
+\jp{Look at this})
 
 We also have |evalAll . d = tail . evalAll| which leads to:
 %

@@ -193,6 +193,7 @@ A proposition whose truth table output is constantly true is called a
 \emph{tautology}.
 %
 Thus |t|, |p2| and |p4| are tautologies. We can formalise this idea as the following tautology-tester:
+\jp{Explain |Env = Name -> Bool|, relate to the truth table above.}
 \begin{code}
 isTautology :: Prop -> Bool
 isTautology p = and (map (eval p) (envs (freeNames p)))
@@ -200,7 +201,14 @@ isTautology p = and (map (eval p) (envs (freeNames p)))
 which uses the helper functions |envs| to generate all possible
 environments for a given list of names and |freeNames| to find all
 names in a proposition \pj{Haskell notation for list comprehensions
-  not introduced}
+  not introduced. Possible alternative in TeX comment}
+
+% \begin{code}
+% envs (n:ns)  =  map (\(e,b) -> \n' -> if n == n' then b else e n') ((envs ns) × [False,True])
+% [] × ys = []
+% (x:xs) × ys = map (x,) ys ++ (xs × ys)
+% \end{code}
+
 \begin{code}
 envs :: [Name] -> [Name -> Bool]
 envs []      =  [error "envs: never used"]
@@ -212,6 +220,9 @@ envs (n:ns)  =  [  \n' -> if n == n' then b else e n'
 freeNames :: Prop -> [Name]
 freeNames = error "exercise"
 \end{code}
+
+
+
 %
 Truth table verification is only viable for propositions with few
 names because of the exponential growth in the number of cases to
@@ -381,7 +392,7 @@ the semantic domain of |Prop|.
 In other words, a proposition can be interpreted as the subset of
 proofs which prove it.
 %
-\pj{Make the identification of ``subset of A'' with ``predicate on A'' explicit earlier.}
+\pj{Make the identification of ``subset of A'' with ``predicate on A'' explicit earlier. For instance |isTautology| defines the subset of}
 
 
 \subsection{Implication, hypothetical derivations, contexts}

@@ -176,7 +176,6 @@ To be able to conform to that tradition we define two separate
 classes, one for the additive and one for the multiplicative monoids,
 as follows.
 \label{sec:ring-like-classes}
-\pj{Perhaps use two one-liners to see the matching structure?}
 \begin{spec}
 class Additive a        where {-"\qquad"-}  zero  :: a; {-"\qquad"-}  (+)  :: a -> a -> a
 class Multiplicative a  where               one   :: a;               (*)  :: a -> a -> a

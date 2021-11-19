@@ -357,7 +357,7 @@ data MVExp = Va String | Ad MVExp MVExp | Mu MVExp MVExp
 %
 Example values include |x = Va "x"|, |e1 = Ad x x|, and |e2 = Mu e1 e1|.
 
-\pj{Add some text in an earlier chapter about |:+| colon-operators, parameterised datatypes, more than one defintion variant in one file, etc. }
+% \pj{Add some text in an earlier chapter about |:+| colon-operators, parameterised datatypes, more than one defintion variant in one file, etc. }
 % If you want a constructor to be used as an infix operator you need to use
 % symbol characters and start with a colon:
 %

@@ -175,37 +175,39 @@
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}
-  \fromExam{2017-03} (Note that this exam question is now
-  included as an example in this chapter, see
-  \cref{sec:typePartialDerivative}.\jp{What about tidying this up? Maybe show the exercise only in the lecture notes?}
-%
-It is kept here in case you want to check if you remember it!)
+% \begin{exercise}
+%   \fromExam{2017-03} (Note that this exam question is now
+%   included as an example in this chapter, see
+%   \cref{sec:typePartialDerivative}.
+% %
+%   It is kept here in case you want to check if you remember it!
+% In fact it's now commented out for this reason.
+% )
 
-Consider the following text from page 169 of Mac Lane [1968]: %\cite{maclane1986mathematics}:
+% Consider the following text from page 169 of Mac Lane [1968]: %\cite{maclane1986mathematics}:
 
-\begin{quote}
-  [...] a function |z = f (x, y)| for all points |(x, y)| in some open
-  set |U| of the cartesian |(x, y)|-plane.
-%
-  [...] If one holds |y| fixed, the quantity |z| remains just a
-  function of |x|; its derivative, when it exists, is called the
-  \emph{partial derivative} with respect to |x|.
-%
-  Thus at a point |(x, y)| in |U| this derivative for |h ≠ 0| is
-%
-\[
-∂ z / ∂ x  =  f'_{x} (x, y) =
-              \lim_{h \to 0} (f (x + h, y) - f (x, y)) / h
-\]
-\end{quote}
+% \begin{quote}
+%   [...] a function |z = f (x, y)| for all points |(x, y)| in some open
+%   set |U| of the cartesian |(x, y)|-plane.
+% %
+%   [...] If one holds |y| fixed, the quantity |z| remains just a
+%   function of |x|; its derivative, when it exists, is called the
+%   \emph{partial derivative} with respect to |x|.
+% %
+%   Thus at a point |(x, y)| in |U| this derivative for |h ≠ 0| is
+% %
+% \[
+% ∂ z / ∂ x  =  f'_{x} (x, y) =
+%               \lim_{h \to 0} (f (x + h, y) - f (x, y)) / h
+% \]
+% \end{quote}
 
-What are the types of the elements involved in the equation on the
-last line?
-% (\(∂ z / ∂ x\), \(f'_{x}\), \((x,y)\),\(\lim\), \ldots)
-%
-You are welcome to introduce functions and names to explain your reasoning.
-\end{exercise}
+% What are the types of the elements involved in the equation on the
+% last line?
+% % (\(∂ z / ∂ x\), \(f'_{x}\), \((x,y)\),\(\lim\), \ldots)
+% %
+% You are welcome to introduce functions and names to explain your reasoning.
+% \end{exercise}
 
 %TODO (by DaHe) This has to do with matrices, which have not been covered yet
 % in W3, so should this exercise be here or later?. It doesn't actually seem to
