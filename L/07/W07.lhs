@@ -2,6 +2,7 @@
 \label{sec:LinAlg}
 %if False
 \begin{code}
+{-# LANGUAGE InstanceSigs #-}
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE GADTs, FlexibleInstances, FlexibleContexts #-}
@@ -27,7 +28,7 @@ Other times, this is supplemented by the definition of a row vector:
 %
 
 The |vi|s are real or complex numbers, or, more generally, elements of
-a \emph{field} (\cref{sec:fields-defintion}).
+a \emph{field} (See \cref{sec:fields-defintion} for the definition of a field).
 %
 
 However, following our theme, we will first characterize vectors
@@ -40,31 +41,44 @@ scaling by a set of scalars (i.e., elements of the field).
 In terms of typeclasses, we can characterize this structure as
 follows:
 \begin{code}
+infixr 7 *^
 class (Field s, AddGroup v) => VectorSpace v s where
   (*^) :: s -> v -> v
 \end{code}
-Additionally, vector scaling (|s *^|) must be a homomorphism over
-(from and to) the additive group structure of |v|:
-\begin{spec}
-  s *^ (a + b)     = s *^ a + s *^ b
-  s *^ zero        = zero
-  s *^ (negate a)  = negate (s *^ a)
-\end{spec}
-And, on the other side, |(*^ a)| is a homomorphism from the additive
-group structure of |s| to the group structure of |v|:
-\begin{spec}
-  (s + t)   *^ a   = s *^ a + t *^ a
-  zero      *^ a   = zero
-  negate s  *^ a   = negate (s *^ a)
-\end{spec}
-The multiplicative monoid of |s| maps to the monoid of endofunctions
-(see \cref{ex:endofunction}) homomorphically:
-\begin{spec}
-  one      *^ a    = id                  a  =  a
-  (s * t)  *^ a    = ((s *^) . (t *^))   a  =  s *^ (t *^ a)
-\end{spec}
-Traditionally some of the above laws are omitted because they are
-consequences of other laws.
+
+Additionally, every vector space must satisfy the following laws:
+\begin{enumerate}
+\item
+  Vector scaling (|s *^|) is a homomorphism over
+  (from and to) the additive group structure of |v|:
+  \begin{spec}
+    s *^ (a + b)     = s *^ a + s *^ b
+    s *^ zero        = zero
+    s *^ (negate a)  = negate (s *^ a)
+  \end{spec}
+\item On the other side, |(*^ a)| is a homomorphism from the additive
+  group structure of |s| to the group structure of |v|:
+  \begin{spec}
+    (s + t)   *^ a   = s *^ a + t *^ a
+    zero      *^ a   = zero
+    negate s  *^ a   = negate (s *^ a)
+  \end{spec}
+\item Finally |(*^)| is a homomorphism from the multiplicative monoid
+  of |s| to the monoid of endofunctions over |v| (see
+  \cref{ex:endofunction}):
+  \begin{spec}
+    (*^) one          = id
+    (*^) (s * t)      = ((*^) s . (*^) t)
+  \end{spec}
+Applying the vector |a| everywhere gives the familiar form for these laws:
+  \begin{spec}
+    one      *^ a    = id                  a  =  a
+    (s * t)  *^ a    = ((s *^) . (t *^))   a  =  s *^ (t *^ a)
+  \end{spec}
+\end{enumerate}
+Often, the above laws are not expressed in terms of homomorphisms, but
+rather as individual equations. This means that some of them are often
+omitted, because they are consequences of sets of other laws.
 
 An important consequence of the algebraic structure of vectors is that
 they can be expressed as a simple sort of combination of other special
@@ -75,14 +89,14 @@ space in terms of a fixed set of \emph{basis} vectors |{b0, ..., bn}|.
 By definition, basis vectors
 cover the whole space:
 \begin{spec}
-  ∀ |v|, ∃s0, …, sn. v = s0 *^ b0 + ... + sn *^ bn 
-\end{spec}
+  ∀ v, ∃s0, …, sn.    v = s0 *^ b0 + ... + sn *^ bn 
+\end{spec}\todo{wrong typesetting (. vs |.|).}
 They are also \emph{linearly independent}:
 %
 \begin{spec}
   (s0 *^ b0 + ... + sn *^ bn = 0) <=> (s0 = ... = sn = 0)
 \end{spec}
-One can prove the uniqueness of representation as follows.
+One can prove the uniqueness of representation as follows:
 \begin{proof}
   Assume two representations of |v|, given by |si| and |ti|.
   %
@@ -91,7 +105,7 @@ One can prove the uniqueness of representation as follows.
   But because they represent the same vector, they must be equal to
   the zero vector: |(s0-t0) *^ b0 + ... + (sn-tn) *^ bn = 0|.
   %
-  By the bases being linearly independent, we find |si-ti=0|, and
+  By the bases being linearly independent, we find |si-ti=0|, and thus
   |si=ti|.
 \end{proof}
 
@@ -99,13 +113,13 @@ According to our red thread, this representation (coefficients) is
 akin to the notion of syntax.
 %
 But this is a case where the representation is \emph{equivalent} to
-the algebraic definition: the evaluator is not only a homomorphism,
-but an isomorphism.
-
+the algebraic definition: the evaluator is not
+only a homomorphism, but an isomorphism between the space of vectors
+and the list of coefficients.
 %
-This equivalence is what justifies the introduction of vectors as
+This equivalence is what justifies the definition of vectors as
 columns (or rows) of numbers.
-%
+
 Indeed, we can define:
 \[v = \colvec{v} = |v0 *^| \colveccc{1 \\ 0 \\ \vdots \\ 0} +
                    |v1 *^| \colveccc{0 \\ 1 \\ \vdots \\ 0} + \cdots +
@@ -153,15 +167,6 @@ set of indices |G|:
 \begin{code}
 newtype Vector s g    = V (g -> s) deriving (Additive, AddGroup)
 \end{code}
-%
-The addition of |Vectors| is defined indexwise.
-%
-Because indexwise addition is already our definition of addition for
-functions (|g -> s|), we can simply reuse this definition.
-%
-(Likewise for |zero| and |negate|.)
-%
-This is what the |deriving| clause amounts to here.
 
 We define right away the notation |a ! i| for the coefficient of the
 canonical base vector |e i|, as follows:
@@ -171,8 +176,8 @@ infix 9 !
 V f ! i = f i
 \end{code}
 %
-We sometimes omit the constructor |V| and the indexing |(!)|,
-treating vectors as functions without the |newtype|.
+We sometimes omit the constructor |V| and the indexing operator |(!)|,
+thereby treating vectors as functions without the |newtype|.
 
 As discussed above, the |S| parameter in |Vector S| has to be a field
 (|REAL|, or |CC|, or |Zp|, etc.)\footnote{The set |Zp| is the set of
@@ -200,10 +205,19 @@ finiteDomain :: Finite a => [a]
 finiteDomain = [minBound..maxBound]
 \end{code}
 
-We know from \cref{sec:FunNumInst} that if |S| is an instance of
-|AddGroup| then so is |G -> S|, with the pointwise definitions.
+Let us now define a |VectorSpace| instance for the |Vector| representation. This can only be done if |s| is a |Field|.
+Then, we must provide an associative and commutative addition operation. 
+For |Vector|, it can is defined indexwise.
 %
-However, multiplication of vectors does not in general work
+Because indexwise addition is already our definition of addition for
+functions (|g -> s|), from \cref{sec:FunNumInst}, we can simply reuse this definition.
+(Function addition demands that |s| is an instance of
+|AddGroup|, but it's fine since |s| is even a |Field|.)
+This is what the |deriving| clause amounts to in the definition of |newtype Vector|.
+The rest of the |AddGroup| structure, |zero| and |negate| is defined by the same means.
+
+What about vector scaling, |(*^)|? Can we simply reuse the definition that we had for functions?
+No, because multiplication of vectors does not work
 pointwise.
 %
 In fact, attempting to lift multiplication from the |Multiplicative|
@@ -218,34 +232,20 @@ the first argument is a scalar and the second one is a vector.
 %
 For our representation it can be defined as follows:
 
-\pj{This should be a |VectorSpace| class instance.}
-\jp{Investigate}
-%{
-%format *^^ = *^
 \begin{code}
-infixr 7 *^
-(*^^) :: Multiplicative s => s -> Vector s g -> Vector s g
-s *^^ V a = V (\i -> s * a i)
+instance Field s => VectorSpace (Vector s g) s  where
+   (*^) :: Multiplicative s => s -> Vector s g -> Vector s g
+   s *^ V a = V (\i -> s * a i)
 \end{code}
+
+\begin{exercise}
+  Show that |Vector s g| satisfies the laws of vector spaces.
+\end{exercise}
 % Equivalent definition: s *^^ v = V (\i -> s * v ! i)
-%}
-%if False
-\begin{code}
-instance Field s => VectorSpace (Vector s g) s where (*^) = (*^^)
--- Overlapping instances:
--- instance VectorSpace v s => VectorSpace (Vector v g) s where (*^) = scaleVec
--- scaleVec :: VectorSpace v s => s -> Vector v g -> Vector v g
--- scaleVec s (V a) = V (\i -> s *^ a i)
-instance Field s => VectorSpace s s where (*^) = (*)
--- Overlapping instances:
--- instance VectorSpace v s => VectorSpace (t->v) s where (*^) = scaleFun
--- scaleFun :: VectorSpace v s => s -> (t->v) -> (t->v)
--- scaleFun s f = \x-> s*^f x
-\end{code}
-%endif
+
 
 %
-The canonical basis vectors are given by
+The canonical basis for |Vector| are given by
 %
 \begin{code}
 e :: (Eq g, Ring s) => g -> Vector s g
@@ -261,16 +261,17 @@ is i j = if i == j then one else zero
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
 zeros everywhere, except at position |i| where it has a one.
 
-This way, every |v : G -> S| is a linear combination of vectors |e i| where the coefficient of base vector |e i| is the scalar |v i|:
+We can see that, as exepected, every |v : g -> s| is a linear combination
+of vectors |e i| where the coefficient of the canonical base vector |e
+i| is the scalar |v i|:
 \begin{spec}
     v  ==  (v 0 *^ e 0) + ... + (v n *^ e n)
 \end{spec}
-To clarify, the above equation is a property of every vector |v|. Such
-a vector can always be written as a linear combination of base
-vectors. The coefficients come from applying |v| (seen as a function)
-to the possible indices.
+To be sure, every vector |v| is a linear combination of base
+vectors. But when using canonical base vectors, the coefficients come
+simply from applying |v| (seen as a function) to the possible indices.
 %
-As we will work with many such linear combinations we introduce a
+Because we will work with many such linear combinations we introduce a
 helper function |linComb|:
 %
 \begin{code}
@@ -312,13 +313,13 @@ functions |f : Vector S G -> Vector S G'|:
 f v  =  f (v 0 *^ e 0 + ... + v n *^ e n)
 \end{spec}
 % that
-It is particularly interesting to study such functions when they preserve the vector space structure: vector-space homomorphisms.
+It is particularly interesting to study functions which preserve the vector space structure: vector-space homomorphisms.
 Such functions are more commonly called ``linear maps'', but
 to avoid unnecessary confusion with the Haskell |map| function we will
 refer to vector-space homomorphisms by the slightly less common name
 ``linear transformation''.
 %
-The function |f| is a linear transformation if it maps the operations
+Spelling out the homomorphism, the function |f| is a linear transformation if it maps the operations
 in |Vector S G| into operations in |Vector S G'| as follows:
 \begin{spec}
 f (u + v)   =  f u + f v
@@ -327,9 +328,11 @@ f (s *^ u)  =  s *^ f u
 Because |v = linComb v e = (v 0 *^ e 0 + ... + v n *^ e n)|, we also have:
 %
 \begin{spec}
-f v =  f (  v 0 *^ e 0      + ... +  v n *^ e n)     = {- |f| is linear -}
-    =       v 0 *^ f (e 0)  + ... +  v n *^ f (e n)  = {- def. of |linComb| -}
-    =  linComb v (f . e)
+f v   =  f (  v 0 *^ e 0      + ... +  v n *^ e n)
+   {- because |f| is linear -}
+      =       v 0 *^ f (e 0)  + ... +  v n *^ f (e n)
+   {- by def. of |linComb| -}
+      =  linComb v (f . e)
 \end{spec}
 %if False
 \begin{code}
@@ -386,8 +389,8 @@ from just
 %
 which has a much smaller domain.
 %
-Let |m = f . e|
-That is, each |m i| is the image of the canonical base
+Let |m = f . e|.
+Then, for each |i|, the vector |m i| is the image of the canonical base
 vector |e i| through |f|.
 Then
 %
@@ -397,7 +400,7 @@ f v = linComb v m = v 0 *^ m 0 + ... + v n *^ m n
 %
 Each of the |m k| is a |Vector S G'|, as is the resulting |f v|.
 %
-If we look at component |g'| of |f v| we have
+If we look at the component |g'| of |f v| we have
 %
 \begin{spec}
   f v g'                           = {- as above -}
@@ -526,7 +529,6 @@ You may want to refer to Exercise~\ref{exc:Mstarhomomorphismcompose}, which asks
 % \jp{We do not note that |Matrix| form a category with mulMV being the composition and |e| as the identity because we have not talked about categories!}
 Additionally, exercise~\ref{exc:MMmultAssoc} is about associativity of matrix-matrix multiplication.
 %
-\jp{Not sure what the difference is from the previous exercise.}
 
 A simple vector space is obtained for |G = ()|, the singleton index
 set.
@@ -594,6 +596,7 @@ Inner products have (at least) two aspects.
 First, they yield a notion of how ``big'' a vector is, the |norm|.
 %
 \begin{code}
+sqNorm :: InnerSpace v s => v -> s
 sqNorm v = inner v v
 
 norm v = sqrt (sqNorm v)
@@ -612,7 +615,7 @@ Dividing by the norms mean that |abs (similarity u v)| is at most |1|
 
 For example, in Euclidean spaces, one defines the inner product to be
 the product of the cosine of the angle between the vectors and their
-norms. Consequently, similarity is the cosine of the angle betwen
+norms. Consequently, |similarity| is the cosine of the angle betwen
 vectors.
 
 For this reason, one says that two vectors are orthogonal when their
@@ -621,7 +624,7 @@ inner product is |0| --- even in non-Euclidean spaces.
 
 \paragraph{Dot product}
 
-An often used inner product is the dot product, defined as follows:
+An often used inner product is the dot product, defined as follows:\footnote{This code is using the one-dimensional vector space instance defined in \cref{sec:one-elem-vector}}
 \begin{code}
 dot :: (Field s, Finite g) => Vector s g -> Vector s g -> s
 dot (V v) (V w) = linComb v w
@@ -631,7 +634,7 @@ We should note that the dot product acts on the representations
 (syntax). This means that it will \emph{change} dependending on the
 basis chosen to represent vectors. Thus, the dot product is a
 syntactic concept, and it should be clearly identified as such. This
-can be somewhat counterintuitive, because so far it was fine to use
+can be somewhat counterintuitive, because so far in this chapter it was fine to use
 representations (they were unique given the basis). 
 %
 To further confuse matters, in Euclidean spaces (which are often used
@@ -650,8 +653,14 @@ preserve the inner product.
   inner (f u) (f v) = inner u v
 \end{spec}
 
-So, in Euclidean spaces, such a transformation preserve angles. In the
-context of linear algebra they are called orthogonal transformations.
+In Euclidean spaces, such a transformation preserve angles. In the
+context of linear algebra they are either called orthogonal
+transformations (emphasizing the preservation of angles) or
+unitary transformations (emphasizing preservation of norms).
+\footnote{In today's mathematical vocabulary, the word ``unitary''
+  signals that a complex scalar field is used, whereas the word
+  ``orthogonal'' signals that that a real field is used, and that the
+  space is Euclidean.}
 
 \begin{exercise}
   Can you express this condition as a homomorphism condition?
@@ -693,28 +702,44 @@ In Euclidean spaces, this means that preserving angles and preserving
 distances go hand-in-hand.
 
 Orthogonal transformations enjoy many more useful properties: we have
-barely scrached the surface here.
+barely scratched the surface here.
 %
 Among others, their rows (and columns) are orthogonal to each other.
 %
 The are also invertible (and so they form a group), and the inverse is
-the (conjugate-) transpose of the matrix.
+the given by (conjugate-) transpose of the matrix.
 %
-(In the context of a complex scalar field, one would use the word
-``unitary'' instead of ``orthogonal'', but it's a straightforward
-generalisation once we have define the appropriate inner product.)
 
 \section{Examples of matrix algebra}
 
+\subsection{Functions}
+\label{sec:functions-vector-space}
+
+A useful example of vector space is functions from real to real. In terms of |VectorSpace| instance:
+\begin{code}
+instance VectorSpace (REAL->REAL) REAL where
+   s *^ f = (s*) .f
+\end{code}
+Here |s *^ f| scales pointwise the function |f| by |s|.
+\begin{exercise}
+  Verify the |VectorSpace| laws for the above instance.
+\end{exercise}
+
+An example of a linear transformation is the derivative.  Indeed, we
+have already seen that |D (f + g) = D f + D g|. The equation |D (s *^
+f) = s *^ D f| is verified by expanding the definitions.  Together,
+this means that the laws of linear transformations are verified.
+
+
 \subsection{Polynomials and their derivatives}
 
-We have represented polynomials of degree |n+1| by the list of their
+In \cref{sec:poly}, we have represented polynomials of degree |n+1| by the list of their
 coefficients.
 %
 This is the same representation as the vectors represented by |n+1|
 coordinates which we referred to in the introduction to this chapter.
 %
-This suggests that polynomials of degree |n| form a vector space, and
+Indeed, polynomials of degree |n| form a vector space, and
 we could interpret that as |{0, ..., n} -> REAL| (or, more generally,
 |Field a => {0, ..., n} -> a|).
 %
@@ -762,27 +787,20 @@ evalP, evalP' :: Vector REAL G -> (REAL -> REAL)
 evalP (V v) x = sum (map (\i -> v i * evalM i x) finiteDomain)
 
 evalP' (V v) = linComb v evalM
-instance VectorSpace (REAL->REAL) REAL where
-  (*^) = scaleR2R
-scaleR2R s f = (s*).f
 \end{code}
 %endif
-\jp{In the latex code, there is an instance VectorSpace (REAL->REAL) REAL which we use! See the tex code. I have created a label and used it when we reference this space.
-Should we show this code?}
-\label{sec:functions-vector-space}
 %
 \begin{spec}
 evalP :: Vector REAL {0, ..., n} -> (REAL -> REAL)
 evalP (V v) x = sum (map (\ i -> v i * x^i) [0..n])
 \end{spec}
-%
-The |derive| function takes polynomials of degree |n+1| to polynomials
-of degree |n|, and since |D (f + g) = D f + D g| and |D (s *^ f) = s *^
-D f|, we know that it is a linear transformation.
-%
-% What is its associated matrix?
 
-The associated matrix will be obtained by appling the linear
+Let us know turn to the representation of the derivative of
+polynomials.  We have already seen in the previous section that the
+|derive| function is a linear transformation. We also know that it
+takes polynomials of degree |n+1| to polynomials of degree |n|, and as
+such it is well defined as a linear transformation of polynomials too.
+Its representation can be obtained by appling the linear
 transformation to every base vector:
 %
 \begin{spec}
@@ -884,7 +902,7 @@ As we suspected, using |inner = innerF|, the straightforward
 representation of polynomials as list of coefficients is not an
 orthogonal basis.
 %
-There is, for example, a positive correlation between |x| and |x^3|.
+There is, for example, a positive correlation between the canonical vectors |x| and |x^3|.
 
 If we were using instead a set of basis polynomials |bn| which are
 orthogonal using the above definition of |inner|, then
@@ -2161,5 +2179,13 @@ getRow = id
 % = -- simplification
 %   \v -> (dot (dot v . b) . a)
 % ... gets too complicated for this chapter
+
+\subsection{One-dimensional space}
+
+The following instance means that we can treat scalar fields as one-dimensional vector spaces:
+\begin{code}
+instance Field s => VectorSpace s s where (*^) = (*)
+\end{code}
+
 
 %include E7.lhs
