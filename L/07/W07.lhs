@@ -624,7 +624,7 @@ inner product is |0| --- even in non-Euclidean spaces.
 
 \paragraph{Dot product}
 
-An often used inner product is the dot product, defined as follows:\footnote{This code is using the one-dimensional vector space instance defined in \cref{sec:one-elem-vector}}
+An often used inner product is the dot product, defined as follows:\footnote{This code is using the one-dimensional vector space instance defined in \cref{sec:one-elem-vector}.}
 \begin{code}
 dot :: (Field s, Finite g) => Vector s g -> Vector s g -> s
 dot (V v) (V w) = linComb v w

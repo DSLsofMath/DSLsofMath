@@ -75,14 +75,14 @@ We want to define the other numeric operations on streams of
 derivatives in such a way that |evalAll| is a homomorphism in each of
 them.
 %
-For example:
+For example, consider multiplication:
 %
 \begin{spec}
 evalAll (e1 :*: e2) = evalAll e1 * evalAll e2
 \end{spec}
 %
 where the |(*)| sign stands for the multiplication of derivative
-streams --- an operation we are trying to determine.
+streams --- an operation we are trying to determine, not the usual multiplication.
 %
 We assume that we have already derived the definition of |(+)| for
 these streams (it is |zipWithLonger (+)|, or just |zipWith (+)| if we
@@ -145,7 +145,20 @@ and similarly for the second term.
 %
 (For a formal proof we also need to check that this assumption can be
 discharged.\pj{Do the formal proof - perhaps in appendix.}
-\jp{Look at this})
+\jp{It seems to me that the reasoning is as follows. We assume earlier that there exists |(*)| such that |evalAll (e1 :*: e2) = evalAll e1 * evalAll e2|.
+We use this assumption here. Then we find the definition below. This solution satisfies the equation if it exists. Here "exists" means computable.
+Because it produces lists, we only need to check that the solution does
+not diverge/is productive. 
+
+
+(a:as) * (b:bs) = (a*b) : (as * (b : bs) + (a : as) * bs) 
+
+
+The head can always be produced depending on the head of the input,
+and the tail (one element down) needs the tails (one element down) of
+the arguments, so we're good.
+
+})
 
 We also have |evalAll . d = tail . evalAll| which leads to:
 %
