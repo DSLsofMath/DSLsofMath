@@ -1,3 +1,18 @@
+2021-11-23: ToC overview
+Page counts:
+| Ch  0 |  8 |       |
+| Ch  1 | 27 |       |
+| Ch  2 | 33 |       |
+| Ch  3 | 23 |       |
+| Ch  4 | 35 |       |
+| Ch  5 | 17 | short |
+| Ch  6 | 16 | short |
+| Ch  7 | 17 | short |
+| Ch  8 | 11 | short |
+| Ch  9 | 22 |       |
+
+
+
 2021-01-16: Time to set the license: CC-by-nc-sa
 
   https://creativecommons.org/licenses/by-nc-sa/4.0/

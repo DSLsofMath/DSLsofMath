@@ -7,13 +7,16 @@ import Prelude hiding (Either(Left,Right), either)
 %endif
 
 \begin{code}
+data Either p q = Left p | Right q
+\end{code}
+
+
+%if False
+\begin{spec}
 data Either p q where
   Left   :: p  ->  Either p q
   Right  :: q  ->  Either p q
-
-\end{code}
-
-%if False
+\end{spec}
 \begin{code}
 either :: (p->r) -> (q->r) -> (Either p q -> r)
 either l r (Left x)   =  l x

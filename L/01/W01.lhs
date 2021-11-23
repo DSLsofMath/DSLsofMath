@@ -3,7 +3,7 @@
 \chapter{Types, Functions, and Complex numbers}
 \label{sec:DSLComplex}
 
-In this chapter we exemplify our method by applying our method to the
+In this chapter we exemplify our method by applying it to the
 domain of arithmetic first, and complex numbers second, which we
 assume most readers will already be familiar with.
 %
@@ -14,7 +14,7 @@ However, before doing so, we introduce several central concepts in the
 We will implement certain concepts in the functional programming
 language Haskell and
 %
-the code for this lecture is placed in a module called
+the code for this chapter is placed in a module called
 |DSLsofMath.W01| that starts here.
 %
 As mentioned earlier, the code is available on
@@ -55,12 +55,7 @@ the infix operator |(%)| used to construct ratios
 Dividing up the world (or problem domain) into values of different
 types is one of the guiding principles of this \course{}.
 %
-\begin{figure}
-  \centering
-  \includegraphics[width=0.5\linewidth]{New_cuyama.jpg}
-  \caption{Humorously inappropriate type mismatch on a sign in New Cuyama, California. \href{https://commons.wikimedia.org/w/index.php?curid=2513523}{By I, MikeGogulski, CC BY 2.5, Wikipedia.} }
-  \label{fig:TypeErrorSign}
-\end{figure}
+\pj{Mention Type Driven Development (perhaps already in Chapter 0)}
 %
 We will see that keeping track of types can guide the development of
 theories, languages, programs and proofs.
@@ -76,7 +71,7 @@ mathematics and then in Haskell.
 %
 To a first approximation one can think of types as sets.
 %
-The type of truth values, |True| and |False|, is often called |Bool|
+The type of truth values, |False| and |True|, is often called |Bool|
 or just |BB|.
 %
 Thus the name (syntax) is |BB| and the semantics (meaning) is the
@@ -85,7 +80,7 @@ two-element set |{False, True}|.
 Similarly, we have the type |Nat| whose semantics is the infinite set
 of natural numbers |{0, 1, 2, ...}|.
 %
-Other common types are |ZZ| of integers, |QQ| of rationals, and |REAL|
+Other common mathematical types are |ZZ| of integers, |QQ| of rationals, and |REAL|
 of real numbers.
 %
 
@@ -94,12 +89,14 @@ is a (constant) set. But we can also combine these names to form more
 complex types. For our purposes the most important construction is the
 function type.
 %
-\subsection{Functions}
+\subsection{Functions and their types}
+\pj{too long (split into subsections or at least paragraphs)}
+%
 For any two type expressions |A| and |B| we can form the function type
 |A -> B|.
 %
-Its semantics is the set of (semantic) functions from the semantics of
-|A| to the semantics of |B|.
+Its semantics is the set of ``functions from |A| to |B|'' (formally:
+functions from the semantics of |A| to the semantics of |B|).\pj{delay / rewrite footnote}
 \footnote{The only way to be precise about semantics is to use a
   formal language, which itself comes with its own syntax. So semantics sometimes does not seem to be that
   much different from syntax, as in this example.
@@ -108,8 +105,10 @@ Its semantics is the set of (semantic) functions from the semantics of
   domains where the semantics is gives more insight than here.}
 %
 As an example, the semantics of |BB -> BB| is a set of four functions:
-|{const False, id, not, const True}| where |not : BB -> BB| is boolean
-negation.\pedantic{Additionally, in Haskell, one has to deal with
+|{const False, id, not, const True}| where |not : BB -> BB|\pj{Explain
+  single colon and double colon for ``has type'' relation - probably
+  earlier} is boolean negation.\pj{delay / rewrite
+  remark until PARTIAL}\pedantic{Additionally, in Haskell, one has to deal with
   diverging computations. These induce very subtle difficulties which
   we mention later. Fortunately, in the rest of this \course{}, we can
   largely ignore those subtleties.}
@@ -139,15 +138,19 @@ This use of type variables is called ``parametric polymorphism'' and
 the compiler gives more help when implementing functions with such
 types.
 %
-Another building block for functions is |const|. Its type mentions two type
-variables, and it is a function of two arguments:
+
+\paragraph{Constant functions} Another building block for functions is |const|.
+Its type mentions two type variables, and it is a function of two
+arguments:
 %
 \begin{code}
 const :: a -> b -> a
 const x _ = x
 \end{code}
 %
+\pj{Perhaps explain underscore}
 
+%note: "arity" is new terminology - worth collecting in a table or register to find it easy.
 The term ``arity'' is used to describe how many arguments a function
 has.
 %
@@ -156,12 +159,13 @@ An |n|-argument function has arity |n|.
 For small |n| special names are often used: binary means arity 2 (like
 |(+)|), unary means arity 1 (like |negate|) and nullary means arity 0
 (like |"hi!"|).
-%*TODO: perhaps add something about tupling, currying and arity
+\pj{perhaps add something about tupling, currying and arity --- check Idris intro}
 
+\paragraph{Higher-order functions.}
 We can also construct functions which manipulate functions.
 %
 They are called \emph{higher-order} functions and as a first example
-we present |flip| which ``flips'' the two arguments of a binary
+we present |flip| which flips the order the two arguments of a binary
 operator.
 %
 \begin{code}
@@ -169,16 +173,20 @@ flip :: (a -> b -> c) -> (b -> a -> c)
 flip op x y = op y x
 \end{code}
 %
-As an example |flip (-) 5 10 == 10 - 5| and |flip const x y ==
+As an example |flip (-) 4 10 == 10 - 4 == 6| and |flip const x y ==
 const y x == y|.
 
 \paragraph{Lambda expressions}
 \label{sec:lambda-expression}
 It is possible to create values of a function type without naming
-it. The syntax is |\x -> b|, where |b| is any expression. For example,
-the identity function can be written |\x -> x|, and the constant
-function |\x y -> x|.
-
+them.
+%
+The syntax is |\x -> b|, where |b| is any expression. For example, the
+identity function can be written |\x -> x|, and the constant function
+|\x y -> x|.
+%
+\pj{Perhaps use underscore also here as in |const| def. above.}
+\pj{Explain the backslash syntax rendered as lambda.}
 
 \paragraph{Function composition}
 
@@ -224,8 +232,9 @@ In Haskell we get the following type:
 %
 which may take a while to get used to.
 
+%TODO: check usage of single : and double :: colon
 In the figure we use ``operator sections'': |(%1) :: ZZ -> QQ| is the
-function that the embeds an integer |n| as the ratio |frac n 1|.
+function that embeds an integer |n| as the ratio |frac n 1|.
 %
 Other convenient examples include |(+1) :: ZZ -> ZZ| for the ``add
 one'' function, and |(2*)| for the ``double'' function.
@@ -240,26 +249,39 @@ Haskell functions.
 Some Haskell ``functions'' are not defined for all inputs --- they are
 \emph{partial} functions.
 %
+\pj{PARTIAL: Here could be a better place for the footnote about partial functions earlier}
+%
 Simple examples include |head :: [a] -> a| which is not defined for
 the empty list and |(1/) :: REAL -> REAL| which is not defined for
 zero.
 %
-A proper mathematical function is said to be \emph{total}: it is defined
-for all its inputs. In Haskell totality can be compromised by omitting cases (like |head|), by raising
-exceptions (like division) or by non termination (like |inf = 1 + inf|).
+A proper mathematical function is said to be \emph{total}: it is
+defined for all its inputs.
+%
+In Haskell totality can be compromised by omitting cases (like
+|head|), by raising exceptions (like division) or by non termination
+(like |inf = 1 + inf|).
 
-There are two ways of turning a partial function to a total function. One can limit
-the type of the inputs (the domain) to avoid the inputs where the function is undefined (or non-terminating, etc.), or
-extend the type of the output (the range) to represent ``default'' or ``error''
-values explicitly\footnote{or better yet, meaningful values, as we shall see later}.
+There are two ways of turning a partial function into a total
+function.
 %
+One can limit the type of the inputs (the domain) to avoid the inputs
+where the function is undefined (or non-terminating, etc.), or extend
+the type of the output (the range) to represent ``default'' or
+``error'' values explicitly\footnote{or better yet, meaningful values,
+as we shall see later}.
+%
+
 As an example, |sqrt|, the square root function, is partial if
-considered as a function from |REAL| to |REAL|. It can be made total if the domain
-is restricted to |RPosz|, or if the range is extended to complex numbers.
+considered as a function from |REAL| to |REAL|.
 %
-In most programming languages the range is extended in another way. The type is
-|Double -> Double| and |sqrt (-1)| returns the value |NaN : Double|
-(Not a Number).
+It can be made total if the domain is restricted to |RPosz|, or if the
+range is extended to complex numbers.
+%
+In most programming languages the range is extended in another way.
+%
+The type is |Double -> Double| and |sqrt (-1)| returns the value |NaN
+: Double| (Not a Number).
 %
 Similarly, |(1/) :: Double -> Double| returns |Infinity :: Double|
 when given zero as an input.
@@ -267,8 +289,12 @@ when given zero as an input.
 Thus |Double| is a mix of rational numbers and special
 quantities like |NaN| and |Infinity|.
 %
+
 Often the type |Maybe a| with values |Nothing| and |Just a| (for all
-|x::a|) is used as the target of functions. The definition of |Maybe| is given in full in \cref{sec:Maybe}.
+|x::a|) is used as the target of functions which would otherwise be
+partial: any undefined input is mapped to |Nothing|.
+%
+The definition of |Maybe| is given in full in \cref{sec:Maybe}.
 
 There are also mathematical functions which cannot be implemented at
 all (uncomputable functions). We will only briefly encounter such a
@@ -285,6 +311,8 @@ finite domain.
 %
 The type |Env v s| will be the \emph{syntax} for the type of partial
 functions from |v| to |s|, and defined as follows:
+%
+\pj{Perhaps explain list and pair type separately, before combining them.}
 %
 \begin{code}
 type Env v s = [(v,s)]
@@ -338,7 +366,7 @@ evalEnv vss x  =  findFst vss
 \end{code}
 %
 Another equivalent definition is |evalEnv = flip lookup|, where
-|lookup| is defined in the Haskell Prelude:
+|lookup| is defined in the Haskell Prelude with the following type:
 %
 \begin{spec}
 lookup :: Eq a => a -> [(a, b)] -> Maybe b
@@ -376,7 +404,7 @@ implies |fApp(x) == fApp(y)|'.
 As a special case we certainly want |fApp(x) == fApp(x)| for every |x|.
 %
 But with |rand| this does not hold: |rand(6)==rand(6)| will only be
-true occasionally.
+true occasionally (if we happen to draw the same random number twice).
 %
 Fortunately, in mathematics and in Haskell all functions are pure.
 %}
@@ -431,18 +459,19 @@ semantic meaning about its type (this is also common in functional
 programming, for example with the conventional use of a plural "s"
 suffix, as in the name |xs|, to denote a list of values.).
 %
-Moreover, by using this (implicit!)\ convention, it is easier to deal
-with cases such as that of the Hartley transform (a close relative of
-the Fourier transform), which does not change the type of the input
-function, but rather the \emph{interpretation} of that type.
-%
+% Moreover, by using this (implicit!)\ convention, it is easier to deal
+% with cases such as that of the Hartley transform (a close relative of
+% the Fourier transform), which does not change the type of the input
+% function, but rather the \emph{interpretation} of that type.
+% %
 
-Rather than relying on
-lexical (or syntactical) conventions in the variable names, we prefer to explicitly use different types.
-When there are several interpretations of the same type, we can define a type synonym
-for each interpretations.
+Rather than relying on lexical (or syntactical) conventions in the
+variable names, we prefer to explicitly use different types.
 %
-In the example of the Laplace transformation, this leads to
+When there are several interpretations of the same type, we can define
+a type synonym for each interpretation.
+%
+In the example of the Laplace transform, this leads to
 %
 \begin{spec}
 Lap : (T -> CC) -> (S -> CC)
@@ -465,8 +494,8 @@ specification) of mathematical concepts.
 
 \subsection{Types in Haskell: |type|, |newtype|, and |data|}
 
-There are three keywords in Haskell involved in naming types: |type|,
-|newtype|, and |data|.
+There are three keywords in Haskell involved in naming and creating
+types: |type|, |newtype|, and |data|.
 
 \paragraph{|type| -- abbreviating type expressions}
 
@@ -493,9 +522,17 @@ type safety, just readability (if used wisely).
 The |Env| example shows that a type synonym can have type parameters.
 %
 Note that |Env v s| is a type (for any types |v| and |s|), but |Env|
-on its own is not a type but a \emph{type constructor}.
+on its own is not a type but a \emph{type constructor} --- a function
+at the type level.
 
 \paragraph{|newtype| -- more protection}
+%
+\begin{figure}
+  \centering
+  \includegraphics[width=0.5\linewidth]{New_cuyama.jpg}
+  \caption{Humorously inappropriate type mismatch on a sign in New Cuyama, California. \href{https://commons.wikimedia.org/w/index.php?curid=2513523}{By I, MikeGogulski, CC BY 2.5, Wikipedia.} }
+  \label{fig:TypeErrorSign}
+\end{figure}
 
 A simple example of the use of |newtype| in Haskell is to distinguish
 values which should be kept apart.
@@ -528,19 +565,21 @@ integers to the new types, and for pattern matching.
 The semantics of |Population| is the set of values of the form |Pop i|
 for every value |i :: Int|.
 %
-It is not the same as the semantics of |Int| but it is isomorphic
+It is not the same as the semantics of |Int| but the sets are
+\emph{bijective}.
 %
-\pedantic{Usually an isomorphism cares not only about the elements of
-  the sets, but some structure involving operations defined on this
-  set (otherwise the term ``bijection'' is more typical). At this point we have
-  not talked about these operations (yet). If we had, we might have been able
-  to establish a more useful isomorphism. We talk about algebraic structures in \cref{sec:CompSem}.
-}
+The function |Pop| is an invertible function, a \emph{bijection}, also
+called a set-isomorphism.
+%
+(We talk about more general isomorphisms between algebraic structures
+in \cref{sec:CompSem}.)
+
 
 Later in this chapter we use a newtype for the semantics of complex
 numbers as a pair of numbers in the Cartesian representation but it
 may also be useful to have another newtype for complex as a pair of
 numbers in the polar representation.
+
 
 \paragraph{The keyword |data| -- for syntax trees}
 
@@ -555,12 +594,13 @@ This declaration introduces
 \begin{itemize}
 \item a new type |N| for unary natural numbers,
 \item a constructor |Z :: N| to represent zero, and
-\item a constructor |S :: N -> N| to represent the successor.
+\item a constructor |S :: N -> N| to represent the successor function.
 \end{itemize}
 The semantics of |N| is the set of natural numbers (|Nat|), with the
-semantics of |Z| being |0|, |S Z| being 1, etc. A way to be complete
-about the semantics is to state that the semantics of |S| is ``add
-one''.
+semantics of |Z| being |0|, |S Z| being 1, etc.
+%
+A way to be complete about the semantics is to state that the
+semantics of |S| is ``add one''.
 
 Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
 
@@ -616,21 +656,17 @@ Two other examples of, often used, parameterised types are |(a,b)| for
 the type of pairs (a product type) and |Either a b| for either an |a|
 or a |b| (a sum type).
 %
-% \begin{spec}
-% data Either p q = Left p | Right q
-% \end{spec}
-%
 For reference, the either type is defined as follows in Haskell:
 %include Either.lhs
-
+%TODO at first use explain GADT syntax for |data| declaration 
 
 \section{Notation and abstract syntax for sequences}
 \label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
-As preparation for the language of sequences and limits
-later (\cref{par:LimitOfSequence,sec:power-series}), we spend a few lines on the notation and abstract
-syntax of sequences.
+As preparation for the language of sequences and limits later
+(\cref{par:LimitOfSequence,sec:power-series}), we spend a few lines on
+the notation and abstract syntax of sequences.
 
 In math textbooks, the following notation is commonly in use: $\left\{ a_i \right\}_{i=0}^{\infty}$ or
 just $\left\{ a_i \right\}$ and (not always) an indication of the type
@@ -782,6 +818,7 @@ evaluation functions or predicates (like |lim| and |sum|).
 Workshop on Trends in Functional Programming in Education, 2015.}
 }
 \label{sec:complexcase}
+\pj{May benefit from more "sectioning" structure (now 5p + just one subsection of 3p)}
 
 We now turn to our first study of mathematics as found ``in the
 wild'': we will do an analytic reading of a piece of the
@@ -831,7 +868,7 @@ type.
 We use a capital |I| in the |data| declaration because a lowercase
 constructor name would cause a syntax error in Haskell.
 %
-For convenience we add a synonym |i == I|.
+For convenience we add a synonym |i = I|.
 %
 \begin{code}
 data ImagUnits = I
@@ -847,7 +884,7 @@ syntax as a function |showIU|:
 showIU ::  ImagUnits       ->  String
 showIU     I               =   "i"
 \end{code}
-\footnote{Here we could also redefine |sqrt| so that |sqrt(-1) = I|. Doing so would force generalising the codomain. Adam and Essex say that we 'can' do it, but it is unclear if we should, at least at this stage.}
+% \footnote{Here we could also redefine |sqrt| so that |sqrt(-1) = I|. Doing so would force generalising the codomain. Adam and Essex say that we 'can' do it, but it is unclear if we should, at least at this stage.}
 
 Next, in the book, we find the following definition:
 %
@@ -981,8 +1018,8 @@ say ``either form is acceptable''.
 After all, they are acceptable according to the definition provided earlier.
 
 Given that |a + ib| is only ``syntactic sugar'' for |a + bi|, we can
-simplify our representation for the abstract syntax, eliminating one
-of the constructors:
+simplify our representation for the abstract syntax, merging the two
+constructors:
 %
 \begin{code}
 data ComplexB = CPlusB REAL REAL ImagUnits
@@ -1027,13 +1064,14 @@ instance Eq ComplexC where
     CPlusC a b == CPlusC x y = a == x && b == y
 \end{code}
 %
-The line |instance Eq ComplexC| is there because the specify that
-|ComplexC| supports the |(==)| operator.  (The cognoscenti would
-prefer to obtain an equivalent definition using the shorter |deriving
-Eq| clause upon defining the type.)
+The line |instance Eq ComplexC| is there to explain to Haskell that
+|ComplexC| supports the |(==)| operator.
+%
+(The cognoscenti would prefer to obtain an equivalent definition using
+the shorter |deriving Eq| clause upon defining the type.)
 %*TODO: explain more about deriving - perhaps in a \footnote{}
 
-This shows that the set of complex numbers is, in fact, isomorphic\footnote{See \cref{sec:isomorphism}.}
+This shows that the set of complex numbers is, in fact, isomorphic
 with the set of pairs of real numbers, a point which we can make
 explicit by re-formulating the definition in terms of a |newtype|:
 %
@@ -1107,8 +1145,8 @@ We can describe these operations in a \emph{shallow embedding} in
 terms of the concrete datatype |ComplexD|, for example:
 %
 \begin{code}
-plusD :: ComplexD -> ComplexD -> ComplexD
-plusD (CD (a , b)) (CD (x , y))  =  CD ((a + x) , (b + y))
+addD :: ComplexD -> ComplexD -> ComplexD
+addD (CD (a , b)) (CD (x , y))  =  CD ((a + x) , (b + y))
 \end{code}
 %
 \noindent
@@ -1163,8 +1201,7 @@ Now we turn to the study of the \emph{syntax} instead (``deep embedding'').
 We want a datatype |ComplexE| for the abstract syntax tree (AST) of
 expressions.
 %
-The syntactic expressions can later be evaluated to semantic values:
-%
+The syntactic expressions can later be evaluated to semantic values.
 %
 The concept of ``an evaluator'', a function from the syntax to the
 semantics, is something we will return to many times in this \course{}.
@@ -1176,48 +1213,47 @@ evalE :: ComplexE -> ComplexD
 The datatype |ComplexE| should collect ways of building syntactic
 expressions representing complex numbers and we have so far seen
 %
-the symbol |i|, an embedding from |REAL|, plus and times.
+the symbol |i|, an embedding from |REAL|, addition and multiplication.
 %
 We make these four \emph{constructors} in one recursive datatype as
 follows:
 %
-\pj{Perhaps rename |Plus| to |Add| and |Times| to |Mul| for coherence.}
-%
 %**TODO rename |ImagUnit| to just |I| (and adapt explanation)
+%format I2 = I
 \begin{code}
-data ComplexE  =  ImagUnit  -- syntax for |i|, not the type |ImagUnits|
+data ComplexE  =  I2
                |  ToComplex REAL
-               |  Plus   ComplexE  ComplexE
-               |  Times  ComplexE  ComplexE
+               |  Add   ComplexE  ComplexE
+               |  Mul  ComplexE  ComplexE
  deriving (Eq, Show)
 \end{code}
 Note that, in |ComplexA| above, we also had a constructor for
-``plus'' (|CPlus1|), but it was playing a different role.
+``addition'' (|CPlus1|), but it was playing a different role.
 %
 They are distinguished by type: |CPlus1| took two real
-numbers as arguments, while |Plus| here takes two
+numbers as arguments, while |Add| here takes two
 complex expressions as arguments.
 
 Here are two examples of type |ComplexE| as Haskell code and as
 ASTs:
 \begin{code}
-testE1 = Times ImagUnit ImagUnit
-testE2 = Plus (ToComplex 3) (Times (ToComplex 2) ImagUnit)
+testE1 = Mul I2 I2
+testE2 = Add (ToComplex 3) (Mul (ToComplex 2) I2)
 \end{code}
 
 \hspace{2em}
 \begin{tikzpicture}[level 1/.style={sibling distance=3cm},baseline]
-\node{|Times|}
-child {node {|ImagUnit|}}
-child {node {|ImagUnit|}};
+\node{|Mul|}
+child {node {|I2|}}
+child {node {|I2|}};
 \end{tikzpicture}
 \hspace{2em}
 \begin{tikzpicture}[level 1/.style={sibling distance=3cm},baseline]
-\node{|Plus|}
+\node{|Add|}
 child {node {|ToComplex|} child {node {|3|}}}
-child {node {|Times|}
+child {node {|Mul|}
   child {node {|ToComplex|} child {node {|2|}}}
-  child {node {|ImagUnit|}}};
+  child {node {|I2|}}};
 \end{tikzpicture}
 
 We can implement the evaluator |evalE| by pattern matching on the
@@ -1238,12 +1274,12 @@ long as you do it for subexpressions (subtrees of the abstract syntax
 tree datatype). This pattern is called \emph{structural induction}.
 %
 
-For example, when implementing the |evalE (Plus c1 c2)| case, you can
+For example, when implementing the |evalE (Add c1 c2)| case, you can
 assume that you already know the values |s1, s2 :: ComplexD|
 corresponding to the subtrees |c1| and |c2| of type |ComplexE|.
 %
 The only thing left is to add them up componentwise and we can assume
-there is a function |plusD :: ComplexD -> ComplexD -> ComplexD| taking
+there is a function |addD :: ComplexD -> ComplexD -> ComplexD| taking
 care of this step (in fact, we implemented it earlier in
 \refSec{sec:complexcase}).
 %
@@ -1251,10 +1287,10 @@ Continuing in this direction (by structural induction; or ``wishful
 thinking'') we arrive at the following implementation.
 %
 \begin{code}
-evalE ImagUnit         = imagUnitD
-evalE (ToComplex r)    = toComplexD r
-evalE (Plus  c1 c2)    = plusD   (evalE c1)  (evalE c2)
-evalE (Times c1 c2)    = timesD  (evalE c1)  (evalE c2)
+evalE I2              = iD
+evalE (ToComplex r)   = toComplexD r
+evalE (Add  c1 c2)    = addD  (evalE c1)  (evalE c2)
+evalE (Mul  c1 c2)    = mulD  (evalE c1)  (evalE c2)
 \end{code}
 %
 Note the pattern here: for each constructor of the syntax datatype we
@@ -1264,26 +1300,26 @@ The next step is to implement these functions, but let us first list
 their types and compare them with the types of the syntactic constructors:
 %
 \begin{spec}
-ImagUnit    :: ComplexE
-imagUnitD   :: ComplexD
+I2   :: ComplexE
+iD   :: ComplexD
 
 ToComplex   :: REAL -> ComplexE
 toComplexD  :: REAL -> ComplexD
 
-Times       :: ComplexE  -> ComplexE  -> ComplexE
-timesD      :: ComplexD  -> ComplexD  -> ComplexD
+Mul       :: ComplexE  -> ComplexE  -> ComplexE
+mulD      :: ComplexD  -> ComplexD  -> ComplexD
 \end{spec}
-%plusD   :: ComplexD -> ComplexD -> ComplexD  -- |ComplexE -> ComplexE -> ComplexE|
+%addD   :: ComplexD -> ComplexD -> ComplexD  -- |ComplexE -> ComplexE -> ComplexE|
 As we can see, each use of |ComplexE| has been replaced be a use of |ComplexD|.
 %
 Finally, we can start filling in the implementations:
 %
 \begin{code}
-imagUnitD     = CD (0 ,  1)
+iD            = CD (0 ,  1)
 toComplexD r  = CD (r ,  0)
 \end{code}
 %
-The function |plusD| was defined earlier and |timesD| is left as an
+The function |addD| was defined earlier and |mulD| is left as an
 exercise for the reader.
 %
 To sum up we have now implemented a recursive datatype for
@@ -1298,7 +1334,7 @@ embed a semantic complex number in the syntax:
 %
 \begin{code}
 fromCD :: ComplexD -> ComplexE
-fromCD (CD (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
+fromCD (CD (x , y)) = Add (ToComplex x) (Mul (ToComplex y) I2)
 \end{code}
 %
 This function is injective: different complex numbers map to different syntactic expressions.
@@ -1324,8 +1360,8 @@ The simplest law is perhaps |square i = -1| from the start of
 \refSec{sec:complexcase},
 %
 \begin{code}
-propImagUnit :: Bool
-propImagUnit =  Times ImagUnit ImagUnit === ToComplex (-1)
+propI2 :: Bool
+propI2 =  Mul I2 I2 === ToComplex (-1)
 \end{code}
 %
 Note the we use a new operator here, |(===)|.
@@ -1374,16 +1410,16 @@ Other desirable laws are that |+| and |*| should be associative and
 commutative and |*| should distribute over |+|:
 %if false
 \begin{code}
-propAssocPlus      :: (Num a, SemEq a) => a -> a -> a -> Bool
-propDistTimesPlus  :: (Num a, SemEq a) => a -> a -> a -> Bool
+propAssocAdd      :: (Num a, SemEq a) => a -> a -> a -> Bool
+propDistMulAdd  :: (Num a, SemEq a) => a -> a -> a -> Bool
 \end{code}
 %endif
 \begin{code}
-propCommPlus   x y                   = {-"\quad"-}  x + y          ===  y + x
-propCommTimes  x y                   = {-"\quad"-}  x * y          ===  y * x
-propAssocPlus  x y z                 = {-"\quad"-}  (x + y) + z    ===  x + (y + z)
-propAssocTimes x y z                 =              (x * y) * z    ===  x * (y * z)
-propDistTimesPlus x y z {-"\quad"-}  =              x * (y + z)    ===  (x * y) + (x * z)
+propCommAdd     x y                = {-"\quad"-}  x + y          ===  y + x
+propCommMul     x y                = {-"\quad"-}  x * y          ===  y * x
+propAssocAdd    x y z              = {-"\quad"-}  (x + y) + z    ===  x + (y + z)
+propAssocMul    x y z              =              (x * y) * z    ===  x * (y * z)
+propDistMulAdd  x y z {-"\quad"-}  =              x * (y + z)    ===  (x * y) + (x * z)
 \end{code}
 
 These laws actually fail, but not due to any mistake in the
@@ -1392,8 +1428,8 @@ implementation of |evalE| in itself.
 To see this, let us consider associativity at different types:
 
 \begin{code}
-propAssocInt     = propAssocPlus ::  Int     -> Int     -> Int     -> Bool
-propAssocDouble  = propAssocPlus ::  Double  -> Double  -> Double  -> Bool
+propAssocInt     = propAssocAdd ::  Int     -> Int     -> Int     -> Bool
+propAssocDouble  = propAssocAdd ::  Double  -> Double  -> Double  -> Bool
 \end{code}
 %
 The first property is fine, but the second fails.
@@ -1430,11 +1466,11 @@ number type, which is parameterised on the underlying representation
 type for~|REAL|.
 %
 At the same time, to reduce the number of constructors, we combine
-|ImagUnit| and |ToComplex| to |ToComplexCart|, which corresponds to
+|I2| and |ToComplex| to |ToComplexCart|, which corresponds to
 the primitive form |a + bi| discussed above:
 %*TODO: perhaps explain more about the generalisation step.
 
-%TODO: Add as an exercise the version with I | ToComplex | Plus ... | Times ...
+%TODO: Add as an exercise the version with I | ToComplex | Add ... | Mul ...
 % See data blackboard/W1/20170116_114608.jpg, eval blackboard/W1/20170116_114613.jpg
 \label{sec:toComplexSyn}
 \begin{code}
@@ -1448,7 +1484,7 @@ toComplexSyn x = ToComplexCart x 0
 %
 From Appendix~\ref{app:CSem} we import |newtype Complex r = C (r ,
 r) deriving Eq| and the semantic operations |addC| and |mulC|
-corresponding to |plusD| and |timesD|.
+corresponding to |addD| and |mulD|.
 %
 \begin{code}
 evalCSyn :: Ring r => ComplexSyn r -> Complex r
@@ -1490,7 +1526,7 @@ uniformly, and roots are in general irrational.)
 %TODO: perhaps include
 % We can also state and check properties relating the semantic and the syntactic operations:
 %
-% |a + b = eval (Plus (embed a) (embed b))| for all |a| and |b|.
+% |a + b = eval (Add (embed a) (embed b))| for all |a| and |b|.
 \subsection{Generalising laws}
 \label{sec:generalising-laws}
 Some laws appear over and over again in different mathematical
@@ -1509,13 +1545,17 @@ we introduce a few definitions already here:
 |Distributive (⊗) (⊕) = Forall (a, b, c) ((a⊕b)⊗c = (a⊗c)⊕(b⊗c))|
 
 The above laws are \emph{parameterised} over some operators
-(|(⊛),(⊗),(⊕)|).  These laws will hold for some operators, but not for
-others.  For example, division is not commutative; taking the average
-of two quantities is commutative but not associative.\footnote{See
-  also \crefatpage{distributivity-as-homomorphism} for further
-  analysis of distributivity.}
-
-Such generalisation can be reflected in QuickCheck properties as well.
+(|(⊛),(⊗),(⊕)|).
+%
+These laws will hold for some operators, but not for others.
+%
+For example, division is not commutative; taking the average of two
+quantities is commutative but not associative.
+%
+(See also \crefatpage{distributivity-as-homomorphism} for further
+analysis of distributivity.)
+%
+Such generalisations can be reflected in QuickCheck properties as well.
 
 \begin{code}
 propAssoc :: SemEq a => (a -> a -> a) -> a -> a -> a -> Bool
@@ -1528,9 +1568,9 @@ Note that |propAssocA| is a higher order function: it takes a function |(⊛)|
 The property is also polymorphic: it works for many different types |a| (all
 types which have an |===| operator).
 
-Thus we can specialise it to |Plus|, |Times| and any other binary
-operator, and obtain some of the earlier laws (|propAssocPlus|,
-|propAssocTimes|).
+Thus we can specialise it to |Add|, |Mul| and any other binary
+operator, and obtain some of the earlier laws (|propAssocAdd|,
+|propAssocMul|).
 %
 The same can be done with distributivity.
 %
@@ -1556,11 +1596,11 @@ distributive laws.
 \begin{code}
 type QQ     =  Ratio Integer
 
-propAssocAdd :: (SemEq a, Num a) => a -> a -> a -> Bool
-propAssocAdd = propAssoc (+)
+propAssocAdd2 :: (SemEq a, Num a) => a -> a -> a -> Bool
+propAssocAdd2 = propAssoc (+)
 
--- timesD :: ComplexD -> ComplexD -> ComplexD
-timesD (CD (ar, ai)) (CD (br, bi)) = CD (ar*br - ai*bi, ar*bi + ai*br)
+-- mulD :: ComplexD -> ComplexD -> ComplexD
+mulD (CD (ar, ai)) (CD (br, bi)) = CD (ar*br - ai*bi, ar*bi + ai*br)
 
 instance Show ComplexD where
   show = showCD

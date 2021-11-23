@@ -11,20 +11,23 @@
 \section{Introduction}
 \label{sec:intro}
 
+%note: start
 This book started out as lecture notes aimed at covering the lectures and exercises of the
 BSc-level course ``Domain-Specific Languages of
 Mathematics'' (at Chalmers University of Technology and University of
 Gothenburg).
-%
+%note: aim
 The immediate aim of the \course{} is to improve the mathematical
 education of computer scientists and the computer science education of
 mathematicians.
-%
+%note: future
 We believe the \course{} can be the starting point for far-reaching
 changes, leading to a restructuring of the mathematical training
 of engineers in particular, but perhaps also for mathematicians
 themselves.
 
+%note: different style than elsewhere in Ch.0
+%note: start of "identify a gap" (to later fill with "the book"/course)
 Computer science, viewed as a mathematical discipline, has certain
 features that set it apart from mainstream mathematics.
 %
@@ -76,7 +79,9 @@ such as real and complex analysis, or linear algebra.
 
 This is a serious problem, because this lack of competence tends to
 infect the design of the entire curriculum.
+%note: end of "identify a gap"
 
+%note: start of "fill the gap"
 We propose that a focus on \emph{domain-specific languages} (DSLs) can
 be used to repair this unsatisfactory state of affairs.
 %
@@ -107,7 +112,7 @@ addition to an engineering curriculum.
 %
 Our key idea is to apply the DSL approach to a rich source of domains and
 applications: mathematics.
-%
+%note: short ToC (Table of Contents)
 Indeed, mathematics offers countless examples of DSLs: in this book we cover
 complex arithmetics        (\cref{sec:DSLComplex}), %Ch1
 sets and logic             (\cref{sec:logic}),      %Ch2
@@ -122,8 +127,11 @@ probability theory         (\cref{ch:probability-theory}). %Ch9
 The idea that the various branches of mathematics are in fact DSLs
 embedded in the ``general purpose language'' of set theory was (even
 if not expressed in these words) the driving idea of the Bourbaki
-project\ci{what to cite: \href{https://en.wikipedia.org/wiki/Nicolas_Bourbaki}{wikipedia}?, \href{https://www.bourbaki.fr/}{Bourbaki association homepage}?, first book(s)?}, which exerted an enormous influence on present day
-mathematics.
+project\footnote{The Bourbaki group is the pseudonym of a group of
+mathematicians publishing a series of textbooks in modern pure
+mathematics, starting in the 1930:s. See
+\href{https://en.wikipedia.org/wiki/Nicolas_Bourbaki}{wikipedia}.}
+which exerted an enormous influence on present day mathematics.
 
 Hence, the topic of this \course{} is \emph{DSLs of Mathematics (DSLM)}.
 %
@@ -139,7 +147,7 @@ The increased formality is justified by the need to implement
 %
 We provide a wide range of applications of the DSLs introduced, so
 that the new concepts can be seen ``in action'' as soon as possible.
-%
+%TODO: check how "in action" is actually followed up / implemented
 For the computer science students, one aspect is to bring the
 ``computer aided learning'' present in feedback from the compiler from
 programming to also help in mathematics.
@@ -153,7 +161,7 @@ new domain.
 Second, they should be able to handle new mathematical areas using the
 computer science perspective.
 %
-(For the detailed learning outcomes, see Figure~\ref{fig:LearningOutcomes}.)
+(For the detailed learning outcomes, see Figure~\ref{fig:LearningOutcomes}.\pj{perhaps merge learning outcomes with ToC above})
 %
 \begin{wrapfigure}[26]{R}{0.5\textwidth}
 \small
@@ -185,6 +193,7 @@ computer science perspective.
   \label{fig:LearningOutcomes}
 \end{wrapfigure}
 
+%*TODO: Check if this form is actually carried out (perhaps update)
 To achieve these objectives, the course consists of a sequence of case
 studies in which a mathematical area is first presented, followed by a
 careful analysis that reveals the domain elements needed to build a
@@ -207,9 +216,12 @@ The DSL is then implemented in Haskell.
 Finally, limitations of the DSL are assessed and the possibility for
 further improvements discussed.
 
-In the first instances, the course is an elective course for the
-second year within programmes such as CSE\footnote{CSE = Computer
-  Science \& Engineering = Datateknik = D}, SE, and Math.
+In the first instances, the course is an elective course\pj{Too much
+  focus on course, not book} for the second year within programmes
+such as CSE\footnote{CSE = Computer Science \& Engineering =
+Datateknik = D}, SE, and Math.
+%
+\pj{PREREQ1: merge with formal prereq text below at PREREQ2}
 %
 The potential students will have all taken first-year mathematics
 courses, and the only prerequisite which some of them will not satisfy
@@ -220,6 +232,8 @@ CSE programmes) shows, math students are usually able to catch up fairly
 quickly, and in any case we aim to keep to a restricted subset of
 Haskell (no ``advanced'' features are required).
 
+\pj{Probably move course data to appendix}
+%note: partial evidence that the course "works"
 To assess the impact in terms of increased quality of education, we
 planned to measure how well the students do in ulterior courses that
 require mathematical competence (in the case of engineering students)
@@ -266,6 +280,8 @@ details are explained by
 \end{table}
 %TODO: perhaps add later statistics
 
+\pj{Move old history to appendix}
+%
 The work that leads up to the current \course{} started in 2014 with
 an assessment of what prerequisites we can reasonably assume and what
 mathematical fields the targeted students are likely to encounter in
@@ -293,6 +309,7 @@ In the following years we used the feedback from students following
 the standard course evaluation in order to improve and further develop
 the course material into complete lecture notes, and now a book.
 
+\pj{Probably cut - at least move to appendix}
 \paragraph{Future work} includes involving faculty from CSE and
 mathematics in the development of other mathematics courses with the
 aim to incorporate these ideas also there.
@@ -315,11 +332,12 @@ perspective are adopted in the first-year mathematics courses.
         }
 \jp{The whole chapter could have this title. It seems that what follows should be folded seamlessly into the rest}
 
+%note: what the book is about
 Software engineering involves modelling very different domains (e.g.,
 business processes, typesetting, natural language, etc.) as software
 systems.
 %
-The main idea of this course is that this kind of modelling is also
+The main idea of this book is that this kind of modelling is also
 important when tackling classical mathematics.
 %
 In particular, it is useful to introduce abstract datatypes to
@@ -336,7 +354,9 @@ that we develop in the form of domain-specific languages, and we will see
 how each mathematical theory gives rise to one or more such languages,
 and appreciate that many important theorems establish ``translations''
 between them.
+%TODO: Is the claim about "translations" true for the book?
 
+%note: motivates use of FP and choice of topics
 Mathematical objects are immutable, and, as such, functional
 programming languages are a very good fit for describing them.
 %
@@ -349,14 +369,15 @@ expect all students to be familiar with them (for example, limits of
 sequences, continuous functions, derivatives) or because they can be
 useful in many applications (e.g., Laplace transforms, linear algebra).
 
+\pj{Move to appendix about the course + project history}
 In the first few years, the enrolment and results of the DSLsofMath
 course itself was as follows:
 
 \begin{center}
-\begin{tabular}{lrrrrr}
-Year           & '16 & '17 & '18 & '19 & '20\\\hline
-Student count  &  28 &  43 &  39 &  59 &  50\\
-Pass rate (\%) &  68 &  58 &  89 &  73 &  68\\
+\begin{tabular}{lrrrrrr}
+Year           & '16 & '17 & '18 & '19 & '20& '21\\\hline
+Student count  &  28 &  43 &  39 &  59 &  50& 67\\
+Pass rate (\%) &  68 &  58 &  89 &  73 &  68& 72\\
 \end{tabular}
 \end{center}
 
@@ -368,7 +389,7 @@ programme students.
 
 The prerequisites of the underlying course may give a hint about what
 is expected of the reader.
-\jp{This was stated in different terms above, restructuring needed}
+\jp{PREREQ2: This was stated in different terms above (PREREQ1), restructuring needed}
 %
 But feel free to keep going and fill in missing concepts as you go
 along.
@@ -381,14 +402,18 @@ The student should have successfully completed
 \item an additional 22.5 hec of any mathematics or computer science courses.
 \end{itemize}
 
-Informally: One full time year (60 hec) of university level study
-consisting of a mix of mathematics and computer science.
+\pj{Move this part up (or cut what is above in this section)}
+Informally: One full time year (60 hec = 60 ``higher education
+credits'' ) of university level study consisting of a mix of
+mathematics and computer science.
+
+
 
 Working knowledge of functional programming is helpful, but it should
 be possible to pick up quite a bit of Haskell along the way.
 % \section{Roadmap}
 %TODO: write about the book plan and internal dependencies
-\jp{Reading guide as dependency graph}
+\jp{Reading guide as dependency graph - see also ``short ToC'' note above + \ref{fig:LearningOutcomes}}
 
 
 \section{Notation and code convention}
@@ -426,9 +451,14 @@ repository.
 
 %
 The reader is encouraged to experiment with the examples to get a
-feeling for how they work. A more radical, but perhaps more
-instructive alternative would be to recreate all the Haskell examples
-from scratch.
+feeling for how they work.
+%
+But instead of cutting and pasting code from the PDF, please use the
+source code in the repository to avoid confusion from indentation and
+symbols.
+%
+A more radical, but perhaps more instructive alternative would be to
+recreate all the Haskell examples from scratch.
 
 Each chapter ends with exercises to help the reader practice the
 concepts just taught.
@@ -443,7 +473,8 @@ Sometimes the chapter text contains short, inlined questions, like
 ``Exercice~\ref{exc:fmap}: what does function composition do to a sequence?''.
 %
 In such cases there is some more explanation in the exercises section
-at the end of the chapter.
+at the end of the chapter, and the exercise number is a link to the
+correct place in the document.
 
 In several places the book contains an indented quote of a definition
 or paragraph from a mathematical textbook, followed by detailed
@@ -454,6 +485,7 @@ and implementing mathematical text.
 
 \section{Common pitfalls with traditional mathematical notation}
 \label{sec:pitfalls}
+%note: a bit odd placement of this section in a chapter "about this book"
 
 \subsection{A function or the value at a point?}
 
@@ -539,3 +571,6 @@ This work was partially supported by the projects GRACeFUL (grant
 agreement No 640954) and CoeGSS (grant agreement No 676547), which
 have received funding from the European Union’s Horizon 2020 research
 and innovation programme.
+
+The authors also wish to thank several anonymous reviewers and
+students who have contributed with many suggestions for improvements.

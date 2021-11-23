@@ -5,7 +5,7 @@
 %include E1_1.lhs
 %include E1_2.lhs
 
-\begin{exercise}\label{exc:counting}
+\begin{exercise}\label{exc:counting}\textbf{[Important]}
   Counting values.
   %
   Assume we have three finite types |a|, |b|, |c| with cardinalites
@@ -24,8 +24,7 @@
   algebra when working with types.
 \end{exercise}
 
-\begin{exercise}
-  Counting |Maybe|s. For each of the following types, enumerate and
+\begin{exercise}{Counting |Maybe|s.} For each of the following types, enumerate and
   count the values:
   \begin{enumerate}
   \item |Bool -> Maybe Bool|
@@ -37,7 +36,7 @@
   adequate notation for mathematical concepts'': what is a suitable
   notation for values of type |Bool|, |Maybe a|, |a->b|, |(a,b)|, etc.?
 %
-
+\pj{Solve in the book to show ``suitable notation''.}
 
 \end{exercise}
 

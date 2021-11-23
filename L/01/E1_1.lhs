@@ -1,16 +1,16 @@
 \begin{exercise}
-  Consider the following data type for simple arithmetic expressions:
+  Consider the following data type for arithmetic expressions:
   %
 \begin{code}
 data Exp  =  Con Integer
-          |  Exp  `Plus`   Exp
-          |  Exp  `Minus`  Exp
-          |  Exp  `Times`  Exp
+          |  Plus   Exp  Exp
+          |  Minus  Exp  Exp
+          |  Times  Exp  Exp
   deriving (Eq, Show)
 \end{code}
   %
-  Note the use of ``backticks'' around |Plus| etc.\ which makes it
-  possible to use a name as an infix operator.
+%  Note the use of ``backticks'' around |Plus| etc.\ which makes it
+%  possible to use a name as an infix operator.
   %
   \begin{enumerate}
    %
@@ -21,11 +21,14 @@ data Exp  =  Con Integer
   \item |a3 = 8*(2 + 11) - (3 + 7)*(a1 + a2)|
   \end{enumerate}
     %
-    \item Create a function |eval :: Exp -> Integer| that takes a value of the |Exp| data type
-       and returns the corresponding number (for instance, |eval ((Con 3) `Plus` (Con 3)) == 6|).
-       Try it on the expressions from the first part, and verify that it works as expected.
+    \item Create a function |eval :: Exp -> Integer| that takes a
+      value of the |Exp| data type and returns the corresponding
+      number (for instance, |eval a2 == 4|).
+      %
+      Try it on the expressions from the first part, and verify that
+      it works as expected.
     %
-    \item Consider the following expression:
+    \item Consider the following mathematical expression with variables:
        \begin{spec}
          c1 = (x - 15)*(y + 12)*z
           where  x = 5; y = 8; z = 13

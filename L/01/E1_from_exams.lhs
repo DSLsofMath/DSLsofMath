@@ -19,8 +19,8 @@
 
     \begin{spec}
       (a + b) + c = a + (b + c)
-      0 + a = a + 0 = a
       a + b = b + a
+      0 + a = a + 0 = a
     \end{spec}
 
   \item |(R, ⋅, 1)| is a monoid with identity element |1|:

@@ -158,6 +158,7 @@
 %
   and, finally, to organize the resulting functions and types in
   domain-specific languages.
+\pj{Remove abstract or replace by text from reviews}
 
 \vfill
 

@@ -14,6 +14,7 @@ type REAL = Double
 %endif
 
 \section{Polynomials}
+\pj{Maybe a bit long as a section}
 
 Again we take as starting point a definition from
   \cite{adams2010calculus}, this time from page 39:
