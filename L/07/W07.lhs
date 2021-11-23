@@ -795,7 +795,7 @@ evalP :: Vector REAL {0, ..., n} -> (REAL -> REAL)
 evalP (V v) x = sum (map (\ i -> v i * x^i) [0..n])
 \end{spec}
 
-Let us know turn to the representation of the derivative of
+Let us now turn to the representation of the derivative of
 polynomials.  We have already seen in the previous section that the
 |derive| function is a linear transformation. We also know that it
 takes polynomials of degree |n+1| to polynomials of degree |n|, and as
