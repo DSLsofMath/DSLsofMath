@@ -68,7 +68,7 @@ Additionally, every vector space must satisfy the following laws:
   \cref{ex:endofunction}):
   \begin{spec}
     (*^) one          = id
-    (*^) (s * t)      = ((*^) s . (*^) t)
+    (*^) (s * t)      = (*^) s . (*^) t
   \end{spec}
 Applying the vector |a| everywhere gives the familiar form for these laws:
   \begin{spec}
