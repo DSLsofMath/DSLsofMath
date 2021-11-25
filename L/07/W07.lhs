@@ -2181,7 +2181,7 @@ getRow = id
 % ... gets too complicated for this chapter
 
 \subsection{One-dimensional space}
-
+\label{sec:one-elem-vector}
 The following instance means that we can treat scalar fields as one-dimensional vector spaces:
 \begin{code}
 instance Field s => VectorSpace s s where (*^) = (*)
