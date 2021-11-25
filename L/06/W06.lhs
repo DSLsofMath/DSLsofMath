@@ -145,8 +145,12 @@ and similarly for the second term.
 %
 (For a formal proof we also need to check that this assumption can be
 discharged.\pj{Do the formal proof - perhaps in appendix.}
-\jp{It seems to me that the reasoning is as follows. We assume earlier that there exists |(*)| such that |evalAll (e1 :*: e2) = evalAll e1 * evalAll e2|.
-We use this assumption here. Then we find the definition below. This solution satisfies the equation if it exists. Here "exists" means computable.
+\jp{It seems to me that the reasoning is as follows.
+We assume earlier that there exists |(*)| such that
+|evalAll (e1 :*: e2) = evalAll e1 * evalAll e2|.
+We use this assumption here. Then we find the definition below.
+This solution satisfies the equation if it exists.
+Here "exists" means computable.
 Because it produces lists, we only need to check that the solution does
 not diverge/is productive. 
 
