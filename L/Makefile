@@ -44,7 +44,8 @@ BOOKDEPS=DSLsofMath.lhs dslm.format ref.bib  \
              07/W07.lhs 07/E7.lhs \
              08/W08.lhs 08/E8.lhs \
              09/W09.lhs \
-             End.lhs
+	     Appendix/DSLMCourse.lhs
+#             End.lhs
 
 %.tex: %.lhs $(BOOKDEPS)
 	lhs2TeX --poly $< > $@

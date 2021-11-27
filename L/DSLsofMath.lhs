@@ -178,9 +178,10 @@
 %include 07/W07.lhs
 %include 08/W08.lhs
 %include 09/W09.lhs
-%include End.lhs
+% %include End.lhs
 
 
+% ----------------------------------------------------------------
 \appendix
 
 %if lectureNotes
@@ -202,6 +203,7 @@
 \includeexam{2017-08}
 %endif
 
+%include Appendix/DSLMCourse.lhs
 %include 01/CSem.lhs
 
 \bibliographystyle{abbrvnat}
