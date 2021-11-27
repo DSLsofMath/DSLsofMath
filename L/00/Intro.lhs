@@ -8,12 +8,50 @@
         }
 \label{ch:intro}
 
-\section{Introduction}
+%\section{Introduction}
 \label{sec:intro}
 
-%note: start
-This book started out as lecture notes aimed at covering the lectures and exercises of the
-BSc-level course ``Domain-Specific Languages of
+%note: what the book is about
+Software engineering involves modelling very different domains (e.g.,
+business processes, typesetting, natural language, etc.) as software
+systems.
+%
+The main idea of this book is that this kind of modelling is also
+important when tackling classical mathematics.
+%
+In particular, it is useful to introduce abstract datatypes to
+represent mathematical objects, to specify the mathematical operations
+performed on these objects, to pay attention to the ambiguities of
+mathematical notation and understand when they express overloading,
+overriding, or other forms of generic programming.
+%
+We shall emphasise the dividing line between syntax (what mathematical
+expressions look like) and semantics (what they mean).
+%
+This emphasis leads us to naturally organise the software abstractions
+that we develop in the form of domain-specific languages, and we will see
+how each mathematical theory gives rise to one or more such languages,
+and appreciate that many important theorems establish ``translations''
+between them.
+%TODO: Is the claim about "translations" true for the book?
+
+%note: motivates use of FP and choice of topics
+Mathematical objects are immutable, and, as such, functional
+programming languages are a very good fit for describing them.
+%
+We shall use Haskell as our main vehicle, but only at a basic level,
+and we shall introduce the elements of the language as they are
+needed.
+%
+The mathematical topics treated have been chosen either because we
+expect all students to be familiar with them (for example, limits of
+sequences, continuous functions, derivatives) or because they can be
+useful in many applications (e.g., Laplace transforms, linear algebra).
+
+\section{Origins}
+%note: historic background
+This book started out as lecture notes aimed at covering the lectures
+and exercises of the BSc-level course ``Domain-Specific Languages of
 Mathematics'' (at Chalmers University of Technology and University of
 Gothenburg).
 %note: aim
@@ -196,55 +234,24 @@ programming.
 But we aim to keep to a restricted subset of Haskell (no ``advanced''
 features are required).
 
-\section{About this
-%if book
-    book
-%else
-         course
-%endif
-        }
-%
-\jp{The whole chapter could have this title. It seems that what
-  follows should be folded seamlessly into the rest}
+\section{Who should read this book?}
 
-%note: what the book is about
-Software engineering involves modelling very different domains (e.g.,
-business processes, typesetting, natural language, etc.) as software
-systems.
-%
-The main idea of this book is that this kind of modelling is also
-important when tackling classical mathematics.
-%
-In particular, it is useful to introduce abstract datatypes to
-represent mathematical objects, to specify the mathematical operations
-performed on these objects, to pay attention to the ambiguities of
-mathematical notation and understand when they express overloading,
-overriding, or other forms of generic programming.
-%
-We shall emphasise the dividing line between syntax (what mathematical
-expressions look like) and semantics (what they mean).
-%
-This emphasis leads us to naturally organise the software abstractions
-that we develop in the form of domain-specific languages, and we will see
-how each mathematical theory gives rise to one or more such languages,
-and appreciate that many important theorems establish ``translations''
-between them.
-%TODO: Is the claim about "translations" true for the book?
+The book is recommended for Haskell developers who are learning Math
+and would like to use Haskell to create concrete models out of
+abstract Math concepts to improve their understanding.
 
-%note: motivates use of FP and choice of topics
-Mathematical objects are immutable, and, as such, functional
-programming languages are a very good fit for describing them.
+The book explores the connection between mathematical structures and
+type-based programs in Haskell.
 %
-We shall use Haskell as our main vehicle, but only at a basic level,
-and we shall introduce the elements of the language as they are
-needed.
-%
-The mathematical topics treated have been chosen either because we
-expect all students to be familiar with them (for example, limits of
-sequences, continuous functions, derivatives) or because they can be
-useful in many applications (e.g., Laplace transforms, linear algebra).
+If you enjoyed ``The Haskell Road to Logic, Maths and Programming''
+\citep{doets-haskellroadto-2004}, you will also enjoy this book.
 
-\section{Who should read this textbook?}
+It is also a book for the mathematically interested who wants to
+explore functional programming and domain-specific languages.
+%
+The book helps put into perspective the domains of Mathematics and
+Functional Programming and shows how Computer Science and Mathematics
+can be usefully studied together.
 
 Informal prerequisites: one full time year of university level study
 consisting of a mix of mathematics and computer science.
