@@ -241,7 +241,7 @@ and would like to use Haskell to create concrete models out of
 abstract Math concepts to improve their understanding.
 
 The book explores the connection between mathematical structures and
-type-based programs in Haskell.
+Type Driven Development of Haskell programs.
 %
 If you enjoyed ``The Haskell Road to Logic, Maths and Programming''
 \citep{doets-haskellroadto-2004}, you will also enjoy this book.

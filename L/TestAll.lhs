@@ -4,9 +4,9 @@ import DSLsofMath.W01
 -- import DSLsofMath.W01.Test -- to avoid dependency on QuickCheck
 import DSLsofMath.CSem
 
-import DSLsofMath.W02
-import FOL
-import PropositionalLogic
+-- import DSLsofMath.W02
+import DSLsofMath.FOL
+import DSLsofMath.PropositionalLogic
 
 import DSLsofMath.W03
 import DSLsofMath.Derive

@@ -1,5 +1,7 @@
 > module DSLsofMath.W01.Test where
 > import DSLsofMath.W01
+> import DSLsofMath.ComplexSem (ComplexD (CD))
+> import DSLsofMath.ComplexSyn
 > import DSLsofMath.CSem hiding ((/))
 > import Test.QuickCheck
 > import Prelude hiding (flip)
@@ -8,7 +10,7 @@ We may also need the Haskell standard library version for some testing later:
 
 > import qualified Data.Complex as DC
 
-> fromC (C (x , y)) = Plus (ToComplex x) (Times (ToComplex y) ImagUnit)
+> fromC (C (x , y)) = Add (ToComplex x) (Mul (ToComplex y) I2)
 
 > instance (Num r, Arbitrary r) => Arbitrary (Complex r) where
 >   arbitrary = arbitraryC arbitrary
@@ -25,33 +27,33 @@ We may also need the Haskell standard library version for some testing later:
 >   shrink = shrinkCE
 
 > arbitraryCESized :: Int -> Gen ComplexE
-> arbitraryCESized n | n <= 0 = oneof [ return ImagUnit
+> arbitraryCESized n | n <= 0 = oneof [ return I2
 >                                     , ToComplex <$> arbitrary
 >                                     , fromC <$> arbitrary
 >                                     ]
 >                    | otherwise = do
->   op <- elements [Plus, Times]
+>   op <- elements [Add, Mul]
 >   let arbHalf = arbitraryCESized (n `div` 2)
 >   op <$> arbHalf <*> arbHalf
 
 
 > shrinkCE :: ComplexE -> [ComplexE]
-> shrinkCE ImagUnit = [ToComplex 0]
+> shrinkCE I2 = [ToComplex 0]
 > shrinkCE (ToComplex r) = ToComplex <$> shrink r
-> shrinkCE (Times r ImagUnit) = r:shrink r
-> shrinkCE (Plus  l (Times r ImagUnit)) = [l, Times r ImagUnit]
-> shrinkCE (e@(Plus  l r)) = fromCD (evalE e) :
->   [l, r] ++ [Plus  l r' | r' <- shrink r]
->          ++ [Plus  l' r | l' <- shrink l]
-> shrinkCE (e@(Times l r)) = fromCD (evalE e) :
->   [l, r] ++ [Times l r' | r' <- shrink r]
->          ++ [Times l' r | l' <- shrink l]
+> shrinkCE (Mul r I2) = r:shrink r
+> shrinkCE (Add  l (Mul r I2)) = [l, Mul r I2]
+> shrinkCE (e@(Add  l r)) = fromCD (evalE e) :
+>   [l, r] ++ [Add  l r' | r' <- shrink r]
+>          ++ [Add  l' r | l' <- shrink l]
+> shrinkCE (e@(Mul l r)) = fromCD (evalE e) :
+>   [l, r] ++ [Mul l r' | r' <- shrink r]
+>          ++ [Mul l' r | l' <- shrink l]
 
 > main = do
 >   quickCheck propFromCD
->   quickCheck $ expectFailure (propAssocPlus     :: REAL->REAL->REAL->Bool)
->   quickCheck $ expectFailure (propAssocTimes    :: REAL->REAL->REAL->Bool)
->   quickCheck $ expectFailure (propDistTimesPlus :: REAL->REAL->REAL->Bool)
+>   quickCheck $ expectFailure (propAssocAdd    :: REAL->REAL->REAL->Bool)
+>   quickCheck $ expectFailure (propAssocMul    :: REAL->REAL->REAL->Bool)
+>   quickCheck $ expectFailure (propDistMulAdd  :: REAL->REAL->REAL->Bool)
 
 > propAssocSmall :: Int -> Int -> Int -> Bool
 > propAssocSmall m n k = propAssocAdd (fromIntegral m) (fromIntegral n) ((1/fromIntegral k) :: Double)

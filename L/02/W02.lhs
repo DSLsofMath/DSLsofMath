@@ -16,18 +16,20 @@ first order logic, but also applications to mathematics: prime
 numbers, (ir)rationals, limit points, limits, etc.\ and some Haskell
 concepts.
 
-%if False
-\begin{code}
-module DSLsofMath.W02 where
-\end{code}
-%endif
-
+%% module PropositionalLogic where
 %include PropositionalLogic.lhs
+
+%% module FOL where
 %include FOL.lhs
+
+%% Only text
 %include SetTheory.lhs
+
+%% Only text
 %include Examples.lhs
+
+%% Only text
 %include CalculusConcepts.lhs
 
-
-
+%% A bit of code
 %include E2.lhs

@@ -1147,7 +1147,7 @@ project_sigma_equations f a g h =
 \begin{proof}
 We check the equivalence by using semantic equality:
   \begin{code}
-project_sigma_equations f a g h = 
+project_if_equations c a b s g = 
       integrator (Project (if c then a else b) s) g
   === -- by def
       integrator s ((if c then a else b) . g)

@@ -19,25 +19,12 @@ the code for this chapter is placed in a module called
 %
 As mentioned earlier, the code is available on
 \href{https://github.com/DSLsofMath/DSLsofMath}{GitHub}.
-%
-\TODO{It would also be useful to split up these imports into those
-  needed early (|Natural|, |Ratio|) and those (|CSem|) only needed in
-  subsection \cref{sec:complexcase} (to be introduced later).}
 
-\begin{spec}
-module DSLsofMath.W01 where
-import Numeric.Natural (Natural)
-import Data.Ratio (Ratio, (%))
-\end{spec}
-
-%if False
 \begin{code}
 module DSLsofMath.W01 where
-import DSLsofMath.CSem (Complex(C), addC, mulC, Ring)
 import Numeric.Natural (Natural)
 import Data.Ratio (Ratio, (%))
 \end{code}
-%endif
 
 These lines constitute the module header which usually starts a Haskell
 file.
@@ -55,10 +42,10 @@ the infix operator |(%)| used to construct ratios
 Dividing up the world (or problem domain) into values of different
 types is one of the guiding principles of this \course{}.
 %
-\pj{Mention Type Driven Development (perhaps already in Chapter 0)}
-%
 We will see that keeping track of types can guide the development of
 theories, languages, programs and proofs.
+%
+We follow a Type Driven Development style of programming.
 
 \subsection{What is a type?}
 
@@ -80,14 +67,23 @@ two-element set |{False, True}|.
 Similarly, we have the type |Nat| whose semantics is the infinite set
 of natural numbers |{0, 1, 2, ...}|.
 %
-Other common mathematical types are |ZZ| of integers, |QQ| of rationals, and |REAL|
-of real numbers.
+Other common mathematical types are |ZZ| of integers, |QQ| of
+rationals, and |REAL| of real numbers.
 %
+The judgment |e : t| states that the expression |e| has type |t|.
+%
+For example |False : Bool|, |2 : Nat|, and |3.14 : REAL|.
+%
+In Haskell, double colon (|::|) is used for the typing judgment, but
+we often use just single colon (|:|) in the mathematical text.
 
-So far the syntax is trivial --- just names. Every time, the semantic
-is a (constant) set. But we can also combine these names to form more
-complex types. For our purposes the most important construction is the
-function type.
+So far the syntax for types is trivial --- just names.
+%
+Every time, the semantic is a (constant) set.
+%
+But we can also combine these names to form more complex types.
+%
+For our purposes the most important construction is the function type.
 %
 \subsection{Functions and their types}
 \pj{too long (split into subsections or at least paragraphs)}
@@ -96,22 +92,19 @@ For any two type expressions |A| and |B| we can form the function type
 |A -> B|.
 %
 Its semantics is the set of ``functions from |A| to |B|'' (formally:
-functions from the semantics of |A| to the semantics of |B|).\pj{delay / rewrite footnote}
-\footnote{The only way to be precise about semantics is to use a
-  formal language, which itself comes with its own syntax. So semantics sometimes does not seem to be that
-  much different from syntax, as in this example.
-  %
-  Fortunately, in the rest of this \course{}, we will be describing
-  domains where the semantics is gives more insight than here.}
+functions from the semantics of |A| to the semantics of |B|).
 %
+%\pj{delay / rewrite footnote}
+%\footnote{The only way to be precise about semantics is to use a
+%  formal language, which itself comes with its own syntax. So semantics sometimes does not seem to be that
+%  much different from syntax, as in this example.
+%  %
+%  Fortunately, in the rest of this \course{}, we will be describing
+%  domains where the semantics is gives more insight than here.}
+%note: first use of single colon for "has type"
 As an example, the semantics of |BB -> BB| is a set of four functions:
-|{const False, id, not, const True}| where |not : BB -> BB|\pj{Explain
-  single colon and double colon for ``has type'' relation - probably
-  earlier} is boolean negation.\pj{delay / rewrite
-  remark until PARTIAL}\pedantic{Additionally, in Haskell, one has to deal with
-  diverging computations. These induce very subtle difficulties which
-  we mention later. Fortunately, in the rest of this \course{}, we can
-  largely ignore those subtleties.}
+|{const False, id, not, const True}| where |not : BB -> BB| is boolean
+negation.
 %
 The function type construction is very powerful, and can be used to
 model a wide range of concepts in mathematics (and the real world).
@@ -125,6 +118,7 @@ for numbers.
 For each type |A| there is an \emph{identity function} |idA : A -> A|.
 %
 In Haskell all of these functions are defined once and for all as follows:
+%note: first use of double colon
 \begin{code}
 id :: a -> a
 id x = x
@@ -148,7 +142,9 @@ const :: a -> b -> a
 const x _ = x
 \end{code}
 %
-\pj{Perhaps explain underscore}
+The underscore (|_|) is here used instead of a variable name (like
+|y|) which is not needed on the right hand side (RHS) of the equality
+sign.
 
 %note: "arity" is new terminology - worth collecting in a table or register to find it easy.
 The term ``arity'' is used to describe how many arguments a function
@@ -159,7 +155,7 @@ An |n|-argument function has arity |n|.
 For small |n| special names are often used: binary means arity 2 (like
 |(+)|), unary means arity 1 (like |negate|) and nullary means arity 0
 (like |"hi!"|).
-\pj{perhaps add something about tupling, currying and arity --- check Idris intro}
+%*TODO: perhaps add something about tupling, currying and arity --- check Idris intro
 
 \paragraph{Higher-order functions.}
 We can also construct functions which manipulate functions.
@@ -183,10 +179,13 @@ them.
 %
 The syntax is |\x -> b|, where |b| is any expression. For example, the
 identity function can be written |\x -> x|, and the constant function
-|\x y -> x|.
+|\x _ -> x|.
 %
-\pj{Perhaps use underscore also here as in |const| def. above.}
-\pj{Explain the backslash syntax rendered as lambda.}
+The ASCII syntax uses backslash to start the lambda expression, but
+we render it as a greek lower case lambda.
+
+%note: perhaps note that λ is a proper character, to be used in
+%      identifiers, and cannot be used instead of backslash.
 
 \paragraph{Function composition}
 
@@ -248,8 +247,6 @@ Haskell functions.
 %
 Some Haskell ``functions'' are not defined for all inputs --- they are
 \emph{partial} functions.
-%
-\pj{PARTIAL: Here could be a better place for the footnote about partial functions earlier}
 %
 Simple examples include |head :: [a] -> a| which is not defined for
 the empty list and |(1/) :: REAL -> REAL| which is not defined for
@@ -660,7 +657,7 @@ For reference, the either type is defined as follows in Haskell:
 %include Either.lhs
 %TODO at first use explain GADT syntax for |data| declaration 
 
-\section{Notation and abstract syntax for sequences}
+\subsection{Notation and abstract syntax for sequences}
 \label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
@@ -810,807 +807,19 @@ evaluation functions or predicates (like |lim| and |sum|).
 %*TODO: the concept of "run functions" has not yet been introduced
 
 % ----------------------------------------------------------------
+%include ComplexSem.lhs
 
-
-
-\section[A DSL of complex numbers]{A DSL of complex numbers\footnote{This part is partly based on material by
-\citet{TFPIE15_DSLsofMath_IonescuJansson} which appeared at the International
-Workshop on Trends in Functional Programming in Education, 2015.}
-}
-\label{sec:complexcase}
-\pj{May benefit from more "sectioning" structure (now 5p + just one subsection of 3p)}
-
-We now turn to our first study of mathematics as found ``in the
-wild'': we will do an analytic reading of a piece of the
-introduction of complex numbers by \citet{adams2010calculus}.
-%
-We choose a simple domain to allow the reader to concentrate on the
-essential elements of our approach without the distraction of
-potentially unfamiliar mathematical concepts.
-%
-In fact, for this section, we temporarily pretend to forget any previous
-knowledge of complex numbers, and study the textbook of Adams and
-Essex as we would approach a completely new domain, even if that leads
-to a somewhat exaggerated attention to detail.
-
-Adams and Essex introduce complex numbers in Appendix A of their book.
-%
-The section \emph{Definition of Complex Numbers} starts with:
-
-\begin{quote}
-  We begin by defining the symbol |i|, called \textbf{the imaginary
-    unit}, to have the property
-
-<      square i = -1
-
-  Thus, we could also call |i| the square root of |-1| and denote it
-  |sqrt (-1)|.
-%
-  Of course, |i| is not a real number; no real number has a negative
-  square.
-\end{quote}
-
-%*TODO: Perhaps use this as an example of "specification by equation" pattern which is also used in the lab.
-At this stage, it is not clear what the type of |i| is meant to be, we
-only know that |i| is not a real number.
-%
-Moreover, we do not know what operations are possible on |i|, only
-that |square i| is another name for |-1| (but it is not obvious that,
-say |i * i| is related in way with |square i|, since the
-operations of multiplication and squaring have only been introduced so
-far for numerical types such as |Nat| or |REAL|, and not for
-``symbols'').
-
-For the moment, we introduce a type for the symbol |i|, and, since we
-know nothing about other symbols, we make |i| the only member of this
-type.
-%
-We use a capital |I| in the |data| declaration because a lowercase
-constructor name would cause a syntax error in Haskell.
-%
-For convenience we add a synonym |i = I|.
-%
-\begin{code}
-data ImagUnits = I
-
-i :: ImagUnits
-i = I
-\end{code}
-%
-We can give the translation from the abstract syntax to the concrete
-syntax as a function |showIU|:
-%
-\begin{code}
-showIU ::  ImagUnits       ->  String
-showIU     I               =   "i"
-\end{code}
-% \footnote{Here we could also redefine |sqrt| so that |sqrt(-1) = I|. Doing so would force generalising the codomain. Adam and Essex say that we 'can' do it, but it is unclear if we should, at least at this stage.}
-
-Next, in the book, we find the following definition:
-%
-\begin{quote}
-  \textbf{Definition:} A \textbf{complex number} is an expression of
-  the form
-
-<  a + bi {-"\qquad \mathrm{or} \qquad"-} a + ib,
-
-  where |a| and |b| are real numbers, and |i| is the imaginary unit.
-\end{quote}
-%
-This definition clearly points to the introduction of a syntax (notice
-the keyword ``form'').
-%
-This is underlined by the presentation of \emph{two} forms, which can
-suggest that the operation of juxtaposing |i| (multiplication?) is not
-commutative.
-
-A profitable way of dealing with such concrete syntax in functional
-programming is to introduce an abstract representation of it in the
-form of a datatype:
-%
-\begin{code}
-data ComplexA  =  CPlus1 REAL REAL ImagUnits  -- the form |a + bi|
-               |  CPlus2 REAL ImagUnits REAL  -- the form |a + ib|
-\end{code}
-%
-We can give the translation from the (abstract) syntax to its concrete
-representation as a string of characters, as the function |showCA|:
-%
-\begin{code}
-showCA ::  ComplexA       ->  String
-showCA     (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ showIU i
-showCA     (CPlus2 x i y)  =  show x ++ " + " ++ showIU i ++ show y
-\end{code}
-%
-Notice that the type |REAL| is not implemented yet (and it is not even
-clear how to implement it with fidelity to mathematical convention at
-this stage) but we want to focus on complex numbers so we will simply
-approximate |REAL| by double precision floating point numbers for now.
-%
-\begin{code}
-type REAL = Double
-\end{code}
-%
-\citeauthor{adams2010calculus} continue with examples:
-%
-\begin{quote}
-  For example, $3 + 2i$, $\frac{7}{2} - \frac{2}{3}i$,
-  $i\pi = 0 + i\pi$ and $-3 = -3 + 0i$ are all complex numbers.
-  %
-  The last of these examples shows that every real number can be
-  regarded as a complex number.
-\end{quote}
-%
-The second example is somewhat problematic: it does not seem to be of
-the form |a + bi|.
-%
-Given that the last two examples seem to introduce shorthand for
-various complex numbers, let us assume that this one does as well, and
-that |a - bi| can be understood as an abbreviation of |a + (-b)i|.
-%
-With this provision, in our Haskell encoding the examples are written as in
-\cref{tab:CompleSyntaxExamplesMathHaskell}.
-%
-\begin{table}[tbph]
-  \centering
-\begin{tabular}{lll}
-    \multicolumn{2}{@@{}l@@{}}{Mathematics} & Haskell
-\\\hline
-    $3 +2i$                        &  & |CPlus1 3 2 I|
-\\ $\frac{7}{2} - \frac{2}{3} i$ &=
-   $\frac{7}{2} + \frac{-2}{3} i$     & |CPlus1 (7/2) (-2/3) I|
-\\ $i \pi$ &= $0 + i \pi$             & |CPlus2 0 I pi|
-\\ $-3$ &= $-3 + 0 i$                 & |CPlus1 (-3) 0 I|
-\end{tabular}
-  \caption{Examples of notation and abstract syntax for some complex numbers.}
-  \label{tab:CompleSyntaxExamplesMathHaskell}
-\end{table}
-%
-%if False
-% This is just for testing.
-\begin{code}
-testC1 :: [ComplexA]
-testC1 =  [  CPlus1 3 2 I  ,    CPlus1 (7/2) (-2/3) I
-          ,  CPlus2 0 I pi ,    CPlus1 (-3) 0 I
-          ]
-testS1 = map showCA testC1
-\end{code}
-%endif
-%
-We interpret the sentence ``The last of these examples \ldots'' to
-mean that there is an embedding of the real numbers in |ComplexA|,
-which we introduce explicitly:
-%
-\begin{code}
-toComplex :: REAL -> ComplexA
-toComplex x = CPlus1 x 0 I
-\end{code}
-%
-Again, at this stage there are many open questions.
-%
-For example, we can assume that the mathematical expression $i 1$
-stands for the complex number |CPlus2 0 I 1|, but what about the
-expression $i$ by itself?
-%
-If juxtaposition is meant to denote some sort of multiplication, then
-perhaps $1$ can be considered as a unit, in which case we would have
-that $i$ abbreviates $i 1$ and therefore |CPlus2 0 I 1|.
-%
-But what about, say, $2 i$?
-%
-Abbreviations with |i| have only been introduced for the |ib| form,
-and not for the |bi| one!
-
-The text then continues with a parenthetical remark which helps us
-dispel these doubts:
-%
-\begin{quote}
-  (We will normally use |a + bi| unless |b| is a complicated
-  expression, in which case we will write |a + ib| instead.
-%
-  Either form is acceptable.)
-\end{quote}
-%
-This remark suggests strongly that the two syntactic forms are meant
-to denote the same elements, since otherwise it would be strange to
-say ``either form is acceptable''.
-%
-After all, they are acceptable according to the definition provided earlier.
-
-Given that |a + ib| is only ``syntactic sugar'' for |a + bi|, we can
-simplify our representation for the abstract syntax, merging the two
-constructors:
-%
-\begin{code}
-data ComplexB = CPlusB REAL REAL ImagUnits
-\end{code}
-%
-In fact, since it doesn't look as though the type |ImagUnits| will
-receive more elements, we can dispense with it altogether:
-%
-\begin{code}
-data ComplexC = CPlusC REAL REAL
-\end{code}
-%
-(The renaming of the constructor to |CPlusC| serves as a guard against
-the case that we have suppressed potentially semantically relevant syntax.)
-
-We read further:
-%
-\begin{quote}
-  It is often convenient to represent a complex number by a single
-  letter;
-%
-  |w| and |z| are frequently used for this purpose.
-%
-  If |a|, |b|, |x|, and |y| are real numbers, and |w = a + bi| and |z
-  = x + yi|, then we can refer to the complex numbers |w| and |z|.
-%
-  Note that |w = z| if and only if |a = x| and |b = y|.
-\end{quote}
-%
-First, let us notice that we are given an important semantic
-information:
-%
-to check equality for complex numbers, it is enough to check equality
-of the components (the arguments to the constructor |CPlusC|).
-%
-Another way of saying this is that |CPlusC| is injective.
-%
-In Haskell we could define this equality as:
-%
-\begin{code}
-instance Eq ComplexC where
-    CPlusC a b == CPlusC x y = a == x && b == y
-\end{code}
-%
-The line |instance Eq ComplexC| is there to explain to Haskell that
-|ComplexC| supports the |(==)| operator.
-%
-(The cognoscenti would prefer to obtain an equivalent definition using
-the shorter |deriving Eq| clause upon defining the type.)
-%*TODO: explain more about deriving - perhaps in a \footnote{}
-
-This shows that the set of complex numbers is, in fact, isomorphic
-with the set of pairs of real numbers, a point which we can make
-explicit by re-formulating the definition in terms of a |newtype|:
-%
-\begin{code}
-newtype ComplexD = CD (REAL, REAL)   deriving Eq
-\end{code}
-%
-As we see it, the somewhat confusing discussion of using ``letters''
-to stand for complex numbers serves several purposes.
-%
-First, it hints at the implicit typing rule that the symbols |z| and
-|w| should be complex numbers.
-%
-Second, it shows that, in mathematical arguments, one needs not
-abstract over two real variables: one can instead abstract over a
-single complex variable.
-%
-We already know that we have an isomorphism between pair of reals and
-complex numbers.
-%
-But additionally, we have a notion of \emph{pattern matching}, as in
-the following definition:
-%
-\begin{quote}
-  \textbf{Definition:} If |z = x + yi| is a complex number (where |x|
-  and |y| are real), we call |x| the \textbf{real part} of |z| and
-  denote it |Re (z)|.
-%
-  We call |y| the \textbf{imaginary part} of |z| and denote it |Im
-  (z)|:
-
-< Re(z)  =  Re (x + yi)  =  x
-< Im(z)  =  Im (x + yi)  =  y
-
-\end{quote}
-%
-This is rather similar to Haskell's \emph{as-patterns}:
-%
-\begin{code}
-re :: ComplexD        ->  REAL
-re z @ (CD (x , y))   =   x
-
-im :: ComplexD        ->  REAL
-im z @ (CD (x , y))   =   y
-\end{code}
-%
-a potential source of confusion being that the symbol |z| introduced
-by the as-pattern is not actually used on the right-hand side of the
-equations (although it could be).
-
-The use of as-patterns such as ``|z = x + yi|'' is repeated throughout
-the text, for example in the definition of the algebraic operations on
-complex numbers:
-%
-\begin{quote}
-  \textbf{The sum and difference of complex numbers}
-
-  If |w = a + bi| and |z = x + yi|, where |a|, |b|, |x|, and |y| are real numbers,
-  then
-
-< w  +  z  =  (a + x)  +  (b + y)i
-<
-< w  -  z  =  (a - x)  +  (b - y)i
-
-\end{quote}
-%
-With the introduction of algebraic operations, the language of complex
-numbers becomes much richer.
-%
-We can describe these operations in a \emph{shallow embedding} in
-terms of the concrete datatype |ComplexD|, for example:
-%
-\begin{code}
-addD :: ComplexD -> ComplexD -> ComplexD
-addD (CD (a , b)) (CD (x , y))  =  CD ((a + x) , (b + y))
-\end{code}
-%
-\noindent
-or we can build a datatype of ``syntactic'' complex numbers from the
-algebraic operations to arrive at a \emph{deep embedding} as seen in
-the next section.
-%
-Both shallow and deep embeddings will be further explained in
-\cref{sec:evalD,sec:expressions-of-one-var} (and several other places:
-this is a recurrent idea of the \course{}).
-
-At this point we can sum up the ``evolution'' of the datatypes introduced so far.
-%
-Starting from |ComplexA|, the type has evolved by successive
-refinements through |ComplexB|, |ComplexC|, ending up in |ComplexD|
-(see Fig.~\ref{fig:ComplexTypeSummary}).
-%
-We can also make a parameterised version of |ComplexD|, by noting
-that the definitions for complex number operations work fine for a
-range of underlying numeric types.
-%
-The operations for |ComplexSem| are defined in module |CSem|,
-available in Appendix~\ref{app:CSem}.
-%
-\begin{figure}[tbph]
-\begin{spec}
-data     ImagUnits     =  I
-data     ComplexA      =  CPlus1  REAL   REAL ImagUnits
-                       |  CPlus2  REAL   ImagUnits REAL
-data     ComplexB      =  CPlusB  REAL   REAL ImagUnits
-data     ComplexC      =  CPlusC  REAL   REAL
-newtype  ComplexD      =  CD  (REAL, REAL)   deriving Eq
-newtype  ComplexSem r  =  CS  (r , r)        deriving Eq
-\end{spec}
-%*TODO: explain deriving
-  \caption{Complex number datatype refinement (semantics).}
-  \label{fig:ComplexTypeSummary}
-\end{figure}
 
 % ----------------------------------------------------------------
-
-\subsection{A syntax for (complex) arithmetical expressions}
-\label{sec:complex-arithmetic}
-
-By following \citet{adams2010calculus}, we have arrived at representation which captures the
-\emph{semantics} of complex numbers.
-%
-This kind of representation is often called a ``shallow embedding''.
-%
-Now we turn to the study of the \emph{syntax} instead (``deep embedding'').
-
-We want a datatype |ComplexE| for the abstract syntax tree (AST) of
-expressions.
-%
-The syntactic expressions can later be evaluated to semantic values.
-%
-The concept of ``an evaluator'', a function from the syntax to the
-semantics, is something we will return to many times in this \course{}.
-%
-\begin{code}
-evalE :: ComplexE -> ComplexD
-\end{code}
-%
-The datatype |ComplexE| should collect ways of building syntactic
-expressions representing complex numbers and we have so far seen
-%
-the symbol |i|, an embedding from |REAL|, addition and multiplication.
-%
-We make these four \emph{constructors} in one recursive datatype as
-follows:
-%
-%**TODO rename |ImagUnit| to just |I| (and adapt explanation)
-%format I2 = I
-\begin{code}
-data ComplexE  =  I2
-               |  ToComplex REAL
-               |  Add   ComplexE  ComplexE
-               |  Mul  ComplexE  ComplexE
- deriving (Eq, Show)
-\end{code}
-Note that, in |ComplexA| above, we also had a constructor for
-``addition'' (|CPlus1|), but it was playing a different role.
-%
-They are distinguished by type: |CPlus1| took two real
-numbers as arguments, while |Add| here takes two
-complex expressions as arguments.
-
-Here are two examples of type |ComplexE| as Haskell code and as
-ASTs:
-\begin{code}
-testE1 = Mul I2 I2
-testE2 = Add (ToComplex 3) (Mul (ToComplex 2) I2)
-\end{code}
-
-\hspace{2em}
-\begin{tikzpicture}[level 1/.style={sibling distance=3cm},baseline]
-\node{|Mul|}
-child {node {|I2|}}
-child {node {|I2|}};
-\end{tikzpicture}
-\hspace{2em}
-\begin{tikzpicture}[level 1/.style={sibling distance=3cm},baseline]
-\node{|Add|}
-child {node {|ToComplex|} child {node {|3|}}}
-child {node {|Mul|}
-  child {node {|ToComplex|} child {node {|2|}}}
-  child {node {|I2|}}};
-\end{tikzpicture}
-
-We can implement the evaluator |evalE| by pattern matching on the
-constructors of the syntax tree and by recursion.
-%
-To write a recursive function requires a small leap of faith.
-%
-It can be difficult to get started implementing a function (like
-|evalE|) that should handle all the cases and all the levels of a
-recursive datatype (like |ComplexE|).
-%
-One way to overcome this difficulty is through what may seem at first glance ``wishful thinking'':
-assume that all but one case have been implemented already.
-%
-All you need to do is to focus on that one remaining case, and you can
-freely call the function (that you are implementing) recursively, as
-long as you do it for subexpressions (subtrees of the abstract syntax
-tree datatype). This pattern is called \emph{structural induction}.
-%
-
-For example, when implementing the |evalE (Add c1 c2)| case, you can
-assume that you already know the values |s1, s2 :: ComplexD|
-corresponding to the subtrees |c1| and |c2| of type |ComplexE|.
-%
-The only thing left is to add them up componentwise and we can assume
-there is a function |addD :: ComplexD -> ComplexD -> ComplexD| taking
-care of this step (in fact, we implemented it earlier in
-\refSec{sec:complexcase}).
-%
-Continuing in this direction (by structural induction; or ``wishful
-thinking'') we arrive at the following implementation.
-%
-\begin{code}
-evalE I2              = iD
-evalE (ToComplex r)   = toComplexD r
-evalE (Add  c1 c2)    = addD  (evalE c1)  (evalE c2)
-evalE (Mul  c1 c2)    = mulD  (evalE c1)  (evalE c2)
-\end{code}
-%
-Note the pattern here: for each constructor of the syntax datatype we
-assume that there exists a corresponding semantic function.
-%
-The next step is to implement these functions, but let us first list
-their types and compare them with the types of the syntactic constructors:
-%
-\begin{spec}
-I2   :: ComplexE
-iD   :: ComplexD
-
-ToComplex   :: REAL -> ComplexE
-toComplexD  :: REAL -> ComplexD
-
-Mul       :: ComplexE  -> ComplexE  -> ComplexE
-mulD      :: ComplexD  -> ComplexD  -> ComplexD
-\end{spec}
-%addD   :: ComplexD -> ComplexD -> ComplexD  -- |ComplexE -> ComplexE -> ComplexE|
-As we can see, each use of |ComplexE| has been replaced be a use of |ComplexD|.
-%
-Finally, we can start filling in the implementations:
-%
-\begin{code}
-iD            = CD (0 ,  1)
-toComplexD r  = CD (r ,  0)
-\end{code}
-%
-The function |addD| was defined earlier and |mulD| is left as an
-exercise for the reader.
-%
-To sum up we have now implemented a recursive datatype for
-mathematical expressions describing complex numbers, and an evaluator
-that computes the underlying number.
-%
-Note that many different syntactic expressions will evaluate to the
-same number (|evalE| is not injective).
-
-Generalising from the example of |testE2| we also define a function to
-embed a semantic complex number in the syntax:
-%
-\begin{code}
-fromCD :: ComplexD -> ComplexE
-fromCD (CD (x , y)) = Add (ToComplex x) (Mul (ToComplex y) I2)
-\end{code}
-%
-This function is injective: different complex numbers map to different syntactic expressions.
-
-\section{Laws, properties and testing}
-There are certain laws that we would like to hold for operations on complex
-numbers.
-%
-To specify these laws, in a way which can be easily testable in
-Haskell, we use functions to |Bool| (also called \emph{predicates} or
-\emph{properties}).
-%
-The intended meaning of such a boolean function (representing a law)
-is ``forall inputs, this should return |True|''.
-%
-This idea is at the core of \emph{property based testing} (pioneered
-by \citet{claessen_quickcheck_2000}) and conveniently available in the
-Haskell library QuickCheck.
-%
-
-%
-The simplest law is perhaps |square i = -1| from the start of
-\refSec{sec:complexcase},
-%
-\begin{code}
-propI2 :: Bool
-propI2 =  Mul I2 I2 === ToComplex (-1)
-\end{code}
-%
-Note the we use a new operator here, |(===)|.
-%
-Indeed, we reserve the usual equality |(==)| for syntactic equality
-(and here the left hand side (LHS) is clearly not syntactically equal
-to the right hand side).
-%
-The new operator |(===)| corresponds to semantic equality, that is,
-equality \emph{after evaluation}:
-%
-
-%{
-%format .=. = ===
-\begin{code}
-(.=.) :: ComplexE -> ComplexE -> Bool
-z .=. w {-"\quad"-} = {-"\quad"-} evalE z == evalE w
-\end{code}
-%}
-
-%if false
-Unfortunately we have not explained classes yet.
-\begin{code}
-infix 0 ===
-class SemEq a where
-  (===) :: a -> a -> Bool
-instance SemEq Int where
-  (===) = (==)
-instance SemEq Double where
-  (===) = (==)
-instance SemEq ComplexE where
-  (===) = (.=.)
-\end{code}
-%endif
-
-Another law is that |fromCD| is an embedding: if we start from a
-semantic value, embed it back into syntax, and evaluate that syntax we
-get back to the value we started from.
-%
-\begin{code}
-propFromCD :: ComplexD -> Bool
-propFromCD s =  evalE (fromCD s) == s
-\end{code}
-
-Other desirable laws are that |+| and |*| should be associative and
-commutative and |*| should distribute over |+|:
-%if false
-\begin{code}
-propAssocAdd      :: (Num a, SemEq a) => a -> a -> a -> Bool
-propDistMulAdd  :: (Num a, SemEq a) => a -> a -> a -> Bool
-\end{code}
-%endif
-\begin{code}
-propCommAdd     x y                = {-"\quad"-}  x + y          ===  y + x
-propCommMul     x y                = {-"\quad"-}  x * y          ===  y * x
-propAssocAdd    x y z              = {-"\quad"-}  (x + y) + z    ===  x + (y + z)
-propAssocMul    x y z              =              (x * y) * z    ===  x * (y * z)
-propDistMulAdd  x y z {-"\quad"-}  =              x * (y + z)    ===  (x * y) + (x * z)
-\end{code}
-
-These laws actually fail, but not due to any mistake in the
-implementation of |evalE| in itself.
-%
-To see this, let us consider associativity at different types:
-
-\begin{code}
-propAssocInt     = propAssocAdd ::  Int     -> Int     -> Int     -> Bool
-propAssocDouble  = propAssocAdd ::  Double  -> Double  -> Double  -> Bool
-\end{code}
-%
-The first property is fine, but the second fails.
-%
-Why?
-%
-QuickCheck can be used to find small examples --- this one is perhaps
-the best one:
-%
-\begin{code}
-notAssocEvidence :: (Double , Double , Double , Bool)
-notAssocEvidence = (lhs , rhs , lhs-rhs , lhs==rhs)
-  where  lhs = (1+1)+1/3
-         rhs =  1+(1+1/3)
-\end{code}
-%
-For completeness: these are the values:
-%
-\begin{spec}
-  (  2.3333333333333335     -- Notice the five at the end
-  ,  2.333333333333333,     -- which is not present here.
-  ,  4.440892098500626e-16  -- The (very small) difference
-  ,  False)
-\end{spec}
-%
-We can now see the underlying reason why some of the laws failed for
-complex numbers: the approximative nature of |Double|.
-%
-Therefore, to ascertain that there is no other bug hiding, we need to
-move away from the implementation of |REAL| as |Double|.
-%
-We do this by abstraction: we make one more version of the complex
-number type, which is parameterised on the underlying representation
-type for~|REAL|.
-%
-At the same time, to reduce the number of constructors, we combine
-|I2| and |ToComplex| to |ToComplexCart|, which corresponds to
-the primitive form |a + bi| discussed above:
-%*TODO: perhaps explain more about the generalisation step.
-
-%TODO: Add as an exercise the version with I | ToComplex | Add ... | Mul ...
-% See data blackboard/W1/20170116_114608.jpg, eval blackboard/W1/20170116_114613.jpg
-\label{sec:toComplexSyn}
-\begin{code}
-data ComplexSyn r  =  ToComplexCart r r
-                   |  ComplexSyn r  :+:  ComplexSyn r
-                   |  ComplexSyn r  :*:  ComplexSyn r
-
-toComplexSyn :: Num a => a -> ComplexSyn a
-toComplexSyn x = ToComplexCart x 0
-\end{code}
-%
-From Appendix~\ref{app:CSem} we import |newtype Complex r = C (r ,
-r) deriving Eq| and the semantic operations |addC| and |mulC|
-corresponding to |addD| and |mulD|.
-%
-\begin{code}
-evalCSyn :: Ring r => ComplexSyn r -> Complex r
-evalCSyn (ToComplexCart x y)  = C (x , y)
-evalCSyn (l  :+:  r)          = addC  (evalCSyn l)  (evalCSyn r)
-evalCSyn (l  :*:  r)          = mulC  (evalCSyn l)  (evalCSyn r)
-\end{code}
-%
-%if False
-\label{sec:firstFromInteger}
-\begin{code}
-negateCS :: Num a => ComplexSyn a -> ComplexSyn a
-negateCS = ((-1) :*:)
-absCS = error "absCS: missing constructor"
-signumCS = error "signumCS: missing constructor"
-instance Num a => Num (ComplexSyn a) where
-   (+)  = (:+:)
-   (*)  = (:*:)
-   fromInteger = fromIntegerCS
-   negate = negateCS
-   abs = absCS
-   signum = signumCS
-fromIntegerCS :: Num r =>  Integer -> ComplexSyn r
-fromIntegerCS = toComplexSyn . fromInteger
-\end{code}
-%endif
-
-% \begin{exercise}
-%   Add a few more operations (hint: extend |ComplexSyn| as well) and extend |eval| appropriately.
-% \end{exercise}
-
-With this parameterised type we can test the code for ``complex
-rationals'' to avoid rounding errors.
-%**TODO: add concrete example
-(The reason why math textbooks rarely talk about complex rationals is
-because complex numbers are used to handle roots of all numbers
-uniformly, and roots are in general irrational.)
-
-%TODO: perhaps include
-% We can also state and check properties relating the semantic and the syntactic operations:
-%
-% |a + b = eval (Add (embed a) (embed b))| for all |a| and |b|.
-\subsection{Generalising laws}
-\label{sec:generalising-laws}
-Some laws appear over and over again in different mathematical
-contexts.
-%
-For example, binary operators are often associative or commutative, and
-sometimes one operator distributes over another.
-%
-We will work more formally with logic in \cref{sec:logic} but
-we introduce a few definitions already here:
-
-|Associative (⊛) = Forall (a, b, c) ((a⊛b)⊛c = a⊛(b⊛c))|
-
-|Commutative (⊛) = Forall (a, b) (a⊛b = b⊛a)|
-
-|Distributive (⊗) (⊕) = Forall (a, b, c) ((a⊕b)⊗c = (a⊗c)⊕(b⊗c))|
-
-The above laws are \emph{parameterised} over some operators
-(|(⊛),(⊗),(⊕)|).
-%
-These laws will hold for some operators, but not for others.
-%
-For example, division is not commutative; taking the average of two
-quantities is commutative but not associative.
-%
-(See also \crefatpage{distributivity-as-homomorphism} for further
-analysis of distributivity.)
-%
-Such generalisations can be reflected in QuickCheck properties as well.
-
-\begin{code}
-propAssoc :: SemEq a => (a -> a -> a) -> a -> a -> a -> Bool
-propAssoc (⊛) x y z =  (x ⊛ y) ⊛ z === x ⊛ (y ⊛ z)
-\end{code}
-%
-Note that |propAssocA| is a higher order function: it takes a function |(⊛)|
-(declared as a binary operator) as its first parameter, and tests if it is associative.
-%
-The property is also polymorphic: it works for many different types |a| (all
-types which have an |===| operator).
-
-Thus we can specialise it to |Add|, |Mul| and any other binary
-operator, and obtain some of the earlier laws (|propAssocAdd|,
-|propAssocMul|).
-%
-The same can be done with distributivity.
-%
-Doing so we learnt that the underlying set matters: |(+)| for |REAL|
-has some properties, but |(+)| for |Double| has others.
-%
-When formalising math as DSLs, approximation is sometimes convenient,
-but makes many laws false.
-%
-Thus, we should attempt to do it late, and if possible, leave a
-parameter to make the degree of approximation tunable (|Int|,
-|Integer|, |Float|, |Double|, |QQ|, syntax trees, etc.).
-
-%**TODO: hide or give hints / method (otherwise too hard and a bit off topic)
-%Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
-% Answer: |max|
-
-It is a good exercise to find other pairs of operators satisfying
-distributive laws.
+%include ComplexSyn.lhs
 
 %if False
 \section{Some helper functions (can be skipped)}
 \begin{code}
 type QQ     =  Ratio Integer
-
-propAssocAdd2 :: (SemEq a, Num a) => a -> a -> a -> Bool
-propAssocAdd2 = propAssoc (+)
-
--- mulD :: ComplexD -> ComplexD -> ComplexD
-mulD (CD (ar, ai)) (CD (br, bi)) = CD (ar*br - ai*bi, ar*bi + ai*br)
-
-instance Show ComplexD where
-  show = showCD
-
-showCD :: ComplexD -> String
-showCD (CD (x, y)) = show x ++ " + " ++ show y ++ "i"
+type REAL   =  Double
 \end{code}
 %endif
 
-% end of formatting "bi" as just that (and not as \(b_i\)).
-%}
 
 %include E1.lhs

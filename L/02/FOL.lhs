@@ -1,6 +1,6 @@
 \section{First Order Logic}
 \begin{code}
- module FOL where
+module DSLsofMath.FOL where
 \end{code}
 
 %
