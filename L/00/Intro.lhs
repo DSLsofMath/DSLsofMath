@@ -399,9 +399,6 @@ Mathematics text books usually avoid the risk of confusion by
 renaming is a sufficiently important operation to be more explicitly
 mentioned.
 
-
-
-
 \section*{Acknowledgments}
 
 The support from Chalmers Quality Funding 2015 (Dnr C 2014-1712, based

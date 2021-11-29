@@ -72,25 +72,53 @@ rationals, and |REAL| of real numbers.
 %
 The judgment |e : t| states that the expression |e| has type |t|.
 %
-For example |False : Bool|, |2 : Nat|, and |3.14 : REAL|.
+For example |False : Bool|, |2 : Nat|, and |sqrt 2 : REAL|.
 %
 In Haskell, double colon (|::|) is used for the typing judgment, but
 we often use just single colon (|:|) in the mathematical text.
 
 So far the syntax for types is trivial --- just names.
 %
-Every time, the semantic is a (constant) set.
+Every time, the semantic is a set.
 %
 But we can also combine these names to form more complex types.
+
+\paragraph{Pairs and tuple types}
+%
+For a pair, like |(False, 2)|, the type is written |(Bool, Nat)|.
+%
+In general, for any types |A| and |B| we write |(A, B)| for the type
+of pairs.
+%
+The semantics of |(Bool, Bool)| is the set |{(F, F), (F, T), (T, F),
+  (T, T)}| where we shorten |False| to |F| and |True| to |T| for
+readbility.
+%
+We can also form expressions and types for triples, four-tuples,
+etc.\ and nest them freely: |((17, True), (sqrt 2, "hi", 38))| has type
+|((Nat, Bool), (REAL, String, Nat))|.
+
+\paragraph{List types}
+%
+If we have a collection of values of the same type we can collect them
+in a list.
+%
+Examples include |[1,2,3]| of type |[Nat]| and |[("x", 17), ("y",
+  38)]| of type |[(String, Nat)]|.
+%
+The semantics of the type |[Bool]| is the infinite set
+
+\begin{spec}
+  {[], [F], [T], [F,F], [F, T], [T, F], [T, T], ...}
+\end{spec}  
+
+\subsection{Functions and their types}
 %
 For our purposes the most important construction is the function type.
-%
-\subsection{Functions and their types}
-\pj{too long (split into subsections or at least paragraphs)}
-%
+%note: Syntax for function types
 For any two type expressions |A| and |B| we can form the function type
 |A -> B|.
-%
+%note: semantics for functions types
 Its semantics is the set of ``functions from |A| to |B|'' (formally:
 functions from the semantics of |A| to the semantics of |B|).
 %
@@ -101,7 +129,7 @@ functions from the semantics of |A| to the semantics of |B|).
 %  %
 %  Fortunately, in the rest of this \course{}, we will be describing
 %  domains where the semantics is gives more insight than here.}
-%note: first use of single colon for "has type"
+%note: examples of function values
 As an example, the semantics of |BB -> BB| is a set of four functions:
 |{const False, id, not, const True}| where |not : BB -> BB| is boolean
 negation.
@@ -109,22 +137,54 @@ negation.
 The function type construction is very powerful, and can be used to
 model a wide range of concepts in mathematics (and the real world).
 %
-Because function types are really important, we immediately introduce a few basic
-building blocks to construct functions. They are as useful for functions as zero and one are
-for numbers.
+But to clarify the notion it is also important to note what is
+\emph{not} a function.
+
+\paragraph{Pure and impure functions}
+
+Many programming languages provide so called ``functions'' which are
+actually not functions at all, but rather procedures: computations
+depending on some hidden state or exhibiting some other effect.
+%{
+%format rand (x) = rand "(" x ")"
+%format fApp (x) = f "(" x ")"
+A typical example is |rand(N)| which returns a random number in the
+range |1..N|.
+%
+Treating such an ``impure function'' as a mathematical ``pure''
+function quickly leads to confusing results.
+%
+For example, we know that any pure function |f| will satisfy `|x == y|
+implies |fApp(x) == fApp(y)|'.
+%
+As a special case we certainly want |fApp(x) == fApp(x)| for every |x|.
+%
+But with |rand| this does not hold: |rand(6)==rand(6)| will only be
+true occasionally (if we happen to draw the same random number twice).
+%
+Fortunately, in mathematics and in Haskell all functions are pure.
+%}
+
+Because function types are really important, we immediately introduce
+a few basic building blocks to construct functions.
+%
+They are as useful for functions as zero and one are for numbers.
 
 \paragraph{Identity function}
 %
 For each type |A| there is an \emph{identity function} |idA : A -> A|.
 %
-In Haskell all of these functions are defined once and for all as follows:
-%note: first use of double colon
+In Haskell all of these functions are defined once and for all as
+follows:
+%
 \begin{code}
 id :: a -> a
 id x = x
 \end{code}
 %
-In Haskell, a type name starting with a lowercase letter is a \emph{type variable}.
+In Haskell, a type name starting with a lowercase letter is a
+\emph{type variable}.
+%
 When a type variable (here |a|) is used in a type signature it is
 implicitly quantified (bound) as if preceded by ``for any type |a|''.
 %
@@ -132,8 +192,15 @@ This use of type variables is called ``parametric polymorphism'' and
 the compiler gives more help when implementing functions with such
 types.
 %
+We have seen one example use of the identity function already, as one
+of the four functions from |Bool| to |Bool|.
+%
+That instance of |id| has type |Bool -> Bool|.
 
-\paragraph{Constant functions} Another building block for functions is |const|.
+\paragraph{Constant functions}
+%
+Another building block for functions is |const|.
+%
 Its type mentions two type variables, and it is a function of two
 arguments:
 %
@@ -145,6 +212,13 @@ const x _ = x
 The underscore (|_|) is here used instead of a variable name (like
 |y|) which is not needed on the right hand side (RHS) of the equality
 sign.
+%
+Above we saw the instance |const False : Bool -> Bool| where |a| and
+|b| are both |Bool|.
+%
+Note that this is an example of \emph{partially applied} function:
+|const| by itself expects two arguments, thus |const False| still
+expects one argument.
 
 %note: "arity" is new terminology - worth collecting in a table or register to find it easy.
 The term ``arity'' is used to describe how many arguments a function
@@ -157,7 +231,7 @@ For small |n| special names are often used: binary means arity 2 (like
 (like |"hi!"|).
 %*TODO: perhaps add something about tupling, currying and arity --- check Idris intro
 
-\paragraph{Higher-order functions.}
+\paragraph{Higher-order functions}
 We can also construct functions which manipulate functions.
 %
 They are called \emph{higher-order} functions and as a first example
@@ -179,7 +253,7 @@ them.
 %
 The syntax is |\x -> b|, where |b| is any expression. For example, the
 identity function can be written |\x -> x|, and the constant function
-|\x _ -> x|.
+could also be defined as |const = \x _ -> x|.
 %
 The ASCII syntax uses backslash to start the lambda expression, but
 we render it as a greek lower case lambda.
@@ -238,9 +312,7 @@ function that embeds an integer |n| as the ratio |frac n 1|.
 Other convenient examples include |(+1) :: ZZ -> ZZ| for the ``add
 one'' function, and |(2*)| for the ``double'' function.
 
-
-
-\paragraph{Partial and total functions}
+\subsection{Partial and total functions}
 \label{sec:partial-and-total-functions}
 There are some differences between functions in the usual mathematical sense, and
 Haskell functions.
@@ -265,9 +337,8 @@ function.
 One can limit the type of the inputs (the domain) to avoid the inputs
 where the function is undefined (or non-terminating, etc.), or extend
 the type of the output (the range) to represent ``default'' or
-``error'' values explicitly\footnote{or better yet, meaningful values,
-as we shall see later}.
-%
+``exceptional'' values explicitly.
+%\footnote{or better yet, meaningful values, as we shall see later}
 
 As an example, |sqrt|, the square root function, is partial if
 considered as a function from |REAL| to |REAL|.
@@ -283,8 +354,8 @@ The type is |Double -> Double| and |sqrt (-1)| returns the value |NaN
 Similarly, |(1/) :: Double -> Double| returns |Infinity :: Double|
 when given zero as an input.
 %
-Thus |Double| is a mix of rational numbers and special
-quantities like |NaN| and |Infinity|.
+Thus |Double| is a mix of (many, but not all) rational numbers and
+some special quantities like |NaN| and |Infinity|.
 %
 
 Often the type |Maybe a| with values |Nothing| and |Just a| (for all
@@ -298,7 +369,6 @@ all (uncomputable functions). We will only briefly encounter such a
 case in \cref{sec:fol-undecidability}.
 
 \paragraph{Partial functions with finite domain}
-\pj{Look over the paragraphs and subsections - perhaps restructure}
 
 Later on (in \cref{sec:ArithExp}), we will use partial functions for
 looking up values in an environment.
@@ -309,8 +379,6 @@ finite domain.
 The type |Env v s| will be the \emph{syntax} for the type of partial
 functions from |v| to |s|, and defined as follows:
 %
-\pj{Perhaps explain list and pair type separately, before combining them.}
-%
 \begin{code}
 type Env v s = [(v,s)]
 \end{code}
@@ -319,10 +387,10 @@ As an example value of this type we can take:
 %
 \begin{code}
 env1 :: Env String Int
-env1 = [("hey", 17), ("you", 38)]
+env1 = [("x", 17), ("y", 38)]
 \end{code}
 
-The intended meaning is that |"hey"| is mapped to |17|, etc.
+The intended meaning is that |"x"| is mapped to |17|, etc.
 %
 The semantic domain is the set of partial functions, and, as discussed
 above, we represent those as the Haskell type |v -> Maybe s|.
@@ -381,43 +449,18 @@ lookup :: Eq a => a -> [(a, b)] -> Maybe b
 % \hfill{}
 % %\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
 
-\paragraph{Pure and impure functions}
-
-Many programming languages provide so called ``functions'' which are
-actually not functions at all, but rather procedures: computations
-depending on some hidden state or exhibiting some other effect.
-%{
-%format rand (x) = rand "(" x ")"
-%format fApp (x) = f "(" x ")"
-A typical example is |rand(N)| which returns a random number in the
-range |1..N|.
-%
-Treating such an ``impure function'' as a mathematical ``pure''
-function quickly leads to confusing results.
-%
-For example, we know that any pure function |f| will satisfy `|x == y|
-implies |fApp(x) == fApp(y)|'.
-%
-As a special case we certainly want |fApp(x) == fApp(x)| for every |x|.
-%
-But with |rand| this does not hold: |rand(6)==rand(6)| will only be
-true occasionally (if we happen to draw the same random number twice).
-%
-Fortunately, in mathematics and in Haskell all functions are pure.
-%}
-
 %**TODO: Perhaps more about cartesian product, etc.
 %*TODO explain the e : t syntax (and mention e `elem` t)
 
 %\subsection{Functions}
 
-\paragraph{Variable names as type hints}
+\subsection{Variable names as type hints}
 
 In mathematical texts there are often conventions about the names used
 for variables of certain types.
 %
 Typical examples include |f, g| for functions, |i, j, k| for natural
-numbers or integers, |x, y| for real numbers and |z, w| for complex
+numbers, |x, y| for real numbers and |z, w| for complex
 numbers.
 
 The absence of explicit types in mathematical texts can sometimes lead
@@ -489,7 +532,7 @@ specification) of mathematical concepts.
 
 %TODO: perhaps use more from Expr.lhs
 
-\subsection{Types in Haskell: |type|, |newtype|, and |data|}
+\section{Types in Haskell: |type|, |newtype|, and |data|}
 
 There are three keywords in Haskell involved in naming and creating
 types: |type|, |newtype|, and |data|.
@@ -657,7 +700,7 @@ For reference, the either type is defined as follows in Haskell:
 %include Either.lhs
 %TODO at first use explain GADT syntax for |data| declaration 
 
-\subsection{Notation and abstract syntax for sequences}
+\section{Notation and abstract syntax for sequences}
 \label{sec:infseq}
 %TODO: perhaps add as possible reading: http://www.mathcentre.ac.uk/resources/uploaded/mc-ty-convergence-2009-1.pdf
 %TODO: perhaps link to https://en.wikipedia.org/wiki/Squeeze_theorem for nice examples
