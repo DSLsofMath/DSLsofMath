@@ -8,15 +8,17 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865
 
 ## News
 
+* Tuesday 2022-01-18: First lecture of the 2022 course instance
 * [Lecture note snapshots](L/snapshots/) with the full course book
 * [YouTube playlist](https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-) with the recorded lectures (most in Swedish, some in English)
-* Tuesday 2020-01-21: First lecture of the 2020 course instance
 
 ## Contributors
 
 * Main author, examiner, lecturer: Patrik Jansson (patrikj AT)
 * First version (and continued support): Cezar Ionescu (cezar AT)
+* Book co-author: Jean-Philippe Bernardy
 * Teaching assistants:
+  * 2022: Sólrún Einarsdóttir (slrn AT), David Wärn (warnd AT), and Felix Cherubini (felixche AT)
   * 2021: Maximilian Algehed (algehed AT) and Víctor López Juan (lopezv AT)
   * 2020: Sólrún Einarsdóttir (slrn AT) and Víctor López Juan (lopezv AT)
   * 2019: Maximilian Algehed (algehed AT) and Abhiroop Sarkar (sarkara AT)
@@ -48,7 +50,7 @@ paying attention to syntax and types, and ultimately constructing DSLs
 of some mathematical areas mentioned below.
 
 Learning outcomes as in the
-[course syllabus](https://www.student.chalmers.se/sp/course?course_id=27332).
+[course syllabus](https://www.student.chalmers.se/sp/course?course_id=32245).
 
 * Knowledge and understanding
     * design and implement a DSL (Domain-Specific Language) for a new domain
@@ -98,6 +100,7 @@ In [L/RecEx.md](L/RecEx.md) you will find a list of recommended exercises
 for each chapter of the lecture notes.
 
 ## Using the DSLsofMath source code
+**Construction zone ahead (old instructions)**
 
 In order to do some of the exercises, you may need/want to have access to the
 DSLs introduced during the lectures and in the lecture notes.
