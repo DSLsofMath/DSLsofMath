@@ -400,7 +400,7 @@ compute the value of that expression.
 %
 \pj{It would look better with |Integer| replaced by |ZZ|.}
 %
-Hence, the semantics of |MVExp| is a function of type |Env String Integer
+Because the semantics of |env| is a partial function (of type |String -> Maybe Integer|), the semantics of |MVExp| is a partial function too, of type |Env String Integer
 -> Maybe Integer|.
 %
 %*TODO: perhaps switch Mul to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
