@@ -1813,12 +1813,12 @@ Since we implemented all these as matrix-vector multiplications, this
 raises the question: is there a monad underlying matrix-vector
 multiplication, such that the above are instances of it (obtained by
 specialising the scalar type |S|)?
+The answer is yes, up to a point, as we shall see in the next section.
 
 Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|, |Super|.
 
 
 \section{\extraMaterial The monad of linear algebra}
-The answer is yes, up to a point.
 %
 Haskell |Monad|s, just like |Functor|s, require |return| and |>>=| to
 be defined for every type.
