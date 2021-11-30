@@ -2107,7 +2107,7 @@ f2  = f
 \end{enumerate}
 
 \end{solution}
-\section{Numeric instances for |Dup|}
+\paragraph{Numeric instances for |Dup|}
 For reference: the rest of the instance declarations for |Dup| (the
 |Multiplicative| instance was provided above):
 \begin{code}
