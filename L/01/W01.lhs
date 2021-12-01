@@ -45,7 +45,7 @@ types is one of the guiding principles of this \course{}.
 We will see that keeping track of types can guide the development of
 theories, languages, programs and proofs.
 %
-We follow a Type Driven Development style of programming.
+We follow a Type-Driven Development style of programming.
 
 \subsection{What is a type?}
 
@@ -540,7 +540,8 @@ types: |type|, |newtype|, and |data|.
 \paragraph{|type| -- abbreviating type expressions}
 
 The |type| keyword is used to create a type synonym -- just another name
-for a type expression.
+for a type expression. The new name is written on the left-hand side (LHS) of an equal sign,
+and the type expression on the right-hand side (RHS).
 %
 The semantics is unchanged: the set of values of type |Number| is
 exactly the same as the set of values of type |Integer|, etc.
@@ -556,8 +557,7 @@ type Env v s  =  [(v,s)]
 \end{spec}
 \end{joincode}
 
-The new name for the type on the right hand side (RHS) does not add
-type safety, just readability (if used wisely).
+A |type| declaration does not add type safety, just readability (if used wisely).
 %
 The |Env| example shows that a type synonym can have type parameters.
 %
@@ -596,7 +596,7 @@ est :: Established;      est  = Est  1951;
 
 This example introduces three new types, |Population|,
 |Elevation|, and |Established|, which all are internally
-represented by an |Int| but which are good to keep apart.
+represented by an |Int| but which are good to keep apart\jp{Amount, Distance, Date may be better choices here.}.
 %
 The syntax also introduces \emph{constructor functions} |Pop :: Int ->
 Population|, |Hei| and |Est| which can be used to translate from plain
@@ -611,7 +611,7 @@ It is not the same as the semantics of |Int| but the sets are
 The function |Pop| is an invertible function, a \emph{bijection}, also
 called a set-isomorphism.
 %
-(We talk about more general isomorphisms between algebraic structures
+(We talk about isomorphisms between richer algebraic structures
 in \cref{sec:CompSem}.)
 
 
