@@ -203,7 +203,7 @@ computer science perspective.
 Figure~\ref{fig:LearningOutcomes} in Section \ref{sec:DSLMcourse}.)
 
 %*TODO: Check if this form is actually carried out (perhaps update)
-To achieve these objectives, the course consists of a sequence of case
+To achieve these objectives, the \course{} consists of a sequence of case
 studies in which a mathematical area is first presented, followed by a
 careful analysis that reveals the domain elements needed to build a
 language for that domain.
@@ -213,7 +213,7 @@ sufficient to account for intended applications (for example, solving
 equations, or specifying a certain kind of mathematical object).
 %
 It is in this step that the computer science perspective proves
-valuable for improving the students' understanding of the mathematical
+valuable for improving the reader's understanding of the mathematical
 area.
 %
 The DSL is then implemented in Haskell.
@@ -227,9 +227,9 @@ further improvements discussed.
 %
 More about the course is presented in Section~\ref{sec:DSLMcourse}.
 
-We expect the reader to have taken a few first-year mathematics and
-computer science courses, preferrably including functional
-programming.
+We expect the reader to have knowledge corresponding to a few first-year
+mathematics and computer science courses, preferrably including
+functional programming.
 %
 But we aim to keep to a restricted subset of Haskell (no ``advanced''
 features are required).
@@ -241,7 +241,7 @@ and would like to use Haskell to create concrete models out of
 abstract Math concepts to improve their understanding.
 
 The book explores the connection between mathematical structures and
-Type Driven Development of Haskell programs.
+Type-Driven Development~\citep{citeulike:14291916} of Haskell programs.
 %
 If you enjoyed ``The Haskell Road to Logic, Maths and Programming''
 \citep{doets-haskellroadto-2004}, you will also enjoy this book.
@@ -261,9 +261,22 @@ along.
 
 Working knowledge of functional programming is helpful, but it should
 be possible to pick up quite a bit of Haskell along the way.
+%
+
+The book is not primarily a collection of ready-made code-snippets,
+like the ``Numerical recipes in ...'' series, but rather uses Haskell
+as a ``tool for learning''.
+%
+Even code which cannot actually run can still be useful in the quest
+to ``debug the mathematical understanding'' of the reader (through
+scope-checking and type-checking) when trying to encode different
+concepts in Haskell.
+
 % \section{Roadmap}
 %TODO: write about the book plan and internal dependencies
 %\jp{Reading guide as dependency graph - see also ``short ToC'' note above + \ref{fig:LearningOutcomes}}
+
+
 
 \section{Notation and code convention}
 

@@ -4,7 +4,7 @@ module Either where
 import Prelude hiding (id, const, (.), fst, snd, swap, either, Either(Left,Right))
 \end{code}
 
-Type Driven Development
+Type-Driven Development
  -- use parametrically polymorphic types to guide the implementation
 
 Functions:

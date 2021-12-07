@@ -464,8 +464,10 @@ the quantification that Haskell provides |forall a? ...| is \emph{over
   types} rather than individuals.%
 %
 \footnote{There is ongoing progress in this direction, but we find the
-  current state too clunky to be worthy of basing our development on
-  it.}
+current state too clunky to be worthy of basing our development on it.
+%
+See the langauges Agda \citep{Norell09dependentlytyped} or Idris
+\citep{citeulike:14291916} for more direct support.}
 %
 What we would need is: 1. a type corresponding to universal
 quantification, the dependent function type |(a:A) → B|, and 2. a type

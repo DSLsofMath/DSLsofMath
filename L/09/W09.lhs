@@ -88,9 +88,12 @@ the ``outcome'' is the situation after the experiment is over.
 %
 When we use the word ``situation'' there is not necessarily an
 explicit experiment, but something happens according to a specific
-scenario.  In this case we call the ``situation'' the state of affairs
-at end of the scenario in question.}  Then the student is asked to
-compute the probability of some event.
+scenario.
+%
+In this case we call the ``situation'' the state of affairs at end of
+the scenario in question.}
+%
+Then the reader is asked to compute the probability of some event.
 
 It is common to refer to a sample space by the labels \(S\), $\Omega$,
 or \(U\), but in this chapter we will define many such spaces, and
