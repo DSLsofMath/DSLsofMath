@@ -115,9 +115,13 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
 %
 \subsection{Truth tables and tautologies}
 
+\definecolor{lightergray}{gray}{0.90}
+\newcolumntype{a}{>{\columncolor{lightgray}}c}
+\newcolumntype{b}{>{\columncolor{lightergray}}c}
+
 \begin{figure}[tbp]\centering
   \begin{subfigure}[b]{0.2\textwidth}\centering
-    \begin{tabular}{|| *{2}{c@@{~}} l||}
+    \begin{tabular}{|| a c a||}
         \hline  |F| & |=>| & |a|
       \\\hline  |F| & |T| & |F|
       \\        |F| & |T| & |T|
@@ -126,8 +130,8 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
     \caption{|t = F => a|}
     \label{fig:F2a}
   \end{subfigure}
-  \begin{subfigure}[b]{0.3\textwidth}\centering
-    \begin{tabular}{|| *{2}{c@@{~}} l||}
+  \begin{subfigure}[b]{0.2\textwidth}\centering
+    \begin{tabular}{|| aca||}
         \hline   |a| & |=>|& |b|
       \\\hline   |F| & |T| & |F|
       \\         |F| & |T| & |T|
@@ -138,8 +142,8 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
     \caption{|p3 = a => b|.}
     \label{fig:TruthTableImplies}
   \end{subfigure}
-  \begin{subfigure}[b]{0.3\textwidth}\centering
-    \begin{tabular}{|| *{6}{c@@{~}} l||}
+  \begin{subfigure}[b]{0.45\textwidth}\centering
+    \begin{tabular}{|| abacaba ||}
         \hline   |a| & |&&| & |b| & |=>| & |b| & |&&| & |a|
       \\\hline   |F| & |F| & |F| & |T|  & |F| & |F| & |F|
       \\         |F| & |F| & |T| & |T|  & |T| & |F| & |F|
@@ -150,10 +154,10 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
     \caption{\(|p4| = (a \wedge b) \Rightarrow (b \wedge a)\).}
     \label{fig:abswap}
   \end{subfigure}
-  \caption{Truth table examples.}
+  \caption{Truth table examples. Darker shades are filled in first,
+    white column is the final result.}
   \label{fig:TruthTables}
 \end{figure}
-\pj{make different columns use different background colours}
 
 %TODO Perhaps cite the full \refFig{fig:TruthTables}
 %TODO Perhaps cite the middle subfigure \refFig{fig:TruthTableImplies}
@@ -161,9 +165,11 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
 As a first example of a truth table, consider the proposition |F => a|
 which we call |t| here.
 %
-The truth table semantics of |t| is usually drawn as in~\refFig{fig:F2a}:
+The truth table semantics of |t| is usually drawn as
+in~\refFig{fig:F2a}:
 %
-one column for each symbol, filled with the truth value of the expression ``rooted'' at that symbol.
+one column for each symbol, filled with the truth value of the
+expression ``rooted'' at that symbol.
 %
 Thus, here we have one column for the name |a| listing all
 combinations of |T| and |F|, one (boring) column for |F|, and one
@@ -175,8 +181,6 @@ only variable |a|, the semantic value is |T = True|.
 Thus the whole expression could be simplified to just |T| without
 changing its semantics.
 
-
-%
 If we continue with the example |p4| from above we have two names |a|
 and |b| which together can have any of four combinations of true and
 false.
@@ -187,21 +191,29 @@ one operation (column) at a time (see \refFig{fig:abswap}).
 The |&| columns become |F F F T| and finally the |=>| column (the
 output) becomes true everywhere.
 %
-For our other examples, |p1| is always false, |p2| is always true, and |p3| is mixed.
+For our other examples, |p1| is always false, |p2| is always true, and
+|p3| is mixed.
 
 A proposition whose truth table output is constantly true is called a
 \emph{tautology}.
 %
-Thus |t|, |p2| and |p4| are tautologies. We can formalise this idea as the following tautology-tester:
+Thus |t|, |p2| and |p4| are tautologies.
+%
+We can formalise this idea as the following tautology-tester:
+%
 \jp{Explain |Env = Name -> Bool|, relate to the truth table above.}
+%
 \begin{code}
 isTautology :: Prop -> Bool
 isTautology p = and (map (eval p) (envs (freeNames p)))
 \end{code}
+%
 which uses the helper functions |envs| to generate all possible
 environments for a given list of names and |freeNames| to find all
-names in a proposition \pj{Haskell notation for list comprehensions
-  not introduced. Possible alternative in TeX comment}
+names in a proposition.
+%
+\pj{Haskell notation for list comprehensions not introduced. Possible
+  alternative in TeX comment}
 
 % \begin{code}
 % envs (n:ns)  =  map (\(e,b) -> \n' -> if n == n' then b else e n') ((envs ns) × [False,True])

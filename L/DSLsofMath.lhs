@@ -29,6 +29,7 @@
 %else
 \usepackage{hyperref}
 %endif
+\usepackage{colortbl}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
 \usepackage{newunicodechar}
@@ -145,7 +146,7 @@
   classical mathematics (mainly real and complex analysis).
 %endif
 %
-  The main idea behind this textbook is to encourage the students to
+  The main idea behind this book is to encourage readers to
   approach mathematical domains from a functional programming
   perspective:
 %
@@ -158,7 +159,21 @@
 %
   and, finally, to organize the resulting functions and types in
   domain-specific languages.
-\pj{Remove abstract or replace by text from reviews}
+
+  The book is recommended for developers who are learning mathematics
+  and would like to use Haskell to make sense of definitions and
+  theorems.
+%
+  It is also a book for the mathematically interested who wants to
+  explore functional programming and domain-specific languages.
+%
+  The book helps put into perspective the domains of Mathematics and
+  Functional Programming and shows how Computer Science and
+  Mathematics are usefully taught together.
+
+
+
+
 
 \vfill
 
