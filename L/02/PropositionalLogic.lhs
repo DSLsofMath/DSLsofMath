@@ -90,7 +90,8 @@ a |Prop| to its truth value.
 |check| instead of |eval| but for consistency we stick to |eval|.)
 %
 \begin{code}
-eval :: Prop -> (Name -> Bool) -> Bool
+type Env = Name -> Bool
+eval :: Prop -> Env -> Bool
 eval (Implies p q)  env = eval p env  ==>  eval q env
 eval (And p q)      env = eval p env  &&   eval q env
 eval (Or  p q)      env = eval p env  ||   eval q env
@@ -103,15 +104,16 @@ False  ==> _ {-"\quad"-}  = True
 True   ==> p              = p
 \end{code}
 %
-The function |eval| translates from the syntactic domain to the semantic
-domain, given an environment (an assignment of names to truth values), which we represent as a function from each |Name| to |Bool|.
+The function |eval| translates from the syntactic domain to the
+semantic domain, given an environment (an assignment of names to truth
+values), which we represent as a function from each |Name| to |Bool|.
 %
 Here |Prop| is the (abstract) \emph{syntax} of the language of
 propositional calculus and |Bool| is the \emph{semantic domain}, and
-|Name -> Bool| is a necessary extra parameter to write the function.
+|env : Env| is a necessary extra parameter to write the function.
 %
-Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
--> Bool| as the semantic domain.
+Alternatively, and perhaps more elegantly, we can view |Env -> Bool|
+as the semantic domain.
 %
 \subsection{Truth tables and tautologies}
 
@@ -162,6 +164,12 @@ Alternatively, and perhaps more elegantly, we can view |(Name -> Bool)
 %TODO Perhaps cite the full \refFig{fig:TruthTables}
 %TODO Perhaps cite the middle subfigure \refFig{fig:TruthTableImplies}
 
+Values of type |Name -> a| are called ``assignment functions'' because
+they assign values (of type |a|) to the variable names.
+%
+When we have |a = Bool|, and not too many variable names, we can
+enumerate all the combinations in a truth table.
+
 As a first example of a truth table, consider the proposition |F => a|
 which we call |t| here.
 %
@@ -199,22 +207,30 @@ A proposition whose truth table output is constantly true is called a
 %
 Thus |t|, |p2| and |p4| are tautologies.
 %
-We can formalise this idea as the following tautology-tester:
-%
-\jp{Explain |Env = Name -> Bool|, relate to the truth table above.}
+We can formalise this idea as the following tautology-tester --- a
+predicate which specifies the subset of |Prop|erties which are always
+true:
 %
 \begin{code}
 isTautology :: Prop -> Bool
 isTautology p = and (map (eval p) (envs (freeNames p)))
 \end{code}
 %
-which uses the helper functions |envs| to generate all possible
-environments for a given list of names and |freeNames| to find all
-names in a proposition.
+It uses the helper functions |envs| to generate all possible
+environments (functions of type |Env = Name -> Bool|) for a given list
+of names and |freeNames| to find all names in a proposition.
 %
-\pj{Haskell notation for list comprehensions not introduced. Possible
-  alternative in TeX comment}
-
+As an example, for |p4| above, |freeNames| would return the list
+|["a", "b"]| and |envs| would return a four-element |[Env]|, one for
+each row in the truth table.
+%
+The |map| would then apply |eval p4| to each element in the list to
+evaluate top-level truth value of the expression for each row.
+%
+Finally |and| combines the results with |(&&)| to ensure that they are
+all |True|.
+%
+%TODO: Haskell notation for list comprehensions not introduced. Possible alternative in TeX comment
 % \begin{code}
 % envs (n:ns)  =  map (\(e,b) -> \n' -> if n == n' then b else e n') ((envs ns) × [False,True])
 % [] × ys = []
@@ -222,7 +238,7 @@ names in a proposition.
 % \end{code}
 
 \begin{code}
-envs :: [Name] -> [Name -> Bool]
+envs :: [Name] -> [Env]
 envs []      =  [error "envs: never used"]
 envs (n:ns)  =  [  \n' -> if n == n' then b else e n'
                 |  b  <-  [False, True]
@@ -232,14 +248,11 @@ envs (n:ns)  =  [  \n' -> if n == n' then b else e n'
 freeNames :: Prop -> [Name]
 freeNames = error "exercise"
 \end{code}
-
-
-
 %
 Truth table verification is only viable for propositions with few
 names because of the exponential growth in the number of cases to
 check: for |n| names we get $2^n$ different rows in a truth table.
-%
+
 \begin{exercise}
 Define the function |freeNames|.
 \end{exercise}
@@ -394,8 +407,9 @@ Any other combination of proof/prop is an incorrect combination: the proof is no
 checkProof _ _ = False -- incorrect proof
 \end{spec}
 
-Once more, it can be interesting to view |checkProof| as an
-evaluator. This can be made plain by flipping its arguments: |flip checkProof ::
+Once more, it can be interesting to view |checkProof| as an evaluator.
+%
+This can be made plain by flipping its arguments: |flip checkProof ::
 Prop -> (Proof -> Bool)|.
 %
 This way, one can understand |Proof -> Bool|, a subset of proofs, as
@@ -403,9 +417,6 @@ the semantic domain of |Prop|.
 %
 In other words, a proposition can be interpreted as the subset of
 proofs which prove it.
-%
-\pj{Make the identification of ``subset of A'' with ``predicate on A'' explicit earlier. For instance |isTautology| defines the subset of}
-
 
 \subsection{Implication, hypothetical derivations, contexts}
 

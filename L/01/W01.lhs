@@ -584,31 +584,31 @@ To avoid this class of problems Haskell provides the |newtype|
 construct as a stronger version of |type|.
 
 \begin{code}
-newtype Population       = Pop  Int  -- Population count
-newtype Elevation        = Hei  Int  -- Elevation in feet above sea level
-newtype Established      = Est  Int  -- Year of establishment
+newtype Count       = Cou    Int  -- Population count
+newtype DistFeet    = DisFt  Int  -- Elevation in feet above sea level
+newtype Year        = Yea    Int  -- Year of establishment
 
 -- Example values of the new types
-pop :: Population;       pop  = Pop   562;
-hei :: Elevation;        hei  = Hei  2150;
-est :: Established;      est  = Est  1951;
+pop  :: Count;       pop  = Cou    562;
+hei  :: DistFeet;    hei  = DisFt  2150;
+est  :: Year;        est  = Yea    1951;
 \end{code}
 
-This example introduces three new types, |Population|,
-|Elevation|, and |Established|, which all are internally
-represented by an |Int| but which are good to keep apart\jp{Amount, Distance, Date may be better choices here.}.
+This example introduces three new types, |Count|,
+|DistFeet|, and |Year|, which all are internally
+represented by an |Int| but which are good to keep apart.
 %
-The syntax also introduces \emph{constructor functions} |Pop :: Int ->
-Population|, |Hei| and |Est| which can be used to translate from plain
+The syntax also introduces \emph{constructor functions} |Cou :: Int ->
+Count|, |DisFt| and |Yea| which can be used to translate from plain
 integers to the new types, and for pattern matching.
 %*TODO: pehaps add example of pattern matching as well
-The semantics of |Population| is the set of values of the form |Pop i|
+The semantics of |Count| is the set of values of the form |Cou i|
 for every value |i :: Int|.
 %
 It is not the same as the semantics of |Int| but the sets are
 \emph{bijective}.
 %
-The function |Pop| is an invertible function, a \emph{bijection}, also
+The function |Cou| is an invertible function, a \emph{bijection}, also
 called a set-isomorphism.
 %
 (We talk about isomorphisms between richer algebraic structures
