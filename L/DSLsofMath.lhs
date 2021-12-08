@@ -1,6 +1,10 @@
 %let lectureNotes = not book
 
+%if submit
+\documentclass{book}
+%else
 \documentclass[oneside]{book} % use one-side as long as we edit the book (easier to read in pdf reader).
+%endif %submit
 %if book
 \usepackage{mathpazo}
 %endif
