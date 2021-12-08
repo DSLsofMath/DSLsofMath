@@ -153,19 +153,10 @@
 \date{WORK IN PROGRESS: DRAFT OF \today}
 \begin{document}
 \frontmatter
+%if not submit
+% Publisher instruction: The submitted file should not include titlepage etc.
 \maketitle
-%\begin{abstract}
 \paragraph{Abstract}
-%if lectureNotes
-
-  These notes aim to cover the lectures and exercises of the recently
-  introduced course ``Domain-Specific Languages of Mathematics'' (at
-  Chalmers and University of Gothenburg).
-%
-  The course was developed in response to difficulties faced by
-  third-year computer science students in learning and applying
-  classical mathematics (mainly real and complex analysis).
-%endif
 %
   The main idea behind this book is to encourage readers to
   approach mathematical domains from a functional programming
@@ -192,15 +183,14 @@
   Functional Programming and shows how Computer Science and
   Mathematics are usefully taught together.
 
-
-
-
-
 \vfill
 
 \paragraph{License} \doclicenseThis
-
-
+%endif % not submit
+%if submit
+% Publisher instruction: the ToC should start at page v = page 5
+\setcounter{page}{5}
+%endif % submit
 \tableofcontents
 \mainmatter
 
