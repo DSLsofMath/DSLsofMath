@@ -5,7 +5,28 @@
 \usepackage{mathpazo}
 %endif
 %if book
-% let's use the default size to avoid luring ourselves into huge lines.
+%Publisher instructions:
+\usepackage[ paperheight  =297mm,paperwidth   =210mm,  % or: "paper=a4paper"
+             layoutheight =200mm,layoutwidth  =120mm,
+             layoutvoffset= 48.9mm,layouthoffset= 45mm,
+             centering,
+             margin=0pt, includeheadfoot,
+             footskip=0mm,
+             % showframe=true, showcrop=true
+           ]{geometry}
+
+% It might need a little tweaking.
+% This version, although not using A4 paper, also works
+% \usepackage[%
+%         papersize={156mm,234mm}, %7in,10in},
+%         lmargin=18.9mm,
+%         rmargin=18.9mm,
+%         tmargin=22mm,
+%         bmargin=22mm,
+%         includefoot,
+%         includehead
+%         ]{geometry}
+%\usepackage{layout}
 %else
 \usepackage[margin=2cm,a4paper]{geometry}
 % \usepackage{a4wide} (the above is even more compact and easier to control)
