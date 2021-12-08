@@ -7,7 +7,7 @@ module DSLsofMath.W03 where
 import Prelude hiding (Num(..),Fractional(..), Floating(..))
 import DSLsofMath.Algebra (Algebraic(..),Transcendental(..),
                            Additive(..),AddGroup(..),(-),
-                           Multiplicative(..))
+                           Multiplicative(..), MulGroup(..))
 import DSLsofMath.W01 (Env, evalEnv)
 type REAL = Double
 type ℝ = REAL
@@ -34,13 +34,17 @@ Simple types are sometimes mentioned explicitly in mathematical texts:
 \end{itemize}
 
 However the types of big operators (sums, limits, integrals, etc.) are
-usually not given explicitly. In fact, it may not be clear at first
-sight that the summing operator ($\sum$) should be assigned a type at
-all! Yet this is exactly what we will set out to do, dealing with a
+usually not given explicitly.
+%
+In fact, it may not be clear at first sight that the summing operator
+($\sum$) should be assigned a type at all!
+%
+Yet this is exactly what we will set out to do, dealing with a
 dangerous pitfall of mathematical notation
-(\cref{sec:scoping-pitfall}). However, to be able to do so
-convincingly we shall first clarify the relationship between functions and
-expressions.
+(\cref{sec:scoping-pitfall}).
+%
+However, to be able to do so convincingly we shall first clarify the
+relationship between functions and expressions.
 
 \subsection{Expressions and functions of one variable}
 \label{sec:expressions-of-one-var}
@@ -303,9 +307,11 @@ typings:
 \item \(\frac d {dt} : (ℝ → ℝ) → (ℝ → ℝ)\)
 
   Note that there are many notations for derivatives. Instead of
-  \(\frac d {dt} f\) one sees also \((d/dt) f\), or \(f'\) or even
-  \(\dot{f}\) if the varable is time (\(t\)).  Below we'll use
-  preferrably the |D f| notation.  \end{itemize}
+  \(\frac d {dt} f\) one sees also \(df/dt\), or \(f'\) or even
+  \(\dot{f}\) if the varable is time (\(t\)).
+  %
+  Below we'll use preferrably the |D f| notation.
+\end{itemize}
 
 In sum, the chief difficulty to overcome when assigning types for
 mathematical operators is that they often introduce (bind) variable
@@ -323,7 +329,8 @@ Therefore the limit operator has a higher order type.
 %
 A similar line of reasoning justifies the types of derivatives.
 %
-We return to derivatives after a section about multi-variable expressions.
+We return to derivatives after a section about multi-variable
+expressions.
 %study in detail how these play out first.
 
 \section{Detour: expressions of several variables}
@@ -344,8 +351,9 @@ variables, giving the \emph{name} of the variable.
 Here we use a string, so we have an infinite supply of variables.
 %
 \begin{code}
-data MVExp = Va String | Ad MVExp MVExp | Mu MVExp MVExp
+data MVExp = Va String | Ad MVExp MVExp | Di MVExp MVExp
 \end{code}
+where the last constructor |Di| is intended for division (for a change).
 
 % The above declaration introduces:
 % \begin{itemize}
@@ -355,7 +363,17 @@ data MVExp = Va String | Ad MVExp MVExp | Mu MVExp MVExp
 % \item a constructor |Mu :: MVExp -> MVExp -> MVExp| for multiplication.
 % \end{itemize}
 %
-Example values include |x = Va "x"|, |e1 = Ad x x|, and |e2 = Mu e1 e1|.
+Example expressions include |v = Va "v"|, |e1 = Ad v v|, and |e2 = Di e1 e1|.
+
+%if False
+
+\begin{code}
+v   = Va  "v"
+e1  = Ad  v   v
+e2  = Di  e1  e1
+\end{code}
+
+%endif % False
 
 % \pj{Add some text in an earlier chapter about |:+| colon-operators, parameterised datatypes, more than one defintion variant in one file, etc. }
 % If you want a constructor to be used as an infix operator you need to use
@@ -398,27 +416,33 @@ In the evaluator for |MVExp| we take this idea one step further: given an
 environment |env| and the syntax of an arithmetic expression |e| we
 compute the value of that expression.
 %
-\pj{It would look better with |Integer| replaced by |ZZ|.}
+Because the semantics of |env| is a partial function (modelled as a
+total function of type |String -> Maybe QQ|), the semantics of
+|MVExp| is a partial function too, of type |Env String QQ ->
+Maybe QQ|.
 %
-Because the semantics of |env| is a partial function (of type |String -> Maybe Integer|), the semantics of |MVExp| is a partial function too, of type |Env String Integer
--> Maybe Integer|.
-%
-%*TODO: perhaps switch Mul to Div to further "motivate" the use of |Maybe|. This would require changing the type (above) and a few lines below.
 %**TODO explain more for those not used to Haskell
 \begin{code}
-evalMVExp :: MVExp -> (Env String Integer -> Maybe Integer)
-evalMVExp (Va x)      env   =  evalEnv env x
-evalMVExp (Ad e1 e2)  env   =  mayP  (evalMVExp e1 env)  (evalMVExp e2 env)
-evalMVExp (Mu e1 e2)  env   =  mayT  (evalMVExp e1 env)  (evalMVExp e2 env)
+type QQ = Rational
+evalMVExp :: MVExp -> Env String QQ -> Maybe QQ
+evalMVExp e env = eval e
+  where  
+    eval  (Va  x)       =  evalEnv env x
+    eval  (Ad  e1  e2)  =  mayAdd  (eval e1)  (eval e2)
+    eval  (Di  e1  e2)  =  mayDiv  (eval e1)  (eval e2)
 
-mayP :: Maybe Integer -> Maybe Integer -> Maybe Integer
-mayP (Just a) (Just b)  =  Just (a+b)
-mayP _        _         =  Nothing
+mayAdd :: Maybe QQ -> Maybe QQ -> Maybe QQ
+mayAdd  (Just a)  (Just b)  =  Just (a+b)
+mayAdd  _         _         =  Nothing
 
-mayT :: Maybe Integer -> Maybe Integer -> Maybe Integer
-mayT (Just a) (Just b)  =  Just (a*b)
-mayT _        _         =  Nothing
+mayDiv :: Maybe QQ -> Maybe QQ -> Maybe QQ
+mayDiv  (Just a)  (Just 0)  =  Nothing
+mayDiv  (Just a)  (Just b)  =  Just (a/b)
+mayDiv  _         _         =  Nothing
 \end{code}
+%
+Note that there are two sources of |Nothing| in the evaluator:
+undefined variables, and (avoiding) division by zero.
 
 % The corresponding code for |MVExp'| is more general and you don't need to
 % understand it at this stage, but it is left here as an example for
@@ -438,7 +462,7 @@ mayT _        _         =  Nothing
 % \end{code}
 
 The approach taken above is to use a |String| to name each variable:
-indeed, |Env String Integer| is like a table of several variables and their values.
+indeed, |Env String QQ| is like a table of several variables and their values.
 %
 % However, in other situations, it is better to refer to variables by
 % position.
