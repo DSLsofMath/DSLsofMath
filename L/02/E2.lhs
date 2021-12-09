@@ -235,24 +235,13 @@ Can you prove the converse?
 
 \subsection{Continuity and limits}
 
-\begin{itemize}
-\item when asked to ``sketch an implementation'' of a function, you
-  must explain how the various results might be obtained from the
-  arguments, in particular, why the evidence required as output may
-  result from the evidence given as input.
-  %
-  You may use all the facts you know (for instance, that addition is
-  monotonic) without formalisation.
-
-\item to keep things short, let us abbreviate a significant chunk of
-  the definition of |a haslim L| (see
-  \refSec{par:LimitOfSequence}) by
-  \begin{spec}
-     P : Seq X -> X -> RPos -> Prop
-     P a L ε = Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (absBar (an - L) < ε)))
-  \end{spec}
-
-\end{itemize}
+Below, when asked to ``sketch an implementation'' of a function, you
+must explain how the various results might be obtained from the
+arguments, in particular, why the evidence required as output may
+result from the evidence given as input.
+%
+You may use all the facts you know (for instance, that addition is
+monotonic) without formalisation.
 
 \begin{exercise}
   \fromExam{2016-08-23}
@@ -335,6 +324,12 @@ Can you prove the converse?
 
   The sequence |{an} = (0, 1, 0, 1, ...)| does not converge.
 
+  To keep things short, let us abbreviate a significant chunk of the
+  definition of |a haslim L| (see \refSec{par:LimitOfSequence}) by
+  \begin{spec}
+     P : Seq X -> X -> RPos -> Prop
+     P a L ε = Exists (N : ℕ) (Forall (n : ℕ) ((n ≥ N) → (absBar (an - L) < ε)))
+  \end{spec}
   \begin{enumerate}
   \item Define the sequence |{an}| as a function |a : ℕ → ℝ|.
   \item The statement ``the sequence |{an}| is convergent'' is

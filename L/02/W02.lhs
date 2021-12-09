@@ -1,4 +1,4 @@
-\chapter{Logic and calculational proofs}
+\chapter{DSLs for logic and proofs}
 \label{sec:logic}
 
 In this chapter, we continue to exercise our skill of organizing areas

@@ -36,9 +36,11 @@ outcomes:
 \subsection{DSLs, sets and von Neumann}
 \label{dsls-sets-and-von-neumann}
 
-In this assignment you will build up a domain-specific language (a DSL)
-for finite sets. The domain you should model is pure set theory where
-all members are sets.
+In this assignment you will build up a domain-specific language (a
+DSL) for finite sets.
+%
+The domain you should model is pure set theory where all members are
+sets.
 
 Define a datatype |TERM v| for the abstract syntax of set expressions with
 variables of type |v| and a datatype |PRED v| for predicates over pure set
@@ -107,7 +109,7 @@ Implement |vonNeumann| and explore, explain and implement the following
 
 \begin{spec}
   claim1 n1 n2  =  {- if |(n1 <= n2)|  then  |(n1 ⊆ n2)| -}
-  claim2 n      =  {- |n = {0, 1, ..., n − 1}| -}
+  claim2 n      =  {- |n = {0, 1, ..., n - 1}| -}
 \end{spec}
 
 You need to insert some embeddings and types and you should use the

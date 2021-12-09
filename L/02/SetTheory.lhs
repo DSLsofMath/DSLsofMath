@@ -1,25 +1,31 @@
 \section{An aside: Pure set theory}
 \label{sec:PureSet}
 \jp{A possibility is to include the assignments in the book and move this there.}
+%
 One way to build mathematics from the ground up is to start from pure
 set theory and define all concepts by translation to sets.
 %
-We will only work with (a small corner of) this as a mathematical domain to study, not as
-``the right way'' of doing mathematics (there are other ways).
+We will only work with (a small corner of) this as a mathematical
+domain to study, not as ``the right way'' of doing mathematics (there
+are other ways).
 %
+To classify the sets we will often talk about the \emph{cardinality}
+of a set which is defined as the number of elements in it.
+
 The core of the language of pure set theory is captured by four
 function symbols (|{}|, |S|, |Union|, and |Intersection|).
 %\begin{code}
 %data Set = EmptySet | S | Union | Intersection
 %\end{code}
 %
-We use a nullary function symbol |{}| for the empty set (sometimes
-written $\emptyset$) and a unary function symbol |S| for the function
-that builds a singleton set from an ``element''.
+We use a nullary function symbol |{}| to denote the empty set
+(sometimes written $\emptyset$) and a unary function symbol |S| for
+the function that builds a singleton set from an ``element''.
 %
 All non-variable terms so far are |{}|, |S {}|, |S (S {})|, \ldots
 %
-The first set is empty but all the others are (different) one-element sets.
+The first set is empty but all the others denote (different)
+one-element sets.
 
 Next we add two binary function symbols for union and intersection of
 sets (denoted by terms).
@@ -38,8 +44,7 @@ set are again sets.
 \lnOnly{(Yes, this can make your head spin.)}
 
 At this point it is a good exercise to enumerate a few sets of
-cardinality\footnote{The \emph{cardinality} of a set is the number of
-  elements in it.} 0, 1, 2, and 3.
+cardinality 0, 1, 2, and 3.
 %
 There is really just one set of cardinality 0: the empty set |s0 =
 {}|.
@@ -101,3 +106,81 @@ A good read in this direction is ``The Haskell Road to Logic, Maths
 and Programming'' \citep{doets-haskellroadto-2004}.
 
 %*TODO: Perhaps add a bit about laws for pure set theory: x /= S x, Commutative(Union), etc.
+
+\subsection{Assignment 1: DSLs, sets and von Neumann}
+\label{dsls-sets-and-von-neumann}
+
+In this assignment you will build up a domain-specific language (a
+DSL) for finite sets.
+%
+The domain you should model is pure set theory where all members are
+sets.
+
+Define a datatype |TERM v| for the abstract syntax of set expressions
+with variables of type |v| and a datatype |PRED v| for predicates over
+pure set expressions.
+
+\paragraph{Part 1.} |TERM| should have constructors for
+
+\begin{itemize}
+
+\item the |Empty| set
+\item the one-element set constructor |Singleton|
+\item |Union|, and |Intersection|
+  \begin{itemize}
+  \item you can also try |Powerset|
+  \end{itemize}
+\item set-valued variables (|Var :: v -> TERM v|)
+\end{itemize}
+
+|PRED| should have contructors for
+\begin{itemize}
+\item the two predicates |Elem|, |Subset|
+\item the logical connectives |And|, |Or|, |Implies|, |Not|
+\end{itemize}
+
+\paragraph{Part 2.} A possible semantic domain for pure sets is
+
+\begin{code}
+newtype Set = S [Set]
+\end{code}
+
+Implement the evaluation functions
+\begin{code}
+eval   :: Eq v => Env v Set ->  TERM v   -> Set
+check  :: Eq v => Env v Set ->  PRED v  -> Bool
+\end{code}
+
+\begin{code}
+type Env var dom = [(var , dom)]
+\end{code}
+
+Note that the type parameter |v| to |TERM| is for the type of
+variables in the set expressions, not the type of elements of the
+sets.
+%
+(You can think of pure set theory as ``untyped'' or ``unityped''.)
+
+\paragraph{Part 3.} The \emph{von Neumann encoding} of natural numbers as
+sets is defined recursively as
+
+\begin{spec}
+  vonNeumann 0        =  Empty
+  vonNeumann (n + 1)  =  Union  (vonNeumann n)
+                                (Singleton (vonNeumann n))
+\end{spec}
+
+Implement |vonNeumann| and explore, explain and implement the following
+``pseudocode'' claims as functions in Haskell:
+%
+\begin{spec}
+  claim1 n1 n2  =  {- if |(n1 <= n2)|  then  |(n1 ⊆ n2)| -}
+  claim2 n      =  {- |n = {0, 1, ..., n - 1}| -}
+\end{spec}
+
+You need to insert some embeddings and types and you should use the
+|eval| and |check| functions.
+%
+(For debugging it is useful to implement a |show| function for |Set|
+which uses numerals to show the von Neumann naturals.)
+

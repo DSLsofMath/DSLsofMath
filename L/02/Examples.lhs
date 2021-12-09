@@ -139,39 +139,42 @@ proof : (n : Term) -> Prime n -> ((m : Term), (Prime m, m>n))
 This time the proof is going to be constructive: we have to find a concrete bigger prime, |m|.
 We can start filling in the definition of |proof| as a
 2-argument function returning a triple. % nested pair
-The key idea is to consider |1+factorial n| as a canditate new prime:
+The key idea is to consider |1+factorial n| as a candidate new prime:
 %
 \begin{spec}
-proof n np = (m, (pm, gt))
-  where  m' = 1 + factorial n
-         m  = {- some non-trivial prime factor of |m'| -}
-         pm = {- a proof that |m| is prime -}
-         gt = {- a proof that |m>n| -}
+proof n pn = (m, (pm, gt))
+  where  m'  = 1 + factorial n
+         m   = {- some non-trivial prime factor of |m'| -}
+         pm  = {- a proof that |m| is prime -}
+         gt  = {- a proof that |m>n| -}
 \end{spec}
 %
 The proof |pm| is the core of the theorem.
 %
-First, we note that for any |2<=p<=n| we have
+Let |mod x y| be the remainder after integer division of |x| by |y| and 
+%
+%format ==# = == "_{p}"
+let |(==#)| denote ``equality modulo p'': |x ==# y = mod x p == mod y p|.
+%
+Then note that for any number |p| where |2<=p<=n| we have |n! ==# 0|.
+%
+We then calculate
 %
 \begin{spec}
- mod m' p                        ==  {- Def. of |m'| -}
- mod (1 + n!) p                  ==  {- modulo distributes over |+| -}
- mod (mod 1 p  +  mod (n!) p) p  ==  {- modulo comp.: |n!| has |p| as a factor -}
- mod (1        +  0) p           ==
+ m'           ==#  {- Def. of |m'| -}
+ 1 + n!       ==#  {- modulo distributes over |+|, and |n! ==# 0| -}
  1
 \end{spec}
-where |mod x y| is the remainder after integer division of |x| by |y|.
 %
 Thus |m'| is not divisible by any number from |2| to |n|.
 %
 But is it a prime?
 %
-Here we could, as before, use the law of excluded middle to
-progress.
+Here we could, as before, use the law of excluded middle to progress.
 %
 But we don't have to, because primality is a \emph{decidable
-  property}: we can write a terminating function which checks if |m'|
-is prime.
+property}: we can write a terminating function which checks if |m'| is
+prime.
 %
 We can then proceed by case analysis again:
 %
@@ -180,7 +183,7 @@ If |m'| is prime then |m=m'| and the proof is done (because |1+n! >= 1
 %
 Otherwise, let |m| be a prime factor of |m'| (thus |m'=m*q|, |q>1|).
 %
-Then |1 == mod m' p == (mod m p)*(mod q p)| which means that neither
+Then |1 ==# m' ==# (mod m p)*(mod q p)| which means that neither
 |m| nor |q| are divisible by |p| (otherwise the product would be
 zero).
 %

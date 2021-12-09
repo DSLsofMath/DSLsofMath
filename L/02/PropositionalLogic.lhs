@@ -54,8 +54,9 @@ calculus --- so we keep calling them ``names'' to avoid confusing them.
 
 % simple arithmetic in \sref{sec:ch1ex}
 Just as we did with with complex number expressions in
-\cref{sec:complex-arithmetic},%\cref{sec:DSLComplex}
+\cref{sec:complex-arithmetic}, %\cref{sec:DSLComplex}
 we can model the abstract syntax of propositions as a datatype:
+%
 \begin{code}
 data Prop  =  Con      Bool
            |  Not      Prop
@@ -301,8 +302,8 @@ and, the corresponding case of the |checkProof| function will look like this:
 checkProof (AndIntro t u) (And p q) = checkProof t p && checkProof u q
 \end{spec}
 
-To prove |Or P Q|, we need either a proof of |P| or proof of |Q| --- but
-we need to know which side (|Left| for |p| or |Right| for |q|) we
+To prove |Or P Q|, we need either a proof of |P| or a proof of |Q| ---
+but we need to know which side (|Left| for |p| or |Right| for |q|) we
 refer to.
 %
 Therefore, we introduce two proof-term constructors:
@@ -323,6 +324,7 @@ Not (a  `Or`   b)  =  Not a  `And`  Not b
 Not (a  `And`  b)  =  Not a  `Or`   Not b
 ...
 \end{spec}
+%
 Negation can then be pushed all the way down to names, which can
 recieve a special treatment in proof-checking.
 
@@ -330,7 +332,9 @@ However, we will instead apply the same treatment to negation as to
 other constructions, and define a suitable introduction rule:
 \[ \frac{P → Q \quad P → ¬Q}{¬P} \]
 %
-(Intuitively, this rule says that to prove \(¬P\), one needs to derive a contradiction from \(P\).)
+(Intuitively, this rule says that to prove \(¬P\), one needs to derive
+a contradiction from \(P\).)
+%
 We can represent it by the constructor |NotIntro :: Prop -> Proof ->
 Proof -> Proof|.
 %
@@ -344,7 +348,8 @@ formula.
 There is no rule to introduce falsity (|⊥|) --- otherwise we'd have an
 inconsistent logic!
 %
-Thus the last introduction rule deals with Truth, with no premiss: \[\frac{\phantom{hello}}{⊤}\]
+Thus the last introduction rule deals with Truth, with no
+premiss: \[\frac{\phantom{hello}}{⊤}\]
 %
 The proof has no information either: |TruthIntro :: Proof|.
 
@@ -559,12 +564,29 @@ conjunctionCommProof2 =
 %endif
 \end{exercise}
 
+\paragraph{|Or| is the dual of |And|}
+Before moving on to our next topic, we make a final remark on |And| and |Or|.
+%
+Most of the properties of |And| have corresponding properties for
+|Or|.
+%
+This can be explained one way by observing that they are de Morgan
+duals.
+%
+Another explanation is that one can swap the direction of the arrows
+in the types of the the role between introduction and
+elimination.
+%
+(Using our presentation, doing so requires applying isomorphisms.)
+
 
 \subsection{The Haskell type-checker as a proof checker}
 \label{sec:haskell-as-proof checker}
 Perhaps surprisingly, the proof-checker that we just wrote is already
-built-in in the Haskell compiler. Let us clarify what we mean, using
-the same example, but adapt it to let the type-checker do the work:
+built-in in the Haskell compiler.
+%
+Let us clarify what we mean, using the same example, but adapt it to
+let the type-checker do the work:
 
 \begin{code}
 conjunctionCommProof' :: Implies (And a b) (And b a)
@@ -614,15 +636,27 @@ define partial functions (instead of total ones, see
 \cref{sec:partial-and-total-functions}).
 
 
-\subsection{Intuitionistic Propositional Logic and Simply Typed
-  Lambda-Calculus, Curry-Howard isomorphism.}
+\subsection{Intuitionistic Propositional Logic}
 \label{sec:intuitionistic-logic}
+% ToC:
+% + intuitionistic logic
+% + Not p = p -> False
+% + notIntro
+% + implement Implies as (->)
+% + implement And as (,)
+% + implement Or as Either
+% + introduce "proof terms" and STLC
+% + "excluded middle" impossible
+% + implement not (not exclMid)
+% + revisiting the tupling transform
+% + "Logic as impoverished typing rules"
 We can make the link beween Haskell and logic more tight if we
 restrict ourselves to \emph{intuitionistic} logic.
 
 One way to characterize intuitionistic logic is that it lacks native
-support for negation. Instead, |Not p| is represented as |p `Implies`
-False|:
+support for negation.
+%
+Instead, |Not p| is represented as |p `Implies` False|:
 \begin{code}
 type Not p = p `Implies` False
 \end{code}
@@ -642,11 +676,15 @@ notIntro :: (p `Implies` q) `And` (p `Implies` Not q) -> Not p
 \end{spec}
 where |Not p = p `Implies` False|, and its proof is:
 \begin{code}
-notIntro (evPimpQ, evPimpNotQ) = implyIntro $ \evP ->
-    (evPimpNotQ `implyElim` evP ) `implyElim` (evPimpQ `implyElim` evP)
+notIntro (evPimpQ, evPimpNotQ) =
+    implyIntro $ \evP ->
+    let  evQ     = evPimpQ     `implyElim` evP
+         evNotQ  = evPimpNotQ  `implyElim` evP
+    in evNotQ `implyElim` evQ
 \end{code}
 % $ -- resync emacs mode parser
-\label{sec:curry-howard}
+%    (evPimpNotQ `implyElim` evP ) `implyElim` (evPimpQ `implyElim` evP)
+\label{sec:curry-howard}%
 By focusing on intuitionistic logic, we can give a \emph{typed}
 representation for each of the formula constructors.
 %
@@ -693,7 +731,8 @@ type Truth = ()
 truthIntro = ()
 \end{code}
 
-And falsehood is represented as the \emph{empty} type (with no constructor):
+And falsehood is represented as the \emph{empty} type (with no
+constructor):
 \begin{code}
 data False
 falseElim x = case x of {}
@@ -701,11 +740,21 @@ falseElim x = case x of {}
 Note that the case-analysis has nothing to take care of here.
 
 In this way we can build proofs (``proof terms'') for all of
-intuitionistic propositional logic (IPL). As we have seen, each such
-proof term is a program in Haskell. Conversely, every program written
-in this fragment of Haskell (functions, pairs, |Either|, no recursion
-and full coverage of cases) can be turned into a proof in IPL. This
-fragment is called the simply-typed lambda calculus (STLC) with sum and products.
+intuitionistic propositional logic (IPL).
+%
+As we have seen, each such proof term is a program in Haskell.
+%
+Conversely, every program written in this fragment of Haskell
+(functions, pairs, |Either|, no recursion and full coverage of cases)
+can be turned into a proof in IPL.
+%
+This fragment is called the simply-typed lambda calculus (STLC) with
+sum and products.
+
+\subsection{Type-Driven Development of Proofs as Programs}
+
+With the logic connectives implemented as type constructors we explore
+a few more examples of laws and their proofs.
 
 \paragraph{The law of the excluded middle}
 \label{sec:excluded-middle}
@@ -739,13 +788,18 @@ excludedMiddle k = -- ... assume |Not (Or p (Not p))| and prove falsity.
    k -- So, we can prove falsity if we can prove |Or p (Not p)|.
    (Right  -- We can prove in particular the right case, |Not p|
      (\evP ->  -- ... by assuming that |p| holds, and prove falsity.
-        k --  But again, we can prove falsity if we can prove |Or p (Not p)|.
+        k --  Again, we can prove falsity if we can prove |Or p (Not p)|.
         (Left -- This time, we can prove in particular the left case, |p| ...
           evP))) -- because we assumed it earlier!
 \end{code}
+which can be shortened to a one-liner if we cut out the comments:
+\begin{code}
+excludedMiddle' :: Not (Not (p `Or` Not p))
+excludedMiddle' k = k (Right (\evP -> k (Left evP))) 
+\end{code}
 % excludedMiddle k = k (Right (\evP -> k (Left evP)))
 % excludedMiddle k = k (Right (k . Left))
-
+% excludedMiddle k = (k . Right) (k . Left)
 
 \paragraph{Revisiting the tupling transform}
 %
@@ -757,7 +811,7 @@ There is a logic formula corresponding to the type of the tupling
 transform:
 %
 \begin{spec}
-  (a `Implies` (b `And` c)) `Iff` (a` Implies` b) `And` (a `Implies` c)
+  (a `Implies` (b `And` c)) `Iff` (a `Implies` b) `And` (a `Implies` c)
 \end{spec}
 (|Iff| refers to implication in both directions).
 The proof of this formula closely follows the implementation of the transform.
@@ -808,21 +862,6 @@ says that we can think of propositions as types, and proofs as
 programs. This principle goes beyond propositional logic (and even first
 order logic): it applies to all sorts of logics and programming
 languages, with various levels of expressivity and features.
-
-\subsection{|Or| is the dual of |And|}
-Before moving on to our next topic, we make a final remark on |And| and |Or|.
-%
-Most of the properties of |And| have corresponding properties for
-|Or|.
-%
-This can be explained one way by observing that they are de Morgan
-duals.
-%
-Another explanation is that one can swap the direction of the arrows
-in the types of the the role between introduction and
-elimination.
-%
-(Using our presentation, doing so requires applying isomorphisms.)
 
 %
 %

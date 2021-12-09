@@ -106,6 +106,7 @@ Thus our function can be
 A slight variation which is often useful would be to use |max| to
 define |getq ε = max (17/38,1-ε/2)|.
 %
+
 Similarly, we can show that any internal point (like |1/2|) is a limit
 point.
 
@@ -185,7 +186,7 @@ Now, if we let |ε = minimum ds| we can be certain that
 `notElem` xs|).
 
 \begin{exercise}
-If |Limp p X| we now know that |X| is infinite.
+Show that |Limp p X| implies that |X| is infinite.
 \end{exercise}
 %
 Show how to construct an infinite sequence |a : Nat -> REAL| of points
@@ -340,7 +341,7 @@ Indeed, it is often useful to introduce a local name (like |P| here)
 to help break the definition down into more manageable parts.
 %
 If we now naively translate the last part we get this ``definition''
-for |P|:
+for~|P|:
 %
 \begin{spec}
 {-"\quad"-}  where  P epsilon delta = (0 < absBar (x - a) < delta) => (x `elem` Dom f  && absBar (f x - L) < epsilon))

@@ -284,8 +284,8 @@ A typical example is the notation for equations: for instance |x^2 +
 We write ``roughly'' here because in math texts the scope of |x| very
 often extends to some text after the equation where something more is
 said about the solution |x|.%
-\footnote{This phenomena seems to be borrowed the behaviour of
-  quantifiers in natural language.
+\footnote{This phenomena seems to be borrowed from the behaviour of
+quantifiers in natural language.
   %
   See for example \citep{bernardy_computational_2020} for a
   discussion.}
@@ -325,7 +325,7 @@ The eliminator uses |checkUnify| which verifies that |f x| is indeed a
 generalisation of the formula to prove, |p|.
 %
 Finally we need a way to introduce fresh variables |freshFor|, which
-conjures up a variable occuring nowhere (in its argument).
+conjures up a variable occuring nowhere in its argument list.
 
 \subsection{Existential quantification}
 
@@ -348,15 +348,18 @@ Then the final step is to take the disjunction of this infinite set of formulas
 to obtain |Exists i (A i)|.
 
 The elimination and introduction rules for existential quantification are:
-
+%
 \[
   \frac{P(a)}{∃i. P(i)}\hspace{10em}\frac{{∀x.P(x) → R}  \quad \quad ∃i. P(i)}{R}
 \]
+%
 The introduction rule says that to prove the existential
 quantification, we only need exhibit one witness ($a$) and one proof
-for that member of set of individuals. For binary |Or| the ``family''
-only had two members, one labelled |Left| and |Right|, and we
-effectively had one introduction rule for each.
+for that member of the set of individuals.
+%
+For binary |Or| the ``family'' only had two members, one labelled
+|Left| and one |Right|, and we effectively had one introduction rule
+for each.
 %
 Here, for the generalisation of |Or|, we have unified the two rules
 into one with an added parameter |a| corresponding to the label which
@@ -373,7 +376,7 @@ orElim      :: Or p q -> (p `Implies` r) -> (q `Implies` r) -> r
 The generalisation unifies these two to one family of arguments.
 %
 If we can prove |R| for each member of the family, we can be sure to
-prove |R| when we encounter some family member:
+prove |R| when we encounter some family member.
 
 The constructors for proofs can be |ExistsIntro :: RatSem -> Proof ->
 Proof| and |ExistsElim :: Proof -> Proof -> Proof|.
@@ -460,24 +463,22 @@ equivalent of quantification over individuals.
 Therefore, one would have to use a different tool than Haskell as a
 proof assistant for (intuitionistic) FOL.
 %
-the quantification that Haskell provides |forall a? ...| is \emph{over
+The quantification that Haskell provides (|forall a? ...|) is \emph{over
   types} rather than individuals.%
 %
-\footnote{There is ongoing progress in this direction, but we find the
-current state too clunky to be worthy of basing our development on it.
+What we would need is:
 %
-See the langauges Agda \citep{Norell09dependentlytyped} or Idris
-\citep{citeulike:14291916} for more direct support.}
+1.\ a type corresponding to universal quantification, the dependent
+function type |(a:A) → B|, and
 %
-What we would need is: 1. a type corresponding to universal
-quantification, the dependent function type |(a:A) → B|, and 2. a type
-corresponding to |Exists (x:A) (P x)|, the dependent pair |(x:A,
-P x)|.
+2.\ a type corresponding to |Exists (x:A) (P x)|, the dependent pair
+|(x:A, P x)|.
 
-We can recommend the language Agda (which provides even more forms of
-quantification), however, in order to avoid a multiplicity of tools
-and potentially an excessive emphasis on proof formalism, we will
-refrain to formalise any proof as Agda programs in the remainder.
+We can recommend the language Agda \citep{Norell09dependentlytyped} or
+Idris \citep{citeulike:14291916}, however, in order to avoid a
+multiplicity of tools and potentially an excessive emphasis on proof
+formalism, we will refrain to formalise proofs as Agda or Idris
+programs in the remainder.
 %
 Rather, in the rest of the chapter, we will illustrate the logical
 principles seen so far by examples.
