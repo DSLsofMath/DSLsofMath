@@ -79,13 +79,13 @@ also has type ℝ.
 %format =?= = "\mathbin{\stackrel{?}{=}}"
 Furthermore, it is less clear now if |e2 = 2*x + 3 =?= 2*y + 3 = e3|.
 %
-In general one cannot simply change a variable name by another without
+In general one cannot simply change a variable name to another without
 making sure that
 %
 1. the renaming is applied everywhere uniformly and
 %
 2. the new variable name is not used for another purpose in the same
-scope (otherwise one informally says that there is a ``clash'').
+scope (otherwise one informally says that there is a ``name clash'').
 
 To clarify this situation, we will now formalise expressions of one
 variables as a DSL.
@@ -115,8 +115,9 @@ We could encode our examples as follows:
 \item |e1 = X :+: Const (-1)|
 \item |e2 = Const 2 :*: (X :*: X)  :+: Const 3|
 \end{itemize}
-We no longer have a third example: we can only ever represent one
-variable, as |X|, and thus we skip the last example, equal to the second.
+We no longer have a third example: in this type we can only
+ever represent one variable, as |X|, and thus we skip the last
+example, equal to the second.
 
 We can now evaluate the values of these expressions.
 %
@@ -232,7 +233,7 @@ operand can be typed as, say, $ℤ → ℝ$.
 The other arguments will be the lower and upper limits of the sum ($1$
 and $n$ in our example).
 %
-The variable, $i$ shall not be represented as an argument:
+The variable name, $i$ shall not be represented as an argument:
 %
 indeed, the variable name is \emph{fixed by the representation of
   functions}.
@@ -252,8 +253,10 @@ and use it for our example as follows:
 \begin{spec}
 sumOfSquares n = summation 1 n (powTo 2)
 \end{spec}
-equivalently, we can use a lambda expression for the summand, to give
+%
+Equivalently, we can use a lambda expression for the summand, to give
 a name to the summation variable:
+%
 \begin{spec}
 sumOfSquares n = summation 1 n (\i -> i `powTo` 2)
 \end{spec}
@@ -277,14 +280,14 @@ Surely we said that only one variable could occur in the summand, but
 we see both |i| and |j|?
 %
 Well, we are not cheating as long as we use the \emph{shallow
-  embedding} for functions of one variables.
+  embedding} for functions of one variable.
 %
-Doing so allows us to
+Doing so allows us to:
 %
-1. use lambda notation to bind (and name) the variable name of the
+1.~use lambda notation to bind (and name) the variable name of the
 summation however we wish (in this case |i| and |j|) and
 %
-2. freely use any Haskell function of type |ℤ → ℝ| as the summand.
+2.~freely use any Haskell function of type |ℤ → ℝ| as the summand.
 %
 In particular, this function can be any lambda-expression returning
 |ℝ|, and this expression can include summation itself.
@@ -329,6 +332,8 @@ Therefore the limit operator has a higher order type.
 %
 A similar line of reasoning justifies the types of derivatives.
 %
+\pj{replace ``after a section'' with ``in Chapter \ref{sec:types}'' after the move/split.}
+%
 We return to derivatives after a section about multi-variable
 expressions.
 %study in detail how these play out first.
@@ -340,7 +345,7 @@ In first reading this section can be skipped, however it is natural to
 to extend the study of expressions from single variables to multiple
 variables.
 
-\paragraph{The data type of multiple variables expressions}
+\paragraph{The data type of expressions of multiple variables}
 \label{sec:ArithExp}
 Let us define the following type, describing a deep embedding for
 simple arithmetic expressions.
@@ -488,6 +493,7 @@ indeed, |Env String QQ| is like a table of several variables and their values.
 
 \section{Typing Mathematics: derivative of a function}
 \label{sec:typeDerivative}
+\pj{Move the sections before this to ``Ch. 1.5'' (after limits, etc.).}
 
 Consider the classical definition of the derivative of
 \citet{adams2010calculus}:
