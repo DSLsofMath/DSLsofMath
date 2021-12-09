@@ -9,32 +9,35 @@
 \usepackage{mathpazo}
 %endif
 %if book
-%Publisher instructions:
-\usepackage[ paperheight  =297mm,paperwidth   =210mm,  % or: "paper=a4paper"
-             layoutheight =200mm,layoutwidth  =120mm,
-             layoutvoffset= 48.9mm,layouthoffset= 45mm,
-             centering,
-             margin=0pt, includeheadfoot,
-             footskip=0mm,
-             % showframe=true, showcrop=true
+\usepackage[bindingoffset=0cm,a4paper,centering,totalheight=200mm,textwidth=120mm,includefoot,includehead,
+            showframe=true, showcrop=true, verbose
            ]{geometry}
-
+%Publisher instructions:
+%\usepackage[ paperheight  =297mm,paperwidth   =210mm,  % or: "paper=a4paper"
+%             layoutheight =200mm,layoutwidth  =120mm,
+%             layoutvoffset= 48.9mm,layouthoffset= 45mm,
+%             centering,
+%             margin=0pt, includehead, includefoot,
+%             footskip=0mm,
+%             showframe=true, showcrop=true, verbose
+%           ]{geometry}
 % It might need a little tweaking.
 % This version, although not using A4 paper, also works
-% \usepackage[%
-%         papersize={156mm,234mm}, %7in,10in},
-%         lmargin=18.9mm,
-%         rmargin=18.9mm,
-%         tmargin=22mm,
-%         bmargin=22mm,
-%         includefoot,
-%         includehead
-%         ]{geometry}
-%\usepackage{layout}
+%\usepackage[%
+%        papersize={156mm,234mm}, %7in,10in},
+%        lmargin=18.9mm,
+%        rmargin=18.9mm,
+%        tmargin=22mm,
+%        bmargin=22mm,
+%        includefoot,
+%        includehead,
+%        showframe=true, showcrop=true, verbose
+%        ]{geometry}
 %else
 \usepackage[margin=2cm,a4paper]{geometry}
 % \usepackage{a4wide} (the above is even more compact and easier to control)
 %endif
+\usepackage{layout}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{mathrsfs}
@@ -45,6 +48,7 @@
 % %include dslmagda.fmt
 %%% Our own formatting directives
 %include dslm.format
+\usepackage{makeidx}
 \usepackage{natbib}
 \usepackage{wrapfig}
 \usepackage{graphicx}
@@ -190,6 +194,7 @@
 \vfill
 
 \paragraph{License} \doclicenseThis
+%\layout
 %endif % not submit
 %if submit
 % Publisher instruction: the ToC should start at page v = page 5

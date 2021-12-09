@@ -1,0 +1,137 @@
+* Version with a4 paper (242 pages)
++ Correct total printed area, but problems with (lack of) footer space for page number.
+** Settings
+\usepackage[ paperheight  =297mm,paperwidth   =210mm,  % or: "paper=a4paper"
+             layoutheight =200mm,layoutwidth  =120mm,
+             layoutvoffset= 48.9mm,layouthoffset= 45mm,
+             centering,
+             margin=0pt, includehead, includefoot,
+             footskip=0mm,
+             showframe=true, showcrop=true, verbose
+           ]{geometry}
+** geometry verbose output
++ driver: pdftex
++ paper: custom
++ layout: <custom>
++ layout(width,height): (341.43306pt,569.05511pt)
++ layoutoffset:(h,v)=(128.0374pt,139.13396pt)
++ hratio: 1:1
++ vratio: 1:1
++ modes: includehead includefoot showframe showcrop 
++ h-part:(L,W,R)=(0.0pt, 341.43306pt, 0.0pt)
++ v-part:(T,H,B)=(0.0pt, 569.05511pt, 0.0pt)
++ \paperwidth=597.50787pt
++ \paperheight=845.04684pt
++ \textwidth=341.43306pt   = 12.000cm
++ \textheight=538.98763pt  = 18.943cm
++ \oddsidemargin=55.76741pt
++ \evensidemargin=55.76741pt
++ \topmargin=66.86397pt
++ \headheight=12.0pt
++ \headsep=18.06749pt
++ \topskip=10.0pt
++ \footskip=0.0pt
++ \marginparwidth=69.0pt
++ \marginparsep=7.0pt
++ \columnsep=10.0pt
++ \skip\footins=9.0pt plus 4.0pt minus 2.0pt
++ \hoffset=0.0pt
++ \voffset=0.0pt
++ \mag=1000
++ \@twocolumnfalse
++ \@twosidefalse
++ \@mparswitchfalse
++ \@reversemarginfalse
++ (1in=72.27pt=25.4mm, 1cm=28.453pt)
+* Version with small paper (268 pages)
++ Smaller total printed area than specified by the publisher. Right or wrong?
+** Settings
+\usepackage[%
+        papersize={156mm,234mm}, %7in,10in},
+        lmargin=18.9mm,
+        rmargin=18.9mm,
+        tmargin=22mm,
+        bmargin=22mm,
+        includefoot,
+        includehead,
+        showframe=true, showcrop=true, verbose
+        ]{geometry}
+** geometry verbose output
+   :PROPERTIES:
+   :ORDERED:  t
+   :END:
+*geometry* verbose mode - [ preamble ] result:
++ driver: pdftex
++ paper: custom
++ layout: <same size as paper>
++ layoutoffset:(h,v)=(0.0pt,0.0pt)
++ modes: includehead includefoot showframe showcrop 
++ h-part:(L,W,R)=(53.77568pt, 336.31163pt, 53.77568pt)
++ v-part:(T,H,B)=(62.59605pt, 540.60237pt, 62.59605pt)
++ \paperwidth=443.86299pt
++ \paperheight=665.79448pt
++ \textwidth=336.31163pt  = 11.820cm
++ \textheight=485.23994pt = 17.054cm
++ \oddsidemargin=-18.49431pt
++ \evensidemargin=-18.49431pt
++ \topmargin=-9.67393pt
++ \headheight=12.0pt
++ \headsep=18.06749pt
++ \topskip=10.0pt
++ \footskip=25.29494pt
++ \marginparwidth=69.0pt
++ \marginparsep=7.0pt
++ \columnsep=10.0pt
++ \skip\footins=9.0pt plus 4.0pt minus 2.0pt
++ \hoffset=0.0pt
++ \voffset=0.0pt
++ \mag=1000
++ \@twocolumnfalse
++ \@twosidefalse
++ \@mparswitchfalse
++ \@reversemarginfalse
++ (1in=72.27pt=25.4mm, 1cm=28.453pt)
+* Aarnes version (253 pages)
++ Correct total printed area, and reasonable space for footer.
+** Settings
+\usepackage[bindingoffset=0cm,
+            a4paper,
+            centering,
+            totalheight=200mm,
+            textwidth=120mm,
+            includefoot,includehead,
+            showframe=true, showcrop=true, verbose
+           ]{geometry}
+** *geometry* verbose mode - [ preamble ] result:
++ driver: pdftex
++ paper: a4paper
++ layout: <same size as paper>
++ layoutoffset:(h,v)=(0.0pt,0.0pt)
++ hratio: 1:1
++ vratio: 1:1
++ modes: includehead includefoot showframe showcrop 
++ h-part:(L,W,R)=(128.0374pt, 341.43306pt, 128.03741pt)
++ v-part:(T,H,B)=(137.99586pt, 569.05511pt, 137.99586pt)
++ \paperwidth=597.50787pt
++ \paperheight=845.04684pt
++ \textwidth=341.43306pt    = 12.000cm
++ \textheight=513.69269pt   = 18.054cm
++ \oddsidemargin=55.76741pt
++ \evensidemargin=55.76741pt
++ \topmargin=65.72588pt
++ \headheight=12.0pt
++ \headsep=18.06749pt
++ \topskip=10.0pt
++ \footskip=25.29494pt
++ \marginparwidth=69.0pt
++ \marginparsep=7.0pt
++ \columnsep=10.0pt
++ \skip\footins=9.0pt plus 4.0pt minus 2.0pt
++ \hoffset=0.0pt
++ \voffset=0.0pt
++ \mag=1000
++ \@twocolumnfalse
++ \@twosidefalse
++ \@mparswitchfalse
++ \@reversemarginfalse
++ (1in=72.27pt=25.4mm, 1cm=28.453pt)
