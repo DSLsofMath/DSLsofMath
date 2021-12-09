@@ -1,6 +1,6 @@
 \section{An aside: Pure set theory}
 \label{sec:PureSet}
-\jp{A possibility is to include the assignments in the book and move this there.}
+%TODO: assignment is included - perhaps move this
 %
 One way to build mathematics from the ground up is to start from pure
 set theory and define all concepts by translation to sets.

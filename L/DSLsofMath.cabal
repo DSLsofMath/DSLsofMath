@@ -18,7 +18,7 @@ cabal-version:       >=1.10
 library
   exposed-modules: DSLsofMath.Algebra, DSLsofMath.FunExpInst,
                    DSLsofMath.W01, DSLsofMath.W01.Test, DSLsofMath.CSem,
-                   DSLsofMath.ComplexSem, DSLsofMath.ComplexSyn,
+                   DSLsofMath.ComplexSem, DSLsofMath.ComplexSyn, DSLsofMath.SimpleFunExp,
                    -- Chapter 2
                    DSLsofMath.FOL, DSLsofMath.PropositionalLogic,
                    DSLsofMath.W03, DSLsofMath.PoorMansProofs, DSLsofMath.Simplify,

@@ -26,6 +26,7 @@ BOOKDEPS=DSLsofMath.lhs dslm.format ref.bib  \
              01/W01.lhs                      \
                 01/ComplexSem.lhs            \
                 01/ComplexSyn.lhs            \
+                01/SimpleFunExp.lhs          \
                 01/CSem.lhs                  \
                 01/Either.lhs		     \
                 01/E1.lhs                    \

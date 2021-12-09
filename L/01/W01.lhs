@@ -1,6 +1,6 @@
 %{
 %format bi = "\Varid{bi}"
-\chapter{Types, Functions, and Complex numbers}
+\chapter{Types, Functions, and DSLs for Expressions}
 \label{sec:DSLComplex}
 
 In this chapter we exemplify our method by applying it to the
@@ -855,6 +855,9 @@ evaluation functions or predicates (like |lim| and |sum|).
 
 % ----------------------------------------------------------------
 %include ComplexSyn.lhs
+
+% ----------------------------------------------------------------
+%include SimpleFunExp.lhs
 
 %if False
 \section{Some helper functions (can be skipped)}
