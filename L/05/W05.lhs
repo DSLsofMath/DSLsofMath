@@ -14,8 +14,25 @@ type REAL = Double
 %endif
 
 \section{Polynomials}
-\pj{Maybe a bit long as a section}
-
+%TODO: Maybe a bit long as a section - the paragraphs could be "promoted" to subsections.
+% Section ToC
+% + polynomial definition from textbook
+% + typing the definition + updated version
+% + evalL : Syn -> Sem where Syn = [REAL], Sem = REAL -> REAL
+% + evalL using Ring
+% + Chebyshev example  
+% + Yet another definition of polynomial
+% + newtype Poly
+% + evalPoly :: Ring a => Poly a -> (a -> a)
+% + H2(evalPoly, +, +)?
+% + calculational proof - compute def. of (+) for Poly
+% + numeric instances for Poly
+% + Algebra def. of "polynomial"
+% + mention other def.: Poly'
+% + Remark about techn. adv. of Poly'
+% + Obs1: poly /= polyfun
+% + Obs2: can def. x = Poly[0,1] and usual def. of poly.
+%
 Again we take as starting point a definition from
   \cite{adams2010calculus}, this time from page 39:
 
@@ -63,6 +80,8 @@ Thus, what is meant is
   For the constant zero polynomial the degree is not defined.
   Otherwise, the degree is $n$.
 \end{quote}
+\paragraph{Syntax and semantics of polynomials.}
+%
 Given the coefficients $a_i$ we can evaluate $P$ at any given $x$.
 %
 Ignoring the condition on coefficients for now, we can assume that the
@@ -96,9 +115,8 @@ evalL (a:as)  = const a  +  id * evalL as
 \end{code}
 %
 As an example, the polynomial which is usually written just |x| is
-represented by the list |[0, 1]| and the polynomial function |\x -> x^2-1| is
-represented by the list |[-1,0,1]|.
-
+represented by the list |[0, 1]| and the polynomial function |\x ->
+x^2-1| is represented by the list |[-1,0,1]|.
 
 It is worth noting that the definition of what we call a ``polynomial
 function'' is semantic, not syntactic.
@@ -171,6 +189,7 @@ The largest element of this set is undefined (by definition of
 largest, see also \cref{ex:maximum-homo}), and we have the intended
 definition.
 
+\paragraph{Representing polynomials}
 So, we can simply use any list of coefficients to \emph{represent} a
 polynomial:
 \begin{code}
@@ -258,6 +277,8 @@ This definition looks natural (we could probably have guessed it early
 on) but it is still interesting to see that we can derive it as the
 form that it has to take for the proof to go through.
 
+\paragraph{Numeric instances for polynomials}
+%
 We leave the derivation of the other cases and operations as an
 exercise.
 %
@@ -266,12 +287,12 @@ Here, we just give the corresponding definitions.
 \label{sec:mulPoly}
 \begin{code}
 instance Additive a => Additive (Poly a) where
-  (+) = addPoly
-  zero = Poly []
+  (+)   = addPoly
+  zero  = Poly []
 
 instance Ring a => Multiplicative (Poly a) where
-  (*) = mulPoly
-  one = Poly [one]
+  (*)   = mulPoly
+  one   = Poly [one]
 
 instance AddGroup a => AddGroup (Poly a) where
   negate = negPoly
@@ -307,7 +328,7 @@ polyMap f (Poly as)   = Poly (map f as)
 polyCons :: a -> Poly a -> Poly a
 polyCons x (Poly xs) = Poly (x:xs)
 \end{code}
-Therefore, we \emph{can} define a |Ring| structure on |Poly a|, and we
+As we \emph{can} define a |Ring| structure on |Poly a|, and we
 have arrived at the canonical definition of polynomials, as found in
 any algebra book (see, for example, \cite{rotman2006first} for a very
 readable text):
@@ -322,9 +343,9 @@ Note that from here on we will use the term ``polynomial'' for the
 abstract syntax (the list of coefficients, |as|) and ``polynomial
 function'' for its semantics (the function |evalPoly as : A -> A|).
 
-
-\textbf{Caveat:} The canonical representation of polynomials in
-algebra does not use finite lists, but the equivalent
+\paragraph{An alternative representation}
+The canonical representation of polynomials in algebra does not use
+finite lists, but the equivalent
 
 \begin{spec}
   Poly' A = { a : ℕ → A | {- |a| has a finite number of non-zero values -} }
@@ -361,54 +382,51 @@ distinction is necessary.
 %
 The advantage is even clearer in the case of multiplication.
 
-\paragraph{Observations:}
-
+\paragraph{Syntax |/=| semantics}
 \label{sec:polynotpolyfun}
-\begin{enumerate}
-\item If one considers arbitrary rings, polynomials are not isomorphic
-  (in one-to-one correspondence) to polynomial functions.
-  %
-  For any finite ring |A|, there is a finite number of functions |A ->
-  A|, but there is a countable infinity of polynomials.
-  %
-  That means that the same polynomial function on |A| will be the
-  evaluation of many different polynomials.
+If one considers arbitrary rings, polynomials are not isomorphic (in
+one-to-one correspondence) to polynomial functions.
+%
+For any finite ring |A|, there is a finite number of functions |A ->
+A|, but there is a countable infinity of polynomials.
+%
+That means that the same polynomial function on |A| will be the
+evaluation of many different polynomials.
 
-  For example, consider the ring |ℤ₂| (|{0, 1}| with addition and
-  multiplication modulo |2|).
-  %
-  In this ring, we have that |p x = x+x^2| is actually a constant
-  function.
-  %
-  The only two input values to |p| are |0| and |1| and we can easily
-  check that |p 0 = 0| and also |p 1 = mod (1+1^2) 2 = mod 2 2 = 0|.
-  %
-  Thus
-  \begin{spec}
+For example, consider the ring |ℤ₂| (|{0, 1}| with addition and
+multiplication modulo |2|).
+%
+In this ring, we have that |p x = x+x^2| is actually a constant
+function.
+%
+The only two input values to |p| are |0| and |1| and we can easily
+check that |p 0 = 0| and also |p 1 = mod (1+1^2) 2 = mod 2 2 = 0|.
+%
+Thus
+\begin{spec}
     eval [0, 1, 1] = p = const 0 = eval []  {-"\quad"-}-- in |ℤ₂ -> ℤ₂|
-  \end{spec}
-
-  but
-
-  \begin{spec}
+\end{spec}
+but
+\begin{spec}
     [0, 1, 1] ≠ []  {-"\quad"-} -- in |Poly ℤ₂|
-  \end{spec}
+\end{spec}
 
-  Therefore, it is not generally a good idea to conflate polynomials
-  (syntax) and polynomial functions (semantics).
+Therefore, it is not generally a good idea to conflate polynomials
+(syntax) and polynomial functions (semantics).
 
-\item Following the DSL terminology, we can say that the polynomial
-  functions are the semantics of the language of polynomials.
-  %
-  We started with polynomial functions, we wrote the evaluation
-  function and realised that we have the makings of a homomorphism.
-  %
-  That suggested that we could create an adequate language for
-  polynomial functions.
-  %
-  Indeed, this turns out to be the case; in so doing, we have
-  recreated an important mathematical achievement: the algebraic
-  definition of polynomials.
+\paragraph{Algebra of syntactic polynomials}
+Following the DSL terminology, we can say that the polynomial
+functions are the semantics of the language of polynomials.
+%
+We started with polynomial functions, we wrote the evaluation function
+and realised that we have the makings of a homomorphism.
+%
+That suggested that we could create an adequate language for
+polynomial functions.
+%
+Indeed, this turns out to be the case; in so doing, we have recreated
+an important mathematical achievement: the algebraic definition of
+polynomials.
 
 Let
 %
@@ -416,9 +434,8 @@ Let
 x :: Ring a => Poly a
 x = Poly [0,1]
 \end{code}
-
+%
 Then for any polynomial |as = Poly [a0, a1, ..., an]| we have
-
 %{
 %format .* = "\mathbin{\cdot}"
   \begin{spec}
@@ -429,15 +446,14 @@ Then for any polynomial |as = Poly [a0, a1, ..., an]| we have
 Exercise~\ref{exc:polySpecList}: Prove the above equality.
 
 This equality justifies the standard notation
-
+%
 \begin{spec}
-  as = {-"\sum_{i = 0}^n"-} ai .* x^i
+  as == {-"\sum_{i = 0}^n"-} ai .* x^i
 \end{spec}
+where both sides of the equality are syntax (expressions of type |Poly a|).
 %}
 
-\end{enumerate}
-
-\section{Aside: division and the degree of the zero polynomial}
+\section{Division and the degree of the zero polynomial}
 
 Recall the fundamental property of division that we learned in high school:
 \begin{quote}
@@ -454,9 +470,11 @@ When |r = 0|, |a| is divisible by |b|.
 Questions of divisibility are essential in number theory and its
 applications (including cryptography).
 %
-A similar theorem holds for polynomials (see, for example, \cite[page 40]{adams2010calculus}):
+A similar theorem holds for polynomials (see, for example, \cite[page
+  40]{adams2010calculus}):
 \begin{quote}
-For all polynomials |as|, |bs|, with |bs ≠ 0|, there exist \emph{unique} polynomials |qs| and |rs|, such that
+For all polynomials |as|, |bs|, with |bs ≠ 0|, there exist
+\emph{unique} polynomials |qs| and |rs|, such that
 %
 \begin{spec}
 as = bs * qs + rs,{-"\qquad\text{with}\quad"-} degree rs < degree bs
@@ -525,7 +543,8 @@ Let's see why that is the case and how we might ``fix'' it.
 Assume that there exists a natural number |z| such that |degree 0 =
 z|.
 %
-Assume additionally a polynomial |p| with |degree p = n|.
+Assume additionally a polynomial |p| with |degree p = n| (for example,
+|p = x^n| would do).
 %
 Then we get
 %

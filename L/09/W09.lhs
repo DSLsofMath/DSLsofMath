@@ -854,7 +854,7 @@ by symbolic calculation:
 |condProb s f g == probability s (\y -> f y && g y) / probability s g|
 \label{lem:cond-prob}
 \end{lemma}
-\TODO{Possibly split into helper lemma(s) to avoid diving ``too deep''.}
+%TODO: Possibly split into helper lemma(s) to avoid diving ``too deep''.
 %{
 \begin{proof}~
 \begin{code}

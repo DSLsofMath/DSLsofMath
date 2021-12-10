@@ -144,25 +144,22 @@ can rewrite |evalAll (d e1 :*: e2)| to |evalAll (d e1) * evalAll e2|
 and similarly for the second term.
 %
 (For a formal proof we also need to check that this assumption can be
-discharged.\pj{Do the formal proof - perhaps in appendix.}
-\jp{It seems to me that the reasoning is as follows.
-We assume earlier that there exists |(*)| such that
-|evalAll (e1 :*: e2) = evalAll e1 * evalAll e2|.
-We use this assumption here. Then we find the definition below.
-This solution satisfies the equation if it exists.
-Here "exists" means computable.
-Because it produces lists, we only need to check that the solution does
-not diverge/is productive. 
-
-
-(a:as) * (b:bs) = (a*b) : (as * (b : bs) + (a : as) * bs) 
-
-
-The head can always be produced depending on the head of the input,
-and the tail (one element down) needs the tails (one element down) of
-the arguments, so we're good.
-
-})
+discharged.)
+%*TODO: Perhaps include the proof in an appendix
+% It seems to me that the reasoning is as follows.
+% We assume earlier that there exists |(*)| such that
+% |evalAll (e1 :*: e2) = evalAll e1 * evalAll e2|.
+% We use this assumption here. Then we find the definition below.
+% This solution satisfies the equation if it exists.
+% Here "exists" means computable.
+% Because it produces lists, we only need to check that the solution does
+% not diverge/is productive. 
+% 
+% (a:as) * (b:bs) = (a*b) : (as * (b : bs) + (a : as) * bs) 
+% 
+% The head can always be produced depending on the head of the input,
+% and the tail (one element down) needs the tails (one element down) of
+% the arguments, so we're good.
 
 We also have |evalAll . d = tail . evalAll| which leads to:
 %
@@ -187,10 +184,13 @@ help a b as bs = as * (b : bs) + (a : as) * bs
 \end{code}
 %
 Thus, we can eliminate |help| to arrive at a definition for
-multiplication\footnote{This expression is reminiscent of polynomial multiplication
-  (\cref{sec:mulPoly}), but it is different from it because here each
-  element is implicitly divided by a factorial, as we shall see below. Hence we compute several terms many times
-  here, and sum them together.}:
+multiplication\footnote{This expression is reminiscent of polynomial
+multiplication (\cref{sec:mulPoly}), but it is different from it
+because here each element is implicitly divided by a factorial, as we
+shall see below.
+%
+Hence we compute several terms many times here, and sum them
+together.}:
 %
 \begin{code}
 mulStream :: Ring a => Stream a -> Stream a -> Stream a

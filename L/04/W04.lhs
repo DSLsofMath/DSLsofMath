@@ -115,8 +115,8 @@ as the following propositions:
   positive numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
   with composition |(a->a,id, (.))|.
   %
-  (An ``endofunction'', also known as ``endomorphism'' is a function
-  of type |X->X| for some set |X|.)
+  An ``endofunction'', also known as ``endomorphism'' is a function
+  of type |X->X| for some set |X|.
   \label{ex:endofunction}
 \end{example}
 
@@ -269,10 +269,17 @@ replacement for the |Num| class!
   \end{tikzpicture}
 %  In |Real| but not in the book: |toRational|.
 %  Not in the book: |Integral| with |div|, |mod|, \ldots
-  \caption{Comparing the Haskell Prelude class hierarchy (|Num|, |Fractional|) with the book's hierarchy.}
+  \caption{Comparing the Haskell Prelude class hierarchy (|Num|,
+    |Fractional|) with the book's hierarchy.
+    %
+  In addition to the groupings visible in the figure, the class
+  |AddGroup| includes the |Additive| operations and |MulGroup|
+  includes the |Multiplicative| operations.}
   \label{fig:CompNum}
 \end{figure}
-\pj{Fix the figure to indicate that |AddGroup| includes |Additive| and |MulGroup| includes |Multiplicative|.}
+%TODO: Perhaps fix the figure to indicate that |AddGroup| includes the
+%|Additive| operations and |MulGroup| includes the |Multiplicative|
+%operations.
 We note right away that one can have a multiplicative group structure
 as well, whose inverse is called the reciprocal (abbreviated as
 |recip| in Haskell).

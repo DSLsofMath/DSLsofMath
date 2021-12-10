@@ -10,7 +10,7 @@
 %endif
 %if book
 \usepackage[bindingoffset=0cm,a4paper,centering,totalheight=200mm,textwidth=120mm,includefoot,includehead,
-            showframe=true, showcrop=true, verbose
+%            showframe=true, showcrop=true, verbose
            ]{geometry}
 %Publisher instructions:
 %\usepackage[ paperheight  =297mm,paperwidth   =210mm,  % or: "paper=a4paper"

@@ -89,8 +89,9 @@ space in terms of a fixed set of \emph{basis} vectors |{b0, ..., bn}|.
 By definition, basis vectors
 cover the whole space:
 \begin{spec}
-  ∀ v, ∃s0, …, sn.    v = s0 *^ b0 + ... + sn *^ bn 
-\end{spec}\todo{wrong typesetting (. vs |.|).}
+  Forall v (Exists (s0, …, sn) (v == s0 *^ b0 + ... + sn *^ bn))
+\end{spec}
+%
 They are also \emph{linearly independent}:
 %
 \begin{spec}
@@ -1984,7 +1985,7 @@ i))|.
 The proof uses the definitions of |linComb|, |(*^)|, and the
 |Additive| instances for |Vector| and functions but is omitted here
 for brevity.
-\pj{Show parts of the proof which is in |qq|, |qq2|, |qq3| above.}
+%*TODO: Show parts of the proof which is in |qq|, |qq2|, |qq3| above.
 
 % Perhaps for extra exercises:\jp{clarify status}
 %
@@ -2059,16 +2060,25 @@ showFun f = show (map f finiteDomain)
 \end{code}
 
 %*TODO: perhaps convert to using the |newtype Vector|.
-
+%*TODO: Perhaps include parts of the below (after rewriting)
+%if False
 The scalar product of two vectors is a good building block for matrix
-multiplication:\jp{Do we really need to have this? In linear algebra,
-  linear spaces are a more primitive concept than inner product
-  spaces.  So defining matrix multiplication in terms of dot product
-  is bad from an algebraic perspective.  It would be ok to define in
-  terms of |linComb| if we really want some refactoring. We could keep
-  this as an example of a bad idea of a refactoring; but since we're
-  already in the ``associated code'' section, I suggest to just remove
-  this.
+multiplication:
+%
+\jp{Do we really need to have this?
+  %
+  In linear algebra, linear spaces are a more primitive concept than
+  inner product spaces.
+  %
+  So defining matrix multiplication in terms of dot product is bad
+  from an algebraic perspective.
+  %
+  It would be ok to define in terms of |linComb| if we really want
+  some refactoring.
+  %
+  We could keep this as an example of a bad idea of a refactoring; but
+  since we're already in the ``associated code'' section, I suggest to
+  just remove this.
 
   Decision: remove.
 }
@@ -2120,11 +2130,12 @@ mulMV' ::  (Finite g, Ring s) =>
            Mat s g g' ->  Vec s g  ->  Vec s g'
 mulMV' m v  =  dot' v . m
 
+\end{code}
+
+\begin{code}
 type Mat s r c = c -> r -> s
 type Vec s r = r -> s
-\end{code}
-%if False
-\begin{code}
+
 linComb' :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
 linComb' a v = sum (map (\j -> a j *^ v j) finiteDomain)
 

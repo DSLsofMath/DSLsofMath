@@ -755,25 +755,25 @@ classes, which together serve a similar role as |Num|, and which we
 study in more detail in \cref{sec:ring-like-classes}:
 
 \label{sec:numeric-classes}
-\pj{Make sure the code matches ../DSLsofMath/Algebra.hs.}
+%*TODO: Make sure the code matches ../DSLsofMath/Algebra.hs.
 \begin{spec}
 class Additive a where
   zero  :: a
   (+)   :: a -> a -> a
 class Additive a => AddGroup a where
-  negate :: a -> a
+  negate :: a -> a  -- specified as |x + negate x == zero|
 class Multiplicative a where
   one  :: a
   (*)  :: a -> a -> a
 class Multiplicative a => MulGroup a where
-  recip :: a -> a -- reciprocal
+  recip :: a -> a   -- reciprocal, specified as  |x * recip x == one|
 \end{spec}
 %
 The operator names clash with the |Num| class, which we will avoid
 from now on in favour |Additive| and |Multiplicative|.
 %
 In \cref{sec:ring-like-classes} we will get back to these classes and
-in present a comparison in \cref{fig:CompNum}.
+present a comparison in \cref{fig:CompNum}.
 
 \begin{exercise}
   Consider the exponentiation operator, which we can write |(^)|.
@@ -793,7 +793,7 @@ in present a comparison in \cref{fig:CompNum}.
 % as \(4 + 2.5\).
 % TODO: here we also use defaulting at the same time, which is 1. not principled and 2. does not work with custom classes.
 
-\pj{Perhaps end subsect with some connecting back to the start}
+%TODO: Perhaps end subsect with some connecting back to the start
 %Given these definitions, both expressions $4 + 3$ and $3.4 + 3.2$ typecheck.
 
 
