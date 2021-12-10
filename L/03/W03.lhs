@@ -275,7 +275,6 @@ Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D�
 \label{sec:Lagrangian}
 
 From \citet{sussman2013functional}:
-\pj{Compare with the edits made in preparation for a TiPES talk.}
 \begin{quote}
   A mechanical system is described by a Lagrangian function of the
   system state (time, coordinates, and velocities).
@@ -295,71 +294,81 @@ From \citet{sussman2013functional}:
 What could this expression possibly mean?
 \end{quote}
 
-To start answering the question of Sussman and Wisdom, we start typing the elements involved:
+To start answering the question of Sussman and Wisdom, we start typing
+the elements involved:
 
+%{
+%format dotq = "\dot{q}"
+%format / = "\mathbin{\!/\!}"
+%format ddotq =  ∂ dotq
+%format juxtapose f x = f "\," x
 \begin{enumerate}
-\item The use of notation for ``partial derivative'', \(∂L / ∂q\),
+\item First, note that the ``system state'' mentioned can be modelled
+  as a triple (of type |S = T × Q × V|) and we can call the three
+  components |t : T| for time, |q : Q| for coordinates, and |v : V|
+  for velocities.
+
+\item If we let ``coordinates'' be just one coordinate, then there is
+  also a single velocity.
+  %
+  (A bit of physics domain knowledge is useful here: if \(q\) is a
+  position of a particle, then |v| is its velocity.)
+  % 
+  Thus we can use |T = Q = V = ℝ| in this example but it can help the
+  reading to remember the different uses of |ℝ| --- this would help
+  for example to generalise to more than one coordinate.
+
+\item Also the use of notation for ``partial derivative'', \(∂L / ∂q\),
   suggests that |L| is a function of at least a pair of arguments:
 \begin{spec}
   L : ℝⁱ → ℝ,    i ≥ 2
 \end{spec}
 %
-This is consistent with the description: ``Lagrangian function of the
-system state (time, coordinates, and velocities)''.
-%
-So, if we let ``coordinates'' be just one coordinate, then there is
-also a single velocity\footnote{A bit of domain knowledge is necessary
-  here: if \(q\) is a position of a particle, then \(\dot q\) is its velocity.} and so we can take |i = 3|:
+This is consistent with our plan so far if we take |i = 3|:
 %
 \begin{spec}
   L : ℝ³ → ℝ
 \end{spec}
 %
-The ``system state'' here is a triple (of type |S = (T, Q, V) = ℝ³|)
-and we can call the three components |t : T| for time, |q : Q| for
-coordinate, and |v : V| for velocity.
-%
-(We use |T = Q = V = ℝ| in this example but it can help the reading to
-remember the different uses of |ℝ| --- this would help for example to
-generalise to more than one coordinate.)
 
 \item Looking again at the same derivative, \(∂L / ∂q\) suggests that
   \(q\) is the name of a real variable, one of the three arguments to
   \(L\).
 %
   In the context, which we do not have, we would expect to find
-  somewhere the definition of the Lagrangian as
-  %**TODO: Perhaps write T x Q x V on the type level instead of (T, Q, V) to avoid confusion. If so there needs to be an explanation of the relation to Haskell syntax somewhere and several places need changes below for consistency.
+  somewhere the definition of the Lagrangian as a function of the
+  system state:
   \begin{spec}
-    L  :  (T, Q, V)  ->  ℝ
-    L     (t, q, v)  =   ...
+    L  :  T × Q × V  ->  ℝ
+    L (t, q, v)  =  ...
   \end{spec}
 
-\item Consequently the type of the partial derivatives get specialised as follows:
+\item Consequently the type of the partial derivatives get specialised
+  as follows:
 
 \begin{spec}
-  (∂/∂q) : ((T, Q, V)  ->  ℝ) -> ((T, Q, V)  ->  ℝ)
-  (∂/∂v) : ((T, Q, V)  ->  ℝ) -> ((T, Q, V)  ->  ℝ)
+  (∂/∂q) : (T × Q × V  ->  ℝ) -> (T × Q × V  ->  ℝ)
 \end{spec}
+%  (∂/∂v) : (T × Q × V  ->  ℝ) -> (T × Q × V  ->  ℝ)
 
-The notation |∂L / ∂q| is equivalent to |(∂/∂q) L|, and even |D2 L|;
-that is, applying the partial derivative with respect to the second
-argument (named |q|) to |L|.
+The notation |∂L / ∂q| is equivalent to |(∂/∂q) L|, and |D₂ L|;
+applying the partial derivative with respect to the second
+argument (named |q|) of~|L|.
 
-\item therefore, \(∂L / ∂q\) should also be a function of the same
-  triple of arguments:
+\item Therefore, |∂L / ∂q| should also be a function of the same
+  triple of arguments as |L|:
 %
   \begin{spec}
-    (∂L / ∂q) : (T, Q, V) -> ℝ
+    (∂L / ∂q) : T × Q × V -> ℝ
   \end{spec}
 %
   It follows that the equation expresses a relation between
-  \emph{functions}, therefore the \(0\) on the right-hand side of the Lagrange equation(s) is
-  \emph{not} the real number \(0\), but rather the constant function
-  |const 0|:
+  \emph{functions}, thus the |0| on the right-hand side of the
+  Lagrange equation(s) is \emph{not} the real number |0|, but rather
+  the constant function |const 0|:
 
   \begin{spec}
-    const 0  :  (T, Q, V)  →  ℝ
+    const 0  :  T × Q × V  →  ℝ
     const 0     (t, q, v)  =   0
   \end{spec}
 
@@ -367,24 +376,28 @@ argument (named |q|) to |L|.
   of \emph{one} real argument |t|, and the result is a function of one
   real argument:
 %
-%format dotq = "\dot{q}"
-%format ddotq =  ∂ dotq
-%format juxtapose f x = f "\," x
-\begin{spec}
+  \begin{spec}
     juxtapose (d / dt) (∂L / ∂dotq)  :  T → ℝ
-\end{spec}
+  \end{spec}
 %
-Since we subtract from this the function \(∂L / ∂q\), it follows that
-this, too, must be of type |T -> ℝ|.
+  Since we subtract from this the function \(∂L / ∂q\), it follows
+  that this, too, must be of type |T -> ℝ|.
 %
-But we already typed it as |(T, Q, V) → ℝ|, contradiction!
+  But we already typed it as |T × Q × V → ℝ|, contradiction!
 %
-\label{item:L:contra}
+  \label{item:L:contra}
 
-\item The expression \(∂L / ∂\dot{q}\) appears to also be malformed.
+\item The expression |∂L / ∂dotq| appears to also be malformed.
 %
-  We would expect a variable name where we find \(\dot{q}\), but
-  \(\dot{q}\) is the same as \(dq / dt\), a function.
+  We would expect a variable name where we find |dotq|, but
+  |dotq| is the same as |dq / dt|, a function.
+%
+  But, with some knowledge from physics we can guess that |dotq|, the
+  rate of change of the position with time, is the same as the |v|,
+  the velocity.
+  %
+  Thus |∂L / ∂dotq = ∂L / ∂v = D₃ L| --- now well-formed, but still
+  ill-typed.
 
 \item Looking back at the description above, we see that the only
   immediate candidate for an application of \(d/dt\) is ``a path that
@@ -393,7 +406,7 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
   Thus, the path is a function of time, let us say
 %
   \begin{spec}
-    w  :  T → Q  -- with |T = ℝ| for time and |Q = ℝ| for coordinates (|q : Q|)
+    w  :  T → Q  -- with |T| for time and |Q| for coordinates (|q : Q|)
   \end{spec}
 %
   We can now guess that the use of the plural form ``equations'' might
@@ -418,9 +431,9 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
 \item Now that we have a path, the coordinates at any time are given
   by the path.
   %
-  And because the time derivative of a coordinate is a velocity, we can
-  actually compute the trajectory of the full system state |(T, Q, V)|
-  starting from just the path.
+  And because the time derivative of a coordinate is a velocity, we
+  can actually compute the trajectory of the full system state |(T, Q,
+  V)| starting from just the path.
 %
   \begin{spec}
     q  :  T → Q
@@ -433,7 +446,7 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
   We combine these in the ``combinator'' |expand|, given by
   %
   \begin{spec}
-    expand : (T → Q) → (T → (T, Q, V))
+    expand : (T → Q) → (T → T × Q × V)
     expand w t  =  (t, w t, D w t)
   \end{spec}
 
@@ -460,19 +473,20 @@ But we already typed it as |(T, Q, V) → ℝ|, contradiction!
     (∂L / ∂q) . (expand w)  :  T -> ℝ
   \end{spec}
 
-  which is used inside |d / dt|.
+  which is used inside |d / dt| (and which now type-checks).
 
 \item We now move to using |D| for |d / dt|, |D₂| for |∂ / ∂q|, and
   |D₃| for |∂ / ∂dotq|.
   %
-  (The type of the partial derivatives |D₂| and |D₃| is |L  : ((T, Q, V) -> R) -> ((T, Q, V) -> R)|, and here |D : (T -> ℝ) -> (T -> ℝ)|)
+  The type of the partial derivatives |D₂| and |D₃| is |(S -> REAL)
+  -> (S -> REAL)|, and here |D : (T -> ℝ) -> (T -> ℝ)|.
   %
   In combination with |expand w| we find these type correct
   combinations for the two terms in the equation:
   %
   \begin{spec}
-    D ((D₂ L)  ∘  (expand w))  :  T → ℝ
-       (D₃ L)  ∘  (expand w )  :  T → ℝ
+    D (  (D₂ L)  ∘  (expand w))  :  T → ℝ
+         (D₃ L)  ∘  (expand w )  :  T → ℝ
   \end{spec}
 
   The equation becomes
@@ -506,9 +520,9 @@ If we zoom out slightly we see that the quoted text means something
 like:
 %
 If we can describe the mechanical system in terms of a ``Lagrangian''
-(|L : S -> ℝ| where |S = (T, Q, V)|), then we can use the equation to check if a particular
-candidate path |w : T → ℝ| qualifies as an allowed ``motion of the system'' or
-not.
+(|L : S -> ℝ| where |S = T × Q × V|), then we can use the equation to
+check if a particular candidate path |w : T → ℝ| qualifies as an
+allowed ``motion of the system'' or not.
 %
 The unknown of the equation is the path |w|, and as the equation
 involves partial derivatives it is an example of a partial
@@ -516,11 +530,14 @@ differential equation (a PDE).
 %
 We will not dig into how to solve such PDEs, but they are widely used
 in physics.
+%} %end of formatting for the Lagrangian example
 
 \section{Incremental analysis with types}
-So far we have worked on typing mathematics, but without the help of any tool. However we can
-in fact get the Haskell interpreter to help a bit even when we are
-still at the specification stage.
+So far we have worked on typing mathematics, but without the help of
+any tool.
+%
+However we can in fact get the Haskell interpreter to help a bit even
+when we are still at the specification stage.
 %
 It is often useful to collect the known (or assumed) facts about types
 in a Haskell file and regularly check if the type checker agrees.

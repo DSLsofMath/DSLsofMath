@@ -365,14 +365,14 @@ The predicate |lim| can be shown to be a partial function of two
 arguments, |a| and |f|.
 %
 This means that at a point |a| each function |f| can have \emph{at
-  most} one limit |L|.
+  most} one limit~|L|.
 %
 (This is not evident from the definition and proving it is a good
 exercise.)
 
 \begin{exercise}
   What does Adams mean by ``\(\delta > 0\), possibly depending on
-  epsilon''?
+  \(\epsilon\)''?
   %
   How did we express ``possibly depending on'' in our formal
   defintion?

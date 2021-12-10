@@ -85,14 +85,20 @@ But we can also combine these names to form more complex types.
 
 \paragraph{Pairs and tuple types}
 %
-For a pair, like |(False, 2)|, the type is written |(Bool, Nat)|.
+For a pair, like |(False, 2)|, the type is written |(Bool, Nat)| in
+Haskell.
 %
 In general, for any types |A| and |B| we write |(A, B)| for the type
 of pairs.
 %
-The semantics of |(Bool, Bool)| is the set |{(F, F), (F, T), (T, F),
-  (T, T)}| where we shorten |False| to |F| and |True| to |T| for
-readbility.
+In mathematics, the type (or set) of pairs is usually called the
+\emph{cartesian product} and is written using an infix cross: |A×B|.
+%
+We will sometimes use this notation as well.
+%
+The semantics of |Bool×Bool = (Bool, Bool)| is the set |{(F, F), (F,
+  T), (T, F), (T, T)}| where we shorten |False| to |F| and |True| to
+|T| for readbility.
 %
 We can also form expressions and types for triples, four-tuples,
 etc.\ and nest them freely: |((17, True), (sqrt 2, "hi", 38))| has type

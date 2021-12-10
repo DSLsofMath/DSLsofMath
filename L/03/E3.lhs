@@ -9,14 +9,16 @@
 %
   Then \(D₁ : F2 → F2\) and |D : F1 -> F1|.
 %
-  Start by defining helper functions: |fstFixed : a -> (b -> (a, b))| and |sndFixed : b -> (a -> (a, b))|.
+  Start by defining helper functions: |fstFixed : a -> (b -> (a, b))|
+  and |sndFixed : b -> (a -> (a, b))|.
 %
   Then use |D| and the helpers in the definitions of \(D₁\) and \(D₂\).
 \end{exercise}
 %
 \begin{exercise}
   To get a feeling for the Lagrange equations, let |L(t, q, v) =
-  m*v^2/2 - m*g*q|, compute |expand w|, perform the derivatives and check if the equation is satisfied for
+  m*v^2/2 - m*g*q|, compute |expand w|, perform the derivatives and
+  check if the equation is satisfied for
   \begin{itemize}
   \item |w1 = id| or
   \item |w2 = sin| or
