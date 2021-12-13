@@ -11,11 +11,12 @@
 \begin{exercise} \label{exc:e1_semiring}
   \fromExam{2017-08-22}
 
-  A semiring is a set |R| equipped with two binary operations |+| and
-  |⋅|, called addition and multiplication, such that:
+  A \addtoindex{semiring} is a set |R| equipped with two binary
+  operations |+| and |⋅|, called addition and multiplication, such
+  that:
   \begin{itemize}
 
-  \item |(R, +, 0)| is a commutative monoid with identity element |0|:
+  \item |(R, +, 0)| is a \addtoindex{commutative} \addtoindex{monoid} with identity element |0|:
 
     \begin{spec}
       (a + b) + c = a + (b + c)
@@ -52,8 +53,11 @@
   \item \lnOnly{(Was not part of the exam)} Implement the expressions from the laws.
 
   \item Give a type signature for, and define, a general evaluator for
-    |SR v| expressions on the basis of an assignment function.
-%
+    |SR v| expressions on the basis of an \addtoindex{assignment
+      function}.
+    %
+    \index{eval@@|eval : Syn -> Sem|}
+    %
     An ``assignment function'' is a mapping from variable names to values.
   \end{enumerate}
 \end{exercise}
@@ -91,7 +95,9 @@
   \item Define a datatype for the language of lattice expressions.
 
   \item Define a general evaluator for |Lattice| expressions on the
-    basis of an assignment function.
+    basis of an \addtoindex{assignment function}.
+    %
+    \index{eval@@|eval : Syn -> Sem|}
   \end{enumerate}
 \end{exercise}
 
@@ -133,7 +139,9 @@
     sides and right hand sides of the above equations.)
 
   \item Define a general evaluator for |AbMonoidExp| expressions on
-    the basis of an assignment function.
+    the basis of an \addtoindex{assignment function}.
+    %
+    \index{eval@@|eval : Syn -> Sem|}
 
   \end{enumerate}
 \end{exercise}

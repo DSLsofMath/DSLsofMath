@@ -693,7 +693,9 @@ overloading is via \emph{type classes}.
 In Haskell both |4 == 3| and |3.4 == 3.2| typecheck because both
 integers and floating point values are member of the |Eq| class, which
 we can safely assume to be defined as follows:
-
+%
+\index{class@@|class| (keyword)}
+\index{Eq@@|Eq| (type class)||textbf}
 \begin{spec}
 class Eq a where   (==) :: a -> a -> Bool
 \end{spec}
@@ -715,6 +717,8 @@ eqBool  False  False  = True
 eqBool  _      _      = False
 instance Eq Bool where  (==) = eqBool
 \end{spec}
+\index{instance@@|instance| (keyword)||textbf}
+%
 (The Haskell compiler will in fact provide instances for primitive types).
 
 Second, the |Eq| class declaration provides an operator |(==)| of type

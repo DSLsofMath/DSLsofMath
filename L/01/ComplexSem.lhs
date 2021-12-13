@@ -11,6 +11,10 @@ in the GitHub repository of the book.
 \begin{code}
 module DSLsofMath.ComplexSem where
 \end{code}
+%
+These definitions together form a DSL for complex numbers.
+%
+\index{DSL!complex numbers}
 
 We now turn to our first study of mathematics as found ``in the
 wild'': we will do an analytic reading of a piece of the
@@ -29,6 +33,7 @@ Adams and Essex introduce complex numbers in Appendix A of their book.
 %
 The section \emph{Definition of Complex Numbers} starts with:
 
+\index{imaginary unit (|i|)}
 \begin{quote}
   We begin by defining the symbol |i|, called \textbf{the imaginary
     unit}, to have the property
@@ -69,8 +74,8 @@ i :: ImagUnits
 i = I
 \end{code}
 %
-We can give the translation from the abstract syntax to the concrete
-syntax as a function |showIU|:
+We can give the translation from the abstract \addtoindex{syntax} to
+the concrete syntax as a function |showIU|:
 %
 \begin{code}
 showIU ::  ImagUnits       ->  String
@@ -114,6 +119,8 @@ showCA     (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ showIU i
 showCA     (CPlus2 x i y)  =  show x ++ " + " ++ showIU i ++ show y
 \end{code}
 %
+\index{real@@|REAL| (real numbers)}
+%
 Notice that the type |REAL| is not implemented yet (and it is not even
 clear how to implement it with fidelity to mathematical convention at
 this stage) but we want to focus on complex numbers so we will simply
@@ -140,8 +147,8 @@ Given that the last two examples seem to introduce shorthand for
 various complex numbers, let us assume that this one does as well, and
 that |a - bi| can be understood as an abbreviation of |a + (-b)i|.
 %
-With this provision, in our Haskell encoding the examples are written as in
-\cref{tab:CompleSyntaxExamplesMathHaskell}.
+With this provision, in our Haskell encoding the examples are written
+as in \cref{tab:CompleSyntaxExamplesMathHaskell}.
 %
 \begin{table}[tbph]
   \centering
@@ -207,7 +214,8 @@ This remark suggests strongly that the two syntactic forms are meant
 to denote the same elements, since otherwise it would be strange to
 say ``either form is acceptable''.
 %
-After all, they are acceptable according to the definition provided earlier.
+After all, they are acceptable according to the definition provided
+earlier.
 
 Given that |a + ib| is only ``syntactic sugar'' for |a + bi|, we can
 simplify our representation for the abstract syntax, merging the two
@@ -247,9 +255,12 @@ information:
 to check equality for complex numbers, it is enough to check equality
 of the components (the arguments to the constructor |CPlusC|).
 %
-Another way of saying this is that |CPlusC| is injective.
+Another way of saying this is that |CPlusC| is \addtoindex{injective}.
 %
 In Haskell we could define this equality as:
+%
+\index{instance@@|instance| (keyword)}
+\index{Eq@@|Eq| (type class)}
 %
 \begin{code}
 instance Eq ComplexC where
@@ -281,11 +292,11 @@ Second, it shows that, in mathematical arguments, one needs not
 abstract over two real variables: one can instead abstract over a
 single complex variable.
 %
-We already know that we have an isomorphism between pair of reals and
-complex numbers.
+We already know that we have an \addtoindex{isomorphism} between pair
+of reals and complex numbers.
 %
-But additionally, we have a notion of \emph{pattern matching}, as in
-the following definition:
+But additionally, we have a notion of \emph{\addtoindex{pattern
+  matching}}, as in the following definition:
 %
 \begin{quote}
   \textbf{Definition:} If |z = x + yi| is a complex number (where |x|
@@ -330,8 +341,8 @@ complex numbers:
 
 \end{quote}
 %
-With the introduction of algebraic operations, the language of complex
-numbers becomes much richer.
+With the introduction of algebraic operations, the domain-specific
+language of complex numbers becomes much richer.
 %
 We can describe these operations in a \emph{shallow embedding} in
 terms of the concrete datatype |ComplexD|, for example:
@@ -347,10 +358,11 @@ algebraic operations to arrive at a \emph{deep embedding} as seen in
 the next section.
 %
 Both shallow and deep embeddings will be further explained in
-\cref{sec:evalD,sec:expressions-of-one-var} (and several other places:
-this is a recurrent idea of the \course{}).
+\cref{sec:evalD,sec:expressions-of-one-var} (and in several other
+places: this is a recurrent idea of the \course{}).
 
-At this point we can sum up the ``evolution'' of the datatypes introduced so far.
+At this point we can sum up the ``evolution'' of the datatypes
+introduced so far.
 %
 Starting from |ComplexA|, the type has evolved by successive
 refinements through |ComplexB|, |ComplexC|, ending up in |ComplexD|
@@ -377,3 +389,4 @@ newtype  ComplexSem r  =  CS  (r , r)        deriving Eq
   \caption{Complex number datatype refinement (semantics).}
   \label{fig:ComplexTypeSummary}
 \end{figure}
+\index{deriving@@|deriving| (keyword)}

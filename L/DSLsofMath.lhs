@@ -48,7 +48,7 @@
 % %include dslmagda.fmt
 %%% Our own formatting directives
 %include dslm.format
-\usepackage{makeidx}
+\usepackage{imakeidx}
 \usepackage{natbib}
 \usepackage{wrapfig}
 \usepackage{graphicx}
@@ -94,6 +94,7 @@
 \newcommand{\todo}[2][?]{\marginpar{\raggedright\tiny{}TODO: #2}}
 %endif
 
+\newcommand{\addtoindex}[1]{#1\index{#1}}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{6pt plus 2pt minus 1pt}
 
@@ -159,6 +160,7 @@
 %           {\texttt{patrikj@@chalmers.se}}
 %           {\texttt{cezar@@chalmers.se}}
 \date{WORK IN PROGRESS: DRAFT OF \today}
+\makeindex
 \begin{document}
 \frontmatter
 %if not submit
@@ -243,4 +245,5 @@
 
 \bibliographystyle{abbrvnat}
 \bibliography{ref}
+\printindex
 \end{document}

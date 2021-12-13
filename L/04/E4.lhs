@@ -242,7 +242,7 @@ Prove or disprove the following claims:
     (including variables) and define a |Ring| instance for it.
   \item \label{point:otherinstances} Find two other instances of the |Ring| class.
   \item Define a general evaluator for |Ring| expressions on the basis
-    of a given assignment function (mapping variables to semantic values).
+    of a given \addtoindex{assignment function} (mapping variables to semantic values).
   \item Specialise the evaluator to the two |Ring| instances defined
     at point~\ref{point:otherinstances}.
     %

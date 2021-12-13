@@ -23,16 +23,16 @@ type ℤ = Int
 \paragraph{Examples of types in mathematics}
 
 Simple types are sometimes mentioned explicitly in mathematical texts:
-
+%
 \begin{itemize}
 \item \(x ∈ ℝ\)
 \item \(\sqrt{\phantom{x}} : ℝ_{≥0} → ℝ_{≥0}\)
 \item \((\_)² : ℝ → ℝ\) or, alternatively but \emph{not} equivalently
 \item \((\_)² : ℝ → ℝ_{≥0}\)
 \end{itemize}
-
-However the types of big operators (sums, limits, integrals, etc.) are
-usually not given explicitly.
+%
+However the types of \addtoindex{big operator}s (sums, limits,
+integrals, etc.) are usually not given explicitly.
 %
 In fact, it may not be clear at first sight that the summing operator
 ($\sum$) should be assigned a type at all!
@@ -78,13 +78,15 @@ also has type ℝ.
 Furthermore, it is less clear now if |e2 = 2*x + 3 =?= 2*y + 3 = e3|.
 %
 In general one cannot simply change a variable name to another without
-making sure that
+making sure that:
 %
-1. the renaming is applied everywhere uniformly and
+1.~the renaming is applied everywhere uniformly and
 %
-2. the new variable name is not used for another purpose in the same
+2.~the new variable name is not used for another purpose in the same
 scope (otherwise one informally says that there is a ``name clash'').
 
+\index{DSL!expr. of one variable}
+%
 To clarify this situation, we will now formalise expressions of one
 variables as a DSL.
 %
@@ -100,6 +102,8 @@ We can implement all this in a datatype as follows:
 
 \subsubsection{Deep embedding}
 \label{sec:FunExp}
+\index{deep embedding}
+\index{FunExp@@|FunExp| (type)}
 \begin{code}
 data FunExp  =  Const REAL
              |  X
@@ -124,6 +128,9 @@ The meaning of operators and constants is as in
 %
 But, to be able to evaluate |X|, the variable, we need its value ---
 and we simply take it as a parameter.
+%
+\index{eval@@|eval : Syn -> Sem|}
+%
 \begin{code}
 eval  ::  FunExp         ->  REAL  -> REAL
 eval      (Const alpha)      x     = alpha
@@ -147,6 +154,7 @@ single argument.
 
 \subsubsection{Shallow embedding}
 \label{sec:funexp-shallow}
+\index{shallow embedding}
 Thus the above was a deep embedding for functions of a single
 variable.
 %
@@ -196,8 +204,7 @@ eval      (e1 :*: e2)    =   funMul  (eval e1)  (eval e2)
 Representing expressions of one variable as functions (of one
 argument) is a recurring technique in this \course{}.
 %
-%
-To start, we can use it to assign types to big operators.
+To start off, we can use it to assign types to big operators.
 
 \subsection{Scoping and typing big operators}
 \label{sec:big-operators}
@@ -252,13 +259,14 @@ and use it for our example as follows:
 sumOfSquares n = summation 1 n (powTo 2)
 \end{spec}
 %
-Equivalently, we can use a lambda expression for the summand, to give
-a name to the summation variable:
+Equivalently, we can use a \addtoindex{lambda expression} for the
+summand, to give a name to the summation variable:
 %
 \begin{spec}
 sumOfSquares n = summation 1 n (\i -> i `powTo` 2)
 \end{spec}
-(Recall the syntax for lambda expressions from \cref{sec:lambda-expression}.)
+(Recall the syntax for lambda expressions from
+\cref{sec:lambda-expression}.)
 
 %TODO: perhaps mention types: skipped here because of |ℤ|, |ℝ| mismatch.
 
@@ -277,8 +285,8 @@ Aren't we cheating though?
 Surely we said that only one variable could occur in the summand, but
 we see both |i| and |j|?
 %
-Well, we are not cheating as long as we use the \emph{shallow
-  embedding} for functions of one variable.
+Well, we are not cheating as long as we use the
+\emph{\addtoindex{shallow embedding}} for functions of one variable.
 %
 Doing so allows us to:
 %
@@ -291,7 +299,7 @@ In particular, this function can be any lambda-expression returning
 |ℝ|, and this expression can include summation itself.
 %
 This freedom is an advantage of shallow embeddings: if we were to use
-the deep embedding, then we'd need a whole lot more machinery to ensure
+the deep embedding, then we would need much more machinery to ensure
 that we can represent summation within the deep embedding.
 %
 In particular we need a way to embed variable binding itself.
@@ -304,14 +312,20 @@ kind of reasoning to other big operators, and obtain the following
 typings:
 %
 \begin{itemize}
-\item |lim : (ℕ → ℝ) → ℝ| for the mathematical expression \(\lim_{n → ∞} \{a_n\}\)
+\item |lim : (ℕ → ℝ) → ℝ| for the mathematical expression
+  %
+  \(\lim_{n → ∞} \{a_n\}\)
+\index{limit (of sequence)}.
 \item \(\frac d {dt} : (ℝ → ℝ) → (ℝ → ℝ)\)
 
-  Note that there are many notations for derivatives. Instead of
-  \(\frac d {dt} f\) one sees also \(df/dt\), or \(f'\) or even
-  \(\dot{f}\) if the varable is time (\(t\)).
+  Note that there are many notations for derivatives.
+  %
+  Instead of \(\frac d {dt} f\) one sees also \(df/dt\), or \(f'\) or
+  even \(\dot{f}\) if the varable is time (\(t\)).
   %
   Below we'll use preferrably the |D f| notation.
+  %
+  \index{derivative (|D|)}
 \end{itemize}
 
 In sum, the chief difficulty to overcome when assigning types for
@@ -326,11 +340,11 @@ body of the limit ($a_n$ in the example) be a function.
 %
 Thus we use the type $ℕ → ℝ$ for the body.
 %
-Therefore the limit operator has a higher order type.
+Therefore the limit operator is a \addtoindex{higher-order function}.
 %
 A similar line of reasoning justifies the types of derivatives.
 %
-We return to derivatives in Chapter \ref{sec:types}.
+We return to derivatives in Chapter~\ref{sec:types}.
 %study in detail how these play out first.
 
 \subsection{Detour: expressions of several variables}
@@ -349,6 +363,8 @@ Compared to single variable expressions, we add one argument for
 variables, giving the \emph{name} of the variable.
 %
 Here we use a string, so we have an infinite supply of variables.
+%
+\index{DSL!expr. of several variables}
 %
 \begin{code}
 data MVExp = Va String | Ad MVExp MVExp | Di MVExp MVExp

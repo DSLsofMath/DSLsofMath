@@ -2,11 +2,14 @@
 \label{sec:complex-arithmetic}
 
 By following \citet{adams2010calculus}, we have arrived at
-representation which captures the \emph{semantics} of complex numbers.
+representation which captures the \emph{\addtoindex{semantics}} of
+complex numbers.
 %
-This kind of representation is often called a ``shallow embedding''.
+This kind of representation is often called a ``\addtoindex{shallow
+  embedding}''.
 %
-Now we turn to the study of the \emph{syntax} instead (``deep embedding'').
+Now we turn to the study of the \emph{\addtoindex{syntax}} instead
+(``\addtoindex{deep embedding}'').
 %
 We collect these syntactic definitions in a separate module which
 imports the earlier semantic definitions.
@@ -17,13 +20,20 @@ import DSLsofMath.CSem (Complex(C), addC, mulC, Ring)
 import DSLsofMath.ComplexSem
 \end{code}
 
-We want a datatype |ComplexE| for the abstract syntax tree (AST) of
-expressions.
+\index{AST||see {abstract syntax tree (AST)}}
+%
+We want a datatype |ComplexE| for the \addtoindex{abstract syntax tree
+  (AST)} of expressions (a DSL for complex arithmetical expressions).
+%
+\index{DSL!complex expressions}
 %
 The syntactic expressions can later be evaluated to semantic values.
 %
 The concept of ``an evaluator'', a function from the syntax to the
-semantics, is something we will return to many times in this \course{}.
+semantics, is something we will return to many times in this
+\course{}.
+%
+\index{eval@@|eval : Syn -> Sem|}
 %
 \begin{code}
 evalE :: ComplexE -> ComplexD
@@ -34,10 +44,11 @@ expressions representing complex numbers and we have so far seen
 %
 the symbol |i|, an embedding from |REAL|, addition and multiplication.
 %
+\index{constructor function}
+%
 We make these four \emph{constructors} in one recursive datatype as
 follows:
 %
-%**TODO rename |ImagUnit| to just |I| (and adapt explanation)
 %format I2 = I
 \begin{code}
 data ComplexE  =  I2
@@ -46,12 +57,15 @@ data ComplexE  =  I2
                |  Mul  ComplexE  ComplexE
  deriving (Eq, Show)
 \end{code}
+\index{deriving@@|deriving| (keyword)}
+\index{Eq@@|Eq| (type class)}
+%
 Note that, in |ComplexA| above, we also had a constructor for
 ``addition'' (|CPlus1|), but it was playing a different role.
 %
-They are distinguished by type: |CPlus1| took two real
-numbers as arguments, while |Add| here takes two
-complex expressions as arguments.
+They are distinguished by type: |CPlus1| took two real numbers as
+arguments, while |Add| here takes two complex expressions as
+arguments.
 
 Here are two examples of type |ComplexE| as Haskell code and as
 ASTs:
@@ -84,14 +98,16 @@ It can be difficult to get started implementing a function (like
 |evalE|) that should handle all the cases and all the levels of a
 recursive datatype (like |ComplexE|).
 %
-One way to overcome this difficulty is through what may seem at first glance ``wishful thinking'':
-assume that all but one case have been implemented already.
+One way to overcome this difficulty is through what may seem at first
+glance ``\addtoindex{wishful thinking}'': assume that all but one case
+have been implemented already.
 %
 All you need to do is to focus on that one remaining case, and you can
 freely call the function (that you are implementing) recursively, as
 long as you do it for subexpressions (subtrees of the abstract syntax
-tree datatype). This pattern is called \emph{structural induction}.
+tree datatype).
 %
+This pattern is called \emph{\addtoindex{structural induction}}.
 
 For example, when implementing the |evalE (Add c1 c2)| case, you can
 assume that you already know the values |s1, s2 :: ComplexD|
@@ -129,7 +145,8 @@ Mul       :: ComplexE  -> ComplexE  -> ComplexE
 mulD      :: ComplexD  -> ComplexD  -> ComplexD
 \end{spec}
 %addD   :: ComplexD -> ComplexD -> ComplexD  -- |ComplexE -> ComplexE -> ComplexE|
-As we can see, each use of |ComplexE| has been replaced be a use of |ComplexD|.
+As we can see, each use of |ComplexE| has been replaced be a use of
+|ComplexD|.
 %
 Finally, we can start filling in the implementations:
 %
@@ -156,28 +173,31 @@ fromCD :: ComplexD -> ComplexE
 fromCD (CD (x , y)) = Add (ToComplex x) (Mul (ToComplex y) I2)
 \end{code}
 %
-This function is injective: different complex numbers map to different syntactic expressions.
+This function is injective: different complex numbers map to different
+syntactic expressions.
 
 \section{Laws, properties and testing}
 There are certain laws that we would like to hold for operations on complex
 numbers.
 %
 To specify these laws, in a way which can be easily testable in
-Haskell, we use functions to |Bool| (also called \emph{predicates} or
-\emph{properties}).
+Haskell, we use functions to |Bool| (also called
+\emph{\addtoindex{predicate}s} or \emph{properties}).
 %
 The intended meaning of such a boolean function (representing a law)
 is ``forall inputs, this should return |True|''.
 %
-This idea is at the core of \emph{property based testing} (pioneered
-by \citet{claessen_quickcheck_2000}) and conveniently available in the
-Haskell library QuickCheck.
+This idea is at the core of \emph{\addtoindex{property based testing}}
+(pioneered by \citet{claessen_quickcheck_2000}) and conveniently
+available in the Haskell library QuickCheck.
+%
+\index{QuickCheck||see {property based testing}}
 
 Note that a predicate |p : A -> Bool| can also be used to specify the
-subset of |A| for which |p| returns |True|.
+\addtoindex{subset} of |A| for which |p| returns |True|.
 %
-QuickCheck is very good at finding counterexamples to candidate laws:
-values for which |p| returns |False|.
+QuickCheck is very good at finding \addtoindex{counterexample}s to
+candidate laws: values for which |p| returns |False|.
 %
 With the subset interpretation this means that QuickCheck helps
 finding elements in the set specified by the opposite predicate |not
@@ -238,11 +258,12 @@ propFromCD :: ComplexD -> Bool
 propFromCD s =  evalE (fromCD s) == s
 \end{code}
 
-Other desirable laws are that |+| and |*| should be associative and
-commutative and |*| should distribute over |+|:
+Other desirable laws are that |+| and |*| should be
+\addtoindex{associative} and \addtoindex{commutative} and |*| should
+\addtoindex{distribute over} |+|:
 %if false
 \begin{code}
-propAssocAdd      :: (Num a, SemEq a) => a -> a -> a -> Bool
+propAssocAdd    :: (Num a, SemEq a) => a -> a -> a -> Bool
 propDistMulAdd  :: (Num a, SemEq a) => a -> a -> a -> Bool
 \end{code}
 %endif
@@ -364,6 +385,8 @@ uniformly, and roots are in general irrational.)
 Some laws appear over and over again in different mathematical
 contexts.
 %
+\index{binary (arity 2)}
+%
 For example, binary operators are often associative or commutative, and
 sometimes one operator distributes over another.
 %
@@ -376,6 +399,8 @@ we introduce a few definitions already here:
 
 |Distributive (⊗) (⊕) = Forall (a, b, c) ((a⊕b)⊗c = (a⊗c)⊕(b⊗c))|
 
+\index{parameterised laws}
+%
 The above laws are \emph{parameterised} over some operators
 (|(⊛),(⊗),(⊕)|).
 %
@@ -394,11 +419,12 @@ propAssoc :: SemEq a => (a -> a -> a) -> a -> a -> a -> Bool
 propAssoc (⊛) x y z =  (x ⊛ y) ⊛ z === x ⊛ (y ⊛ z)
 \end{code}
 %
-Note that |propAssocA| is a higher order function: it takes a function |(⊛)|
-(declared as a binary operator) as its first parameter, and tests if it is associative.
+Note that |propAssocA| is a higher order function: it takes a function
+|(⊛)| (declared as a binary operator) as its first parameter, and
+tests if it is associative.
 %
-The property is also polymorphic: it works for many different types |a| (all
-types which have an |===| operator).
+The property is also \addtoindex{polymorphic}: it works for many
+different types |a| (all types which have an |===| operator).
 
 Thus we can specialise it to |Add|, |Mul| and any other binary
 operator, and obtain some of the earlier laws (|propAssocAdd|,
@@ -409,8 +435,8 @@ The same can be done with distributivity.
 Doing so we learnt that the underlying set matters: |(+)| for |REAL|
 has some properties, but |(+)| for |Double| has others.
 %
-When formalising math as DSLs, approximation is sometimes convenient,
-but makes many laws false.
+When formalising math as DSLs, \addtoindex{approximation} is sometimes
+convenient, but makes many laws false.
 %
 Thus, we should attempt to do it late, and if possible, leave a
 parameter to make the degree of approximation tunable (|Int|,

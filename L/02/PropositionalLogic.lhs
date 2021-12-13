@@ -165,6 +165,8 @@ as the semantic domain.
 %TODO Perhaps cite the full \refFig{fig:TruthTables}
 %TODO Perhaps cite the middle subfigure \refFig{fig:TruthTableImplies}
 
+\index{assignment function||textbf}
+%
 Values of type |Name -> a| are called ``assignment functions'' because
 they assign values (of type |a|) to the variable names.
 %

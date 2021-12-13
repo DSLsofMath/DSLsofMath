@@ -11,10 +11,14 @@
   Assume we have three finite types |a|, |b|, |c| with cardinalites
   |A|, |B|, and |C|.
   %
-  (For example, the cardinality of |Bool| is |2|, the cardinality of
+  (For example, the \addtoindex{cardinality} of |Bool| is |2|, the cardinality of
   |Weekday| is |7|, etc.)
   %
   Then what is the cardinality of the types |Either a b|? |(a, b)|? |a->b|? etc.
+  %
+\index{Either@@|Either| type}
+\index{pair type}
+\index{function type}
   %
   These rules for computing the cardinality suggests that |Either| is
   similar to sum, |(,)| is similar to product and |(->)| to (flipped)
@@ -26,6 +30,7 @@
 
 \begin{exercise}{Counting |Maybe|s.} For each of the following types, enumerate and
   count the values:
+\index{Maybe@@|Maybe| type}
   \begin{enumerate}
   \item |Bool -> Maybe Bool|
   \item |Maybe Bool -> Bool|
@@ -42,11 +47,15 @@
 
 \begin{exercise}\label{exc:funtupE1}
   Functions as tuples.
+\index{pair type}
+\index{function type}
+\index{Bool@@|Bool| (|BB|)}
   %
   For any type |t| the type |Bool -> t| is basically ``the same'' as
   the type |(t,t)|.
   %
-  Implement the two functions |isoR| and |isoL| forming an isomorphism:
+  Implement the two functions |isoR| and |isoL| forming an
+  \addtoindex{isomorphism}:
   %
   \begin{spec}
     isoR :: (Bool -> t) -> (t, t)
@@ -99,11 +108,14 @@
 % Answer: f False = 7; f True = 3
 
 \end{exercise}
-\begin{exercise}\label{exc:tuplingE1}
-  Functions and pairs (the ``tupling transform'').
+\begin{exercise}\label{exc:tuplingE1}\textbf{[Important]}
+  Functions and pairs (the ``\addtoindex{tupling transform}'').
   %
   From one function |f :: a -> (b, c)| returning a pair, you can
   always make a pair of two functions |pf :: (a->b, a->c)|.
+  %
+\index{pair type}
+\index{function type}
   %
   Implement this transform:
   %
@@ -129,6 +141,10 @@
   There is also a ``dual'' to the tupling transform: to show this,
   implement these functions:
   %
+\index{Either@@|Either| type}
+\index{pair type}
+\index{function type}
+  %
   \begin{spec}
     s2p :: (Either b c -> a) -> (b->a, c->a)
     p2s :: (b->a, c->a) -> (Either b c -> a)
@@ -139,23 +155,27 @@
   %
   \begin{itemize}
 
-  \item What does function composition do to a sequence?
-  More concretely:
-  for a sequence |a| what is |a . (1+)|? What is |(1+) . a|?
+  \item What does \addtoindex{function composition} do to a \addtoindex{sequence}?
+%
+    More concretely: for a sequence |a| what is |a . (1+)|?
+    %
+    What is |(1+) . a|?
 
 %(composition on the left?, on the right?)
 
 \item How is |liftSeq1| related to |fmap|? |liftSeq0| to |conSeq|?
   \end{itemize}
 %
-
 \end{exercise}
 
 \begin{exercise}
   Operator sections.
   %
-  Please fill out the remaining parts of this table with simplified expressions:
-
+  \index{operator section}
+  %
+  Please fill out the remaining parts of this table with simplified
+  expressions:
+%
 \begin{align*}
     |(1+)| &= |\x->1+x| \\
     |(*2)| &= |\x->x*2| \\
@@ -177,15 +197,10 @@
   like |(Var "z") :*: toComplex 1|.
 \end{exercise}
 
-
-
-
-
 % \begin{exercise}
 %   TODO: formulate exercise to implement more efficient |show| using an
 %   accumulating parameter.
 % \end{exercise}
-
 
 \begin{exercise}
   \label{exc:embedeval}
@@ -221,16 +236,16 @@ property related to the first round-trip property?
 \end{exercise}
 
 \begin{exercise}
- Read the next few pages of Appendix I (in
-  \citep{adams2010calculus}) defining the polar view of Complex Numbers
-  and try to implement complex numbers again, this time based on
-  magnitude and phase for the semantics.
+  Read the next few pages of Appendix I (in \citep{adams2010calculus})
+  defining the polar view of Complex Numbers and try to implement
+  complex numbers again, this time based on magnitude and phase for
+  the semantics.
 \end{exercise}
 
 \begin{exercise}
- Implement a simplifier |simp :: ComplexSyn r -> ComplexSyn r|
-  that handles a few cases like |0 * x = 0|, |1 * x = x|, |(a + b) * c
-  = a * c + b * c|, \ldots
+  Implement a simplifier |simp :: ComplexSyn r -> ComplexSyn r| that
+  handles a few cases like |0 * x = 0|, |1 * x = x|, |(a + b) * c = a
+  * c + b * c|, \ldots
   %
   What class context do you need to add to the type of |simp|?
 \end{exercise}

@@ -79,13 +79,13 @@ scientists \citep{gries1995teaching, boute2009decibel}, that the
 computer science perspective could be valuable in general mathematical
 education.
 %
-Until today, as far as we can judge, this perspective has been convincingly demonstrated (at least since
-the classical textbook of \citet{gries1993logical}) only in the field
-of discrete mathematics.
+Until today, as far as we can judge, this perspective has been
+convincingly demonstrated (at least since the classical textbook of
+\citet{gries1993logical}) only in the field of discrete mathematics.
 %
-In fact, this demonstration has been so successful, that we
-see discrete mathematics courses being taken over by
-computer science departments.
+In fact, this demonstration has been so successful, that we see
+discrete mathematics courses being taken over by computer science
+departments.
 %
 This is a quite unsatisfactory state of affairs, for at least two
 reasons.
@@ -120,6 +120,8 @@ infect the design of the entire curriculum.
 %note: end of "identify a gap"
 
 %note: start of "fill the gap"
+\index{domain-specific language (DSL)}
+%
 We propose that a focus on \emph{domain-specific languages} (DSLs) can
 be used to repair this unsatisfactory state of affairs.
 %
@@ -276,8 +278,6 @@ concepts in Haskell.
 %TODO: write about the book plan and internal dependencies
 %\jp{Reading guide as dependency graph - see also ``short ToC'' note above + \ref{fig:LearningOutcomes}}
 
-
-
 \section{Notation and code convention}
 
 The \course{} is a collection of literate programs: that is, it
@@ -293,23 +293,27 @@ maximize readability from the point of view of someone used to
 conventional mathematical notation.
 %
 For example, function composition is typically represented as a circle
-in mathematics texts. When typesetting, a suitable circle glyph can be
-obtained in various ways, depending on the typesetting system:
-\verb+&#8728+ in HTML, \verb+\circ+ in \TeX, or by the \textsc{ring
-  operator} unicode codepoint (\verb"U+2218"), which appears ideal for
-the purpose.
+in mathematics texts.
+%
+When typesetting, a suitable circle glyph can be obtained in various
+ways, depending on the typesetting system: \verb+&#8728+ in HTML,
+\verb+\circ+ in \TeX, or by the \textsc{ring operator} unicode
+codepoint (\verb"U+2218"), which appears ideal for the purpose.
 %
 This codepoint can also be used in Haskell (recent implementations
 allow any sequence of codepoints from the unicode \textsc{symbol}
-class).  However, the Haskell Prelude uses instead the infix operator
-\verb+.+ (period), as a crude ASCII approximation, possibly chosen for
-its availability and the ease with which it can be typed.
+class).
+%
+However, the Haskell Prelude uses instead the infix operator \verb+.+
+(period), as a crude ASCII approximation, possibly chosen for its
+availability and the ease with which it can be typed.
 %
 In this book, as a compromise, we use the period in our source code,
-but our typesetting tool renders it as a circle glyph. If, when
-looking at typset pages, any doubt should remain regarding to the form
-of the Haskell source, we urge the reader to consult the github
-repository.
+but our typesetting tool renders it as a circle glyph.
+%
+If, when looking at typset pages, any doubt should remain regarding to
+the form of the Haskell source, we urge the reader to consult the
+github repository.
 
 %
 The reader is encouraged to experiment with the examples to get a
@@ -332,7 +336,8 @@ course, you can check your progress towards the final examination.
 %endif
 %
 Sometimes the chapter text contains short, inlined questions, like
-``Exercice~\ref{exc:fmap}: what does function composition do to a sequence?''.
+``Exercice~\ref{exc:fmap}: what does function composition do to a
+sequence?''.
 %
 In such cases there is some more explanation in the exercises section
 at the end of the chapter, and the exercise number is a link to the
@@ -386,10 +391,11 @@ definition \(f(x) = x^2\) reveals a rather odd rule: instead of
 %
 (There are historical explanations for this notation, and it is
 motivated by computation rules in the differential calculus, but we
-will not go there now. We are also aware that the notation
-$\int dx f(x)$, which emphasises the bound variable, is sometimes
-used, especially by physicists, but it remains the exception rather
-than the rule at the time of writing.)
+will not go there now.
+%
+We are also aware that the notation $\int dx f(x)$, which emphasises
+the bound variable, is sometimes used, especially by physicists, but
+it remains the exception rather than the rule at the time of writing.)
 %
 It seems like the scope of the variable ``bound'' by |d| is from the
 integral sign to the final |dx|, but does it also extend to the
