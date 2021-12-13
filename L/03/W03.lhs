@@ -563,8 +563,7 @@ This is a form of \addtoindex{type-driven development}.
 Consider the following text from \citeauthor{maclane1986mathematics}'s
 \textit{Mathematics Form and Function} (page 182):
 %
-
-\begin{linenumbers}
+\begin{linenumbers}[1]
    \begin{quote}
      In these cases one tries to find not the values of
      |x|\linelabel{line:exam1603_x} which make a given function |y =
