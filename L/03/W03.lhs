@@ -29,15 +29,18 @@ Consider the classical definition of the derivative of
 \citet{adams2010calculus}:
 %
 \begin{quote}
-  The \textbf{derivative} of a function |f| is another function |f'| defined by
+  The \textbf{derivative} of a function |f| is another function |f'|
+  defined by
 %
   \[
     f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}
   \]
 %
   at all points |x| for which the limit exists (i.e., is a finite real
-  number). If \(f'(x)\) exists, we say that |f| is \textbf{differentiable}
-  at |x|.
+  number).
+  %
+  If \(f'(x)\) exists, we say that |f| is \textbf{differentiable} at
+  |x|.
 \end{quote}
 %
 We can start by assigning types to the expressions in the definition.
@@ -57,10 +60,12 @@ in the definition is a prime symbol (apostrophe), written postfix.
 To make it easier to see we use a prefix |D| instead and we can
 thus write |D : (X->REAL) -> (Y->REAL)|.
 %
-% {Why |Y| is typeset rather stangely? (calligraphic font?)  Leading idea: this is an effect of the mathpazo package. No format directive, see: |XY|}
+% {Why |Y| is typeset rather strangely? (calligraphic font?)  Leading idea: this is an effect of the mathpazo package. No format directive, see: |XY|}
 We will often assume that |X = Y| (|f| is differentiable everywhere)
 so that we can can see |D| as preserving the type of its argument.
 
+\index{derivative (|D|)||textbf}
+%
 Now, with the type of |D| sorted out, we can turn to the actual
 definition of the function |D f|.
 %
@@ -68,6 +73,8 @@ The definition is given for a fixed (but arbitrary) |x|.
 %
 (At this point the reader may want to check the definition of
 ``limit of a function'' in \refSec{sec:LimitOfFunction}.)
+%
+\index{lim@@|lim| (limit)}
 %
 The |lim| expression is using the (anonymous) function |g h = frac
 (f(x+h) - f x) h| and that the limit of |g| is taken at |0|.
@@ -81,7 +88,8 @@ the limit of |phi x| at 0.
 %
 So, to sum up, |D f x = lim 0 (phi x)|.
 %
-\footnote{We could go one step further by noting that |f| is in the scope of |phi| and used in its definition.
+\footnote{We could go one step further by noting that |f| is in the
+scope of |phi| and used in its definition.
 %
 Thus the function |psi f x h = phi x h|, or |psi f = phi|, is used.
 %
@@ -120,7 +128,7 @@ apply the usual rules we have learnt in calculus.
 %
 We will get get back to this question in \refSec{sec:computingDerivatives}.
 
-\section{Typing Mathematics: partial derivative}
+\section{Typing Mathematics: \addtoindex{partial derivative}}
 \label{sec:typePartialDerivative}
 % https://books.google.com/ngrams/graph?year_end=2019&year_start=1800&corpus=26&content=quest+of%2C+quest+to&smoothing=3&direct_url=t1%3B%2Cquest%20of%3B%2Cc0%3B.t1%3B%2Cquest%20to%3B%2Cc0
 Armed with our knowledge of functions of more than one variable, we
@@ -219,8 +227,9 @@ That is, |z| stands for an expression which depends on |x| and |y|;
 thus, it can be enlightening to replace |z| with |f(x, y)| everywhere.
 %
 In particular, |∂ z / ∂ x| becomes |∂ f (x, y) / ∂ x|, which we can
-interpret as the operator |∂ / ∂ x| applied to |f(x, y)| (remember that |(x, y)|
-is bound in the context by a universal quantifier on line 4).
+interpret as the operator |∂ / ∂ x| applied to |f| and |(x, y)|
+(remember that |(x, y)| is bound in the context by a universal
+quantifier on line 4).
 %
 There is the added difficulty that, just like the subscript in |f'x|,
 the |x| in |∂ x| is not the |x| bound by the universal quantifier, but
@@ -237,10 +246,10 @@ in the context, the function \(f\) has been given a definition of the
 form \(f (x, y, z) = \ldots\).
 %
 This kind of approach presents several difficulties:
-
+%
 \begin{enumerate}
-\item it makes it hard to rename variables (for example for the purpose of
-  integration)
+\item it makes it hard to rename variables (for example for the
+  purpose of integration)
 \item Further confusion can be created when a variable (such as $z$
   above) depends on other variables.
   %
@@ -249,25 +258,28 @@ This kind of approach presents several difficulties:
 \item it makes it difficult to assign a higher order type to the
   partial derivatives.
   %
-  Indeed, as we have seen in \cref{sec:big-operators}, the \(∂f/∂x\) style
-  means that the operator binds the name of the variable.
+  Indeed, as we have seen in \cref{sec:big-operators}, the \(∂f/∂x\)
+  style means that the operator binds the name of the variable.
   %
   % But it is often awkward to make partial differentiation bind a variable. % But, we are precisely listing reason why it's awkward here. This sentence is circular reasoning.
 \end{enumerate}
 
 One possibility would be to use the following type:
+%
 \(∂/∂x_i : (ℝⁿ → ℝ) → (ℝⁿ → ℝ)\), but it still assumes as input a
-vector of variables $x$--- even though the type assumes independence with respect to the variable names.
+vector of variables $x$--- even though the type assumes independence
+with respect to the variable names.
 %
 Hence we prefer a notation which doesn't rely on the names given to
 the arguments whatsoever.
 %
 It was popularised by \citet{landau1934einfuhrung} (English edition
 \cite{landau2001differential}): \(D₁\) for the partial derivative with
-respect to the first argument, \(D_2\) for the partial derivative with
+respect to the first argument, \(D₂\) for the partial derivative with
 respect to the second argument, etc.
 
-Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
+Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and
+\(D₂\) using only \(D\).
 
 %TODO: perhaps mention "total derivative" at this stage. That could serve as an intermediate step towards the Langrangian, or could be added after it.
 
@@ -275,6 +287,8 @@ Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and \(D�
 \label{sec:Lagrangian}
 
 From \citet{sussman2013functional}:
+%\index{Lagrangian}
+\index{Lagrange equations}
 \begin{quote}
   A mechanical system is described by a Lagrangian function of the
   system state (time, coordinates, and velocities).
@@ -366,7 +380,7 @@ argument (named |q|) of~|L|.
   \emph{functions}, thus the |0| on the right-hand side of the
   Lagrange equation(s) is \emph{not} the real number |0|, but rather
   the constant function |const 0|:
-
+%
   \begin{spec}
     const 0  :  T × Q × V  →  ℝ
     const 0     (t, q, v)  =   0
@@ -511,6 +525,7 @@ argument (named |q|) of~|L|.
   %
   where we use |(==)| to avoid confusion with the equality sign (|=|)
   used for the definition of the predicate.
+\index{Lagrange equations}
 \end{enumerate}
 
 So, we have figured out what the equation means in terms of
@@ -525,8 +540,8 @@ check if a particular candidate path |w : T → ℝ| qualifies as an
 allowed ``motion of the system'' or not.
 %
 The unknown of the equation is the path |w|, and as the equation
-involves partial derivatives it is an example of a partial
-differential equation (a PDE).
+involves partial derivatives it is an example of a \addtoindex{partial
+  differential equation} (a PDE).
 %
 We will not dig into how to solve such PDEs, but they are widely used
 in physics.
@@ -542,6 +557,9 @@ when we are still at the specification stage.
 It is often useful to collect the known (or assumed) facts about types
 in a Haskell file and regularly check if the type checker agrees.
 %
+This is a form of \addtoindex{type-driven development}.
+%
+
 Consider the following text from \citeauthor{maclane1986mathematics}'s
 \textit{Mathematics Form and Function} (page 182):
 %
@@ -565,8 +583,8 @@ Consider the following text from \citeauthor{maclane1986mathematics}'s
 \lnOnly{Typing the variables and the integration operators in this text was an
   exam question in 2016.}
 %
-We will use the above example as an example of getting
-feedback from a type checker.
+We will use the above example as an example of getting feedback from a
+type checker.
 %
 We start by declaring two types, |X| and |Y|, and a function |f|
 between them:
@@ -579,24 +597,28 @@ f :: X -> Y
 f = undefined
 \end{code}
 %
+\index{data@@|data| (keyword)}
+%
 To the Haskell interpreter, such empty |data|-declarations mean that
-there is no way to construct any element for them, as we saw in \cref{sec:curry-howard}. But at this stage
-of the specfication, we will use this notation to indicate that we do
-not know anything about values of those types.
+there is no way to construct any element for them, as we saw in
+\cref{sec:curry-howard}.
+%
+But at this stage of the specfication, we will use this notation to
+indicate that we do not know anything about values of those types.
 %
 Similarly, |f| has a type, but no proper implementation.
 %
-We will declare types for the rest of the variables as well, and because we
-are not implementing any of them right now, we can just make provide
-a dummy definition for a few of them in one go:
+We will declare types for the rest of the variables as well, and
+because we are not implementing any of them right now, we can just
+make provide a dummy definition for a few of them in one go:
 %
 \begin{code}
 (x, deriv, ff, a, b, int) = undefined
 \end{code}
 %
 We write |ff| for the capital |F| (to satisfy Haskell rules for
-variable names), |deriv| for the derivation operator (|D| above), and |int| for the
-integral operator.
+variable names), |deriv| for the derivation operator (|D| above), and
+|int| for the integral operator.
 %
 On line~\ref{line:exam1603_x} ``values of |x|'' hints at the type |X|
 for |x| and the way |y| is used indicates that it is to be seen as an
@@ -674,7 +696,7 @@ beginning.
 \label{sec:typeclasses}
 
 One difficulty when reading (and implementing) mathematics is
-\emph{overloading}.
+\emph{\addtoindex{overloading}}.
 %
 For our purposes, we say that a symbol is \emph{overloaded} when its
 meaning depends on the type of the expressions that it applies to.
@@ -688,7 +710,7 @@ poses no difficulty.
 We explore the mathematical reasons in more detail in
 \cref{sec:AlgHomo}, but for now we will concentrate on the view of
 functional programming of this problem: one way to understand
-overloading is via \emph{type classes}.
+overloading is via \emph{\addtoindex{type class}es}.
 
 In Haskell both |4 == 3| and |3.4 == 3.2| typecheck because both
 integers and floating point values are member of the |Eq| class, which
@@ -702,7 +724,7 @@ class Eq a where   (==) :: a -> a -> Bool
 %
 The above declaration does two things.
 %
-First, it defines a set of types which have equality test.
+First, it names a set of types which have equality test.
 %
 One can tell the Haskell compiler that certain types belong to this
 set by using instance declarations, which additionally provide an
@@ -719,13 +741,16 @@ instance Eq Bool where  (==) = eqBool
 \end{spec}
 \index{instance@@|instance| (keyword)||textbf}
 %
-(The Haskell compiler will in fact provide instances for primitive types).
+(The Haskell compiler will in fact provide instances for primitive
+types ).
 
 Second, the |Eq| class declaration provides an operator |(==)| of type
 |Eq a => a -> a -> Bool|.
 %
 One can use the operator on any type |a| which belongs to the |Eq|
 set.
+%
+\index{constraint (type)}
 %
 This is expressed in general by a constraint |Eq a| occuring before
 the |=>| symbol.
@@ -747,6 +772,8 @@ instances of |Eq|: |Char|, |[Char]|, |[[Char]]|, etc.
 %
 
 \subsection{Numeric operations}
+\index{Num@@|Num| (type class)}
+%
 Haskell also provides a |Num| class, containing various numeric types
 (|Int|, |Double|, etc.) with several operators (|+|,|*|, etc.).
 %
@@ -760,6 +787,8 @@ study in more detail in \cref{sec:ring-like-classes}:
 
 \label{sec:numeric-classes}
 %*TODO: Make sure the code matches ../DSLsofMath/Algebra.hs.
+\index{Additive@@|Additive| (type class)}
+\index{AddGroup@@|AddGroup| (type class)}
 \begin{spec}
 class Additive a where
   zero  :: a
@@ -772,6 +801,8 @@ class Multiplicative a where
 class Multiplicative a => MulGroup a where
   recip :: a -> a   -- reciprocal, specified as  |x * recip x == one|
 \end{spec}
+\index{Multiplicative@@|Multiplicative| (type class)}
+\index{MulGroup@@|MulGroup| (type class)}
 %
 The operator names clash with the |Num| class, which we will avoid
 from now on in favour |Additive| and |Multiplicative|.
@@ -803,6 +834,7 @@ present a comparison in \cref{fig:CompNum}.
 
 \subsection{Overloaded integer literals}
 \label{sec:overloaded-integer-literals}
+\index{overloading}
 We will spend some time explaining a convenient Haskell-specific
 syntactic shorthand which is very useful but which can be confusing:
 overloaded integers.
@@ -810,6 +842,8 @@ overloaded integers.
 In Haskell, every use of an integer literal like |2|, |1738|, etc., is
 actually implicitly an application of |fromInteger| to the literal
 typed as an |Integer|.
+%
+\index{fromInteger@@|fromInteger|}
 
 But what is |fromInteger|?
 %
@@ -941,7 +975,8 @@ instance Transcendental a  => Transcendental  (x -> a) where
    pi =  const pi
    sin f = sin . f; {-"\quad"-}    cos f = cos . f; {-"\quad"-}  exp f = exp . f
 \end{spec}
-  \caption{Numeric instances lifted to functions (Full definitions can be found in |module Algebra| in the repo).}
+  \caption{Numeric instances lifted to functions (Full definitions can
+    be found in |module Algebra| in the repo).}
   \label{fig:FunNumInst}
 \end{figure}
 \label{sec:FunNumInst}
@@ -953,8 +988,14 @@ Therefore we prefer to define the more general instances in
 \cref{fig:FunNumInst}.
 %
 Here we extend our set of type-classes to cover algebraic and
-transcendental numbers. A simplified version, which is sufficent for
-our purposes looks as follows:
+transcendental numbers.
+%
+A simplified version, which is sufficent for our purposes, looks as
+follows:
+%
+\index{Algebraic@@|Algebraic| (type class)}
+\index{sqrt@@square root (|sqrt|)||textbf}
+%
 \begin{spec}
 class Field a => Algebraic a where
   sqrt :: a -> a
@@ -965,6 +1006,13 @@ class Field a => Transcendental a where
   sin :: a -> a
   cos :: a -> a
 \end{spec}
+%
+\index{Transcendental@@|Transcendental| (type class)}
+\index{sin@@|sin|{}||textbf}
+\index{cos@@|cos|{}||textbf}
+\index{exp@@|exp|{}||textbf}
+\index{pi@@|pi|{}||textbf}
+%
 While classes up to |Field| follow mathematical conventions very
 closely, for |Algebraic| and |Transcendental| we take the pragmatic
 approach and list only the methods which are necessary for our
@@ -1056,6 +1104,8 @@ numeric operations to functions directly, we can fill in a table of
 examples which can be followed to compute derivatives of many
 functions:
 %
+\index{derivative (|D|)||textbf}
+%
 \begin{spec}
     D (f + g)        =  D f + D g
     D (f * g)        =  D f * g + f * D g
@@ -1097,14 +1147,17 @@ functions or expressions: abstract syntax trees \emph{representing}
 the (semantic) functions.
 
 We observe that we can compute derivatives for any expression made out
-of arithmetic functions, trigonometric functions, the exponential and their compositions.
+of arithmetic functions, trigonometric functions, the exponential and
+their compositions.
 %
 In other words, the computation of derivatives is based on a domain
 specific language of expressions (representing functions in
 one variable).
 %
-This means that we can in fact implement the derivative of |FunExp| expressions
-(from \cref{sec:FunExp}), using the rules of derivatives.
+\index{FunExp@@|FunExp| (type)}
+%
+This means that we can in fact implement the derivative of |FunExp|
+expressions (from \cref{sec:FunExp}), using the rules of derivatives.
 %
 Because the specification of derivation rules is already in the right
 format, the way to obtain this implementation may seem obvious, but we
@@ -1114,6 +1167,8 @@ case.
 \label{sec:derive}
 Our goal is to implement a function |derive :: FunExp -> FunExp| which
 makes the following diagram commute:
+%
+\index{derive@@|derive|}
 
 \quad%
 \begin{tikzcd}
@@ -1135,6 +1190,8 @@ In turn, this means that for any expression |e :: FunExp|, we want
 
 For example, let us calculate the |derive| function for |Exp e|:%
 \footnote{We have added a constructor |Exp :: FunExp -> FunExp| for this example.}
+%
+\index{equational reasoning}
 %
 \begin{spec}
      eval (derive (Exp e))                          =  {- specification of |derive| above -}
@@ -1163,6 +1220,8 @@ derive (Exp e) = Exp e :*: derive e
 \end{spec}
 
 Similarly, we obtain
+%
+\index{derive@@|derive|}
 %
 \begin{joincode}%
 \begin{code}

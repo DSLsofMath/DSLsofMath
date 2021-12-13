@@ -754,7 +754,8 @@ This fragment is called the simply-typed lambda calculus (STLC) with
 sum and products.
 
 \subsection{Type-Driven Development of Proofs as Programs}
-
+\index{type-driven development}
+%
 With the logic connectives implemented as type constructors we explore
 a few more examples of laws and their proofs.
 

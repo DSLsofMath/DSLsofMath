@@ -2,7 +2,8 @@
 \section{Exercises}
 
 \begin{exercise}
-  \label{exc:D1usingD}
+  \label{exc:D1usingD}\textbf{Partial Derivatives}
+  \index{partial derivative}
   For \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
 %
   In more detail: let the type \(F2 = ℝ² → ℝ\) and \(F1 = ℝ → ℝ\).
@@ -16,9 +17,9 @@
 \end{exercise}
 %
 \begin{exercise}
-  To get a feeling for the Lagrange equations, let |L(t, q, v) =
-  m*v^2/2 - m*g*q|, compute |expand w|, perform the derivatives and
-  check if the equation is satisfied for
+  To get a feeling for the \addtoindex{Lagrange equations}, let |L(t,
+  q, v) = m*v^2/2 - m*g*q|, compute |expand w|, perform the
+  derivatives and check if the equation is satisfied for
   \begin{itemize}
   \item |w1 = id| or
   \item |w2 = sin| or
@@ -216,6 +217,8 @@
 % use any of the matrix DSL, so I think it should be solvable at this point
 \begin{exercise}
 \fromExam{2017-08-22}
+%
+\index{matrix}
 %
 Multiplication for matrices (from the matrix algebra DSL).
 

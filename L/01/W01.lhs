@@ -49,7 +49,8 @@ types is one of the guiding principles of this \course{}.
 We will see that keeping track of types can guide the development of
 theories, languages, programs and proofs.
 %
-We follow a \addtoindex{Type-Driven Development} style of programming.
+We follow a Type-Driven Development style of programming.
+\index{type-driven development}
 
 \subsection{What is a type?}
 \index{type}
