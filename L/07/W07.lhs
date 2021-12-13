@@ -40,6 +40,7 @@ scaling by a set of scalars (i.e., elements of the field).
 %
 In terms of typeclasses, we can characterize this structure as
 follows:
+\index{AddGroup@@|AddGroup| (type class)}
 \begin{code}
 infixr 7 *^
 class (Field s, AddGroup v) => VectorSpace v s where
@@ -164,6 +165,9 @@ There is a temptation to model the corresponding collection of
 coefficients as a list, or a tuple, but a more general (and
 conceptually simpler) way is to view them as a \emph{function} from a
 set of indices |G|:
+%
+\index{Additive@@|Additive| (type class)}
+\index{AddGroup@@|AddGroup| (type class)}
 %
 \begin{code}
 newtype Vector s g    = V (g -> s) deriving (Additive, AddGroup)

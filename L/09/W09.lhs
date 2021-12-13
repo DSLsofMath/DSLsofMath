@@ -250,6 +250,9 @@ RealLine :: Space REAL
 \paragraph{Summary}
 We have already completed the description of a DSL for spaces, whose
 abstract syntax is captured by the following datatype:
+%
+\index{abstract syntax tree}
+%
 \begin{code}
 data Space a where
   Finite    :: [a] -> Space a

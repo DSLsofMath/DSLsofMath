@@ -57,6 +57,8 @@ Just as we did with with complex number expressions in
 \cref{sec:complex-arithmetic}, %\cref{sec:DSLComplex}
 we can model the abstract syntax of propositions as a datatype:
 %
+\index{abstract syntax tree}
+%
 \begin{code}
 data Prop  =  Con      Bool
            |  Not      Prop

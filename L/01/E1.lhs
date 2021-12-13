@@ -154,8 +154,8 @@
   From \refSec{sec:infseq}:
   %
   \begin{itemize}
-
-  \item What does \addtoindex{function composition} do to a \addtoindex{sequence}?
+\index{function composition (|.|)}
+  \item What does function composition do to a \addtoindex{sequence}?
 %
     More concretely: for a sequence |a| what is |a . (1+)|?
     %

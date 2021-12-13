@@ -116,6 +116,8 @@ DSL) for finite sets.
 The domain you should model is pure set theory where all members are
 sets.
 
+\index{abstract syntax tree}
+%
 Define a datatype |TERM v| for the abstract syntax of set expressions
 with variables of type |v| and a datatype |PRED v| for predicates over
 pure set expressions.

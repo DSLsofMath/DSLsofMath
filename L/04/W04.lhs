@@ -64,6 +64,9 @@ logarithms arise from homomorphism conditions, which
 relate the additive and multiplicative structures of reals and
 positive reals.
 
+%
+\index{abstract syntax tree}
+%
 Additionally, homomorphisms play a crucial role when relating an
 abstract syntax (a datatype), and a semantic domain (another type) via
 an evaluation function between them (the semantics).
@@ -176,6 +179,8 @@ To be able to conform to that tradition we define two separate
 classes, one for the additive and one for the multiplicative monoids,
 as follows.
 \label{sec:ring-like-classes}
+\index{Additive@@|Additive| (type class)||textbf}
+\index{Multiplicative@@|Multiplicative| (type class)||textbf}
 \begin{spec}
 class Additive a        where {-"\qquad"-}  zero  :: a; {-"\qquad"-}  (+)  :: a -> a -> a
 class Multiplicative a  where               one   :: a;               (*)  :: a -> a -> a
@@ -197,6 +202,7 @@ This is what we have done in \cref{sec:numeric-classes}.
   To continue our mathematically-grounded |Num| replacement, we have
   also defined the additive group as follows:
 
+\index{AddGroup@@|AddGroup| (type class)||textbf}
 \begin{spec}
 class Additive a => AddGroup a where
   negate :: a -> a
@@ -286,6 +292,7 @@ as well, whose inverse is called the reciprocal (abbreviated as
 %
 With that in place, division can be defined in terms of multiplication
 and reciprocal.
+\index{MulGroup@@|MulGroup| (type class)||textbf}
 \begin{joincode}%class Multiplicative is defined earlier
 \begin{spec}
 class Multiplicative a => MulGroup a where
@@ -1711,6 +1718,8 @@ definition for |oneDup| to make it satisfy to homomorphism law:
 %
 We can now define an instance
 %
+\index{Multiplicative@@|Multiplicative| (type class)}
+%
 \begin{code}
 oneDup :: Ring a => Dup a
 oneDup = (one, zero)
@@ -1744,6 +1753,8 @@ Hint: Something very similar can be used for Assignment 2.
 In this chapter we have compared and contrasted a number of
 mathematical concepts and their computer science representations or
 alternative interpretations.
+%
+\index{abstract syntax tree}
 %
 Mathematical structures can often be use to capture the core of a DSL,
 initial algebras can be used (with |data|-types) for abstract syntax

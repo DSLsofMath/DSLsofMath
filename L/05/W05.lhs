@@ -285,6 +285,9 @@ exercise.
 Here, we just give the corresponding definitions.
 %
 \label{sec:mulPoly}
+\index{Additive@@|Additive| (type class)}
+\index{AddGroup@@|AddGroup| (type class)}
+\index{Multiplicative@@|Multiplicative| (type class)}
 \begin{code}
 instance Additive a => Additive (Poly a) where
   (+)   = addPoly
@@ -342,6 +345,8 @@ readable text):
 Note that from here on we will use the term ``polynomial'' for the
 abstract syntax (the list of coefficients, |as|) and ``polynomial
 function'' for its semantics (the function |evalPoly as : A -> A|).
+%
+\index{abstract syntax tree}
 
 \paragraph{An alternative representation}
 The canonical representation of polynomials in algebra does not use

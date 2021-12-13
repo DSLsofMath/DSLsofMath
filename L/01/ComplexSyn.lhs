@@ -20,10 +20,11 @@ import DSLsofMath.CSem (Complex(C), addC, mulC, Ring)
 import DSLsofMath.ComplexSem
 \end{code}
 
-\index{AST||see {abstract syntax tree (AST)}}
+\index{AST||see {abstract syntax tree}}
 %
-We want a datatype |ComplexE| for the \addtoindex{abstract syntax tree
-  (AST)} of expressions (a DSL for complex arithmetical expressions).
+We want a datatype |ComplexE| for the \addtoindex{abstract syntax
+  tree} (AST) of expressions (a DSL for complex arithmetical
+expressions).
 %
 \index{DSL!complex expressions}
 %
