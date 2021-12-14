@@ -179,8 +179,8 @@
 %format xn = x "_n"
 %format Tn = T "_n"
 %format H0
-%format H1
-%format H2
+%format H1 p = H "_1" p
+%format H2 p = H "_2" p
 %format Hn = H "_" n
 %format y1
 %format y2

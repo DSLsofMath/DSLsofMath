@@ -46,6 +46,8 @@ become an important topic of study.
 When such mappings preserve the structure, they are called
 \emph{homomorphisms}.
 %
+\index{homomorphism}
+%
 As two examples, we have the homomorphisms |exp| and |log|, specified
 as follows:
 %
@@ -77,9 +79,11 @@ DSLs in general.
 
 \section{Algebraic Structures}
 
-What is an algebraic structure?
+What is an \addtoindex{algebraic structure}?
 %
 Let's turn to Wikipedia as a starting point:
+%
+\index{algebra||see {algebraic structure}}
 %
 \begin{quote}
   In universal algebra, an algebra (or algebraic structure) is a set
@@ -96,14 +100,16 @@ captured in Haskell using a type class (\cref{sec:typeclasses}).
   %
   A monoid is an algebra which has an associative operation |op| and a
   |unit|:
+%
+\index{monoid||textbf}
 \begin{code}
 class Monoid a where
     unit  ::  a
     op    ::  a -> a -> a
 \end{code}
 %
-The laws cannot easily be captured in the Haskell class, but can be formulated
-as the following propositions:
+The laws cannot easily be captured in the Haskell class, but can be
+formulated as the following propositions:
 %
 \begin{spec}
   ∀ x : a? (unit `op` x == x  ∧  x `op` unit == x)
@@ -112,15 +118,23 @@ as the following propositions:
   The first law ensures that |unit| is indeed the unit of |op| and the
   second law is the familiar associativity law for |op|.
 \end{example}
+\index{associative}
 
 \begin{example}
   Examples of monoids include numbers with addition, |(REAL, 0, (+))|,
   positive numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
   with composition |(a->a,id, (.))|.
   %
-  An ``endofunction'', also known as ``endomorphism'' is a function
-  of type |X->X| for some set |X|.
+\index{endofunction}
+  %
+  An ``endofunction'' is a function of type |X->X| for some set |X|.
   \label{ex:endofunction}
+  %
+\hyphenation{endo-morphism}
+%
+  A structure-preserving endofunction is called an endomorphism.
+  %
+  \index{endomorphism}
 \end{example}
 
 \begin{exercise}
@@ -166,9 +180,9 @@ instance Monoid MNat where
 \end{code}
 \end{example}
 
-In Haskell there can ever be at most one instance of a given class for
-a given type, so we cannot define two |instance Monoid Natural|: we
-must make a |newtype| whose role is to indicate which of the two
+In Haskell there can be at most one instance of a given class in scope
+for a given type, so we cannot define two |instance Monoid Natural|:
+we must make a |newtype| whose role is to indicate which of the two
 possible monoids (additive or applicative) applies in a given context.
 %
 But, in mathematical texts the constructors |M| and |A| are usually
@@ -196,17 +210,18 @@ This is what we have done in \cref{sec:numeric-classes}.
 
 %\begin{example}
 \subsection{Groups and rings}
-  Another important structure are groups, which are monoids augmented with an
-  inverse.
-  %
-  To continue our mathematically-grounded |Num| replacement, we have
-  also defined the additive group as follows:
+Another important structure are groups, which are monoids augmented
+with an inverse.
+%
+To continue our mathematically-grounded |Num| replacement, we have
+also defined the additive group as follows:
 
 \index{AddGroup@@|AddGroup| (type class)||textbf}
 \begin{spec}
 class Additive a => AddGroup a where
   negate :: a -> a
 \end{spec}
+\index{negate@@|negate|}
 
 Groups demand that the inverse (called |negate| for the additive
 group) act like an inverse.
@@ -234,6 +249,9 @@ distributes over addition (|x*(y+z) == (x*y)+(x*z)|), we have a
 As always we cannot conveniently specify laws in Haskell typeclasses
 and thus define |Ring| simply as the conjunction of |AddGroup| and
 |Multiplicative|:
+%
+\index{Ring@@|Ring| (type class)}
+%
 \begin{spec}
 type Ring a = (AddGroup a, Multiplicative a)
 \end{spec}
@@ -243,9 +261,12 @@ With that, we have completed the structural motivation of our
 replacement for the |Num| class!
 %
 \begin{exercise}
-  Prove that |Nat| admits the usual |Additive| instance.  Likewise for |Ring| instances of |ZZ|, |QQ|, and |REAL|.
+  Prove that |Nat| admits the usual |Additive| instance.
+  %
+  Likewise for |Ring| instances of |ZZ|, |QQ|, and |REAL|.
 \end{exercise}
 % If label:=pin then the text will be connected to the rectangle by a short "pin" (line) 17.10.3 in pgfmanual
+
 \begin{figure}
   \centering
   \begin{tikzpicture}
@@ -283,12 +304,22 @@ replacement for the |Num| class!
   includes the |Multiplicative| operations.}
   \label{fig:CompNum}
 \end{figure}
+\index{Additive@@|Additive| (type class)}
+\index{AddGroup@@|AddGroup| (type class)}
+\index{Multiplicative@@|Multiplicative| (type class)}
+\index{MulGroup@@|MulGroup| (type class)}
+\index{Num@@|Num| (type class)}
+\index{Fractional@@|Fractional| (type class)}
+\index{Ring@@|Ring| (type class)}
+\index{Field@@|Field| (type class)}
 %TODO: Perhaps fix the figure to indicate that |AddGroup| includes the
 %|Additive| operations and |MulGroup| includes the |Multiplicative|
 %operations.
 We note right away that one can have a multiplicative group structure
 as well, whose inverse is called the reciprocal (abbreviated as
 |recip| in Haskell).
+%
+\index{reciprocal@@|recip|{}||see {|MulGroup| (type class)}}
 %
 With that in place, division can be defined in terms of multiplication
 and reciprocal.
@@ -304,11 +335,15 @@ class Multiplicative a => MulGroup a where
 a / b = a * recip b
 \end{code}
 \end{joincode}
-Often the multiplicative group structure is added to a |Ring|, and one has a |Field|:\label{sec:fields-defintion}
+Often the multiplicative group structure is added to a |Ring|, and one
+has a |Field|:
+%
+\index{Field@@|Field| (type class)}
+\label{sec:fields-defintion}
 \begin{code}
 type Field a = (Ring a, MulGroup a)
 \end{code}
-For fields, the reciprocal is not defined at |0|.
+For fields, the reciprocal is not defined at zero.
 %
 We will not capture this precondition in types: it would cause too
 much notational awkwardness.
@@ -321,15 +356,22 @@ relations between the Haskell |Num| class hierarchy and the
 corresponding numerical classes we use in this book.
 
 \section{Homomorphisms}
+\index{homomorphism||textbf}
 The Wikipedia definition of homomorphism states that ``A homomorphism
 is a structure-preserving map between two algebraic structures of the
 same type''.
 
 \subsection{(Homo)morphism on one operation}
 
-As a stepping stone to capture the idea of homomorphism, we can define a
-ternary predicate |H2|. The first argument |h|, is the map. The second
-(|Op|) and third (|op|) arguments correspond to the algebraic structures.
+As a stepping stone to capture the idea of homomorphism, we can define
+a ternary predicate |H2|.
+%
+The first argument |h|, is the map.
+%
+The second (|Op|) and third (|op|) arguments correspond to the
+algebraic structures.
+%
+\index{H2@@|H2(h,Op,op)|{}||textbf}
 %
 \begin{spec}
   H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
@@ -396,11 +438,15 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 
 \subsection{Homomorphism on structures}
 \label{sec:AlgHomo}
-So far our definition of homomorphism takes the rather
-limited view that a single operation is transformed. Usually,
-homomorphisms map a whole \emph{structure}.
+So far our definition of homomorphism takes the rather limited view
+that a single operation is transformed.
+%
+Usually, homomorphisms map a whole \emph{structure}.
 
 Back to Wikipedia:
+%
+\index{algebraic structure}
+\index{homomorphism||textbf}
 %
 \begin{quote}
   More formally, a homomorphism between two algebras |A| and |B| is a
@@ -433,6 +479,8 @@ right the belong to |(B, unitB, opB)|.
 \end{example}
 
 \begin{example}
+\index{exp@@|exp|{}}
+%
   Hence, the function |exp| is a monoid homomorphism from (|REAL|,0,|(+)|)
   to (|RPos|,1,|(*)|).
   \begin{spec}
@@ -449,9 +497,11 @@ is homomorphism, what kind of function can |h| be?
 
 \begin{example}
   \label{ex:exponential-as-homomorphism}
-As an example, let us can characterise the homomorphisms from |ANat| to
+As an example, let us characterise the homomorphisms from |ANat| to
 |MNat| (from \cref{sec:anat-mnat}).
 
+\index{monoid}
+%
 Let |h : ANat -> MNat| be a monoid homomorphism.
 %
 Then it must satisfy the following conditions:
@@ -494,9 +544,11 @@ every base |a|.
 
 \begin{exercise}
   \label{ex:fromInteger}
-  Assume an arbitrary Ring-homomorphism |f| from |Integer| to an
-  arbitrary type |a|. Prove |f == fromInteger|, provided the
-  definition in \cref{sec:overloaded-integer-literals}.
+  Assume an arbitrary |Ring|-homomorphism |f| from |Integer| to an
+  arbitrary type |a|.
+  %
+  Prove |f == fromInteger|, provided the definition in
+  \cref{sec:overloaded-integer-literals}.
 \end{exercise}
 
 \begin{solution}
@@ -523,7 +575,8 @@ it can either be zero, positive or negative.
 
 \subsubsection{Other homomorphisms}
 
-
+\index{const@@|const| (constant function)}
+\index{homomorphism}
 \begin{exercise}
   Show that |const| is a homomorphism.
 \end{exercise}
@@ -543,7 +596,8 @@ it can either be zero, positive or negative.
   take |A=a=REAL| and |B=x->REAL|.
   %
   As |B| is a function type the |(+)| on that side is addition of
-  functions, which we defined in \refSec{sec:FunNumInst} in terms of |funAdd| from \refSec{sec:funAdd}.
+  functions, which we defined in \refSec{sec:FunNumInst} in terms of
+  |funAdd| from \refSec{sec:funAdd}.
   %
   The homomorphism law (that |h| distributes over |(+)|) can be shown
   as follows:
@@ -567,6 +621,7 @@ The answer is ``Yes, many''.
 Such homomorphisms take the form |apply c|, for any |c|.
 %
 \begin{exercise}
+\index{apply@@|apply|}
   \label{ex:apply}
 Show that |apply c| is an |Additive| homomorphism for all |c|, where
 |apply x f = f x|.
@@ -590,27 +645,37 @@ and
 
 \subsection{\extraMaterial Isomorphisms}
 \label{sec:isomorphism}
+\index{isomorphism}
 Two homomorphisms which are inverse of each other define an
-\emph{isomorphism}. If an isomorphism exist between two sets, we say
-that they are isomorphic.  For example, the exponential and the
-logarithm witness an isomorphism between |RPos| and |REAL|.
+\emph{isomorphism}.
+%
+If an isomorphism exist between two sets, we say that they are
+isomorphic.
+%
+For example, the exponential and the logarithm witness an isomorphism
+between |RPos| and |REAL|.
 
 \begin{exercise}
-Show that exponential and logarithm are inverse of each other.
+  Show that exponential and logarithm are inverse of each other.
 \end{exercise}
 
 \begin{exercise}
-Extend the exponential-logarithm isomorphism to relate
-|AddGroup| and |MulGroup|.
+  Extend the exponential-logarithm isomorphism to relate |AddGroup|
+  and |MulGroup|.
 \end{exercise}
 
-\begin{exercise} Sketch the isomorphism between IPC and STLC seen in
-\cref{sec:curry-howard}. What are the structures? What are mappings
-(functions)?
+\begin{exercise}[\textbf{Hard.}]
+  Sketch the isomorphism between IPC and STLC seen in
+  \cref{sec:curry-howard}.
+  %
+  What are the structures?
+  %
+  What are mappings (functions)?
 \end{exercise}
 
-\begin{exercise} Sketch an isomorphism between pairs of natural
-numbers and complex numbers, as suggested in \cref{sec:complexcase}.
+\begin{exercise}
+  Sketch an isomorphism between pairs of numbers and complex numbers,
+  as suggested in \cref{sec:complexcase}.
 \end{exercise}
 
 
@@ -619,6 +684,8 @@ numbers and complex numbers, as suggested in \cref{sec:complexcase}.
 \subsection{Compositional functions are homomorphisms}
 \label{sec:compositionality-and-homomorphisms}
 Consider a datatype of very simple integer expressions:
+%
+\index{abstract syntax tree}
 %
 \begin{code}
 data E = Add E E | Mul E E | Con Integer deriving Eq
@@ -650,9 +717,13 @@ child {node {|Con|} child {node(rightleaf) {|3|}}};
 \node [draw=blue, ellipse, thick, inner sep=-4pt, fit = (root) (leftleaf) (rightleaf)] {};
 \end{tikzpicture}
 
+\index{eval@@|eval : Syn -> Sem|}
+%
 As the reader may have guessed, the natural evaluator |eval : E -> Integer|
 (defined later) is a homomorphism from |Add| to |(+)| and from |Mul| to
 |(*)|.
+%
+\index{homomorphism}
 %
 But to practice the definition of homomorphism we will here check if
 |even| or |isPrime| is a homomorphism from |E| to |Bool|.
@@ -677,13 +748,17 @@ evenCon :: Integer -> Bool
 Note that |even| throws away lots of information: the domain is
 infinite and the range is a two-element set.
 %
-This information loss could make it difficult to define the helper functions |evenAdd|,
-etc.\ because they only get to work on the small range.
+This information loss could make it difficult to define the helper
+functions |evenAdd|, etc.\ because they only get to work on the small
+range.
 %
 Still, in this case we are lucky: we can use the ``parity rules''
 taught in elementary school: even + even is even, etc.
 %
-In code we simply get:\footnote{A perhaps more natural alternative would be to taken |odd| instead of |even| as the homomorphism. You can try it out as an exercise.}
+In code we simply get:\footnote{A perhaps more natural alternative
+would be to taken |odd| instead of |even| as the homomorphism.
+%
+You can try it out as an exercise.}
 %
 \begin{code}
 evenAdd = (==)
@@ -698,10 +773,8 @@ Prove |H2(even,Add,evenAdd)| and |H2(even,Mul,evenMul)|.
 
 \subsection{An example of a non-compositional function}
 
-
-Let's now try to define
-|isPrime : E -> Bool| in the same way to see a simple example of a
-non-compositional function.
+Let's now try to define |isPrime : E -> Bool| in the same way to see a
+simple example of a non-compositional function.
 %
 In this case it is enough to just focus on one of the cases to already
 see the problem:
@@ -747,13 +820,19 @@ Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
 to |Bool|, regardless of the choice of the operator (on the the
 boolean side) corresponding to addition.
 
-
 \section{Folds}
-
 \label{sec:folds}
+\index{eval@@|eval : Syn -> Sem|}
+%
 In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
 and an |eval| function of type |Syn -> Sem|), we call the semantics
 \emph{compositional} if we can implement |eval| as a fold.
+%
+\index{compositional semantics}
+%
+\index{fold}
+%
+\index{constructor function}
 %
 Informally a ``fold'' is a recursive function which replaces each
 abstract syntax constructor |Ci| of |Syn| with its semantic
@@ -762,9 +841,9 @@ structure.
 %
 In particular, moving around constructors is forbidden.
 %
-For example, in our datatype |E|, a compositional semantics means that |Add|
-maps to |add|, |Mul {-"\mapsto"-} mul|, and |Con {-"\mapsto"-} con|
-for some ``semantic functions'' |add|, |mul|, and |con|.
+For example, in our datatype |E|, a compositional semantics means that
+|Add| maps to |add|, |Mul {-"\mapsto"-} mul|, and |Con {-"\mapsto"-}
+con| for some ``semantic functions'' |add|, |mul|, and |con|.
 %
 \begin{center}
 \begin{tikzpicture}[AbsSyn]
@@ -825,6 +904,8 @@ idE = foldE Add Mul Con
 Finally, it is useful to capture the semantic functions (the
 parameters to the fold) in a type class:
 %
+\index{class@@|class| (keyword)}
+%
 \begin{code}
 class IntExp t where
   add  ::  t -> t -> t
@@ -878,7 +959,7 @@ This condition was satisfied in the case of our |class IntExp t|: all
 function signatures end with |... -> t|.
 %
 When this condition is satisfied, we say that the class is an
-\emph{algebra} --- not just any algebraic structure.%
+\emph{\addtoindex{algebra}} --- not just any algebraic structure.%
 \footnote{Indeed, this terminology can be confusing.}
 
 \subsection{Even folds can be wrong!}
@@ -1017,9 +1098,11 @@ a datatype which captures the structure of the algebra, but nothing
 more.
 %
 This representation is called the initial algebra.
+%
+\index{initial algebra}
 
 \subsubsection{The Initial Monoid}
-
+\index{monoid}
 As a first example, consider an initial algebra for monoids (an
 initial monoid for short).
 
@@ -1055,7 +1138,7 @@ As one might guess, there are not many interesting applications of the
 initial monoid, so let us consider another structure.
 
 \subsubsection{The Initial Ring}
-
+\index{ring}
 Gathering all function in various type classes, we find that a |Ring|
 corresponds to the following algebra --- again we start by ignoring laws:
 %
@@ -1104,17 +1187,13 @@ To get a more concrete feeling for this, let us return to |IntExp|,
 and consider a few values of type |IntExp a => a|.
 %
 \begin{code}
-seven :: IntExp a => a
-seven = add (con 3) (con 4)
+seven :: IntExp a => a;  seven = add (con 3) (con 4)
 
-testI :: Integer
-testI = seven
-
-testE :: E
-testE = seven
-
-testP :: String
-testP = seven
+testI  :: Integer;       testI  = seven
+                         
+testE  :: E;             testE  = seven
+                         
+testP  :: String;        testP  = seven
 
 check :: Bool
 check = and  [  testI  ==  7
@@ -1143,9 +1222,13 @@ integer literals.
 They can be given the type |Ring a => a|, and doing it in a
 mathematically meaningful way, because |Ring a => a| is the initial
 algebra for |Ring|.
+%
+\index{Ring@@|Ring| (type class)}
 
 \subsection{Free Structures}
 
+\index{free structure}
+%
 Another useful way of constructing types is through ``free structures''.
 %
 They are similar to initial structures, but they also allows one to embed
@@ -1159,8 +1242,8 @@ class Generate a where
   generate :: G -> a
 \end{code}
 %
-(We could parameterize the class over an abstract generator set |g|,
-but will refain from doing so to avoid needless complications.)
+We could parameterize the class over an abstract generator set |g|,
+but will refrain from doing so to avoid needless complications.
 
 \subsubsection{Free Monoid}
 
@@ -1182,6 +1265,10 @@ data FreeMonoid g   =  Unit
 instance Monoid (FreeMonoid g) where  unit = Unit;  op = Op
 \end{code}
 
+
+\index{eval@@|eval : Syn -> Sem|}
+\index{fold}
+%
 Let us consider a fold for |FreeMonoid|.
 %
 We can write its type as follows:
@@ -1190,14 +1277,19 @@ evalM :: (Monoid a, Generate a) => (FreeMonoid G -> a)
 \end{spec}
 but we can also drop the |Generate| constraint and take the |generate|
 method as an explicit argument:
+%
+\index{eval@@|eval : Syn -> Sem|}
+\index{monoid}
+%
 \begin{code}
 evalM :: Monoid a => (G -> a) -> (FreeMonoid G -> a)
 \end{code}
 This form is similar to the evaluators of expressions with variables
 of type |G|, which we have seen for example in \cref{sec:ArithExp}.
 %
-Once given a function |f :: G -> a| (which we call an ``assignment
-function''), the homomorphism condition forces |evalM| to be a fold:
+Once given a function |f :: G -> a| (which we call an
+``\addtoindex{assignment function}''), the homomorphism condition forces
+|evalM| to be a fold:
 %
 \begin{code}
 evalM  _   Unit           =  unit
@@ -1266,11 +1358,14 @@ instance Generate        FunExp where  generate () = X
 \end{code}
 
 We can easily show that |FunExp| is |Additive| and |Multiplicative|:
+\index{Additive@@|Additive| (type class)}
+\index{Multiplicative@@|Multiplicative| (type class)}
 \begin{code}
 instance Additive        FunExp where  (+)  = (:+:);  zero  = Const 0
 instance Multiplicative  FunExp where  (*)  = (:*:);  one   = Const 1
 \end{code}
 %
+
 % and so on for the other numeric classes. (Not really "and so on")
 
 %if False
@@ -1283,11 +1378,13 @@ instance Transcendental FunExp where pi = Const (Prelude.pi); exp = Exp; sin = S
 
 
 \begin{exercise}
-  Implement |FunExp| instances for |AddGroup|,  and
-  (possibly extending the datatype) for |MulGroup| and |Transcendental| .
+  Implement |FunExp| instances for |AddGroup|, and (possibly extending
+  the datatype) for |MulGroup| and |Transcendental|.
 \end{exercise}
 
-We can then define a compositional evaluator. It would start like so:
+We can then define a compositional evaluator.
+%
+It would start as follows:
 %
 %{
 %format evalIncomplete = eval
@@ -1297,8 +1394,9 @@ evalIncomplete (e1 :+: e2)  =  evalIncomplete e1 + evalIncomplete e2
 \end{code}
 
 Remark: to translate the |Const :: REAL -> FunExp| constructor we need
-a way to map any |REAL| to the above structures. Here we will restrict
-ourselves to integers.
+a way to map any |REAL| to the above structures.
+%
+Here we will restrict ourselves to integers.
 
 %if False
 \begin{code}
@@ -1308,8 +1406,8 @@ evalIncomplete _ = error "Implemented elsewhere"
 %endif
 
 The most general type of evaluator will give us: \footnote{We call
-  this constraint ``OneVarExp'' because we have fixed |G=()|. In
-  general the number of variables is the cardinality of |G|.}
+this constraint ``OneVarExp'' because we have fixed |G=()|. In general
+the number of variables is the cardinality of |G|.}
 %
 \begin{code}
 type OneVarExp a = (Generate a, Ring a)
@@ -1317,8 +1415,8 @@ evalIncomplete :: FunExp -> (OneVarExp a => a)
 \end{code}
 %}
 
-With this class in place we can define generic expressions using generic
-constructors just like in the case of |IntExp| above.
+With this class in place we can define generic expressions using
+generic constructors just like in the case of |IntExp| above.
 %
 For example, we can define
 %
@@ -1332,12 +1430,9 @@ twoX = two * varX
 and instantiate |twoexp| to either syntax or semantics:
 %
 \begin{code}
-testFE :: FunExp
-testFE = twoX
-
 type Func = REAL -> REAL
-testFu :: Func
-testFu = twoX
+testFE  :: FunExp;           testFE  = twoX
+testFu  :: Func;             testFu  = twoX
 \end{code}
 provided a suitable instance for |Generate Func|:
 \begin{code}
@@ -1452,8 +1547,8 @@ example = embed 1 `op` embed 10 `op` unit `op` embed 11
 \end{exercise}
 
 \section{Computing Derivatives, reprise.}
-
 \label{sec:evalD}
+%TODO: continue indexing from here****
 %
 As discussed in \cref{sec:OneVarExp-class}, it can sometimes be
 good to use the representation |OneVarExp a => a| rather than
