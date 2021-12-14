@@ -1349,6 +1349,7 @@ independentEvents2 s e f =
   probability1 s (\x -> e x && f x) == probability1 s e * probability1 s f
 \end{spec}
 
+We can now state (and prove) the lemma using the DSL notation:
 \begin{lemma}
   independentEvents s e f ⇔ independentEvents2 s e f 
 \end{lemma}
