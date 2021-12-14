@@ -10,6 +10,8 @@ deriving instance Eq Prop
 %endif
 
 \section{Propositional Calculus}
+\index{DSL!propositional calculus}
+\index{DSL!propositional logic}
 \label{sec:PropFrag} % yep, the propositional calculus is a propositional fragment of other logics, such as FOL.
 
 Our first DSL for this chapter is the language of \emph{propositional
@@ -92,6 +94,8 @@ a |Prop| to its truth value.
 (The evaluation function for a DSL describing a logic is often called
 |check| instead of |eval| but for consistency we stick to |eval|.)
 %
+\index{eval@@|eval : Syn -> Sem|}
+\index{implication}
 \begin{code}
 type Env = Name -> Bool
 eval :: Prop -> Env -> Bool
@@ -273,7 +277,7 @@ number of variables.)
 
 
 \subsection{Proofs for Propositional Logic}
-
+\index{proof}
 Given a |Prop|osition |p| and a proof |t| (represented as
 an element of another type |Proof|), we can write a function that checks
 that |t| is a valid proof of |p|:
@@ -392,6 +396,7 @@ This rule goes sometimes by its descriptive latin name \textit{ex
   falso quodlibet} --- from falsehood, anything (follows).
 
 We can then write our proof checker as follows:
+\index{eval@@|eval : Syn -> Sem|}
 \savecolumns
 \begin{code}
 checkProof TruthIntro        (Con True)   =   True
@@ -698,6 +703,7 @@ The proof rules |impIntro| and |impElim| seem to be conversion from
 and to functions, and so it should be clear that the representation of
 the implication formula is a function:
 %
+\index{implication}
 \begin{code}
 type Implies p q = p -> q
 implyElim   f = f
