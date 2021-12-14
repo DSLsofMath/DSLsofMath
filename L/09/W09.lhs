@@ -76,7 +76,7 @@ Our method will be to:
 
 
 \section{Sample spaces}
-
+\index{DSL!Sample spaces}
 Generally, textbook problems involving probability involve the
 description of some scenario or experiment, with an explicit
 uncertainty, including the outcome of certain
@@ -285,6 +285,7 @@ instance Monad Space where
 \end{exercise}
 
 \section{Distributions}
+\index{probability distribution}
 
 So far we have defined several spaces, but we have not used them to compute any
 probability.
@@ -744,6 +745,7 @@ Assuming that the space |s| accurately represents the relative mass of
 all possible situations, there are two ways to define the probability
 of |e|.
 
+\index{probability notation}
 
 The first definition of the probability of |e| is the expected value of |indicator . e|, where
 |indicator| maps boolean to reals as follows:
@@ -831,7 +833,7 @@ only infer the space of outcomes, but also which random variable the
 author means.
 
 \section{Conditional probability}
-
+\index{conditional probability}
 In \cref{sec:StocSys}, we encountered the notion of conditional
 probability, traditionally written $P(F ∣ G)$ and read ``probability
 of $F$ given $G$''. As suggested in \cref{sec:StocSys} and brushed
@@ -901,9 +903,12 @@ We are now ready to solve all three problems motivating this chapter.
 \begin{code}
 diceSpace :: Space Bool
 diceSpace =
-   Project (\(x,y) -> (x * y >= 10))  $  -- consider only the event ``product >= 10''
-   observing (\(x,y) -> (x + y >= 7)) $  -- observe that the sum is >= 7
-   twoDice                               -- sample two balanced die
+     -- consider only the event ``product >= 10''
+   Project (\(x,y) -> (x * y >= 10))  $
+   -- observe that the sum is >= 7
+   observing (\(x,y) -> (x + y >= 7)) $
+   -- sample two balanced die
+   twoDice
 \end{code}
 Then we can compute its probability:
 \begin{code}
@@ -952,7 +957,8 @@ drugSpace =
    -- we're interested the posterior distribution of |isUser|,
   -- (first component of the pair, ignoring the result of the test).
   Project fst  $
-  -- we have ``a positive test'' by assumption (second component of the pair)
+  -- we have ``a positive test'' by assumption
+  -- (second component of the pair contains result of the test)
   observing snd $ 
   Sigma
     (bernoulli 0.005) -- model the distribution of drug users
@@ -1230,9 +1236,9 @@ The proof is by induction on |m|:
 \item for the base case |measure (helper 0) = measure (pure 0) = 1|
 \item induction: assume that |helper m| is a distribution.
   %
-  Then |if h then helper m else helper 3| for every |h|.
+  Then |if h then helper m else helper 3| is a distribution too, for every |h|.
   %
-  The result is obtained by using the distribution property of |Sigma|.
+  The result is obtained by using the distribution property of |Sigma| (\cref{lem:measure-properties}).
 \end{itemize}
 
 Then, we can symbolically compute the integrator of |helper|.
@@ -1338,7 +1344,8 @@ independentEvents s e f = probability1 s e == condProb s e f
 
 The equivalent formulation is:
 \begin{spec}
-independentEvents2 s e f = probability1 s (\x -> e x && f x) == probability1 s e * probability1 s f
+independentEvents2 s e f =
+  probability1 s (\x -> e x && f x) == probability1 s e * probability1 s f
 \end{spec}
 
 \begin{lemma}
