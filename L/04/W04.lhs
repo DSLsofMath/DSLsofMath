@@ -1731,7 +1731,7 @@ instance Ring a => Multiplicative (Dup a) where
 \end{code}
 %
 \begin{exercise}
-Complete the instance declarations for |Dup REAL|: |Additive|, |AddGroup|, etc.
+Complete instance declarations for |Dup REAL|: |Additive|, |AddGroup|, etc.
 \end{exercise}
 
 
