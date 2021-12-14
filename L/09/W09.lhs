@@ -1301,6 +1301,7 @@ row.
 % h 3 = 14
 
 \section{Independent events}
+\index{independent events}
 
 Another important notion in probability theory is that of independent events.
 One way to define independent events is as follows.
@@ -1349,7 +1350,7 @@ independentEvents2 s e f =
 \end{spec}
 
 \begin{lemma}
-  independentEvents s e f <=> independentEvents2 s e f 
+  independentEvents s e f ⇔ independentEvents2 s e f 
 \end{lemma}
 \begin{proof}
   Left to right direction:
