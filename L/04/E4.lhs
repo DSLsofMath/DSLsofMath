@@ -9,7 +9,11 @@ import DSLsofMath.Simplify
 
 \begin{exercise}\label{exc:homomorphisms}
 \textbf{Homomorphisms.}
+\index{homomorphism}%
 Consider the following definitions:
+\index{H2@@|H2(h,Op,op)|{}||textbf}%
+\index{H1@@|H1(h,F,f)|{}||textbf}%
+\index{H0@@|H0(h,E,e)|{}||textbf}%
 \begin{spec}
   -- |h : A -> B| is a homomorphism from |Op : A->A->A| to |op : B->B->B|
   H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
@@ -37,7 +41,6 @@ Prove or disprove the following claims:
 \end{itemize}
 
 \end{exercise}
-
 
 %TODO (by DaHe): One or more exercises on "characterize the homomorphisms from
 % X to Y"
@@ -75,7 +78,7 @@ Prove or disprove the following claims:
   \fromExam{2017-08-22}
 
   In Exercise~\ref{exc:e1_semiring} we looked at the datatype |SR v|
-  for the language of semiring expressions.
+  for the language of \addtoindex{semiring} expressions.
   %
   We will now use some of the concepts discussed in this chapter to
   expand on this language.
@@ -116,24 +119,29 @@ Prove or disprove the following claims:
 \begin{exercise}
   \fromExam{2016-03-15}
 
-  In \cref{exc:e1_lattice}, we looked a datatype for the language of lattice
-  expressions. We will now use some of the concepts discussed in this chapter to
+  In \cref{exc:e1_lattice}, we looked a datatype for the language of
+  \addtoindex{lattice} expressions.
+  %
+  We will now use some of the concepts discussed in this chapter to
   expand on this language.
 
   \begin{enumerate}
 
-    \item Define a type class |Lattice| that corresponds to the lattice
-      structure.
+    \item Define a type class |Lattice| that corresponds to the
+      lattice structure.
 
-    \item Define a |Lattice| instance for the datatype for lattice expressions
-      that you defined in \cref{exc:e1_lattice}.
+    \item Define a |Lattice| instance for the datatype for lattice
+      expressions that you defined in \cref{exc:e1_lattice}.
 
     \item Find two other instances of the |Lattice| class.
 
-    \item Specialise the evaluator you defined in \cref{exc:e1_lattice} to the two
-      |Lattice| instances defined above. Take three lattice expressions, give
-      the appropriate assignments and compute the results of evaluating, in each
-      case, the three expressions.
+    \item Specialise the evaluator you defined in
+      \cref{exc:e1_lattice} to the two |Lattice| instances defined
+      above.
+      %
+      Take three lattice expressions, give the appropriate assignments
+      and compute the results of evaluating, in each case, the three
+      expressions.
 
   \end{enumerate}
 
@@ -142,26 +150,31 @@ Prove or disprove the following claims:
  \begin{exercise}
   \fromExam{2016-08-23}
 
-
-  In Exercise~\ref{exc:e1_abMon}, we looked a datatype for the language of abelian monoid
-  expressions. We will now use some of the concepts discussed in this chapter to
+  In Exercise~\ref{exc:e1_abMon}, we looked a datatype for the
+  language of abelian \addtoindex{monoid} expressions.
+  %
+  We will now use some of the concepts discussed in this chapter to
   expand on this language.
 
   \begin{enumerate}
 
-    \item Define a type class |AbMonoid| that corresponds to the abelian monoid
-      structure.
+    \item Define a type class |AbMonoid| that corresponds to the
+      abelian monoid structure.
 
-    \item Define an |AbMonoid| instance for the datatype for abelian monoid
-      expressions that you defined in exercise 1.5.1.
+    \item Define an |AbMonoid| instance for the datatype for abelian
+      monoid expressions that you defined in
+      Exercise~\ref{exc:e1_abMon}.
 
-    \item Find one other instance of the |AbMonoid| class and give an example
-      which is *not* an instance of |AbMonoid|.
+    \item Find one other instance of the |AbMonoid| class and give an
+      example which is \textbf{not} an instance of |AbMonoid|.
 
-    \item Specialise the evaluator that you defined in exercise 1.5.2 to the
-      |AbMonoid| instance defined above. Take three `AbMonoidExp` expressions,
-      give the appropriate assignments and compute the results of evaluating the
-      three expressions.
+    \item Specialise the evaluator that you defined in
+      Exercise~\ref{exc:e1_abMon} to the |AbMonoid| instance defined
+      above.
+      %
+      Take three |AbMonoidExp| expressions, give the appropriate
+      assignments and compute the results of evaluating the three
+      expressions.
 
   \end{enumerate}
 
@@ -172,9 +185,9 @@ Prove or disprove the following claims:
 
   \lnOnly{(Closely related to exam question)}
 
-  A \textit{ring} is a set |A| together with two constants, |0| and
-   |1|, one unary operation, |negate|, and two binary operations,
-   |(+)| and |(*)|, such that
+  A \textit{\addtoindex{ring}} is a set |A| together with two
+  constants, |0| and |1|, one unary operation, |negate|, and two
+  binary operations, |(+)| and |(*)|, such that
 
   \begin{enumerate}[label=\alph*.,itemsep=0ex]
   \item |0| is the neutral element of |(+)|
@@ -230,9 +243,13 @@ Prove or disprove the following claims:
 %
   Remarks:
   \begin{itemize}[itemsep=0ex]
-  \item \ref{item:addZero} -- \ref{item:addAssoc} say that |(A, 0, +)| is a monoid and \ref{item:mulOne} -- \ref{item:mulAssoc} that |(A, 1, *)| is a monoid
-  \item \ref{item:addZero} -- \ref{item:addNeg} say that |(A, 0, +, negate)| is a group
-  \item \ref{item:addZero} -- \ref{item:addComm} say that |(A, 0, +, negate)| is a commutative (Abelian) group
+  \item \ref{item:addZero} -- \ref{item:addAssoc} say that |(A, 0, +)|
+    is a monoid and \ref{item:mulOne} -- \ref{item:mulAssoc} that |(A,
+    1, *)| is a monoid
+  \item \ref{item:addZero} -- \ref{item:addNeg} say that |(A, 0, +,
+    negate)| is a group
+  \item \ref{item:addZero} -- \ref{item:addComm} say that |(A, 0, +,
+    negate)| is a commutative (Abelian) group
   \end{itemize}
 
   \begin{enumerate}[label=\roman*,itemsep=0ex]
@@ -240,9 +257,11 @@ Prove or disprove the following claims:
     structure.
   \item Define a datatype for the language of ring expressions
     (including variables) and define a |Ring| instance for it.
-  \item \label{point:otherinstances} Find two other instances of the |Ring| class.
+  \item \label{point:otherinstances} Find two other instances of the
+    |Ring| class.
   \item Define a general evaluator for |Ring| expressions on the basis
-    of a given \addtoindex{assignment function} (mapping variables to semantic values).
+    of a given \addtoindex{assignment function} (mapping variables to
+    semantic values).
   \item Specialise the evaluator to the two |Ring| instances defined
     at point~\ref{point:otherinstances}.
     %
@@ -253,9 +272,11 @@ Prove or disprove the following claims:
 \end{exercise}
 
 \begin{exercise}
-  \fromExam{2017-03-14} (Note that the |Num| hierarchy has been replaced by |Additive|, |AddGroup|, etc.)
+  \fromExam{2017-03-14} (Note that the |Num| hierarchy has been
+  replaced by |Additive|, |AddGroup|, etc.)
 
-  Recall the type of expressions of one variable from \cref{sec:FunExp}.
+  Recall the type of expressions of one variable from
+  \cref{sec:FunExp}.
 
 \begin{spec}
 data FunExp  =  Const Rational           |  X
@@ -275,23 +296,23 @@ f x = exp (sin x) + x
 
   \begin{enumerate}
 
-  \item Find an expression |e| such that |eval e == f| and show this using
-      equational reasoning.
+  \item Find an expression |e| such that |eval e == f| and show this
+    using equational reasoning.
 
 
   \item Implement a function |deriv2| such that, for any
-
 %
-      |f : Fractional a => a -> a| constructed with the grammar of
-      |FunExp| and any |x| in the domain of |f|, we have that |deriv2
-      f x| computes the second derivative of |f| at |x|.
+    |f :: Fractional a => a -> a| constructed with the grammar of
+    |FunExp| and any |x| in the domain of |f|, we have that
+    %
+    |deriv2 f x| computes the second derivative of |f| at |x|.
   %
-      Use the function |derive :: FunExp -> FunExp| from the lectures (|eval
-      (derive e)| is the derivative of |eval e|).
+    Use the function |derive :: FunExp -> FunExp| from the lectures
+    (|eval (derive e)| is the derivative of |eval e|).
   %
-      What instance declarations do you need?
+    What instance declarations do you need?
 
-      The type of |deriv2 f| should be |Fractional a => a -> a|.
+    The type of |deriv2 f| should be |Fractional a => a -> a|.
 
   \end{enumerate}
 

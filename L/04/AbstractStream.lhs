@@ -8,6 +8,8 @@ import Prelude hiding (head, tail)
 
 \paragraph{Streams as an abstract datatype.}
 
+\index{stream}%
+%
 Consider the API for streams of values of type |A| represented by some
 abstract type |X|:
 %
@@ -66,7 +68,6 @@ head  (constS a)  = a
 tail  (constS a)  = constS a
 \end{spec}
 but this syntax is not supported in Haskell.
-
 
 The last part of the API are a few laws we expect to hold.
 %

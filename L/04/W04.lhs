@@ -1555,7 +1555,7 @@ example = embed 1 `op` embed 10 `op` unit `op` embed 11
   Show that |Free Ring ()| covers most of the type |FunExp| from \cref{sec:FunExp}.
 \end{exercise}
 
-\section{Computing derivatives, reprise.}
+\section{Computing derivatives, reprise}
 \label{sec:evalD}
 %
 As discussed in \cref{sec:OneVarExp-class}, it can sometimes be
@@ -1658,6 +1658,9 @@ and |D f| at once.
 %
 (At this point, you are advised to look up and solve
 Exercise~\ref{exc:tuplingE1} in case you have not done so already.)
+%
+\index{FD@@|FD|}%
+\index{eval@@|eval : Syn -> Sem|}%
 \begin{code}
 type FD a = (a -> a, a -> a)
 
@@ -1737,7 +1740,7 @@ Implement the rest of the numeric instances for |FD a|.
 \subsection{Automatic differentiation}
 \label{sec:automatic-differentiation}
 The simultaneous computation of values and derivatives is an important
-technique called ``automatic differentiation''.
+technique called ``\addtoindex{automatic differentiation}''.
 %
 Automatic differentiation has grown in importance with the rise of
 machine learning, which often uses derivatives (or gradients) to find
@@ -1860,9 +1863,9 @@ Complete instance declarations for |Dup REAL|: |Additive|, |AddGroup|, etc.
 \end{exercise}
 
 
-In sum, because this computation goes through also for the other cases we can
-actually work with just pairs of values (at an implicit point |c ::
-a|) instead of pairs of functions.
+In sum, because this computation goes through also for the other cases
+we can actually work with just pairs of values (at an implicit point
+|c :: a|) instead of pairs of functions.
 %
 Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|.
 
@@ -1872,8 +1875,6 @@ Hint: Something very similar can be used for Assignment 2.
 
 
 %TODO: Perhaps include the comparison of the |Ring t => Ring (Bool -> t)| instance (as a special case of functions as |Ring|) and the |Ring r => Ring (r,r)| instance from the complex numbers. But it probably takes us too far off course. blackboard/W5/20170213_104559.jpg
-
-
 
 \section{Summary}
 
@@ -1904,6 +1905,8 @@ See
 \label{sec:homomophism-roadmap}
 Homomorphisms are key to describe mathematical structures, specify
 programs, and derive of correct programs.
+%
+\index{homomorphism}%
 %
 The relation |h : S1 -> S2| (standing for ``h is a homomorphism from
 |S1| to |S2|''), can be used in many ways, depending on what is known
@@ -2020,13 +2023,15 @@ structure.
 \section{A solved exercise}
 \label{exc:findFunExp0}
 
-We have seen three different ways to use a generic |f :: Transcendental a =>
-a -> a| to compute the derivative at some point (say, at 2.0, |f' 2|):
+We have seen three different ways to use a generic
+%
+|f :: Transcendental a => a -> a| to compute the derivative at some
+point (say, at 2.0, |f' 2|):
 %
 \begin{itemize}
 \item fully symbolic (using |FunExp|),
-\item using pairs of functions (|FD|),
-\item or just pairs of values.
+\item using pairs of functions (|FD a = (a->a, a->a)|),
+\item or just pairs of values (|Dup a = (a, a)|).
 \end{itemize}
 
 Given the following definition of |f|, compute |f' 2|.
@@ -2045,6 +2050,7 @@ f x = sin x + two * x
 
 Recall expressions (or functions) of one variables, from \cref{sec:FunExp}:
 %
+\index{FunExp@@|FunExp| (type)}%
 \begin{spec}
 data FunExp  =  Const Rational
              |  X
@@ -2072,9 +2078,9 @@ We have
 <==     e = Sin X :+: (Const 2 :*: X)
 \end{spec}
 %
-Finally, we can apply |derive :: FunExp -> FunExp|, defined in \cref{sec:derive}, and obtain
+Finally, we can apply |derive :: FunExp -> FunExp|, defined in
+\cref{sec:derive}, and obtain
 %
-
 \begin{spec}
 e = Sin X :+: (Const 2 :*: X)
 f' 2 = FunExp.eval (derive e) 2
@@ -2084,7 +2090,6 @@ This can hardly be called ``automatic'', look at all the work we did
 in deducing |e|!\footnote{Besides, manipulating symbolic
   representations (even in a program), is not was is usually called
   automatic differentiation.}
-
 
 However, consider this definition:
 %
@@ -2098,7 +2103,9 @@ instances of |Additive| and other numeric classes and build the syntax
 tree for |f| instead of computing its semantic value.
 %
 
-In general, to find the derivative of a function |f :: Transcendental a => a -> a|, we can use
+In general, to find the derivative of a function
+%
+|f :: Transcendental a => a -> a|, we can use
 %
 \begin{code}
 drv f = FunExp.eval (derive (f X))
@@ -2113,7 +2120,8 @@ type FD a = (a -> a, a -> a)
 applyFD c (f, g) = (f c, g c)
 \end{spec}
 %
-The operations (the numeric type class instances) on |FD a| are such that, if |eval e = f|, then
+The operations (the numeric type class instances) on |FD a| are such
+that, if |eval e = f|, then
 %
 \begin{spec}
 (eval e, eval' e) = (f, f')
@@ -2163,15 +2171,18 @@ drvFD f x = snd (applyFD x (f (id, const 1)))
 %
 computes the derivative of |f| at |x|.
 %
+%if False
 \begin{code}
 f1 :: FD REAL -> FD REAL
 f1  = f
 \end{code}
+%endif
 
-\item Using pairs.
+\item Using |Dup| (pairs of values).
 
-We have |instance Transcendental a => Transcendental (a, a)|, moreover, the
-instance declaration looks exactly the same as that for |FD a|:
+We have |instance Transcendental a => Transcendental (a, a)|,
+moreover, the instance declaration looks exactly the same as that for
+|FD a|:
 %
 \begin{spec}
 instance Transcendental a => Transcendental (FD a) where
@@ -2185,10 +2196,12 @@ instance Transcendental a => Transcendental (a, a) where
   -- ...
 \end{spec}
 %
-In fact, the latter instance (just pairs) a generalisation of the former instance (FD). 
+In fact, the latter instance (just pairs) a generalisation of the
+former instance (FD).
 %
-To see this, recall that |FD a = (a -> a, a -> a)|, and note that if we have a |Transcendental| instance for some
-|A|, we get a |Transcendental| instance for |x->A| for all |x| from
+To see this, recall that |FD a = (a -> a, a -> a)|, and note that if
+we have a |Transcendental| instance for some |A|, we get a
+|Transcendental| instance for |x->A| for all |x| from
 \cref{fig:FunNumInst}.
 %
 Then from the instance for pairs we get an instance for any type of
@@ -2197,8 +2210,8 @@ the form |(x->A, x->A)|.
 As a special case when |x=A| this includes all |(A->A, A->A)| which is
 |FD A|.
 %
-Thus it is enough to have the instance |Transcendental (x->A)| and the pair instance to get
-the ``pairs of functions'' instance (and more).
+Thus it is enough to have the instance |Transcendental (x->A)| and the
+pair instance to get the ``pairs of functions'' instance (and more).
 
 The pair instance is also the ``maximally general'' such
 generalisation.
@@ -2246,17 +2259,23 @@ drvP f x  =  snd (f (var x))
 %
 computes the derivative of |f| at |x|.
 %
+%if False
 \begin{code}
 f2 :: (REAL, REAL) -> (REAL, REAL)
 f2  = f
 \end{code}
-
+%endif
 \end{enumerate}
-
 \end{solution}
+
 \paragraph{Numeric instances for |Dup|}
 For reference: the rest of the instance declarations for |Dup| (the
 |Multiplicative| instance was provided above):
+\index{Additive@@|Additive| (type class)}%
+\index{AddGroup@@|AddGroup| (type class)}%
+\index{Multiplicative@@|Multiplicative| (type class)}%
+\index{MulGroup@@|MulGroup| (type class)}%
+\index{Transcendental@@|Transcendental| (type class)}%
 \begin{code}
 instance Additive a => Additive (Dup a) where
   zero = zeroDup;  (+) = addDup
