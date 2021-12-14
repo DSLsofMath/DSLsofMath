@@ -43,7 +43,7 @@ expression trees with complex numbers at the leaves.
     \end{tabular}
   \end{table}
   %
-\index{Env@@|Env| (environment type)}
+\index{Env@@|Env| (environment type)}%
   %
   In Haskell, we can represent this table using a value of type |Table
   a = Env String a = [(String, a)]|, which is a list of pairs of

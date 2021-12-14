@@ -20,13 +20,13 @@ import DSLsofMath.CSem (Complex(C), addC, mulC, Ring)
 import DSLsofMath.ComplexSem
 \end{code}
 
-\index{AST||see {abstract syntax tree}}
+\index{AST||see {abstract syntax tree}}%
 %
 We want a datatype |ComplexE| for the \addtoindex{abstract syntax
   tree} (AST) of expressions (a DSL for complex arithmetical
 expressions).
 %
-\index{DSL!complex expressions}
+\index{DSL!complex expressions}%
 %
 The syntactic expressions can later be evaluated to semantic values.
 %
@@ -34,7 +34,7 @@ The concept of ``an evaluator'', a function from the syntax to the
 semantics, is something we will return to many times in this
 \course{}.
 %
-\index{eval@@|eval : Syn -> Sem|}
+\index{eval@@|eval : Syn -> Sem|}%
 %
 \begin{code}
 evalE :: ComplexE -> ComplexD
@@ -45,7 +45,7 @@ expressions representing complex numbers and we have so far seen
 %
 the symbol |i|, an embedding from |REAL|, addition and multiplication.
 %
-\index{constructor function}
+\index{constructor function}%
 %
 We make these four \emph{constructors} in one recursive datatype as
 follows:
@@ -192,7 +192,7 @@ This idea is at the core of \emph{\addtoindex{property based testing}}
 (pioneered by \citet{claessen_quickcheck_2000}) and conveniently
 available in the Haskell library QuickCheck.
 %
-\index{QuickCheck||see {property based testing}}
+\index{QuickCheck||see {property based testing}}%
 
 Note that a predicate |p : A -> Bool| can also be used to specify the
 \addtoindex{subset} of |A| for which |p| returns |True|.
@@ -386,7 +386,7 @@ uniformly, and roots are in general irrational.)
 Some laws appear over and over again in different mathematical
 contexts.
 %
-\index{binary (arity 2)}
+\index{binary (arity 2)}%
 %
 For example, binary operators are often associative or commutative, and
 sometimes one operator distributes over another.
@@ -400,7 +400,7 @@ we introduce a few definitions already here:
 
 |Distributive (⊗) (⊕) = Forall (a, b, c) ((a⊕b)⊗c = (a⊗c)⊕(b⊗c))|
 
-\index{parameterised laws}
+\index{parameterised laws}%
 %
 The above laws are \emph{parameterised} over some operators
 (|(⊛),(⊗),(⊕)|).

@@ -15,12 +15,11 @@
 \renewcommand{\linethickness}{0.5pt}
 \providecommand{\textepsilon}{\ensuremath{\epsilon}}
 \begin{document}
-\title{DSLsofMath 2020: Assignment 1}
+\title{DSLsofMath 2022: Assignment 1}
 \author{Patrik Jansson and Sólrún Einardóttir and Víctor López Juan}
 \date{}
 \maketitle
-\section{DSLsofMath 2020: Assignment 1}
-\label{dslsofmath-2018-assignment-1}
+\section{DSLsofMath 2022: Assignment 1}
 
 In this assignment the focus is on the following three learning
 outcomes:
@@ -56,7 +55,6 @@ expressions.
 \item the one-element set constructor |Singleton|
 \item |Union|, and |Intersection|
   \begin{itemize}
-
   \item you can also try |Powerset|
   \end{itemize}
 \item set-valued variables (|Var :: v -> TERM v|)

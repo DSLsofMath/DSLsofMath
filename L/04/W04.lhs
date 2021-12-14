@@ -46,7 +46,7 @@ become an important topic of study.
 When such mappings preserve the structure, they are called
 \emph{homomorphisms}.
 %
-\index{homomorphism}
+\index{homomorphism}%
 %
 As two examples, we have the homomorphisms |exp| and |log|, specified
 as follows:
@@ -67,7 +67,7 @@ relate the additive and multiplicative structures of reals and
 positive reals.
 
 %
-\index{abstract syntax tree}
+\index{abstract syntax tree}%
 %
 Additionally, homomorphisms play a crucial role when relating an
 abstract syntax (a datatype), and a semantic domain (another type) via
@@ -83,7 +83,7 @@ What is an \addtoindex{algebraic structure}?
 %
 Let's turn to Wikipedia as a starting point:
 %
-\index{algebra||see {algebraic structure}}
+\index{algebra||see {algebraic structure}}%
 %
 \begin{quote}
   In universal algebra, an algebra (or algebraic structure) is a set
@@ -101,7 +101,7 @@ captured in Haskell using a type class (\cref{sec:typeclasses}).
   A monoid is an algebra which has an associative operation |op| and a
   |unit|:
 %
-\index{monoid||textbf}
+\index{monoid||textbf}%
 \begin{code}
 class Monoid a where
     unit  ::  a
@@ -118,14 +118,14 @@ formulated as the following propositions:
   The first law ensures that |unit| is indeed the unit of |op| and the
   second law is the familiar associativity law for |op|.
 \end{example}
-\index{associative}
+\index{associative}%
 
 \begin{example}
   Examples of monoids include numbers with addition, |(REAL, 0, (+))|,
   positive numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
   with composition |(a->a,id, (.))|.
   %
-\index{endofunction}
+\index{endofunction}%
   %
   An ``endofunction'' is a function of type |X->X| for some set |X|.
   \label{ex:endofunction}
@@ -134,7 +134,7 @@ formulated as the following propositions:
 %
   A structure-preserving endofunction is called an endomorphism.
   %
-  \index{endomorphism}
+  \index{endomorphism}%
 \end{example}
 
 \begin{exercise}
@@ -193,8 +193,8 @@ To be able to conform to that tradition we define two separate
 classes, one for the additive and one for the multiplicative monoids,
 as follows.
 \label{sec:ring-like-classes}
-\index{Additive@@|Additive| (type class)||textbf}
-\index{Multiplicative@@|Multiplicative| (type class)||textbf}
+\index{Additive@@|Additive| (type class)||textbf}%
+\index{Multiplicative@@|Multiplicative| (type class)||textbf}%
 \begin{spec}
 class Additive a        where {-"\qquad"-}  zero  :: a; {-"\qquad"-}  (+)  :: a -> a -> a
 class Multiplicative a  where               one   :: a;               (*)  :: a -> a -> a
@@ -216,12 +216,12 @@ with an inverse.
 To continue our mathematically-grounded |Num| replacement, we have
 also defined the additive group as follows:
 
-\index{AddGroup@@|AddGroup| (type class)||textbf}
+\index{AddGroup@@|AddGroup| (type class)||textbf}%
 \begin{spec}
 class Additive a => AddGroup a where
   negate :: a -> a
 \end{spec}
-\index{negate@@|negate|}
+\index{negate@@|negate|}%
 
 Groups demand that the inverse (called |negate| for the additive
 group) act like an inverse.
@@ -250,7 +250,7 @@ As always we cannot conveniently specify laws in Haskell typeclasses
 and thus define |Ring| simply as the conjunction of |AddGroup| and
 |Multiplicative|:
 %
-\index{Ring@@|Ring| (type class)}
+\index{Ring@@|Ring| (type class)}%
 %
 \begin{spec}
 type Ring a = (AddGroup a, Multiplicative a)
@@ -304,14 +304,14 @@ replacement for the |Num| class!
   includes the |Multiplicative| operations.}
   \label{fig:CompNum}
 \end{figure}
-\index{Additive@@|Additive| (type class)}
-\index{AddGroup@@|AddGroup| (type class)}
-\index{Multiplicative@@|Multiplicative| (type class)}
-\index{MulGroup@@|MulGroup| (type class)}
-\index{Num@@|Num| (type class)}
-\index{Fractional@@|Fractional| (type class)}
-\index{Ring@@|Ring| (type class)}
-\index{Field@@|Field| (type class)}
+\index{Additive@@|Additive| (type class)}%
+\index{AddGroup@@|AddGroup| (type class)}%
+\index{Multiplicative@@|Multiplicative| (type class)}%
+\index{MulGroup@@|MulGroup| (type class)}%
+\index{Num@@|Num| (type class)}%
+\index{Fractional@@|Fractional| (type class)}%
+\index{Ring@@|Ring| (type class)}%
+\index{Field@@|Field| (type class)}%
 %TODO: Perhaps fix the figure to indicate that |AddGroup| includes the
 %|Additive| operations and |MulGroup| includes the |Multiplicative|
 %operations.
@@ -319,11 +319,11 @@ We note right away that one can have a multiplicative group structure
 as well, whose inverse is called the reciprocal (abbreviated as
 |recip| in Haskell).
 %
-\index{reciprocal@@|recip|{}||see {|MulGroup| (type class)}}
+\index{reciprocal@@|recip|{}||see {|MulGroup| (type class)}}%
 %
 With that in place, division can be defined in terms of multiplication
 and reciprocal.
-\index{MulGroup@@|MulGroup| (type class)||textbf}
+\index{MulGroup@@|MulGroup| (type class)||textbf}%
 \begin{joincode}%class Multiplicative is defined earlier
 \begin{spec}
 class Multiplicative a => MulGroup a where
@@ -338,7 +338,7 @@ a / b = a * recip b
 Often the multiplicative group structure is added to a |Ring|, and one
 has a |Field|:
 %
-\index{Field@@|Field| (type class)}
+\index{Field@@|Field| (type class)}%
 \label{sec:fields-defintion}
 \begin{code}
 type Field a = (Ring a, MulGroup a)
@@ -356,7 +356,7 @@ relations between the Haskell |Num| class hierarchy and the
 corresponding numerical classes we use in this book.
 
 \section{Homomorphisms}
-\index{homomorphism||textbf}
+\index{homomorphism||textbf}%
 The Wikipedia definition of homomorphism states that ``A homomorphism
 is a structure-preserving map between two algebraic structures of the
 same type''.
@@ -371,7 +371,7 @@ The first argument |h|, is the map.
 The second (|Op|) and third (|op|) arguments correspond to the
 algebraic structures.
 %
-\index{H2@@|H2(h,Op,op)|{}||textbf}
+\index{H2@@|H2(h,Op,op)|{}||textbf}%
 %
 \begin{spec}
   H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
@@ -445,8 +445,8 @@ Usually, homomorphisms map a whole \emph{structure}.
 
 Back to Wikipedia:
 %
-\index{algebraic structure}
-\index{homomorphism||textbf}
+\index{algebraic structure}%
+\index{homomorphism||textbf}%
 %
 \begin{quote}
   More formally, a homomorphism between two algebras |A| and |B| is a
@@ -479,7 +479,7 @@ right the belong to |(B, unitB, opB)|.
 \end{example}
 
 \begin{example}
-\index{exp@@|exp|{}}
+\index{exp@@|exp|{}}%
 %
   Hence, the function |exp| is a monoid homomorphism from (|REAL|,0,|(+)|)
   to (|RPos|,1,|(*)|).
@@ -500,7 +500,7 @@ is homomorphism, what kind of function can |h| be?
 As an example, let us characterise the homomorphisms from |ANat| to
 |MNat| (from \cref{sec:anat-mnat}).
 
-\index{monoid}
+\index{monoid}%
 %
 Let |h : ANat -> MNat| be a monoid homomorphism.
 %
@@ -575,8 +575,8 @@ it can either be zero, positive or negative.
 
 \subsubsection{Other homomorphisms}
 
-\index{const@@|const| (constant function)}
-\index{homomorphism}
+\index{const@@|const| (constant function)}%
+\index{homomorphism}%
 \begin{exercise}
   Show that |const| is a homomorphism.
 \end{exercise}
@@ -602,7 +602,7 @@ it can either be zero, positive or negative.
   The homomorphism law (that |h| distributes over |(+)|) can be shown
   as follows:
 %
-\index{equational reasoning}
+\index{equational reasoning}%
 %
 \begin{spec}
   h (a + b)                     =  {- |h = const| in this case -}
@@ -623,7 +623,7 @@ The answer is ``Yes, many''.
 Such homomorphisms take the form |apply c|, for any |c|.
 %
 \begin{exercise}
-\index{apply@@|apply|}
+\index{apply@@|apply|}%
   \label{ex:apply}
 Show that |apply c| is an |Additive| homomorphism for all |c|, where
 |apply x f = f x|.
@@ -631,7 +631,7 @@ Show that |apply c| is an |Additive| homomorphism for all |c|, where
 \begin{solution}
 Indeed, writing |h = apply c| for some fixed |c|, we have
 %
-\index{equational reasoning}
+\index{equational reasoning}%
 %
 \begin{spec}
      h (f + g)         =  {- def. |apply| -}
@@ -649,7 +649,7 @@ and
 
 \subsection{\extraMaterial Isomorphisms}
 \label{sec:isomorphism}
-\index{isomorphism}
+\index{isomorphism}%
 Two homomorphisms which are inverse of each other define an
 \emph{isomorphism}.
 %
@@ -689,7 +689,7 @@ between |RPos| and |REAL|.
 \label{sec:compositionality-and-homomorphisms}
 Consider a datatype of very simple integer expressions:
 %
-\index{abstract syntax tree}
+\index{abstract syntax tree}%
 %
 \begin{code}
 data E = Add E E | Mul E E | Con Integer deriving Eq
@@ -721,13 +721,13 @@ child {node {|Con|} child {node(rightleaf) {|3|}}};
 \node [draw=blue, ellipse, thick, inner sep=-4pt, fit = (root) (leftleaf) (rightleaf)] {};
 \end{tikzpicture}
 
-\index{eval@@|eval : Syn -> Sem|}
+\index{eval@@|eval : Syn -> Sem|}%
 %
 As the reader may have guessed, the natural evaluator |eval : E -> Integer|
 (defined later) is a homomorphism from |Add| to |(+)| and from |Mul| to
 |(*)|.
 %
-\index{homomorphism}
+\index{homomorphism}%
 %
 But to practice the definition of homomorphism we will here check if
 |even| or |isPrime| is a homomorphism from |E| to |Bool|.
@@ -802,7 +802,7 @@ and |H2(isPrime,Add,isPrimeAdd)|.
 %
 To shorten the calculation we write just |n| for |Con n|.
 %
-\index{equational reasoning}
+\index{equational reasoning}%
 %
 \begin{spec}
   False
@@ -828,17 +828,17 @@ boolean side) corresponding to addition.
 
 \section{Folds}
 \label{sec:folds}
-\index{eval@@|eval : Syn -> Sem|}
+\index{eval@@|eval : Syn -> Sem|}%
 %
 In general, for a syntax |Syn|, and a possible semantics (a type |Sem|
 and an |eval| function of type |Syn -> Sem|), we call the semantics
 \emph{compositional} if we can implement |eval| as a fold.
 %
-\index{compositional semantics}
+\index{compositional semantics}%
 %
-\index{fold}
+\index{fold}%
 %
-\index{constructor function}
+\index{constructor function}%
 %
 Informally a ``fold'' is a recursive function which replaces each
 abstract syntax constructor |Ci| of |Syn| with its semantic
@@ -910,7 +910,7 @@ idE = foldE Add Mul Con
 Finally, it is useful to capture the semantic functions (the
 parameters to the fold) in a type class:
 %
-\index{class@@|class| (keyword)}
+\index{class@@|class| (keyword)}%
 %
 \begin{code}
 class IntExp t where
@@ -1105,10 +1105,10 @@ more.
 %
 This representation is called the initial algebra.
 %
-\index{initial algebra}
+\index{initial algebra}%
 
 \subsubsection{The Initial Monoid}
-\index{monoid}
+\index{monoid}%
 As a first example, consider an initial algebra for monoids (an
 initial monoid for short).
 
@@ -1144,7 +1144,7 @@ As one might guess, there are not many interesting applications of the
 initial monoid, so let us consider another structure.
 
 \subsubsection{The Initial Ring}
-\index{ring}
+\index{ring}%
 Gathering all function in various type classes, we find that a |Ring|
 corresponds to the following algebra --- again we start by ignoring laws:
 %
@@ -1229,11 +1229,11 @@ They can be given the type |Ring a => a|, and doing it in a
 mathematically meaningful way, because |Ring a => a| is the initial
 algebra for |Ring|.
 %
-\index{Ring@@|Ring| (type class)}
+\index{Ring@@|Ring| (type class)}%
 
 \subsection{Free Structures}
 
-\index{free structure}
+\index{free structure}%
 %
 Another useful way of constructing types is through ``free structures''.
 %
@@ -1272,8 +1272,8 @@ instance Monoid (FreeMonoid g) where  unit = Unit;  op = Op
 \end{code}
 
 
-\index{eval@@|eval : Syn -> Sem|}
-\index{fold}
+\index{eval@@|eval : Syn -> Sem|}%
+\index{fold}%
 %
 Let us consider a fold for |FreeMonoid|.
 %
@@ -1284,8 +1284,8 @@ evalM :: (Monoid a, Generate a) => (FreeMonoid G -> a)
 but we can also drop the |Generate| constraint and take the |generate|
 method as an explicit argument:
 %
-\index{eval@@|eval : Syn -> Sem|}
-\index{monoid}
+\index{eval@@|eval : Syn -> Sem|}%
+\index{monoid}%
 %
 \begin{code}
 evalM :: Monoid a => (G -> a) -> (FreeMonoid G -> a)
@@ -1364,8 +1364,8 @@ instance Generate        FunExp where  generate () = X
 \end{code}
 
 We can easily show that |FunExp| is |Additive| and |Multiplicative|:
-\index{Additive@@|Additive| (type class)}
-\index{Multiplicative@@|Multiplicative| (type class)}
+\index{Additive@@|Additive| (type class)}%
+\index{Multiplicative@@|Multiplicative| (type class)}%
 \begin{code}
 instance Additive        FunExp where  (+)  = (:+:);  zero  = Const 0
 instance Multiplicative  FunExp where  (*)  = (:*:);  one   = Const 1
@@ -1509,7 +1509,7 @@ We can also check the monoid laws for the free monoid.
 %
 For example, here is the proof that the right identity law holds:
 %
-\index{equational reasoning}
+\index{equational reasoning}%
 %
 \begin{spec}
     Free f `op` unit
@@ -1599,7 +1599,7 @@ In a diagram:
 %
 Let us consider the |Exp| case (the |eval'Exp|-lemma):
 %
-\index{equational reasoning}
+\index{equational reasoning}%
 %
 \begin{spec}
      eval' (Exp e)                      =  {- def. |eval'|, function composition -}
@@ -1650,7 +1650,7 @@ In practice, the solution is to extend the return type of |eval'| from one
 semantic value |f| of type |Func = REAL -> REAL| to two such values
 |(f, f') :: (Func, Func)| where |f' = D f|.
 %
-\index{tupling transform}
+\index{tupling transform}%
 %
 That is, we are using the ``tupling transform'': we are computing just
 one function |evalD :: FunExp -> (Func, Func)| returning a pair of |f|
@@ -1670,7 +1670,7 @@ Is |evalD| compositional?
 %
 We compute, for example:
 %
-\index{equational reasoning}
+\index{equational reasoning}%
 %
 \begin{spec}
      evalD (Exp e)                           =  {- specification of |evalD| -}
@@ -1709,8 +1709,8 @@ given algebra, we can now define a shallow embedding for the combined
 computation of functions and derivatives, using the numerical type
 classes.
 %
-\index{Additive@@|Additive| (type class)}
-\index{Multiplicative@@|Multiplicative| (type class)}
+\index{Additive@@|Additive| (type class)}%
+\index{Multiplicative@@|Multiplicative| (type class)}%
 %
 \begin{code}
 instance Additive a                      => Additive (FD a)        where
@@ -1778,7 +1778,7 @@ Can we do something similar for |FD|?
 %
 The elements of |FD a| are pairs of functions, so we can take
 %
-\index{apply@@|apply|}
+\index{apply@@|apply|}%
 \label{sec:applyFD}
 %{
 %format DummyFD = FD
@@ -1800,7 +1800,7 @@ condition.
 %
 For example:
 %
-\index{equational reasoning}
+\index{equational reasoning}%
 %
 \begin{spec}
      h ((f, f') * (g, g'))                       =  {- def. |(*)| for |FD a| -}
@@ -1834,7 +1834,7 @@ Thus, if we define a ``multiplication'' on pairs of values using
 To make it a |Multiplicative|-homomorphism we just need to calculate a
 definition for |oneDup| to make it satisfy to homomorphism law:
 %
-\index{equational reasoning}
+\index{equational reasoning}%
 %
 \begin{spec}
   oneDup                                = {- |H0(applyFD c,oneFD,oneDup)|-}
@@ -1845,7 +1845,7 @@ definition for |oneDup| to make it satisfy to homomorphism law:
 %
 We can now define an instance
 %
-\index{Multiplicative@@|Multiplicative| (type class)}
+\index{Multiplicative@@|Multiplicative| (type class)}%
 %
 \begin{code}
 oneDup :: Ring a => Dup a
@@ -1881,7 +1881,7 @@ In this chapter we have compared and contrasted a number of
 mathematical concepts and their computer science representations or
 alternative interpretations.
 %
-\index{abstract syntax tree}
+\index{abstract syntax tree}%
 %
 Mathematical structures can often be use to capture the core of a DSL,
 initial algebras can be used (with |data|-types) for abstract syntax
@@ -2062,7 +2062,7 @@ What is the expression |e| for which |f = eval e|?
 
 We have
 %
-\index{equational reasoning}
+\index{equational reasoning}%
 %
 \begin{spec}
         eval e x = f x

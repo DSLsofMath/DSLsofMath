@@ -203,7 +203,7 @@ f x = f (x + T)  --  |∀ x ∈ A|
 Therefore, for this definition to make sense, we need addition on
 |A|; in fact we normally assume at least |AddGroup A|.
 %
-\index{AddGroup@@|AddGroup| (type class)}
+\index{AddGroup@@|AddGroup| (type class)}%
 
 
 Since |sin| and |cos| are periodic, with period |tau = 2 * pi|, we have,

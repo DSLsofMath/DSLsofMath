@@ -76,7 +76,7 @@ Our method will be to:
 
 
 \section{Sample spaces}
-\index{DSL!Sample spaces}
+\index{DSL!Sample spaces}%
 Generally, textbook problems involving probability involve the
 description of some scenario or experiment, with an explicit
 uncertainty, including the outcome of certain
@@ -251,7 +251,7 @@ RealLine :: Space REAL
 We have already completed the description of a DSL for spaces, whose
 abstract syntax is captured by the following datatype:
 %
-\index{abstract syntax tree}
+\index{abstract syntax tree}%
 %
 \begin{code}
 data Space a where
@@ -285,7 +285,7 @@ instance Monad Space where
 \end{exercise}
 
 \section{Distributions}
-\index{probability distribution}
+\index{probability distribution}%
 
 So far we have defined several spaces, but we have not used them to compute any
 probability.
@@ -745,7 +745,7 @@ Assuming that the space |s| accurately represents the relative mass of
 all possible situations, there are two ways to define the probability
 of |e|.
 
-\index{probability notation}
+\index{probability notation}%
 
 The first definition of the probability of |e| is the expected value of |indicator . e|, where
 |indicator| maps boolean to reals as follows:
@@ -833,7 +833,7 @@ only infer the space of outcomes, but also which random variable the
 author means.
 
 \section{Conditional probability}
-\index{conditional probability}
+\index{conditional probability}%
 In \cref{sec:StocSys}, we encountered the notion of conditional
 probability, traditionally written $P(F ∣ G)$ and read ``probability
 of $F$ given $G$''. As suggested in \cref{sec:StocSys} and brushed
@@ -1301,7 +1301,7 @@ row.
 % h 3 = 14
 
 \section{Independent events}
-\index{independent events}
+\index{independent events}%
 
 Another important notion in probability theory is that of independent events.
 One way to define independent events is as follows.

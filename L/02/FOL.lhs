@@ -2,8 +2,8 @@
 \begin{code}
 module DSLsofMath.FOL where
 \end{code}
-\index{DSL!first order logic}
-\index{DSL!predicate logic}
+\index{DSL!first order logic}%
+\index{DSL!predicate logic}%
 %
 Our next DSL is that of \emph{First Order
   Logic\lnOnly{\footnote{Swedish: Första ordningens logik =
@@ -213,8 +213,8 @@ section on propositional logic, and it can be extended to
 support quantifiers.
 
 \subsection{Universal quantification}
-\index{forall}
-\index{universal quantifier}
+\index{forall}%
+\index{universal quantifier}%
 %
 Universal quantification (Forall or ∀) can be seen as a generalisation
 of |And|.
@@ -331,8 +331,8 @@ Finally we need a way to introduce fresh variables |freshFor|, which
 conjures up a variable occuring nowhere in its argument list.
 
 \subsection{Existential quantification}
-\index{exists}
-\index{existantial quantifier}
+\index{exists}%
+\index{existantial quantifier}%
 
 %
 We have already seen how the universal quantifier can be seen as a

@@ -10,8 +10,8 @@ deriving instance Eq Prop
 %endif
 
 \section{Propositional Calculus}
-\index{DSL!propositional calculus}
-\index{DSL!propositional logic}
+\index{DSL!propositional calculus}%
+\index{DSL!propositional logic}%
 \label{sec:PropFrag} % yep, the propositional calculus is a propositional fragment of other logics, such as FOL.
 
 Our first DSL for this chapter is the language of \emph{propositional
@@ -59,7 +59,7 @@ Just as we did with with complex number expressions in
 \cref{sec:complex-arithmetic}, %\cref{sec:DSLComplex}
 we can model the abstract syntax of propositions as a datatype:
 %
-\index{abstract syntax tree}
+\index{abstract syntax tree}%
 %
 \begin{code}
 data Prop  =  Con      Bool
@@ -94,8 +94,8 @@ a |Prop| to its truth value.
 (The evaluation function for a DSL describing a logic is often called
 |check| instead of |eval| but for consistency we stick to |eval|.)
 %
-\index{eval@@|eval : Syn -> Sem|}
-\index{implication}
+\index{eval@@|eval : Syn -> Sem|}%
+\index{implication}%
 \begin{code}
 type Env = Name -> Bool
 eval :: Prop -> Env -> Bool
@@ -171,7 +171,7 @@ as the semantic domain.
 %TODO Perhaps cite the full \refFig{fig:TruthTables}
 %TODO Perhaps cite the middle subfigure \refFig{fig:TruthTableImplies}
 
-\index{assignment function||textbf}
+\index{assignment function||textbf}%
 %
 Values of type |Name -> a| are called ``assignment functions'' because
 they assign values (of type |a|) to the variable names.
@@ -277,7 +277,7 @@ number of variables.)
 
 
 \subsection{Proofs for Propositional Logic}
-\index{proof}
+\index{proof}%
 Given a |Prop|osition |p| and a proof |t| (represented as
 an element of another type |Proof|), we can write a function that checks
 that |t| is a valid proof of |p|:
@@ -396,7 +396,7 @@ This rule goes sometimes by its descriptive latin name \textit{ex
   falso quodlibet} --- from falsehood, anything (follows).
 
 We can then write our proof checker as follows:
-\index{eval@@|eval : Syn -> Sem|}
+\index{eval@@|eval : Syn -> Sem|}%
 \savecolumns
 \begin{code}
 checkProof TruthIntro        (Con True)   =   True
@@ -703,7 +703,7 @@ The proof rules |impIntro| and |impElim| seem to be conversion from
 and to functions, and so it should be clear that the representation of
 the implication formula is a function:
 %
-\index{implication}
+\index{implication}%
 \begin{code}
 type Implies p q = p -> q
 implyElim   f = f
@@ -762,7 +762,7 @@ This fragment is called the simply-typed lambda calculus (STLC) with
 sum and products.
 
 \subsection{Type-Driven Development of Proofs as Programs}
-\index{type-driven development}
+\index{type-driven development}%
 %
 With the logic connectives implemented as type constructors we explore
 a few more examples of laws and their proofs.

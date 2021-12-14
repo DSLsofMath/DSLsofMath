@@ -3,7 +3,7 @@
 
 \begin{exercise}
   \label{exc:D1usingD}\textbf{Partial Derivatives}
-  \index{partial derivative}
+  \index{partial derivative}%
   For \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
 %
   In more detail: let the type \(F2 = ℝ² → ℝ\) and \(F1 = ℝ → ℝ\).
@@ -218,7 +218,7 @@
 \begin{exercise}
 \fromExam{2017-08-22}
 %
-\index{matrix}
+\index{matrix}%
 %
 Multiplication for matrices (from the matrix algebra DSL).
 

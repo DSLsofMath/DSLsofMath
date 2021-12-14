@@ -85,7 +85,7 @@ making sure that:
 2.~the new variable name is not used for another purpose in the same
 scope (otherwise one informally says that there is a ``name clash'').
 
-\index{DSL!expr. of one variable}
+\index{DSL!expr. of one variable}%
 %
 To clarify this situation, we will now formalise expressions of one
 variables as a DSL.
@@ -102,8 +102,8 @@ We can implement all this in a datatype as follows:
 
 \subsubsection{Deep embedding}
 \label{sec:FunExp}
-\index{deep embedding}
-\index{FunExp@@|FunExp| (type)}
+\index{deep embedding}%
+\index{FunExp@@|FunExp| (type)}%
 \begin{code}
 data FunExp  =  Const REAL
              |  X
@@ -129,7 +129,7 @@ The meaning of operators and constants is as in
 But, to be able to evaluate |X|, the variable, we need its value ---
 and we simply take it as a parameter.
 %
-\index{eval@@|eval : Syn -> Sem|}
+\index{eval@@|eval : Syn -> Sem|}%
 %
 \begin{code}
 eval  ::  FunExp         ->  REAL  -> REAL
@@ -154,7 +154,7 @@ single argument.
 
 \subsubsection{Shallow embedding}
 \label{sec:funexp-shallow}
-\index{shallow embedding}
+\index{shallow embedding}%
 Thus the above was a deep embedding for functions of a single
 variable.
 %
@@ -315,7 +315,7 @@ typings:
 \item |lim : (ℕ → ℝ) → ℝ| for the mathematical expression
   %
   \(\lim_{n → ∞} \{a_n\}\)
-\index{limit (of sequence)}.
+\index{limit (of sequence)}.%
 \item \(\frac d {dt} : (ℝ → ℝ) → (ℝ → ℝ)\)
 
   Note that there are many notations for derivatives.
@@ -325,7 +325,7 @@ typings:
   %
   Below we'll use preferrably the |D f| notation.
   %
-  \index{derivative (|D|)}
+  \index{derivative (|D|)}%
 \end{itemize}
 
 In sum, the chief difficulty to overcome when assigning types for
@@ -364,7 +364,7 @@ variables, giving the \emph{name} of the variable.
 %
 Here we use a string, so we have an infinite supply of variables.
 %
-\index{DSL!expr. of several variables}
+\index{DSL!expr. of several variables}%
 %
 \begin{code}
 data MVExp = Va String | Ad MVExp MVExp | Di MVExp MVExp

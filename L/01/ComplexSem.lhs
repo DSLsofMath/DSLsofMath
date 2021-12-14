@@ -14,7 +14,7 @@ module DSLsofMath.ComplexSem where
 %
 These definitions together form a DSL for complex numbers.
 %
-\index{DSL!complex numbers}
+\index{DSL!complex numbers}%
 
 We now turn to our first study of mathematics as found ``in the
 wild'': we will do an analytic reading of a piece of the
@@ -33,7 +33,7 @@ Adams and Essex introduce complex numbers in Appendix A of their book.
 %
 The section \emph{Definition of Complex Numbers} starts with:
 
-\index{imaginary unit (|i|)}
+\index{imaginary unit (|i|)}%
 \begin{quote}
   We begin by defining the symbol |i|, called \textbf{the imaginary
     unit}, to have the property
@@ -119,7 +119,7 @@ showCA     (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ showIU i
 showCA     (CPlus2 x i y)  =  show x ++ " + " ++ showIU i ++ show y
 \end{code}
 %
-\index{real@@|REAL| (real numbers)}
+\index{real@@|REAL| (real numbers)}%
 %
 Notice that the type |REAL| is not implemented yet (and it is not even
 clear how to implement it with fidelity to mathematical convention at
@@ -259,8 +259,8 @@ Another way of saying this is that |CPlusC| is \addtoindex{injective}.
 %
 In Haskell we could define this equality as:
 %
-\index{instance@@|instance| (keyword)}
-\index{Eq@@|Eq| (type class)}
+\index{instance@@|instance| (keyword)}%
+\index{Eq@@|Eq| (type class)}%
 %
 \begin{code}
 instance Eq ComplexC where
@@ -389,4 +389,4 @@ newtype  ComplexSem r  =  CS  (r , r)        deriving Eq
   \caption{Complex number datatype refinement (semantics).}
   \label{fig:ComplexTypeSummary}
 \end{figure}
-\index{deriving@@|deriving| (keyword)}
+\index{deriving@@|deriving| (keyword)}%

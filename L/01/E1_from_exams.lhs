@@ -56,7 +56,7 @@
     |SR v| expressions on the basis of an \addtoindex{assignment
       function}.
     %
-    \index{eval@@|eval : Syn -> Sem|}
+    \index{eval@@|eval : Syn -> Sem|}%
     %
     An ``assignment function'' is a mapping from variable names to values.
   \end{enumerate}
@@ -97,7 +97,7 @@
   \item Define a general evaluator for |Lattice| expressions on the
     basis of an \addtoindex{assignment function}.
     %
-    \index{eval@@|eval : Syn -> Sem|}
+    \index{eval@@|eval : Syn -> Sem|}%
   \end{enumerate}
 \end{exercise}
 
@@ -141,7 +141,7 @@
   \item Define a general evaluator for |AbMonoidExp| expressions on
     the basis of an \addtoindex{assignment function}.
     %
-    \index{eval@@|eval : Syn -> Sem|}
+    \index{eval@@|eval : Syn -> Sem|}%
 
   \end{enumerate}
 \end{exercise}

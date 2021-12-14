@@ -64,7 +64,7 @@ thus write |D : (X->REAL) -> (Y->REAL)|.
 We will often assume that |X = Y| (|f| is differentiable everywhere)
 so that we can can see |D| as preserving the type of its argument.
 
-\index{derivative (|D|)||textbf}
+\index{derivative (|D|)||textbf}%
 %
 Now, with the type of |D| sorted out, we can turn to the actual
 definition of the function |D f|.
@@ -74,7 +74,7 @@ The definition is given for a fixed (but arbitrary) |x|.
 (At this point the reader may want to check the definition of
 ``limit of a function'' in \refSec{sec:LimitOfFunction}.)
 %
-\index{lim@@|lim| (limit)}
+\index{lim@@|lim| (limit)}%
 %
 The |lim| expression is using the (anonymous) function |g h = frac
 (f(x+h) - f x) h| and that the limit of |g| is taken at |0|.
@@ -287,8 +287,8 @@ Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and
 \label{sec:Lagrangian}
 
 From \citet{sussman2013functional}:
-%\index{Lagrangian}
-\index{Lagrange equations}
+%\index{Lagrangian}%
+\index{Lagrange equations}%
 \begin{quote}
   A mechanical system is described by a Lagrangian function of the
   system state (time, coordinates, and velocities).
@@ -525,7 +525,7 @@ argument (named |q|) of~|L|.
   %
   where we use |(==)| to avoid confusion with the equality sign (|=|)
   used for the definition of the predicate.
-\index{Lagrange equations}
+\index{Lagrange equations}%
 \end{enumerate}
 
 So, we have figured out what the equation means in terms of
@@ -596,7 +596,7 @@ f :: X -> Y
 f = undefined
 \end{code}
 %
-\index{data@@|data| (keyword)}
+\index{data@@|data| (keyword)}%
 %
 To the Haskell interpreter, such empty |data|-declarations mean that
 there is no way to construct any element for them, as we saw in
@@ -715,8 +715,8 @@ In Haskell both |4 == 3| and |3.4 == 3.2| typecheck because both
 integers and floating point values are member of the |Eq| class, which
 we can safely assume to be defined as follows:
 %
-\index{class@@|class| (keyword)}
-\index{Eq@@|Eq| (type class)||textbf}
+\index{class@@|class| (keyword)}%
+\index{Eq@@|Eq| (type class)||textbf}%
 \begin{spec}
 class Eq a where   (==) :: a -> a -> Bool
 \end{spec}
@@ -738,7 +738,7 @@ eqBool  False  False  = True
 eqBool  _      _      = False
 instance Eq Bool where  (==) = eqBool
 \end{spec}
-\index{instance@@|instance| (keyword)||textbf}
+\index{instance@@|instance| (keyword)||textbf}%
 %
 (The Haskell compiler will in fact provide instances for primitive
 types ).
@@ -749,7 +749,7 @@ Second, the |Eq| class declaration provides an operator |(==)| of type
 One can use the operator on any type |a| which belongs to the |Eq|
 set.
 %
-\index{constraint (type)}
+\index{constraint (type)}%
 %
 This is expressed in general by a constraint |Eq a| occuring before
 the |=>| symbol.
@@ -771,7 +771,7 @@ instances of |Eq|: |Char|, |[Char]|, |[[Char]]|, etc.
 %
 
 \subsection{Numeric operations}
-\index{Num@@|Num| (type class)}
+\index{Num@@|Num| (type class)}%
 %
 Haskell also provides a |Num| class, containing various numeric types
 (|Int|, |Double|, etc.) with several operators (|+|,|*|, etc.).
@@ -786,8 +786,8 @@ study in more detail in \cref{sec:ring-like-classes}:
 
 \label{sec:numeric-classes}
 %*TODO: Make sure the code matches ../DSLsofMath/Algebra.hs.
-\index{Additive@@|Additive| (type class)}
-\index{AddGroup@@|AddGroup| (type class)}
+\index{Additive@@|Additive| (type class)}%
+\index{AddGroup@@|AddGroup| (type class)}%
 \begin{spec}
 class Additive a where
   zero  :: a
@@ -800,8 +800,8 @@ class Multiplicative a where
 class Multiplicative a => MulGroup a where
   recip :: a -> a   -- reciprocal, specified as  |x * recip x == one|
 \end{spec}
-\index{Multiplicative@@|Multiplicative| (type class)}
-\index{MulGroup@@|MulGroup| (type class)}
+\index{Multiplicative@@|Multiplicative| (type class)}%
+\index{MulGroup@@|MulGroup| (type class)}%
 %
 The operator names clash with the |Num| class, which we will avoid
 from now on in favour |Additive| and |Multiplicative|.
@@ -833,7 +833,7 @@ present a comparison in \cref{fig:CompNum}.
 
 \subsection{Overloaded integer literals}
 \label{sec:overloaded-integer-literals}
-\index{overloading}
+\index{overloading}%
 We will spend some time explaining a convenient Haskell-specific
 syntactic shorthand which is very useful but which can be confusing:
 overloaded integers.
@@ -842,7 +842,7 @@ In Haskell, every use of an integer literal like |2|, |1738|, etc., is
 actually implicitly an application of |fromInteger| to the literal
 typed as an |Integer|.
 %
-\index{fromInteger@@|fromInteger|}
+\index{fromInteger@@|fromInteger|}%
 
 But what is |fromInteger|?
 %
@@ -992,8 +992,8 @@ transcendental numbers.
 A simplified version, which is sufficent for our purposes, looks as
 follows:
 %
-\index{Algebraic@@|Algebraic| (type class)}
-\index{sqrt@@square root (|sqrt|)||textbf}
+\index{Algebraic@@|Algebraic| (type class)}%
+\index{sqrt@@square root (|sqrt|)||textbf}%
 %
 \begin{spec}
 class Field a => Algebraic a where
@@ -1006,11 +1006,11 @@ class Field a => Transcendental a where
   cos :: a -> a
 \end{spec}
 %
-\index{Transcendental@@|Transcendental| (type class)}
-\index{sin@@|sin|{}||textbf}
-\index{cos@@|cos|{}||textbf}
-\index{exp@@|exp|{}||textbf}
-\index{pi@@|pi|{}||textbf}
+\index{Transcendental@@|Transcendental| (type class)}%
+\index{sin@@|sin|{}||textbf}%
+\index{cos@@|cos|{}||textbf}%
+\index{exp@@|exp|{}||textbf}%
+\index{pi@@|pi|{}||textbf}%
 %
 While classes up to |Field| follow mathematical conventions very
 closely, for |Algebraic| and |Transcendental| we take the pragmatic
@@ -1103,7 +1103,7 @@ numeric operations to functions directly, we can fill in a table of
 examples which can be followed to compute derivatives of many
 functions:
 %
-\index{derivative (|D|)||textbf}
+\index{derivative (|D|)||textbf}%
 %
 \begin{spec}
     D (f + g)        =  D f + D g
@@ -1153,7 +1153,7 @@ In other words, the computation of derivatives is based on a domain
 specific language of expressions (representing functions in
 one variable).
 %
-\index{FunExp@@|FunExp| (type)}
+\index{FunExp@@|FunExp| (type)}%
 %
 This means that we can in fact implement the derivative of |FunExp|
 expressions (from \cref{sec:FunExp}), using the rules of derivatives.
@@ -1167,7 +1167,7 @@ case.
 Our goal is to implement a function |derive :: FunExp -> FunExp| which
 makes the following diagram commute:
 %
-\index{derive@@|derive|}
+\index{derive@@|derive|}%
 
 \quad%
 \begin{tikzcd}
@@ -1190,7 +1190,7 @@ In turn, this means that for any expression |e :: FunExp|, we want
 For example, let us calculate the |derive| function for |Exp e|:%
 \footnote{We have added a constructor |Exp :: FunExp -> FunExp| for this example.}
 %
-\index{equational reasoning}
+\index{equational reasoning}%
 %
 \begin{spec}
      eval (derive (Exp e))                          =  {- specification of |derive| above -}
@@ -1220,7 +1220,7 @@ derive (Exp e) = Exp e :*: derive e
 
 Similarly, we obtain
 %
-\index{derive@@|derive|}
+\index{derive@@|derive|}%
 %
 \begin{joincode}%
 \begin{code}

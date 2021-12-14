@@ -16,9 +16,9 @@
   %
   Then what is the cardinality of the types |Either a b|? |(a, b)|? |a->b|? etc.
   %
-\index{Either@@|Either| type}
-\index{pair type}
-\index{function type}
+\index{Either@@|Either| type}%
+\index{pair type}%
+\index{function type}%
   %
   These rules for computing the cardinality suggests that |Either| is
   similar to sum, |(,)| is similar to product and |(->)| to (flipped)
@@ -30,7 +30,7 @@
 
 \begin{exercise}{Counting |Maybe|s.} For each of the following types, enumerate and
   count the values:
-\index{Maybe@@|Maybe| type}
+\index{Maybe@@|Maybe| type}%
   \begin{enumerate}
   \item |Bool -> Maybe Bool|
   \item |Maybe Bool -> Bool|
@@ -47,9 +47,9 @@
 
 \begin{exercise}\label{exc:funtupE1}
   Functions as tuples.
-\index{pair type}
-\index{function type}
-\index{Bool@@|Bool| (|BB|)}
+\index{pair type}%
+\index{function type}%
+\index{Bool@@|Bool| (|BB|)}%
   %
   For any type |t| the type |Bool -> t| is basically ``the same'' as
   the type |(t,t)|.
@@ -114,8 +114,8 @@
   From one function |f :: a -> (b, c)| returning a pair, you can
   always make a pair of two functions |pf :: (a->b, a->c)|.
   %
-\index{pair type}
-\index{function type}
+\index{pair type}%
+\index{function type}%
   %
   Implement this transform:
   %
@@ -141,9 +141,9 @@
   There is also a ``dual'' to the tupling transform: to show this,
   implement these functions:
   %
-\index{Either@@|Either| type}
-\index{pair type}
-\index{function type}
+\index{Either@@|Either| type}%
+\index{pair type}%
+\index{function type}%
   %
   \begin{spec}
     s2p :: (Either b c -> a) -> (b->a, c->a)
@@ -154,7 +154,7 @@
   From \refSec{sec:infseq}:
   %
   \begin{itemize}
-\index{function composition (|.|)}
+\index{function composition (|.|)}%
   \item What does function composition do to a \addtoindex{sequence}?
 %
     More concretely: for a sequence |a| what is |a . (1+)|?
@@ -171,7 +171,7 @@
 \begin{exercise}
   Operator sections.
   %
-  \index{operator section}
+  \index{operator section}%
   %
   Please fill out the remaining parts of this table with simplified
   expressions:

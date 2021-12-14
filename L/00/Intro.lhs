@@ -120,7 +120,7 @@ infect the design of the entire curriculum.
 %note: end of "identify a gap"
 
 %note: start of "fill the gap"
-\index{domain-specific language (DSL)}
+\index{domain-specific language (DSL)}%
 %
 We propose that a focus on \emph{domain-specific languages} (DSLs) can
 be used to repair this unsatisfactory state of affairs.
