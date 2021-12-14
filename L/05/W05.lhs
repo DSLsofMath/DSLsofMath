@@ -906,7 +906,7 @@ We let |p = [1]| and |q=[1,-1]| and seek |r = p/q|.
 \begin{spec}
   divL p q                                  =  {- def. of |p| and |q| -}
   divL (1:[])  (1:[-1])                     =  {- main case of |divL| -}
-  (1/1) : divL ([] - [1] * [-1])  (1:[-1])  =  {- simplification, def. of |(*)|, |(-)| -}
+  (1/1) : divL ([] - [1] * [-1])  (1:[-1])  =  {- simpl., def. of |(*)|, |(-)| -}
   1 : divL [1] (1:[-1])                     =  {- def. of |p| and |q| -}
   1 : divL p q
 \end{spec}
