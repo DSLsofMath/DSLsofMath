@@ -34,8 +34,9 @@ type REAL = Double
 % + Obs2: can def. x = Poly[0,1] and usual def. of poly.
 %
 Again we take as starting point a definition from
-  \cite{adams2010calculus}, this time from page 39:
+\cite{adams2010calculus}, this time from page 39:
 
+\index{polynomial}%
 \begin{quote}
 A \textbf{polynomial} is a function $P$ whose value at $x$ is
 
@@ -50,6 +51,7 @@ polynomial, is called the \textbf{degree} of the polynomial.
 %
 (The degree of the zero polynomial is not defined.)
 \end{quote}
+\index{degree}%
 
 This definition raises a number of questions, for example ``what is
 the zero polynomial?'' (and why isn't its degree defined).
@@ -90,6 +92,7 @@ counting up).
 %
 Then the evaluation function is:
 %
+\index{eval@@|eval : Syn -> Sem|}%
 \label{def:evalL}
 \begin{spec}
 evalL ::  [REAL] ->  REAL  ->  REAL
@@ -192,6 +195,9 @@ definition.
 \paragraph{Representing polynomials}
 So, we can simply use any list of coefficients to \emph{represent} a
 polynomial:
+%
+\index{Poly@@|Poly|{}||textbf}
+%
 \begin{code}
 newtype Poly a = Poly [a] deriving (Show,Eq)
 \end{code}
@@ -199,6 +205,7 @@ newtype Poly a = Poly [a] deriving (Show,Eq)
 Since we only use the arithmetic operations, we can generalise our
 evaluator to an arbitrary |Ring| type.
 %
+\index{eval@@|eval : Syn -> Sem|}%
 \begin{code}
 evalPoly :: Ring a => Poly a -> (a -> a)
 evalPoly (Poly [])        _   =  0
@@ -251,7 +258,9 @@ constructor and writing |eval cs = evalPoly (Poly cs)| for brevity.
 evalPoly (a : as) x  +  evalPoly (b : bs) x  =  evalPoly ((a : as)  +  (b : bs)) x
 \end{spec}
 
-We use the homomorphism condition for |as| and |bs|
+
+We use the \addtoindex{homomorphism} condition for |as| and |bs|.
+%
 For the left-hand side, we have:
 %
 \begin{spec}
@@ -307,7 +316,7 @@ addList :: Additive a => [a] -> [a] -> [a]
 addList = zipWithLonger (+)
 
 zipWithLonger :: (a->a->a) -> ([a] -> [a] -> [a])
-zipWithLonger _   []      bs      = bs  -- |0+bs == bs|
+zipWithLonger _   []      bs      = bs  -- |0+bs == bs|  {-"\index{zipWithLonger@@|zipWithLonger|}"-}
 zipWithLonger _   as      []      = as  -- |as+0 == as|
 zipWithLonger op  (a:as)  (b:bs)  = op a b : zipWithLonger op as bs
 
@@ -420,6 +429,8 @@ Therefore, it is not generally a good idea to conflate polynomials
 (syntax) and polynomial functions (semantics).
 
 \paragraph{Algebra of syntactic polynomials}
+\index{algebra}%
+%
 Following the DSL terminology, we can say that the polynomial
 functions are the semantics of the language of polynomials.
 %
@@ -514,8 +525,10 @@ homomorphism and the domain or range structure is \emph{almost} a monoid.
 In \cref{sec:evalD}, we saw tupling as one way to fix such a
 problem and here we will introduce another way.
 
+\index{degree}%
+%
 The |degree| of a polynomial is a good candidate for being a
-homomorphism:
+\addtoindex{homomorphism}:
 %
 if we multiply two polynomials we can normally add their degrees.
 %
@@ -553,6 +566,8 @@ Assume additionally a polynomial |p| with |degree p = n| (for example,
 %
 Then we get
 %
+\index{equational reasoning}%
+%
 \begin{spec}
   z                               = {- assumption -}
 
@@ -580,6 +595,8 @@ In Haskell we can do that using the |Maybe| type constructor:
 
 %{
 %format Monoid' = Monoid
+\index{monoid}%
+\index{Maybe@@|Maybe| type}%
 \begin{code}
 class Monoid' a where
   unit  :: a
@@ -594,6 +611,7 @@ opMaybe Nothing    _m         = Nothing    -- |(-Inf) + m  = -Inf|
 opMaybe _m         Nothing    = Nothing    -- |m + (-Inf)  = -Inf|
 opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
 \end{code}
+\index{opMaybe@@|opMaybe|}%
 %}
 
 % TODO: perhaps mention another construction:
@@ -651,18 +669,19 @@ Similarly
 
 < c2 = a0 * b2 + a1 * b1 + a2 * b0
 
-from which we obtain,as before, the value of |b2| by subtraction and division.
+from which we obtain, as before, the value of |b2| by subtraction and
+division.
 
 It is clear that this process can be continued, yielding at every step
 a value for a coefficient of |bs|, and thus we have obtained |bs|
 satisfying |cs = as * bs|.
-
 \end{proof}
 
 The problem with this proof attempt is in the statement ``it is clear
 that this process can be continued''.
 %
-In fact, it is rather clear that it cannot be continued (for polynomials)!
+In fact, it is rather clear that it cannot be continued (for
+polynomials)!
 %
 Indeed, |bs| only has |m+1| coefficients, therefore for all remaining
 |n| equations of the form |ck = {-"\sum_{i = 0}^k a_i * b_{k-i}"-}|,
@@ -678,18 +697,19 @@ coefficients.
 
 Power series are obtained from polynomials by removing in |Poly'| the
 restriction that there should be a \emph{finite} number of non-zero
-coefficients; or, in, the case of |Poly|, by going from lists to
-streams.
+coefficients; or, in, the case of |Poly|, by going from finite lists to
+infinite streams.
 
 
 \begin{joincode}%
 \begin{spec}
-PowerSeries' a = { f : ℕ → a }
+-- |PowerSeries' a = { f : ℕ → a }|
 \end{spec}
 \begin{code}
 type PowerSeries a = Poly a   -- finite and infinite lists
 \end{code}
 \end{joincode}
+\index{power series}%
 
 The operations are still defined as before.
 %
@@ -711,8 +731,9 @@ The simplest operation, addition, can be illustrated as follows:
 \end{array}
 \]
 
-The evaluation of a power series represented by |a : ℕ → A| is defined,
-in case the necessary operations make sense on |A|, as a function
+The evaluation of a power series represented by |a : ℕ → A| is
+defined, in case the necessary operations make sense on |A|, as a
+function
 %
 \begin{spec}
 eval a : A -> A
@@ -736,8 +757,9 @@ Here the qualifier ``formal'' refers to the independence of the
 definition of power series from the ideas of convergence and
 evaluation.
 %
-In particular, two power series represented by |a| and |b|, respectively,
-are equal only if |a = b| (as infinite series of numbers).
+In particular, two power series represented by |a| and |b|,
+respectively, are equal only if |a = b| (as infinite series of
+numbers).
 %
 If |a ≠ b|, then the power series are different, even if |eval a =
 eval b|.
@@ -755,17 +777,19 @@ takePoly n (Poly xs) = Poly (take n xs)
 \end{code}
 %TODO: perhaps explain with plain lists: |takeP :: Nat -> PS r -> P r| with |takeP n (PS as) = P (take n as)|
 %
-Note that |evalPS n| is not a homomorphism: for example:
+Note that |evalPS n| is \emph{not} a homomorphism: for example:
+%
+\index{equational reasoning}%
 %
 \begin{spec}
-  evalPS 2 (x*x) 1                     =
+  evalPS 2 (x*x) 1                   =
   evalPoly (takePoly 2 [0, 0, 1]) 1  =
   evalPoly [0,0] 1                   =
   0
 \end{spec}
 but
 \begin{spec}
-  (evalPS 2 x 1)                    =
+  (evalPS 2 x 1)                  =
   evalPoly (takePoly 2 [0, 1]) 1  =
   evalPoly [0, 1] 1               =
   1
@@ -777,6 +801,7 @@ and thus |evalPS 2 (x*x) 1 = 0 /= 1 = 1*1 = (evalPS 2 x 1) * (evalPS 2 x
 
 \section{Operations on power series}
 
+\index{power series}%
 Power series have a richer structure than polynomials.
 %
 % TODO (by DaHe): I think the note about moving from Z to Q could be expanded
@@ -785,11 +810,12 @@ Power series have a richer structure than polynomials.
 % (not sure if there is any actual connection or just a coincidence, but still
 % interesting to note)
 %
-For example, as suggested above, we also have division (this is reminiscent of the move from |ℤ|
-to |ℚ| to allow division to be generalised).
+For example, as suggested above, we also have division (this is
+reminiscent of the move from |ℤ| to |ℚ| to allow division to be
+generalised).
 %
-To illustrate, let us start with a special case: trying to compute |p = frac 1 (1-x)| as a
-power series.
+To illustrate, let us start with a special case: trying to compute |p
+= frac 1 (1-x)| as a power series.
 %
 The specification of |a/b = c| is |a=c*b|, thus in our case we need to
 find a |p| such that |1 = (1-x)*p|.
@@ -839,6 +865,8 @@ a:as|, |q = b:bs|, and assume that |a * b ≠ 0|.
 Then we want to find, for any given |(a : as)| and |(b : bs)|, the
 series |(c : cs)| satisfying
 %
+\index{equational reasoning}%
+%
 \begin{spec}
   (a : as) / (b : bs) = (c : cs)                     <=> {- spec. of division -}
 
@@ -854,7 +882,7 @@ series |(c : cs)| satisfying
 \end{spec}
 
 This leads to the implementation:
-
+\index{MulGroup@@|MulGroup| (type class)}%
 \begin{code}
 instance (Eq a, Field a) => MulGroup (PowerSeries a) where
   (/) = divPS
@@ -917,7 +945,6 @@ In other words, we have that |1/[1,-1] = [1,1..]| as an infinite list
 of coefficients and \(\frac{1}{1-x} = \sum_{i=0}^{\infty} x^i\) in the
 more traditional mathematical notation.
 
-
 \section{Formal derivative}
 \label{sec:poly-formal-derivative-1}
 Considering the analogy between power series and polynomial functions
@@ -951,8 +978,8 @@ oneUp :: Ring a => [a]
 oneUp = one : map (one+) oneUp
 \end{code}
 
-Side note: we cannot in general implement a decidable (Boolean) equality test for
-|PowerSeries|.
+Side note: we cannot in general implement a decidable (Boolean)
+equality test for |PowerSeries|.
 %
 For example, we know that |deriv ps0| equals |ps1| but we cannot
 compute |True| in finite time by comparing the coefficients of the two
@@ -965,7 +992,6 @@ checkDeriv n  =  takePoly n (deriv ps0) == takePoly n (ps1 :: Poly Rational)
 
 Recommended reading: the Functional pearl: ``Power series, power
 serious'' \cite{mcilroy1999functional}.
-
 
 % ================================================================
 

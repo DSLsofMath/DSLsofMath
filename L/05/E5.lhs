@@ -64,7 +64,8 @@ above.
 %}
 \end{exercise}
 
-\begin{exercise}\label{ex:chebyshev}\textbf{Chebyshev polynomials.}
+\begin{exercise}\label{ex:chebyshev}\textbf{\addtoindex{Chebyshev polynomials}.}
+%
 Let
 \(T_n(x) = \cos (n*\arccos(x))\) for |x| in the interval |[-1,1]|.
 %
@@ -127,6 +128,7 @@ To prove this, here are a few hints:
 \end{exercise}
 
 \begin{exercise}
+\index{degree}%
 Prove the |degree| law
 \begin{spec}
  ∀ x, y? degree (x `op` y) = degree x  +  degree y
@@ -135,15 +137,19 @@ for polynomials.
 \end{exercise}
 
 \begin{exercise}\label{exc:degreeMonoidHomomorphism}
-Check all the |Monoid| and homomorphism properties in the claim:
-|degree| is a monoid homomorphism from |(Poly a, 1, *)| to |(Maybe Nat, Just 0, opMaybe)|.
+Is |degree| a homomorphism from the monoid |(Poly a, 1, *)| to the
+monoid |(Maybe Nat, Just 0, opMaybe)|?
+%
+\index{opMaybe@@|opMaybe|}%
+%
+Check all the |Monoid| and homomorphism properties in the claim.
 \end{exercise}
 
 \begin{exercise}
   The helper function |polyMap :: (a->b) -> (Poly a -> Poly b)| that
   was used in the implementation of |negPoly| is a close relative of
   the usual |map :: (a->b) -> ([a] -> [b])|.
-%
+\index{Functor@@|Functor| (type class)}%
   Both these are members of a typeclass called |Functor|:
 %
 \begin{spec}
@@ -166,10 +172,14 @@ class Functor f where
   Some information is lacking, but we assume a monoid homomorphism is
   requested.
   %
+  We write |maxi| instead of |maximum| below to keep it short.
+  %{
+  %format maximum = maxi
+  %
   The source type (lists) is a monoid with |op=(++)| and |unit=[]| and
   we are looking for a monoid structure on |ℤ|.
   %
-  The homomorphism conditions are then |maximum (xs ++ ys) = op
+  The homomorphism conditions are then |maximum (xs ++ ys)| |=| |op
   (maximum xs) (maximum ys)| and |maximum [] = unit|, for some
   operation |op : ℤ -> ℤ -> ℤ| and a constant |unit : ℤ|, forming a
   monoid.
@@ -187,6 +197,7 @@ class Functor f where
   Thus, |maximum| is \emph{not} a (monoid) homomorphism from |[ℤ]| to |ℤ|.
   %
   (If we create another type |ℤ'| with |-∞| added to |ℤ| we could
-  define another |maximum' : [ℤ] -> ℤ'|).
+  define another |maxi' : [ℤ] -> ℤ'|).
+  %}
 \end{solution}
 %TODO: more exercises!
