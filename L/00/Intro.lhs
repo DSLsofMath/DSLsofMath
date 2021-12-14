@@ -227,7 +227,7 @@ The DSL is then implemented in Haskell.
 Finally, limitations of the DSL are assessed and the possibility for
 further improvements discussed.
 %
-More about the course is presented in Section~\ref{sec:DSLMcourse}.
+More about the course is presented in Appendix~\ref{sec:DSLMcourse}.
 
 We expect the reader to have knowledge corresponding to a few first-year
 mathematics and computer science courses, preferrably including

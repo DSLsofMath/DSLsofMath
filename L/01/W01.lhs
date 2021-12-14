@@ -11,8 +11,7 @@ However, before doing so, we introduce several central concepts in the
 \course{}, as well as laying out methodological assumptions.
 
 %
-We will implement certain concepts in the functional programming
-language Haskell and
+We will implement certain concepts in Haskell and
 %
 \index{module (Haskell)@@|module| (Haskell)}
 %
@@ -592,7 +591,7 @@ suffix, as in the name |xs|, to denote a list of values.).
 % function, but rather the \emph{interpretation} of that type.
 % %
 
-Rather than relying on lexical (or syntactical) conventions in the
+Rather than relying on lexical or syntactical conventions in the
 variable names, we prefer to explicitly use different types.
 %
 When there are several interpretations of the same type, we can define
@@ -723,12 +722,14 @@ may also be useful to have another newtype for complex as a pair of
 numbers in the polar representation.
 
 
-\paragraph{The keyword |data| -- for syntax trees}
+\paragraph{The keyword |data| for syntax trees}
 %
 \index{data@@|data| (keyword)}
+\index{abstract syntax tree}
+\index{recursive datatype}
 %
-The simplest form of a \addtoindex{recursive datatype} is the unary
-notation for natural numbers:
+The simplest form of a recursive datatype is the unary notation for
+natural numbers:
 %
 \index{Nat@@|Nat| (natural numbers)}
 %
@@ -900,10 +901,12 @@ liftSeq0 c i = c
 Exercise~\ref{exc:fmap}: what does function composition do to a sequence?
   For a sequence |a| what is |a . (1+)|? What is |(1+) . a|?
 
-Another common mathematical operator on sequences is the
-\addtoindex{limit (of sequence)}.
+Another common mathematical operator on sequences is the limit (of a
+sequence).
 %
-We will get back to limits later (\cref{sec:LimPoint,sec:FunLimit}),
+\index{limit (of sequence)}
+%
+We will get back to limits later (in \cref{sec:LimPoint,sec:FunLimit}),
 but for now we just analyse the notation and typing.
 %
 This definition is slightly adapted from Wikipedia (2017-11-08):

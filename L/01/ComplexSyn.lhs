@@ -58,11 +58,11 @@ data ComplexE  =  I2
                |  Mul  ComplexE  ComplexE
  deriving (Eq, Show)
 \end{code}
-\index{deriving@@|deriving| (keyword)}
-\index{Eq@@|Eq| (type class)}
+\index{deriving@@|deriving| (keyword)}%
+\index{Eq@@|Eq| (type class)}%
 %
 Note that, in |ComplexA| above, we also had a constructor for
-``addition'' (|CPlus1|), but it was playing a different role.
+addition (|CPlus1|), but it was playing a different role.
 %
 They are distinguished by type: |CPlus1| took two real numbers as
 arguments, while |Add| here takes two complex expressions as
