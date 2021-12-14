@@ -131,7 +131,7 @@ Prove or disprove the following claims:
     \item Find two other instances of the |Lattice| class.
 
     \item Specialise the evaluator you defined in \cref{exc:e1_lattice} to the two
-      |Lattice| instances defined above. Take three lattice expressions, give
+      |Lattice| instances defined above. Take three lattice expressions, give
       the appropriate assignments and compute the results of evaluating, in each
       case, the three expressions.
 
