@@ -116,7 +116,7 @@ Prove or disprove the following claims:
 \begin{exercise}
   \fromExam{2016-03-15}
 
-  In Exercise~\ref{exc:e1_lattice}, we looked a datatype for the language of lattice
+  In \cref{exc:e1_lattice}, we looked a datatype for the language of lattice
   expressions. We will now use some of the concepts discussed in this chapter to
   expand on this language.
 
@@ -126,11 +126,11 @@ Prove or disprove the following claims:
       structure.
 
     \item Define a |Lattice| instance for the datatype for lattice expressions
-      that you defined in 1.4.1.
+      that you defined in \cref{exc:e1_lattice}.
 
     \item Find two other instances of the |Lattice| class.
 
-    \item Specialise the evaluator you defined in exercise 1.4.2 to the two
+    \item Specialise the evaluator you defined in \cref{exc:e1_lattice} to the two
       |Lattice| instances defined above. Take three lattice expressions, give
       the appropriate assignments and compute the results of evaluating, in each
       case, the three expressions.
