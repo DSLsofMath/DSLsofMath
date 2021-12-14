@@ -693,7 +693,7 @@ evenCon = (0==).(`mod` 2)
 
 %
 \begin{exercise}
-Exercise: prove |H2(even,Add,evenAdd)| and |H2(even,Mul,evenMul)|.
+Prove |H2(even,Add,evenAdd)| and |H2(even,Mul,evenMul)|.
 \end{exercise}
 
 \subsection{An example of a non-compositional function}
@@ -995,15 +995,17 @@ paren :: String -> String
 paren s = "(" ++ s ++ ")"
 \end{code}
 
-Exercise: Another way to make this example go through is to refine the
-semantic domain from |String| to |Precedence -> String|.
-%
-This can be seen as another variant of the result after the tupling
-transform: if |Precedence| is an |n|-element type then |Precedence ->
-String| can be seen as an |n|-tuple.
-%
-In our case a three-element |Precedence| would be enough.
 
+\begin{exercise}
+  Another way to make this example go through is to refine the
+  semantic domain from |String| to |Precedence -> String|.
+  % 
+  This can be seen as another variant of the result after the tupling
+  transform: if |Precedence| is an |n|-element type then |Precedence ->
+  String| can be seen as an |n|-tuple.
+  % 
+  In our case a three-element |Precedence| would be enough.
+\end{exercise}
 
 \section{Initial and Free Structures}
 
