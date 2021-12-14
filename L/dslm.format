@@ -232,6 +232,7 @@
 %format CSem.*. = "\mathbin{\stackrel{\scriptscriptstyle" CSem "}{" *. "}}"
 
 %format eval'Exp = eval' "_{\!" Exp "}"
+%format evalDExp = evalD "_{\!" Exp "}"
 
 %format fA = f "_" A
 %format fB = f "_" B

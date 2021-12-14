@@ -602,6 +602,8 @@ it can either be zero, positive or negative.
   The homomorphism law (that |h| distributes over |(+)|) can be shown
   as follows:
 %
+\index{equational reasoning}
+%
 \begin{spec}
   h (a + b)                     =  {- |h = const| in this case -}
   const (a + b)                 =  {- By def. of |const| -}
@@ -628,6 +630,8 @@ Show that |apply c| is an |Additive| homomorphism for all |c|, where
 \end{exercise}
 \begin{solution}
 Indeed, writing |h = apply c| for some fixed |c|, we have
+%
+\index{equational reasoning}
 %
 \begin{spec}
      h (f + g)         =  {- def. |apply| -}
@@ -797,6 +801,8 @@ But it is not possible for |isPrime| to both satisfy its specification
 and |H2(isPrime,Add,isPrimeAdd)|.
 %
 To shorten the calculation we write just |n| for |Con n|.
+%
+\index{equational reasoning}
 %
 \begin{spec}
   False
@@ -1502,6 +1508,9 @@ instance Monoid (Free Monoid g)  where
 We can also check the monoid laws for the free monoid.
 %
 For example, here is the proof that the right identity law holds:
+%
+\index{equational reasoning}
+%
 \begin{spec}
     Free f `op` unit
 ==  {- def. -}
@@ -1546,9 +1555,8 @@ example = embed 1 `op` embed 10 `op` unit `op` embed 11
   Show that |Free Ring ()| covers most of the type |FunExp| from \cref{sec:FunExp}.
 \end{exercise}
 
-\section{Computing Derivatives, reprise.}
+\section{Computing derivatives, reprise.}
 \label{sec:evalD}
-%TODO: continue indexing from here****
 %
 As discussed in \cref{sec:OneVarExp-class}, it can sometimes be
 good to use the representation |OneVarExp a => a| rather than
@@ -1591,6 +1599,8 @@ In a diagram:
 %
 Let us consider the |Exp| case (the |eval'Exp|-lemma):
 %
+\index{equational reasoning}
+%
 \begin{spec}
      eval' (Exp e)                      =  {- def. |eval'|, function composition -}
 
@@ -1606,12 +1616,19 @@ Let us consider the |Exp| case (the |eval'Exp|-lemma):
 
      exp f * f'
 \end{spec}
-Thus, given \emph{only} the derivative |f' = eval' e|, it is
-not possible to compute |eval' (Exp e)|.
 %
-Another example of the problem is |derive (f :*: g)| where the
-result involves not only |derive f| and |derive g|, but also |f| and
-|g| on their own.
+Thus given \emph{only} the derivative |f' = eval' e|, it looks hard to
+compute |exp f * f'|.
+%
+More concretely, if we take |e1=X| and |e2=X:+:Const 1|, then |eval'
+e1 == const 1 == eval' e2| but |eval' (Exp e1) 0 == 1 /= e == eval'
+(Exp e2)|.
+%
+Thus, it is impossible to compute |eval'| compositionally.
+
+Another example of the problem is |derive (f :*: g)| where the result
+involves not only |derive f| and |derive g|, but also |f| and |g| on
+their own.
 %
 In general, the problem is that some of the rules for computing the
 derivative depend not only on the derivative of the subexpressions,
@@ -1633,6 +1650,8 @@ In practice, the solution is to extend the return type of |eval'| from one
 semantic value |f| of type |Func = REAL -> REAL| to two such values
 |(f, f') :: (Func, Func)| where |f' = D f|.
 %
+\index{tupling transform}
+%
 That is, we are using the ``tupling transform'': we are computing just
 one function |evalD :: FunExp -> (Func, Func)| returning a pair of |f|
 and |D f| at once.
@@ -1650,6 +1669,8 @@ evalD     e       =   (FunExp.eval e, eval' e)
 Is |evalD| compositional?
 %
 We compute, for example:
+%
+\index{equational reasoning}
 %
 \begin{spec}
      evalD (Exp e)                           =  {- specification of |evalD| -}
@@ -1687,6 +1708,9 @@ Because all compositional functions can be expressed as a fold for a
 given algebra, we can now define a shallow embedding for the combined
 computation of functions and derivatives, using the numerical type
 classes.
+%
+\index{Additive@@|Additive| (type class)}
+\index{Multiplicative@@|Multiplicative| (type class)}
 %
 \begin{code}
 instance Additive a                      => Additive (FD a)        where
@@ -1754,6 +1778,7 @@ Can we do something similar for |FD|?
 %
 The elements of |FD a| are pairs of functions, so we can take
 %
+\index{apply@@|apply|}
 \label{sec:applyFD}
 %{
 %format DummyFD = FD
@@ -1774,6 +1799,8 @@ In fact, we can \emph{compute} this structure from the homomorphism
 condition.
 %
 For example:
+%
+\index{equational reasoning}
 %
 \begin{spec}
      h ((f, f') * (g, g'))                       =  {- def. |(*)| for |FD a| -}
@@ -1806,6 +1833,9 @@ Thus, if we define a ``multiplication'' on pairs of values using
 %
 To make it a |Multiplicative|-homomorphism we just need to calculate a
 definition for |oneDup| to make it satisfy to homomorphism law:
+%
+\index{equational reasoning}
+%
 \begin{spec}
   oneDup                                = {- |H0(applyFD c,oneFD,oneDup)|-}
   applyFD c oneFD                       = {- Def. of |oneFD| and |applyFD| -}
@@ -1834,7 +1864,7 @@ In sum, because this computation goes through also for the other cases we can
 actually work with just pairs of values (at an implicit point |c ::
 a|) instead of pairs of functions.
 %
-Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|
+Thus we can define a variant of |FD a| to be |type Dup a = (a, a)|.
 
 %if lectureNotes
 Hint: Something very similar can be used for Assignment 2.
@@ -2031,6 +2061,8 @@ data FunExp  =  Const Rational
 What is the expression |e| for which |f = eval e|?
 
 We have
+%
+\index{equational reasoning}
 %
 \begin{spec}
         eval e x = f x
