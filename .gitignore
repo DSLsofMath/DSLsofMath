@@ -32,3 +32,6 @@ Lecture*.pdf
 /L/DSLsofMathBook.pdf
 /L/DSLsofMathBook.tex
 *.synctex.gz
+*.idx
+*.ilg
+*.ind
