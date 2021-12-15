@@ -23,24 +23,20 @@
   |Id| is evaluated in each case.
 
   \begin{enumerate}
-
-    \item |f1 x = x^2 + 4|
-
-    \item |f2 x = 7 * exp( 2 + 3*x )|
-
-    \item |f3 x = 1 / (sin x + cos x)|
-
+  \item |f1 x = x^2 + 4|
+  \item |f2 x = 7 * exp( 2 + 3*x )|
+  \item |f3 x = 1 / (sin x + cos x)|
   \end{enumerate}
 
 \end{exercise}
 
 \begin{exercise} \label{exc:derivFunExp}
-
+  \index{derive@@|derive|{}}%
+%
   For each of the expressions |e :: FunExp| you found in
   Exercise~\ref{exc:findFunExp}, use |derive| to find an expression
   |e' :: FunExp| representing the derivative of the expression, and
   verify that |e'| is indeed the derivative of |e|.
-
 \end{exercise}
 
 \begin{exercise}
@@ -48,28 +44,29 @@
   value of the derivative of a function at a given point:
 
   \begin{enumerate}
-
-    \item Using |FunExp|
-
-    \item Using |FD|
-
-    \item Using pairs
-
+  \item Using |FunExp|
+  \item Using |FD|
+  \item Using pairs
   \end{enumerate}
 
   Try using each of these methods to find the values of |f1' 2|, |f2'
-  2|, and |f3' 2|, i.e. the derivatives of each of the functions in
-  Exercise~\ref{exc:findFunExp}, evaluated at the point 2. You can
-  verify that the result is correct by comparing it with the
+  2|, and |f3' 2|, i.e.\ the derivatives of each of the functions in
+  Exercise~\ref{exc:findFunExp}, evaluated at the point 2.
+  %
+  You can verify that the result is correct by comparing it with the
   expressions |e1'|, |e2'| and |e3'| that you found in
   \ref{exc:derivFunExp}.
 
 \end{exercise}
 
 \begin{exercise}
-  The exponential function |exp t = e^t| has the property that |{-"\int"-} exp t
-  dt = exp t + C|. Use this fact to express the functions below as |PowerSeries|
-  using |integ|. \textit{Hint: the definitions will be recursive}.
+  The exponential function |exp t = e^t| has the property that
+  |{-"\int"-} exp t dt = exp t + C|.
+  %
+  Use this fact to express the functions below as |PowerSeries| using
+  |integ|.
+  %
+  \textit{Hint: the definitions will be recursive}.
 
   \begin{enumerate}
     \item |\t -> exp t  |
@@ -80,8 +77,11 @@
 \end{exercise}
 
 \begin{exercise}
-  In the chapter, we saw that a representation |expx :: PowerSeries| of the
-  exponential function can be implemented using |solve| as |expx = solve 1 id|. Use the same method to implement power series representations of the
+  In the chapter, we saw that a representation |expx :: PowerSeries|
+  of the exponential function can be implemented using |solve| as
+  |expx = solve 1 id|.
+  %
+  Use the same method to implement power series representations of the
   following functions:
 
   \begin{enumerate}
@@ -93,14 +93,8 @@
 
 \begin{exercise} \leavevmode
 
-  \begin{enumerate}
-
-    \item Implement |idx'|, |sinx'| and |cosx'| using |solve|
-
-    \item Complete the instance |Floating (PowerSeries a)|
-
-  \end{enumerate}
-
+  Implement |sinx| and |cosx| using |solve| instead of a recursive
+  definition.
 \end{exercise}
 
 \begin{exercise}
@@ -123,10 +117,12 @@
 
     \item Find an expression for |fs| in terms of |fs'|, using |integ|.
 
-    \item Use |takePoly| to find the first three coefficients of |fs|. You can
-      check that your solution is correct using a tool such as MATLAB or
-      WolframAlpha, by first finding an expression for |f t|, and then getting
-      the Taylor series expansion for that expression.
+    \item Use |takePoly| to find the first three coefficients of |fs|.
+      %
+      You can check that your solution is correct using a tool such as
+      MATLAB or WolframAlpha, by first finding an expression for |f
+      t|, and then getting the Taylor series expansion for that
+      expression.
 
   \end{enumerate}
 \end{exercise}
@@ -139,8 +135,9 @@
   $$f''\, t - 2 * f'\, t + f\, t = e^{2 * t},\quad f\, 0 = 2,\quad f'\, 0 = 3$$
 
   Solve the equation assuming that |f| can be expressed by a power series |fs|,
-  that is, use |deriv| and |integ| to compute |fs|.  What are the first three
-  coefficients of |fs|?
+  that is, use |deriv| and |integ| to compute |fs|.
+  %
+  What are the first three coefficients of |fs|?
 
 \end{exercise}
 
@@ -152,8 +149,9 @@
   $$f''\, t - 5 * f'\, t + 6 * f\, t = e^t,\quad f\, 0 = 1,\quad f'\, 0 = 4$$
 
   Solve the equation assuming that |f| can be expressed by a power series |fs|,
-  that is, use |deriv| and |integ| to compute |fs|.  What are the first three
-  coefficients of |fs|?
+  that is, use |deriv| and |integ| to compute |fs|.
+  %
+  What are the first three coefficients of |fs|?
 
 \end{exercise}
 
@@ -166,8 +164,9 @@
   0 = 6 $$
 
   Solve the equation assuming that |f| can be expressed by a power series |fs|,
-  that is, use |deriv| and |integ| to compute |fs|.  What are the first three
-  coefficients of |fs|?
+  that is, use |deriv| and |integ| to compute |fs|.
+  %
+  What are the first three coefficients of |fs|?
 
 \end{exercise}
 
@@ -195,10 +194,9 @@
   $$f'' \,t -3 \sqrt{2} * f' \, t + 4 * f \, t = 0, \quad f\, 0 = 2,\quad f'\, 0
   = 3 \sqrt{2}$$
 
-  Solve the equation assuming that |f| can be
-  expressed by a power series |fs|, that is, use |integ| and the
-  differential equation to express the relation between |fs|, |fs'|,
-  and |fs''|.
+  Solve the equation assuming that |f| can be expressed by a power
+  series |fs|, that is, use |integ| and the differential equation to
+  express the relation between |fs|, |fs'|, and |fs''|.
   %
   What are the first three coefficients of |fs|?
 \end{exercise}

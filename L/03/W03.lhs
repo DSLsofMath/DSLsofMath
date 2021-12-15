@@ -1167,7 +1167,7 @@ case.
 Our goal is to implement a function |derive :: FunExp -> FunExp| which
 makes the following diagram commute:
 %
-\index{derive@@|derive|}%
+\index{derive@@|derive|{}}%
 
 \quad%
 \begin{tikzcd}
@@ -1220,7 +1220,7 @@ derive (Exp e) = Exp e :*: derive e
 
 Similarly, we obtain
 %
-\index{derive@@|derive|}%
+\index{derive@@|derive|{}}%
 %
 \begin{joincode}%
 \begin{code}

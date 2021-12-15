@@ -334,7 +334,7 @@ f x = exp (sin x) + x
 \end{exercise}
 
 
-\begin{exercise}
+\begin{exercise}\label{exc:simplifyFunExp}
   Write a function
 \begin{spec}
 simplify :: FunExp -> FunExp
