@@ -316,7 +316,7 @@ addList :: Additive a => [a] -> [a] -> [a]
 addList = zipWithLonger (+)
 
 zipWithLonger :: (a->a->a) -> ([a] -> [a] -> [a])
-zipWithLonger _   []      bs      = bs  -- |0+bs == bs|  {-"\index{zipWithLonger@@|zipWithLonger|}"-}
+zipWithLonger _   []      bs      = bs  -- |0+bs == bs|  
 zipWithLonger _   as      []      = as  -- |as+0 == as|
 zipWithLonger op  (a:as)  (b:bs)  = op a b : zipWithLonger op as bs
 
@@ -340,6 +340,7 @@ polyMap f (Poly as)   = Poly (map f as)
 polyCons :: a -> Poly a -> Poly a
 polyCons x (Poly xs) = Poly (x:xs)
 \end{code}
+\index{zipWithLonger@@|zipWithLonger|}%
 As we \emph{can} define a |Ring| structure on |Poly a|, and we
 have arrived at the canonical definition of polynomials, as found in
 any algebra book (see, for example, \cite{rotman2006first} for a very

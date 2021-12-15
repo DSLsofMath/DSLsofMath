@@ -1007,8 +1007,8 @@ class Field a => Transcendental a where
 \end{spec}
 %
 \index{Transcendental@@|Transcendental| (type class)}%
-\index{sin@@|sin|{}||textbf}%
-\index{cos@@|cos|{}||textbf}%
+%\index{sin@@|sin|{}||textbf}%
+%\index{cos@@|cos|{}||textbf}%
 \index{exp@@|exp|{}||textbf}%
 \index{pi@@|pi|{}||textbf}%
 %

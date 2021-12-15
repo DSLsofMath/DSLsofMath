@@ -148,7 +148,7 @@ or equivalently:
 
 Both the LHS and RHS are linear transformations (from a vector space V to W), thus to compare them we need to apply them to vectors in V. In general
   h1 =L= h2 iff forall v. h1 v =V= h2 v
-It is enough to check this for the base vectors (is r).
+It is enough to check this for the basis vectors (is r).
 The resulting vectors then need to be compared:
   v1 =V= v2 iff forall i. v1 i == v2 i
 

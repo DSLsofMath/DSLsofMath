@@ -267,7 +267,7 @@ replacement for the |Num| class!
 \end{exercise}
 % If label:=pin then the text will be connected to the rectangle by a short "pin" (line) 17.10.3 in pgfmanual
 
-\begin{figure}
+\begin{figure}[tpbp]
   \centering
   \begin{tikzpicture}
 %  \draw[help lines] (-3,-3) grid (3,3);
