@@ -113,7 +113,9 @@ the associated matrix.
 % \label{exc:}
 % \end{exercise}
 
+%if lectureNotes
 \subsection{Exercises from old exams}
+%endif
 
 \begin{exercise}
 

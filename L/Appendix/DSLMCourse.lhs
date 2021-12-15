@@ -1,4 +1,4 @@
-\chapter{The course ``DSL of Mathematics''}
+\chapter{The course ``DSLs of Mathematics''}
 \label{sec:DSLMcourse}
 
 From 2016 there has been a BSc-level university course on

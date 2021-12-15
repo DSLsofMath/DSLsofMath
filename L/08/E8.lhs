@@ -39,7 +39,9 @@ Derive a general formula for |ℒ {-"f^{(k)} "-} s|.
 % TODO (by DaHe): Add some exercises on inverse Laplace transforms and partial
 % fraction decomposition
 
+%if lectureNotes
 \subsection{Exercises from old exams}
+%endif
 
 \begin{exercise}
   \textit{From exam 2016-03-15}
