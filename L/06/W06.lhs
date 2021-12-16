@@ -208,7 +208,9 @@ together.}:
 %
 \begin{code}
 mulStream :: Ring a => Stream a -> Stream a -> Stream a
-mulStream (a : as) (b : bs) = (a*b) :  (as * (b : bs) + (a : as) * bs)
+mulStream []        _         = []
+mulStream _         []        = []
+mulStream (a : as)  (b : bs)  = (a*b) :  (as * (b : bs) + (a : as) * bs)
 \end{code}
 %
 As in the case of pairs, we find that we do not need any properties of
@@ -222,12 +224,17 @@ type Stream a = [a]
 instance Additive a => Additive (Stream a) where
   zero  = repeat zero
   (+)   = addStream
+instance AddGroup a => AddGroup (Stream a) where
+  negate = negStream
 instance Ring a => Multiplicative (Stream a) where
   one   = one : zero
   (*)   = mulStream
 
 addStream :: Additive a => Stream a -> Stream a -> Stream a
-addStream (a : as)  (b : bs)  =  (a + b)  :  (as + bs)
+addStream = zipWithLonger (+)
+
+negStream :: AddGroup a => Stream a -> Stream a
+negStream = map negate
 \end{code}
 
 \begin{exercise}
@@ -732,7 +739,7 @@ cx = 1  :  neg 0  :  frac (neg 1) 2  :  0               :  error "TODO"
 %
 
 \section{Exponentials and trigonometric functions}
-
+\label{sec:expPS}
 We have now shown how to compute the power series representations of
 the functions |exp|, |sin|, and |cos|.
 %

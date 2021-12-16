@@ -5,12 +5,12 @@
 \label{sec:exp}
 %if False
 \begin{code}
-{-# LANGUAGE RebindableSyntax #-}
+{-# LANGUAGE RebindableSyntax, TypeSynonymInstances #-}
 module DSLsofMath.W08 where
 import Prelude hiding (Num(..),(/),(^),Fractional(..),Floating(..),sum)
 import DSLsofMath.W05
 import qualified DSLsofMath.W06
-import DSLsofMath.W06 (integ, sinx, sinf, cosx, cosf)
+import DSLsofMath.W06 (Taylor, integ, sinx, sinf, cosx, cosf)
 import DSLsofMath.Algebra
 import Data.Complex
 \end{code}
@@ -26,7 +26,9 @@ This is undoubtedly the most important function in mathematics.
 \end{quote}
 %
 Rudin goes on
-
+%
+\index{exp@@|exp|{}}
+%
 \begin{quote}
 It is defined, for every complex number |z|, by the formula
 \[
@@ -89,39 +91,43 @@ sinf 1  =  0.8414709848078965
 %
 and therefore |expf i == cosf 1 :+ sinf 1|.
 %
-This is not a coincidence, as we shall see.
+This is no coincidence, as we shall see.
 
-First we define a helper function |compScale| specified by |eval
-(compScale as c) x = eval as (c*x)|.
+First we define a helper function |compScale| specified by
+%
+|eval (compScale c as) x = eval as (c*x)|.
+% eval (compScale c as) = (eval as) . (c*)
+% eval (compScale c as) = (.(c*)) (eval as)
+% eval . compScale c = (.(c*)) . eval
 %
 Then we define the power series representing the function
-\(f(x) = e^{i x}\) as |compScale expx i|.
+%
+\(f(x) = e^{i x}\) as |compScale i expx|.
 \begin{code}
-compScale :: Ring a => Poly a -> a -> Poly a
-compScale (Poly as) c = Poly (zipWith (*) as (iterate (c*) 1))
+compScale :: Ring a => a -> Poly a -> Poly a
+compScale c (Poly as) = Poly (zipWith (*) as (iterate (c*) 1))
 
 type PSC a = PowerSeries (Complex a)
 expix :: Field a => PSC a
-expix = compScale expx i
+expix = compScale i expx
 
 cosxisinx :: Field a => PSC a
 cosxisinx = cosx + Poly [i] * sinx
-
+\end{code}
+%
+As the code is polymorphic in the underlying number type, we can use
+rationals to be able to test for equality without rounding problems.
+%
+We can see that every second coefficient is real and every second is
+imaginary:
+\begin{code}
 ex2, ex2' :: Field a => PSC a
 ex2   = takePoly 8 expix
 ex2'  = takePoly 8 cosxisinx
 
 test2 :: Bool
 test2 = ex2 == (ex2' :: PSC Rational)
-\end{code}
 
-As the code is polymorphic in the underlying number type, we can use
-rationals here to be able to test for equality without rounding
-problems.
-%
-We can see that every second coefficient is real and every second is
-imaginary:
-\begin{code}
 check2 :: Bool
 check2 = ex2 == coeff2
 \end{code}
@@ -132,27 +138,6 @@ coeff2 =   Poly [      1            :+ 0, {-"\qquad"-}  0 :+     1,
                        1  /  24     :+ 0, {-"\qquad"-}  0 :+     1  /  120,
                    (-  1  /  720)   :+ 0, {-"\qquad"-}  0 :+ (-  1  /  5040)]
 \end{code}
-
-% Yet another Alternative from here; but does not work due to lack of Transcendental instance for Stream/MacLaurin
-%
-% \begin{spec}
-% expix3 :: Taylor (Predefined.Complex Double)
-% expix3 = exp (i * x)
-%  where i = [0 Predefined.:+ 1]
-%        x = [0,1]
-%
-% ex2alt3 = take 10 expix3
-%
-% cosxisinx3 :: Taylor (Predefined.Complex Double)
-% cosxisinx3 = cos x + i * sin x
-%  where i = [0 Predefined.:+ 1]
-%        x = [0,1]
-%
-% ex2'alt3 = take 10 cosxisinx3 -- also possible: convert using toMacLaurin to get rid of factorial
-% \end{spec}
-% ends here
-%
-%
 
 We can see that the real part of this series is the same as
 \begin{code}
@@ -185,12 +170,15 @@ sina (2 * n)  = 0
 sina (2*n+1)  = (-1)^n / (2*n+1)!
 \end{spec}
 This can be proven from the definitions of |cosx| and |sinx|.
-%
+
+\paragraph{Euler's formula and periodic functions}
+
 From this we obtain \emph{Euler's formula}:
 
 \begin{spec}
 exp (i*x) = cos x + i*sin x
 \end{spec}
+
 
 One thing which comes out of Euler's formula is the fact that the
 exponential is a \emph{periodic function} along the imaginary axis.
@@ -204,7 +192,6 @@ Therefore, for this definition to make sense, we need addition on
 |A|; in fact we normally assume at least |AddGroup A|.
 %
 \index{AddGroup@@|AddGroup| (type class)}%
-
 
 Since |sin| and |cos| are periodic, with period |tau = 2 * pi|, we have,
 using the standard notation |a+i*b| for some |z = a :+ b|:
@@ -233,6 +220,102 @@ Thus, we see that |exp| is periodic, because |exp z = exp (z + T)|
 with |T = i*tau|, for all |z|.
 %\jp{Question: are all periodic functions also periodic in the taylor series space?}
 
+\paragraph{Taylor meets transcendental functions}
+In \cref{sec:expPS} we saw that we could make power series instances
+for |Transcendental|, including |exp|, |sin|, and |cos|.
+%
+We can do the same for the Taylor series representation: [f, f', f'',
+  ...].
+%
+With this representation we have very easy implementations of
+derivative, integral, and value at zero:
+\begin{code}
+derivT :: Taylor a -> Taylor a
+derivT = tail
+
+integT :: a -> Taylor a -> Taylor a
+integT = (:)
+
+val ::  Additive a => Taylor a  ->  a
+val (a:_)   =   a
+val _       =   zero
+\end{code}
+%
+We can borrow the same derivation of the differential equations
+defining |expT|, |sinT|, and |cosT| recursively, just replacing
+|integ| with |integT|, etc.
+%
+\begin{code}
+expT, sinT, cosT :: Transcendental a => Taylor a -> Taylor a
+expT  as  = integT  (exp  (val as))  (expT as   * derivT as)
+sinT  as  = integT  (sin  (val as))  (cosT as   * derivT as)
+cosT  as  = integT  (cos  (val as))  (-sinT as  * derivT as)
+\end{code}
+%
+With this in place we can assemble the instance declaration:
+\begin{code}
+instance Transcendental a => Transcendental (Taylor a) where
+   pi   =  [pi]
+   exp  =  expT
+   sin  =  sinT
+   cos  =  cosT
+\end{code}
+
+Only one instance remains: we have not yet defined |recip| for Taylor
+series.
+%
+Here we can use the easy access to the derivative as a help in the
+implementation.
+%
+We want to compute |g == recip f| which is specified by |g*f==one|.
+%
+We can write |f == head f : tail f == f0 : f'| where |f' :: Taylor a|.
+%
+If we compute the derivative of the specification we get |derivT (g*f) ==
+derivT one| which simplifies to |g'*f+g*f'==0|.
+%
+From this we can extract |g' == -g*f'/f == -f'*g*g| because dividing
+by |f| is the same as multiplying by |recip f == g|.
+% 
+Thus we can implement the last remaining instance:
+\begin{code}
+instance Field a => MulGroup (Taylor a) where
+  recip = recipStream
+
+recipStream :: Field a => Taylor a -> Taylor a
+recipStream [] = error "recipStream: divByZero"
+recipStream (f0:f') = g
+  where  g  = g0:g'
+         g0 = recip f0
+         g' = negate (f' * g*g)
+\end{code}
+Just to check we can now compute the first few terms in |expT x :
+Taylor REAL|:
+\begin{code}
+expTx :: Taylor REAL
+expTx = expT [0,1]
+testExpT = take 5 expTx == [1.0, 1.0, 1.0, 1.0, 1.0]
+\end{code}
+All derivatives are one, as expected.
+
+We can also combine this with the complex number example above:
+%
+\begin{code}
+expix3 :: Taylor (Complex Double)
+expix3 = exp (i * x)            where  i  = [0 :+ 1]; x  = [0,1]
+
+ex2alt3 = take 10 expix3
+testex2alt3 = ex2alt3 ==  take 10 (concat (repeat [1, i, -1, -i]))
+
+cosxisinx3 :: Taylor (Complex Double)
+cosxisinx3 = cos x + i * sin x  where  i  = [0 :+ 1];  x  = [0,1]
+
+ex2'alt3 = take 10 cosxisinx3
+\end{code}
+%
+As with |expTx|, these coefficients in these series are also really
+simple: the four values |[1, i, -1, -i]| just repeat forever.
+
 \section{The Laplace transform}
 
 This material was inspired by \citet{quinn2008discovering}, which is
@@ -260,7 +343,7 @@ fs = integ 1 fs'
    where  fs'   = integ 0 fs''
           fs''  = exp3x + 3 * fs' - 2 * fs
 exp3x :: Field a => PowerSeries a
-exp3x = compScale expx 3
+exp3x = compScale 3 expx
 \end{code}
 We have done this by ``zooming in'' on the function |f| and representing
 it by a power series, |f x = Sigma an * x^n|.
@@ -456,14 +539,23 @@ transformation is defined, and for any constants |alpha| and |beta|
 
 Note that this is an equality between functions.
 %
-Indeed, recalling \cref{sec:LinAlg}, in particular \cref{sec:functions-vector-space}, we are working here with the
-vector space of functions (|f| and |g| are elements of it)
+Indeed, recalling \cref{sec:LinAlg}, in particular
+\cref{sec:functions-vector-space}, we are working here with the vector
+space of functions (|f| and |g| are elements of it).
+%
+Let us call the space of real functions |V = X -> REAL| (for some |X|)
+so that we have |f, g : V|.
+%
+And let us call the space of functions that |ℒ| returns |W = S -> CC|
+for some suitable type |S|.
 %
 The operator |(*^)| refers to scaling in a vector space --- here
-scaling functions.
+scaling functions in |V| on the LHS and functions in |W| on the RHS.
 %
-The above equation says that |ℒ| is a linear transformation in that
-space.
+The above equation says that |ℒ| is a linear transformation from |V|
+to~|W|.
+%
+\index{linear transformation}%
 
 Applying this linearity property to the left-hand side of (1), we have
 for any |s|:
@@ -525,7 +617,7 @@ sum of functions with known inverse transforms.
 We know one such function:
 
 \begin{spec}
-exp (alpha * t)  {- is the inverse Laplace transform of -}  (frac 1 (s - alpha))
+\t -> exp (alpha * t)  {- is the inverse Laplace transform of -} \s -> (frac 1 (s - alpha))
 \end{spec}
 
 In fact, in our case, this is all we need.
@@ -613,6 +705,101 @@ The checking may seem overly pedantic, but when solving these
 equations by hand it is often these last checks which help catching
 mistakes along the way.
 
+\subsection{Some standard Laplace transforms}
+%
+Now when we have tools to calculate solutions to ODEs we can use this
+to compute some Laplace transforms for common functions specified by
+ODEs, like |exp|, |sin|, and |cos|.
+%
+
+\paragraph{Deriving |ℒ exp|:}
+The easiest one is |exp| which is the unique solution to the ODE |e' =
+e|, |e 0 = 1|.
+%
+Here we can use the "Laplace-D" law:
+%
+|ℒ e' s = s * ℒ e s - e 0| in combination with the initial condition
+and the application of |ℒ| to our characterising ODE
+%
+|ℒ e' s = ℒ e s| to eliminate |ℒ e' s|.
+%
+We get |ℒ e s = s * ℒ e s - 1| which is now an equation we can solve
+for |ℒ e s| (abbreviated to |E s|).
+%
+First collect the terms, |(s-1)*E s = 1|, then divide by |s-1| to get 
+%
+|E s = 1/(s-1)|.
+%
+Thus |ℒ exp s = 1/(s-1)|.
+
+It is instructive to see what happens when we make minor changes to
+the ODE, for example |f' = alpha * f|, |f 0 = 1| for some constant
+|alpha|.
+%
+The derivation is very similar but we get the equation
+%
+|alpha * ℒ f s = s * ℒ f s - 1| to solve, which gives us
+%
+|ℒ f s = 1/(s-alpha)|.
+%
+It is reassuring to see that we recover |exp| if we let |alpha = 1|.
+%
+But what function is |f|?
+%
+We know that |f x = A*exp (alpha*x)| has derivative |f' x =
+alpha*A*exp (alpha*x) = alpha * f x|, and with |A=1| we satisfy the
+initial condition |f 0 = 1|.
+%
+Thus |ℒ (\x->exp(alpha*x)) s = 1/(s-alpha)|.
+%
+
+From this we can also see that the ODE |f' = alpha * f|, |f 0 = A| has
+the transform |A/(s-alpha)|.
+
+\paragraph{Deriving |ℒ sin| and |ℒ cos|:}
+%
+%{
+%format si = "\Varid{si}"
+With the same method we can compute the transforms of |sin| and |cos|.
+%
+First the ODEs: |sin| and |cos| are the solutions to the the coupled
+equations |si' = co|, |si 0 = 0|, |co' = -si|, |co 0 = 1|.
+%
+We apply Laplace to both ODEs (and linearity in the second):
+%
+\begin{spec}
+ ℒ si'  s = ℒ co     s
+ ℒ co'  s = ℒ (-si)  s = -ℒ si s
+\end{spec}  
+%
+As for |exp| we can use the Laplace-D-law to simplify the derivatives:
+%
+\begin{spec}
+  ℒ si'  s = s * ℒ si  s - si  0 = s * ℒ si  s
+  ℒ co'  s = s * ℒ co  s - co  0 = s * ℒ co  s - 1
+\end{spec}  
+%
+We combine our equations to eliminate |si'| and |co'|:
+%
+\begin{spec}
+    ℒ co  s = s * ℒ si  s
+ -  ℒ si  s = s * ℒ co  s - 1
+\end{spec}  
+and introduce names for the transformed functions: |S = ℒ si| and |C =
+ℒ co|:
+\begin{spec}
+    C  s = s * S  s
+ -  S  s = s * C  s - 1
+\end{spec}  
+%
+Use the first to eliminate |C s| in the second to get |- S s = s^2 *
+S s - 1| which means |1 = (s^2 + 1) * S s| and finally
+\begin{spec}
+  S s =            1 / (s^2 + 1)
+  C s = s * S s =  s / (s^2 + 1)
+\end{spec}  
+%}
+
 \section{Laplace and other transforms}
 \label{sec:LaplaceSum}
 
@@ -622,8 +809,6 @@ be used to solve differential equations.
 It can be seen as a continuous version of the transform between the
 infinite sequence of coeeficients |a : Nat -> REAL| and the functions
 behind formal power series.
-%
-
 
 Laplace is also closely related to Fourier series, which is a way of
 expressing functions on a closed interval as a linear combination of
