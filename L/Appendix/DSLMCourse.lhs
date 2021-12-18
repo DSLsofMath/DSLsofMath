@@ -2,7 +2,7 @@
 \label{sec:DSLMcourse}
 
 From 2016 there has been a BSc-level university course on
-``Domain-Specific Languages of Mathematics'' at the Computer Science
+``Domain-Specific Languages of Mathematics (DSLM)'' at the Computer Science
 and Engineering (CSE) Department, joint between Chalmers University of
 Technology and University of Gothenburg, Sweden.
 %

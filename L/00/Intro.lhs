@@ -173,7 +173,7 @@ mathematics, starting in the 1930:s. See
 \href{https://en.wikipedia.org/wiki/Nicolas_Bourbaki}{wikipedia}.}
 which exerted an enormous influence on present day mathematics.
 
-Hence, the topic of this \course{} is \emph{DSLs of Mathematics (DSLM)}.
+Hence, the topic of this \course{} is \emph{DSLs of Mathematics}.
 %
 It presents classical mathematical topics in a way which builds on the
 experience of discrete mathematics: giving specifications of the
@@ -361,7 +361,7 @@ and implementing mathematical text.
 \label{sec:pitfalls}
 %note: a bit odd placement of this section in a chapter "about this book"
 
-\subsection{A function or the value at a point?}
+\paragraph{A function or the value at a point?}
 
 Mathematical texts often talk about ``the function $f(x)$'' when ``the
 function $f$'' would be more clear.
@@ -378,9 +378,10 @@ But if we let $s = 5*f(x)$ it is not clear if $s$ should be seen as a
 constant (for some fixed value $x$) or as a function of $x$.
 
 Paying attention to types and variable scope often helps to sort out
-these ambiguities.
+these ambiguities and we will expand on this in
+\cref{sec:functions-and-scoping}.
 
-\subsection{Scoping}
+\paragraph{Scoping}
 \label{sec:scoping-pitfall}
 The syntax and scoping rules for the integral sign are rarely
 explicitly mentioned, but looking at it from a software perspective

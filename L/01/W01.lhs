@@ -20,6 +20,14 @@ the code for this chapter is placed in a module called
 %
 As mentioned earlier, the code is available on
 \href{https://github.com/DSLsofMath/DSLsofMath}{GitHub}.
+%
+It is strongly recommended to try out the different examples, to play
+with the code and to make different edits and tests in order to reach
+a deeper understanding.
+%
+But then please use the source files instead of trying to
+copy-and-paste from the PDF, to avoid confusing error messages due to
+problems with layout or unicode characters.
 
 \begin{code}
 module DSLsofMath.W01 where
@@ -447,8 +455,8 @@ We will only briefly encounter such a case in
 Later on (in \cref{sec:ArithExp}), we will use partial functions for
 looking up values in an environment.
 %
-Here we prepare this by presenting a DSL for partial functions with a
-finite domain.
+Here we prepare this by presenting a minimal DSL for partial functions
+with a finite domain.
 %
 The type |Env v s| will be the \emph{syntax} for the type of partial
 functions from |v| to |s|, and defined as follows:
@@ -507,10 +515,9 @@ if one is found, and |Nothing| otherwise.
 %**TODO: Explain boolean guards
 \begin{code}
 evalEnv vss x  =  findFst vss
-  where  findFst ((v,s):vss)
-           | x == v         =  Just s
-           | otherwise      =  findFst vss
-         findFst []         =  Nothing
+  where  findFst ((v,s):vss)   | x == v         =  Just s     
+                               | otherwise      =  findFst vss
+         findFst [] =  Nothing
 \end{code}
 %
 Another equivalent definition is |evalEnv = flip lookup|, where
@@ -782,7 +789,8 @@ values for the values of two rolled dice.
 It is very often possible to describe a \addtoindex{family of types}
 using a \addtoindex{type parameter}.
 %
-One simple example is the type constructor |Maybe|:
+One simple example is the type constructor |Maybe|, used for
+encapsulation of an optional value:
 %
 \index{Maybe@@|Maybe| type}%
 %
@@ -800,7 +808,7 @@ This declaration introduces
 \index{Maybe@@|Maybe| type!Just@@|Just|}%
 \end{itemize}
 %
-A maybe type is often used when an operation may, or may not, return a
+A maybe type can be used when an operation may, or may not, return a
 value:
 %
 \begin{code}

@@ -370,7 +370,7 @@ Here we use a string, so we have an infinite supply of variables.
 data MVExp = Va String | Ad MVExp MVExp | Di MVExp MVExp
 \end{code}
 where the last constructor |Di| is intended for division (for a change).
-
+%
 % The above declaration introduces:
 % \begin{itemize}
 % \item a new type |MVExp| for multi-variable arithmetic expressions,
@@ -382,13 +382,11 @@ where the last constructor |Di| is intended for division (for a change).
 Example expressions include |v = Va "v"|, |e1 = Ad v v|, and |e2 = Di e1 e1|.
 
 %if False
-
 \begin{code}
 v   = Va  "v"
 e1  = Ad  v   v
 e2  = Di  e1  e1
 \end{code}
-
 %endif % False
 
 % \pj{Add some text in an earlier chapter about |:+| colon-operators, parameterised datatypes, more than one defintion variant in one file, etc. }
@@ -425,12 +423,9 @@ e2  = Di  e1  e1
 % version of a datatype without changing the names, to avoid multiple
 % modules or too many primed names.
 
-Together with a datatype for the syntax of arithmetic expressions we
-want to define an evaluator of the expressions.
-
-In the evaluator for |MVExp| we take this idea one step further: given an
-environment |env| and the syntax of an arithmetic expression |e| we
-compute the value of that expression.
+In the evaluator for |e :: MVExp| we use an environment |env| to look
+up variables whose values are needed to compute the value of the
+expression.
 %
 Because the semantics of |env| is a partial function (modelled as a
 total function of type |String -> Maybe QQ|), the semantics of
@@ -501,3 +496,22 @@ indeed, |Env String QQ| is like a table of several variables and their values.
 % \end{exercise}
 
 %*TODO: Perhaps add simple exercises on renaming and variable capture
+
+\paragraph{Polymorphic variables} In |MVExp| we used variables of type
+|String|, but it is often convenient to be able to choose another type
+for variables.
+%
+Here is the same code for |eval| but with a type parameterised over
+the choice of type for the variables.
+%
+Note that |PExp String| is isomorphic to |MVExp|.
+\begin{code}
+data PExp v = V v | A (PExp v) (PExp v) | D (PExp v) (PExp v)
+evalPExp :: Eq v => PExp v -> Env v QQ -> Maybe QQ
+evalPExp e env = eval e
+  where  
+    eval  (V  x)       =  evalEnv env x
+    eval  (A  e1  e2)  =  mayAdd  (eval e1)  (eval e2)
+    eval  (D  e1  e2)  =  mayDiv  (eval e1)  (eval e2)
+\end{code}
+%

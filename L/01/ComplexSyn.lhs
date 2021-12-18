@@ -47,8 +47,8 @@ the symbol |i|, an embedding from |REAL|, addition and multiplication.
 %
 \index{constructor function}%
 %
-We make these four \emph{constructors} in one recursive datatype as
-follows:
+We make these four operations into \emph{constructors} in one
+recursive datatype as follows:
 %
 %format I2 = I
 \begin{code}
@@ -259,9 +259,9 @@ propFromCD :: ComplexD -> Bool
 propFromCD s =  evalE (fromCD s) == s
 \end{code}
 
-Other desirable laws are that |+| and |*| should be
-\addtoindex{associative} and \addtoindex{commutative} and |*| should
-\addtoindex{distribute over} |+|:
+Other desirable laws are that |(+)| and |(*)| should be
+\addtoindex{associative} and \addtoindex{commutative} and |(*)| should
+\addtoindex{distribute over} |(+)|:
 %if false
 \begin{code}
 propAssocAdd    :: (Num a, SemEq a) => a -> a -> a -> Bool

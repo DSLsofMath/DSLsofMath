@@ -216,14 +216,16 @@ The embedding should satisfy a round-trip property:
 %
 |eval (embed s) == s| for all semantic complex numbers |s|.
 %
+What about the opposite direction: when is |embed (eval e) == e|?
+%
 Here is a diagram showing how the types and the functions fit together
 
+\hsindent{}%
 \begin{tikzcd}
   |ComplexSyn r| \arrow[d, bend left, "|eval|"]  \arrow[loop right, "|embed . eval|"] \\
   |ComplexSem r| \arrow[u, bend left, "|embed|"] \arrow[loop right, "|eval . embed|"]
 \end{tikzcd}
 
-What about the opposite direction: when is |embed (eval e) == e|?
 
 Step 0: type the quantification: what is the type of |e|?
 
@@ -240,14 +242,22 @@ property related to the first round-trip property?
   defining the polar view of Complex Numbers and try to implement
   complex numbers again, this time based on magnitude and phase for
   the semantics.
+  %
+  Try to use the same interface, so that you can import this new polar
+  representation or the previous cartesian representation without
+  changing anything more than the import statement.
 \end{exercise}
 
 \begin{exercise}
   Implement a simplifier |simp :: ComplexSyn r -> ComplexSyn r| that
   handles a few cases like |0 * x = 0|, |1 * x = x|, |(a + b) * c = a
-  * c + b * c|, \ldots
+  * c + b * c|, etc.
   %
   What class context do you need to add to the type of |simp|?
+  %
+  This exercise is rather open-ended but it is recommended to start
+  with a concrete view of what expected ``normal forms'' should be so
+  that you can test it.
 \end{exercise}
 
 %**TODO: include as an early exercise
