@@ -107,11 +107,14 @@ and Programming'' \citep{doets-haskellroadto-2004}.
 
 %*TODO: Perhaps add a bit about laws for pure set theory: x /= S x, Commutative(Union), etc.
 
-\subsection{Assignment 1: DSLs, sets and von Neumann}
+\subsection{DSLs, sets and von Neumann}
 \label{dsls-sets-and-von-neumann}
 
-In this assignment you will build up a domain-specific language (a
-DSL) for finite sets.
+This subsection describes a larger exercise (or small project) you can
+use to practice what you have learnt so far.
+%
+In this project you will build up a domain-specific language (a DSL)
+for finite sets.
 %
 The domain you should model is pure set theory where all members are
 sets.
@@ -119,8 +122,8 @@ sets.
 \index{abstract syntax tree}%
 %
 Define a datatype |TERM v| for the abstract syntax of set expressions
-with variables of type |v| and a datatype |PRED v| for predicates over
-pure set expressions.
+with variables of type |v| (as in \cref{sec:polyvar}) and a datatype
+|PRED v| for predicates over pure set expressions.
 
 \paragraph{Part 1.} |TERM| should have constructors for
 

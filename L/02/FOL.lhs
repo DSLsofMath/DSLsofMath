@@ -9,9 +9,7 @@ Our next DSL is that of \emph{First Order
   Logic\lnOnly{\footnote{Swedish: Första ordningens logik =
       predikatlogik}}}, or FOL for short, and also known as Predicate
 Logic.
-
-%TODO: include top-level explanation: Adds term variables and functions, predicate symbols and quantifiers (sv: kvantorer).
-
+%
 Compared to propositional logic, the main addition is
 \emph{quantification over individuals}.
 %
@@ -53,15 +51,15 @@ and three function symbols:
 evalRat :: RatT -> (VarT -> RatSem) -> RatSem
 type RatSem = Rational
 \end{code}
-
+%
 %if False
 \begin{code}
 evalRat = error "evalRat: todo"
 \end{code}
 %endif
-
+%
 \end{exercise}
-
+%
 As mentioned above, the propositions (often referred to as
 \emph{formulas} in the context of FOL) are extended so that they can
 refer to terms. That is, the names from the propositional calculus are
@@ -88,56 +86,47 @@ first the logical connectives from the propositional calculus:
 |And|, |Or|, |Implies|, |Not|, and then two quantifiers:
 %
 ``forall'' (|ForallAlone|) and ``exists'' (|ExistsAlone|).
-
-Thus the following is an example FOL formula:
+%
+Thus the following are examples of FOL formulas:
 %
 \begin{spec}
   Forall x (Pos(x) => (Exists y (Less(f(x,x),y))))
+  Forall x (Forall y (Equal(plus(x,y),plus(y,x))))   -- |plus| is commutative
 \end{spec}
 %
-The fact that quantification is over individuals is a defining
-characteristic of FOL.  If one were to, say, quantify over predicates,
-we'd have a higher-order logic, with completely different properties.
-%
-
-As another example, we can write a formula stating that the function symbol |plus| is
-commutative:
-%
-\begin{spec}
-  Forall x (Forall y (Eq(plus(x,y),plus(y,x))))
-\end{spec}
-%
-Here is the same formula with infix operators:
+Here is the second formula again, but with infix operators:
 %
 \begin{spec}
   Forall x (Forall y ((x+y)==(y+x)))
 \end{spec}
 %
-Note that |==| is a binary predicate symbol (written |Eq| above),
-while |+| is a binary function symbol (written |plus| above).
+Note that |(==)| is a binary predicate symbol (written |Equal| above),
+while |(+)| is a binary function symbol (written |plus| above).
+
+
+
+% 
+The fact that quantification is over individuals is a defining
+characteristic of FOL.  If one were to, say, quantify over predicates,
+we'd have a higher-order logic, with completely different properties.
+%
+
 
 
 As before we can model the expression syntax (for FOL, in this case)
 as a datatype.
 %
-We keep on using the logical connectives |And|, |Or|, |Implies|, |Not| from the
+We keep on using the logical connectives |Implies|, |And|, |Or|, |Not| from the
 type |Prop|, add predicates over terms, and quantification.
 %
-The constructor |Equal| could be eliminated in favour of |PName "Eq"| but
+The constructor |Equal| could be eliminated in favour of |PName "Equal"| but
 it is often included as a separate constructor.
 
 \begin{code}
 type PSym = String
-data FOL  =  PName PSym [RatT]
-          |  Equal  RatT  RatT
-
-          |  And      FOL   FOL
-          |  Or       FOL   FOL
-          |  Implies  FOL   FOL
-          |  Not      FOL
-
-          |  FORALL  VarT  FOL
-          |  EXISTS  VarT  FOL
+data FOL  =  Implies FOL FOL | And FOL FOL | Or FOL FOL | Not FOL
+          |  FORALL  VarT  FOL    |  EXISTS  VarT  FOL
+          |  PName PSym [RatT]    |  Equal  RatT  RatT
   deriving Show
 \end{code}
 

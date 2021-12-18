@@ -497,9 +497,11 @@ indeed, |Env String QQ| is like a table of several variables and their values.
 
 %*TODO: Perhaps add simple exercises on renaming and variable capture
 
-\paragraph{Polymorphic variables} In |MVExp| we used variables of type
-|String|, but it is often convenient to be able to choose another type
-for variables.
+\paragraph{Polymorphic variables}
+\label{sec:polyvar}
+%
+In |MVExp| we used variables of type |String|, but it is often
+convenient to be able to choose another type for variables.
 %
 Here is the same code for |eval| but with a type parameterised over
 the choice of type for the variables.

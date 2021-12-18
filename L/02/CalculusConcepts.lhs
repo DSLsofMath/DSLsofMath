@@ -45,23 +45,22 @@ type Q = {-"ℝ_{> 0}"-} → (X - {p})
 Limp p X = ∃ getq : Q? ∀ ε > 0? absBar (getq ε - p) < ε
 \end{spec}
 
-Next: introduce the ``open ball'' function |B|.
+Next, we introduce the function |B| such that  
 %
+|B c r| is an ``open ball'' around |c| of radius |r|.
+%
+On the real line this open ball is just an open interval, but with
+complex |c| or in more dimensions the term feels more natural.
 \begin{spec}
 B : ℝ → {-"ℝ_{> 0}"-} → 𝒫 ℝ
 B c r = {x | absBar (x - c) < r}
 \end{spec}
+%TODO perhaps include some of this:
+% In every case |B c r| is an open set of points of distance less than
+% |r| from |c|.
 %
-|B c r| is often called an ``open ball'' around |c| of radius |r|.
-%
-On the real line this ``open ball'' is just an open interval, but with
-complex |c| or in more dimensions the term feels more natural.
-%
-In every case |B c r| is an open set of values (points) of distance
-less than |r| from |c|.
-%
-The open balls around |c| are special cases of \emph{neighbourhoods of
-  |c|} which can have other shapes but must contain some open ball.
+% The open balls around |c| are special cases of \emph{neighbourhoods of
+%  |c|} which can have other shapes but must contain some open ball.
 
 Using |B| we get
 \begin{spec}

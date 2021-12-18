@@ -61,13 +61,12 @@ we can model the abstract syntax of propositions as a datatype:
 %
 \index{abstract syntax tree}%
 %
+%data Prop  =  Con      Bool   |  And      Prop  Prop
+%           |  Not      Prop   |  Or       Prop  Prop
+%           |  Name     Name   |  Implies  Prop  Prop
 \begin{code}
-data Prop  =  Con      Bool
-           |  Not      Prop
-           |  And      Prop  Prop
-           |  Or       Prop  Prop
-           |  Implies  Prop  Prop
-           |  Name     Name
+data Prop  =  Implies  Prop  Prop  |  And      Prop  Prop  |  Or       Prop  Prop
+           |  Not      Prop        |  Name     Name        |  Con      Bool   
 type Name = String
 \end{code}
 %
@@ -177,7 +176,7 @@ Values of type |Name -> a| are called ``assignment functions'' because
 they assign values (of type |a|) to the variable names.
 %
 When we have |a = Bool|, and not too many variable names, we can
-enumerate all the combinations in a truth table.
+collect all the combinations in a truth table.
 
 As a first example of a truth table, consider the proposition |F => a|
 which we call |t| here.
@@ -397,7 +396,9 @@ Finally we can eliminate falsity as follows:
 This rule goes sometimes by its descriptive latin name \textit{ex
   falso quodlibet} --- from falsehood, anything (follows).
 
-We can then write our proof checker as follows:
+We can then write our proof checker as follows.
+%
+First the introduction rules:
 \index{eval@@|eval : Syn -> Sem|}%
 \savecolumns
 \begin{code}
@@ -408,6 +409,10 @@ checkProof (OrIntroL t)      (Or p q)     =   checkProof t p
 checkProof (OrIntroR u)      (Or p q)     =   checkProof u q
 checkProof (NotIntro q t u)  (Not p)      =   checkProof t (p `Implies` q)
                                           &&  checkProof u (p `Implies` Not q)
+\end{code}
+then the elimination rules:
+\restorecolumns
+\begin{code}
 checkProof (AndElimL q t)       p  =   checkProof  t  (p `And` q)
 checkProof (AndElimR p t)       q  =   checkProof  t  (p `And` q)
 checkProof (OrElim p q t u v)   r  =   checkProof  t  (p `Implies` r)
@@ -417,8 +422,10 @@ checkProof (NotElim t)          p  =   checkProof  t  (Not (Not p))
 checkProof (FalseElim t)        p  =   checkProof  t  (Con False)
 \end{code}
 
-Any other combination of proof/prop is an incorrect combination: the proof is not valid for the proposition.
+Any other combination of proof/prop is an incorrect combination: the
+proof is not valid for the proposition.
 
+\restorecolumns
 \begin{spec}
 checkProof _ _ = False -- incorrect proof
 \end{spec}
@@ -712,8 +719,8 @@ implyElim   f = f
 implyIntro  f = f
 \end{code}
 %
-Conjunction is represented as pairs; that is, if |p : P| and |q : Q|
-then the proof of |And P Q| should be a pair of |p| and |q|.
+Conjunction is represented as pairs; that is, if |t : P| and |u : Q|
+then the proof of |And P Q| should be a pair |(t,u)|.
 %
 The elimination rules are projections.
 %
