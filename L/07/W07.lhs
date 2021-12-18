@@ -620,7 +620,8 @@ M * w = w 0 *^ fv 0 + ... + w n *^ fv n
 type |() -> S|, thus, the only component of |M * w| is
 %
 \begin{spec}
-(M * w) () = w 0 * fv 0 () + ... + w n * fv n () = w 0 * v 0 + ... + w n * v n
+(M * w) ()  = w 0 * fv 0 () + ... + w n * fv n ()
+            = w 0 * v 0 + ... + w n * v n
 \end{spec}
 %
 i.e., the scalar product of the vectors |v| and |w|.
@@ -777,7 +778,7 @@ In the other direction one uses the equality:
 In Euclidean spaces, this means that preserving angles and preserving
 distances go hand-in-hand.
 
-Orthogonal transformations enjoy many more useful properties: we have
+Orthogonal transformations enjoy many more useful properties --- we have
 barely scratched the surface here.
 %
 Among others, their rows (and columns) are orthogonal to each other.
@@ -1950,7 +1951,7 @@ you see that they are very similar to the monadic operations
     (>>=)   :  m g -> (g -> m g') -> m g'
 \end{spec}
 %
-which suggests that the representation of possible future states might
+which suggests that the structure of possible future states might
 be monadic.
 %
 Indeed, that is the case.
@@ -2347,9 +2348,16 @@ getRow = id
 
 \paragraph{One-dimensional space}
 \label{sec:one-elem-vector}
-The following instance means that we can treat scalar fields as one-dimensional vector spaces:
+We can treat scalar fields as one-dimensional vector spaces, as shown
+by the following instance declaration:
+%
 \begin{code}
 instance Field s => VectorSpace s s where (*^) = (*)
 \end{code}
+%
+Here (for once) the vectors have the the same type as the scalars,
+which means that the scaling operation, which usually has an
+assymmetric type, now is just ordinary scalar multiplication |(*) :: s
+-> s -> s|.
 
 %include E7.lhs

@@ -14,6 +14,8 @@ Consider the following definitions:
 \index{H2@@|H2(h,Op,op)|{}||textbf}%
 \index{H1@@|H1(h,F,f)|{}||textbf}%
 \index{H0@@|H0(h,E,e)|{}||textbf}%
+%{
+%format -> = "\!\to\!"
 \begin{spec}
   -- |h : A -> B| is a homomorphism from |Op : A->A->A| to |op : B->B->B|
   H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
@@ -22,7 +24,7 @@ Consider the following definitions:
   -- |h : A -> B| is a homomorphism from |E : A| to |e : B|
   H0(h,E,e)    =  h E == e
 \end{spec}
-
+%}
 Prove or disprove the following claims:
 \begin{itemize}
 \item |H2((2*),(+),(+))|
@@ -119,7 +121,7 @@ Prove or disprove the following claims:
 \begin{exercise}
   \fromExam{2016-03-15}
 
-  In \cref{exc:e1_lattice}, we looked a datatype for the language of
+  In \cref{exc:e1_lattice}, we looked at a datatype for the language of
   \addtoindex{lattice} expressions.
   %
   We will now use some of the concepts discussed in this chapter to
@@ -150,7 +152,7 @@ Prove or disprove the following claims:
  \begin{exercise}
   \fromExam{2016-08-23}
 
-  In Exercise~\ref{exc:e1_abMon}, we looked a datatype for the
+  In Exercise~\ref{exc:e1_abMon}, we looked at a datatype for the
   language of abelian \addtoindex{monoid} expressions.
   %
   We will now use some of the concepts discussed in this chapter to
@@ -321,9 +323,9 @@ f x = exp (sin x) + x
 
 
 \begin{exercise}
-
-  Based on the lecture notes, complete all the instance and datatype
-  declarations and definitions in the files
+  %
+  Complete all the instance and datatype declarations and definitions
+  in the files
   \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/FunNumInst.lhs}{FunNumInst.lhs},
   \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/FunExp.lhs}{FunExp.lhs},
   \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/Derive.lhs}{Derive.lhs},

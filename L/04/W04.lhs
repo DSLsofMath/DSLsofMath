@@ -664,8 +664,8 @@ between |RPos| and |REAL|.
 \end{exercise}
 
 \begin{exercise}
-  Extend the exponential-logarithm isomorphism to relate |AddGroup|
-  and |MulGroup|.
+  Extend the |exp|-|log|-isomorphism to relate the methods of the |AddGroup|
+  and |MulGroup| classes.
 \end{exercise}
 
 \begin{exercise}[\textbf{Hard.}]
@@ -1678,7 +1678,7 @@ We compute, for example:
 \begin{spec}
      evalD (Exp e)                           =  {- specification of |evalD| -}
 
-     (eval (Exp e), eval' (Exp e))           =  {- def. |eval| for |Exp| + |eval'Exp|-lemma -}
+     (eval (Exp e), eval' (Exp e))           =  {- def. |eval| for |Exp|, |eval'Exp|-lemma -}
 
      (exp (eval e), exp (eval e) * eval' e)  =  {- introduce local names -}
 
@@ -1805,6 +1805,8 @@ For example:
 %
 \index{equational reasoning}%
 %
+%{
+%format != = "\!=\!"
 \begin{spec}
      h ((f, f') * (g, g'))                       =  {- def. |(*)| for |FD a| -}
 
@@ -1812,9 +1814,9 @@ For example:
 
      ((f * g) c, (f' * g + f * g') c)            =  {- def. |(*)| and |(+)| for functions -}
 
-     (f c * g c, f' c * g c + f c * g' c)        =  {- |let x=f c; y=g c; x'=f' c; y'=g' c| -}
+     (f c * g c, f' c * g c + f c * g' c)        =  {- |let x!=f c; y!=g c; x'!=f' c; y'!=g' c| -}
 
-     (  x * y  ,   x' * y   +   x * y'  )        =  {- \textbf{introduce |*?| to make the ends meet} -}
+     (  x * y  ,   x' * y   +   x * y'  )        =  {- \textbf{introduce |*?|: see def.\ below} -}
 
      (  x, x'  ) *? (y  , y'  )                  =  {- expand shorter names again -}
 
@@ -1822,6 +1824,7 @@ For example:
 
      h (f, f') *? h (g, g')
 \end{spec}
+%}
 %
 The identity will hold if we take
 %

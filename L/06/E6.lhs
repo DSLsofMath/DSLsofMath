@@ -51,7 +51,7 @@
 
   Try using each of these methods to find the values of |f1' 2|, |f2'
   2|, and |f3' 2|, i.e.\ the derivatives of each of the functions in
-  Exercise~\ref{exc:findFunExp}, evaluated at the point 2.
+  Exercise~\ref{exc:findFunExp}, evaluated at the point~2.
   %
   You can verify that the result is correct by comparing it with the
   expressions |e1'|, |e2'| and |e3'| that you found in
@@ -60,8 +60,8 @@
 \end{exercise}
 
 \begin{exercise}
-  The exponential function |exp t = e^t| has the property that
-  |{-"\int"-} exp t dt = exp t + C|.
+  The exponential function |exp t = {-"e^t"-}| has the property that
+  \(\int e^t dt = e^t + C\).
   %
   Use this fact to express the functions below as |PowerSeries| using
   |integ|.

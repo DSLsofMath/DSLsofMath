@@ -296,9 +296,11 @@ To prove |And P Q|, one needs both a proof of |P| and a proof of |Q|.
 In logic texts, one will often find
 \[ \frac{P \quad Q}{P ∧ Q} \] to represent this fact, which is called the \emph{introduction rule for (∧)}.
 %
-For the proof to be complete, one still needs to provide a full proof of |P| and another for |Q| --- it is not enough to just invoke this rule.
+For the proof to be complete, one still needs to provide a full proof
+of |P| and another for |Q| --- it is not enough to just invoke this
+rule.
 
-Therefore, in Haskell, can represent this rule by a proof-term
+Therefore, in Haskell, we can represent this rule by a proof-term
 constructor |AndIntro| with two |Proof| arguments:
 \begin{spec}
 AndIntro :: Proof -> Proof -> Proof
@@ -461,9 +463,9 @@ The intended meaning of this notation is that, to prove $P → Q$,
 it suffices to prove $Q$, but one is also allowed to use $P$ as an
 assumption in this (local) proof of $Q$.
 
-We can use our DSL to formalise this rule as Haskell data, by adding a
-constructor corresponding to implication introduction: |ImplyIntro ::
-(Proof -> Proof) -> Proof|.
+By adding a constructor corresponding to implication introduction:
+|ImplyIntro :: (Proof -> Proof) -> Proof|, we can formalise this rule
+as in the Haskell data type representing our proof DSL. 
 %
 The fact that the premiss can depend on the assumption |Q| is
 represented by a function whose parameter is the proof of |Q| in

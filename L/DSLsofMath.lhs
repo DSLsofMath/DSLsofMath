@@ -82,7 +82,8 @@
 \newcommand\jp[1]{\todo{JP: #1}}
 \newcommand\ci[1]{\todo{CI: #1}}
 \newcommand\pj[1]{\todo{PJ: #1}}
-\newcommand\extraMaterial{\(\ast\)}
+%\newcommand\extraMaterial{\(\ast\)}
+\newcommand\extraMaterial{*}
 \newcommand\pedantic[1]{\footnote{Pedantic remark: #1}}
 
 \providecommand\mathbbm{\mathbb}
@@ -202,6 +203,7 @@
 % Publisher instruction: the ToC should start at page v = page 5
 \setcounter{page}{5}
 %endif % submit
+\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
 \tableofcontents
 \mainmatter
 

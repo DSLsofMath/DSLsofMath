@@ -245,7 +245,7 @@ The third step is to formalise the definition using logic: we define
 where we have introduced an ``image function'' for sequences ``from |N| onward'':
 %
 \begin{spec}
-  I : (Nat → X) → Nat → PS X
+  I : (Nat → X) → Nat → PowSet X
   I a N = {a n | n ≥ N}
 \end{spec}
 

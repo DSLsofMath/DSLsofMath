@@ -35,8 +35,8 @@ Show that matrix-matrix multiplication is associative.
 
 \begin{exercise}
 \label{exc:Dmatrixpowerseries}
-With |G = Nat| for the set of indices, write the
-(infinite-dimensional) matrix representing |D| for power series.
+With |G = Nat| for the set of indices, write the infinite-dimensional
+matrix representing |D| for power series.
 \end{exercise}
 
 \begin{exercise}

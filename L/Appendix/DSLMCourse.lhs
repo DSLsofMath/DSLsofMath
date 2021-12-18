@@ -93,7 +93,7 @@ details are explained by
 
 %% -------------------------------------------------------------------
 % Subsequent results
-\begin{table}[h]
+\begin{table}[htb]
   \centering
   \begin{tabu}{l*{3}{c}}
                        & PASS  & IN   & OUT  \\

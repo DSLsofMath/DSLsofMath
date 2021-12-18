@@ -320,7 +320,8 @@ our informal explanation:
 \begin{spec}
 proofChecker (AllIntro f a) (Forall x p) = proofChecker (f a') (subst x a' p)
   where a' = freshFor [a, Forall x p]
-proofChecker (AllElim f t) p = checkUnify (f x') p && proofChecker t (Forall x' (f x'))
+proofChecker (AllElim f t) p  =   checkUnify (f x') p
+                              &&  proofChecker t (Forall x' (f x'))
   where x' = freshFor [f x, p]
 \end{spec}
 %

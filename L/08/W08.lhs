@@ -93,18 +93,21 @@ and therefore |expf i == cosf 1 :+ sinf 1|.
 %
 This is no coincidence, as we shall see.
 
-First we define a helper function |compScale| specified by
+First we define a helper function |compScale| which scales the input
+to a function by a factor.
+%
+It is specified by 
 %
 |eval (compScale c as) x = eval as (c*x)|.
 % eval (compScale c as) = (eval as) . (c*)
 % eval (compScale c as) = (.(c*)) (eval as)
 % eval . compScale c = (.(c*)) . eval
 %
-Then we define the power series representing the function
+Then we define the power series of 
 %
 \(f(x) = e^{i x}\) as |compScale i expx|.
 \begin{code}
-compScale :: Ring a => a -> Poly a -> Poly a
+compScale :: Ring a => a -> PowerSeries a -> PowerSeries a
 compScale c (Poly as) = Poly (zipWith (*) as (iterate (c*) 1))
 
 type PSC a = PowerSeries (Complex a)
@@ -224,8 +227,8 @@ with |T = i*tau|, for all |z|.
 In \cref{sec:expPS} we saw that we could make power series instances
 for |Transcendental|, including |exp|, |sin|, and |cos|.
 %
-We can do the same for the Taylor series representation: [f, f', f'',
-  ...].
+We can do the same for the Taylor series representation: |[f, f', f'',
+  ...]|.
 %
 With this representation we have very easy implementations of
 derivative, integral, and value at zero:
@@ -425,7 +428,7 @@ here, not |x|).
 
   Integ (D f t) * x^t dt                                       =  {- Derivative of product -}
 
-  Integ (D (f t * x^t)) - f t * log x * x^t dt                 =  {- Linearity of integration -}
+  Integ (D (f t * x^t)) - f t * log x * x^t dt                 =  {- Linearity of \(\int\) -}
 
   Integ (D (f t * x^t)) dt  -  log x * Integ f t * x^t dt      =  {- Def. of integral to \(\infty\). -}
 

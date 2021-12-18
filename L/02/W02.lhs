@@ -22,14 +22,18 @@ concepts.
 %% module FOL where
 %include FOL.lhs
 
+%\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
 %% Only text
 %include SetTheory.lhs
 
 %% Only text
 %include Examples.lhs
+%\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
 
 %% Only text
 %include CalculusConcepts.lhs
 
+%\addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
 %% A bit of code
 %include E2.lhs
+%\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}

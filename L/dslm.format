@@ -17,7 +17,7 @@
 %format Pos                     =  "\mathbb{N}_{> 0}"
 %format RPos                    =  "\mathbb{R}_{> 0}"
 %format RPosz                   =  "\mathbb{R}_{\ge 0}"
-%format PS                      =  "\mathcal{P}"
+%format PowSet                  =  "\mathcal{P}"
 % %format PS+                     =  PS "^+"
 %format idA			= id "_{" A "}"
 %format elemOf                  =  "\in"
@@ -251,3 +251,5 @@
 %format next1 = next "_1"
 %format next2 = next "_2"
 %format next3 = next "_3"
+
+%format ... = "\ldots"

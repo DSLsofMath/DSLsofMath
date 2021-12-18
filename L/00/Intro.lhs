@@ -202,7 +202,7 @@ Second, they should be able to handle new mathematical areas using the
 computer science perspective.
 %
 (For the detailed learning outcomes, see
-Figure~\ref{fig:LearningOutcomes} in Section \ref{sec:DSLMcourse}.)
+Figure~\ref{fig:LearningOutcomes} in Appendix \ref{sec:DSLMcourse}.)
 
 %*TODO: Check if this form is actually carried out (perhaps update)
 To achieve these objectives, the \course{} consists of a sequence of case
@@ -270,9 +270,16 @@ like the ``Numerical recipes in ...'' series, but rather uses Haskell
 as a ``tool for learning''.
 %
 Even code which cannot actually run can still be useful in the quest
-to ``debug the mathematical understanding'' of the reader (through
+to debug the mathematical understanding of the reader (through
 scope-checking and type-checking) when trying to encode different
 concepts in Haskell.
+
+It would be an interesting endeavour to port the code from Haskell to
+a language with an even stronger type system, like Agda
+\citep{Norell09dependentlytyped}, Idris \citep{citeulike:14291916}, or
+Lean \citep{conf/cade/MouraKADR15}.
+%
+The authors would welcome contributions in this direction.
 
 % \section{Roadmap}
 %TODO: write about the book plan and internal dependencies
@@ -418,7 +425,7 @@ Mathematics text books usually avoid the risk of confusion by
 renaming is a sufficiently important operation to be more explicitly
 mentioned.
 
-\section*{Acknowledgments}
+\section{Acknowledgments}
 
 The support from Chalmers Quality Funding 2015 (Dnr C 2014-1712, based
 on Swedish Higher Education Authority evaluation results) is

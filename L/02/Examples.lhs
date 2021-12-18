@@ -1,5 +1,4 @@
-\section{Examples}
-
+\section{Example proofs: contradiction, cases, primes}
 \subsection{Proof by contradiction}
 
 % See also ProofByContradiction.hs

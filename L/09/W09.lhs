@@ -238,15 +238,24 @@ The values of the dice are the same as in |twoDice|, but the density
 of any sum less than 7 is brought down to zero.
 
 We can check that the product of spaces is a special case of |Sigma|:
+%*TODO: define |card| and |support| as alternative semantic functions
 %
 \begin{code}
 prod a b = Sigma a (const b)
 \end{code}
 If we call |card a| the cardinality of the support type of space |a|,
-then |card (prod a b) = card a × card b|, and in the general case
-|card (Sigma a f)| = \(\sum_{i\in \mathit{support(|a|)}} |card (f
-i)|\).
-  
+then
+\begin{spec}
+  card (prod a b) == card a × card b
+\end{spec}
+and in the general case
+%{
+%format (support (a)) = "\lvert{}" a "\rvert{}"
+\begin{spec}
+  card (Sigma a f) == {-"\sum_{i\in"-} (support(a)) {-"}"-} card (f i)
+\end{spec}
+where |support a| is the set of points in the space |a|.
+%}  
 \paragraph{Projections}
 In the end we may not be interested in all values and hide some of
 them.
@@ -283,8 +292,11 @@ data Space a where
 \section{\extraMaterial Monad Interface}
 
 Seasoned functional programmers will be aware of monadic interfaces.
-For them, it may be useful to know that one can easily provide a monadic interface
-for spaces. The implementation is the following:
+%
+For them, it may be useful to know that one can easily provide a
+monadic interface for spaces.
+%
+The implementation is the following:
 
 %format <*> = "\mathbin{" < "\!\!" * "\!\!" > "}"
 \begin{code}
@@ -299,7 +311,10 @@ instance Monad Space where
 
 \begin{exercise}
   \label{ex:monad-laws}
-  Prove the functor and monad laws for the above definitions. (Use semantic equality.)
+  Prove the functor and monad laws for the above definitions.
+  %
+  (Use semantic equality.)
+%**TODO: semantic not defined yet!
 \end{exercise}
 
 \section{Distributions}
@@ -348,10 +363,10 @@ dieDistr = uniformDiscrete [1..6]
 
 Scaling is a special case of the more general operation
 |marginaliseWith| which applies a factor to every point, and ignores
-the unit type associated with |Factor|.
+the unit type from |Factor|.
 %
-In the jargon of Bayesian reasoning, this operation is often called
-``marginalisation''.
+This operation is often called ``marginalisation'', in the jargon of
+Bayesian reasoning.
 %
 \begin{code}
 marginaliseWith :: (a -> REAL) -> Space a -> Space a
@@ -427,13 +442,14 @@ integration of spaces.
 The weight is given as a second parameter to |integrator|, as a
 function mapping elements of the space to a real value.
 
-In code, we obtain the following:\footnote{You may want to come back
-to \cref{sec:big-operators} to see how to deal with the integration
-(or summation) variable and what it means for the type of the
-integrator.}
+In code, we obtain the following:%
+\footnote{You may want to come back to \cref{sec:big-operators} to see
+  how to deal with the integration (or summation) variable and what it
+  means for the type of the integrator.}
 % \TODO{PJ: I'd prefer swapping the argument order.}
 % JPB: It's generally a better idea to put the "continuation" last, because it's usually a much longer argument.
 % Also this is the order of arguments in sum and integrals.
+%*TODO: Can we replace REAL by a Ring? a Field?
 \begin{code}
 integrator :: Space a -> (a -> REAL) -> REAL
 integrator (Finite a)     g =  bigsum a g
@@ -442,9 +458,22 @@ integrator (Factor f)     g =  f * g ()
 integrator (Sigma a f)    g =  integrator a      $ \x ->
                                integrator (f x)  $ \y ->
                                g (x,y)
-integrator (Project f a)  g =  integrator a (g . f)
+integrator (Project p a)  g =  integrator a (g . p)
 \end{code}
 %
+In calculuations we will often use the notation 
+%{
+%format integrator (s) = "\int\{" s "\}"
+|integrator s g|
+%}
+for |integrator s g|.
+%
+This shows that we are dealing with a generalisation of integration to
+more complicated domains (spaces).
+%
+For simplicity we use |REAL| here, but the definitions would work for
+any field.
+
 % integr :: (a -> REAL) -> Space a -> REAL
 % integr g (Finite a)     = bigsum a g
 % integr g (RealLine)     = integral g
@@ -941,7 +970,7 @@ cond_prob_equations s f g =
 % emacs wakeup $
 %}
 \end{proof}
-\section{Examples}
+\section{Examples: Dice, Drugs, Monty Hall}
 
 We are now ready to solve all three problems motivating this chapter.
 
@@ -1314,11 +1343,13 @@ is 1).
 The proof is by induction on |m|:
 \begin{itemize}
 \item for the base case |measure (helper 0) = measure (pure 0) = 1|
-\item induction: assume that |helper m| is a distribution.
+\item for the step case: assume that |helper m| is a distribution.
   %
-  Then |if h then helper m else helper 3| is a distribution too, for every |h|.
+  Then, for every |h|, |if h then helper m else helper 3| is a
+  distribution too.
   %
-  The result is obtained by using the distribution property of |Sigma| (\cref{lem:measure-properties}).
+  The result is obtained by using the distribution property of |Sigma|
+  (\cref{lem:measure-properties}).
 \end{itemize}
 
 Then, we can symbolically compute the integrator of |helper|.

@@ -238,8 +238,8 @@ negStream = map negate
 \end{code}
 
 \begin{exercise}
-Complete the instance declarations for |MulGroup| and
-|Transcendental|.
+  Complete the |Stream| instance declarations for |MulGroup| and
+  |Transcendental|.
 \end{exercise}
 %
 Note that it may make more sense to declare a |newtype| for |Stream a|
@@ -571,7 +571,7 @@ f' x = g f x, {-"\qquad"-} f 0 = f0
 \end{spec}
 %
 i.e., they are defined in terms of the higher-order function |g| and
-initial value |f0|.
+initial value~|f0|.
 %
 The fundamental theorem of calculus
 \cite[Sect.\ 5.5]{adams2010calculus} gives us
@@ -587,7 +587,7 @@ eval as x = f0 + {-"\int_0^x "-} (g (eval as) t) dt
 \end{spec}
 %
 Assuming that |g| is a polymorphic function defined both for the
-syntax (|PowerSeries|) and the semantics (|REAL -> REAL|), and that
+syntax (|PS REAL|) and the semantics (|REAL -> REAL|), and that
 %
 \begin{spec}
 Forall as (eval (gSyn as) == gSem (eval as))
@@ -613,14 +613,16 @@ operations, which is implementable in Haskell (for a reasonable |g|).
 
 Which functions |g| commute with |eval|?
 %
-All the ones in |Ring|, |Field|, |Transcendental|, by construction;
-additionally, as above, |deriv| and |integ|.
+All functions built from methods in |Ring|, |Field|, |Transcendental|,
+by construction; additionally, as above, |deriv| and |integ|.
 %
 Therefore, we can implement a general solver for these simple
 equations:
 %
 \begin{code}
-solve :: Field a => a -> (PowerSeries a -> PowerSeries a) -> PowerSeries a
+type PS a = PowerSeries a
+  
+solve :: Field a => a -> (PS a -> PS a) -> PS a
 solve f0 g = f              -- solves |f' = g f|, |f 0 = f0|
   where f = integ f0 (g f)
 \end{code}
@@ -630,10 +632,10 @@ its definition depends on itself.
 We come back to this point soon, but first we observe |solve| in
 action on simple instances of |g|, starting with |const 1| and |id|:
 \begin{code}
-idx  ::  Field a => PowerSeries a
+idx  ::  Field a => PS a
 idx  =   solve 0 (\_f -> 1)         -- \(f'(x) = 1\), \(f(0) = 0\)
 
-expx  ::  Field a => PowerSeries a
+expx  ::  Field a => PS a
 expx  =   solve 1 (\f -> f)         -- \(f'(x) = f(x)\), \(f(0) = 1\)
 expf  ::  Field a => a -> a
 expf  =   evalPS 100 expx
@@ -678,7 +680,7 @@ As an alternative to using |solve| we can use recursion directly.
 For example, we can define sine and cosine in terms of each other:
 %
 \begin{code}
-sinx,  cosx  :: Field a =>  PowerSeries a
+sinx,  cosx  :: Field a =>  PS a
 sinx  =  integ 0 cosx
 cosx  =  integ 1 (-sinx)
 
@@ -774,9 +776,9 @@ Differentiating both sides of the specification, we obtain
   deriv (expPS as) = expPS as * deriv as
 \end{spec}
 %
-Now we have reached the form of an ordinary differential equation for
-|expPS as|, and we know how to solve them by integration, given the
-initial condition.
+Now we have reached the form of a differential equation for |expPS
+as|, and we know how to solve them by integration, given the initial
+condition.
 %
 Using |eval (expPS as) 0 == exp (eval as 0) == exp (head as)|, we
 obtain
@@ -793,19 +795,18 @@ declaration for |PowerSeries|:
 %
 \index{Transcendental@@|Transcendental| (type class)}%
 \begin{code}
-
 instance (Eq a, Transcendental a) => Transcendental (PowerSeries a) where
    pi   =  Poly [pi]
    exp  =  expPS
    sin  =  sinPS
    cos  =  cosPS
 
-expPS, sinPS, cosPS :: (Eq a, Transcendental a) => PowerSeries a -> PowerSeries a
+expPS, sinPS, cosPS :: (Eq a, Transcendental a) => PS a -> PS a
 expPS  as  = integ  (exp  (val as))  (expPS as   * deriv as)
 sinPS  as  = integ  (sin  (val as))  (cosPS as   * deriv as)
 cosPS  as  = integ  (cos  (val as))  (-sinPS as  * deriv as)
 
-val ::  Additive a => PowerSeries a  ->  a
+val ::  Additive a => PS a  ->  a
 val (Poly (a:_))   =   a
 val _              =   zero
 \end{code}
@@ -818,7 +819,7 @@ evaluating |FunExp| functions as power series!
 \index{eval@@|eval : Syn -> Sem|}%
 %
 \begin{code}
-evalP :: (Eq r, Transcendental r) => FunExp -> PowerSeries r
+evalP :: (Eq r, Transcendental r) => FunExp -> PS r
 evalP (Const x)    =  Poly [fromRational (toRational x)]
 evalP (e1 :+: e2)  =  evalP e1 + evalP e2
 evalP (e1 :*: e2)  =  evalP e1 * evalP e2
@@ -856,7 +857,7 @@ evalFunExp  (Recip e)      =   recip   (evalFunExp e)
 evalFunExp  (Negate e)     =   negate  (evalFunExp e)
 \end{code}
 
-\subsection{Syntactic derivative: |derive : FunExp -> FunExp|}
+\subsection{Syntactic derivative: \texorpdfstring{|derive : FunExp -> FunExp|}{derive : FunExp -> FunExp}}
 
 Note that this syntactic computation of the derivative does not
 perform any kind of algebraic simplification of the result.

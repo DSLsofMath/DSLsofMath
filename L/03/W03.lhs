@@ -46,7 +46,7 @@ Consider the classical definition of the derivative of
 We can start by assigning types to the expressions in the definition.
 %
 Let's write |X| for the domain of |f| so that we have |f : X -> REAL|
-and |X included REAL| (or, equivalently, |X : PS REAL|).
+and |X included REAL| (or, equivalently, |X : PowSet REAL|).
 %
 If we denote with |Y| the subset of |X| for which |f| is
 differentiable we get |f' : Y -> REAL|.
@@ -283,7 +283,7 @@ Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and
 
 %TODO: perhaps mention "total derivative" at this stage. That could serve as an intermediate step towards the Langrangian, or could be added after it.
 
-\section{Type inference and understanding: Lagrangian case study}
+\section{Typing Mathematics: Lagrangian case study}
 \label{sec:Lagrangian}
 
 From \citet{sussman2013functional}:
@@ -950,7 +950,6 @@ One the left-hand-side we define |zero :: REAL -> REAL|, while on the
 right-hand-side we use |zero :: REAL|.
 
 %
-\label{sec:FunNumInst}
 \begin{figure}[htpb]
 \begin{spec}
 instance Additive a        => Additive        (x -> a) where

@@ -2,7 +2,7 @@
 \label{sec:complex-arithmetic}
 
 By following \citet{adams2010calculus}, we have arrived at
-representation which captures the \emph{\addtoindex{semantics}} of
+a representation which captures the \emph{\addtoindex{semantics}} of
 complex numbers.
 %
 This kind of representation is often called a ``\addtoindex{shallow
