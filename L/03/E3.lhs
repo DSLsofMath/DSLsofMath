@@ -17,9 +17,16 @@
 \end{exercise}
 %
 \begin{exercise}
-  To get a feeling for the \addtoindex{Lagrange equations}, let |L(t,
-  q, v) = m*v^2/2 - m*g*q|, compute |expand w|, perform the
-  derivatives and check if the equation is satisfied for
+  To get a feeling for the \addtoindex{Lagrange equations}, let us
+  take the case of an object falling in constant gravity:
+  %
+  |L(t, q, v) = m*v^2/2 - m*g*q|, compute |expand w|, perform the
+  derivatives and check if the equation is satisfied for the following
+  three cases.
+  %
+  If, in one of the cases, the equation is not satisfied in general,
+  see if you can find some values of the mass |m| and the acceleration
+  due to gravity |g| which makes the equations hold.
   \begin{itemize}
   \item |w1 = id| or
   \item |w2 = sin| or
@@ -255,8 +262,8 @@ of the right factor, $B$.
   (Extra material outside the course.)
   %
   In the same direction as the Lagrangian case study in
-  \refSec{sec:Lagrangian} there are two nice blog posts about
-  Hamiltonian dynamics: one
+  \refSec{sec:Lagrangian} there are two nice blog posts by Justin Le
+  about Hamiltonian dynamics: one
   \href{https://blog.jle.im/entry/introducing-the-hamilton-library.html}{introductory}
   and one
   \href{https://blog.jle.im/entry/hamiltonian-dynamics-in-haskell.html}{more

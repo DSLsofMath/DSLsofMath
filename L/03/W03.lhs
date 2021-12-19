@@ -86,7 +86,7 @@ argument.
 To be more explicit we write |phi x h = frac (f(x+h) - f x) h| and take
 the limit of |phi x| at 0.
 %
-So, to sum up, |D f x = lim 0 (phi x)|.
+So, to sum up, |D f x = lim 0 (phi x)|.%
 %
 \footnote{We could go one step further by noting that |f| is in the
 scope of |phi| and used in its definition.
@@ -96,7 +96,7 @@ Thus the function |psi f x h = phi x h|, or |psi f = phi|, is used.
 With this notation we obtain a point-free definition that can come in
 handy:
 %
-|D f = lim 0 . psi f|.}%
+|D f = lim 0 . psi f|.}
 %
 The key here is that we name, type, and specify the operation of
 computing the derivative (of a one-argument function).
@@ -792,11 +792,14 @@ study in more detail in \cref{sec:ring-like-classes}:
 class Additive a where
   zero  :: a
   (+)   :: a -> a -> a
+
 class Additive a => AddGroup a where
   negate :: a -> a  -- specified as |x + negate x == zero|
+
 class Multiplicative a where
   one  :: a
   (*)  :: a -> a -> a
+
 class Multiplicative a => MulGroup a where
   recip :: a -> a   -- reciprocal, specified as  |x * recip x == one|
 \end{spec}
@@ -849,7 +852,8 @@ But what is |fromInteger|?
 It is a function that converts integers to any type that supports
 |zero|, |one|, |(+)|, and |(-)|.
 %
-We can implement it as follows:
+We can implement it by the following three cases depending on the sign
+of |n|:
 \begin{code}
 fromInteger :: (AddGroup a, Multiplicative a) => Integer -> a
 fromInteger n  | n < 0      = negate (fromInteger (negate n))
@@ -973,8 +977,9 @@ instance Transcendental a  => Transcendental  (x -> a) where
    pi =  const pi
    sin f = sin . f; {-"\quad"-}    cos f = cos . f; {-"\quad"-}  exp f = exp . f
 \end{spec}
-  \caption{Numeric instances lifted to functions (Full definitions can
-    be found in |module Algebra| in the repo).}
+\caption{Numeric instances lifted to functions. Full definitions can
+  be found in |module Algebra| in the repo. (Sometimes referred to as
+  |FunNumInst|.)}
   \label{fig:FunNumInst}
 \end{figure}
 \label{sec:FunNumInst}
@@ -996,13 +1001,13 @@ follows:
 %
 \begin{spec}
 class Field a => Algebraic a where
-  sqrt :: a -> a
+  sqrt  :: a -> a
 
 class Field a => Transcendental a where
-  pi  :: a
-  exp :: a -> a
-  sin :: a -> a
-  cos :: a -> a
+  pi :: a
+  exp   :: a -> a
+  sin   :: a -> a
+  cos   :: a -> a
 \end{spec}
 %
 \index{Transcendental@@|Transcendental| (type class)}%
@@ -1129,7 +1134,7 @@ no way of telling which of these rules should be applied.
 %
 That is, given an extensional (semantic, shallow) function |f|, the
 only thing that we can ever do is to evaluate |f| at given points, and
-thus we cannot know if this function was written using a |+|, or |sin|
+thus we cannot know if this function was written using a |(+)|, or |sin|
 or |exp| as outermost operation.
 %
 The only thing that a derivative operator could do would be to
@@ -1185,9 +1190,18 @@ In turn, this means that for any expression |e :: FunExp|, we want
 \begin{spec}
      eval (derive e)  =  D (eval e)
 \end{spec}
+%
 
-For example, let us calculate the |derive| function for |Exp e|:%
-\footnote{We have added a constructor |Exp :: FunExp -> FunExp| for this example.}
+As an example of using equational reasoning we will calculate the
+definition of |derive| for a specific constructor.
+%
+We have added |Exp :: FunExp -> FunExp| to the datatype |FunExp| for
+this example.
+%
+We start from the left-hand side of the specification, in the case
+when the expression is of the form |Exp e|, and use equalities from
+the mathematical side in combination with our instances and functions
+definitions to ``push'' the call of |derive| to the subexpression |e|:
 %
 \index{equational reasoning}%
 %

@@ -220,7 +220,7 @@ What about the opposite direction: when is |embed (eval e) == e|?
 %
 Here is a diagram showing how the types and the functions fit together
 
-\hsindent{}%
+\hspace{\mathindent}%
 \begin{tikzcd}
   |ComplexSyn r| \arrow[d, bend left, "|eval|"]  \arrow[loop right, "|embed . eval|"] \\
   |ComplexSem r| \arrow[u, bend left, "|embed|"] \arrow[loop right, "|eval . embed|"]
