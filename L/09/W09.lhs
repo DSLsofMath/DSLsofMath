@@ -313,7 +313,7 @@ instance Monad Space where
   \label{ex:monad-laws}
   Prove the functor and monad laws for the above definitions.
   %
-  (Use semantic equality.)
+  (Use semantic equality, see \cref{def:space-equality}.)
 %**TODO: semantic not defined yet!
 \end{exercise}
 
@@ -503,6 +503,16 @@ but this would take us too far off track here.)
 integral :: (REAL -> REAL) -> REAL
 integral = undefined
 \end{code}
+
+\index{semantic equality}
+This semantics yields a notion of semantic equality for space, which we can define as follows:
+%% \begin{definition}[Semantic equality]
+\label{def:space-equality}
+\begin{spec}
+  s₁ === s₂ = Forall g (integrator s₁ g === integrator s₂ g)
+\end{spec}
+%% \end{definition}
+
 
 
 The simplest useful quantity that we can compute using the integrator is the
@@ -1015,7 +1025,7 @@ give a product |>=10| and that all of those 19 satisfy both
 requirements.
 
 \subsection{Drug test}
-The above drug test problem (item \cref{ex:drugtest} at the start of
+The above drug test problem (\cref{ex:drugtest} at the start of
 this chapter) is often used as an illustration for the Bayes
 theorem.
 %
