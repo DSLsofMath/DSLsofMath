@@ -76,9 +76,6 @@
 \usepackage{enumitem}
 \usepackage{pdfpages}
 \usepackage{tabu}
-\newtheorem{theorem}{Theorem}
-\newtheorem{lemma}{Lemma}
-\newtheorem{proposition}{Proposition}
 \newcommand\jp[1]{\todo{JP: #1}}
 \newcommand\ci[1]{\todo{CI: #1}}
 \newcommand\pj[1]{\todo{PJ: #1}}
@@ -101,6 +98,10 @@
 
 \theoremstyle{definition}
 \newtheorem{exercise}{Exercise}[chapter]
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}{Lemma}[chapter]
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
 % Old exercise style (until 2017-11-08): \renewcommand*{\theenumi}{\textbf{E\thesection.\arabic{enumi}}}
 \newenvironment{solution}% environment name
 {% begin code
