@@ -1,11 +1,5 @@
-\setcounter{chapter}{-1}
-\chapter{About this
-%if book
-    book
-%else
-         course
-%endif
-        }
+\chapter*{About this \course{}}
+\addcontentsline{toc}{chapter}{About this \course{}}
 \label{ch:intro}
 
 %\section{Introduction}
@@ -189,7 +183,7 @@ We provide a wide range of applications of the DSLs introduced, so
 that the new concepts can be seen ``in action'' as soon as possible.
 %TODO: check how "in action" is actually followed up / implemented
 For the computer science students, one aspect is to bring the
-``computer aided learning'' present in feedback from the compiler from
+``computer-aided learning'' present in feedback from the compiler from
 programming to also help in mathematics.
 
 In our view a course based on this textbook should have two major
@@ -229,12 +223,6 @@ further improvements discussed.
 %
 More about the course is presented in Appendix~\ref{sec:DSLMcourse}.
 
-We expect the reader to have knowledge corresponding to a few first-year
-mathematics and computer science courses, preferrably including
-functional programming.
-%
-But we aim to keep to a restricted subset of Haskell (no ``advanced''
-features are required).
 
 \section{Who should read this book?}
 
@@ -246,7 +234,7 @@ The book explores the connection between mathematical structures and
 Type-Driven Development~\citep{citeulike:14291916} of Haskell programs.
 %
 If you enjoyed ``The Haskell Road to Logic, Maths and Programming''
-\citep{doets-haskellroadto-2004}, you will also enjoy this book.
+\citep{doets-haskellroadto-2004}, you might also enjoy this book.
 
 It is also a book for the mathematically interested who wants to
 explore functional programming and domain-specific languages.
@@ -255,24 +243,25 @@ The book helps put into perspective the domains of Mathematics and
 Functional Programming and shows how Computer Science and Mathematics
 can be usefully studied together.
 
-Informal prerequisites: one full time year of university level study
-consisting of a mix of mathematics and computer science.
+We expect the reader to have knowledge corresponding to a few first-year
+mathematics and computer science courses, preferrably including
+functional programming.
 %
-But feel free to keep going and fill in missing concepts as you go
-along.
+But we will review all mathematics using our methodology, and keep to a restricted subset of Haskell (no ``advanced''
+features are required).
 
 Working knowledge of functional programming is helpful, but it should
 be possible to pick up quite a bit of Haskell along the way.
 %
 
 The book is not primarily a collection of ready-made code-snippets,
-like the ``Numerical recipes in ...'' series, but rather uses Haskell
-as a ``tool for learning''.
+% , like the ``Numerical recipes in ...'' series, %JP: obscure reference
+but rather uses Haskell as a ``tool for learning''.
 %
 Even code which cannot actually run can still be useful in the quest
 to debug the mathematical understanding of the reader (through
 scope-checking and type-checking) when trying to encode different
-concepts in Haskell.
+mathematical concepts in Haskell.
 
 It would be an interesting endeavour to port the code from Haskell to
 a language with an even stronger type system, like Agda
@@ -288,7 +277,7 @@ The authors would welcome contributions in this direction.
 \section{Notation and code convention}
 
 The \course{} is a collection of literate programs: that is, it
-consist of text interspersed with code fragments (in Haskell).
+consists of text interspersed with code fragments (in Haskell).
 %
 The source code of the book (including in particular all the Haskell
 code) is available on GitHub in the repository
@@ -421,7 +410,7 @@ The variable |x| bound on the left is independent of the variable |x|
 %
 We address this issue in detail in \cref{sec:functions-and-scoping}.
 %
-Mathematics text books usually avoid the risk of confusion by
+Mathematics textbooks usually avoid the risk of confusion by
 (silently) renaming variables when needed, but we believe that this
 renaming is a sufficiently important operation to be more explicitly
 mentioned.
@@ -444,6 +433,10 @@ This work was partially supported by the projects GRACeFUL (grant
 agreement No 640954) and CoeGSS (grant agreement No 676547), which
 have received funding from the European Union’s Horizon 2020 research
 and innovation programme.
+
+Bernardy is supported by the Swedish Research Council, via grant
+2014-39, funding the Centre for Linguistic Theory and Studies in
+Probability.
 
 The authors also wish to thank several anonymous reviewers and
 students who have contributed with many suggestions for improvements.
