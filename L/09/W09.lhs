@@ -273,6 +273,10 @@ spaces, which assign an even probability density across all reals.
 \begin{spec}
 RealLine :: Space REAL
 \end{spec}
+%
+To get other probability distributions over the reals, you can combine
+|RealLine| with |Factor| --- see, for example, the normal distribution
+in \cref{sec:distributions}.
 
 \paragraph{Summary}
 We have already completed the description of a DSL for spaces, whose
@@ -317,7 +321,7 @@ instance Monad Space where
 %**TODO: semantic not defined yet!
 \end{exercise}
 
-\section{Distributions}
+\section{Distributions}\label{sec:distributions}
 \index{probability distribution}%
 
 So far we have defined several spaces, but we have not used them to
@@ -598,6 +602,8 @@ integrator s (g . f) == g (integrator s f)
   The case of |Project| is immediate by definition.
   % 
   The case for |Sigma| is proven as follows:
+%{
+%format integrator (s) = "\int\{" s "\}"
   \begin{spec}
     integrator (Sigma a f) (g . h)
     = {- By definition -}
@@ -609,6 +615,7 @@ integrator s (g . f) == g (integrator s f)
     = {- By definition -}
     g (integrator (Sigma a f) h)
   \end{spec}
+%}
 \end{proof}
 
 %**TODO this does not make sense type-wise in general, only for Num-values spaces
@@ -1050,11 +1057,9 @@ drugSpace =
   -- we have ``a positive test'' by assumption
   -- (second component of the pair contains result of the test)
   observing snd $ 
-  Sigma
-    (bernoulli 0.005) -- model the distribution of drug users
-    (\isUser -> bernoulli (if isUser then 0.99 else 0.01))
-    -- model test results depending on whether we have a drug user
-
+  Sigma  (bernoulli 0.005) -- model the distribution of drug users     
+         (\isUser -> bernoulli (if isUser then 0.99 else 0.01))        
+         -- model test results depending on whether we have a drug user
 \end{code}
 The probability is computed as usual:
 \begin{code}
@@ -1134,9 +1139,7 @@ montySpace =
                   (uniformDiscrete doors))
           (\(winningDoor,pickedDoor) ->
               uniformDiscrete (doors \\ [pickedDoor, winningDoor])))
-\end{code}
 
-\begin{code}
 montyProblem :: Bool -> Space Bool
 montyProblem changing = Project (haveWon changing) montySpace
 
@@ -1456,7 +1459,6 @@ In the right to left direction:
 = {- by computation -}
   P(E)
 \end{spec}
-
 \end{proof}
 
 Let us now express the same definitions and the same theorem and proof

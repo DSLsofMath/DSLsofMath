@@ -127,10 +127,12 @@ formulated as the following propositions:
   %
 \index{endofunction}%
   %
-  An ``endofunction'' is a function of type |X->X| for some set |X|.
+%{
+%format -> = "\!\to\!"
+  An \emph{endofunction} is a function of type |X->X| for some set |X|.
   \label{ex:endofunction}
-  %
-\hyphenation{endo-morphism}
+%}
+\hyphenation{endo-morphism}%
 %
   A structure-preserving endofunction is called an endomorphism.
   %
@@ -1034,7 +1036,7 @@ trouble :: Bool
 trouble = p1 == p2
 \end{code}
 %
-Note that |e1| and |e2| (from page \pageref{code:e1e2}) are not equal,
+Note that |e1| and |e2| (from \cref{code:e1e2}) are not equal,
 but they still pretty-print to the same string.
 %
 This means that |pretty| is doing something wrong: the inverse,
@@ -1069,6 +1071,10 @@ prTop e =  let (pTop, _, _) = prVersions e
            in pTop
 
 type ThreeVersions = (String, String, String)
+
+paren :: String -> String
+paren s = "(" ++ s ++ ")"
+
 prVersions :: E -> ThreeVersions
 prVersions = foldE prVerAdd prVerMul prVerCon
 
@@ -1086,9 +1092,6 @@ prVerCon :: Integer -> ThreeVersions
 prVerCon i =
   let s = show i
   in (s, s, s)                 -- parens never needed
-
-paren :: String -> String
-paren s = "(" ++ s ++ ")"
 \end{code}
 
 

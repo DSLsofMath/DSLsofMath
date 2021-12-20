@@ -288,9 +288,9 @@ data FunExp  =  Const Rational           |  X
              -- and so on
              deriving Show
 \end{spec}
-
+%
   and consider the function
-
+%
 \begin{code}
 f :: REAL -> REAL
 f x = exp (sin x) + x
@@ -322,6 +322,7 @@ f x = exp (sin x) + x
 \end{exercise}
 
 
+%if lectureNotes
 \begin{exercise}
   %
   Complete all the instance and datatype declarations and definitions
@@ -334,6 +335,7 @@ f x = exp (sin x) + x
   \href{https://github.com/DSLsofMath/DSLsofMath/tree/master/L/DSLsofMath/ShallowD.lhs}{ShallowD.lhs}.
 
 \end{exercise}
+%endif
 
 
 \begin{exercise}\label{exc:simplifyFunExp}
@@ -342,7 +344,7 @@ f x = exp (sin x) + x
 simplify :: FunExp -> FunExp
 \end{spec}
   %
-  to simplify the expression resulted from |derive|.
+  to simplify the expression resulting from |derive|.
   %
   For example, the following tests should work:
 \begin{code}

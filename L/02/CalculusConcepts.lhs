@@ -109,11 +109,7 @@ define |getq ε = max (17/38,1-ε/2)|.
 Similarly, we can show that any internal point (like |1/2|) is a limit
 point.
 
-Example 3: limit of an infinite discrete set |X|
-%
-\begin{spec}
-X = {1/n | n ∈ Pos }
-\end{spec}
+Example 3: Limit of an infinite discrete set |X = {1/n || n ∈ Pos }|.
 %
 Show that |0| is a limit point of |X|.
 %
@@ -303,9 +299,9 @@ limit of a function of type |REAL -> REAL| from
 
   We say that \(f(x)\) \textbf{approaches the limit} \(L\) as \(x\)
   \textbf{approaches} \(a\), and we write
-
+%
   \[\lim_{x\to a} f(x) = L,\]
-
+%
   if the following condition is satisfied:\\
   for every number \(\epsilon > 0\) there exists a number
   \(\delta > 0\), possibly depending on \(\epsilon\), such that if
