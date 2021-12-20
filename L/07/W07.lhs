@@ -32,17 +32,17 @@ Other times, this is supplemented by the definition of a row vector:
 %
 
 The |vi|s are real or complex numbers, or, more generally, elements of
-a \emph{field} (See \cref{sec:fields-defintion} for the definition of a field).
+a \emph{field} (See \cref{sec:fields-definition} for the definition of a field).
 %
 
-However, following our theme, we will first characterize vectors
+However, following our theme, we will first characterise vectors
 algebraically.
 %
-From this perpective a \emph{vector space} is an algebraic structure
+From this perspective a \emph{vector space} is an algebraic structure
 that captures a set of vectors, with zero, a commutative addition, and
 scaling by a set of scalars (i.e., elements of the field).
 %
-In terms of typeclasses, we can characterize this structure as
+In terms of type classes, we can characterise this structure as
 follows:
 %
 \index{Field@@|Field| (type class)}%
@@ -170,7 +170,7 @@ vector, |v|).
 % ...
 
 \section{Representing vectors as functions}
-In what follows we will systematically use the represention of vectors
+In what follows we will systematically use the representation of vectors
 as a linear combination of basis vectors.
 %
 There is a temptation to model the corresponding collection of
@@ -256,13 +256,13 @@ Can we simply reuse the definition that we had for functions?
 No, because multiplication of vectors does not work pointwise.
 %
 In fact, attempting to lift multiplication from the |Multiplicative|
-class would give a homogenous multiplication operator |(*) :: v -> v
+class would give a homogeneous multiplication operator |(*) :: v -> v
 -> v|, but such an operator is not part of the definition of vector
 spaces.
 %
 Consequently, vector spaces are in general \emph{not} rings.
 
-Indeed, the scaling operator |(*^) :: s -> v -> v|, is inhomogenous:
+Indeed, the scaling operator |(*^) :: s -> v -> v|, is inhomogeneous:
 the first argument is a scalar and the second one is a vector.
 %
 For our representation it can be defined as follows:
@@ -299,7 +299,7 @@ is i j = if i == j then one else zero
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
 zeros everywhere, except at position |i| where it has a one.
 
-We can see that, as exepected, every |v : g -> s| is a linear combination
+We can see that, as expected, every |v : g -> s| is a linear combination
 of vectors |e i| where the coefficient of the canonical basis vector |e
 i| is the scalar |v i|:
 \begin{spec}
@@ -336,7 +336,7 @@ linComb2 as vs = sum [as j *^ vs j | j <- finiteDomain]
 
 \begin{exercise}
   Using the elements defined above, sketch the isomorphism between an
-  abtract vector space and its representation.
+  abstract vector space and its representation.
   %
   Recall the definition of \addtoindex{isomorphism} in
   \cref{sec:isomorphism}.
@@ -630,7 +630,7 @@ i.e., the scalar product of the vectors |v| and |w|.
 %
 \lnOnly{For the connection between matrices, linear transformations,
   and geometry, I warmly recommend binge-watching the ``Essence of
-  linear algebra'' videos on youtube (start here:
+  linear algebra'' videos on YouTube (start here:
   \url{https://www.youtube.com/watch?v=kjBOesZCoqc}).  }
 
 %*TODO: Perhaps it would be interesting to show that some linear
@@ -679,7 +679,7 @@ For example, in Euclidean spaces, one defines the inner product to be
 the product of the cosine of the angle between the vectors and their
 norms.
 %
-Consequently, |similarity| is the cosine of the angle betwen vectors.
+Consequently, |similarity| is the cosine of the angle between vectors.
 
 For this reason, one says that two vectors are orthogonal when their
 inner product is |0| --- even in non-Euclidean spaces.
@@ -700,7 +700,7 @@ dot (V v) (V w) = linComb v w
 We should note that the dot product acts on the representations
 (syntax).
 %
-This means that it will \emph{change} dependending on the basis chosen
+This means that it will \emph{change} depending on the basis chosen
 to represent vectors.
 %
 Thus, the dot product is a syntactic concept, and it should be clearly
@@ -731,8 +731,8 @@ preserve the inner product.
 In Euclidean spaces, such a transformation preserve angles.
 %
 In the context of linear algebra they are either called orthogonal
-transformations (emphasizing the preservation of angles) or unitary
-transformations (emphasizing preservation of norms).%
+transformations (emphasising the preservation of angles) or unitary
+transformations (emphasising preservation of norms).%
 \footnote{In today's mathematical vocabulary, the word ``unitary''
 signals that a complex scalar field is used, whereas the word
 ``orthogonal'' signals that that a real field is used, and that the
@@ -896,7 +896,7 @@ We also know that it takes polynomials of degree |n+1| to polynomials
 of degree |n|, and as such it is well defined as a linear
 transformation of polynomials too.
 %
-Its representation can be obtained by appling the linear
+Its representation can be obtained by applying the linear
 transformation to every basis vector:
 %
 \begin{spec}
@@ -1677,7 +1677,7 @@ In this case, the canonical basis vector |e i = \ j -> i `is` j| is the
 probability distribution \emph{concentrated} in |i|.
 %
 This means that the probability to be in state |i| is 100\% and the
-probability of being anwhere else is~|0|.
+probability of being anywhere else is~|0|.
 %
 \[
   M =
@@ -2357,7 +2357,7 @@ instance Field s => VectorSpace s s where (*^) = (*)
 %
 Here (for once) the vectors have the the same type as the scalars,
 which means that the scaling operation, which usually has an
-assymmetric type, now is just ordinary scalar multiplication |(*) :: s
+asymmetric type, now is just ordinary scalar multiplication |(*) :: s
 <-> s -> s|.
 
 %include E7.lhs

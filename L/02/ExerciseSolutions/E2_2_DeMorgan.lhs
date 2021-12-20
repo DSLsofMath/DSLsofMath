@@ -28,7 +28,7 @@ We can start with the most concrete one: |an2no|, where we start from
 a pair of proofs of |Not p| and |Not q|.
 %
 The idea is to collect proofs of simple statements in the hope of finding
-some obvious contradition.
+some obvious contradiction.
 %
 It helps to name subterms to keep track of what is already known.
 \begin{code}
@@ -81,7 +81,7 @@ no2an' nOrpq = andIntro (notMap orIntroL nOrpq)
                         (notMap orIntroR nOrpq)
 \end{code}
 
-The final de Morgan theorem is |na2on| and, for a change, we will prove
+The final De Morgan theorem is |na2on| and, for a change, we will prove
 that using one of the others and double negation:
 %
 \begin{code}

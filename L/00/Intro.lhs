@@ -226,9 +226,9 @@ More about the course is presented in Appendix~\ref{sec:DSLMcourse}.
 
 \section{Who should read this book?}
 
-The book is recommended for Haskell developers who are learning Math
+The book is recommended for Haskell developers who are learning maths
 and would like to use Haskell to create concrete models out of
-abstract Math concepts to improve their understanding.
+abstract maths concepts to improve their understanding.
 
 The book explores the connection between mathematical structures and
 Type-Driven Development~\citep{citeulike:14291916} of Haskell programs.
@@ -244,7 +244,7 @@ Functional Programming and shows how Computer Science and Mathematics
 can be usefully studied together.
 
 We expect the reader to have knowledge corresponding to a few first-year
-mathematics and computer science courses, preferrably including
+mathematics and computer science courses, preferably including
 functional programming.
 %
 But we will review all mathematics using our methodology, and keep to a restricted subset of Haskell (no ``advanced''
@@ -293,11 +293,11 @@ in mathematics texts.
 %
 When typesetting, a suitable circle glyph can be obtained in various
 ways, depending on the typesetting system: \verb+&#8728+ in HTML,
-\verb+\circ+ in \TeX, or by the \textsc{ring operator} unicode
+\verb+\circ+ in \TeX, or by the \textsc{ring operator} Unicode
 codepoint (\verb"U+2218"), which appears ideal for the purpose.
 %
 This codepoint can also be used in Haskell (recent implementations
-allow any sequence of codepoints from the unicode \textsc{symbol}
+allow any sequence of codepoints from the Unicode \textsc{symbol}
 class).
 %
 However, the Haskell Prelude uses instead the infix operator \verb+.+
@@ -307,7 +307,7 @@ availability and the ease with which it can be typed.
 In this book, as a compromise, we use the period in our source code,
 but our typesetting tool renders it as a circle glyph.
 %
-If, when looking at typset pages, any doubt should remain regarding to
+If, when looking at typeset pages, any doubt should remain regarding to
 the form of the Haskell source, we urge the reader to consult the
 github repository.
 
@@ -332,7 +332,7 @@ course, you can check your progress towards the final examination.
 %endif
 %
 Sometimes the chapter text contains short, inlined questions, like
-``Exercice~\ref{exc:fmap}: what does function composition do to a
+``Exercise~\ref{exc:fmap}: what does function composition do to a
 sequence?''.
 %
 In such cases there is some more explanation in the exercises section

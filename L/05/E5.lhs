@@ -150,7 +150,7 @@ Check all the |Monoid| and homomorphism properties in the claim.
   was used in the implementation of |negPoly| is a close relative of
   the usual |map :: (a->b) -> ([a] -> [b])|.
 \index{Functor@@|Functor| (type class)}%
-  Both these are members of a typeclass called |Functor|:
+  Both these are members of a type class called |Functor|:
 %
 \begin{spec}
 class Functor f where

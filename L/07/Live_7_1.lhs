@@ -29,7 +29,7 @@ instance Vector Double where
 \end{code}
 
 Note that |Num.*  :: a -> a -> a|  -- symmetric type
-and       |scale  :: S -> v -> v|  -- assymmetric type
+and       |scale  :: S -> v -> v|  -- asymmetric type
 but in this instance |S=v=a=Double|.
 
 \begin{code}
@@ -87,7 +87,7 @@ scaleF :: Vector v => S -> Vec v g -> Vec v g
 scaleF s v = \i -> scale s (v i)
 \end{code}
 
-Note that the instance declaration for |g->v| is parametrised over
+Note that the instance declaration for |g->v| is parameterised over
 another vector space. That means we can use it several times to get
 "vectors of vectors of ... of scalars". This is not widely used in the
 case of vectors, but more common for matrices, where it represents

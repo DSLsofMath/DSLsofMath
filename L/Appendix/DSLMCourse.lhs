@@ -68,7 +68,7 @@ corresponds to one full-time year of study.
 To assess the impact in terms of increased quality of education, we
 planned to measure how well the students do in ulterior courses that
 require mathematical competence (in the case of engineering students)
-or software compentence (in the case of math students).
+or software competence (in the case of math students).
 %
 For math students, we would like to measure their performance in
 ulterior scientific computing courses, but we have taught too few math
@@ -125,7 +125,7 @@ course could start early 2016.
 We also surveyed similar courses being offered at other universities,
 but did not find any close matches.
 %
-(``The Haskell road to Logic Math and Programming'' by
+(``The Haskell road to Logic, Maths and Programming'' by
 \citet{doets-haskellroadto-2004} is perhaps the closest, but it is
 mainly aimed at discrete mathematics.)
 

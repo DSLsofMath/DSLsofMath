@@ -88,7 +88,7 @@
 \maketitle
 \end{frame}
 
-\begin{frame}{Starting point: a math quote (the Lagrangian)}
+\begin{frame}{Starting point: a maths quote (the Lagrangian)}
 
   From \citep{sussman2013functional}:
 

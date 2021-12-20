@@ -389,7 +389,7 @@ function is an integral:
 
 We note that, for the integral |Integ (f t) * pow x t dt| to converge
 for a larger class of functions (say, bounded functions\footnote{A
-  function is bounded if there exists a bound |B| such that forall
+  function is bounded if there exists a bound |B| such that for all
   |x|, |absBar (f x) <= B|.}), we have to limit ourselves to |absBar x
 < 1|.
 %

@@ -6,7 +6,7 @@
 % TODO: Perhaps introduce GADT datatype notation use in some exercise solutions
 
 \begin{exercise}
-  Define a function for de Morgan dualisation.
+  Define a function for De Morgan dualisation.
 \end{exercise}
 
 \begin{exercise}
@@ -40,7 +40,7 @@
   %
   Note that |p+q| does not represent any proposition, because its
   value would be |2| for |p=q=1|, but |2| does not represent any
-  boolean.
+  Boolean.
 
   How should |Not|, |Or|, and |Implies| be represented?
 

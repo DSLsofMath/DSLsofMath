@@ -61,7 +61,7 @@ as follows:
   log    (a * b)  =   log a  +  log b   -- \(\log(ab) = \log a + \log b \)
 \end{spec}
 %
-What we recognize as the familiar laws of exponentiation and
+What we recognise as the familiar laws of exponentiation and
 logarithms arise from homomorphism conditions, which
 relate the additive and multiplicative structures of reals and
 positive reals.
@@ -73,7 +73,7 @@ Additionally, homomorphisms play a crucial role when relating an
 abstract syntax (a datatype), and a semantic domain (another type) via
 an evaluation function between them (the semantics).
 %
-In this chapter we will explain the notions of algebraic struture and
+In this chapter we will explain the notions of algebraic structure and
 homomorphism in detail and show applications both in mathematics and
 DSLs in general.
 
@@ -183,7 +183,7 @@ instance Monoid MNat where
 In Haskell there can be at most one instance of a given class in scope
 for a given type, so we cannot define two |instance Monoid Natural|:
 we must make a |newtype| whose role is to indicate which of the two
-possible monoids (additive or applicative) applies in a given context.
+possible monoids (additive or multiplicative) applies in a given context.
 %
 But, in mathematical texts the constructors |M| and |A| are usually
 omitted, and instead the names of the operations suggest which of the
@@ -250,7 +250,7 @@ When the additive monoid is abelian (commutative) and multiplication
 distributes over addition (|x*(y+z) == (x*y)+(x*z)|), we have a
 |Ring|.
 %
-As always we cannot conveniently specify laws in Haskell typeclasses
+gAs always we cannot conveniently specify laws in Haskell type classes
 and thus define |Ring| simply as the conjunction of |AddGroup| and
 |Multiplicative|:
 %
@@ -342,7 +342,7 @@ a / b = a * recip b
 Often the multiplicative group structure is added to a ring to get what is called a \emph{field} which we represent by the type class |Field|:
 %
 \index{Field@@|Field| (type class)}%
-\label{sec:fields-defintion}
+\label{sec:fields-definition}
 \begin{code}
 type Field a = (Ring a, MulGroup a)
 \end{code}
@@ -353,8 +353,8 @@ much notational awkwardness.
 %
 Example instances of |Field| are |QQ| and |REAL|.
 %
-For progmatic reasons we will also treat |Double| as a |Field| even
-though the laws only hold approximatively.
+For pragmatic reasons we will also treat |Double| as a |Field| even
+though the laws only hold approximately.
 
 \cref{fig:CompNum} provides a graphical illustration of some of the
 relations between the Haskell |Num| class hierarchy and the
@@ -399,7 +399,7 @@ We have seen several examples in earlier chapters:
 \item in \refSec{sec:complexcase} we saw that |evalE : ComplexE ->
   ComplexD| is a homomorphism from the syntactic operator |Plus| to
   the corresponding semantic operator |plusD|.
-\item in \refSec{sec:logic} we saw de Morgan's laws, which say that
+\item in \refSec{sec:logic} we saw De Morgan's laws, which say that
   ``not'' (|not|) is a homomorphism in two ways: |H2(not,(&&),(||||))|
   and |H2(not,(||||),(&&))|.
 \item in \refSec{sec:FunExp} we saw that |eval : FunExp -> Func| is a
@@ -469,7 +469,7 @@ In our Haskell interpretation, the above would mean that we have
 more generally |Hn(h,opA,opB)| for each operation |op| of arity |n|.
 %
 We can also use type class overloading to write |Hn(h,op,op)| where
-the first occurence of |op| comes from the |C A| instance and the
+the first occurrence of |op| comes from the |C A| instance and the
 second one from |C B|.
 
 
@@ -546,7 +546,7 @@ In other words, we know that every |h| (homomorphism from |ANat| to
 \begin{spec}
 h n = a ^ n
 \end{spec}
-for a given natual number |a = h 1|.
+for a given natural number |a = h 1|.
 %
 So, the set of homomorphisms between the additive monoid and the
 multiplicative monoid is the set of exponential functions, one for
@@ -840,7 +840,7 @@ But because we also know that |False /= True|, we have a contradiction.
 %
 Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
 to |Bool|, regardless of the choice of the operator (on the the
-boolean side) corresponding to addition.
+Boolean side) corresponding to addition.
 
 \section{Folds}
 \label{sec:folds}
@@ -1757,7 +1757,7 @@ technique called ``\addtoindex{automatic differentiation}''.
 %
 Automatic differentiation has grown in importance with the rise of
 machine learning, which often uses derivatives (or gradients) to find
-a values of parameter which minimizes a user-defined objective
+a values of parameter which minimises a user-defined objective
 function.
 %
 However, in such systems, one is often not interested in computing
@@ -2156,7 +2156,7 @@ so we can then do
 f' 2 = snd (applyFD 2 (f (g, g')))
 \end{spec}
 %
-We can fullfill (*) if we can find a pair |(g, g')| that is a sort of
+We can fulfil (*) if we can find a pair |(g, g')| that is a sort of
 ``unit'' for |FD a|:
 %
 \begin{spec}

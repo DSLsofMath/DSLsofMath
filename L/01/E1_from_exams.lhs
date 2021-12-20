@@ -5,7 +5,7 @@
 % implementing the datatype SR v for the laguage of semiring expressions. We
 % will now revisit this blablabla" Answer: refer back.)
 
-%TODO: Add an exercise to implement some property as a boolean functions (for example some from the semiring properties.
+%TODO: Add an exercise to implement some property as a Boolean functions (for example some from the semiring properties.
 
 %\newpage
 \begin{exercise} \label{exc:e1_semiring}

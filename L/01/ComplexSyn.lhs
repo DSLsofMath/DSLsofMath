@@ -185,8 +185,8 @@ To specify these laws, in a way which can be easily testable in
 Haskell, we use functions to |Bool| (also called
 \emph{\addtoindex{predicate}s} or \emph{properties}).
 %
-The intended meaning of such a boolean function (representing a law)
-is ``forall inputs, this should return |True|''.
+The intended meaning of such a Boolean function (representing a law)
+is ``for all inputs, this should return |True|''.
 %
 This idea is at the core of \emph{\addtoindex{property based testing}}
 (pioneered by \citet{claessen_quickcheck_2000}) and conveniently
@@ -374,7 +374,7 @@ fromIntegerCS = toComplexSyn . fromInteger
 With this parameterised type we can test the code for ``complex
 rationals'' to avoid rounding errors.
 %**TODO: add concrete example
-(The reason why math textbooks rarely talk about complex rationals is
+(The reason why maths textbooks rarely talk about complex rationals is
 because complex numbers are used to handle roots of all numbers
 uniformly, and roots are in general irrational.)
 
@@ -437,7 +437,7 @@ The same can be done with distributivity.
 Doing so we learnt that the underlying set matters: |(+)| for |REAL|
 has some properties, but |(+)| for |Double| has others.
 %
-When formalising math as DSLs, \addtoindex{approximation} is sometimes
+When formalising maths as DSLs, \addtoindex{approximation} is sometimes
 convenient, but makes many laws false.
 %
 Thus, we should attempt to do it late, and if possible, leave a

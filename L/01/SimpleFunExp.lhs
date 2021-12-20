@@ -321,9 +321,9 @@ typings:
   Note that there are many notations for derivatives.
   %
   Instead of \(\frac d {dt} f\) one sees also \(df/dt\), or \(f'\) or
-  even \(\dot{f}\) if the varable is time (\(t\)).
+  even \(\dot{f}\) if the variable is time (\(t\)).
   %
-  Below we'll use preferrably the |D f| notation.
+  Below we'll use preferably the |D f| notation.
   %
   \index{derivative (|D|)}%
 \end{itemize}
@@ -389,7 +389,7 @@ e2  = Di  e1  e1
 \end{code}
 %endif % False
 
-% \pj{Add some text in an earlier chapter about |:+| colon-operators, parameterised datatypes, more than one defintion variant in one file, etc. }
+% \pj{Add some text in an earlier chapter about |:+| colon-operators, parameterised datatypes, more than one definition variant in one file, etc. }
 % If you want a constructor to be used as an infix operator you need to use
 % symbol characters and start with a colon:
 %

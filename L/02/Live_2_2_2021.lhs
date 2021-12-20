@@ -9,7 +9,7 @@ Reminder of learning outcomes
 Repetition/reminder: Lecture 2.1 covered
 
 * Propositional calculus (as a DSL)
-    * boolean logic without quantifiers (And, Or, Implies, Not, False, True) but with named atoms
+    * Boolean logic without quantifiers (And, Or, Implies, Not, False, True) but with named atoms
     * a syntax tree datatype |PC|
     * an evaluator: |eval :: PC -> Sem| where |Sem = Tab -> Bool| and |Tab = String -> Bool|
 * Pure set theory (as a domain for FOL)

@@ -12,7 +12,7 @@ data E2 a  =  Con a
   deriving(Eq, Show)
 \end{code}
 %
-The type has now been parametrized, so that it is no longer limited to
+The type has now been parameterised, so that it is no longer limited to
 representing expressions with integers, but can instead represent
 expressions with any type.
 %

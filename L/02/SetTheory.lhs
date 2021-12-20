@@ -138,7 +138,7 @@ with variables of type |v| (as in \cref{sec:polyvar}) and a datatype
 \item set-valued variables (|Var :: v -> TERM v|)
 \end{itemize}
 
-|PRED| should have contructors for
+|PRED| should have constructors for
 \begin{itemize}
 \item the two predicates |Elem|, |Subset|
 \item the logical connectives |And|, |Or|, |Implies|, |Not|

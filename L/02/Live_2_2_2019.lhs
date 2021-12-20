@@ -9,7 +9,7 @@ Reminder of learning outcomes
 ** Lecture 2.1 covered
 
 * Propositional calculus (as a DSL)
-    * boolean logic without quantifiers (And, Or, Implies, Not, False, True) but with named atoms
+    * Boolean logic without quantifiers (And, Or, Implies, Not, False, True) but with named atoms
     * a syntax tree datatype |Prop|
     * an evaluator: |eval :: Env String Bool -> Prop -> Bool|
     * truth table, tautology

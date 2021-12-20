@@ -374,7 +374,7 @@ exercise.)
   \(\epsilon\)''?
   %
   How did we express ``possibly depending on'' in our formal
-  defintion?
+  definition?
   %
   Hint: how would you express that |delta| cannot depend on |epsilon|?
 \end{exercise}

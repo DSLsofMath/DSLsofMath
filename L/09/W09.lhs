@@ -461,7 +461,7 @@ integrator (Sigma a f)    g =  integrator a      $ \x ->
 integrator (Project p a)  g =  integrator a (g . p)
 \end{code}
 %
-In calculuations we will often use the notation 
+In calculations we will often use the notation 
 %{
 %format integrator (s) = "\int\{" s "\}"
 |integrator s g|
@@ -493,7 +493,7 @@ bigsum xs f = sum (map f xs)
 We use also the definite integral over the whole real line.
 %
 However, at the Haskell level, we will leave this concept undefined  ---
-thus whenever using real-valued spaces, our defintions are not usable
+thus whenever using real-valued spaces, our definitions are not usable
 for numerical computations, but for symbolic computations only.
 %
 (If we had a syntax for the function to integrate, we could do more,
@@ -646,7 +646,7 @@ The proof of the second item is as follows:
 \end{spec}
 
 \begin{exercise}
-  \label{ex:integrator-bernouilli}
+  \label{ex:integrator-bernoulli}
   Using the above lemmas, prove:
 \begin{spec}
   integrator (bernoulli p) f == p * f True + (1-p) * f False
@@ -810,9 +810,9 @@ probability of an \emph{event} |e|.
 Again, the space of situations |s| is implicit as well as the
 dependency between |e| and |s|.
 
-Here, we define events as \emph{boolean-valued} random variables.
+Here, we define events as \emph{Boolean-valued} random variables.
 %
-Thus an event |e| can be defined as a boolean-valued function |e : a
+Thus an event |e| can be defined as a Boolean-valued function |e : a
 -> Bool| over a space |s : Space a|.
 %
 Assuming that the space |s| accurately represents the relative mass of
@@ -889,7 +889,7 @@ where the event |e| is observed to be true --- a kind of subspace
 which is often used in textbook problems.
 
 It will often be convenient to define a space whose underlying set is
-a boolean value and compute the probability of the identity event:
+a Boolean value and compute the probability of the identity event:
 \begin{code}
 probability :: Space Bool -> REAL
 probability d = expectedValue d indicator
@@ -1019,7 +1019,7 @@ test2     = measure (observing p2 twoDice)                       -- 19
 testBoth  = measure (observing (\xy -> p1 xy && p2 xy) twoDice)  -- 19
 prob21    = condProb (prod d6 d6) p2 p1                          -- 19/21
 \end{code}
-We can see that 21 possibities give a sum |>=7|, that 19 possibilities
+We can see that 21 possibilities give a sum |>=7|, that 19 possibilities
 give a product |>=10| and that all of those 19 satisfy both
 requirements.
 
@@ -1072,7 +1072,7 @@ positives).
 Perhaps surprisingly, we never needed the Bayes theorem to solve the
 problem.
 %
-Indeed, the Bayes theorem is already incorporated in our defintion of
+Indeed, the Bayes theorem is already incorporated in our definition of
 |probability|, so our methodology guarantees that we always respect
 it.
 
@@ -1111,7 +1111,7 @@ If they do not change their mind, then the final choice is equal to
 the initial one.
 %
 If they do change their mind, then the final choice is neither their
-inital choice nor Monty's door.
+initial choice nor Monty's door.
 %
 (Because there are only three doors there is only one door left.)
 
@@ -1209,7 +1209,7 @@ This will require extensive symbolic reasoning (perhaps not for the
 faint of heart).
 %
 One may skip all the equational reasoning in first reading: the
-important point is to realize that one is able to write down the kind
+important point is to realise that one is able to write down the kind
 of proofs that one would do with pen and paper directly within a
 program.
 %
@@ -1380,7 +1380,7 @@ integrator coin $ \h -> integrator (if h then helper m else helper 3) (1 +)
 1 + integrator coin $ \h -> integrator (if h then helper m else helper 3) id
 == {- By case analysis -}
 1 + (integrator coin $ \h -> if h then integrator (helper m) id else integrator (helper 3) id)
-== {- By integrator/bernouilli (\cref{ex:integrator-bernouilli}) -}
+== {- By integrator/bernoulli (\cref{ex:integrator-bernoulli}) -}
 1 + 0.5 * integrator (helper m) id + 0.5 * integrator (helper 3) id
 \end{spec}
 % $ emacs
@@ -1462,7 +1462,7 @@ In the right to left direction:
 Let us now express the same definitions and the same theorem and proof
 in our DSL.
 %
-The defintion for independent events is:
+The definition for independent events is:
 \begin{code}
 independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
 independentEvents s e f = probability1 s e == condProb s e f
@@ -1543,7 +1543,7 @@ Express the rest of the proof using our DSL.
 % LocalWords:  const fst RealLine monadic fmap Applicative snd Distr
 % LocalWords:  isDistribution uniformDiscrete xs fromIntegral sqrt tH
 % LocalWords:  marginaliseWith observing dieDistr bernoulli normalMass iff
-% LocalWords:  distributionDensity bigsum defintions expectedValue
+% LocalWords:  distributionDensity bigsum expectedValue
 % LocalWords:  expectedValueOfDistr calculational IntroProb Grinstead
 % LocalWords:  representable curtosis isTrue mutiplication condProb
 % LocalWords:  cond diceSpace threeHeads cardinality

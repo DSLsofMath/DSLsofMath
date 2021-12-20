@@ -273,7 +273,7 @@ texts is that variable binding is sometimes implicit.
 A typical example is the notation for equations: for instance |x^2 +
 2*x + 1 == 0| usually means roughly |Exists x (x^2 + 2*x + 1 == 0)|.
 %
-We write ``roughly'' here because in math texts the scope of |x| very
+We write ``roughly'' here because in maths texts the scope of |x| very
 often extends to some text after the equation where something more is
 said about the solution |x|.%
 \footnote{This phenomena seems to be borrowed from the behaviour of
@@ -292,7 +292,7 @@ The idea here is that if |A(x)| holds for every abstract individual
 As for |And| we had to provide the other argument to recover |p `And`
 q|, here we have to be able reconstruct the general form |A(x)| ---
 indeed, it is not simply a matter of substituting |x| for |a|, because
-there can be several occurences of |a| in the formula to prove.
+there can be several occurrences of |a| in the formula to prove.
 %
 So, in fact, the proof constructor must contain the general form
 |A(x)|, for example as a function from individuals:
@@ -318,11 +318,11 @@ The eliminator uses |checkUnify| which verifies that |f x| is indeed a
 generalisation of the formula to prove, |p|.
 %
 Finally we need a way to introduce fresh variables |freshFor|, which
-conjures up a variable occuring nowhere in its argument list.
+conjures up a variable occurring nowhere in its argument list.
 
 \subsection{Existential quantification}
 \index{exists}%
-\index{existantial quantifier}%
+\index{existential quantifier}%
 
 %
 We have already seen how the universal quantifier can be seen as a
@@ -411,7 +411,7 @@ explicitly can greatly help understanding, and we won't refrain from
 writing down types in quantifiers in FOL formulas.
 
 \begin{exercise}
-  Prove that the de Morgan dual of typed universal quantification is
+  Prove that the De Morgan dual of typed universal quantification is
   the typed existential quantification, using the above translation to
   untyped quantification.
 
@@ -427,7 +427,7 @@ writing down types in quantifiers in FOL formulas.
 
 \subsection{Curry-Howard for quantification over individuals}
 
-We can try and draw parrellels with a hypothetical programming
+We can try and draw parallels with a hypothetical programming
 language corresponding to FOL.
 %
 In such a programming language, we expect to be able to encode proof

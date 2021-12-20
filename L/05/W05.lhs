@@ -124,7 +124,7 @@ x^2-1| is represented by the list |[-1,0,1]|.
 It is worth noting that the definition of what we call a ``polynomial
 function'' is semantic, not syntactic.
 %
-A syntactic defintion would talk about the form of the expression (a
+A syntactic definition would talk about the form of the expression (a
 sum of coefficients times natural powers of $x$).
 %
 In contrast, this semantic definition only requires that the function
@@ -550,7 +550,7 @@ degree one = zero
 \end{spec}
 %
 The first law is no problem and for most polynomials the second law is
-also straighforward to prove (try it as an exercise).
+also straightforward to prove (try it as an exercise).
 %
 But we run into trouble with one special case: the zero polynomial.
 
@@ -623,7 +623,7 @@ opMaybe (Just m1)  (Just m2)  = Just (op m1 m2)
 %   \url{http://en.wikipedia.org/wiki/Monoid}: "Any semigroup |S| may be
 %   turned into a monoid simply by adjoining an element |e| not in |S|
 %   and defining |e*e = e| and |e*s = s = s*e| for all |s ∈ S|." Since
-%   there is no |Semigroup| typeclass [..], we use |Monoid| instead.
+%   there is no |Semigroup| type class [..], we use |Monoid| instead.
 % \end{quote}
 
 Thus, to sum up, |degree| is a monoid homomorphism from |(Poly a, 1,
@@ -849,7 +849,7 @@ The solution is unique: |1 = p0 = p1 = p2 = | \ldots
 %
 but it only exists for streams (infinite lists) of coefficients.
 %
-In the common math notation we have just computed
+In the common maths notation we have just computed
 %
 \[
   \frac{1}{1-x} = \sum_{i = 0}^{\infty} x^i

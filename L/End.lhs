@@ -6,7 +6,7 @@
 %     This often means skipping through a description of the domain from-the-ground up
 %     This may work for you, but if it does not, we encourage using the skills learned in this book.
 %   - use an typeable/executable/testable (formal) language (for example Haskell) to check your understanding. Fill any gap left open.
-%   - algebraic structures, and morphisms between them, is key to drawing generic patterns between various fields of math.
+%   - algebraic structures, and morphisms between them, is key to drawing generic patterns between various fields of maths.
 %     When you figure out such generic patterns you can transpose knowledge from one domain to the other.
 %     Sometimes the existence of a morphism completely fixes the kind of definitions that one can use (e.g. derivatives, vector spaces).
 %   - syntax and semantics are often different but related objects for a given domain. Pay attention to which is which.

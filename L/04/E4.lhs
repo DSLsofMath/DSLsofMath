@@ -44,7 +44,7 @@ Prove or disprove the following claims:
 
 \end{exercise}
 
-%TODO (by DaHe): One or more exercises on "characterize the homomorphisms from
+%TODO (by DaHe): One or more exercises on "characterise the homomorphisms from
 % X to Y"
 
 \begin{exercise}

@@ -58,7 +58,7 @@ constS a = ca
   where ca = cons a ca
 \end{code}
 %
-Instead of specifying a stream in terms of how to contruct it, we
+Instead of specifying a stream in terms of how to construct it, we
 could describe it in terms of how to take it apart; by specifying its
 |head| and |tail|.
 %

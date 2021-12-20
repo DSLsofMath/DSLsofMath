@@ -36,7 +36,7 @@ or, in traditional notation:
   f(x) = f(0) + \int_0^x f'(t) \text{d}t
 \]
 
-which we recognize as the fundamental law of calculus!
+which we recognise as the fundamental law of calculus!
 %
 There is much more to discover in this direction and we present some
 of it in the next few chapters.

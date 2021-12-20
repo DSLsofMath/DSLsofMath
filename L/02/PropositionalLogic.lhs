@@ -326,7 +326,7 @@ OrIntroR  :: Proof -> Proof
 %
 There are a couple of possible approaches to deal with negation.
 %
-One approach is to use de Morgan dualisation:
+One approach is to use De Morgan dualisation:
 %
 \begin{spec}
 Not (a  `Or`   b)  =  Not a  `And`  Not b
@@ -358,15 +358,15 @@ There is no rule to introduce falsity (|⊥|) --- otherwise we'd have an
 inconsistent logic!
 %
 Thus the last introduction rule deals with Truth, with no
-premiss: \[\frac{\phantom{hello}}{⊤}\]
+premise: \[\frac{\phantom{hello}}{⊤}\]
 %
 The proof has no information either: |TruthIntro :: Proof|.
 
 To complete the system, in addition to introduction rules (where the
 connective appears as conclusion), we also need elimination rules
-(where the connective appears as premiss).
+(where the connective appears as premise).
 %
-For conjuction (|And|), we have two eliminations rules:
+For conjunction (|And|), we have two eliminations rules:
 %
 \[\frac{P ∧ Q}{P} \qquad \text{and} \qquad \frac{P ∧ Q}{Q}\]
 %
@@ -393,7 +393,7 @@ It simply says that two negations cancel.
 Finally we can eliminate falsity as follows:
 \[\frac {⊥} P\]
 %
-This rule goes sometimes by its descriptive latin name \textit{ex
+This rule goes sometimes by its descriptive Latin name \textit{ex
   falso quodlibet} --- from falsehood, anything (follows).
 
 We can then write our proof checker as follows.
@@ -474,7 +474,7 @@ By adding a constructor corresponding to implication introduction:
 |ImplyIntro :: (Proof -> Proof) -> Proof|, we can formalise this rule
 as in the Haskell data type representing our proof DSL. 
 %
-The fact that the premiss can depend on the assumption |Q| is
+The fact that the premise can depend on the assumption |Q| is
 represented by a function whose parameter is the proof of |Q| in
 question.
 %
@@ -588,7 +588,7 @@ Before moving on to our next topic, we make a final remark on |And| and |Or|.
 Most of the properties of |And| have corresponding properties for
 |Or|.
 %
-This can be explained one way by observing that they are de Morgan
+This can be explained one way by observing that they are De Morgan
 duals.
 %
 Another explanation is that one can swap the direction of the arrows
@@ -668,10 +668,10 @@ define partial functions (instead of total ones, see
 % + implement not (not exclMid)
 % + revisiting the tupling transform
 % + "Logic as impoverished typing rules"
-We can make the link beween Haskell and logic more tight if we
+We can make the link between Haskell and logic more tight if we
 restrict ourselves to \emph{intuitionistic} logic.
 
-One way to characterize intuitionistic logic is that it lacks native
+One way to characterise intuitionistic logic is that it lacks native
 support for negation.
 %
 Instead, |Not p| is represented as |p `Implies` False|:
@@ -679,7 +679,7 @@ Instead, |Not p| is represented as |p `Implies` False|:
 type Not p = p `Implies` False
 \end{code}
 The intuition behind this definition is the principle of proof by
-contradiction: if assuming |p| leads to a contradition (|False|), then
+contradiction: if assuming |p| leads to a contradiction (|False|), then
 |p| must be false; so |Not p| should hold.
 
 When doing this kind of definition, one gives up on |notElim|: there
@@ -731,7 +731,7 @@ andIntro t u = (t,u)
 andElimL  = fst
 andElimR  = snd
 \end{code}
-Similarly, disjuction is represented as |Either|: if |p : P| then
+Similarly, disjunction is represented as |Either|: if |p : P| then
 |Left p : Or P Q| and if |q : Q| then |Right q : Or P Q|.
 \begin{code}
 type Or a b = Either a b
@@ -741,7 +741,7 @@ orElim pOrq f g = case pOrq of
   Left   p -> f  p
   Right  q -> g  q
 \end{code}
-We already had characterized or-elimination as case analysis, and,
+We already had characterised or-elimination as case analysis, and,
 indeed, this is how we implement it.
 
 Truth is represented as the unit type:
@@ -786,7 +786,7 @@ For example, either it rains or it does not rain.
 %
 There is no ``middle ground''.
 %
-If we attempt to prove |Or P (Not P)| in intuitionitic logic, we
+If we attempt to prove |Or P (Not P)| in intuitionistic logic, we
 quickly find ourselves in a dead end.
 %
 Clearly, we cannot prove |P| for any |P|.

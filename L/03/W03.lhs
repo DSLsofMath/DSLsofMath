@@ -141,7 +141,7 @@ Our example here is by
 \begin{linenumbers}
 \begin{quote}
   [...] a function $z = f (x, y)$ for all points |(x, y)| in some open
-  set |U| of the cartesian |(x, y)|-plane.
+  set |U| of the Cartesian |(x, y)|-plane.
 %
   [...] If one holds |y| fixed, the quantity |z| remains just a
   function of |x|; its derivative, when it exists, is called the
@@ -164,7 +164,7 @@ We have
 %{
 %format f'x = "f''_{x}"
 \begin{spec}
-U    ⊆  cross ℝ ℝ          -- cartesian plane
+U    ⊆  cross ℝ ℝ          -- Cartesian plane
 
 f    :  U -> ℝ
 
@@ -602,7 +602,7 @@ To the Haskell interpreter, such empty |data|-declarations mean that
 there is no way to construct any element for them, as we saw in
 \cref{sec:curry-howard}.
 %
-But at this stage of the specfication, we will use this notation to
+But at this stage of the specification, we will use this notation to
 indicate that we do not know anything about values of those types.
 %
 Similarly, |f| has a type, but no proper implementation.
@@ -751,7 +751,7 @@ set.
 %
 \index{constraint (type)}%
 %
-This is expressed in general by a constraint |Eq a| occuring before
+This is expressed in general by a constraint |Eq a| occurring before
 the |=>| symbol.
 
 Instance declarations can also be parameterised on another
@@ -993,7 +993,7 @@ Therefore we prefer to define the more general instances in
 Here we extend our set of type-classes to cover algebraic and
 transcendental numbers.
 %
-A simplified version, which is sufficent for our purposes, looks as
+A simplified version, which is sufficient for our purposes, looks as
 follows:
 %
 \index{Algebraic@@|Algebraic| (type class)}%
@@ -1032,7 +1032,7 @@ operations (for example addition should distribute over
 multiplication).
 
 These instances for functions allow us to write expressions which are
-very commonly used in math books, such as |f+g| for the sum of two
+very commonly used in maths books, such as |f+g| for the sum of two
 functions |f| and |g|, say |sin + cos :: REAL -> REAL|.
 %
 Somewhat less common notations, like |sq * double :: ZZ -> ZZ| are
@@ -1047,7 +1047,7 @@ assigns the following meaning:
   sin^2 = \x -> (sin x)^(const 2 x) = \x -> (sin x)^2
 \end{spec}
 %
-thus the typical math notation \(\sin^2\) can work fine in Haskell,
+thus the typical maths notation \(\sin^2\) can work fine in Haskell,
 provided the above instances for functions, assuming a fixed argument.
 %
 (Note that there is a clash with another common use of superscript for
@@ -1058,7 +1058,7 @@ With that reading \(sin^2\) would mean |\x->sin (sin x)|.)
 
 %
 \begin{exercise}
-  Experiment with this feature using ghci, for example by evaluating
+  Experiment with this feature using GHCi, for example by evaluating
   |sin + cos| at various points.
 \end{exercise}
 
@@ -1091,7 +1091,7 @@ computing derivatives.
 They are provided by \citet{adams2010calculus} as a series of
 theorems, starting at page 108 of their book.
 %
-We we can summarize those as follows:
+We we can summarise those as follows:
 \begin{align*}
   (f + g)'(x)  &=   f'(x) + g'(x)            \\
   (f * g)'(x)  &=   f'(x)*g(x) + f(x)*g'(x)  \\

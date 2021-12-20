@@ -198,7 +198,7 @@
 
 % \begin{quote}
 %   [...] a function |z = f (x, y)| for all points |(x, y)| in some open
-%   set |U| of the cartesian |(x, y)|-plane.
+%   set |U| of the Cartesian |(x, y)|-plane.
 % %
 %   [...] If one holds |y| fixed, the quantity |z| remains just a
 %   function of |x|; its derivative, when it exists, is called the

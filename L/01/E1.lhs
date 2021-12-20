@@ -8,7 +8,7 @@
 \begin{exercise}\label{exc:counting}\textbf{[Important]}
   Counting values.
   %
-  Assume we have three finite types |a|, |b|, |c| with cardinalites
+  Assume we have three finite types |a|, |b|, |c| with cardinalities
   |A|, |B|, and |C|.
   %
   (For example, the \addtoindex{cardinality} of |Bool| is |2|, the cardinality of
@@ -244,7 +244,7 @@ property related to the first round-trip property?
   the semantics.
   %
   Try to use the same interface, so that you can import this new polar
-  representation or the previous cartesian representation without
+  representation or the previous Cartesian representation without
   changing anything more than the import statement.
 \end{exercise}
 

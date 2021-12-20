@@ -75,7 +75,7 @@ test2 = test1 * test1
 The next step after defining these operations is to make the notation a bit
 smoother. We will talk much more about type classes in later weeks, so check
 elsewhere for a proper explanation. For now we can just treat it as a way of
-overloading the math operators to enable simple notatoin for complex numbers.
+overloading the maths operators to enable simple notatoin for complex numbers.
 
 \begin{code}
 instance Num CB where

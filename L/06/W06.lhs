@@ -444,7 +444,7 @@ To prove that fact, one can substitute |f| by |f'| in the above.
 Another way to see it is to remark that we started with the equation
 |evalAll . derive = tail . evalAll|;
 %
-but now our input represention is \emph{already} a Maclaurin series so
+but now our input representation is \emph{already} a Maclaurin series so
 |evalAll = id|, and in turn |derive = tail|.
 %
 In sum:

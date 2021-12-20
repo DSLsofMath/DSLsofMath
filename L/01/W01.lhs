@@ -27,7 +27,7 @@ a deeper understanding.
 %
 But then please use the source files instead of trying to
 copy-and-paste from the PDF, to avoid confusing error messages due to
-problems with layout or unicode characters.
+problems with layout or Unicode characters.
 
 \begin{code}
 module DSLsofMath.W01 where
@@ -120,15 +120,15 @@ In general, for any types |A| and |B| we write |(A, B)| for the type
 of pairs.
 %
 In mathematics, the type (or set) of pairs is usually called the
-\emph{cartesian product} and is written using an infix cross: |A×B|.
+\emph{Cartesian product} and is written using an infix cross: |A×B|.
 %
-\index{cartesian product||see {pair type}}%
+\index{Cartesian product||see {pair type}}%
 %
 We will sometimes use this notation as well.
 %
 The semantics of |Bool×Bool = (Bool, Bool)| is the set |{(F, F), (F,
   T), (T, F), (T, T)}| where we shorten |False| to |F| and |True| to
-|T| for readbility.
+|T| for readability.
 %
 \index{triple||see {tuple types}}%
 %
@@ -170,7 +170,7 @@ functions from the semantics of |A| to the semantics of |B|).
 %  domains where the semantics is gives more insight than here.}
 %note: examples of function values
 As an example, the semantics of |BB -> BB| is a set of four functions:
-|{const False, id, not, const True}| where |not : BB -> BB| is boolean
+|{const False, id, not, const True}| where |not : BB -> BB| is Boolean
 negation.
 %
 \index{not@@\ensuremath{\Varid{not}} (|not : BB -> BB|)}%
@@ -318,7 +318,7 @@ identity function can be written |\x -> x|, and the constant function
 could also be defined as |const = \x _ -> x|.
 %
 The ASCII syntax uses backslash to start the lambda expression, but
-we render it as a greek lower case lambda.
+we render it as a Greek lower case lambda.
 
 %note: perhaps note that λ is a proper character, to be used in
 %      identifiers, and cannot be used instead of backslash.
@@ -497,7 +497,7 @@ This type signature deserves some more explanation.
 %
 The first part (|Eq v =>|) is a constraint which says that the
 function works, not for \emph{all} types |v|, but only for those who
-support a boolean equality check (|(==) :: v -> v -> Bool|).
+support a Boolean equality check (|(==) :: v -> v -> Bool|).
 %
 The rest of the type signature (|Env v s -> (v -> Maybe s)|) can be
 interpreted in two ways:
@@ -508,11 +508,11 @@ returning a function,
 or as the type of a two-argument function taking an |Env v s| and a
 |v| and maybe returning an |s|.
 
-The implementation proceeds by searching for the first occurence of
+The implementation proceeds by searching for the first occurrence of
 |x| in the list of pairs |(v,s)| such that |x==v|, and return |Just s|
 if one is found, and |Nothing| otherwise.
 %**TODO: Explain |where| clause syntax
-%**TODO: Explain boolean guards
+%**TODO: Explain Boolean guards
 \begin{code}
 evalEnv vss x  =  findFst vss
   where  findFst ((v,s):vss)   | x == v         =  Just s     
@@ -541,7 +541,7 @@ lookup :: Eq a => a -> [(a, b)] -> Maybe b
 % \hfill{}
 % %\includegraphics[width=0.4\textwidth]{../E/FunComp.jpg}
 
-%**TODO: Perhaps more about cartesian product, etc.
+%**TODO: Perhaps more about Cartesian product, etc.
 %*TODO explain the e : t syntax (and mention e `elem` t)
 
 %\subsection{Functions}
@@ -817,7 +817,7 @@ inv 0  = Nothing
 inv r  = Just (1/r)
 \end{code}
 
-%*TODO: perhaps move cartesian product earlier (to math / set part)
+%*TODO: perhaps move Cartesian product earlier (to maths / set part)
 \index{pair type}%
 %
 Two other examples of, often used, parameterised types are |(a,b)| for
@@ -842,12 +842,12 @@ As preparation for the language of sequences and limits later
 (\cref{par:LimitOfSequence,sec:power-series}), we spend a few lines on
 the notation and abstract syntax of sequences.
 
-In math textbooks, the following notation is commonly in use:
+In maths textbooks, the following notation is commonly in use:
 %
 $\left\{ a_i \right\}_{i=0}^{\infty}$ or just $\left\{ a_i \right\}$
 and (not always) an indication of the type $X$ of the $a_i$.
 %
-Note that the |a| at the center of this notation actually carries all
+Note that the |a| at the centre of this notation actually carries all
 of the information: an infinite family of values $a_i$ each of type |X|.
 %
 If we interpret the subscript notation $a_i$ as function application
