@@ -83,8 +83,8 @@ Our method will be to:\nopagebreak
 \index{DSL!sample spaces}%
 Generally, textbook problems involving probability involve the
 description of some scenario or experiment, with an explicit
-uncertainty, including the outcome of certain measures.%
-%TODO: I don't understand the use of the word "measures" here?
+uncertainty, including the outcome of certain measurements.%
+%
 \footnote{Depending on the context, we use the word ``situation'' or
 ``outcome'' for the same mathematical objects.
 %
@@ -243,19 +243,19 @@ We can check that the product of spaces is a special case of |Sigma|:
 \begin{code}
 prod a b = Sigma a (const b)
 \end{code}
-If we call |card a| the cardinality of the support type of space |a|,
-then
-\begin{spec}
-  card (prod a b) == card a × card b
-\end{spec}
-and in the general case
-%{
-%format (support (a)) = "\lvert{}" a "\rvert{}"
-\begin{spec}
-  card (Sigma a f) == {-"\sum_{i\in"-} (support(a)) {-"}"-} card (f i)
-\end{spec}
-where |support a| is the set of points in the space |a|.
-%}  
+% If we call |card a| the cardinality of the support type of space |a|,
+% then
+% \begin{spec}
+%   card (prod a b) == card a × card b
+% \end{spec}
+% and in the general case
+% %{
+% %format (support (a)) = "\lvert{}" a "\rvert{}"
+% \begin{spec}
+%   card (Sigma a f) == {-"\sum_{i\in"-} (support(a)) {-"}"-} card (f i)
+% \end{spec}
+% where |support a| is the set of points in the space |a|.
+% %}  
 \paragraph{Projections}
 In the end we may not be interested in all values and hide some of
 them.
