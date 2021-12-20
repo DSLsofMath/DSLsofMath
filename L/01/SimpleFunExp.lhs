@@ -347,7 +347,7 @@ A similar line of reasoning justifies the types of derivatives.
 We return to derivatives in Chapter~\ref{sec:types}.
 %study in detail how these play out first.
 
-\subsection{Detour: expressions of several variables}
+\subsection{Expressions of several variables}
 \label{sec:multiple-variables}
 
 In first reading this section can be skipped, however it is natural to
