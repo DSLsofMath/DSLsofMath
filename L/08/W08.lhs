@@ -288,9 +288,9 @@ instance Field a => MulGroup (Taylor a) where
 recipStream :: Field a => Taylor a -> Taylor a
 recipStream [] = error "recipStream: divByZero"
 recipStream (f0:f') = g
-  where  g  = g0:g'
-         g0 = recip f0
-         g' = negate (f' * g*g)
+  where  g   = g0:g'
+         g0  = recip f0
+         g'  = negate (f' * g*g)
 \end{code}
 Just to check we can now compute the first few terms in |expT x :
 Taylor REAL|:
@@ -316,7 +316,7 @@ cosxisinx3 = cos x + i * sin x  where  i  = [0 :+ 1];  x  = [0,1]
 ex2'alt3 = take 10 cosxisinx3
 \end{code}
 %
-As with |expTx|, these coefficients in these series are also really
+As with |expTx|, the coefficients in these series are also really
 simple: the four values |[1, i, -1, -i]| just repeat forever.
 
 \section{The Laplace transform}

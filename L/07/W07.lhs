@@ -441,7 +441,7 @@ which has a much smaller domain.
 Let |m = f . e|.
 %
 Then, for each |i|, the vector |m i| is the image of the canonical
-basis vector |e i| through |f|.
+basis vector |e i| through~|f|.
 %
 Then
 %
@@ -1037,7 +1037,6 @@ Assuming |i/=j|, we can take the indefinite integral, and find (call it |F i j x
 \begin{spec}
   F i j x = sin ((i-j)*x)/(i-j) - sin ((i+j)*x) / (i+j) + K
 \end{spec}
-%}
 Note that we only need the value of this function at the interval
 end-points: |-pi| and |pi|.
 %
@@ -1072,6 +1071,7 @@ In sum |bi x = sin (i*x)/sqrt pi| is an orthonormal basis:
 \begin{spec}
   bi `innerF` bj = is i j
 \end{spec}
+%}
 
 As interesting as it is, this basis does not cover all functions over
 |I|.
@@ -2358,6 +2358,6 @@ instance Field s => VectorSpace s s where (*^) = (*)
 Here (for once) the vectors have the the same type as the scalars,
 which means that the scaling operation, which usually has an
 assymmetric type, now is just ordinary scalar multiplication |(*) :: s
--> s -> s|.
+<-> s -> s|.
 
 %include E7.lhs

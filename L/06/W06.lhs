@@ -446,7 +446,7 @@ Another way to see it is to remark that we started with the equation
 %
 but now our input represention is \emph{already} a Maclaurin series so
 |evalAll = id|, and in turn |derive = tail|.
-
+%
 In sum:
 \begin{spec}
 head  f    = eval f 0            -- value of |f| at |0|
@@ -478,7 +478,7 @@ or, in traditional notation:
   f(x) = f(0) + \int_0^x f'(t) \text{d}t
 \]
 
-which is the fundamental theorem of calculus.
+which is the fundamental theorem of calculus \cite[Sect.\ 5.5]{adams2010calculus}.
 %
 In sum, we find that our definition of |integT| is exactly that needed
 to comply with calculus laws.
@@ -563,7 +563,6 @@ eval (integ c as) x  =  c + {-"\int_0^x "-} (eval as t) dt
 \end{spec}
 
 \section{Simple differential equations}
-
 Many first-order differential equations have the structure
 %
 \begin{spec}
@@ -573,8 +572,7 @@ f' x = g f x, {-"\qquad"-} f 0 = f0
 i.e., they are defined in terms of the higher-order function |g| and
 initial value~|f0|.
 %
-The fundamental theorem of calculus
-\cite[Sect.\ 5.5]{adams2010calculus} gives us
+The fundamental theorem of calculus gives us
 %
 \begin{spec}
 f x = f0 + {-"\int_0^x "-} (g f t) dt
@@ -644,7 +642,7 @@ expf  =   evalPS 100 expx
 
 \begin{exercise}
   Write |expx| as a recursive equation (inline |solve| in the
-  definition above).
+  definition).
 \end{exercise}
 %
 The first solution, |idx| is just the polynomial |[0,1]| --- i.e. just

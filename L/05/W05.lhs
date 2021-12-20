@@ -700,18 +700,17 @@ Power series are obtained from polynomials by removing in |Poly'| the
 restriction that there should be a \emph{finite} number of non-zero
 coefficients; or, in, the case of |Poly|, by going from finite lists to
 infinite streams.
-
-
+%
 \begin{joincode}%
-\begin{spec}
--- |PowerSeries' a = { f : ℕ → a }|
-\end{spec}
+% \begin{spec}
+% -- |PowerSeries' a = { f : ℕ → a }|
+% \end{spec}
 \begin{code}
 type PowerSeries a = Poly a   -- finite and infinite lists
 \end{code}
 \end{joincode}
 \index{power series}%
-
+%
 The operations are still defined as before.
 %
 If we consider only infinite lists, then only the equations which deal
@@ -782,6 +781,7 @@ Note that |evalPS n| is \emph{not} a homomorphism: for example:
 %
 \index{equational reasoning}%
 %
+\savecolumns
 \begin{spec}
   evalPS 2 (x*x) 1                   =
   evalPoly (takePoly 2 [0, 0, 1]) 1  =
@@ -789,10 +789,11 @@ Note that |evalPS n| is \emph{not} a homomorphism: for example:
   0
 \end{spec}
 but
+\restorecolumns
 \begin{spec}
-  (evalPS 2 x 1)                  =
-  evalPoly (takePoly 2 [0, 1]) 1  =
-  evalPoly [0, 1] 1               =
+  (evalPS 2 x 1)                     =
+  evalPoly (takePoly 2 [0, 1]) 1     =
+  evalPoly [0, 1] 1                  =
   1
 \end{spec}
 %

@@ -75,8 +75,8 @@ mathematics and then in Haskell.
 To a first approximation one can think of types as sets.
 %
 \index{Bool@@|Bool| (|BB|)}%
-\index{Bool@@|Bool| (|BB|)!False@@|False|}%
-\index{Bool@@|Bool| (|BB|)!True@@|True|}%
+%\index{Bool@@|Bool| (|BB|)!False@@|False|}%
+%\index{Bool@@|Bool| (|BB|)!True@@|True|}%
 %
 The type of truth values, |False| and |True|, is often called |Bool|
 or just |BB|.
@@ -827,9 +827,9 @@ either an |a| or a |b| (a \addtoindex{sum type}).
 For reference, the either type is defined as follows in Haskell:
 %
 \index{Either@@|Either| type}%
-\index{Either@@|Either| type!Left@@|Left : a -> Either a b|}%
+%\index{Either@@|Either| type!Left@@|Left : a -> Either a b|}%
 \index{Left@@|Left : a -> Either a b|}%
-\index{Either@@|Either| type!Right@@|Right : b -> Either a b|}%
+%\index{Either@@|Either| type!Right@@|Right : b -> Either a b|}%
 \index{Right@@|Right : b -> Either a b|}%
 %include Either.lhs
 %TODO at first use explain GADT syntax for |data| declaration 

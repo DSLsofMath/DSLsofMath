@@ -711,6 +711,7 @@ e1, e2 :: E                             -- | 1 + 2 * 3 |
 e1 = Add (Con 1) (Mul (Con 2) (Con 3))  -- | 1 +(2 * 3)|
 e2 = Mul (Add (Con 1) (Con 2)) (Con 3)  -- |(1 + 2)* 3 |
 \end{code}
+\hspace{\mathindent}%
 |e1 = |
 \begin{tikzpicture}[AbsSyn]
 \begin{scope}[yshift=2ex]
@@ -734,9 +735,10 @@ child {node {|Con|} child {node(rightleaf) {|3|}}};
 \end{scope}
 \node [draw=blue, ellipse, thick, inner sep=-4pt, fit = (root) (leftleaf) (rightleaf)] {};
 \end{tikzpicture}
-
+\label{code:e1e2}
 \index{eval@@|eval : Syn -> Sem|}%
 %
+
 As the reader may have guessed, the natural evaluator |eval : E -> Integer|
 (defined later) is a homomorphism from |Add| to |(+)| and from |Mul| to
 |(*)|.
@@ -940,15 +942,8 @@ the return type:
 foldIE :: IntExp t => E -> t
 foldIE = foldE add mul con
 
-instance IntExp E where
-  add  = Add
-  mul  = Mul
-  con  = Con
-
-instance IntExp Integer where
-  add  = (+)
-  mul  = (*)
-  con  = id
+instance IntExp E        where  add  = Add;   mul  = Mul;   con  = Con
+instance IntExp Integer  where  add  = (+);   mul  = (*);   con  = id
 
 idE' :: E -> E
 idE' = foldIE
@@ -1032,15 +1027,15 @@ prettyMul xs ys  = xs ++ "*" ++ ys
 prettyCon c      = show c
 
 p1, p2 :: String
-p1 = pretty e1
-p2 = pretty e2
+p1 = pretty e1     -- gives |"1+2*3"|
+p2 = pretty e2     -- also  |"1+2*3"|, but should be |"(1+2)*3"|
 
 trouble :: Bool
 trouble = p1 == p2
 \end{code}
 %
-Note that |e1| and |e2| are not equal, but they still pretty-print to
-the same string.
+Note that |e1| and |e2| (from page \pageref{code:e1e2}) are not equal,
+but they still pretty-print to the same string.
 %
 This means that |pretty| is doing something wrong: the inverse,
 |parse|, is ambiguous.
@@ -1133,12 +1128,12 @@ But we can also construct more elements using |op|: |unit `op` unit|,
 %
 So a draft for the initial monoid could be:
 %
-\begin{spec}
-data M where
-  Unit :: M
-  Op :: M -> M -> M
-\end{spec}
-or:
+% \begin{spec}
+% data M where
+%   Unit :: M
+%   Op :: M -> M -> M
+% \end{spec}
+% or:
 \begin{spec}
 data M = Unit | Op M M
 \end{spec}
@@ -1163,11 +1158,8 @@ Gathering all function in various type classes, we find that a |Ring|
 corresponds to the following algebra --- again we start by ignoring laws:
 %
 \begin{spec}
-zero    :: a
-(+)     :: a -> a -> a
-negate  :: a -> a
-one     :: a
-(*)     :: a -> a -> a
+zero    :: a; {-"\quad"-}  (+)     :: a -> a -> a; {-"\quad"-} negate  :: a -> a
+one     :: a;              (*)     :: a -> a -> a
 \end{spec}
 %
 In this case, we can start with |zero| and |one|.
@@ -1195,8 +1187,13 @@ For example:
 (one + one) * (one + one) == one + one + one + one
 \end{spec}
 %
+So far we have only the natural numbers, but the last operation,
+|negate|, adds the negative numbers as well.
+% 
 By following this line of reasoning to its conclusion, we will find
 that the initial |Ring| is the set of integers.
+%
+
 
 \subsection{A general initial structure}
 
@@ -1210,9 +1207,7 @@ and consider a few values of type |IntExp a => a|.
 seven :: IntExp a => a;  seven = add (con 3) (con 4)
 
 testI  :: Integer;       testI  = seven
-                         
 testE  :: E;             testE  = seven
-                         
 testP  :: String;        testP  = seven
 
 check :: Bool
@@ -1472,16 +1467,20 @@ Working with |OneVarExp a => a| can be more economical than using
 |FunExp|: one does not need any explicit |eval| function.
 
 
-We now have two DSLs which capture the similar concepts. One
-of them is given by the data type |FunExp|. The other one is given by
-the type class (synonym) |OneVarExp|.
+We now have two DSLs which capture the similar concepts.
+%
+One of them is given by the data type |FunExp|.
+%
+The other one is given by the type class (synonym) |OneVarExp|.
 %
 In fact, the instances and the evaluator would form an isomorphism between |FunExp|
 (the version restricted to integer constants) and |OneVarExp a => a|.
 
 The difference is that the first one builds a syntax tree, while the
-other one refers to the semantics (algebraic) value.  For example,
-|:+:| \emph{stands for} a function, while |+| \emph{is} that function.
+other one refers to the semantics (algebraic) value.
+%
+For example, |(:+:)| \emph{stands for} a function, while |(+)|
+\emph{is} that function.
 
 \subsection{\extraMaterial A generic Free construction}
 
@@ -2065,18 +2064,19 @@ f x = sin x + two * x
 \begin{enumerate}
 \item Using |FunExp|
 
-Recall expressions (or functions) of one variables, from \cref{sec:FunExp}:
+  Recall expressions (or functions) of one variables, from
+  \cref{sec:FunExp}:
 %
 \index{FunExp@@|FunExp| (type)}%
 \begin{spec}
 data FunExp  =  Const Rational
              |  X
-             |  FunExp :+: FunExp
-             |  FunExp :*: FunExp
-             |  FunExp :/: FunExp
-             |  Exp FunExp
-             |  Sin FunExp
-             |  Cos FunExp
+             |  FunExp  :+:  FunExp
+             |  FunExp  :*:  FunExp
+             |  FunExp  :/:  FunExp
+             |  Exp  FunExp
+             |  Sin  FunExp
+             |  Cos  FunExp
                 -- and so on
   deriving (Eq, Show)
 \end{spec}

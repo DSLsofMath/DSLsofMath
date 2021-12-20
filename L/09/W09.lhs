@@ -882,7 +882,6 @@ measure_sigma_equations s e =
      measure (Sigma s (isTrue . e)) / measure s
 \end{code}
 %}
-
 \end{proof}
 
 We can now note that the space |observing e s| is the subspace of |s|
@@ -1432,11 +1431,11 @@ One way to define independent events is as follows.
 %
 $E$ is independent from $F$ iff $P(E ∣ F) = P(E)$.
 %
-
 According to \citet{IntroProb_Grinstead_Snell_2003}, two events
 are independent iff.\ $P(E ∩ F) = P(E) · P(F)$.
 
-The proof can be written in the traditional notation as follows:
+The proof that these formulations are equivalent can be written in the
+traditional notation as follows:
 \begin{proof}
 In the left to right direction:
 \begin{spec}

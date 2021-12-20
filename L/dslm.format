@@ -133,6 +133,7 @@
 %format f1
 %format f2
 %format f3
+%format g0
 %format e1' = "e''_1"
 %format e2' = "e''_2"
 %format e3' = "e''_3"
