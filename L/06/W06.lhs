@@ -72,7 +72,7 @@ Thus |evalAll (derive e) == tail (evalAll e)| which can be written
 |evalAll . derive = tail . evalAll|.
 %
 Thus |evalAll| is a \addtoindex{homomorphism} from |derive| to |tail|,
-or in other words, we have |H1(evalAll,derive,tail)| (|H1| was defined
+or in other words, we have |H1(evalAll,derive,tail)| (|H1pred| was defined
 in \cref{exc:homomorphisms}) --- this is our specification for what
 follows.
 
@@ -597,7 +597,7 @@ Forall as (eval (gSyn as) == gSem (eval as))
 %
 or simply |H1(eval,g,g)|.
 %
-(This particular use of |H1| is read ``|g| commutes with |eval|''.)
+(This particular use of |H1pred| is read ``|g| commutes with |eval|''.)
 %
 Then we can move |eval| outwards step by step:
 %

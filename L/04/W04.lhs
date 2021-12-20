@@ -215,19 +215,17 @@ with an inverse.
 %
 To continue our mathematically-grounded |Num| replacement, we have
 also defined the additive group as follows:
-
+%
 \index{AddGroup@@|AddGroup| (type class)||textbf}%
 \begin{spec}
 class Additive a => AddGroup a where
   negate :: a -> a
 \end{spec}
 \index{negate@@|negate|}%
-
-Groups demand that the inverse (called |negate| for the additive
-group) act like an inverse.
 %
-Namely, applying the operation to an element and its inverse should
-yield the unit of the group.
+Groups demand that the inverse (called |negate| for the additive
+group) act like an inverse: applying the operation to an element and
+its inverse should yield the unit of the group.
 %
 Thus, for the additive group, the laws are:
 %
@@ -236,11 +234,17 @@ Forall a (negate a + a = zero)
 Forall a (a + negate a = zero)
 \end{spec}
 %
-And thus we can define subtraction as
+With |negate| (for ``unary minus'') in place we can define subtraction as
 \begin{spec}
 (-) :: AddGroup a => a -> a -> a
 a - b = a + negate b
 \end{spec}
+%
+Note that this definition works for any (additive) group, thus the
+type |a| need not represent numbers.
+%
+Just with instances from this book we can subtract functions, pairs,
+power series, etc.
 
 When the additive monoid is abelian (commutative) and multiplication
 distributes over addition (|x*(y+z) == (x*y)+(x*z)|), we have a
@@ -335,8 +339,7 @@ class Multiplicative a => MulGroup a where
 a / b = a * recip b
 \end{code}
 \end{joincode}
-Often the multiplicative group structure is added to a |Ring|, and one
-has a |Field|:
+Often the multiplicative group structure is added to a ring to get what is called a \emph{field} which we represent by the type class |Field|:
 %
 \index{Field@@|Field| (type class)}%
 \label{sec:fields-defintion}
@@ -348,8 +351,10 @@ For fields, the reciprocal is not defined at zero.
 We will not capture this precondition in types: it would cause too
 much notational awkwardness.
 %
-Example instance of |Field| are |QQ| and |REAL|.
+Example instances of |Field| are |QQ| and |REAL|.
 %
+For progmatic reasons we will also treat |Double| as a |Field| even
+though the laws only hold approximatively.
 
 \cref{fig:CompNum} provides a graphical illustration of some of the
 relations between the Haskell |Num| class hierarchy and the
@@ -360,11 +365,14 @@ corresponding numerical classes we use in this book.
 The Wikipedia definition of homomorphism states that ``A homomorphism
 is a structure-preserving map between two algebraic structures of the
 same type''.
+%
+We will spend the next few subsections on formal definitions and
+examples of homomorphisms.
 
 \subsection{(Homo)morphism on one operation}
 
 As a stepping stone to capture the idea of homomorphism, we can define
-a ternary predicate |H2|.
+a ternary predicate |H2pred|.
 %
 The first argument |h|, is the map.
 %
@@ -432,7 +440,7 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 %
 
 \begin{exercise}
-  Expand the definition of |H2| in each case and check that the
+  Expand the definition of |H2pred| in each case and check that the
   obtained conditions hold.
 \end{exercise}
 
@@ -441,7 +449,8 @@ child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
 So far our definition of homomorphism takes the rather limited view
 that a single operation is transformed.
 %
-Usually, homomorphisms map a whole \emph{structure}.
+Usually, homomorphisms map a whole \emph{structure} (or
+\emph{algebra}) with several operations.
 
 Back to Wikipedia:
 %
@@ -497,8 +506,10 @@ is homomorphism, what kind of function can |h| be?
 
 \begin{example}
   \label{ex:exponential-as-homomorphism}
-As an example, let us characterise the homomorphisms from |ANat| to
-|MNat| (from \cref{sec:anat-mnat}).
+  Let us characterise the homomorphisms from |ANat| to |MNat| (from
+  \cref{sec:anat-mnat}).
+  %
+  What can be inferred from just the homomorphism conditions?
 
 \index{monoid}%
 %
@@ -540,6 +551,9 @@ for a given natual number |a = h 1|.
 So, the set of homomorphisms between the additive monoid and the
 multiplicative monoid is the set of exponential functions, one for
 every base |a|.
+%
+Note how almost all functions from |Nat| to |Nat| are ruled out by the
+homomorphism conditions.
 \end{example}
 
 \begin{exercise}
@@ -555,17 +569,17 @@ every base |a|.
 The homomorphism conditions include:
 
 \begin{spec}
-f zero = zero
-f (one + x) = one + (f x)
-f (negate x) = negate (f x)
+f zero        == zero            -- from |H0(f,zero,zero)|
+f (one + x)   == one + f x       -- from |H2(f,(+),(+))|
+f (negate x)  == negate (f x)    -- from |H1(f,negate,negate)|
 \end{spec}
 
 By substitution we get the following equations:
 
 \begin{spec}
-f zero = zero
-f x = one + (f (x - one))
-f x = negate (f (negate x))
+f zero  == zero
+f x     == one + (f (x - one))
+f x     == negate (f (negate x))
 \end{spec}
 
 These are compatible with the behaviour of |fromInteger|, but they
@@ -808,13 +822,13 @@ To shorten the calculation we write just |n| for |Con n|.
   False
 = {- By spec. of |isPrime| (four is not prime). -}
   isPrime (Add 2 2)
-= {- by |H2| -}
+= {- by |H2pred| -}
   isPrimeAdd (isPrime 2) (isPrime 2)
 = {- By spec. of |isPrime| (two is prime). -}
   isPrimeAdd (isPrime 2) True
 = {- By spec. of |isPrime| (three is also prime). -}
   isPrimeAdd (isPrime 2) (isPrime 3)
-= {- by |H2| -}
+= {- by |H2pred| -}
   isPrime (Add 2 3)
 = {- By spec. of |isPrime| (five is prime). -}
   True

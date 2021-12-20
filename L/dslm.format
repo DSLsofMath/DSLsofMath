@@ -29,7 +29,7 @@
 %format included                =  "\subseteq"
 %format intersect               =  "\cap"
 %format bar			=  "\mathbin{\mid}"
-%format (absBar (x))               =  "\lvert{}" x "\rvert{}"
+%format (absBar (x))            =  "\lvert{}" x "\rvert{}"
 %format (Clopen(x))             =  "[" x ")"
 %format infinity                =  "\infty"
 %format (pi)                    =  "\pi"
@@ -181,6 +181,8 @@
 %format H0
 %format H1 p = H "_1" p
 %format H2 p = H "_2" p
+%format H1pred = H "_1"
+%format H2pred = H "_2"
 %format Hn = H "_" n
 %format y1
 %format y2
