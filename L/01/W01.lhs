@@ -4,11 +4,11 @@
 \label{sec:DSLComplex}
 
 In this chapter we exemplify our method by applying it to the
-domain of arithmetic first, and complex numbers second, which we
+domain of types and functions first, and complex numbers second, which we
 assume most readers will already be familiar with.
 %
-However, before doing so, we introduce several central concepts in the
-\course{}, as well as laying out methodological assumptions.
+While doing this we also introduce some of the Haskell concepts needed
+later.
 
 %
 We will implement certain concepts in Haskell and

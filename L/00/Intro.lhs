@@ -135,11 +135,31 @@ This is supported by our experience: an example is the
 work done at Chalmers in cooperation with the Potsdam Institute for
 Climate Impact Research in the context of
 \href{http://www.chalmers.se/en/departments/cse/news/Pages/Global-Systems-Science.aspx}{Global
-  Systems Science}, \cite{LinckeJanssonetalDSLWC2009,
-  ionescujansson2013DTPinSciComp, jaeger13:GSSshort,
+  Systems Science}, \cite{DBLP:conf/dsl/LinckeJZI09,
+  DBLP:conf/ifl/IonescuJ12, %jaeger13:GSSshort,
   ionescujansson:LIPIcs:2013:3899, DBLP:journals/corr/BottaJICB16,
-  botta_jansson_ionescu_2017_avoidability}.
+  DBLP:journals/jfp/BottaJI17}.
 %TODO: perhaps look over the references here
+
+%  Cite
+%    DBLP:conf/haskell/DuregardJW12  (Feat) - nice algebraic structure for enumerating syntax trees
+%    DBLP:conf/mpc/MuKJ08 {Algebra of Programming Using Dependent Types}
+%      DBLP:journals/jfp/MuKJ09 {Algebra of programming in {Agda}: Dependent types for relational program derivation}
+%    DBLP:conf/types/IonescuJ11 {Testing versus proving in climate impact research},
+%    botta2018impact {The impact of uncertainty on optimal emission policies}
+% Perhaps cite
+%    DBLP:conf/esop/BernardyJC10 {Testing Polymorphic Properties},
+%    DBLP:conf/haskell/JeuringJA12 {Testing type class laws}
+%      (jeuring2012testing {Testing type class laws})
+%  Perhaps cite
+%    DBLP:conf/icfp/BernardyJZSP08 connecting Haskell and C++ {A comparison of {C++} concepts and {Haskell} type classes}
+%      DBLP:journals/jfp/BernardyJZS10 {Generic programming with {C++} concepts and {Haskell} type classes - a comparison}
+%    DBLP:conf/ifl/IonescuJ12 {Dependently-Typed Programming in Scientific Computing - Examples from Economic Modelling}
+%    DBLP:conf/mpc/DanielssonJ04 {Chasing Bottoms}
+%    DBLP:conf/popl/DanielssonHJG06 {Fast and loose reasoning is morally correct}, in relation to partial functions / non-termination, etc.
+%    DBLP:journals/corr/BernardyJ16 {Certified Context-Free Parsing: A formalisation of {Valiant}'s Algorithm in {Agda}} in relation to Rings
+%    DBLP:journals/jfp/BottaBJT21 {Extensional equality preservation and verified generic programming}
+%    DBLP:journals/jfp/BottaJI17 {Contributions to a computational theory of policy advice and avoidability}
 
 Thus, a course on designing and implementing DSLs can be an important
 addition to an engineering curriculum.
@@ -345,75 +365,6 @@ analysis of that quote.
 %
 The aim is to improve the reader's skills in understanding, modelling,
 and implementing mathematical text.
-
-\section{Common pitfalls with traditional mathematical notation}
-\label{sec:pitfalls}
-%note: a bit odd placement of this section in a chapter "about this book"
-
-\paragraph{A function or the value at a point?}
-
-Mathematical texts often talk about ``the function $f(x)$'' when ``the
-function $f$'' would be more clear.
-%
-Otherwise there is a risk of confusion between $f(x)$ as a
-function and $f(x)$ as the value you get from applying the function
-$f$ to the value bound to the name $x$.
-
-Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
-%
-Then it is clear that the value of $t$ is the constant $15$.
-%
-But if we let $s = 5*f(x)$ it is not clear if $s$ should be seen as a
-constant (for some fixed value $x$) or as a function of $x$.
-
-Paying attention to types and variable scope often helps to sort out
-these ambiguities and we will expand on this in
-\cref{sec:functions-and-scoping}.
-
-\paragraph{Scoping}
-\label{sec:scoping-pitfall}
-The syntax and scoping rules for the integral sign are rarely
-explicitly mentioned, but looking at it from a software perspective
-can help.
-%
-If we start from a simple example, like \(\int_{1}^{2} x^2 dx\), it is
-relatively clear: the integral sign takes two real numbers as limits
-and then a certain notation for a function, or expression, to be
-integrated.
-%
-Comparing the part after the integral sign to the syntax of a function
-definition \(f(x) = x^2\) reveals a rather odd rule: instead of
-\emph{starting} with declaring the variable \(x\), the integral syntax
-\emph{ends} with the variable name, and also uses the letter ``d''.
-%
-(There are historical explanations for this notation, and it is
-motivated by computation rules in the differential calculus, but we
-will not go there now.
-%
-We are also aware that the notation $\int dx f(x)$, which emphasises
-the bound variable, is sometimes used, especially by physicists, but
-it remains the exception rather than the rule at the time of writing.)
-%
-It seems like the scope of the variable ``bound'' by |d| is from the
-integral sign to the final |dx|, but does it also extend to the
-limits of the domain of integration?
-%
-The answer is no, as we can see from a slightly extended example:
-%
-\begin{align*}
-   f(x) &= x^2
-\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
-\end{align*}
-%
-The variable |x| bound on the left is independent of the variable |x|
-``bound under the integral sign''.
-%
-We address this issue in detail in \cref{sec:functions-and-scoping}.
-%
-Mathematics textbooks usually avoid the risk of confusion by
-(silently) renaming variables when needed, but we believe that this
-renaming is a sufficiently important operation to be more explicitly
-mentioned.
 
 \section{Acknowledgments}
 

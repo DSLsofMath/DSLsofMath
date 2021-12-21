@@ -89,7 +89,7 @@ rates and grades in later courses.
 %
 This is very briefly summarised in Table~\ref{tab:res} and more
 details are explained by
-\citet{TFPIE18_DSLMResults_JanssonEinarsdottirIonescu}.
+\citet{DBLP:journals/corr/abs-1908-01572}.
 
 %% -------------------------------------------------------------------
 % Subsequent results
@@ -132,7 +132,7 @@ mainly aimed at discrete mathematics.)
 \reviseForBook{What follows probably needs thorough revision}
 %
 While preparing course materials for use within the first instance we
-wrote a paper \citep{TFPIE15_DSLsofMath_IonescuJansson} about the
+wrote a paper \citep{DBLP:journals/corr/IonescuJ16} about the
 course and presented the pedagogical ideas at several events
 (TFPIE'15, DSLDI'15, IFIP WG 2.1 \#73 in Göteborg, LiVe4CS in
 Glasgow).

@@ -20,7 +20,8 @@ DSLM_A5.tex: DSLsofMathNotes.tex
 	cp DSLsofMathNotes.tex DSLM_A5.tex
 	patch < A5_landscape.patch
 
-BOOKDEPS=DSLsofMath.lhs dslm.format ref.bib  \
+BOOKDEPS=DSLsofMath.lhs dslm.format          \
+             ref.bib pj.bib                  \
              newunicodedefs.tex              \
              00/Intro.lhs                    \
              01/W01.lhs                      \

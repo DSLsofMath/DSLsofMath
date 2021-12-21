@@ -3,7 +3,7 @@
 %TODO: May benefit from more "sectioning" structure (now 5p + just one subsection of 3p)
 
 This section is partly based on material by
-\citet{TFPIE15_DSLsofMath_IonescuJansson}.
+\citet{DBLP:journals/corr/IonescuJ16}.
 %
 and we collect our definitions in a Haskell module which is available
 in the GitHub repository of the book.
