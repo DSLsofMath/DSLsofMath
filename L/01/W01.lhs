@@ -3,6 +3,7 @@
 \chapter{Types, Functions, and DSLs for Expressions}
 \label{sec:DSLComplex}
 
+%**TODO: Better road-mapping needed for this chapter
 In this chapter we exemplify our method by applying it to the
 domain of types and functions first, and complex numbers second, which we
 assume most readers will already be familiar with.
@@ -18,16 +19,13 @@ We will implement certain concepts in Haskell and
 the code for this chapter is placed in a module called
 |DSLsofMath.W01| that starts here.
 %
-As mentioned earlier, the code is available on
-\href{https://github.com/DSLsofMath/DSLsofMath}{GitHub}.
-%
 It is strongly recommended to try out the different examples, to play
 with the code and to make different edits and tests in order to reach
 a deeper understanding.
 %
-But then please use the source files instead of trying to
-copy-and-paste from the PDF, to avoid confusing error messages due to
-problems with layout or Unicode characters.
+As mentioned earlier, the code is freely available on
+\href{https://github.com/DSLsofMath/DSLsofMath}{GitHub} for this
+purpose.
 
 \begin{code}
 module DSLsofMath.W01 where
@@ -64,8 +62,8 @@ We follow a Type-Driven Development style of programming.
 \index{type}%
 
 As mentioned in the introduction, we emphasise the dividing line
-between \addtoindex{syntax} (what mathematical expressions look like)
-and \addtoindex{semantics} (what they mean).
+between \addtoindex{\emph{syntax}} (what mathematical expressions look like)
+and \addtoindex{\emph{semantics}} (what they mean).
 
 \index{DSL!type expressions}%
 %
@@ -199,8 +197,8 @@ range |1..N|.
 Treating such an ``impure function'' as a mathematical ``pure''
 function quickly leads to confusing results.
 %
-For example, we know that any pure function |f| will satisfy `|x == y|
-implies |fApp(x) == fApp(y)|'.
+For example, we know that any pure function |f| will satisfy the property: if |x == y|
+then |fApp(x) == fApp(y)|.
 %
 As a special case we certainly want |fApp(x) == fApp(x)| for every |x|.
 %
@@ -281,7 +279,8 @@ An |n|-argument function has arity |n|.
 %
 For small |n| special names are often used: binary means arity 2 (like
 |(+)|), \addtoindex{unary} means arity 1 (like |negate|) and
-\addtoindex{nullary} means arity 0 (like |"hi!"|).
+\addtoindex{nullary} means arity 0, thus not a function at all, just
+any regular value (like |"hi!"|).
 %*TODO: perhaps add something about tupling, currying and arity --- check Idris intro
 
 \paragraph{Higher-order functions}
@@ -499,14 +498,11 @@ The first part (|Eq v =>|) is a constraint which says that the
 function works, not for \emph{all} types |v|, but only for those who
 support a Boolean equality check (|(==) :: v -> v -> Bool|).
 %
-The rest of the type signature (|Env v s -> (v -> Maybe s)|) can be
-interpreted in two ways:
+The next part of the type signature (|Env v s|) shows the type of
+the first argument (|env|) to the function |evalEnv|.
 %
-either as the type of a one-argument function taking an |Env v s| and
-returning a function,
-%
-or as the type of a two-argument function taking an |Env v s| and a
-|v| and maybe returning an |s|.
+The final part of the type, |(v -> Maybe s)|), shows that |evalEnv
+env| is also a function, now taking a |v| and maybe returning an |s|.
 
 The implementation proceeds by searching for the first occurrence of
 |x| in the list of pairs |(v,s)| such that |x==v|, and return |Just s|
@@ -560,6 +556,12 @@ numbers.
 The absence of explicit types in mathematical texts can sometimes lead
 to confusing formulations.
 %
+Here, and in many places in later chapters, we will analyse a quote
+from a mathematical textbook.
+%
+You do \emph{not} need to understand the mathematics behind at this
+point (we only get to the Laplace transform in \cref{sec:Laplace}).
+% 
 For example, a standard text on differential equations by
 \citet*{edwards2008elementary} contains at page 266 the following
 remark:

@@ -336,8 +336,8 @@ The reader is encouraged to experiment with the examples to get a
 feeling for how they work.
 %
 But instead of cutting and pasting code from the PDF, please use the
-source code in the repository to avoid confusion from indentation and
-symbols.
+source code in the repository to avoid confusing error messages from
+indentation and Unicode symbols.
 %
 A more radical, but perhaps more instructive alternative would be to
 recreate all the Haskell examples from scratch.

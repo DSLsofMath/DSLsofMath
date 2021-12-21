@@ -22,7 +22,7 @@ type ℤ = Int
 \label{sec:functions-and-scoping}
 
 % \subsection{}
-We start this chapter with some common pitfalls with traditional
+We start this section with a common pitfall with traditional
 mathematical notation.
 
 \paragraph{A function or the value at a point?}
@@ -45,51 +45,6 @@ constant (for some fixed value $x$) or as a function of $x$.
 Paying attention to types and variable scope often helps to sort out
 these ambiguities and we will expand on this in the rest of this
 chapter.
-
-\paragraph{Scoping}
-\label{sec:scoping-pitfall}
-The syntax and scoping rules for the integral sign are rarely
-explicitly mentioned, but looking at it from a software perspective
-can help.
-%
-If we start from a simple example, like \(\int_{1}^{2} x^2 dx\), it is
-relatively clear: the integral sign takes two real numbers as limits
-and then a certain notation for a function, or expression, to be
-integrated.
-%
-Comparing the part after the integral sign to the syntax of a function
-definition \(f(x) = x^2\) reveals a rather odd rule: instead of
-\emph{starting} with declaring the variable \(x\), the integral syntax
-\emph{ends} with the variable name, and also uses the letter ``d''.
-%
-(There are historical explanations for this notation, and it is
-motivated by computation rules in the differential calculus, but we
-will not go there now.
-%
-We are also aware that the notation $\int dx f(x)$, which emphasises
-the bound variable, is sometimes used, especially by physicists, but
-it remains the exception rather than the rule at the time of writing.)
-%
-It seems like the scope of the variable ``bound'' by |d| is from the
-integral sign to the final |dx|, but does it also extend to the
-limits of the domain of integration?
-%
-The answer is no, as we can see from a slightly extended example:
-%
-\begin{align*}
-   f(x) &= x^2
-\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
-\end{align*}
-%
-The variable |x| bound on the left is independent of the variable |x|
-``bound under the integral sign''.
-%
-We address this issue in detail in the rest of this chapter.
-%
-Mathematics textbooks usually avoid the risk of confusion by
-(silently) renaming variables when needed, but we believe that this
-renaming is a sufficiently important operation to be more explicitly
-mentioned.
 
 \paragraph{Examples of types in mathematics}
 
@@ -279,6 +234,58 @@ To start off, we can use it to assign types to big operators.
 
 \subsection{Scoping and typing big operators}
 \label{sec:big-operators}
+
+We now introduce another common pitfall with traditional mathematical
+notation.
+
+\paragraph{Scoping the integral operator}
+\label{sec:scoping-pitfall}
+The syntax and scoping rules for the integral sign are rarely
+explicitly mentioned, but looking at it from a software perspective
+can help.
+%
+If we start from a simple example, like \(\int_{1}^{2} x^2 dx\), it is
+relatively clear: the integral sign takes two real numbers as limits
+and then a certain notation for a function, or expression, to be
+integrated.
+%
+Comparing the part after the integral sign to the syntax of a function
+definition \(f(x) = x^2\) reveals a rather odd rule: instead of
+\emph{starting} with declaring the variable \(x\), the integral syntax
+\emph{ends} with the variable name, and also uses the letter ``d''.
+%
+(There are historical explanations for this notation, and it is
+motivated by computation rules in the differential calculus, but we
+will not go there now.
+%
+We are also aware that the notation $\int dx f(x)$, which emphasises
+the bound variable, is sometimes used, especially by physicists, but
+it remains the exception rather than the rule at the time of writing.)
+%
+It seems like the scope of the variable ``bound'' by |d| is from the
+integral sign to the final |dx|, but does it also extend to the
+limits of the domain of integration?
+%
+The answer is no, as we can see from a slightly extended example:
+%
+\begin{align*}
+   f(x) &= x^2
+\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
+\end{align*}
+%
+The variable |x| bound on the left is independent of the variable |x|
+``bound under the integral sign''.
+%
+We address this issue in detail in the rest of this chapter.
+%
+Mathematics textbooks usually avoid the risk of confusion by
+(silently) renaming variables when needed, but we believe that this
+renaming is a sufficiently important operation to be more explicitly
+mentioned.
+
+\paragraph{The ``big sum'' operator}
+
+
 Consider the mathematical expression
 %
 \[
@@ -421,9 +428,9 @@ We return to derivatives in Chapter~\ref{sec:types}.
 \subsection{Expressions of several variables}
 \label{sec:multiple-variables}
 
-In first reading this section can be skipped, however it is natural to
-to extend the study of expressions from single variables to multiple
-variables.
+In a first reading this section can be skipped, however it is natural
+to extend the study of expressions from single variables to
+multiple variables.
 
 \paragraph{The data type of expressions of multiple variables}
 \label{sec:ArithExp}
