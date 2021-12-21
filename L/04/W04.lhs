@@ -313,7 +313,6 @@ replacement for the |Num| class!
 \index{Additive@@|Additive| (type class)}%
 \index{AddGroup@@|AddGroup| (type class)}%
 \index{Multiplicative@@|Multiplicative| (type class)}%
-\index{MulGroup@@|MulGroup| (type class)}%
 \index{Num@@|Num| (type class)}%
 \index{Fractional@@|Fractional| (type class)}%
 \index{Ring@@|Ring| (type class)}%

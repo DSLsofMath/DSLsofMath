@@ -48,6 +48,7 @@
 % %include dslmagda.fmt
 %%% Our own formatting directives
 %include dslm.format
+%\usepackage{showidx}
 \usepackage{imakeidx}
 \usepackage{natbib}
 \usepackage{wrapfig}
@@ -247,6 +248,6 @@
 %include 01/CSem.lhs
 
 \bibliographystyle{abbrvnat}
-\bibliography{ref}
+\bibliography{ref,pj}
 \printindex
 \end{document}
