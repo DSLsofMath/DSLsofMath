@@ -1,3 +1,35 @@
+2021-12-22: Quote overview
+  1.1.4: Variable names as type hints
+  1.3: lim from wikipedia
+  1.4: Complex numbers (several quotes in this section)
+  1.7: Types of funtions, expr., ops: miniquote "the function f(x)", integral notation, big sum
+
+  2.5.1: lim of sequence again (now from Adams and Essex)
+  2.5.2: lim of function
+  2.6.3: continuity, uniform continuity,
+
+  3.1: derivative
+  3.2: partial derivative
+  3.3: Lagrangian
+  3.4: minimum of functional
+  3.7: chain rule, minimum of functional again, conditional probability
+
+  4.1: algebraic structure
+  4.2.2: homomorphism
+
+  5.1: Polynomial (several times), ring of polynomials
+  5.2: division and remainder (naturals), division and remainder (polynomials)
+
+  6.2: fundamental theorem of calculus
+
+  7: definition of vector
+
+  8.1: exponential function
+
+  9.5: random variable
+  9.9: Independent events
+
+  
 2021-11-23: ToC overview
 Page counts:
 | Ch  0 |  8 |       |

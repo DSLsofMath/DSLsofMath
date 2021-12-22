@@ -54,11 +54,6 @@
 \usepackage{wrapfig}
 \usepackage{graphicx}
 \usepackage[dvipsnames]{xcolor}
-%if book
-\usepackage[colorlinks=true,allcolors=blue]{hyperref}
-%else
-\usepackage{hyperref}
-%endif
 \usepackage{colortbl}
 \RequirePackage[T1]{fontenc}
 \RequirePackage[utf8]{inputenc}
@@ -66,7 +61,6 @@
 %include newunicodedefs.tex
 \usepackage[type={CC},modifier={by-nc-sa},version={4.0}]{doclicense}
 \RequirePackage{amsfonts}
-\usepackage[capitalize]{cleveref} % \cref
 \usepackage{tikz}
 %\usepackage[labelfont=bf]{caption}
 \usepackage{caption}
@@ -77,6 +71,15 @@
 \usepackage{enumitem}
 \usepackage{pdfpages}
 \usepackage{tabu}
+%if book
+%\usepackage[backref=page,colorlinks=true,allcolors=blue]{hyperref}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+%else
+\usepackage{hyperref}
+%endif
+\usepackage[capitalize]{cleveref} % \cref
+\usepackage{doi}
+% \usepackage{backref} % does not work with cleveref
 \newcommand\jp[1]{\todo{JP: #1}}
 \newcommand\ci[1]{\todo{CI: #1}}
 \newcommand\pj[1]{\todo{PJ: #1}}

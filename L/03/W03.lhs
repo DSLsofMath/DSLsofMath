@@ -563,8 +563,8 @@ This is a form of \addtoindex{type-driven development}.
 Consider the following text from \citeauthor{maclane1986mathematics}'s
 \textit{Mathematics Form and Function} (page 182):
 %
-\begin{linenumbers}[1]
-   \begin{quote}
+\begin{quote}
+  \begin{linenumbers}[1]
      In these cases one tries to find not the values of
      |x|\linelabel{line:exam1603_x} which make a given function |y =
      f(x)| a minimum, but the values of a given function |f(x)| which
@@ -573,11 +573,11 @@ Consider the following text from \citeauthor{maclane1986mathematics}'s
      expression |F|\linelabel{line:exam1603_F} involving both |x|,
      values of the function |y = f(x)| at interest and the values of
      its derivatives --- say an integral
-   \end{quote}
   \begin{linenomath*}
-    \[\int_a^b F(y, y', x)dx,\quad y = f(x).\] \linelabel{line:exam1603_int}
-  \end{linenomath*}
-\end{linenumbers}
+    \[\int_a^b F(y, y', x)dx,\quad y = f(x).\]\linelabel{line:exam1603_int}%
+  \end{linenomath*}%
+  \end{linenumbers}%
+\end{quote}
 %
 \lnOnly{Typing the variables and the integration operators in this text was an
   exam question in 2016.}
