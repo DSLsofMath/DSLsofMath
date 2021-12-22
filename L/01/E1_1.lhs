@@ -55,7 +55,7 @@ data Exp  =  Con Integer
       %
     \item Update the |eval| function so that it supports the new |Var|
       constructor, and use it get a numeric value of the expression
-      $c1$.
+      |c1|.
       %
     \end{enumerate}
     %

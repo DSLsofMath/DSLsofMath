@@ -6,9 +6,9 @@ previous exercise:
 \begin{code}
 data E2 a  =  Con a
            |  Var String
-           |  Plus  (E2 a) (E2 a)
-           |  Minus (E2 a) (E2 a)
-           |  Times (E2 a) (E2 a)
+           |  Plus   (E2 a)  (E2 a)
+           |  Minus  (E2 a)  (E2 a)
+           |  Times  (E2 a)  (E2 a)
   deriving(Eq, Show)
 \end{code}
 %

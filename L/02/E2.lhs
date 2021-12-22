@@ -56,9 +56,9 @@
 {-# LANGUAGE EmptyCase #-}
 import PropositionalLogic
 \end{code}
-
+%
 \paragraph{Short technical note}\label{short-technical-note}
-
+%
 For the  exercises on the abstract representation of proofs for the propositional calculus
 using Haskell,
 (see \cref{sec:haskell-as-proof checker}), you might find it useful

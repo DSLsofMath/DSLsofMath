@@ -24,10 +24,10 @@ type ℤ = Int
 % \subsection{}
 We start this section with a common pitfall with traditional
 mathematical notation.
-
-\paragraph{A function or the value at a point?}
+%
+%\paragraph{A function or the value at a point?}
 \label{sec:pitfalls}
-
+%
 Mathematical texts often talk about ``the function $f(x)$'' when ``the
 function $f$'' would be more clear.
 %
@@ -35,7 +35,7 @@ Otherwise there is a risk of confusion between $f(x)$ as a
 function and $f(x)$ as the value you get from applying the function
 $f$ to the value bound to the name $x$.
 
-Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
+Examples: let $f(x) = x - 1$ and let $t = 5*f(2)$.
 %
 Then it is clear that the value of $t$ is the constant $15$.
 %
@@ -72,7 +72,7 @@ relationship between functions and expressions.
 
 \subsection{Expressions and functions of one variable}
 \label{sec:expressions-of-one-var}
-Consider the following examples of function definitions:
+Consider the following examples of mathematical function definitions:
 \begin{itemize}
 \item $f(x) = x - 1$
 \item $g(x) = 2*x^2 + 3$

@@ -46,7 +46,7 @@ As an example, the last line imports types for rational numbers and
 the infix operator |(%)| used to construct ratios
 (|1%7| is Haskell notation for $\frac{1}{7}$, etc.).
 
-\section{Types of |data| and functions}
+\section{Types of data and functions}
 
 Dividing up the world (or problem domain) into values of different
 types is one of the guiding principles of this \course{}.
