@@ -32,7 +32,7 @@ module DSLsofMath.W01 where
 import Numeric.Natural (Natural)
 import Data.Ratio (Ratio, (%))
 \end{code}
-
+%
 These lines constitute the module header which usually starts a
 Haskell file.
 %

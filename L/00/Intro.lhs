@@ -135,31 +135,21 @@ This is supported by our experience: an example is the
 work done at Chalmers in cooperation with the Potsdam Institute for
 Climate Impact Research in the context of
 \href{http://www.chalmers.se/en/departments/cse/news/Pages/Global-Systems-Science.aspx}{Global
-  Systems Science}, \cite{DBLP:conf/dsl/LinckeJZI09,
-  DBLP:conf/ifl/IonescuJ12, %jaeger13:GSSshort,
-  ionescujansson:LIPIcs:2013:3899, DBLP:journals/corr/BottaJICB16,
-  DBLP:journals/jfp/BottaJI17}.
-%TODO: perhaps look over the references here
-
-%  Cite
-%    DBLP:conf/haskell/DuregardJW12  (Feat) - nice algebraic structure for enumerating syntax trees
-%    DBLP:conf/mpc/MuKJ08 {Algebra of Programming Using Dependent Types}
-%      DBLP:journals/jfp/MuKJ09 {Algebra of programming in {Agda}: Dependent types for relational program derivation}
-%    DBLP:conf/types/IonescuJ11 {Testing versus proving in climate impact research},
-%    botta2018impact {The impact of uncertainty on optimal emission policies}
+  Systems Science},
+  \cite{DBLP:conf/dsl/LinckeJZI09,%{Generic Libraries in {C++} with Concepts from High-Level Domain Descriptions in {Haskell}},
+  DBLP:conf/types/IonescuJ11,%     {Testing versus proving in climate impact research},
+  DBLP:conf/ifl/IonescuJ12,%       {Dependently-Typed Programming in Scientific Computing - Examples from Economic Modelling}
+  DBLP:journals/jfp/BottaJI17,%    {Contributions to a computational theory of policy advice and avoidability},
+  DBLP:journals/corr/BottaJICB16,% {Sequential decision problems, dependent types and generic solutions},
+  botta2018impact%                 {The impact of uncertainty on optimal emission policies}
+}.
 % Perhaps cite
-%    DBLP:conf/esop/BernardyJC10 {Testing Polymorphic Properties},
-%    DBLP:conf/haskell/JeuringJA12 {Testing type class laws}
-%      (jeuring2012testing {Testing type class laws})
-%  Perhaps cite
 %    DBLP:conf/icfp/BernardyJZSP08 connecting Haskell and C++ {A comparison of {C++} concepts and {Haskell} type classes}
 %      DBLP:journals/jfp/BernardyJZS10 {Generic programming with {C++} concepts and {Haskell} type classes - a comparison}
-%    DBLP:conf/ifl/IonescuJ12 {Dependently-Typed Programming in Scientific Computing - Examples from Economic Modelling}
-%    DBLP:conf/mpc/DanielssonJ04 {Chasing Bottoms}
+%    DBLP:conf/mpc/DanielssonJ04    {Chasing Bottoms}
 %    DBLP:conf/popl/DanielssonHJG06 {Fast and loose reasoning is morally correct}, in relation to partial functions / non-termination, etc.
 %    DBLP:journals/corr/BernardyJ16 {Certified Context-Free Parsing: A formalisation of {Valiant}'s Algorithm in {Agda}} in relation to Rings
-%    DBLP:journals/jfp/BottaBJT21 {Extensional equality preservation and verified generic programming}
-%    DBLP:journals/jfp/BottaJI17 {Contributions to a computational theory of policy advice and avoidability}
+%    DBLP:journals/jfp/BottaBJT21   {Extensional equality preservation and verified generic programming}
 
 Thus, a course on designing and implementing DSLs can be an important
 addition to an engineering curriculum.
@@ -168,7 +158,7 @@ Our key idea is to apply the DSL approach to a rich source of domains and
 applications: mathematics.
 %note: short ToC (Table of Contents)
 Indeed, mathematics offers countless examples of DSLs: in this book we cover
-complex arithmetics        (\cref{sec:DSLComplex}), %Ch1
+types and complex arithmetics (\cref{sec:DSLComplex}), %Ch1
 sets and logic             (\cref{sec:logic}),      %Ch2
 functions and derivatives  (\cref{sec:types}),      %Ch3
 algebras and morphisms     (\cref{sec:CompSem}),    %Ch4

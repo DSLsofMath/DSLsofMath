@@ -42,7 +42,11 @@
   notation for values of type |Bool|, |Maybe a|, |a->b|, |(a,b)|, etc.?
 %
 %TODO: Solve in the book to show ``suitable notation''. But then also remove as recommended hand-in exercise.
-
+%
+  For those interested, \citet{DBLP:conf/haskell/DuregardJW12} present
+  a Haskell library
+  (\href{https://hackage.haskell.org/package/testing-feat}{\texttt{testing-feat}})
+  for enumerating syntax trees.
 \end{exercise}
 
 \begin{exercise}\label{exc:funtupE1}

@@ -470,10 +470,14 @@ function type |(a:A) → B|, and
 |(x:A, P x)|.
 
 We can recommend the language Agda \citep{Norell09dependentlytyped} or
-Idris \citep{citeulike:14291916}, however, in order to avoid a
-multiplicity of tools and potentially an excessive emphasis on proof
-formalism, we will refrain to formalise proofs as Agda or Idris
-programs in the remainder.
+Idris \citep{citeulike:14291916} if you want to express these directly
+in the language (as done in \citep{DBLP:conf/mpc/MuKJ08,
+  DBLP:journals/jfp/MuKJ09, DBLP:conf/ifl/IonescuJ12,
+  DBLP:journals/jfp/BottaJI17}).
+%
+However, in order to avoid a multiplicity of tools and potentially an
+excessive emphasis on proof formalism, we will refrain from formalising
+proofs as Agda or Idris programs in the remainder.
 %
 Rather, in the rest of the chapter, we will illustrate the logical
 principles seen so far by examples.

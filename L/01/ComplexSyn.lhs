@@ -443,13 +443,19 @@ convenient, but makes many laws false.
 Thus, we should attempt to do it late, and if possible, leave a
 parameter to make the degree of approximation tunable (|Int|,
 |Integer|, |Float|, |Double|, |QQ|, syntax trees, etc.).
-
+%
+For the curious, some of our more advanced material about testing and
+different kinds of polymorphism is available in \citep{%
+  DBLP:conf/esop/BernardyJC10,% {Testing Polymorphic Properties},
+  DBLP:conf/types/IonescuJ11,% {Testing versus proving in climate impact research}
+  DBLP:conf/haskell/JeuringJA12% {Testing type class laws}
+}.
 %**TODO: hide or give hints / method (otherwise too hard and a bit off topic)
 %Exercise: Find some operator |(#)| which satisfies |Distributive (+) (#)|
 % Answer: |max|
 
-It is a good exercise to find other pairs of operators satisfying
-distributive laws.
+%It is a good exercise to find other pairs of operators satisfying
+%distributive laws.
 
 %if False
 \section{Some helper functions (can be skipped)}
