@@ -62,8 +62,8 @@ We follow a Type-Driven Development style of programming.
 \index{type}%
 
 As mentioned in the introduction, we emphasise the dividing line
-between \addtoindex{\emph{syntax}} (what mathematical expressions look like)
-and \addtoindex{\emph{semantics}} (what they mean).
+between \emph{\addtoindex{syntax}} (what mathematical expressions look like)
+and \emph{\addtoindex{semantics}} (what they mean).
 
 \index{DSL!type expressions}%
 %
@@ -754,8 +754,8 @@ This declaration introduces
 \item a constructor |S :: N -> N| to represent the successor function.
 \end{itemize}
 %
-\index{Nat@@|Nat| (natural numbers)!S@@|S : Nat -> Nat| (successor)}%
-\index{Nat@@|Nat| (natural numbers)!Z@@|Z : Nat| (zero)}%
+%\index{Nat@@|Nat| (natural numbers)!S@@|S : Nat -> Nat| (successor)}%
+%\index{Nat@@|Nat| (natural numbers)!Z@@|Z : Nat| (zero)}%
 %
 The semantics of |N| is the set of natural numbers (|Nat|), with the
 semantics of |Z| being |0|, |S Z| being 1, etc.

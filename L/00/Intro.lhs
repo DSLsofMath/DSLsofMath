@@ -141,7 +141,7 @@ Climate Impact Research in the context of
   DBLP:conf/ifl/IonescuJ12,%       {Dependently-Typed Programming in Scientific Computing - Examples from Economic Modelling}
   DBLP:journals/jfp/BottaJI17,%    {Contributions to a computational theory of policy advice and avoidability},
   DBLP:journals/corr/BottaJICB16,% {Sequential decision problems, dependent types and generic solutions},
-  botta2018impact%                 {The impact of uncertainty on optimal emission policies}
+  esd-9-525-2018%                  {The impact of uncertainty on optimal emission policies}
 }.
 % Perhaps cite
 %    DBLP:conf/icfp/BernardyJZSP08 connecting Haskell and C++ {A comparison of {C++} concepts and {Haskell} type classes}

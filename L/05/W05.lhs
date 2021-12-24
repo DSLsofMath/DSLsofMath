@@ -431,6 +431,7 @@ Therefore, it is not generally a good idea to conflate polynomials
 
 \paragraph{Algebra of syntactic polynomials}
 \index{algebra}%
+\index{DSL!polynomials}%
 %
 Following the DSL terminology, we can say that the polynomial
 functions are the semantics of the language of polynomials.

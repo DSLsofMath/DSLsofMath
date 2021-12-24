@@ -279,7 +279,7 @@ said about the solution |x|.%
 \footnote{This phenomena seems to be borrowed from the behaviour of
 quantifiers in natural language.
   %
-  See for example \citep{bernardy_computational_2020} for a
+  See for example \citep{DBLP:journals/jolli/BernardyCM21} for a
   discussion.}
 
 Let us now consider the elimination rule for universal
