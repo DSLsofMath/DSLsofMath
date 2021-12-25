@@ -1,5 +1,6 @@
 \def\commentbegin{\{{-}~}
 
+%format \\ = "\smallsetminus"
 %format && = "\mathbin{\wedge}"
 %format || = "\mathbin{\vee}"
 %format >>>                     = ">\!\!>\!\!>"
@@ -89,6 +90,7 @@
 %%% Use ? to end the variable binding part of forall and exists to avoid clash with . for composition
 %format ? = ".~"
 %format ?? = "?"
+%format ??? = "\Varid{\mathbf{?}}"
 %format *? = "\circledast"
 % %format *? = "\otimes"
 %format <=> = "\Leftrightarrow"

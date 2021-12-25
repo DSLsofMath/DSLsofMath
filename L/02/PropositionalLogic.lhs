@@ -692,17 +692,11 @@ The formulation of the theorem is:
 \begin{spec}
 notIntro :: (p `Implies` q) `And` (p `Implies` Not q) -> Not p
 \end{spec}
-where |Not p = p `Implies` False|, and its proof is:
-\begin{code}
-notIntro (evPimpQ, evPimpNotQ) =
-    implyIntro $ \evP ->
-    let  evQ     = evPimpQ     `implyElim` evP
-         evNotQ  = evPimpNotQ  `implyElim` evP
-    in evNotQ `implyElim` evQ
-\end{code}
-% $ -- resync emacs mode parser
-%    (evPimpNotQ `implyElim` evP ) `implyElim` (evPimpQ `implyElim` evP)
+where |Not p = p `Implies` False|, and we give its proof below, after
+introducing concrete representations of implications and conjunction.
 \label{sec:curry-howard}%
+
+\paragraph{Representing |Implies| and |And|}
 By focusing on intuitionistic logic, we can give a \emph{typed}
 representation for each of the formula constructors.
 %
@@ -731,7 +725,62 @@ andIntro t u = (t,u)
 andElimL  = fst
 andElimR  = snd
 \end{code}
-Similarly, disjunction is represented as |Either|: if |p : P| then
+
+\paragraph{Proof of |notIntro|}
+
+Before introducing the representations of the remaining constructors,
+let us get back to the proof of |notIntro|.
+%
+If we introduce abbreviations and simplify the types using our newly
+introduced representations we get:
+%
+\begin{spec}
+  P2Q   = p `Implies` q      = p -> q
+  P2nQ  = p `Implies` Not q  = p -> Not q  = p -> q -> False
+\end{spec}
+And as we know |And| is just the pair type constructor, the type of |notIntro| is 
+\begin{spec}
+  And P2Q P2nQ -> Not p = (P2Q, P2nQ) -> p -> False
+\end{spec}
+
+Thus we can start the definition by matching on a pair and a proof:
+\savecolumns
+\begin{code}
+notIntro (evPimpQ, evPimpNotQ) evP = 
+    {-""-} -- a proof of |False| wanted
+\end{code}
+where |evPimpQ :: P2Q| and |evPimpNotQ :: P2nQ| are functions from
+|p|.
+%
+We can now apply these two functions to |evP :: p|
+\restorecolumns
+\begin{code}
+    let  evQ     = evPimpQ      evP
+         evNotQ  = evPimpNotQ   evP
+\end{code}
+to give us both a proof |evQ :: q| and a function |evNotQ :: q ->
+False|.
+%
+Finally, we just apply this function to the proof:
+\restorecolumns
+\begin{code}
+    in evNotQ  evQ
+\end{code}
+%
+If we inline the local definitions and give the arguments shorter
+names we get a one-liner:
+%{
+%format notIntro' = notIntro
+\begin{code}
+notIntro' :: (p -> q, p -> q -> False) -> p -> False
+notIntro' (f, g) x = (g x) (f x)
+\end{code}
+%}
+More importantly, we can see that the types help by, in effect,
+forcing the definition to be (equivalent to) this one.
+
+\paragraph{Back to representations}
+Disjunction is represented as |Either|: if |p : P| then
 |Left p : Or P Q| and if |q : Q| then |Right q : Or P Q|.
 \begin{code}
 type Or a b = Either a b
@@ -800,8 +849,38 @@ Q)| instead of~|Q|.
 This is exactly what we have to do to (almost) prove the law of
 excluded middle.
 %
-Doing so we can then provide this Haskell-encoded proof:
+First we expand the type using the definitions of |Not| and |Or|:
+%
+\begin{spec}
+  Not (Not (p `Or` Not p))
+=  {- Def. of the outermost |Not| -}
+  Not (p `Or` Not p) -> False
+=  {- Def. of |Not| on the left-}   
+  ((p `Or` Not p) -> False) -> False
+=  {- Def. of |Or| -}   
+  (Either p (Not p) -> False) -> False
+=  {- Det. of the last |Not| -}   
+  (Either p (p -> False) -> False) -> False
+\end{spec}
+%
+Thus the proof needs to be a rather unusual higher-order function.
+%
+The first argument, which we can call |k|, is also a function; from
+|Either p (p -> False)| to |False|.
+%
+We can use this function in two ways: apply it to |Left evP| if we
+have a proof |evP :: p| around or to |Right evNotP| if we can build a
+function |evNotP :: p -> False|.
+%
+To start out we cannot take the |Left| path, so we must try the
+|Right| path.
+%
+Then, what is left is the (local) definition of |evNotP|.
+%
+This function will receive as an argument a value |evP :: p|, and now
+we can take the |Left| path, using |k| again.
 
+In code with comments we get this Haskell-encoded proof:
 \begin{code}
 excludedMiddle :: Not (Not (p `Or` Not p)) -- to prove this, we can ...
 excludedMiddle k = -- ... assume |Not (Or p (Not p))| and prove falsity.
@@ -809,8 +888,8 @@ excludedMiddle k = -- ... assume |Not (Or p (Not p))| and prove falsity.
    (Right  -- We can prove in particular the right case, |Not p|
      (\evP ->  -- ... by assuming that |p| holds, and prove falsity.
         k --  Again, we can prove falsity if we can prove |Or p (Not p)|.
-        (Left -- This time, we can prove in particular the left case, |p| ...
-          evP))) -- because we assumed it earlier!
+          (Left -- This time, we can prove in particular the left case, |p|
+             evP))) -- because we assumed it earlier!
 \end{code}
 which can be shortened to a one-liner if we cut out the comments:
 \begin{code}

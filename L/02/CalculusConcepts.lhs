@@ -33,7 +33,7 @@ all its subsets.
 %
 \begin{spec}
 Limp : ℝ → 𝒫 ℝ → Prop
-Limp p X = ∀ ε > 0? ∃ q ∈ X - {p}? absBar (q-p) < ε
+Limp p X = ∀ ε > 0? ∃ q ∈ X \\ {p}? absBar (q-p) < ε
 \end{spec}
 %
 Notice that |q| depends on |ε|.
@@ -41,7 +41,7 @@ Notice that |q| depends on |ε|.
 Thus by introducing a function |getq| we can move the |∃| out.
 
 \begin{spec}
-type Q = {-"ℝ_{> 0}"-} → (X - {p})
+type Q = {-"ℝ_{> 0}"-} → (X \\ {p})
 Limp p X = ∃ getq : Q? ∀ ε > 0? absBar (getq ε - p) < ε
 \end{spec}
 
@@ -69,7 +69,7 @@ Limp p X = ∃ getq : Q? ∀ ε > 0? getq ε ∈ B p ε
 
 Example 1: Is |p=1| a limit point of |X={1}|?
 %
-No! |X - {p} = {}| (there is no |q/=p| in |X|), thus there cannot
+No! |X \\ {p} = {}| (there is no |q/=p| in |X|), thus there cannot
 exist a function |getq| because it would have to return elements in
 the empty set!
 
@@ -119,7 +119,7 @@ We want to prove |Limp 0 X| which is the same as |∃ getq : Q? ∀ ε > 0?
 getq ε ∈ B 0 ε|.
 %
 Thus, we need a function |getq| which takes any |ε > 0| to an element
-of |X - {0} = X| which is less than |ε| away from |0|.
+of |X \\ {0} = X| which is less than |ε| away from |0|.
 %
 Or, equivalently, we need a function |getn : {-"ℝ_{> 0}"-} → Pos| such
 that |1/n < ε|.
@@ -168,7 +168,7 @@ function |getq| as an argument.
 %
 How can we analyse this function to find a suitable |ε|?
 %
-The key here is that the range of |getq| is |X - {p}| which is a
+The key here is that the range of |getq| is |X \\ {p}| which is a
 finite set (not containing |p|).
 %
 Thus we can enumerate all the possible results in a list |xs = [x1,
@@ -185,7 +185,7 @@ Show that |Limp p X| implies that |X| is infinite.
 \end{exercise}
 %
 Show how to construct an infinite sequence |a : Nat -> REAL| of points
-in |X - {p}| which gets arbitrarily close to |p|.
+in |X \\ {p}| which gets arbitrarily close to |p|.
 %
 Note that this construction can be seen as a proof of |Limp p X =>
 Infinite X|.
@@ -225,6 +225,16 @@ the syntactic form $\lim_{n→∞} a_n = L$ which we could express as an
 infix binary predicate |haslim| where |a haslim L| is well-typed if |a
 : Nat -> REAL| and |L : REAL|.
 %
+Note that the equality sign is abused in the traditional mathematical
+notation: it looks like |lim| would be a normal function always
+returning a |REAL|, where in fact it is not always defined.
+%
+As mentioned in \cref{sec:infseq}, one way to handle is this to treat
+|lim| as a partial function, modelled in Haskell as returning |Maybe
+REAL|.
+%
+Here we play it safe and use a relation instead --- because at this
+stage we cannot be sure if the limit is even unique.
 
 The third step is to formalise the definition using logic: we define
 |haslim| using a ternary helper predicate |P|:

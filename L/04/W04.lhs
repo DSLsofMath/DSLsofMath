@@ -121,6 +121,8 @@ formulated as the following propositions:
 \index{associative}%
 
 \begin{example}
+\hyphenation{endo-mor-phism}%
+%
   Examples of monoids include numbers with addition, |(REAL, 0, (+))|,
   positive numbers with multiplication |(RPos, 1, (*))|, and even endofunctions
   with composition |(a->a,id, (.))|.
@@ -132,9 +134,8 @@ formulated as the following propositions:
   An \emph{endofunction} is a function of type |X->X| for some set |X|.
   \label{ex:endofunction}
 %}
-\hyphenation{endo-morphism}%
-%
-  A structure-preserving endofunction is called an endomorphism.
+  An endofunction which also preserves structure is called an
+  endomorphism.
   %
   \index{endomorphism}%
 \end{example}
@@ -252,7 +253,7 @@ When the additive monoid is abelian (commutative) and multiplication
 distributes over addition (|x*(y+z) == (x*y)+(x*z)|), we have a
 |Ring|.
 %
-gAs always we cannot conveniently specify laws in Haskell type classes
+As always we cannot conveniently specify laws in Haskell type classes
 and thus define |Ring| simply as the conjunction of |AddGroup| and
 |Multiplicative|:
 %
@@ -1902,7 +1903,7 @@ alternative interpretations.
 %
 \index{abstract syntax tree}%
 %
-Mathematical structures can often be use to capture the core of a DSL,
+Mathematical structures can often be used to capture the core of a DSL,
 initial algebras can be used (with |data|-types) for abstract syntax
 (deep embeddings) but can also be constructed with type classes
 (|Class a => a|) without reference to concrete |data|.
@@ -1931,7 +1932,7 @@ The relation |h : S1 -> S2| (standing for ``h is a homomorphism from
 and what is unknown.
 
 \begin{itemize}
-\item |?? : S1 -> S2|.
+\item |??? : S1 -> S2|.
   %
   Given two structures |S1| and |S2|, can we derive some function
   which is a homomorphism between those two structures?
@@ -1939,7 +1940,7 @@ and what is unknown.
   We asked such a question in \cref{ex:apply} (|apply c : Additive (x -> a)
   -> Additive a|) and \cref{ex:exponential-as-homomorphism} (exponentials).
 
-\item |h : S1 -> S2??|.
+\item |h : S1 -> ???|.
   %
   What is a structure |S2| compatible with a given structure |S1| and
   given homomorphism |h|?
@@ -1947,14 +1948,14 @@ and what is unknown.
   (e.g., we derived the operations on |Dup a = (a,a)| from |applyFD c
   : FD a -> Dup a| and operations on |FD a| in \cref{sec:applyFD}.)
 
-\item |?? : S1 -> S2??|.
+\item |??? : S1 -> ???|.
   %
   Can we find a good structure on |S2| so that it becomes homomorphic
   with |S1|?
   %
   This is how we found the structure |FD| in |evalD : FunExp -> FD a|.
 
-\item |h : S1?? -> S2|.
+\item |h : ??? -> S2|.
   %
   Given |h| and |S2|, can we find a structure |S1| compatible with a
   given homomorphism |h|?

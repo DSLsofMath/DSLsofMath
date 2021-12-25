@@ -2,21 +2,6 @@
 \section{Exercises}
 
 \begin{exercise}
-  \label{exc:D1usingD}\textbf{Partial Derivatives}
-  \index{partial derivative}%
-  For \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
-%
-  In more detail: let the type \(F2 = ℝ² → ℝ\) and \(F1 = ℝ → ℝ\).
-%
-  Then \(D₁ : F2 → F2\) and |D : F1 -> F1|.
-%
-  Start by defining helper functions: |fstFixed : a -> (b -> (a, b))|
-  and |sndFixed : b -> (a -> (a, b))|.
-%
-  Then use |D| and the helpers in the definitions of \(D₁\) and \(D₂\).
-\end{exercise}
-%
-\begin{exercise}
   To get a feeling for the \addtoindex{Lagrange equations}, let us
   take the case of an object falling in constant gravity:
   %
@@ -158,13 +143,18 @@
     = P (A ∪ B)|.
   \end{itemize}
 
-  Conditional probabilities are defined as follows \citep{stirzaker_2003}:
+  \cref{ch:probability-theory} presents more material about
+  probability theory, but that material is not needed for the present
+  exercise.
+  
+  Conditional probabilities are defined as follows
+  \citep{stirzaker_2003}:
 
   \begin{quote}
     Let |A| and |B| be events with |P B > 0|.  given that |B| occurs,
     the \textit{conditional probability} that |A| occurs is denoted by
     |P(A||B)| and defined by
-
+%
     |P(A||B) = P(A ∩ B) / P B|
   \end{quote}
 

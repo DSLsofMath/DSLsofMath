@@ -917,49 +917,21 @@ sequence).
 %
 \index{limit (of sequence)}%
 %
-We will get back to limits later (in \cref{sec:LimPoint,sec:FunLimit}),
-but for now we just analyse the notation and typing.
+We will get back to limits later (in \cref{par:LimitOfSequence}), but
+for now we just note that an arbitrary sequence |x|, may or may not
+have a limit.
 %
-This definition is slightly adapted from Wikipedia (2017-11-08):
-\begin{quote}
-  We call \(L\) the limit of the sequence |{xn}| if the following
-  condition holds: For each real number |ε>0|, there exists
-  a natural number |N| such that, for every natural number
-  |n >= N|, we have |absBar (xn - L) < ε|.
+One way to capture that idea is to let the return type be |Maybe X|,
+with |Nothing| corresponding to divergence.
+%
+One way of typing a limit operator is |lim : (Nat -> X) -> Maybe X|,
+but note that with this type we cannot implement the operator, because
+that would take inifintely long time.
 
-  If so, we say that the sequence converges to |L| and write
-  \[L = \lim_{i\to\infty} x_i\]
-\end{quote}
-%
-There are (at least) two things to note here.
-%
-First, with this syntax, the $\lim_{i\to\infty} x_i$ expression form
-binds |i| in the expression |xi|.
-%
-We could just as well say that |lim| takes a function |x :: Nat -> X|
-as its only argument (this is further explained in
-\cref{sec:functions-and-scoping}).
-%
-Second, an arbitrary sequence |x|, may or may not have a limit.
-%
-Thus the customary use of |L =| is a bit of an abuse of notation, because
-the right hand side may not be well defined.
-%
-\index{lim@@|lim| (limit)}%
-%
-One way to capture that idea is to let |lim| return the type |Maybe
-X|, with |Nothing| corresponding to divergence. Then its complete type
-is |(Nat -> X) -> Maybe X| and
-%
-\(L = \lim_{i\to\infty} x_i\) means |Just L = lim x|
-%
-We will return to limits and their proofs in
-\cref{par:LimitOfSequence} after we have reviewed some logic.
-
-Here we just define one more common operation: the \addtoindex{sum of
-  a sequence} (like \(\sigma = \sum_{i=0}^{\infty}
-1/i!\)\footnote{Here |n! = 1*2* ... *n| is the \addtoindex{factorial}
-\lnOnly{(sv: fakultet)}.}).
+Here we just specify one more common operation: the \addtoindex{sum of
+  a sequence} (like
+\(\sigma = \sum_{i=0}^{\infty} 1/i!\)\footnote{Here |n! = 1*2* ... *n|
+  is the \addtoindex{factorial} \lnOnly{(sv: fakultet)}.}).
 %
 Just as not all sequences have a limit, not all have a sum either.
 %

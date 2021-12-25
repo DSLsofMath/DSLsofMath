@@ -332,7 +332,7 @@ indentation and Unicode symbols.
 A more radical, but perhaps more instructive alternative would be to
 recreate all the Haskell examples from scratch.
 
-Each chapter ends with exercises to help the reader practice the
+Each chapter contains exercises to help the reader practice the
 concepts just taught.
 %
 %if lectureNotes

@@ -82,7 +82,7 @@ Thus, what is meant is
   For the constant zero polynomial the degree is not defined.
   Otherwise, the degree is $n$.
 \end{quote}
-\paragraph{Syntax and semantics of polynomials.}
+\paragraph{Syntax and semantics of polynomials}
 %
 Given the coefficients $a_i$ we can evaluate $P$ at any given $x$.
 %
@@ -105,8 +105,8 @@ and thus identify |[REAL]| as the type for the (abstract) syntax (for
 polynomials) and |(REAL -> REAL)| as the type of the semantics (for
 polynomial functions).
 %
-Exercise~\ref{exc:evalLSpec}: Show that this evaluation function gives
-the same result as the formula above.
+A good exercise (\ref{exc:evalLSpec}) is to show that this evaluation
+function gives the same result as the formula above.
 
 Using the |Ring| instance for functions we can rewrite |eval| into a
 one-argument function (returning a polynomial function):
@@ -374,11 +374,11 @@ For example, here is the specification of addition:
   a + b = c  <=>  Forall (n : ℕ) (a n + b n = c n)
 \end{spec}
 %
-Hint: they are not all the same as the operations on arbitrary
-functions |X -> A| defined in \cref{sec:FunNumInst}.
+\textbf{Hint:} they are not all the same as the operations on
+arbitrary functions |X -> A| defined in \cref{sec:FunNumInst}.
 
-Remark: Using functions from |ℕ| in the definition has certain
-technical advantages over using finite lists.
+\textbf{Remark:} Using functions from |ℕ| in the definition has
+certain technical advantages over using finite lists.
 %
 For example, consider adding |[a0, a1, ..., an]| and |[b0, b1, ...,
 bm]|, where |n > m|.
@@ -981,8 +981,8 @@ oneUp :: Ring a => [a]
 oneUp = one : map (one+) oneUp
 \end{code}
 
-Side note: we cannot in general implement a decidable (Boolean)
-equality test for |PowerSeries|.
+\textbf{Side note:} we cannot in general implement a decidable
+(Boolean) equality test for |PowerSeries|.
 %
 For example, we know that |deriv ps0| equals |ps1| but we cannot
 compute |True| in finite time by comparing the coefficients of the two
@@ -993,7 +993,7 @@ checkDeriv :: Int -> Bool
 checkDeriv n  =  takePoly n (deriv ps0) == takePoly n (ps1 :: Poly Rational)
 \end{code}
 
-Recommended reading: the Functional pearl: ``Power series, power
+Recommended reading: the Functional pearl ``Power series, power
 serious'' \cite{mcilroy1999functional}.
 
 % ================================================================

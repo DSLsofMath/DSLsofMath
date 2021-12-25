@@ -200,7 +200,7 @@ This variable |h| is a parameter of an anonymous function, whose limit
 is then taken at |0|.
 
 That function, which we can name |phi|, has the type |phi : U ->
-(ℝ-{0}) -> ℝ| and is defined by
+(ℝ\\{0}) -> ℝ| and is defined by
 %
 \begin{spec}
 phi (x, y) h = (f (x + h, y) - f (x, y)) / h
@@ -208,7 +208,7 @@ phi (x, y) h = (f (x + h, y) - f (x, y)) / h
 %
 The limit is then written |lim 0 (phi (x, y))|.
 %
-Note that |0| is a limit point of |ℝ-{0}|, so the type of |lim| is the
+Note that |0| is a limit point of |ℝ\\{0}|, so the type of |lim| is the
 one we have discussed:
 %
 \begin{spec}
@@ -278,8 +278,20 @@ It was popularised by \citet{landau1934einfuhrung} (English edition
 respect to the first argument, \(D₂\) for the partial derivative with
 respect to the second argument, etc.
 
-Exercise~\ref{exc:D1usingD}: for \(f : ℝ² → ℝ\) define \(D₁\) and
-\(D₂\) using only \(D\).
+\begin{exercise}
+  \label{exc:D1usingD}\textbf{Partial Derivatives}
+  \index{partial derivative}%
+  For \(f : ℝ² → ℝ\) define \(D₁\) and \(D₂\) using only \(D\).
+%
+  In more detail: let the type \(F2 = ℝ² → ℝ\) and \(F1 = ℝ → ℝ\).
+%
+  Then \(D₁ : F2 → F2\) and |D : F1 -> F1|.
+%
+  Start by defining helper functions: |fstFixed : a -> (b -> (a, b))|
+  and |sndFixed : b -> (a -> (a, b))|.
+%
+  Then use |D| and the helpers in the definitions of \(D₁\) and \(D₂\).
+\end{exercise}
 
 %TODO: perhaps mention "total derivative" at this stage. That could serve as an intermediate step towards the Langrangian, or could be added after it.
 

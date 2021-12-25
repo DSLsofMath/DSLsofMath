@@ -62,19 +62,22 @@ evalRat = error "evalRat: todo"
 %
 As mentioned above, the propositions (often referred to as
 \emph{formulas} in the context of FOL) are extended so that they can
-refer to terms. That is, the names from the propositional calculus are
-generalised to \emph{predicate symbols} of different arity.
+refer to terms.
+%
+That is, the names from the propositional calculus are generalised to
+\emph{predicate symbols} of different arity.
 %
 The predicate symbols can only be applied to terms, not to other
 predicate symbols or formulas.
 %
-If we have the predicate symbols |New| of arity |0|, |Pos| of arity |1|
-and |Less| of arity |2| we can form \emph{formulas} like |New|, |Pos(x)|,
-|Less(f(x,x),y)|, etc.
+As an arbitrary example, if we have the predicate symbols |Positive| of
+arity |1| and |LessThan| of arity |2| we can form \emph{formulas} like
+|Positive(x)|, |LessThan(f(x,x),y)|, etc.
 %
 Note that we have two separate layers, with terms at the bottom:
 %
 formulas normally refer to terms, but terms cannot refer to formulas.
+
 
 The formulas introduced so far are all \emph{atomic formulas}:
 generalisations of the \emph{names} from |Prop|.
@@ -90,7 +93,7 @@ first the logical connectives from the propositional calculus:
 Thus the following are examples of FOL formulas:
 %
 \begin{spec}
-  Forall x (Pos(x) => (Exists y (Less(f(x,x),y))))
+  Forall x (Positive(x) => (Exists y (LessThan(f(x,x),y))))
   Forall x (Forall y (Equal(plus(x,y),plus(y,x))))   -- |plus| is commutative
 \end{spec}
 %
