@@ -379,5 +379,14 @@ Bernardy is supported by the Swedish Research Council, via grant
 2014-39, funding the Centre for Linguistic Theory and Studies in
 Probability.
 
+Thanks also to Jane Spurr at College Publications for helping in
+%if submit
+publishing the book \citep{JanssonIonescuBernardyDSLsofMathBook2022}.
+%else
+publishing the book version
+\citep{JanssonIonescuBernardyDSLsofMathBook2022} of this document.
+%endif
+
 The authors also wish to thank several anonymous reviewers and
 students who have contributed with many suggestions for improvements.
+

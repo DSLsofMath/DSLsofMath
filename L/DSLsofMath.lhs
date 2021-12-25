@@ -165,7 +165,7 @@
 %           {Chalmers University of Technology, Sweden}
 %           {\texttt{patrikj@@chalmers.se}}
 %           {\texttt{cezar@@chalmers.se}}
-\date{WORK IN PROGRESS: DRAFT OF \today}
+\date{Work in progress: draft of \today\\[3ex]\includegraphics{../admin/DSL_logo/DSL_logo.pdf}}
 \makeindex
 \begin{document}
 \frontmatter
@@ -202,7 +202,11 @@
 \vfill
 
 \paragraph{License} \doclicenseThis
-%\layout
+
+The printed book version of this document is published through College
+Publications \citep{JanssonIonescuBernardyDSLsofMathBook2022}.
+
+% \layout
 %endif % not submit
 %if submit
 % Publisher instruction: the ToC should start at page v = page 5
