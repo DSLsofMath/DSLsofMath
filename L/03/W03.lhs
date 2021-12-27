@@ -21,6 +21,24 @@ powTo' = powTo . fromIntegral
 % (Based on ../../2016/Lectures/Lecture05 )
 % Show "Functional Differential Geometry" p16: Lagrange_example.pdf
 
+In this chapter we continue the quest to assign types to mathematical
+concepts.
+% 
+In \cref{sec:typeDerivative} through \cref{sec:incremental} we go
+through several examples of short snippets from mathematical texts,
+with different kinds of derivatives at the centre.
+%
+We also show (in \cref{sec:typeclasses}) how to collect related types
+in Haskell's type classes and define several classes for the
+``numerical hierarchy'': |Additive|, |AddGroup|, |Ring|, |Field|, etc.
+%
+These classes provide generalised versions of the standard arithmetic
+operations like |(+)|, |(-)|, |(*)|, |(/)|, etc.\ in preparation for
+the coming chapters.
+%
+Finally, in \cref{sec:computingDerivatives}, we use equational
+reasoning to caclulate a Haskell version of the classical derivative
+rules (for sums, products, etc.).
 
 \section{Typing Mathematics: derivative of a function}
 \label{sec:typeDerivative}
@@ -560,6 +578,7 @@ in physics.
 %} %end of formatting for the Lagrangian example
 
 \section{Incremental analysis with types}
+\label{sec:incremental}
 So far we have worked on typing mathematics, but without the help of
 any tool.
 %

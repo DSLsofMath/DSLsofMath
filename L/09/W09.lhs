@@ -53,7 +53,7 @@ evaluating the DSL expressions.
   %
   \footnote{Example found in
     \href{https://en.wikipedia.org/wiki/Bayes'_theorem}{Wikipedia
-      article on Bayes' theorem}}
+      article on Bayes' theorem, 2019-03-01}}
 \label{ex:drugtest}
 
 \item Suppose you’re on Monty Hall’s \emph{Let’s Make a Deal!}

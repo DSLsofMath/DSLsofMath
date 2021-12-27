@@ -81,7 +81,7 @@ DSLs in general.
 
 What is an \addtoindex{algebraic structure}?
 %
-Let's turn to Wikipedia as a starting point:
+Let's turn to Wikipedia (\href{https://en.wikipedia.org/wiki/Universal_algebra}{Universal algebra, 2020-09-25}) as a starting point:
 %
 \index{algebra||see {algebraic structure}}%
 %
@@ -364,9 +364,9 @@ corresponding numerical classes we use in this book.
 
 \section{Homomorphisms}
 \index{homomorphism||textbf}%
-The Wikipedia definition of homomorphism states that ``A homomorphism
-is a structure-preserving map between two algebraic structures of the
-same type''.
+The Wikipedia definition of homomorphism (2021-12-27) states that ``A
+homomorphism is a structure-preserving map between two algebraic
+structures of the same type''.
 %
 We will spend the next few subsections on formal definitions and
 examples of homomorphisms.
@@ -589,7 +589,7 @@ also completely fix the behaviour of |f| if |x| is an integer, because
 it can either be zero, positive or negative.
 \end{solution}
 
-\subsubsection{Other homomorphisms}
+\paragraph{Other homomorphisms}
 
 \index{const@@|const| (constant function)}%
 \index{homomorphism}%
@@ -1119,7 +1119,7 @@ This representation is called the initial algebra.
 %
 \index{initial algebra}%
 
-\subsubsection{The Initial Monoid}
+\paragraph{The Initial Monoid}
 \index{monoid}%
 As a first example, consider an initial algebra for monoids (an
 initial monoid for short).
@@ -1155,7 +1155,7 @@ data M = Unit
 As one might guess, there are not many interesting applications of the
 initial monoid, so let us consider another structure.
 
-\subsubsection{The Initial Ring}
+\paragraph{The Initial Ring}
 \index{ring}%
 Gathering all function in various type classes, we find that a |Ring|
 corresponds to the following algebra --- again we start by ignoring laws:
@@ -1263,7 +1263,7 @@ class Generate a where
 We could parameterize the class over an abstract generator set |g|,
 but will refrain from doing so to avoid needless complications.
 
-\subsubsection{Free Monoid}
+\paragraph{Free Monoid}
 
 As an example, consider the free monoid.
 %
@@ -1352,7 +1352,7 @@ satisfies the laws.
 This is true in general: folds are always homomorphisms even if the
 datatype representation that they work on ignore laws.
 
-\subsubsection{Functions of one variable as free algebras}
+\paragraph{Functions of one variable as free algebras}
 \label{sec:OneVarExp-class}
 Earlier we have used (many variants of) data types for arithmetic
 expressions.

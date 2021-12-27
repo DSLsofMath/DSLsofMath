@@ -120,8 +120,8 @@ We propose that a focus on \emph{domain-specific languages} (DSLs) can
 be used to repair this unsatisfactory state of affairs.
 %
 In computer science, a DSL ``is a computer language specialized to a
-particular application domain'' (Wikipedia), and building DSLs is
-increasingly becoming a standard industry practice.
+particular application domain'' (Wikipedia, 2021-12-27), and building
+DSLs is increasingly becoming a standard industry practice.
 %
 Empirical studies show that DSLs lead to fundamental increases in
 productivity, above alternative modelling approaches such as UML
@@ -174,7 +174,7 @@ if not expressed in these words) the driving idea of the Bourbaki
 project\footnote{The Bourbaki group is the pseudonym of a group of
 mathematicians publishing a series of textbooks in modern pure
 mathematics, starting in the 1930:s. See
-\href{https://en.wikipedia.org/wiki/Nicolas_Bourbaki}{wikipedia}.}
+\href{https://en.wikipedia.org/wiki/Nicolas_Bourbaki}{Wikipedia, 2021-12-27}.}
 which exerted an enormous influence on present day mathematics.
 
 Hence, the topic of this \course{} is \emph{DSLs of Mathematics}.

@@ -680,7 +680,7 @@ on its own is not a type but a \emph{\addtoindex{type constructor}}
 \begin{figure}
   \centering
   \includegraphics[width=0.5\linewidth]{New_cuyama.jpg}
-  \caption{Humorously inappropriate type mismatch on a sign in New Cuyama, California. \href{https://commons.wikimedia.org/w/index.php?curid=2513523}{By I, MikeGogulski, CC BY 2.5, Wikipedia.} }
+  \caption{Humorously inappropriate type mismatch on a sign in New Cuyama, California. \href{https://commons.wikimedia.org/w/index.php?curid=2513523}{By I, MikeGogulski, CC BY 2.5, Wikipedia, 2021-12-27.} }
   \label{fig:TypeErrorSign}
 \end{figure}
 
