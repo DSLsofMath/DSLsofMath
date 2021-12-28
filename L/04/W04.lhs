@@ -1243,7 +1243,7 @@ algebra for |Ring|.
 %
 \index{Ring@@|Ring| (type class)}%
 
-\subsection{Free Structures}
+\subsection{\extraMaterial Free Structures}
 
 \index{free structure}%
 %

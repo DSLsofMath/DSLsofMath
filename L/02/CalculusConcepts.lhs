@@ -8,24 +8,36 @@ It is time time to apply it to some concepts in calculus.
 %
 We start with the concept of ``limit point'' which is used in the
 formulation of different properties of limits of functions.
-
-% TODO: Perhaps start with the ``expression'' $lim_{x\to x_0} f(x)$ and
-% explain that not all |x_0| make sense, etc. [For context and
-% motivation.]
 %
+
+\subsection{Limit point}\label{sec:LimPoint}
+
+The motivation comes from the expression $\lim_{x\to a} f(x)$ where
+|f : X -> REAL|.
+%
+When trying to formalise this, it turns out that not all combinations
+of |X| and |a| make sense.
+%
+For example, with |f x = x / sqrt x| and |X=RPos| it makes sense to ask
+for the limit at any |a : RPos| and for |a = 0|, but not for |a = -1|, for example.
+%
+The point |a| needs to be ``approachable'' from within |X|.
+
 % TODO: Or talk a bit about open and closed sets. (Open set = every
 % point is internal = there is some wiggle-room around each point in the
 % set. Closed set contains all its limit points.)
 
-\paragraph{Limit point}\label{sec:LimPoint}
-
-\emph{Definition} (adapted from \cite{rudin1964principles}, page 28):
+\begin{definition}
+  (adapted from \cite{rudin1964principles}, page 28):
 Let |X| be a subset of |ℝ|.
 %
 A point |p ∈ ℝ| is a limit point of |X| iff for every |ε > 0|, there
 exists |q ∈ X| such that |q ≠ p| and |absBar(q - p) < ε|.
 %
+\end{definition}
 
+We will formalise this, starting with the types.
+%
 To express ``Let |X| be a subset of |ℝ|'' we write |X : 𝒫 ℝ|.
 %
 In general, the function |𝒫| takes a set (here |REAL|) to the set of
@@ -39,12 +51,12 @@ Limp p X = ∀ ε > 0? ∃ q ∈ X \\ {p}? absBar (q-p) < ε
 Notice that |q| depends on |ε|.
 %
 Thus by introducing a function |getq| we can move the |∃| out.
-
+%
 \begin{spec}
 type Q = {-"ℝ_{> 0}"-} → (X \\ {p})
 Limp p X = ∃ getq : Q? ∀ ε > 0? absBar (getq ε - p) < ε
 \end{spec}
-
+%
 Next, we introduce the function |B| such that  
 %
 |B c r| is an ``open ball'' around |c| of radius |r|.
@@ -61,19 +73,22 @@ B c r = {x | absBar (x - c) < r}
 %
 % The open balls around |c| are special cases of \emph{neighbourhoods of
 %  |c|} which can have other shapes but must contain some open ball.
-
+%
 Using |B| we get
 \begin{spec}
 Limp p X = ∃ getq : Q? ∀ ε > 0? getq ε ∈ B p ε
 \end{spec}
 
-Example 1: Is |p=1| a limit point of |X={1}|?
+\begin{example}
+  Is |p=1| a limit point of |X={1}|?
 %
-No! |X \\ {p} = {}| (there is no |q/=p| in |X|), thus there cannot
-exist a function |getq| because it would have to return elements in
-the empty set!
+  No! |X \\ {p} = {}| (there is no |q/=p| in |X|), thus there cannot
+  exist a function |getq| because it would have to return elements in
+  the empty set!
+\end{example}
 
-Example 2: Is |p=1| a limit point of the open interval |X = (0,1)|?
+\begin{example}
+  Is |p=1| a limit point of the open interval |X = (0,1)|?
 %
 First note that |p ∉ X|, but it is ``very close'' to |X|.
 %
@@ -108,8 +123,10 @@ define |getq ε = max (17/38,1-ε/2)|.
 
 Similarly, we can show that any internal point (like |1/2|) is a limit
 point.
+\end{example}
 
-Example 3: Limit of an infinite discrete set |X = {1/n || n ∈ Pos }|.
+\begin{example}
+Limit of an infinite discrete set |X = {1/n || n ∈ Pos }|.
 %
 Show that |0| is a limit point of |X|.
 %
@@ -133,16 +150,21 @@ so the only step remaining is to round up:
 getq ε = 1/getn ε
 getn ε = 1 + ceiling (1/ε)
 \end{spec}
-%
+\end{example}
+% 
 \begin{exercise}
 prove that |0| is the \emph{only} limit point of |X|.
 \end{exercise}
-\emph{Proposition}: If |X| is finite, then it has no limit points.
 
+\begin{proposition}
+  If |X| is finite, then it has no limit points:
+%
 \begin{spec}
 ∀ p ∈ ℝ? not (Limp p X)
 \end{spec}
-%
+\end{proposition}
+\begin{proof}
+% 
 This is a good exercise in quantifier negation!
 %
 \begin{spec}
@@ -179,6 +201,7 @@ Now, if we let |ε = minimum ds| we can be certain that
 %
 |absBar (getq ε - p) >= ε| just as required (and |ε /= 0| because |p
 `notElem` xs|).
+\end{proof}
 
 \begin{exercise}
 Show that |Limp p X| implies that |X| is infinite.

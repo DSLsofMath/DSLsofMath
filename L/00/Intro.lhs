@@ -356,6 +356,9 @@ analysis of that quote.
 The aim is to improve the reader's skills in understanding, modelling,
 and implementing mathematical text.
 
+Some more advanced material that can be skipped is marked with a star
+(\extraMaterial).
+
 \section{Acknowledgments}
 
 The support from Chalmers Quality Funding 2015 (Dnr C 2014-1712, based

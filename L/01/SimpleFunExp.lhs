@@ -21,7 +21,6 @@ type ℤ = Int
 \section{Types of functions, expressions and operators}
 \label{sec:functions-and-scoping}
 
-% \subsection{}
 We start this section with a common pitfall with traditional
 mathematical notation.
 %

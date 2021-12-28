@@ -42,7 +42,7 @@ There is much more to discover in this direction and we present some
 of it in the next few chapters.
 %
 
-\paragraph{For the curious.}
+\paragraph{For the curious}
 %
 Here are the other two stream laws, in case you wondered.
 %

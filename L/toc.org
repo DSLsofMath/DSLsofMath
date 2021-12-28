@@ -1,0 +1,218 @@
+* %\chapter{}About this book
+** %\section{Introduction}
+** \section{Origins}
+** \section{Who should read this book?}
+** % \section{Roadmap}
+** \section{Notation and code convention}
+** \section{Acknowledgments}
+* \chapter{Types, Functions, and DSLs for Expressions}
+** \section{Types of data and functions}
+*** \subsection{What is a type?}
+**** \paragraph{Pairs and tuple types}
+**** \paragraph{\addtoindex{List types}}
+*** \subsection{Functions and their types}
+**** \paragraph{Pure and impure functions}
+**** \paragraph{Identity function}
+**** \paragraph{Constant functions}
+**** \paragraph{Higher-order functions}
+**** \paragraph{Lambda expressions}
+**** \paragraph{Function composition}
+*** \subsection{Partial and total functions}
+**** \paragraph{Partial functions with finite domain}
+*** %\subsection{Functions}
+*** \subsection{Variable names as type hints}
+** \section{Types in Haskell: |type|, |newtype|, and |data|}
+**** \paragraph{|type| -- abbreviating type expressions}
+**** \paragraph{|newtype| -- more protection}
+**** \paragraph{The keyword |data| for syntax trees}
+**** \paragraph{|Maybe| and \addtoindex{parameterised type}s}
+** \section{Notation and abstract syntax for \addtoindex{sequence}s}
+** \section{A syntax for (complex) arithmetical expressions}
+** \section{Laws, properties and testing}
+*** \subsection{Generalising laws}
+** \section{Types of functions, expressions and operators}
+
+**** %\paragraph{A function or the value at a point?}
+**** \paragraph{Examples of types in mathematics}
+*** \subsection{Expressions and functions of one variable}
+**** \subsubsection{Deep embedding}
+**** \subsubsection{Shallow embedding}
+*** \subsection{Scoping and typing big operators}
+**** \paragraph{Scoping the integral operator}
+**** \paragraph{The ``big sum'' operator}
+*** \subsection{Expressions of several variables}
+**** \paragraph{The data type of expressions of multiple variables}
+**** \paragraph{Polymorphic variables}
+** \section{Exercises: Haskell, DSLs and expressions}
+* \chapter{DSLs for logic and proofs}
+** \section{Propositional Calculus}
+*** \subsection{An Evaluator for |Prop|}
+*** \subsection{Truth tables and tautologies}
+*** \subsection{Proofs for Propositional Logic}
+*** \subsection{Implication, hypothetical derivations, contexts}
+**** \paragraph{Aside}
+**** \paragraph{Example proof}
+**** \paragraph{|Or| is the dual of |And|}
+*** \subsection{The Haskell type-checker as a proof checker}
+*** \subsection{Intuitionistic Propositional Logic}
+**** \paragraph{Representing |Implies| and |And|}
+**** \paragraph{Proof of |notIntro|}
+**** \paragraph{Back to representations}
+*** \subsection{Type-Driven Development of Proofs as Programs}
+**** \paragraph{The law of the excluded middle}
+**** \paragraph{Revisiting the tupling transform}
+**** \paragraph{Logic as impoverished typing rules}
+** \section{First Order Logic}
+*** \subsection{Evaluator for Formulas and \extraMaterial Undecidability}
+*** \subsection{Universal quantification}
+*** \subsection{Existential quantification}
+*** \subsection{Typed quantification}
+*** \subsection{Curry-Howard for quantification over individuals}
+** \section{An aside: Pure set theory}
+**** \paragraph{Natural numbers}
+**** \paragraph{Pairs}
+*** \subsection{DSLs, sets and von Neumann}
+**** \paragraph{Part 1:} |TERM| should have constructors for
+**** \paragraph{Part 2:} A possible semantic domain for pure sets is
+**** \paragraph{Part 3:} The \emph{von Neumann encoding} of natural numbers as
+** \section{Example proofs: contradiction, cases, primes}
+*** \subsection{Proof by contradiction}
+*** \subsection{Proof by cases}
+*** \subsection{There is always another prime}
+** \section{Basic concepts of calculus}
+*** \subsection{Limit point}\label{sec:LimPoint}
+*** \subsection{The limit of a sequence}
+*** \subsection{Case study: The limit of a function}
+** \section{Exercises}
+*** \subsection{Representations of propositions}
+*** \subsection{Proofs}
+**** \paragraph{Short technical note}\label{short-technical-note}
+*** \subsection{Continuity and limits}
+* \chapter{Types in Mathematics}
+** \section{Typing Mathematics: derivative of a function}
+** \section{Typing Mathematics: \addtoindex{partial derivative}}
+** \section{Typing Mathematics: Lagrangian case study}
+** \section{Incremental analysis with types}
+** \section{Type classes}
+*** \subsection{Numeric operations}
+*** \subsection{Overloaded integer literals}
+*** \subsection{Structuring DSLs around type classes}
+** \section{Computing derivatives}
+** \section{Exercises}
+* \chapter{Compositionality and Algebras}
+** \section{Algebraic Structures}
+*** \subsection{Groups and rings}
+** \section{Homomorphisms}
+*** \subsection{(Homo)morphism on one operation}
+*** \subsection{Homomorphism on structures}
+**** \paragraph{Other homomorphisms}
+*** \subsection{\extraMaterial Isomorphisms}
+** \section{Compositional semantics}
+*** \subsection{Compositional functions are homomorphisms}
+*** \subsection{An example of a non-compositional function}
+** \section{Folds}
+*** \subsection{Even folds can be wrong!}
+**** \paragraph{For the curious}
+** \section{Initial and Free Structures}
+**** \paragraph{The Initial Monoid}
+**** \paragraph{The Initial Ring}
+*** \subsection{A general initial structure}
+*** \subsection{\extraMaterial Free Structures}
+**** \paragraph{Free Monoid}
+**** \paragraph{Functions of one variable as free algebras}
+*** \subsection{\extraMaterial A generic Free construction}
+** \section{Computing derivatives, reprise}
+*** \subsection{Automatic differentiation}
+** \section{Summary}
+*** \subsection{Homomorphism as roadmaps}
+*** \subsection{Structures and representations}
+** \section{Beyond Algebras: Co-algebra and the Stream calculus}
+**** \paragraph{Streams as an abstract datatype}
+** \section{A solved exercise}
+**** \paragraph{Numeric instances for |Dup|}
+** \section{Exercises}
+* \chapter{Polynomials and Power Series}
+** \section{Polynomials}
+**** \paragraph{Syntax and semantics of polynomials}
+**** \paragraph{Representing polynomials}
+**** \paragraph{Numeric instances for polynomials}
+**** \paragraph{An alternative representation}
+**** \paragraph{Syntax |/=| semantics}
+**** \paragraph{Algebra of syntactic polynomials}
+** \section{Division and the degree of the zero polynomial}
+** \section{Polynomial degree as a homomorphism}
+** \section{Power Series}
+** \section{Operations on power series}
+** \section{Formal derivative}
+** % \section{Signals and Shapes}
+** \section{Exercises}
+* \chapter{Taylor and Maclaurin series}
+** \section{Taylor series}
+** \section{Derivatives and Integrals for Maclaurin series}
+** \section{Integral for Formal Power series}
+** \section{Simple differential equations}
+** \section{Exponentials and trigonometric functions}
+** \section{Associated code}
+*** \subsection{Full definition of |evalFunExp|}
+*** \subsection{Syntactic derivative: |derive : FunExp -> FunExp|}
+*** \subsection{Numeric instances for |FunExp|}
+*** % \subsection{Not included to avoid overlapping instances}
+*** \subsection{Numeric instances for |Dup|}
+** \section{Exercises}
+* \chapter{Elements of Linear Algebra}
+** \section{Representing vectors as functions}
+** \section{Linear transformations}
+** \section{Inner products}
+**** \paragraph{Dot product}
+**** \paragraph{Orthogonal transformations}
+** \section{Examples of matrix algebra}
+*** \subsection{Functions}
+*** \subsection{Polynomials and their derivatives}
+*** \subsection{\extraMaterial Inner product for functions and Fourier series}
+*** \subsection{Simple deterministic systems (transition systems)}
+*** \subsection{Non-deterministic systems}
+**** \paragraph{Implementation:}
+*** \subsection{Stochastic systems}
+*** \subsection{\extraMaterial Quantum Systems}
+** \section{\extraMaterial Monadic dynamical systems}
+*** \subsection{\extraMaterial The monad of linear algebra}
+** \section{Associated code}
+**** \paragraph{One-dimensional space}
+** \section{Exercises}
+* \chapter{Exponentials and Laplace}
+** \section{The Exponential Function}
+**** \paragraph{Euler's formula and periodic functions}
+**** \paragraph{Taylor meets transcendental functions}
+** \section{The Laplace transform}
+*** \subsection{Some standard Laplace transforms}
+**** \paragraph{Deriving |ℒ exp|:}
+**** \paragraph{Deriving |ℒ sin| and |ℒ cos|:}
+** \section{Laplace and other transforms}
+** \section{Exercises}
+* \chapter{Probability Theory}
+** \section{Sample spaces}
+**** \paragraph{Finite space}
+**** \paragraph{Scaling space}
+**** \paragraph{Product of spaces}
+**** \paragraph{Projections}
+**** \paragraph{Real line}
+**** \paragraph{Summary}
+** \section{\extraMaterial Monad Interface}
+** \section{Distributions}\label{sec:distributions}
+** \section{Semantics of spaces}\label{sec:semanticsOfSpaces}
+**** \paragraph{Properties of |integrator|}
+** \section{Random Variables}
+**** % \paragraph{Theorem: Linearity of expected value}
+** \section{Events and probability}
+** \section{Conditional probability}
+** \section{Examples: Dice, Drugs, Monty Hall}
+*** \subsection{Dice problem}
+*** \subsection{Drug test}
+*** \subsection{Monty Hall}
+*** \subsection{Solving a problem with equational reasoning}
+** \section{Independent events}
+** % \section{Continuous spaces and equality}
+* \chapter{The course ``DSLs of Mathematics''}
+**** % \paragraph{Future work} includes involving faculty from CSE and
+* \chapter{Parameterised Complex Numbers}
+**** \paragraph{Lifting operations to a parameterised type}

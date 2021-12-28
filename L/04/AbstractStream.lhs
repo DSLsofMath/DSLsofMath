@@ -6,7 +6,7 @@ import Prelude hiding (head, tail)
 \end{code}
 %endif
 
-\paragraph{Streams as an abstract datatype.}
+\paragraph{Streams as an abstract datatype}
 
 \index{stream}%
 %

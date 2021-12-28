@@ -125,7 +125,7 @@ Define a datatype |TERM v| for the abstract syntax of set expressions
 with variables of type |v| (as in \cref{sec:polyvar}) and a datatype
 |PRED v| for predicates over pure set expressions.
 
-\paragraph{Part 1.} |TERM| should have constructors for
+\paragraph{Part 1:} |TERM| should have constructors for
 
 \begin{itemize}
 
@@ -144,7 +144,7 @@ with variables of type |v| (as in \cref{sec:polyvar}) and a datatype
 \item the logical connectives |And|, |Or|, |Implies|, |Not|
 \end{itemize}
 
-\paragraph{Part 2.} A possible semantic domain for pure sets is
+\paragraph{Part 2:} A possible semantic domain for pure sets is
 
 \begin{code}
 newtype Set = S [Set]
@@ -166,7 +166,7 @@ sets.
 %
 (You can think of pure set theory as ``untyped'' or ``unityped''.)
 
-\paragraph{Part 3.} The \emph{von Neumann encoding} of natural numbers as
+\paragraph{Part 3:} The \emph{von Neumann encoding} of natural numbers as
 sets is defined recursively as
 
 \begin{spec}
