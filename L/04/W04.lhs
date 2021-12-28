@@ -976,8 +976,30 @@ This condition was satisfied in the case of our |class IntExp t|: all
 function signatures end with |... -> t|.
 %
 When this condition is satisfied, we say that the class is an
-\emph{\addtoindex{algebra}} --- not just any algebraic structure.%
-\footnote{Indeed, this terminology can be confusing.}
+\emph{\addtoindex{algebra}} --- not just any algebraic structure.
+%
+(Indeed, this terminology can be confusing.)
+
+\paragraph{List-folding} The description of a fold also works for the
+datatype of lists: if we let |Syn = [a]| and |Sem = s| the constructor
+|(:) :: a -> Syn -> Syn| is replaced by a function |cons :: a -> Sem
+-> Sem| and the constructor |[] :: Syn| is replaced by |nil :: Sem|.
+%
+Or, if we expand the type synonyms:
+%
+\begin{code}
+foldList :: (a -> s -> s) -> s -> ([a] -> s)
+foldList cons nil = rec
+  where  rec (x : xs)  = cons x (rec xs)
+         rec []        = nil
+\end{code}  
+%
+This is (a special case of) the function called |foldr| in the Haskell prelude.
+%if False
+\begin{code}
+checktypes = [foldr, foldList]
+\end{code}  
+%endif
 
 \subsection{Even folds can be wrong!}
 %

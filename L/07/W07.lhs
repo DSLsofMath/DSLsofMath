@@ -45,37 +45,66 @@ scaling by a set of scalars (i.e., elements of the field).
 In terms of type classes, we can characterise this structure as
 follows:
 %
+%if False
+\begin{code}
+infixr 7 *^
+\end{code}
+%endif
 \index{Field@@|Field| (type class)}%
 \index{AddGroup@@|AddGroup| (type class)}%
 \index{VectorSpace@@|VectorSpace| (type class)||textbf}%
 \begin{code}
-infixr 7 *^
 class (Field s, AddGroup v) => VectorSpace v s where
   (*^) :: s -> v -> v
 \end{code}
+%
+The class declaration is short, but can need some unpacking.
+%
+First, the type |s| for the scalars, is required to be a field, which
+basically means we have |(+)|, |(-)|, |(*)|, and |(/)| available as
+operations on values of type |s|, the scale factors.
+%
+Then, the type |v| needs to be an additive group, thus supporting
+a zero vector, |(+)| and |(-)| on vectors.
+%
+These operations are all required before we are allowed to declare a
+|VectorSpace| instance, due to the constraint |(Field s, AddGroup v)|.
+%
+Finally, the new operator |(*^)|, called ``scale'' or
+scalar-vector-multiplication, takes a scale factor and a vector to a
+suitably resized vector: |2 *^ v| is twice |v|, while |(-1) *^ v| has
+the same length as |v| but points in the opposite direction, etc.
 
 Additionally, every vector space must satisfy the following laws:
 %
-
 \begin{enumerate}
 \item
-  Vector scaling (|s *^|) is a \addtoindex{homomorphism} over
-  (from and to) the additive group structure of |v|:
+  Vector scaling (|(s *^) :: v -> v|) is a \addtoindex{homomorphism} over
+  (from and to) the additive group structure of |v|.
+  %
+  Thus for all vectors |a| and |b| we have:
   \begin{spec}
     s *^ (a + b)     = s *^ a + s *^ b
     s *^ zero        = zero
     s *^ (negate a)  = negate (s *^ a)
   \end{spec}
+  This means that scaling can be ``pushed inside'' any sum or difference.
 \item On the other side, |(*^ a)| is a homomorphism from the additive
-  group structure of |s| to the group structure of |v|:
+  group structure of |s| to the group structure of |v|.
+  %
+  Thus, for all scalars |s| and |t| we have:
   \begin{spec}
     (s + t)   *^ a   = s *^ a + t *^ a
     zero      *^ a   = zero
     negate s  *^ a   = negate (s *^ a)
   \end{spec}
+  For the examples above this means that |2 *^ v == (1+1)*^v ==
+  1*^v+1*^v| and |(-1) *^ v == negate (1*^v)|.
 \item Finally |(*^)| is a homomorphism from the multiplicative monoid
   of |s| to the monoid of endofunctions over |v| (see
-  \cref{ex:endofunction}):
+  \cref{ex:endofunction}).
+  %
+  Thus, for all scalars |s| and |t| we have:
   \begin{spec}
     (*^) one          = id
     (*^) (s * t)      = (*^) s . (*^) t
@@ -88,10 +117,15 @@ Additionally, every vector space must satisfy the following laws:
     one      *^ a    = id                  a  =  a
     (s * t)  *^ a    = ((s *^) . (t *^))   a  =  s *^ (t *^ a)
   \end{spec}
+  For the examples above this means that |2 *^ v == 1*^v+1*^v == v +
+  v| (or ``twice |v|'') and |(-1) *^ v == negate (1*^v) == negate v|
+  (or ``|v| in the opposite direction'').
 \end{enumerate}
 Often, the above laws are not expressed in terms of homomorphisms, but
-rather as individual equations. This means that some of them are often
-omitted, because they are consequences of sets of other laws.
+rather as individual equations.
+%
+This means that some of them are often omitted, because they are
+consequences of sets of other laws.
 
 An important consequence of the algebraic structure of vectors is that
 they can be expressed as a simple sort of combination of other special
@@ -176,7 +210,7 @@ as a linear combination of basis vectors.
 There is a temptation to model the corresponding collection of
 coefficients as a list, or a tuple, but a more general (and
 conceptually simpler) way is to view them as a \emph{function} from a
-set of indices~|G|:
+set of indices~|G|:%
 %
 \index{Additive@@|Additive| (type class)}%
 \index{AddGroup@@|AddGroup| (type class)}%
@@ -184,8 +218,8 @@ set of indices~|G|:
 \begin{code}
 newtype Vector s g    = V (g -> s) deriving (Additive, AddGroup)
 \end{code}
-
-We define right away the notation |a ! i| for the coefficient of the
+%
+We define, right away, the notation |a ! i| for the coefficient of the
 canonical basis vector |e i|, as follows:
 %
 \begin{code}
@@ -196,12 +230,18 @@ V f ! i = f i
 %
 We sometimes omit the constructor |V| and the indexing operator |(!)|,
 thereby treating vectors as functions without the |newtype|.
+%
+(We use the exclamation mark as an infix operator here as is common in
+programming, even though it is often used as postfix notation for
+factorial in mathematics texts.)
+
 
 As discussed above, the |S| parameter in |Vector S| has to be a field
-(|REAL|, or |CC|, or |Zp|, etc.)\footnote{The set |Zp| is the set of
-integers modulo |p|.
+(|REAL|, or |CC|, or |Zp|\footnote{The set |Zp| is the set of integers
+  modulo |p|.
 %
-We let the reader lookup the appropriate notion of division for it.}
+We let the reader lookup the appropriate notion of division for it.},
+etc.)
 %
 for values of type |Vector S G| to represent elements of a vector
 space.
