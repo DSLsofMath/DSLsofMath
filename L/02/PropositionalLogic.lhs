@@ -752,7 +752,7 @@ notIntro (evPimpQ, evPimpNotQ) evP =
 where |evPimpQ :: P2Q| and |evPimpNotQ :: P2nQ| are functions from
 |p|.
 %
-We can now apply these two functions to |evP :: p|
+We can now apply these two functions to |evP :: p| and continue the body of |notIntro|:
 \restorecolumns
 \begin{code}
     let  evQ     = evPimpQ      evP
@@ -859,7 +859,7 @@ First we expand the type using the definitions of |Not| and |Or|:
   ((p `Or` Not p) -> False) -> False
 =  {- Def. of |Or| -}   
   (Either p (Not p) -> False) -> False
-=  {- Det. of the last |Not| -}   
+=  {- Def. of the last |Not| -}   
   (Either p (p -> False) -> False) -> False
 \end{spec}
 %

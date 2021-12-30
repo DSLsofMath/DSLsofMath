@@ -599,13 +599,13 @@ convenient to be able to choose another type for variables.
 Here is the same code for |eval| but with a type parameterised over
 the choice of type for the variables.
 %
-Note that |PExp String| is isomorphic to |MVExp|.
+Note that the type |PExp String| corresponds to |MVExp|.
 \begin{code}
 data PExp v = V v | A (PExp v) (PExp v) | D (PExp v) (PExp v)
 evalPExp :: Eq v => PExp v -> Env v QQ -> Maybe QQ
 evalPExp e env = eval e
   where  
-    eval  (V  x)       =  evalEnv env x
+    eval  (V  x)       =  lookup x env
     eval  (A  e1  e2)  =  mayAdd  (eval e1)  (eval e2)
     eval  (D  e1  e2)  =  mayDiv  (eval e1)  (eval e2)
 \end{code}

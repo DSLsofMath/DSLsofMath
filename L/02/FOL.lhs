@@ -152,27 +152,22 @@ Bool|.
 Rather, with little loss of generality, we will fix this
 interpretation, via a constant function |eval0|, which may look like
 this:
-
+%
 \begin{code}
 eval0 :: PSym -> [RatSem] -> Bool
 eval0 "Equal"     [t1,t2]  =  t1 == t2
 eval0 "LessThan"  [t1,t2]  =  t1 < t2
 eval0 "Positive"  [t1]     =  t1 > 0
 \end{code}
-etc.
-
-So we would use the following type:
 %
+So we would use the following type, and go our merry way for most cases:
 \begin{code}
 eval :: FOL -> (VarT -> RatSem) -> Bool
-\end{code}
-And go our merry way for most cases:
-\begin{code}
-eval formula env = case formula of
-  PName n args  -> eval0 n (map (flip evalRat env) args)
-  Equal a b     -> evalRat a env == evalRat b env
-  And p q       -> eval p env && eval p env
-  Or  p q       -> eval p env || eval p env
+eval formula env = ev formula
+  where  ev (PName n args)  = eval0 n (map (flip evalRat env) args)
+         ev (Equal a b)     = evalRat a env == evalRat b env       
+         ev (And p q)       = ev p  &&  ev q
+         ev (Or  p q)       = ev p  ||  ev q
 \end{code}
 
 However, as soon as we encounter quantifiers, we have a problem.
