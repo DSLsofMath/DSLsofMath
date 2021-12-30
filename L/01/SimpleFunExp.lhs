@@ -8,13 +8,14 @@ import DSLsofMath.Algebra (Algebraic(..),Transcendental(..),
                            Additive(..),AddGroup(..),(-),
                            Multiplicative(..), MulGroup(..))
 import DSLsofMath.SimpleFunExp ()
-powTo n = (^n)
-powTo' = powTo . fromIntegral
 -}
 import DSLsofMath.W01 (Env, evalEnv)
+powTo n = (^n)
+powTo' = powTo . fromIntegral
+type R = Integer
 type REAL = Double
 type ℝ = REAL
-type ℤ = Int
+type ℤ = Integer
 \end{code}
 %endif
 
@@ -310,7 +311,7 @@ complicated example, we can now assign a type to the summation
 operator.
 %
 For simplicity, we will be using the shallow embedding; thus the
-operand can be typed as, say, $ℤ → ℝ$.
+operand can be typed as, say, $ℤ → R$.
 %
 The other arguments will be the lower and upper limits of the sum ($1$
 and $n$ in our example).
@@ -325,22 +326,22 @@ There is no choice to make at the point of summation.
 Thus, we write:
 
 \begin{code}
-summation :: ℤ -> ℤ -> (ℤ -> ℝ) -> ℝ
+bigsum :: ℤ -> ℤ -> (ℤ -> R) -> R
 \end{code}
 Conveniently, we can even provide a simple implementation:
 \begin{code}
-summation low high f = sum [f i | i <- [low..high]]
+bigsum low high f = sum [f i | i <- [low..high]]
 \end{code}
 and use it for our example as follows:
-\begin{spec}
-sumOfSquares n = summation 1 n (powTo 2)
-\end{spec}
+\begin{code}
+sumOfSquares n = bigsum 1 n (powTo 2)
+\end{code}
 %
 Equivalently, we can use a \addtoindex{lambda expression} for the
 summand, to give a name to the summation variable:
 %
 \begin{spec}
-sumOfSquares n = summation 1 n (\i -> i `powTo` 2)
+sumOfSquares n = bigsum 1 n (\i -> i ^ 2)
 \end{spec}
 (Recall the syntax for lambda expressions from
 \cref{sec:lambda-expression}.)
@@ -355,7 +356,7 @@ using the shallow embedding of summation.
 %
 This representation can be written simply as follows:
 \begin{spec}
-exampleSum m n = summation 1 m (\i -> summation 1 n (\j -> i^2 + j^2))
+exampleSum m n = bigsum 1 m (\i -> bigsum 1 n (\j -> i^2 + j^2))
 \end{spec}
 Aren't we cheating though?
 %
@@ -370,7 +371,7 @@ Doing so allows us to:
 1.~use lambda notation to bind (and name) the variable name of the
 summation however we wish (in this case |i| and |j|) and
 %
-2.~freely use any Haskell function of type |ℤ → ℝ| as the summand.
+2.~freely use any Haskell function of type |ℤ → R| as the summand.
 %
 In particular, this function can be any lambda-expression returning
 |ℝ|, and this expression can include summation itself.
@@ -446,7 +447,7 @@ Here we use a string, so we have an infinite supply of variables.
 \begin{code}
 data MVExp = Va String | Ad MVExp MVExp | Di MVExp MVExp
 \end{code}
-where the last constructor |Di| is intended for division (for a change).
+The last constructor |Di| is intended for division (for a change).
 %
 % The above declaration introduces:
 % \begin{itemize}
@@ -509,28 +510,43 @@ total function of type |String -> Maybe QQ|), the semantics of
 |MVExp| is a partial function too, of type |Env String QQ ->
 Maybe QQ|.
 %
-%**TODO explain more for those not used to Haskell
+\begin{joincode}%
+\begin{code}
+evalMVExp  :: MVExp   -> Env String QQ -> Maybe QQ
+\end{code}
+\begin{spec}
+lookup     :: String  -> Env String QQ -> Maybe QQ
+\end{spec}
+\end{joincode}
+Note that there are two sources of |Nothing| in the evaluator:
+undefined variables, and (avoiding) division by zero.
+
+To follow the ``wishful thinking'' pattern for the evaluator, we need
+helper functions for the three cases.
+%
+We have presented |lookup| for variables earlier, and now we define
+|mayAdd| and |mayDiv| to handle the remaining constructors.
+\begin{joincode}%
 \begin{code}
 type QQ = Rational
-evalMVExp :: MVExp -> Env String QQ -> Maybe QQ
-evalMVExp e env = eval e
-  where  
-    eval  (Va  x)       =  evalEnv env x
-    eval  (Ad  e1  e2)  =  mayAdd  (eval e1)  (eval e2)
-    eval  (Di  e1  e2)  =  mayDiv  (eval e1)  (eval e2)
 
-mayAdd :: Maybe QQ -> Maybe QQ -> Maybe QQ
+mayAdd  :: Maybe QQ -> Maybe QQ -> Maybe QQ
 mayAdd  (Just a)  (Just b)  =  Just (a+b)
 mayAdd  _         _         =  Nothing
 
-mayDiv :: Maybe QQ -> Maybe QQ -> Maybe QQ
+mayDiv  :: Maybe QQ -> Maybe QQ -> Maybe QQ
 mayDiv  (Just a)  (Just 0)  =  Nothing
 mayDiv  (Just a)  (Just b)  =  Just (a/b)
 mayDiv  _         _         =  Nothing
+
+evalMVExp e env = eval e
+  where  
+    eval  (Va  x)       =  lookup x env   -- same as |evalEnv env x|
+    eval  (Ad  e1  e2)  =  mayAdd  (eval e1)  (eval e2)
+    eval  (Di  e1  e2)  =  mayDiv  (eval e1)  (eval e2)
 \end{code}
-%
-Note that there are two sources of |Nothing| in the evaluator:
-undefined variables, and (avoiding) division by zero.
+\end{joincode}
+% 
 
 % The corresponding code for |MVExp'| is more general and you don't need to
 % understand it at this stage, but it is left here as an example for

@@ -24,10 +24,10 @@ We choose a simple domain to allow the reader to concentrate on the
 essential elements of our approach without the distraction of
 potentially unfamiliar mathematical concepts.
 %
-In fact, for this section, we temporarily pretend to forget any previous
-knowledge of complex numbers, and study the textbook of Adams and
-Essex as we would approach a completely new domain, even if that leads
-to a somewhat exaggerated attention to detail.
+In fact, for this section, we temporarily pretend to forget any
+previous knowledge of complex numbers, and study the textbook as we
+would approach a completely new domain, even if that leads to a
+somewhat exaggerated attention to detail.
 
 Adams and Essex introduce complex numbers in Appendix A of their book.
 %
@@ -37,9 +37,11 @@ The section \emph{Definition of Complex Numbers} starts with:
 \begin{quote}
   We begin by defining the symbol |i|, called \textbf{the imaginary
     unit}, to have the property
-
-<      square i = -1
-
+%
+\begin{spec}
+      square i = -1
+\end{spec}
+%
   Thus, we could also call |i| the square root of |-1| and denote it
   |sqrt (-1)|.
 %
@@ -63,9 +65,8 @@ know nothing about other symbols, we make |i| the only member of this
 type.
 %
 We use a capital |I| in the |data| declaration because a lowercase
-constructor name would cause a syntax error in Haskell.
-%
-For convenience we add a synonym |i = I|.
+constructor name is a syntax error in Haskell, but for
+convenience we add also a value |i = I|.
 %
 \begin{code}
 data ImagUnits = I

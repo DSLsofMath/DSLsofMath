@@ -13,13 +13,13 @@ Now we turn to the study of the \emph{\addtoindex{syntax}} instead
 %
 We collect these syntactic definitions in a separate module which
 imports the earlier semantic definitions.
-
+%
 \begin{code}
 module DSLsofMath.ComplexSyn where
 import DSLsofMath.CSem (Complex(C), addC, mulC, Ring)
 import DSLsofMath.ComplexSem
 \end{code}
-
+%
 \index{AST||see {abstract syntax tree}}%
 %
 We want a datatype |ComplexE| for the \addtoindex{abstract syntax
