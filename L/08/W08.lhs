@@ -813,22 +813,33 @@ It can be seen as a continuous version of the transform between the
 infinite sequence of coeeficients |a : Nat -> REAL| and the functions
 behind formal power series.
 
-Laplace is also closely related to Fourier series, which is a way of
-expressing functions on a closed interval as a linear combination of
-dicrete frequency components rather than as a function of time.
-%
-Finally, Laplace is also a close relative of the Fourier transform.
+The Laplace transform is a close relative of the Fourier transform.
 %
 Both transforms are used to express functions as a sum of ``complex
 frequencies'', but Laplace allows a wider range of functions to be
 transformed.
 %
-A nice local overview and comparison is B.\ Berndtsson's ``Fourier and
+A nice overview and comparison is B.\ Berndtsson's ``Fourier and
 Laplace Transforms''\footnote{Available from
-  \url{http://www.math.chalmers.se/Math/Grundutb/CTH/mve025/1516/Dokument/F-analys.pdf}.}
+  \url{http://www.math.chalmers.se/Math/Grundutb/CTH/mve025/1516/Dokument/F-analys.pdf}.}.
 %
 Fourier analysis is a common tool in courses on Transforms, Signals
 and Systems.
+
+The Fourier transform can be seen as a generalisation of the Fourier
+series presented in \cref{sec:inner-product-fourier}.
+%
+The Fourier series is a way of expressing functions on a \emph{closed}
+interval (or, equivalently, periodic functions on the real line) as a
+linear combination of dicrete frequency components rather than as a
+function of time.
+%
+The Fourier transform (like the Laplace transform) also handles
+non-period functions, and the result is a continuous linear
+combination of frequency components (an integral rather than a sum).
+
+
+
 
 %include E8.lhs
 %}

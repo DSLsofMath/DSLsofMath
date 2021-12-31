@@ -35,6 +35,7 @@ The |vi|s are real or complex numbers, or, more generally, elements of
 a \emph{field} (See \cref{sec:fields-definition} for the definition of a field).
 %
 
+\paragraph{Vectors and their spaces}
 However, following our theme, we will first characterise vectors
 algebraically.
 %
@@ -75,7 +76,7 @@ scalar-vector-multiplication, takes a scale factor and a vector to a
 suitably resized vector: |2 *^ v| is twice |v|, while |(-1) *^ v| has
 the same length as |v| but points in the opposite direction, etc.
 
-Additionally, every vector space must satisfy the following laws:
+\paragraph{Laws} Additionally, every vector space must satisfy the following laws:
 %
 \begin{enumerate}
 \item
@@ -127,6 +128,24 @@ rather as individual equations.
 This means that some of them are often omitted, because they are
 consequences of sets of other laws.
 
+\paragraph{One-dimensional spaces}
+\label{sec:one-elem-vector}
+We get the simplest instance declaration if we note that we can see
+scalars (like |REAL|) as one-dimensional vectors with |s = v|:
+%
+\begin{code}
+instance Field s => VectorSpace s s where (*^) = (*)
+\end{code}
+%
+Here (for once) the vectors have the the same type as the scalars,
+which means that the scaling operation, which usually has an
+asymmetric type, now is just ordinary scalar multiplication |(*) :: s
+-> s -> s|.
+%
+But for the rest of this chapter we will stick to the general case of
+|n|- (or infinite-) dimensional spaces.
+
+\paragraph{Bases and representations}
 An important consequence of the algebraic structure of vectors is that
 they can be expressed as a simple sort of combination of other special
 vectors.
@@ -157,6 +176,7 @@ One can prove the uniqueness of representation as follows:
   |si=ti|.
 \end{proof}
 
+\paragraph{Syntax for vectors}
 According to our red thread, this representation (coefficients) is
 akin to the notion of syntax.
 %
@@ -265,6 +285,7 @@ type Finite g = (Bounded g, Enum g, Eq g)
 finiteDomain :: Finite a => [a]
 finiteDomain = [minBound..maxBound]
 \end{code}
+For our running example |finiteDomain = [0,1,2,3,4,5,6]|.
 
 Let us now define a |VectorSpace| instance for the |Vector|
 representation.
@@ -342,22 +363,29 @@ zeros everywhere, except at position |i| where it has a one.
 We can see that, as expected, every |v : g -> s| is a linear combination
 of vectors |e i| where the coefficient of the canonical basis vector |e
 i| is the scalar |v i|:
-\begin{spec}
-    v  ==  (v 0 *^ e 0) + ... + (v n *^ e n)
-\end{spec}
-To be sure, every vector |v| is a \addtoindex{linear combination} of
-basis vectors.
+\begin{equation*}
+    |v  ==  (v 0 *^ e 0) + ... + (v n *^ e n)|
+\end{equation*}
 %
-But when using canonical basis vectors, the coefficients come simply
-from applying |v| (seen as a function) to the possible indices.
+This property is called the \emph{characterising equation} for vectors.
+
+To be sure, every vector |v| is a \addtoindex{linear combination} of
+any collection of basis vectors.
+%
+But when using \emph{canonical} basis vectors, the coefficients come
+simply from applying |v| (seen as a function) to the possible indices.
 %
 Because we will work with many such linear combinations we introduce a
-helper function |linComb|:
+helper function |linComb| for the right-hand side of the
+characterising equation:
 %
 \begin{code}
 linComb :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
-linComb a v = sum (map (\j -> a j *^ v j) finiteDomain)
+linComb v e = sum (map (\j -> v j *^ e j) finiteDomain)
 \end{code}
+where you can think of |finiteDomain| as enumerating the indices
+|[0..n]|.
+
 Using |linComb| the characterising equation for vectors reads:
 %
 \begin{equation}
@@ -509,12 +537,15 @@ vector-\addtoindex{matrix} multiplication.
 %
 Let us define |M| as follows:
 %
-\begin{spec}
-M = [m 0 | ... | m n]     -- where |m : G -> Vector S G'|
-\end{spec}
+\[
+  M = \rowvecc{|m 0|}{|m n|} \qquad   \text{where } |m : G -> Vector S G'|
+\]
+% \begin{spec}
+% M = [m 0 | ... | m n]     -- where |m : G -> Vector S G'|
+% \end{spec}
 %
-That is, the columns of |M| are |m 0| to |m n|, or, in other words, the columns of |M| are
-|f (e i)|.
+That is, the columns of |M| are |m 0| to |m n|, or, in other words,
+the columns of |M| are |f (e i)|.
 %
 Every |m k| has |card G'| elements, and it has become standard to
 write |M i j| to mean the |i|th element of the |j|th column, i.e., |M
@@ -643,9 +674,12 @@ fv g () = v g
 %
 The associated matrix is
 %
-\begin{spec}
-M = [m 0 | ... | m n] = [fv 0 | ... | fv n]
-\end{spec}
+\[
+  M = \rowvecc{|m 0|}{|m n|} = \rowvecc{|fv 0|}{|fv n|}
+\]
+% \begin{spec}
+% M = [m 0 | ... | m n] = [fv 0 | ... | fv n]
+% \end{spec}
 %
 having |n+1| columns (the dimension of |Vector G|) and one row
 (dimension of |Vector ()|).
@@ -666,7 +700,7 @@ type |() -> S|, thus, the only component of |M * w| is
 %
 i.e., the scalar product of the vectors |v| and |w|.
 
-\textbf{Remark:} We have not discussed the geometrical point of view.
+\textbf{Remark:} We have not yet discussed the geometrical point of view.
 %
 \lnOnly{For the connection between matrices, linear transformations,
   and geometry, I warmly recommend binge-watching the ``Essence of
@@ -1243,11 +1277,14 @@ f (e i) = e (next i)
 \end{spec}
 
 To write the matrix associated to |f|, we have to compute what vector
-is associated to each canonical basis vector vector:
+is associated to each canonical basis vector:
 %
-\begin{spec}
-M = [ f (e 0), f (e 1), ..., f (e n) ]
-\end{spec}
+\[
+  M = \rowvecc{|f (e 0)|}{|f (e n)|} 
+\]
+% \begin{spec}
+% M = [ f (e 0), f (e 1), ..., f (e n) ]
+% \end{spec}
 
 Therefore:
 %
@@ -1312,10 +1349,10 @@ demand scalar division).
 %
 Therefore, having just a module is not a problem if all we want is to
 compute the evolutions of possible states, but we cannot apply most of
-the deeper results of linear algebra.
+the deeper results of linear algebra.%
 %
-\footnote{For instance, such deeper result would give ways to easily
-  compute the stable state of a dynamic system.}
+\footnote{For instance, such a deeper result would give ways to easily
+  compute the stable states of a dynamic system.}
 
 %*TODO: (NiBo)
 % But even if we take |(REAL, max, min)|, the problem is that we
@@ -1532,9 +1569,9 @@ What changes?
 %
 Can you prove it?
 
-\paragraph{Implementation:}
+\paragraph{Implementation}
 %
-The transition relation has type |G -> (G -> Bool)|:
+The transition relation has type |G -> (G -> Bool)| and is given by:
 %
 \begin{code}
 f2 :: G -> (G -> Bool)
@@ -1547,7 +1584,7 @@ f2 (G 5) (G g)      =   g == 4
 f2 (G 6) (G g)      =   False
 \end{code}
 %
-The associated matrix:\nopagebreak
+It has the associated matrix:\nopagebreak
 %
 \begin{code}
 m2 g' = V (\ g -> f2 g g')
@@ -1665,7 +1702,7 @@ The nodes must be sources of \emph{at least} one arrow.
 
 In the case of the non-deterministic example, the ``legitimate''
 inputs were characteristic functions, i.e., the ``vector space'' was
-|G -> {0, 1}| (the scare quotes are necessary because, as discussed,
+|G -> {0, 1}| (the quotes are necessary because, as discussed,
 the target is not a field).
 %
 In the case of stochastic systems, the inputs will be
@@ -1707,8 +1744,8 @@ next state is |a|, given that the current state is |b|.
 But this is exactly the information summarised in the graphical
 representation.
 %
-Moreover, it is clear that, at least formally, the total probability
-formula is identical to a matrix-vector multiplication.
+Moreover, it can be shown that the total probability formula is
+identical to a matrix-vector multiplication.
 
 As usual, we write the associated matrix by looking at how the
 canonical basis vectors are transformed.
@@ -1738,7 +1775,7 @@ do you need to take before the probability is concentrated in state 6?
 %
 Reverse again the arrow from 2 to 4 (so that |2->5| has probability
 |1|, |4->2| probability |0.7|, |4->6| and |4->1| have probability
-|0.15| each.
+|0.15| each).
 %
 What can you say about the long-term behaviour of the system now?
 
@@ -2003,6 +2040,7 @@ specialising the scalar type |S|)?
 %
 The answer is yes, up to a point, as we shall see in the next section.
 
+%***TODO: fix exercise style
 Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|, |Super|.
 
 
@@ -2385,19 +2423,5 @@ getRow = id
 % = -- simplification
 %   \v -> (dot (dot v . b) . a)
 % ... gets too complicated for this chapter
-
-\paragraph{One-dimensional space}
-\label{sec:one-elem-vector}
-We can treat scalar fields as one-dimensional vector spaces, as shown
-by the following instance declaration:
-%
-\begin{code}
-instance Field s => VectorSpace s s where (*^) = (*)
-\end{code}
-%
-Here (for once) the vectors have the the same type as the scalars,
-which means that the scaling operation, which usually has an
-asymmetric type, now is just ordinary scalar multiplication |(*) :: s
-<-> s -> s|.
 
 %include E7.lhs

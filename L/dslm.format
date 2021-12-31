@@ -258,3 +258,5 @@
 %format next3 = next "_3"
 
 %format ... = "\ldots"
+%format rowvec m = "\rowvec{" m "}"
+%format rowvecc m0 mn = "\rowvecc{" m0 "}{" mn "}"
