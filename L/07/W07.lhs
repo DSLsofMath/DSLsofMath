@@ -626,7 +626,7 @@ and obtain a linear transformation |f = (M*)|.
 Moreover |((M*) . e) g g' = M g' g|, i.e., the matrix constructed as
 above for |f| is precisely |M|.
 
-Exercise~\ref{exc:Mstarcompose}: compute |((M*) . e ) g g'|.
+In \cref{exc:Mstarcompose} you verify this by computing |((M*) . e ) g g'|.
 
 Therefore, every linear transformation is of the form |(M*)| and every
 |(M*)| is a linear transformation.
@@ -648,12 +648,12 @@ that is, if we abstract over the vector |v| on both sides:
 ((M' * M)*) = (M' *) . (M *)
 \end{spec}
 
-You may want to refer to Exercise~\ref{exc:Mstarhomomorphismcompose},
-which asks you to work this out in detail.
+You may want to refer to~\cref{exc:Mstarhomomorphismcompose},
+which asks you to work this out in detail, and
 %
 % \jp{We do not note that |Matrix| form a category with mulMV being the composition and |e| as the identity because we have not talked about categories!}
-Additionally, exercise~\ref{exc:MMmultAssoc} is about associativity of
-matrix-matrix multiplication.
+\cref{exc:MMmultAssoc} is about associativity of matrix-matrix
+multiplication.
 %
 
 A simple vector space is obtained for |G = ()|, the singleton index
@@ -1033,11 +1033,11 @@ and we have
 %
 representing the polynomial function |p' x = 2 + 6*x|.
 
-Exercise~\ref{exc:Dmatrixpowerseries}: write the
+As an interesting follow-up, \cref{exc:Dmatrixpowerseries} asks you to write the
 (infinite-dimensional) matrix representing |D| for power series.
-
-Exercise~\ref{exc:matrixIntegPoly}: write the matrix |In| associated
-with integration of polynomials.
+%
+Similarly, in~\cref{exc:matrixIntegPoly} you compute the matrix |In|
+associated with integration of polynomials.
 
 \subsection{\extraMaterial Inner product for functions and Fourier series}
 \label{sec:inner-product-fourier}
@@ -1555,23 +1555,13 @@ determine what vectors the canonical basis vectors are associated with:
   }
 \]
 
-Exercise~\ref{exc:NonDetExample1}: start with |e 2 + e 3| and iterate
-a number of times, to get a feeling for the possible evolutions.
-%
-What do you notice?
-%
-What is the largest number of steps you can make before the result is
-the zero vector?
-%
-Now invert the arrow from |2| to |4| and repeat the exercise.
-%
-What changes?
-%
-Can you prove it?
+In \cref{exc:NonDetExample1} you are asked to start with |e 2 + e 3|
+and iterate a number of times, to get a feeling for the possible
+evolutions.
 
 \paragraph{Implementation}
 %
-The transition relation has type |G -> (G -> Bool)| and is given by:
+The transition relation is given by:
 %
 \begin{code}
 f2 :: G -> (G -> Bool)
@@ -1770,20 +1760,15 @@ probability of being anywhere else is~|0|.
   }
 \]
 
-Exercise~\ref{exc:StocExample1}: starting from state 0, how many steps
-do you need to take before the probability is concentrated in state 6?
+As before, a good exercise is to explore the evolution of the system.
 %
-Reverse again the arrow from 2 to 4 (so that |2->5| has probability
-|1|, |4->2| probability |0.7|, |4->6| and |4->1| have probability
-|0.15| each).
+For example, in \cref{exc:StocExample1} you are asked how many steps
+you need to take before the probability is concentrated in state 6
+starting from state 0?
 %
-What can you say about the long-term behaviour of the system now?
-
-Exercise~\ref{exc:StocExample1Impl}: Implement the example.
-%
-You will need to define:
-
-The transition function (giving the probability of getting to |g'| from |g|)
+And in \cref{exc:StocExample1Impl} you are tasked with implementing
+the example by defining the transition function (giving the
+probability of getting to |g'| from |g|)
 %
 \begin{code}
 f3 :: G -> Vector REAL G
@@ -1794,7 +1779,7 @@ and the associated matrix
 \begin{code}
 m3 ::  G -> Vector REAL G
 \end{code}
-(We want only |G -> Vector [0, 1] G|, using the unit interval in place of |REAL|.)
+%(We want only |G -> Vector [0, 1] G|, using the unit interval in place of |REAL|.)
 
 
 %**TODO (NiBo):
@@ -2040,8 +2025,10 @@ specialising the scalar type |S|)?
 %
 The answer is yes, up to a point, as we shall see in the next section.
 
-%***TODO: fix exercise style
-Exercise: write |Monad| instances for |Id|, |Powerset|, |Prob|, |Super|.
+\begin{exercise}[\textbf{\extraMaterial Hard}]
+  Write |Monad| instances for |Id|, |Powerset|, |Prob|, |Super|.
+\end{exercise}
+% ***TODO: fix exercise style
 
 
 \subsection{\extraMaterial The monad of linear algebra}

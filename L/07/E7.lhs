@@ -1,7 +1,8 @@
 \newpage
 \section{Exercises}
 
-Search the chapter for tasks marked ``Exercise''.
+Some exercises were inlined in the chapter text, and here are a few
+more.
 
 \begin{exercise}
 \label{exc:Mstarcompose}
@@ -76,11 +77,11 @@ starting from state |0|, how many steps do you need to take before the
 probability is concentrated in state |6|?
 %
 
-Now change |M| to |M'| by inverting the arrow from |2| to |4| and
-repeat the exercise.
+Reverse again the arrow from 2 to 4 (so that |2->5| has probability
+|1|, |4->2| probability |0.7|, |4->6| and |4->1| have probability
+|0.15| each).
 %
 What can you say about the long-term behaviour of the system now?
-
 \end{exercise}
 
 \begin{exercise}
