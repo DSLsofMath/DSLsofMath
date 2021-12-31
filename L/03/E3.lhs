@@ -1,7 +1,7 @@
 \newpage
 \section{Exercises}
 
-\begin{exercise}
+\begin{exercise}\label{exc:Lagrange}
   To get a feeling for the \addtoindex{Lagrange equations}, let us
   take the case of an object falling in constant gravity:
   %
@@ -248,12 +248,12 @@ of the right factor, $B$.
 % The Exercise
 % Read the first few paragraphs of the "Overview" section on Hamiltonian Mechanics on Wikipedia (https://en.wikipedia.org/wiki/Hamiltonian_mechanics#Overview (Links to an external site.)Links to an external site.) and try to explain what is going in the equation which describes the "time evolution of the system" by giving types to all elements and introducing necessary rewrites to clarify the meaning of the equation.
 
-\begin{exercise}
-  (Extra material outside the course.)
+\begin{exercise}\label{exc:Hamiltonian}
+  (\extraMaterial Extra material outside the course.)
   %
   In the same direction as the Lagrangian case study in
   \refSec{sec:Lagrangian} there are two nice blog posts by Justin Le
-  about Hamiltonian dynamics: one
+  about Hamiltonian dynamics implemented in Haskell: one
   \href{https://blog.jle.im/entry/introducing-the-hamilton-library.html}{introductory}
   and one
   \href{https://blog.jle.im/entry/hamiltonian-dynamics-in-haskell.html}{more

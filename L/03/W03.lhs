@@ -303,11 +303,15 @@ respect to the second argument, etc.
 %
   In more detail: let the type \(F2 = ℝ² → ℝ\) and \(F1 = ℝ → ℝ\).
 %
-  Then \(D₁ : F2 → F2\) and |D : F1 -> F1|.
+  Then both \(D₁\) and \(D₂\) have type |F2 -> F2| and |D : F1 -> F1|.
 %
-  Start by defining helper functions: |fstFixed : a -> (b -> (a, b))|
-  and |sndFixed : b -> (a -> (a, b))|.
-%
+  Start by defining helper functions:
+\begin{spec}
+  fstFixed  :: a  -> (b  -> (a, b))
+  sndFixed  :: b  -> (a  -> (a, b))
+\end{spec}
+  Hint: there is only one type-correct definition of each.
+% 
   Then use |D| and the helpers in the definitions of \(D₁\) and \(D₂\).
 \end{exercise}
 
@@ -330,7 +334,7 @@ From \citet{sussman2013functional}:
   equations.
 %
   Traditionally, the Lagrange equations are written
-
+%
 \[
   \frac{d}{dt} \frac{∂L}{∂\dot{q}} - \frac{∂L}{∂q} = 0
 \]
@@ -374,7 +378,6 @@ This is consistent with our plan so far if we take |i = 3|:
   L : ℝ³ → ℝ
 \end{spec}
 %
-
 \item Looking again at the same derivative, \(∂L / ∂q\) suggests that
   \(q\) is the name of a real variable, one of the three arguments to
   \(L\).
@@ -415,7 +418,7 @@ argument (named |q|) of~|L|.
     const 0  :  T × Q × V  →  ℝ
     const 0     (t, q, v)  =   0
   \end{spec}
-
+%
 \item We now have a problem: |d / dt| can only be applied to functions
   of \emph{one} real argument |t|, and the result is a function of one
   real argument:
@@ -553,9 +556,9 @@ argument (named |q|) of~|L|.
     Lagrange(L, w) =  D (D₃ L ∘ expand w) == D₂ L ∘ expand w
   \end{spec}
   %
-  where we use |(==)| to avoid confusion with the equality sign (|=|)
-  used for the definition of the predicate.
-\index{Lagrange equations}%
+  where we use |(==)| in the equation to avoid confusion with the
+  equality sign (|=|) used for the definition of the predicate.
+  \index{Lagrange equations}%
 \end{enumerate}
 
 So, we have figured out what the equation means in terms of
@@ -577,22 +580,35 @@ We will not dig into how to solve such PDEs, but they are widely used
 in physics.
 %} %end of formatting for the Lagrangian example
 
+In \cref{exc:Lagrange} you can practice checking under which
+conditions the Lagrange equations are satisfied for some candidates
+paths in a simple case of an object moving in constant gravity.
+%
+If you have the right background in physics it is really instructive
+to try out a few more advanced examples of Lagrangians, or check the
+similar method of Hamiltonian dynamics described in
+\cref{exc:Hamiltonian} (which includes links to blog posts and Haskell
+libraries helping with simulations of the modelled systems).
+
 \section{Incremental analysis with types}
 \label{sec:incremental}
-So far we have worked on typing mathematics, but without the help of
-any tool.
+So far in this chapter we have worked on typing mathematics, but
+without the help of any tool.
 %
 However we can in fact get the Haskell interpreter to help a bit even
-when we are still at the specification stage.
+when we are still at the specification stage --- before we have any
+code running.
 %
 It is often useful to collect the known (or assumed) facts about types
 in a Haskell file and regularly check if the type checker agrees.
 %
-This is a form of \addtoindex{type-driven development}.
+This is a form of \addtoindex{type-driven development} and can help
+avoiding wrong turns even for concepts which cannot be fully
+implemented.
 %
-
-Consider the following text from \citeauthor{maclane1986mathematics}'s
-\textit{Mathematics Form and Function} (page 182):
+\newpage
+Consider the following quote from \citet[page
+182]{maclane1986mathematics}:
 %
 \begin{quote}
   \begin{linenumbers}[1]
@@ -613,8 +629,8 @@ Consider the following text from \citeauthor{maclane1986mathematics}'s
 \lnOnly{Typing the variables and the integration operators in this text was an
   exam question in 2016.}
 %
-We will use the above example as an example of getting feedback from a
-type checker.
+We will use the quote as an example of getting feedback from a type
+checker.
 %
 We start by declaring two types, |X| and |Y|, and a function |f|
 between them:
@@ -652,17 +668,15 @@ variable names), |deriv| for the derivation operator (|D| above), and
 %
 On line~\ref{line:exam1603_x} ``values of |x|'' hints at the type |X|
 for |x| and the way |y| is used indicates that it is to be seen as an
-alias for |f| (and thus must have the same type)
-%
+alias for |f| (and thus must have the same type).
+
 As we have discussed above, the derivative normally preserves the type
 and thus we can write:
 %
 \begin{code}
 x   :: X
-y   :: X -> Y
-y   =  f
-y'  :: X -> Y
-y'  =  deriv f
+y   :: X -> Y;    y   =  f
+y'  :: X -> Y;    y'  =  deriv f
 deriv :: (X -> Y) -> (X -> Y)
 \end{code}
 %
