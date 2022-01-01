@@ -914,7 +914,7 @@ Here even more imagination is required from the reader, who must not
 only infer the space of outcomes, but also which random variable the
 author means.
 
-\section{Conditional probability}
+\subsection{Conditional probability}
 \index{conditional probability}%
 %
 In \cref{sec:StocSys}, we encountered the notion of conditional
@@ -990,6 +990,80 @@ cond_prob_equations s f g =
 % emacs wakeup $
 %}
 \end{proof}
+
+
+\subsection{Independent events}
+\index{independent events}%
+
+Another important notion in probability theory is that of independent
+events.
+%
+One way to define independent events is as follows.
+%
+$E$ is independent from $F$ iff $P(E ∣ F) = P(E)$.
+%
+According to \citet{IntroProb_Grinstead_Snell_2003}, two events
+are independent iff.\ $P(E ∩ F) = P(E) · P(F)$.
+%
+The proof that these formulations are equivalent can be written in the
+traditional notation as follows:
+\begin{proof}
+In the left to right direction:
+\begin{spec}
+  P(E ∩ F)          = {- by def. of cond. prob -}
+  P(E ∣ F) · P (F)  = {- by def. of independent events -}
+  P(E) · P (F)
+\end{spec}
+
+In the right to left direction:
+\begin{spec}
+  P(E ∣ F)               = {- by def. of cond. prob -}
+  P(E ∩ F) / P (F)       = {- by assumption -}
+  P(E) · P (F) / P (F)   = {- by computation -}
+  P(E)
+\end{spec}
+\end{proof}
+%
+Let us now express the same definitions and the same theorem and proof
+in our DSL.
+%
+The definition for independent events is:
+\begin{code}
+independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
+independentEvents s e f = probability1 s e == condProb s e f
+\end{code}
+
+The equivalent formulation is:
+\begin{spec}
+independentEvents2 s e f =
+  probability1 s (\x -> e x && f x) == probability1 s e * probability1 s f
+\end{spec}
+
+We can now state (and prove) the lemma using the DSL notation:
+\begin{lemma}
+  independentEvents s e f ⇔ independentEvents2 s e f 
+\end{lemma}
+\begin{proof}
+  Left to right direction:
+  \begin{spec}
+        probability1 s (\x -> e x && f x)
+      ===  {- by \cref{lem:cond-prob} -}
+        condProb s e f    * probability1 s f
+      ===  {- by assumption -}
+        probability1 s e  * probability1 s f
+  \end{spec}
+\end{proof}
+
+We note that at this level of abstraction, the proofs follow the same
+structure as the textbook proofs --- the underlying space |s| is
+constant.
+
+\begin{exercise}
+Express the rest of the proof using our DSL.
+\end{exercise}
+
+
+
 \section{Examples: Dice, Drugs, Monty Hall}
 
 We are now ready to solve all three problems motivating this chapter.
@@ -1189,7 +1263,7 @@ The above does not correctly model the problem, because it allows
 Monty to reveal the winning door, while the problem specification said
 he would reveal a goat.
 
-\subsection{\extraMaterial Solving a problem with equational reasoning}
+\section{\extraMaterial Solving a problem with equational reasoning}
 Consider the following problem: how many times must one throw a coin
 before one obtains 3 heads in a row?
 %
@@ -1272,7 +1346,7 @@ But first, we need a lemma which helps us push |fmap| inside
 %format indicator = ind
 %format integrator (s) = "\int\{" s "\}"
 We check the equivalence by using semantic equality:
-  \begin{code}
+\begin{code}
 project_sigma_equations f a g h = 
       integrator (fmap f (Sigma a g)) h
   === -- by def
@@ -1300,17 +1374,14 @@ project_sigma_equations f a g h =
 \end{lemma}
 \begin{proof}
 We check the equivalence by using semantic equality:
-  \begin{code}
+\begin{code}
 project_if_equations c a b s g = 
-      integrator (fmap (if c then a else b) s) g
-  === -- by def
-      integrator s ((if c then a else b) . g)
-  ===  -- by def
+      integrator (fmap (if c then a else b) s) g       === -- by def
+      integrator s ((if c then a else b) . g)          ===  -- by def
       integrator (if c then fmap a s else fmap b s) g
-\end{code}
+\end{code}%
 \end{proof}
-
-
+%
 We can proceed from |helper m| by equational reasoning, and see what we get:
 \begin{code}
 unfolding_helper_equations m = 
@@ -1454,77 +1525,6 @@ coin flips to get three heads in a row.
 % h 1 =  8
 % h 2 = 12
 % h 3 = 14
-
-\section{Independent events}
-\index{independent events}%
-
-Another important notion in probability theory is that of independent
-events.
-%
-One way to define independent events is as follows.
-%
-$E$ is independent from $F$ iff $P(E ∣ F) = P(E)$.
-%
-According to \citet{IntroProb_Grinstead_Snell_2003}, two events
-are independent iff.\ $P(E ∩ F) = P(E) · P(F)$.
-
-The proof that these formulations are equivalent can be written in the
-traditional notation as follows:
-\begin{proof}
-In the left to right direction:
-\begin{spec}
-  P(E ∩ F)          = {- by def. of cond. prob -}
-  P(E ∣ F) · P (F)  = {- by def. of independent events -}
-  P(E) · P (F)
-\end{spec}
-
-In the right to left direction:
-\begin{spec}
-  P(E ∣ F)               = {- by def. of cond. prob -}
-  P(E ∩ F) / P (F)       = {- by assumption -}
-  P(E) · P (F) / P (F)   = {- by computation -}
-  P(E)
-\end{spec}
-\end{proof}
-%
-Let us now express the same definitions and the same theorem and proof
-in our DSL.
-%
-The definition for independent events is:
-\begin{code}
-independentEvents :: Space a -> (a -> Bool) -> (a -> Bool) -> Bool
-independentEvents s e f = probability1 s e == condProb s e f
-\end{code}
-
-The equivalent formulation is:
-\begin{spec}
-independentEvents2 s e f =
-  probability1 s (\x -> e x && f x) == probability1 s e * probability1 s f
-\end{spec}
-
-We can now state (and prove) the lemma using the DSL notation:
-\begin{lemma}
-  independentEvents s e f ⇔ independentEvents2 s e f 
-\end{lemma}
-\begin{proof}
-  Left to right direction:
-  \begin{spec}
-        probability1 s (\x -> e x && f x)
-      ===  {- by \cref{lem:cond-prob} -}
-        condProb s e f    * probability1 s f
-      ===  {- by assumption -}
-        probability1 s e  * probability1 s f
-  \end{spec}
-\end{proof}
-
-We note that at this level of abstraction, the proofs follow the same
-structure as the textbook proofs --- the underlying space |s| is
-constant.
-
-\begin{exercise}
-Express the rest of the proof using our DSL.
-\end{exercise}
-
 
 % \section{Continuous spaces and equality}
 % TODO

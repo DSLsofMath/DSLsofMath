@@ -2316,14 +2316,9 @@ Therefore
 <==   g = 2, g' = 1
 \end{spec}
 %
-Introducing
-%
-\begin{code}
-var x = (x, one)
-\end{code}
-%
-we can, as in the case of |FD|, simplify matters a little:
-%
+Introducing |var x = (x, one)| we can, as in the case of |FD|,
+simplify matters a little:
+% 
 \begin{spec}
 f' x = snd (f (var x))
 \end{spec}
@@ -2387,6 +2382,9 @@ sinDup, cosDup, expDup :: Transcendental a => Dup a -> Dup a
 sinDup  (x,x') =  (sin x,           cos x   * x')
 cosDup  (x,x') =  (cos x, negate (  sin x)  * x')
 expDup  (x,x') =  (exp x,           exp x   * x')
+
+var :: Multiplicative a => a -> Dup a
+var x = (x, one)
 \end{code}
 
 %include E4.lhs

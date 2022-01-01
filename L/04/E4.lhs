@@ -124,8 +124,8 @@ Prove or disprove the following claims:
   In \cref{exc:e1_lattice}, we looked at a datatype for the language of
   \addtoindex{lattice} expressions.
   %
-  We will now use some of the concepts discussed in this chapter to
-  expand on this language.
+%  We will now use some of the concepts discussed in this chapter to
+%  expand on this language.
 
   \begin{enumerate}
 
@@ -295,9 +295,8 @@ data FunExp  =  Const Rational           |  X
 f :: REAL -> REAL
 f x = exp (sin x) + x
 \end{code}
-
-  \begin{enumerate}
-
+%
+\begin{enumerate}
   \item Find an expression |e| such that |eval e == f| and show this
     using equational reasoning.
 
@@ -339,10 +338,7 @@ f x = exp (sin x) + x
 
 
 \begin{exercise}\label{exc:simplifyFunExp}
-  Write a function
-\begin{spec}
-simplify :: FunExp -> FunExp
-\end{spec}
+  Write a function |simplify :: FunExp -> FunExp|
   %
   to simplify the expression resulting from |derive|.
   %
