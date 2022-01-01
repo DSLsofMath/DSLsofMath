@@ -258,12 +258,9 @@ cosT  as  = integT  (cos  (val as))  (-sinT as  * derivT as)
 With this in place we can assemble the instance declaration:
 \begin{code}
 instance Transcendental a => Transcendental (Taylor a) where
-   pi   =  [pi]
-   exp  =  expT
-   sin  =  sinT
-   cos  =  cosT
+   pi   =  [pi]; exp  =  expT;  sin  =  sinT;  cos  =  cosT
 \end{code}
-
+%
 Only one instance remains: we have not yet defined |recip| for Taylor
 series.
 %
@@ -299,7 +296,7 @@ expTx :: Taylor REAL
 expTx = expT [0,1]
 testExpT = take 5 expTx == [1.0, 1.0, 1.0, 1.0, 1.0]
 \end{code}
-All derivatives are one, as expected.
+All derivatives are one, as expected from |exp 0 = 1| and |exp'=exp|.
 
 We can also combine this with the complex number example above:
 %
