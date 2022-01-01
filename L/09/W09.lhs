@@ -49,11 +49,11 @@ evaluating the DSL expressions.
   Suppose that 0.5\% of people are users of the drug.
   %
   What is the probability that a randomly selected individual with a
-  positive test is a drug user?%
+  positive test is a drug user?
   %
-  \footnote{Example found in
+  (Example found in
     \href{https://en.wikipedia.org/wiki/Bayes'_theorem}{Wikipedia
-      article on Bayes' theorem, 2019-03-01}}
+      article on Bayes' theorem, 2019-03-01}.)
 \label{ex:drugtest}
 
 \item Suppose you’re on Monty Hall’s \emph{Let’s Make a Deal!}
@@ -71,7 +71,8 @@ evaluating the DSL expressions.
 \label{ex:monty}
 \end{enumerate}
 
-Our method will be to:\nopagebreak
+\pagebreak
+Our method will be to:
 \begin{itemize}
 \item Describe the space of possible situations, or outcomes.
 \item Define the events whose probabilities we will consider.
@@ -266,6 +267,9 @@ Project :: (a -> b) -> Space a -> Space b
 \end{spec}
 A typical use is |Project fst :: Space (a,b) -> Space a|, ignoring the
 second component of a pair.
+%
+We can make |Space| an instance of the |Functor| type class with |fmap
+= Project|.
 
 \paragraph{Real line}
 Before we continue, we may also add a way to represent real-valued
@@ -552,7 +556,7 @@ expectedValueOfDistr d = integrator d id
 
 \begin{exercise}
 Compute symbolically the expected value of the |bernoulli|
-distribution
+distribution.
 \end{exercise}
 
 \paragraph{Properties of |integrator|}
@@ -1043,23 +1047,33 @@ To do so we make heavy use of the |bernoulli| distribution.
 %
 First we model the distribution of drug users.
 %
+\begin{code}
+type DrugUser = Bool
+drugUser :: Space Bool
+drugUser = bernoulli 0.005
+\end{code}
+%
 Then we model the distribution of test outcomes --- depending on
 whether we have a user or not.
 %
-Finally, we project out all variables, caring only about |isUser|.
-
 \begin{code}
-drugSpace :: Space Bool
-drugSpace =
-   -- we're interested the posterior distribution of |isUser|,
-  -- (first component of the pair, ignoring the result of the test).
-  Project fst  $
-  -- we have ``a positive test'' by assumption
-  -- (second component of the pair contains result of the test)
-  observing snd $ 
-  Sigma  (bernoulli 0.005) -- model the distribution of drug users     
-         (\isUser -> bernoulli (if isUser then 0.99 else 0.01))        
-         -- model test results depending on whether we have a drug user
+type TestResult = Bool
+testResult :: DrugUser -> Space TestResult
+testResult isUser = bernoulli (if isUser then 0.99 else 0.01)
+\end{code}
+%
+Then we ``zoom in on'' (observe) only those with a positive test:
+\begin{code}
+positiveTests :: Space (DrugUser, TestResult)
+positiveTests = observing snd (Sigma  drugUser testResult)
+\end{code}
+% 
+Finally, because the test result is always |True|, we select only the
+|DrugUser| component.
+%
+\begin{code}
+drugSpace :: Space DrugUser
+drugSpace =  Project fst positiveTests
 \end{code}
 The probability is computed as usual:
 \begin{code}
@@ -1085,11 +1099,14 @@ it.
 
 We can model the Monty Hall problem as follows.
 %
-For expository purposes, let us define the list of doors:
+For expository purposes, let us define the list of doors, and a
+uniform distribution of these doors.
 \begin{code}
 type Door = Int
 doors :: [Door]
 doors = [1,2,3]
+anyDoor :: Distr Door
+anyDoor = uniformDiscrete doors
 \end{code}
 
 The event of ``winning'' depends on four variables:
@@ -1135,8 +1152,7 @@ though this might not be the case in a real game.%
 \begin{code}
 montySpace :: Space ((Door, Door), Door)
 montySpace =
-  (Sigma  (prod   (uniformDiscrete doors)
-                  (uniformDiscrete doors))
+  (Sigma  (prod anyDoor anyDoor)
           (\(winningDoor,pickedDoor) ->
               uniformDiscrete (doors \\ [pickedDoor, winningDoor])))
 
@@ -1154,16 +1170,15 @@ Thus, the ``changing door'' strategy is twice as good.
 The Monty Hall is sometimes considered paradoxical: it is strange that
 changing one's mind can change the outcome.
 %
-The crucial point to see this is that Monty can never show a door which contains
-the prize.
+The crucial point to see this is that Monty will never reveal a door
+which contains the prize -- that would end the show a bit too early.
 %
 To illustrate, an \emph{incorrect} way to model the Monty Hall
 space of situations is the following:
 \begin{code}
 montySpaceIncorrect :: Space ((Door, Door), Door)
 montySpaceIncorrect =
-  (Sigma (prod (uniformDiscrete doors)
-               (uniformDiscrete doors))
+  (Sigma (prod anyDoor anyDoor)
          (\(_,pickedDoor) -> uniformDiscrete (doors \\ [pickedDoor])))
 
 -- |>>> probability (Project (haveWon False) montySpaceIncorrect)|
@@ -1171,9 +1186,10 @@ montySpaceIncorrect =
 
 \end{code}
 The above does not correctly model the problem, because it allows
-Monty to pick the door already chosen by the player.
+Monty to reveal the winning door, while the problem specification said
+he would reveal a goat.
 
-\subsection{Solving a problem with equational reasoning}
+\subsection{\extraMaterial Solving a problem with equational reasoning}
 Consider the following problem: how many times must one throw a coin
 before one obtains 3 heads in a row?
 %
@@ -1183,15 +1199,15 @@ coin :: Distr Bool
 coin = bernoulli 0.5
 
 coins :: Distr [Bool]
-coins =  Project  (\(x,xs) -> x : xs)
-                  (prod coin coins)
+coins =  fmap  (\(x,xs) -> x : xs)
+               (prod coin coins)
 
 threeHeads :: [Bool] -> Int
 threeHeads (True:True:True:_) = 3
 threeHeads (_:xs) = 1 + threeHeads xs
 
 example' :: Space Int
-example' = Project threeHeads coins
+example' = fmap threeHeads coins
 \end{code}
 % emacs $ $
 
@@ -1224,24 +1240,31 @@ most typos this way.)
 
 The first step in our computation of the solution is a creative one,
 which involves generalising the problem to computing the number of
-throws to obtain \(3-m\) heads in a row.
+throws to obtain the remaining \(m\) heads in a row, where |m| is
+between zero and three.
 %
 For this purpose we define the function |tH|, such that |tH 3 ==
 threeHeads|:
 
 \begin{code}
 tH :: Int -> [Bool] -> Int
-tH 0 _ = 0
-tH m (x:xs) = 1 + if x then tH (m-1) xs else tH 3 xs
+tH 0 _ = 0  -- no heads remaining means |0| more heads are needed
+tH m (x:xs) =  1 +   -- if |m>0| heads remain, we need one throw + 
+               if x  -- if this throw is a head
+               then  tH (m-1) xs  -- we cont. needing |m-1| heads
+               else  tH 3 xs      -- otherwise we start all over
 \end{code}
-We then define |helper m = Project (tH m) coins|.
+We then define |helper m = fmap (tH m) coins| which returns a
+|Distr Int| representing the probability distribution of throws
+remaining.
 %
 Computing it symbolically will give our answer.
 %
-But first, we need a lemma which helps us push |Project| inside
+But first, we need a lemma which helps us push |fmap| inside
 |Sigma|:
 \begin{lemma}
-  |Project f (Sigma a g) == Project snd (Sigma a (\x -> Project (f . (x,)) (g x)))|
+  |fmap f (Sigma a g) == fmap snd (Sigma a (\x -> fmap (f . (x,)) (g x)))|
+%  |fmap f (Sigma a g) ==  a >>= \x -> fmap (f . (x,)) (g x)|
   \label{lem:project/sigma}
 \end{lemma}
 \begin{proof}
@@ -1251,39 +1274,39 @@ But first, we need a lemma which helps us push |Project| inside
 We check the equivalence by using semantic equality:
   \begin{code}
 project_sigma_equations f a g h = 
-      integrator (Project f (Sigma a g)) h
+      integrator (fmap f (Sigma a g)) h
   === -- by def
       integrator (Sigma a g) (h . f)
   ===  -- by def
       integrator a (\x -> integrator (g x) (\y -> (h . f) (x,y)))
   ===  -- rewriting in point-free style
       integrator a (\x -> integrator (g x) (h . f . (x,)))
-  ===  -- by def of integrator of |Project|
-      integrator a (\x -> integrator (Project (f . (x,)) (g x)) h)
+  ===  -- by def of integrator of |fmap|
+      integrator a (\x -> integrator (fmap (f . (x,)) (g x)) h)
   ===  -- |h == \y -> h y|
-      integrator a (\x -> integrator (Project (f . (x,)) (g x)) $ \y -> h y)
+      integrator a (\x -> integrator (fmap (f . (x,)) (g x)) $ \y -> h y)
   ===  -- taking an explicit (x,y) pair
-      integrator a (\x -> integrator (Project (f . (x,)) (g x)) $ \y -> (h . snd) (x,y))
+      integrator a (\x -> integrator (fmap (f . (x,)) (g x)) $ \y -> (h . snd) (x,y))
   ===  -- by def of integrator of |Sigma|
-      integrator (Sigma a (\x -> Project (f . (x,)) (g x))) (h . snd)
-  ===   -- by def of integrator of |Project|
-      integrator (Project snd (Sigma a (\x -> Project (f . (x,)) (g x)))) h
+      integrator (Sigma a (\x -> fmap (f . (x,)) (g x))) (h . snd)
+  ===   -- by def of integrator of |fmap|
+      integrator (fmap snd (Sigma a (\x -> fmap (f . (x,)) (g x)))) h
 \end{code}
 \end{proof}
 
 
 \begin{lemma}
-  |Project (if c then a else b) s == if c then Project a s else Project b s|
+  |fmap (if c then a else b) s == if c then fmap a s else fmap b s|
 \end{lemma}
 \begin{proof}
 We check the equivalence by using semantic equality:
   \begin{code}
 project_if_equations c a b s g = 
-      integrator (Project (if c then a else b) s) g
+      integrator (fmap (if c then a else b) s) g
   === -- by def
       integrator s ((if c then a else b) . g)
   ===  -- by def
-      integrator (if c then Project a s else Project b s) g
+      integrator (if c then fmap a s else fmap b s) g
 \end{code}
 \end{proof}
 
@@ -1293,50 +1316,49 @@ We can proceed from |helper m| by equational reasoning, and see what we get:
 unfolding_helper_equations m = 
       helper m 
   === -- by def
-      Project (tH m)  coins
+      fmap (tH m)  coins
   === -- by def
-      Project (tH m) (Project (\(x,xs) -> x : xs) (prod coin coins))
-  === -- property of |Project| (\cref{ex:monad-laws}, functoriality of |Project|)
-      Project (tH m . \(x,xs) -> x : xs) (prod coin coins)
+      fmap (tH m) (fmap (\(x,xs) -> x : xs) (prod coin coins))
+  === -- property of |fmap| (\cref{ex:monad-laws}, functoriality of |Project|)
+      fmap (tH m . \(x,xs) -> x : xs) (prod coin coins)
   === -- by def
-      Project  (\(x,xs) -> 1 + if x then tH (m-1) xs else tH 3 xs)
-               (prod coin coins)
-  === -- by functoriality of |Project|
-      Project (1+) (Project  (\(x,xs) -> if x   then  tH (m-1) xs
-                                                else  tH 3 xs)
-                             (prod coin coins))
+      fmap  (\(x,xs) -> 1 + if x then tH (m-1) xs else tH 3 xs)
+            (prod coin coins)
+  === -- by functoriality of |fmap|
+      fmap (1+) (fmap  (\(x,xs) -> if x   then  tH (m-1) xs
+                                          else  tH 3 xs)
+                       (prod coin coins))
   === -- by \cref{lem:project/sigma}
-      Project (1+) (Project snd
-                      (Sigma  coin (\x -> Project  (\xs -> if x  then  tH (m-1) xs
-                                                                 else  tH 3 xs)
-                                                   coins)))
-  === -- by functoriality of |Project|
-      Project  ((1+) . snd)
-               (Sigma  coin (\x -> Project  (\xs -> if x  then  tH (m-1) xs
-                                                          else  tH 3 xs)
-                                            coins))
+      fmap (1+) (fmap  snd
+                       (Sigma  coin (\x -> fmap  (\xs -> if x  then  tH (m-1) xs
+                                                               else  tH 3 xs)
+                                                 coins)))
+  === -- by functoriality of |fmap|
+      fmap  ((1+) . snd)
+            (Sigma  coin (\x -> fmap  (\xs -> if x  then  tH (m-1) xs
+                                                    else  tH 3 xs)
+                                      coins))
   === -- by semantics of |if| in Haskell
-      Project  ((1+) . snd)
-               (Sigma  coin (\x -> Project  (if x  then  (tH (m-1))
-                                                   else  (tH 3))
-                                            coins))
+      fmap  ((1+) . snd)
+            (Sigma  coin (\x -> fmap  (if x  then  (tH (m-1))
+                                             else  (tH 3))
+                                      coins))
   === -- by semantics of |if| in Haskell
-      Project   ((1+) . snd)
-                (Sigma coin (\x -> if x  then  Project (tH (m-1))  coins
-                                         else  Project (tH 3)      coins))
+      fmap   ((1+) . snd)
+             (Sigma coin (\x -> if x  then  fmap (tH (m-1))  coins
+                                      else  fmap (tH 3)      coins))
   === -- by definition of |helper|.
-      Project ((1+) . snd) (Sigma coin (\x -> if x  then  helper (m-1)
-                                                    else  helper 3))
+      fmap ((1+) . snd) (Sigma coin (\x -> if x  then  helper (m-1)
+                                                 else  helper 3))
 \end{code}
 
 To sum up:
 \begin{code}
-helper 0 = point 0
-helper m =
-  Project ((1 +) . snd)  
-  (Sigma coin (\h -> if h
-                then  helper (m-1)
-                else  helper 3)) -- when we have a tail, we start from scratch
+helper 0  =  point 0
+helper m  =  fmap  ((1 +) . snd)  
+                   (Sigma coin (\h ->
+                   if h  then  helper (m-1)                                 
+                         else  helper 3)) -- when we have a tail, we restart
 \end{code}
 % emacs $ $
 Evaluating the probability still does not terminate:
@@ -1373,13 +1395,13 @@ In the recursive case, we have:
 \begin{spec}
 integrator (helper (m+1)) id
 == {- By above result regarding |helper| -}
-integrator  (Project ((1 +) . snd)
+integrator  (fmap ((1 +) . snd)
             (Sigma coin (\h -> if h then helper (m-1) else  helper 3))) id
 == {- By integrator def -}
 integrator (Sigma coin (\h -> if h then  helper (m-1) else  helper 3)) ((1 +) . snd)
 == {- By integrator def -}
 integrator coin $ \h -> integrator (if h then helper m else helper 3) (1 +)
-== {- By linearity of |integrator| -}
+== {- By linearity of |integrator s| -}
 1 + integrator coin $ \h -> integrator (if h then helper m else helper 3) id
 == {- By case analysis -}
 1 + (integrator coin $ \h -> if h then integrator (helper m) id else integrator (helper 3) id)
@@ -1400,15 +1422,24 @@ which we can rewrite as:
 \end{spec}
 and expand for |m = 0| to |m = 2|:
 \begin{spec}
-2 * h 1 = 2 +        h 3
+2 * h 1 = 2 + 0   +  h 3
 2 * h 2 = 2 + h 1 +  h 3
 2 * h 3 = 2 + h 2 +  h 3
 \end{spec}
 This leaves us with a system of linear equations with three unknowns
-|h 1|, |h 2| and |h 3|, which admits a single solution with |h 1 = 8|,
-|h 2 = 12|, and finally |h 3 = 14|, giving the answer to the initial
-problem: we can expect to need 14 coin flips to get three heads in a
-row.
+|h 1|, |h 2| and |h 3|.
+%
+Eliminating |h 3 = 2*h 1 - 2| and simplifying gives 
+\begin{spec}
+3 * h 1 = 2 * h 2
+2 * h 1 = 4 + h 2
+\end{spec}
+and eliminating |h 2 = 2*h 1 - 4| + simplifying gives
+\begin{spec}
+h 1 = 8;   h 2 = 12;   h 3 = 14
+\end{spec}
+Thus the answer to the initial problem is: we can expect to need 14
+coin flips to get three heads in a row.
 %}
 
 %Simplify + eliminate |h 3 = 2*h 1 - 2 |:
@@ -1442,25 +1473,20 @@ traditional notation as follows:
 \begin{proof}
 In the left to right direction:
 \begin{spec}
-  P(E ∩ F)
-= {- by def. of cond. prob -}
-  P(E ∣ F) · P (F)
-= {- by def. of independent events -}
+  P(E ∩ F)          = {- by def. of cond. prob -}
+  P(E ∣ F) · P (F)  = {- by def. of independent events -}
   P(E) · P (F)
 \end{spec}
 
 In the right to left direction:
 \begin{spec}
-  P(E ∣ F)
-= {- by def. of cond. prob -}
-  P(E ∩ F) / P (F)
-= {- by assumption -}
-  P(E) · P (F) / P (F)
-= {- by computation -}
+  P(E ∣ F)               = {- by def. of cond. prob -}
+  P(E ∩ F) / P (F)       = {- by assumption -}
+  P(E) · P (F) / P (F)   = {- by computation -}
   P(E)
 \end{spec}
 \end{proof}
-
+%
 Let us now express the same definitions and the same theorem and proof
 in our DSL.
 %
