@@ -15,6 +15,8 @@
 %format QQ                      =  "\mathbb{Q}"
 %format QQP                     =  QQ "^{+}"
 %format Nat                     =  "\mathbb{N}"
+%format ANat                    =  Nat "_{" A "}"
+%format MNat                    =  Nat "_{" M "}"
 %format Pos                     =  "\mathbb{N}_{> 0}"
 %format RPos                    =  "\mathbb{R}_{> 0}"
 %format RPosz                   =  "\mathbb{R}_{\ge 0}"

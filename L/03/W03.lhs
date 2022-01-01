@@ -12,7 +12,7 @@ import DSLsofMath.W01 (Env, evalEnv)
 import DSLsofMath.SimpleFunExp (FunExp(..))
 type REAL = Double
 type ℝ = REAL
-type ℤ = Int
+type ℤ = Integer
 powTo n = (^n)
 powTo' = powTo . fromIntegral
 \end{code}

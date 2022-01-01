@@ -12,12 +12,14 @@
 module DSLsofMath.W04 where
 import Prelude hiding (Monoid, even, Num(..), recip, pi, sin, cos, exp, (^), (+))
 import qualified Prelude (pi)
+import Numeric.Natural (Natural)
 import DSLsofMath.FunExp hiding (eval, eval')
 import qualified DSLsofMath.FunExp as FunExp
 import DSLsofMath.Algebra
 -- import DSLsofMath.Derive (derive)
 -- import DSLsofMath.W03 (derive)
 type ℝ = REAL
+type Nat    =  Natural     -- imported from |Numeric.Natural|
 \end{code}
 %endif
 %format FunExp.eval = eval
@@ -146,45 +148,34 @@ formulated as the following propositions:
 \end{exercise}
 
 \begin{example}
-  To make this concept a bit more concrete, here are two examples of monoids
-  in Haskell: the additive monoid |ANat| and the multiplicative monoid
+  To make this concept a bit more concrete, we define two examples in
+  Haskell: the additive monoid |ANat| and the multiplicative monoid
   |MNat|.
 %
 %if False
-Included just for type-checking (it is really inefficient in practice).
 \begin{code}
-data Natural = Zero | Succ Natural deriving (Show, Eq)
-addNatural :: Natural -> Natural -> Natural
-addNatural Zero      m = m
-addNatural (Succ n)  m = Succ (addNatural n m)
-
-mulNatural :: Natural -> Natural -> Natural
-mulNatural Zero      _m    = zero
-mulNatural _n        Zero  = zero
-mulNatural (Succ n)  m     = addNatural m (mulNatural n m)
-
-instance Additive Natural        where zero = Zero;      (+) = addNatural
-instance Multiplicative Natural  where one = Succ Zero;  (*) = mulNatural
+instance Additive Nat        where zero  = 0;  (+) = (+)
+instance Multiplicative Nat  where one   = 1;  (*) = (*)
 \end{code}
 %endif
 \label{sec:anat-mnat}
 \begin{code}
-newtype ANat      =  A Natural          deriving (Show, Eq)
+newtype ANat      =  A Nat          deriving (Show, Eq)
 
 instance Monoid ANat where
   unit            =  A zero
   op (A m) (A n)  =  A (m + n)
 
-newtype MNat      =  M Natural          deriving (Show, Eq)
+newtype MNat      =  M Nat          deriving (Show, Eq)
 
 instance Monoid MNat where
   unit            =  M one
   op (M m) (M n)  =  M (m * n)
 \end{code}
 \end{example}
-
+%
 In Haskell there can be at most one instance of a given class in scope
-for a given type, so we cannot define two |instance Monoid Natural|:
+for a given type, so we cannot define two |instance Monoid Nat|:
 we must make a |newtype| whose role is to indicate which of the two
 possible monoids (additive or multiplicative) applies in a given context.
 %
@@ -192,9 +183,9 @@ But, in mathematical texts the constructors |M| and |A| are usually
 omitted, and instead the names of the operations suggest which of the
 monoids one is referring to.
 %
-To be able to conform to that tradition we define two separate
-classes, one for the additive and one for the multiplicative monoids,
-as follows.
+To be able to conform to that tradition we defined two separate
+classes in \cref{sec:numeric-classes}, one for the additive and one
+for the multiplicative monoids, as follows:
 \label{sec:ring-like-classes}
 \index{Additive@@|Additive| (type class)||textbf}%
 \index{Multiplicative@@|Multiplicative| (type class)||textbf}%
@@ -209,7 +200,6 @@ class Multiplicative a  where               one   :: a;               (*)  :: a 
 % class Multiplicative a where
 %   one :: a
 %   (*) :: a -> a -> a
-This is what we have done in \cref{sec:numeric-classes}.
 
 %\begin{example}
 \subsection{Groups and rings}
@@ -274,7 +264,44 @@ replacement for the |Num| class!
 \end{exercise}
 % If label:=pin then the text will be connected to the rectangle by a short "pin" (line) 17.10.3 in pgfmanual
 
-\begin{figure}[tpbp]
+We note right away that one can have a multiplicative group structure
+as well, whose inverse is called the reciprocal (abbreviated as
+|recip| in Haskell).
+%
+\index{reciprocal@@|recip|{}||see {|MulGroup| (type class)}}%
+%
+With that in place, division can be defined in terms of multiplication
+and reciprocal.
+\index{MulGroup@@|MulGroup| (type class)||textbf}%
+\begin{joincode}%class Multiplicative is defined earlier
+\begin{spec}
+class Multiplicative a => MulGroup a where
+  recip :: a -> a -- reciprocal
+
+\end{spec}% changing the blank line breaks compilation (?!!)
+\begin{code}
+(/) :: MulGroup a => a -> a -> a
+a / b = a * recip b
+\end{code}
+\end{joincode}
+Often the multiplicative group structure is added to a ring to get what is called a \emph{field} which we represent by the type class |Field|:
+%
+\index{Field@@|Field| (type class)}%
+\label{sec:fields-definition}
+\begin{code}
+type Field a = (Ring a, MulGroup a)
+\end{code}
+For fields, the reciprocal is not defined at zero.
+%
+We will not capture this precondition in types: it would cause too
+much notational awkwardness.
+%
+Example instances of |Field| are |QQ| and |REAL|.
+%
+For pragmatic reasons we will also treat |Double| as a |Field| even
+though the laws only hold approximately.
+
+\begin{figure}[htpb]
   \centering
   \begin{tikzpicture}
 %  \draw[help lines] (-3,-3) grid (3,3);
@@ -321,46 +348,8 @@ replacement for the |Num| class!
 %TODO: Perhaps fix the figure to indicate that |AddGroup| includes the
 %|Additive| operations and |MulGroup| includes the |Multiplicative|
 %operations.
-We note right away that one can have a multiplicative group structure
-as well, whose inverse is called the reciprocal (abbreviated as
-|recip| in Haskell).
-%
-\index{reciprocal@@|recip|{}||see {|MulGroup| (type class)}}%
-%
-With that in place, division can be defined in terms of multiplication
-and reciprocal.
-\index{MulGroup@@|MulGroup| (type class)||textbf}%
-\begin{joincode}%class Multiplicative is defined earlier
-\begin{spec}
-class Multiplicative a => MulGroup a where
-  recip :: a -> a -- reciprocal
-
-\end{spec}% changing the blank line breaks compilation (?!!)
-\begin{code}
-(/) :: MulGroup a => a -> a -> a
-a / b = a * recip b
-\end{code}
-\end{joincode}
-Often the multiplicative group structure is added to a ring to get what is called a \emph{field} which we represent by the type class |Field|:
-%
-\index{Field@@|Field| (type class)}%
-\label{sec:fields-definition}
-\begin{code}
-type Field a = (Ring a, MulGroup a)
-\end{code}
-For fields, the reciprocal is not defined at zero.
-%
-We will not capture this precondition in types: it would cause too
-much notational awkwardness.
-%
-Example instances of |Field| are |QQ| and |REAL|.
-%
-For pragmatic reasons we will also treat |Double| as a |Field| even
-though the laws only hold approximately.
-
-\cref{fig:CompNum} provides a graphical illustration of some of the
-relations between the Haskell |Num| class hierarchy and the
-corresponding numerical classes we use in this book.
+In \cref{fig:CompNum} the numerical classes we use in this book are
+summed up and compared with the Haskell |Num| class hierarchy.
 
 \section{Homomorphisms}
 \index{homomorphism||textbf}%
@@ -698,8 +687,29 @@ between |RPos| and |REAL|.
   as suggested in \cref{sec:complexcase}.
 \end{exercise}
 
-
 \section{Compositional semantics}
+The core of compositional semantics is that the meaning (semantics) of
+an expression is determined by combining the meanings of its
+subexpressions.
+%
+Earlier, we have presented several DSLs as a syntax datatype |Syn|
+connected to a type |Sem| for the semantic values by a compositional
+semantic function |eval : Syn -> Sem|.
+% 
+In this section we show that compositional functions are homomorphisms
+and provide some examples with proofs of compositionality (or the
+opposite).
+
+
+%   Initial and Free Structures
+%   A general initial structure
+%   \extraMaterial Free Structures
+%   \extraMaterial A generic Free construction
+% Computing derivatives, reprise
+%   Automatic differentiation
+%   Homomorphism as roadmaps
+% Summary
+%   Structures and representations
 
 \subsection{Compositional functions are homomorphisms}
 \label{sec:compositionality-and-homomorphisms}
@@ -893,14 +903,15 @@ expressions:
 \begin{code}
 foldE ::  (s -> s -> s) -> (s -> s -> s) -> (Integer -> s) -> (E -> s)
 foldE add mul con = rec
-  where  rec (Add x y)  = add (rec x) (rec y)
-         rec (Mul x y)  = mul (rec x) (rec y)
-         rec (Con i)    = con i
+  where  rec (Add  x y)  = add  (rec x)  (rec y)
+         rec (Mul  x y)  = mul  (rec x)  (rec y)
+         rec (Con  i)    = con  i
 \end{code}
 %
-Notice that |foldE| has three function arguments corresponding to the
-three constructors of |E|.
-%
+Notice that |foldE| is a higher-order function: it take three function
+arguments corresponding to the three constructors of |E|, and returns
+a function from |E| to the semantic domain |s|.
+
 The ``natural'' evaluator to integers is then easy to define:
 %
 \begin{code}
@@ -943,15 +954,19 @@ the return type:
 \begin{code}
 foldIE :: IntExp t => E -> t
 foldIE = foldE add mul con
-
-instance IntExp E        where  add  = Add;   mul  = Mul;   con  = Con
+\end{code}
+We can then provide type class instances for both the natural
+semantics |Integer| and the syntax |E| and recover the evaluator and
+the ``deep copy'' function as special cases:
+\begin{code}
 instance IntExp Integer  where  add  = (+);   mul  = (*);   con  = id
-
-idE' :: E -> E
-idE' = foldIE
+instance IntExp E        where  add  = Add;   mul  = Mul;   con  = Con
 
 evalE' :: E -> Integer
 evalE' = foldIE
+
+idE' :: E -> E
+idE' = foldIE
 \end{code}
 
 Additionally |IntExp| is the underlying algebraic structure of the
@@ -966,8 +981,7 @@ Given a structure |C|, a fold is a homomorphism from a realisation of
 |C| as a data-type.
 %
 We can note at this point that a class |C a| can be realised as a
-datatype only if all the functions of |class C a| return
-|a|.
+datatype only if all the functions of |class C a| return |a|.
 %
 (Otherwise the constructors could create another type; and so they are
 not constructors any more.)
@@ -1099,6 +1113,9 @@ paren s = "(" ++ s ++ ")"
 
 prVersions :: E -> ThreeVersions
 prVersions = foldE prVerAdd prVerMul prVerCon
+\end{code}
+The main work is (as usual) done in the ``semantic functions'':
+\begin{code}
 
 prVerAdd :: ThreeVersions -> ThreeVersions -> ThreeVersions
 prVerAdd (_xTop, xInA, _xInM) (_yTop, yInA, _yInM) =
@@ -1111,9 +1128,9 @@ prVerMul (_xTop, _xInA, xInM) (_yTop, _yInA, yInM) =
   in (s, s, paren s)           -- parens only needed inside |Mul|
 
 prVerCon :: Integer -> ThreeVersions
-prVerCon i =
-  let s = show i
-  in (s, s, s)                 -- parens never needed
+prVerCon i  | i < 0      =  (s,  ps,  ps)     -- parens needed except at top level
+            | otherwise  =  (s,  s,   s)      -- parens never needed
+  where  s = show i; ps = paren s
 \end{code}
 
 
@@ -1445,16 +1462,17 @@ evalIncomplete _ = error "Implemented elsewhere"
 \end{code}
 %endif
 
-The most general type of evaluator will give us: \footnote{We call
-this constraint ``OneVarExp'' because we have fixed |G=()|. In general
-the number of variables is the cardinality of |G|.}
-%
+The most general type of evaluator will give us:%
+\footnote{We call this constraint ``OneVarExp'' because we have fixed
+  |G=()|. In general the number of variables is the cardinality of
+  |G|.}
+\nopagebreak
 \begin{code}
 type OneVarExp a = (Generate a, Ring a)
 evalIncomplete :: FunExp -> (OneVarExp a => a)
 \end{code}
 %}
-
+%
 With this class in place we can define generic expressions using
 generic constructors just like in the case of |IntExp| above.
 %
@@ -1479,7 +1497,7 @@ provided a suitable instance for |Generate Func|:
 instance Generate Func where
   generate () = id
 \end{code}
-
+%
 As before, we can always define a homomorphism from |FunExp| to
 \emph{any} instance of |OneVarExp|, in a unique way, using the fold
 pattern.
@@ -1550,16 +1568,12 @@ For example, here is the proof that the right identity law holds:
 \index{equational reasoning}%
 %
 \begin{spec}
-    Free f `op` unit
-==  {- def. -}
-    Free f `op` Free (\_ -> unit)
-==  {- def. -}
-    Free (\x -> f x `op` unit)
-==  {- law of the underlying monoid -}
-    Free (\x -> f x)
-==  {- eta-reduction -}
+    Free f `op` unit                    ==  {- def. -}
+    Free f `op` Free (\_ -> unit)       ==  {- def. -}
+    Free (\x -> f x `op` unit)          ==  {- law of the underlying monoid -}
+    Free (\x -> f x)                    ==  {- eta-reduction -}
     Free f
-  \end{spec}
+\end{spec}
 
 \begin{exercise}
 Prove group laws for |Free AdditiveGroup|.
@@ -1590,7 +1604,8 @@ example = embed 1 `op` embed 10 `op` unit `op` embed 11
 \end{code}
 
 \begin{exercise}
-  Show that |Free Ring ()| covers most of the type |FunExp| from \cref{sec:FunExp}.
+  Show that |Free Ring ()| covers most of the type |FunExp| from
+  \cref{sec:FunExp}.
 \end{exercise}
 
 \section{Computing derivatives, reprise}
@@ -1634,6 +1649,21 @@ In a diagram:
   |FunExp| \arrow[r, "|eval|"]                        & |(REAL -> REAL)|
 \end{tikzcd}
 
+The diagram shows types as nodes and functions between those types as
+labeled edges.
+%
+On the left side we have the syntactic part: the |FunExp| type and the
+|derive| function.
+%
+On the right side we have the semantic domain: the type of functions
+from |REAL| to |REAL|, and the mathematical |D| function.
+%
+The diagonal is the function we would like to implement
+compositionally: |eval'|.
+%
+The diagonal is specified by composing the functions on the
+``left-bottom'' path.
+% , but from the specification of |derive| we also know that the ``top-right'' path gives the same mathematical function
 %
 Let us consider the |Exp| case (the |eval'Exp|-lemma):
 %
@@ -2069,11 +2099,11 @@ We have seen three different ways to use a generic
 |f :: Transcendental a => a -> a| to compute the derivative at some
 point (say, at 2.0, |f' 2|):
 %
-\begin{itemize}
+\begin{enumerate}
 \item fully symbolic (using |FunExp|),
 \item using pairs of functions (|FD a = (a->a, a->a)|),
 \item or just pairs of values (|Dup a = (a, a)|).
-\end{itemize}
+\end{enumerate}
 
 Given the following definition of |f|, compute |f' 2|.
 
@@ -2084,8 +2114,8 @@ f x = sin x + two * x
 %
 (So, we have: |f 0 = 0|, |f 2 = 4.909297426825682|, etc.)
 
+\pagebreak
 \begin{solution}
-
 \begin{enumerate}
 \item Using |FunExp|
 
@@ -2099,9 +2129,7 @@ data FunExp  =  Const Rational
              |  FunExp  :+:  FunExp
              |  FunExp  :*:  FunExp
              |  FunExp  :/:  FunExp
-             |  Exp  FunExp
-             |  Sin  FunExp
-             |  Cos  FunExp
+             |  Exp  FunExp | Sin  FunExp  |  Cos  FunExp
                 -- and so on
   deriving (Eq, Show)
 \end{spec}
@@ -2185,8 +2213,8 @@ We can fulfil (*) if we can find a pair |(g, g')| that is a sort of
 ``unit'' for |FD a|:
 %
 \begin{spec}
-sin (g, g') = (sin, cos)
-exp (g, g') = (exp, exp)
+sin  (g, g') = (sin,  cos)
+exp  (g, g') = (exp,  exp)
 \end{spec}
 %
 and so on.
@@ -2197,7 +2225,14 @@ In general, the chain rule gives us
 f (g, g') = (f . g, (f' . g) * g')
 \end{spec}
 %
-Therefore, we need: |g = id| and |g' = const 1|.
+Therefore, if we look at the first components of two examples we see
+that we need to satisfy |sin . g == sin| and |exp . g == exp|.
+%
+For this we can take |g = id|.
+%
+Then, looking at the second components we need to satisfy |sin' * g'
+== cos| and |exp' * g' == exp| which simplifies to |cos * g' == cos|
+and |exp * g' == exp| which is solved by |g' = const 1|.
 
 Finally
 %
