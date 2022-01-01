@@ -445,10 +445,8 @@ Because |v = linComb v e = (v 0 *^ e 0 + ... + v n *^ e n)|, we also
 have:
 %
 \begin{spec}
-f v   =  f (  v 0 *^ e 0      + ... +  v n *^ e n)
-   {- because |f| is linear -}
-      =       v 0 *^ f (e 0)  + ... +  v n *^ f (e n)
-   {- by def. of |linComb| -}
+f v   =  f (  v 0 *^ e 0      + ... +  v n *^ e n)                  {- because |f| is linear -}
+      =       v 0 *^ f (e 0)  + ... +  v n *^ f (e n)  {-"\quad"-}  {- by def. of |linComb| -}
       =  linComb v (f . e)
 \end{spec}
 %if False
@@ -496,11 +494,11 @@ checkTypes2 m k i = let V ek = e k in
 \end{code}
 %endif
 %
-But this means that we can determine
+But this means that we can determine the whole function
 %
 |f : Vector S G -> Vector S G'|
 %
-from just
+on all vectors from just |f| on the base vectors: 
 %
 |f . e : G -> Vector S G'|,
 %
@@ -866,9 +864,9 @@ the given by (conjugate-) transpose of the matrix.
 \subsection{Functions}
 \label{sec:functions-vector-space}
 
-A useful example of vector space is functions from real to real.
+A useful example of a vector space is the functions from |REAL| to |REAL|.
 %
-In terms of |VectorSpace| instance:
+In terms of a |VectorSpace| instance we have:
 %
 \index{VectorSpace@@|VectorSpace| (type class)}%
 %
@@ -876,7 +874,7 @@ In terms of |VectorSpace| instance:
 instance VectorSpace (REAL->REAL) REAL where
    s *^ f = (s*) .f
 \end{code}
-Here |s *^ f| scales pointwise the function |f| by |s|.
+Here |s *^ f| scales the function |f| by |s| pointwise.
 \begin{exercise}
   Verify the |VectorSpace| laws for the above instance.
 \end{exercise}
@@ -913,7 +911,7 @@ interpretation of the canonical basis vectors.
 Recall that they are:
 %
 \begin{spec}
-e i : {0, ..., n} -> REAL, e i j = i `is` j
+e i : {0, ..., n} -> REAL;  e i j = i `is` j
 \end{spec}
 %
 but how do we interpret them as polynomial functions?
@@ -1322,6 +1320,7 @@ longer get the characteristic function of |{f 3, f 4} = {6}|, instead,
 we get a vector that does not represent a characteristic function at
 all: |[0, 0, 0, 0, 0, 0, 2] = 2 *^ e 6|.
 %
+
 In general, if we start with an arbitrary vector, we can interpret
 this as starting with various quantities of some unspecified material
 in each state, simultaneously.
@@ -1372,13 +1371,9 @@ In the example above, we have:
 \begin{code}
 newtype G = G Int deriving (Eq, Show)
 
-instance Bounded G where
-  minBound  =  G 0
-  maxBound  =  G 6
+instance Bounded G  where  minBound = G 0;  maxBound = G 6
 
-instance Enum G where
-  toEnum          =  G
-  fromEnum (G n)  =  n
+instance Enum G     where  toEnum = G;  fromEnum (G g)  =  g
 \end{code}
 %
 Note that the |Ring G| instance is given just for convenient notation
@@ -1594,19 +1589,11 @@ Even though |Bool| is not a |Field| (not even a |Ring|) the
 computations we need go through with these instances:
 %
 \begin{code}
-instance Additive Bool where
-  zero    =  False
-  (+)     =  (||)
+instance Additive        Bool where  zero    =  False;  (+)     =  (||)
+instance Multiplicative  Bool where  one     =  True;   (*)     =  (&&)
 
-instance AddGroup Bool where
-  negate  =  error "negate: not used"
-
-instance Multiplicative Bool where
-  one     =  True
-  (*)     =  (&&)
-
-instance MulGroup Bool where
-  recip   =  id
+instance AddGroup  Bool where  negate  =  error "negate: not used"
+instance MulGroup  Bool where  recip   =  id
 \end{code}
 
 As a test we compute the state after one step from ``either 3 or 4'':
