@@ -245,20 +245,19 @@ For an arbitrary |x|
 
   evalPoly as x + evalPoly bs x = evalPoly (as + bs) x
 \end{spec}
-
+%
 To proceed further, we need to consider the various cases in the
 definition of |evalPoly| and use list induction.
 %
-We give here the computation for the step case, dropping the |Poly|
-constructor and writing |eval cs = evalPoly (Poly cs)| for brevity.
+We give the computation for the step case, dropping the |Poly|
+constructor by using |eval cs = evalPoly (Poly cs)| for brevity.
 %
 %{
 %format evalPoly = eval
 \begin{spec}
 evalPoly (a : as) x  +  evalPoly (b : bs) x  =  evalPoly ((a : as)  +  (b : bs)) x
 \end{spec}
-
-
+%
 We use the \addtoindex{homomorphism} condition for |as| and |bs|.
 %
 For the left-hand side, we have:
@@ -299,15 +298,7 @@ Here, we just give the corresponding definitions.
 \index{Multiplicative@@|Multiplicative| (type class)}%
 \begin{code}
 instance Additive a => Additive (Poly a) where
-  (+)   = addPoly
-  zero  = Poly []
-
-instance Ring a => Multiplicative (Poly a) where
-  (*)   = mulPoly
-  one   = Poly [one]
-
-instance AddGroup a => AddGroup (Poly a) where
-  negate = negPoly
+  (+)   = addPoly;   zero  = Poly []
 
 addPoly :: Additive a => Poly a -> Poly a -> Poly a
 addPoly (Poly xs) (Poly ys) = Poly (addList xs ys)
@@ -320,6 +311,18 @@ zipWithLonger _   []      bs      = bs  -- |0+bs == bs|
 zipWithLonger _   as      []      = as  -- |as+0 == as|
 zipWithLonger op  (a:as)  (b:bs)  = op a b : zipWithLonger op as bs
 
+instance AddGroup a => AddGroup (Poly a) where
+  negate = negPoly
+
+negPoly :: AddGroup a => Poly a -> Poly a
+negPoly = polyMap negate
+
+polyMap :: (a->b) -> (Poly a -> Poly b)
+polyMap f (Poly as)   = Poly (map f as)
+
+instance Ring a => Multiplicative (Poly a) where
+  (*)   = mulPoly;   one   = Poly [one]
+
 mulPoly :: Ring a => Poly a -> Poly a -> Poly a
 mulPoly (Poly xs) (Poly ys) = Poly (mulList xs ys)
 
@@ -330,16 +333,11 @@ mulList  (a:as)  (b:bs)  =  (a * b) :  addList  (scaleList a  bs)
                                                 (mulList as   (b:bs))
 scaleList :: Multiplicative a => a -> [a] -> [a]
 scaleList a = map (a*)
-
-negPoly :: AddGroup a => Poly a -> Poly a
-negPoly = polyMap negate
-
-polyMap :: (a->b) -> (Poly a -> Poly b)
-polyMap f (Poly as)   = Poly (map f as)
-
-polyCons :: a -> Poly a -> Poly a
-polyCons x (Poly xs) = Poly (x:xs)
 \end{code}
+
+% polyCons :: a -> Poly a -> Poly a
+% polyCons x (Poly xs) = Poly (x:xs)
+
 \index{zipWithLonger@@|zipWithLonger|}%
 As we \emph{can} define a |Ring| structure on |Poly a|, and we
 have arrived at the canonical definition of polynomials, as found in
@@ -561,10 +559,7 @@ it says that the degree of the zero polynomial is not defined.
 Let's see why that is the case and how we might ``fix'' it.
 %
 Assume that there exists a natural number |z| such that |degree 0 =
-z|.
-%
-Assume additionally a polynomial |p| with |degree p = n| (for example,
-|p = x^n| would do).
+z| and let |p = x^n| so that |degree p = n|.
 %
 Then we get
 %
@@ -572,16 +567,11 @@ Then we get
 %
 \begin{spec}
   z                               = {- assumption -}
-
   degree 0                        = {- simple calculation -}
-
   degree (0 * p)                  = {- homomorphism condition -}
-
   degree 0 + degree p             = {- assumption -}
-
   z + n
 \end{spec}
-%
 Thus we need to find a degree |z|, for the zero polynomial, such that
 |z = z + n| for all natural numbers |n|!
 %
