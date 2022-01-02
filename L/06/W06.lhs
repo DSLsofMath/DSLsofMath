@@ -251,7 +251,7 @@ First, because the type |[a]| also contains finite lists, but we use
 Second, because there are competing possibilities for |Ring| instances
 for infinite lists, for example applying all the operations
 indexwise.%
-\footnote{These can be obtained applying the the homomorphism between
+\footnote{These can be obtained applying the homomorphism between
 |[a]| and |ℕ -> a| to the |Ring| instances of |(x -> a)|}
 %
 We used just a type synonym here to avoid cluttering the definitions

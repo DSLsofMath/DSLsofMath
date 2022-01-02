@@ -137,7 +137,7 @@ scalars (like |REAL|) as one-dimensional vectors with |s = v|:
 instance Field s => VectorSpace s s where (*^) = (*)
 \end{code}
 %
-Here (for once) the vectors have the the same type as the scalars,
+Here (for once) the vectors have the same type as the scalars,
 which means that the scaling operation, which usually has an
 asymmetric type, now is just ordinary scalar multiplication |(*) :: s
 -> s -> s|.
@@ -807,7 +807,7 @@ transformations (emphasising the preservation of angles) or unitary
 transformations (emphasising preservation of norms).%
 \footnote{In today's mathematical vocabulary, the word ``unitary''
 signals that a complex scalar field is used, whereas the word
-``orthogonal'' signals that that a real field is used, and that the
+``orthogonal'' signals that a real field is used, and that the
 space is Euclidean.}
 
 \begin{exercise}

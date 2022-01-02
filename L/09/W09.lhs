@@ -648,7 +648,7 @@ The proof of the second item is as follows:
    integrator (Sigma s (const t)) (const 1)
 == {- By definition of integrator for |Sigma| -}
    integrator s $ \x -> integrator (const t x) (const 1)
-== {- By definition of of measure, const -}
+== {- By definition of measure, const -}
    integrator s $ \x -> measure t
 == {- By linearity of integrator -}
    measure t * integrator s (const 1)

@@ -55,7 +55,7 @@ calculus --- so we keep calling them ``names'' to avoid confusing them.
 
 
 % simple arithmetic in \sref{sec:ch1ex}
-Just as we did with with complex number expressions in
+Just as we did with complex number expressions in
 \cref{sec:complex-arithmetic}, %\cref{sec:DSLComplex}
 we can model the abstract syntax of propositions as a datatype:
 %
@@ -592,7 +592,7 @@ This can be explained one way by observing that they are De Morgan
 duals.
 %
 Another explanation is that one can swap the direction of the arrows
-in the types of the the role between introduction and
+in the types of the role between introduction and
 elimination.
 %
 (Using our presentation, doing so requires applying isomorphisms.)

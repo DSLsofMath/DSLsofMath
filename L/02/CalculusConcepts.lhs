@@ -4,7 +4,7 @@
 Now we have built up quite a bit of machinery to express logic
 formulas and proofs.
 %
-It is time time to apply it to some concepts in calculus.
+It is time to apply it to some concepts in calculus.
 %
 We start with the concept of ``limit point'' which is used in the
 formulation of different properties of limits of functions.

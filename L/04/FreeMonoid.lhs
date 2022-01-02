@@ -58,7 +58,7 @@ Prove group laws for |Free AdditiveGroup|.
 
 
 But we can also recover the whole structure which was used to build an
-element of this type. For example (pulling the fact that that lists are free monoids from our hat),
+element of this type. For example (pulling the fact that lists are free monoids from our hat),
 we can define:
 \begin{code}
 toList :: Free Monoid a -> [a]

@@ -165,7 +165,7 @@ in the \emph{types}.
 
 We could try jumping through the relevant hoops.
 %
-However, at this stage, we can realise that the the non-zero condition
+However, at this stage, we can realise that the non-zero condition
 is there only to define the degree of the polynomial.
 %
 The same can be said about the separation between zero and non-zero

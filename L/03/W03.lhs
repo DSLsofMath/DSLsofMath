@@ -80,7 +80,7 @@ thus write |D : (X->REAL) -> (Y->REAL)|.
 %
 % {Why |Y| is typeset rather strangely? (calligraphic font?)  Leading idea: this is an effect of the mathpazo package. No format directive, see: |XY|}
 We will often assume that |X = Y| (|f| is differentiable everywhere)
-so that we can can see |D| as preserving the type of its argument.
+so that we can see |D| as preserving the type of its argument.
 
 \index{derivative (|D|)||textbf}%
 %
@@ -147,7 +147,7 @@ numerical approximations.
 However if we also have access to the ``source code'' of |f|, then we can
 apply the usual rules we have learnt in calculus.
 %
-We will get get back to this question in \refSec{sec:computingDerivatives}.
+We will get back to this question in \refSec{sec:computingDerivatives}.
 
 \section{Typing Mathematics: \addtoindex{partial derivative}}
 \label{sec:typePartialDerivative}

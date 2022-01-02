@@ -765,7 +765,7 @@ the transform |A/(s-alpha)|.
 %format si = "\Varid{si}"
 With the same method we can compute the transforms of |sin| and |cos|.
 %
-First the ODEs: |sin| and |cos| are the solutions to the the coupled
+First the ODEs: |sin| and |cos| are the solutions to the coupled
 equations |si' = co|, |si 0 = 0|, |co' = -si|, |co 0 = 1|.
 %
 We apply Laplace to both ODEs (and linearity in the second):

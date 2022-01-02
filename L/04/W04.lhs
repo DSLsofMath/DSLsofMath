@@ -853,7 +853,7 @@ To shorten the calculation we write just |n| for |Con n|.
 But because we also know that |False /= True|, we have a contradiction.
 %
 Thus we conclude that |isPrime| is \emph{not} a homomorphism from |E|
-to |Bool|, regardless of the choice of the operator (on the the
+to |Bool|, regardless of the choice of the operator (on the
 Boolean side) corresponding to addition.
 
 \section{Folds}
