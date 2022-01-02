@@ -902,9 +902,11 @@ excludedMiddle' k = k (Right (\evP -> k (Left evP)))
 
 \paragraph{Revisiting the tupling transform}
 %
-In Exercise~\ref{exc:tuplingE1}, the ``tupling transform'' was
-introduced, relating a pair of functions to a function returning a
-pair. (Revisit that exercise if you skipped it before.)
+In Exercise~\ref{exc:tuplingE1}, the ``\addtoindex{tupling
+  transform}'' was introduced, relating a pair of functions to a
+function returning a pair.
+%
+(Revisit that exercise if you skipped it before.)
 %
 There is a logic formula corresponding to the type of the tupling
 transform:

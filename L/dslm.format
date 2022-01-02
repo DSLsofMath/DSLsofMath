@@ -183,9 +183,10 @@
 %format x3
 %format xn = x "_n"
 %format Tn = T "_n"
-%format H0
+%format H0 p = H "_0" p
 %format H1 p = H "_1" p
 %format H2 p = H "_2" p
+%format H0pred = H "_0"
 %format H1pred = H "_1"
 %format H2pred = H "_2"
 %format Hn = H "_" n

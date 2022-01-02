@@ -521,8 +521,8 @@ lookup     :: String  -> Env String QQ -> Maybe QQ
 Note that there are two sources of |Nothing| in the evaluator:
 undefined variables, and (avoiding) division by zero.
 
-To follow the ``wishful thinking'' pattern for the evaluator, we need
-helper functions for the three cases.
+To follow the ``\addtoindex{wishful thinking}'' pattern for the
+evaluator, we need helper functions for the three cases.
 %
 We have presented |lookup| for variables earlier, and now we define
 |mayAdd| and |mayDiv| to handle the remaining constructors.

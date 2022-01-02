@@ -957,6 +957,7 @@ by symbolic calculation:
 %{
 %format indicator = ind
 %format integrator (s) = "\int\{" s "\}"
+\index{equational reasoning}%
 \begin{proof}~
 \begin{code}
 cond_prob_equations :: Space a -> (a -> Bool) -> (a -> Bool) -> REAL

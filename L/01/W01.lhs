@@ -926,7 +926,7 @@ with |Nothing| corresponding to divergence.
 %
 One way of typing a limit operator is |lim : (Nat -> X) -> Maybe X|,
 but note that with this type we cannot implement the operator, because
-that would take inifintely long time.
+that would take infinitely long time.
 
 Here we just specify one more common operation: the \addtoindex{sum of
   a sequence} (like

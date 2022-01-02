@@ -540,8 +540,10 @@ transformation is defined, and for any constants |alpha| and |beta|
 Note that this is an equality between functions.
 %
 Indeed, recalling \cref{sec:LinAlg}, in particular
-\cref{sec:functions-vector-space}, we are working here with the vector
-space of functions (|f| and |g| are elements of it).
+\cref{sec:functions-vector-space}, we are working here with the
+%
+\index{vector}%
+vector space of functions (|f| and |g| are elements of it).
 %
 Let us call the space of real functions |V = X -> REAL| (for some |X|)
 so that we have |f, g : V|.
@@ -560,6 +562,7 @@ to~|W|.
 Applying this linearity property to the left-hand side of (1), we have
 for any |s|:
 
+\index{equational reasoning}%
 \begin{spec}
   ℒ (f'' - 3 * f' + 2 * f) s
 

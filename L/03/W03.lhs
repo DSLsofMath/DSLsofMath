@@ -37,7 +37,7 @@ operations like |(+)|, |(-)|, |(*)|, |(/)|, etc.\ in preparation for
 the coming chapters.
 %
 Finally, in \cref{sec:computingDerivatives}, we use equational
-reasoning to caclulate a Haskell version of the classical derivative
+reasoning to calculate a Haskell version of the classical derivative
 rules (for sums, products, etc.).
 
 \section{Typing Mathematics: derivative of a function}
@@ -94,8 +94,11 @@ The definition is given for a fixed (but arbitrary) |x|.
 %
 \index{lim@@|lim| (limit)}%
 %
-The |lim| expression is using the (anonymous) function |g h = frac
-(f(x+h) - f x) h| and that the limit of |g| is taken at |0|.
+The |lim| expression is using the
+%
+\index{anonymous function}%
+(anonymous) function |g h = frac (f(x+h) - f x) h| and that the limit
+of |g| is taken at |0|.
 %
 Note that |g| is defined in the scope of |x| and that its definition
 uses |x| so it can be seen as having |x| as an implicit, first
@@ -214,8 +217,8 @@ incorrect.
 In fact, |h| is used as a local variable introduced in the subscript
 of $\lim$.
 %
-This variable |h| is a parameter of an anonymous function, whose limit
-is then taken at |0|.
+This variable |h| is a parameter of an \addtoindex{anonymous
+  function}, whose limit is then taken at |0|.
 
 That function, which we can name |phi|, has the type |phi : U ->
 (ℝ\\{0}) -> ℝ| and is defined by

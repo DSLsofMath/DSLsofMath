@@ -107,7 +107,7 @@ and Programming'' \citep{doets-haskellroadto-2004}.
 
 %*TODO: Perhaps add a bit about laws for pure set theory: x /= S x, Commutative(Union), etc.
 
-\subsection{DSLs, sets and von Neumann}
+\subsection{Project: DSLs, sets and von Neumann}
 \label{dsls-sets-and-von-neumann}
 
 This subsection describes a larger exercise (or small project) you can

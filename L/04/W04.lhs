@@ -559,6 +559,7 @@ homomorphism conditions.
 \begin{solution}
 The homomorphism conditions include:
 
+\index{H0@@|H0(h,E,e)|{}}%
 \begin{spec}
 f zero        == zero            -- from |H0(f,zero,zero)|
 f (one + x)   == one + f x       -- from |H2(f,(+),(+))|
@@ -687,7 +688,8 @@ between |RPos| and |REAL|.
   as suggested in \cref{sec:complexcase}.
 \end{exercise}
 
-\section{Compositional semantics}
+\section{Compositional semantics}\label{sec:compsem}
+\index{compositional semantics}%
 The core of compositional semantics is that the meaning (semantics) of
 an expression is determined by combining the meanings of its
 subexpressions.
@@ -1299,7 +1301,7 @@ class Generate a where
   generate :: G -> a
 \end{code}
 %
-We could parameterize the class over an abstract generator set |g|,
+We could parameterise the class over an abstract generator set |g|,
 but will refrain from doing so to avoid needless complications.
 
 \paragraph{Free Monoid}
@@ -1536,7 +1538,7 @@ explicitly rather than via the |Generate| class.
 In this case, we obtain the type: |C a => (g -> a) -> a| if |g| is the
 set of generators.
 %
-In modern versions of Haskell, we can even parameterize over the |C|
+In modern versions of Haskell, we can even parameterise over the |C|
 class, and write:
 %{
 %format . = ".~"
@@ -1650,7 +1652,7 @@ In a diagram:
 \end{tikzcd}
 
 The diagram shows types as nodes and functions between those types as
-labeled edges.
+labelled edges.
 %
 On the left side we have the syntactic part: the |FunExp| type and the
 |derive| function.
@@ -1910,6 +1912,7 @@ definition for |oneDup| to make it satisfy to homomorphism law:
 %
 \index{equational reasoning}%
 %
+\index{H0@@|H0(h,E,e)|{}}%
 \begin{spec}
   oneDup                                = {- |H0(applyFD c,oneFD,oneDup)|-}
   applyFD c oneFD                       = {- Def. of |oneFD| and |applyFD| -}

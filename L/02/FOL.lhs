@@ -256,9 +256,9 @@ Proof) -> Proof|.
 % with a function f where f t is a proof of P t for all terms t.
 %
 
-Note that the scoping rule for |Forall x b| is similar to the rule
-for a function definition, |f x = b|, and for anonymous functions, |\x
--> b|.
+Note that the scoping rule for |Forall x b| is similar to the rule for
+a function definition, |f x = b|, and for \addtoindex{anonymous
+  function}s, |\x -> b|.
 %
 Just as in those cases we say that the variable |x| is \emph{bound} in
 |b| and that the \emph{scope} of the variable binding extends until

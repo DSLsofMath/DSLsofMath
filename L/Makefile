@@ -42,7 +42,7 @@ BOOKDEPS=DSLsofMath.lhs dslm.format          \
                 02/CalculusConcepts.lhs      \
                 02/E2.lhs                    \
              03/W03.lhs 03/E3.lhs \
-             04/W04.lhs 04/E4.lhs 04/AbstractStream.lhs 04/UnusualStream.lhs \
+             04/W04.lhs 04/E4.lhs 04/AbstractStream.lhs 04/UnusualStream.lhs A2_Skeleton.lhs \
              05/W05.lhs 05/E5.lhs \
              06/W06.lhs 06/E6.lhs \
              07/W07.lhs 07/E7.lhs \
