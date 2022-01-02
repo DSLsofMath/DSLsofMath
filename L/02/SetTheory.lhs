@@ -69,7 +69,7 @@ FOL does not have function definitions or recursion, but in a suitable
 meta-language (like Haskell) we can write a function that creates a
 set with |n| elements (for any natural number |n|) as a term in FOL.
 %
-Here is some pseudo-code defining the ``von Neumann'' encoding:
+Here is some pseudocode defining the ``von Neumann'' encoding:
 %
 \begin{spec}
   vN 0      = {}

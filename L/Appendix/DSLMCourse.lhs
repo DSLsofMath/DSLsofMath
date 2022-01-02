@@ -56,7 +56,7 @@ The formal course prerequisites say that the student should have successfully co
 \begin{itemize}
 \item a course in discrete mathematics as for example Introductory Discrete Mathematics.
 \item 15 hec in mathematics, for example Linear Algebra and Calculus
-\item 15 hec in computer science, for example (Introduction to Programming or Programming with Matlab) and Object-oriented Software Development
+\item 15 hec in computer science, for example (Introduction to Programming or Programming with MATLAB) and Object-oriented Software Development
 \item an additional 22.5 hec of any mathematics or computer science courses.
 \end{itemize}
 %

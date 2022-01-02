@@ -705,7 +705,7 @@ type PowerSeries a = Poly a   -- finite and infinite lists
 The operations are still defined as before.
 %
 If we consider only infinite lists, then only the equations which deal
-with nonempty lists will apply.
+with non-empty lists will apply.
 
 Power series are usually denoted
 

@@ -276,7 +276,7 @@ This kind of approach presents several difficulties:
   %
   Tracing dependencies can become daunting and it is easy to make
   errors of name when doing calculations.
-\item it makes it difficult to assign a higher order type to the
+\item it makes it difficult to assign a higher-order type to the
   partial derivatives.
   %
   Indeed, as we have seen in \cref{sec:big-operators}, the \(∂f/∂x\)
@@ -603,7 +603,7 @@ when we are still at the specification stage --- before we have any
 code running.
 %
 It is often useful to collect the known (or assumed) facts about types
-in a Haskell file and regularly check if the type checker agrees.
+in a Haskell file and regularly check if the type-checker agrees.
 %
 This is a form of \addtoindex{type-driven development} and can help
 avoiding wrong turns even for concepts which cannot be fully
@@ -712,7 +712,7 @@ int :: X -> X -> (X -> Z) -> Z
 \end{code}
 %
 Now we have reached a stage where all the operations have types and
-the type checker is happy with them.
+pthe type-checker is happy with them.
 %
 At this point it is possible to experiment with variations based on
 alternative interpretations of the text.

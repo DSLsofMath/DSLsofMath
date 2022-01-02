@@ -70,7 +70,7 @@ in GHC and available (the same way as the language extension
 If you are familiar with Agda, these will be familiar to use.
 %
 In summary, when trying to code up the definition of some expression
-(which you have already typed) you can get GHC's type checker to help
+(which you have already typed) you can get GHC's type-checker to help
 you out a little in seeing how far you might be from forming the
 expression you want.
 %
@@ -144,13 +144,13 @@ etc.\ as long as you still export only the data types, and not the
 constructors.
 %
 Convince yourself that the proofs given above still work and that the
-type checker can indeed be used as a poor man's proof checker.
+type-checker can indeed be used as a poor man's proof-checker.
 
 \end{exercise}
 \begin{exercise}
  From now on you can assume the representation of proofs defined in \refSec{sec:intuitionistic-logic}.
 \begin{enumerate}
-\item Check your understanding by re-defining all the introduction and elimination rules as functions.
+\item Check your understanding by redefining all the introduction and elimination rules as functions.
 \item Compare proving the distributivity laws
 \end{enumerate}
 

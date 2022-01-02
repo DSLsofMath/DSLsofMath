@@ -183,7 +183,7 @@ But to clarify the notion it is also important to note what is
 %
 \index{pure function}%
 %
-Many programming languages provide so called ``functions'' which are
+Many programming languages provide so-called ``functions'' which are
 actually not functions at all, but rather procedures: computations
 depending on some hidden state or exhibiting some other effect.
 %{
@@ -310,7 +310,7 @@ const y x == y|.
 \index{anonymous function}%
 %
 It is possible to create values of a function type without naming
-them, so called ``anonymous functions''.
+them, so-called ``anonymous functions''.
 %
 The syntax is |\x -> b|, where |b| is any expression. For example, the
 identity function can be written |\x -> x|, and the constant function
@@ -397,7 +397,7 @@ A proper mathematical function is said to be \emph{total}: it is
 defined for all its inputs.
 %
 In Haskell totality can be compromised by omitting cases (like
-|head|), by raising exceptions (like division) or by non termination
+|head|), by raising exceptions (like division) or by non-termination
 (like |inf = 1 + inf|).
 
 There are two ways of turning a partial function into a total

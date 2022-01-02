@@ -169,7 +169,7 @@ discharged.)
 % 
 % The head can always be produced depending on the head of the input,
 % and the tail (one element down) needs the tails (one element down) of
-% the arguments, so we're good.
+% the arguments, so we are good.
 
 We also have |evalAll . d = tail . evalAll| which leads to:
 %

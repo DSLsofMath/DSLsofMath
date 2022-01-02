@@ -354,7 +354,7 @@ proposition, |Q|.
 This is why we need an additional |Prop| argument, which gives the |Q|
 formula.
 
-There is no rule to introduce falsity (|⊥|) --- otherwise we'd have an
+There is no rule to introduce falsity (|⊥|) --- otherwise we would have an
 inconsistent logic!
 %
 Thus the last introduction rule deals with Truth, with no

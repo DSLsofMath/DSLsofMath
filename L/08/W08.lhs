@@ -835,7 +835,7 @@ linear combination of dicrete frequency components rather than as a
 function of time.
 %
 The Fourier transform (like the Laplace transform) also handles
-non-period functions, and the result is a continuous linear
+non-periodic functions, and the result is a continuous linear
 combination of frequency components (an integral rather than a sum).
 
 

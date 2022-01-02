@@ -77,7 +77,7 @@ Exam 2016-03 (Appendix~\ref{app:Exam2016-03}):
 \begin{exercise}
 Exam 2016-08 (Appendix~\ref{app:Exam2016-08}):
   \begin{itemize}
-  \item Algebra: Abelian group,
+  \item Algebra: abelian group,
   \item Typing: conditional probability,
   \item Laplace,
   \item Proof: continuity of (.)

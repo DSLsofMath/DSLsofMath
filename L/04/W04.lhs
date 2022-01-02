@@ -1405,7 +1405,7 @@ For example, the type for arithmetic expressions with |(+),(-),(*)|
 and variables is the free |Ring| with the set of variables as
 generator set.
 
-Let us consider again our deep-embedding for expressions of one
+Let us consider again our deep embedding for expressions of one
 variable from \cref{sec:FunExp}.
 %
 According to our analysis, it should be a free structure, and because

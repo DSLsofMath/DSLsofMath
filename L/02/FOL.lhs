@@ -111,7 +111,7 @@ while |(+)| is a binary function symbol (written |plus| above).
 % 
 The fact that quantification is over individuals is a defining
 characteristic of FOL.  If one were to, say, quantify over predicates,
-we'd have a higher-order logic, with completely different properties.
+we would have a higher-order logic, with completely different properties.
 %
 
 
@@ -374,7 +374,7 @@ prove |R| when we encounter some family member.
 The constructors for proofs can be |ExistsIntro :: RatSem -> Proof ->
 Proof| and |ExistsElim :: Proof -> Proof -> Proof|.
 %
-In this case we'd have |i| as the first argument of |ExistsIntro| and
+In this case we would have |i| as the first argument of |ExistsIntro| and
 a proof of |A(i)| as its second argument.
 
 \begin{exercise}

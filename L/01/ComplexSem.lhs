@@ -277,7 +277,7 @@ the shorter |deriving Eq| clause upon defining the type.)
 
 This shows that the set of complex numbers is, in fact, isomorphic
 with the set of pairs of real numbers, a point which we can make
-explicit by re-formulating the definition in terms of a |newtype|:
+explicit by reformulating the definition in terms of a |newtype|:
 %
 \begin{code}
 newtype ComplexD = CD (REAL, REAL)   deriving Eq

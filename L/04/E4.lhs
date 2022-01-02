@@ -251,7 +251,7 @@ Prove or disprove the following claims:
   \item \ref{item:addZero} -- \ref{item:addNeg} say that |(A, 0, +,
     negate)| is a group
   \item \ref{item:addZero} -- \ref{item:addComm} say that |(A, 0, +,
-    negate)| is a commutative (Abelian) group
+    negate)| is a commutative (abelian) group
   \end{itemize}
 
   \begin{enumerate}[label=\roman*,itemsep=0ex]

@@ -89,7 +89,7 @@ As a bonus exercise we can prove that they compose to the identity:
 claim  =  (p2f . f2p) === id
 \end{code}
 
-We do this by a chain of equational reasoning (type checked by
+We do this by a chain of equational reasoning (type-checked by
 the Haskell compiler, but not checked for correctness by Haskell).
 
 \begin{code}

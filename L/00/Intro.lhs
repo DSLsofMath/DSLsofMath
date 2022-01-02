@@ -206,7 +206,7 @@ Second, they should be able to handle new mathematical areas using the
 computer science perspective.
 %
 (For the detailed learning outcomes, see
-Figure~\ref{fig:LearningOutcomes} in Appendix \ref{sec:DSLMcourse}.)
+\cref{fig:LearningOutcomes} in Appendix \ref{sec:DSLMcourse}.)
 
 %*TODO: Check if this form is actually carried out (perhaps update)
 To achieve these objectives, the \course{} consists of a sequence of case
@@ -375,7 +375,7 @@ work as a student research assistant in 2017.
 
 This work was partially supported by the projects GRACeFUL (grant
 agreement No 640954) and CoeGSS (grant agreement No 676547), which
-have received funding from the European Union’s Horizon 2020 research
+have received funding from the European Union's Horizon 2020 research
 and innovation programme.
 
 Bernardy is supported by the Swedish Research Council, via grant

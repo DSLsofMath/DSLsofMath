@@ -1,7 +1,7 @@
 \chapter{DSLs for logic and proofs}
 \label{sec:logic}
 
-In this chapter, we continue to exercise our skill of organizing areas
+In this chapter, we continue to exercise our skill of organising areas
 of mathematics in DSL terms.
 %
 We apply our methodology to the languages of logic: propositions and

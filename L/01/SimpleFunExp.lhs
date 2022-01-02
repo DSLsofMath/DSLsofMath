@@ -217,8 +217,8 @@ The second reading is that we can define an arithmetic structure
 (|*|,|+|, etc.) on functions, by lifting the operators to work
 pointwise (as we did in \cref{def:pointwise}).
 
-To wrap it up, if we're so inclined, we can re-define the evaluator of
-the deep-embedding using the operators of the shallow embedding:
+To wrap it up, if we are so inclined, we can redefine the evaluator of
+the deep embedding using the operators of the shallow embedding:
 \begin{spec}
 eval  ::  FunExp         ->  (REAL -> REAL)
 eval      (Const alpha)  =   funConst alpha
@@ -301,7 +301,7 @@ As you may have guessed, it is an expression of one variable
 You may object: but surely the body of the summation operator can use
 other variables!
 %
-You'd be entirely correct.
+You would be entirely correct.
 %
 However, \emph{from the point of view of the summation}, it is as if
 such other variables were constant.
@@ -373,7 +373,7 @@ summation however we wish (in this case |i| and |j|) and
 %
 2.~freely use any Haskell function of type |ℤ → R| as the summand.
 %
-In particular, this function can be any lambda-expression returning
+In particular, this function can be any lambda expression returning
 |ℝ|, and this expression can include summation itself.
 %
 This freedom is an advantage of shallow embeddings: if we were to use
@@ -401,7 +401,7 @@ typings:
   Instead of \(\frac d {dt} f\) one sees also \(df/dt\), or \(f'\) or
   even \(\dot{f}\) if the variable is time (\(t\)).
   %
-  Below we'll use preferably the |D f| notation.
+  Below we will normally use the notation |D f|.
   %
   \index{derivative (|D|)}%
 \end{itemize}

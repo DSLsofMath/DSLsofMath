@@ -26,7 +26,7 @@ names of type |v| in |Rat v|.
 %
 We could use |String| instead of |v| but with a type parameter |v| we
 get more flexibility at the same time as we get better feedback from
-the type checker.
+the type-checker.
 %
 Note that this type parameter serves a different purpose from the type
 parameter in~\cref{sec:toComplexSyn}.

@@ -56,7 +56,7 @@ evaluating the DSL expressions.
       article on Bayes' theorem, 2019-03-01}.)
 \label{ex:drugtest}
 
-\item Suppose you’re on Monty Hall’s \emph{Let’s Make a Deal!}
+\item Suppose you are on Monty Hall's \emph{Let's Make a Deal!}
   %
   You are given the choice of three doors, behind one door is a car,
   the others, goats.
@@ -430,7 +430,7 @@ variables will be defined precisely later on.
 We could try to define the probabilities or densities of possible
 values of a distribution, say |distDensityAt :: Space a -> (a ->
 REAL)|, and from there define the expected value (and other
-statistical moments), but we'll take another route.
+statistical moments), but we will take another route.
 
 \section{Semantics of spaces}\label{sec:semanticsOfSpaces}
 First, we come back to general probability spaces without restriction
@@ -1111,7 +1111,7 @@ requirements.
 
 \subsection{Drug test}
 The above drug test problem (\cref{ex:drugtest} at the start of
-this chapter) is often used as an illustration for the Bayes
+this chapter) is often used as an illustration for Bayes'
 theorem.
 %
 We can solve it in exactly the same fashion as the Dice problem.
@@ -1163,10 +1163,10 @@ Thus a randomly selected individual with a positive test is a drug
 user with probability around one third (and about two thirds are false
 positives).
 
-Perhaps surprisingly, we never needed the Bayes theorem to solve the
+Perhaps surprisingly, we never needed Bayes' theorem to solve the
 problem.
 %
-Indeed, the Bayes theorem is already incorporated in our definition of
+Indeed, Bayes' theorem is already incorporated in our definition of
 |probability|, so our methodology guarantees that we always respect
 it.
 
@@ -1307,7 +1307,7 @@ important point is to realise that one is able to write down the kind
 of proofs that one would do with pen and paper directly within a
 program.
 %
-(We even use the Haskell type checker to verify that each line
+(We even use the Haskell type-checker to verify that each line
 typechecks.
 %
 Even though this does not guarantee that the proof is sound, we catch
