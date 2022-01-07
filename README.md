@@ -1,6 +1,9 @@
 # Domain-Specific Languages of Mathematics
 
-[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related to a BSc course at Chalmers and GU.
+[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related the book "Domain-Specific Languages of Mathematics" published in 2022 by College Publications.
+
+The book and the repository are used in a BSc-level course at Chalmers
+and GU.
 
 The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/12458)
 
@@ -9,8 +12,9 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865
 ## News
 
 * Tuesday 2022-01-18: First lecture of the 2022 course instance
-* [Lecture note snapshots](L/snapshots/) with the full course book
-* [YouTube playlist](https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-) with the recorded lectures (most in Swedish, some in English)
+* 2022: final book draft submitted to the printer for publication
+* [Lecture note snapshots](L/snapshots/) with drafts of the full course book
+* [YouTube playlist](https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-) with the recorded lectures from the 2021 course instance (most in Swedish, some in English)
 
 ## Contributors
 
@@ -31,16 +35,13 @@ where AT = @chalmers.se
 
 ## Course material
 
-This repository is mainly the home of the DSLsofMath "book" (lecture notes).
-
-[Lecture notes](L/snapshots/) + references therein cover the course but there is no
-printed course textbook.
+This repository is mainly the home of the DSLsofMath book (originating
+from the course lecture notes).
 
 Comments and contributions are always welcome – especially in the form
 of pull requests.
 
 The main references are listed below.
-
 
 ## Objectives
 
@@ -85,67 +86,21 @@ students at both Chalmers and GU.
 
 ## Lectures
 
-The latest PDF snapshot of the full lecture notes can be found in
-[L/snapshots](L/snapshots/).
+The latest PDF snapshot of the book can be found in
+[L/snapshots](L/snapshots/) but please also consider buying the "real
+thing".
 
-The "source code" for the lecture notes are in subdirectories of
-L/: [L/01/](L/01), [L/02/](L/02/), etc.
+The "source code" for the chapters are in subdirectories of L/:
+[L/01/](L/01), [L/02/](L/02/), etc. where chapter N is approximately
+course week N.
 
 ## Exercises
 
-Chapter 1–8 of the Lecture Notes end with weekly exercises for weeks
-1–8.
+Most chapters end with weekly exercises.
 
-In [L/RecEx.md](L/RecEx.md) you will find a list of recommended exercises
-for each chapter of the lecture notes.
-
-## Using the DSLsofMath source code
-**Construction zone ahead (old instructions)**
-
-In order to do some of the exercises, you may need/want to have access to the
-DSLs introduced during the lectures and in the lecture notes.
-
-To do this, first make sure you have installed
-[stack](https://docs.haskellstack.org/en/stable/README/). Next, download [this
-tarball](L/DSLsofMath-0.1.9.1.tar.gz) and extract it in a desired location (on
-Linux and Mac, you can do this by running `tar -zxf DSLsofMath-x.x.x.x.tar.gz
-` in the terminal. In Windows, you might have to use a tool like
-[7-Zip](http://www.7-zip.org/)).
-
-If you are downloading the tar file from the CLI, download and extract using the following:
-```
-$ curl -OL https://github.com/DSLsofMath/DSLsofMath/raw/master/L/DSLsofMath-x.x.x.x.tar.gz
-$ tar -xzf DSLsofMath-x.x.x.x.tar.gz
-```
-
-Now go into the extracted folder `DSLsofMath-x.x.x.x/` and run `stack init`. You can now interact with
-the code from the lectures by typing `stack ghci`, which puts you in GHCi with all
-DSLs loaded. You can also place your own Haskell files inside this folder and import the DSLs you
-want by typing the following at the start of your file:
-
-```haskell
-import DSLsofMath.W0X
-```
-where X is the chapter that contains the code you want to use. You should be
-able to load your own Haskell files in normal GHCi.
-
-### Installing stack on the Chalmers Linux machines
-
-On the Linux remote machines you have a number of options to get stack to work.
-Regardless of how you do it the goal is to have a local stack executable in the directory `~/.local/bin`.
-One way to do this is to follow these steps:
-* Run `stack upgrade`, optionally download the right executable from the stack website.
-* Make sure you add `export PATH="/chalmers/home/<<<Your CID here>>>/.local/bin/:$PATH"` to your `.bashrc`.
-* Restart the terminal
-* Make sure that `which stack` prints `/chalmers/home/<<<Your CID here>>>/.local/bin/stack`
-
-## Evaluation
-
-DSLsofMath course evaluation student representatives 2019: TBD
-
-| Email (@student) | Name                   |
-| ---------------- | ---------------------- |
-|    | 	    |
+(TODO: update the list to handle some reordering during 2021: In
+[L/RecEx.md](L/RecEx.md) you will find a list of recommended exercises
+for each chapter of the lecture notes.)
 
 ## References
 
@@ -157,10 +112,10 @@ Some important references:
   University Press, 2014
   [URL](http://www.cs.ox.ac.uk/publications/books/functional/)
 - **Introduction to Functional Programming Using Haskell**, Richard
-  Bird, Prentice Hall, 1998.  A previous (but *very* different)
+  Bird, Prentice Hall, 1998.  A previous (but clearly different)
   version of the above.
 - **An Introduction to Functional Programming**, Richard Bird and Phil
-  Wadler, Prentice Hall, 1988. A previous (but *very* different)
+  Wadler, Prentice Hall, 1988. A previous (but clearly different)
   version of *both* of the above.
 
 ### DSLs
