@@ -160,6 +160,9 @@
 %if lectureNotes
 : Lecture Notes
 %endif lectureNotes
+%if not submit
+\\{\small Draft of 2nd edition}
+%endif
 }
 \author{Patrik Jansson \and Cezar Ionescu  \and Jean-Philippe Bernardy}
 %           {Chalmers University of Technology, Sweden}
