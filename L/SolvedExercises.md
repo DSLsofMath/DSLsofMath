@@ -30,17 +30,32 @@ Other solutions are in NN/ExerciseSolutions/
 | E1.14  | Yes    |      | Rec.    | From exam 2017-08 (Semiring)
 | E1.15  | Yes    |      |         | From exam 2016-03 (Lattice )
 | E1.16  | Yes    |      |         | From exam 2016-08 (AbMonoid)
-| E2.01  | Yes    |      | Rec.    |
-| E2.02  | Yes    |      |         |
-| E2.03  | TODO   |      |         |
-| E2.04  | Yes    |      | Rec.    |
-| E2.05  | Yes    |      |         |
-| E2.06  | TODO   |      |         |
-| E2.07  | Yes    |      |         | From exam 2016-08-23
-| E2.08  | Yes    |      | Rec.    | From exam 2017-08-22
-| E2.09  | Yes    | 2019 | Rec.    |
-| E2.10  | Yes    | 2019 | Rec.    |
-| E2.11  | TODO   |      |         |
+| E2.01  | No	  |      |         | freeNames
+| E2.02  | No     |      |         | swap in conjunctionCommProof
+| E2.03  | No     |      |         | swap andElimL and andElimR in conjunctionCommProof'
+| E2.04  | No     |      |	   | evalRat
+| E2.05  | No	  |	 |	   | sketch proofChecker for Exists
+| E2.06  | No	  |	 |	   | prove deMorgan dual of types quantifiers
+| E2.07  | No	  |	 |	   | Prove that 0 in the only limit point of {1/n|n>0}
+| E2.08  | No	  |	 |	   | Show that limp p X => infinite X
+| E2.09  | No	  |	 |	   | Prove that limit of seq. is unique
+| E2.10  | No	  |	 |	   | Prove limits preserve sums
+| E2.11  | No     |      |	   | "delta, possibly depending on epsilon"
+
+
+| E2.16  | Yes    |      | Rec.    | ... notMap ... 
+| E2.17  | Yes    |      |         | De Morgan proofs (with types as theorems)
+
+| TODO E2.03  | TODO   |      |         |
+| TODO E2.04  | Yes    |      | Rec.    |
+| TODO E2.05  | Yes    |      |         |
+| TODO E2.06  | TODO   |      |         |
+| TODO E2.07  | Yes    |      |         | From exam 2016-08-23
+| TODO E2.08  | Yes    |      | Rec.    | From exam 2017-08-22
+| TODO E2.09  | Yes    | 2019 | Rec.    |
+| TODO E2.10  | Yes    | 2019 | Rec.    |
+| TODO E2.11  | TODO   |      |         |
+
 | E3.01  | No     |      | Rec.    |
 | E3.02  | Yes    |      | Rec.    |
 | E3.03  | Yes    |      | Rec.    | From exam 2016-Practice
