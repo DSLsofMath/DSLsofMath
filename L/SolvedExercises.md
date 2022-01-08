@@ -16,16 +16,16 @@ Other solutions are in NN/ExerciseSolutions/
 | ------ | ------ | ---- | ------- | -----------
 | E1.01  | Yes    |      | H-intro |
 | E1.02  | Yes    |      | H-intro |
-| E1.03  | TODO   | 2020 | Rec.    | Counting values (cardinality)
-| E1.04  | TODO   | 2020 |         | Counting Maybes
+| E1.03  | TODO   | 2021 | Rec.    | Counting values (cardinality)
+| E1.04  | TODO   | 2021 |         | Counting Maybes
 | E1.05  | Yes    | 2019 | Rec.    | FunTup
 | E1.06  | Yes    | 2019 | Rec.    | Tupling transform
 | E1.07  | Yes    | 2019 | Rec.    | Dual of tupling transform
-| E1.08  | TODO   | 2020 |         | Comp Seq.
+| E1.08  | TODO   | 2021 |         | Comp Seq.
 | E1.09  | Yes    | 2020 |         | Operator sections
 | E1.10  | Yes    |      |         | embed.eval
 | E1.11  | TODO   |      | H-intro | NumComplexSyn
-| E1.12  | TODO   |      | H-intro | ComplexPolar
+| E1.12  | TODO   | 2021 | H-intro | ComplexPolar
 | E1.13  | Yes    |      | H-intro | Simplify
 | E1.14  | Yes    |      | Rec.    | From exam 2017-08 (Semiring)
 | E1.15  | Yes    |      |         | From exam 2016-03 (Lattice )
