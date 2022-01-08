@@ -41,20 +41,21 @@ Other solutions are in NN/ExerciseSolutions/
 | E2.09  | No	  |	 |	   | Prove that limit of seq. is unique
 | E2.10  | No	  |	 |	   | Prove limits preserve sums
 | E2.11  | No     |      |	   | "delta, possibly depending on epsilon"
-
-
+| E2.12  | No     |	 |	   | De Morgon on expressions
+| E2.13  | No     |	 |	   | conjunctive normal form
+| E2.14  | No     |	 |	   | disjuntive normal form
+| E2.15  | No     |	 |	   | Propositions as polynomials
 | E2.16  | Yes    |      | Rec.    | ... notMap ... 
 | E2.17  | Yes    |      |         | De Morgan proofs (with types as theorems)
-
-| TODO E2.03  | TODO   |      |         |
-| TODO E2.04  | Yes    |      | Rec.    |
-| TODO E2.05  | Yes    |      |         |
-| TODO E2.06  | TODO   |      |         |
-| TODO E2.07  | Yes    |      |         | From exam 2016-08-23
-| TODO E2.08  | Yes    |      | Rec.    | From exam 2017-08-22
-| TODO E2.09  | Yes    | 2019 | Rec.    |
-| TODO E2.10  | Yes    | 2019 | Rec.    |
-| TODO E2.11  | TODO   |      |         |
+| E2.18  | TODO   |      |         | Proofs indep. of (hidden) type impl.
+| E2.19  | Yes    |      | Rec.    | Distrib.laws in different ways
+| E2.05  | Yes    |      |         | notIntro, etc.
+| E2.06  | TODO   |      |         | noContra, etc.
+| E2.22  | Yes    |      |         | From exam 2016-08-23
+| E2.23  | Yes    |      | Rec.    | From exam 2017-08-22
+| E2.24  | Yes    | 2019 | Rec.    | 0,1,0,1,... not covergent
+| E2.25  | No	  | 2021 | 	   | a=id not covergent
+| E2.26  | Yes    | 2019 | Rec.    |
 
 | E3.01  | No     |      | Rec.    |
 | E3.02  | Yes    |      | Rec.    |
