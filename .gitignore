@@ -15,6 +15,7 @@ cabal.sandbox.config
 *.aux
 *.hp
 .stack-work/
+stack.yaml.lock
 *.agdai
 *.log
 *.out
