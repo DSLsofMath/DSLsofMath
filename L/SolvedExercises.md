@@ -145,14 +145,14 @@ Other solutions are in NN/ExerciseSolutions/
 | E7.16  | TODO   |      |         | implement. prob. transition matrix
 | E7.17  | Yes    |      |         | From exam 2017-03-14
 
-| E8.01  | TODO   |      | Rec.    |
-| E8.02  | TODO   |      | Rec.    |
-| E8.03  | TODO   |      | Rec.    |
-| E8.04  | Yes    | 2019 |         | From exam 2016-03-15
-| E8.05  | Yes    | 2019 |         | From exam 2016-08-23
-| E8.06  | Yes    | 2019 | Rec.    | From exam 2016-Practice
-| E8.07  | Yes    | 2019 | Rec.    | From exam 2017-03-14
-| E8.08  | Yes    | 2019 |         | From exam 2017-08-22
+| E8.01  | TODO   |      | Rec.    | Gen. formula for Laplace f^(k) s
+| E8.02  | TODO   |      | Rec.    | Laplace a few examples
+| E8.03  | TODO   |      | Rec.    | Laplace sin and cos through exp
+| E8.04  | Yes    | 2021 |         | From exam 2016-03-15
+| E8.05  | Yes    | 2021 |         | From exam 2016-08-23
+| E8.06  | Yes    | 2021 | Rec.    | From exam 2016-Practice
+| E8.07  | Yes    | 2021 | Rec.    | From exam 2017-03-14
+| E8.08  | Yes    | 2021 |         | From exam 2017-08-22
 
 # Notes
 
