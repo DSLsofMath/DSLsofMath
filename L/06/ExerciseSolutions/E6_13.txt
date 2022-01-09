@@ -1,0 +1,7 @@
+See
+  ../../Exam/2016-08/P3.lhs
+and
+  ../../Exam/2016-08/Sols.lhs  (problem 3)
+  
+  
+  

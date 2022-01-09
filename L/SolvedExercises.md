@@ -110,18 +110,22 @@ Other solutions are in NN/ExerciseSolutions/
 | E5.10  | TODO   |      | Rec.    | Functor instances
 | E5.11  | Yes    |      |         | maximum homomorphism
 
-| E6.01  | TODO   |      | Rec.    |
-| E6.02  | TODO   |      | Rec.    |
-| E6.03  | TODO   |      | Rec.    |
-| E6.04  | TODO   |      | Rec.    |
-| E6.05  | TODO   |      |         |
-| E6.06  | TODO   |      |         |
-| E6.07  | TODO   | 2019 | Rec.    |
-| E6.08  | Yes    |      |         | From exam 2016-03-15
-| E6.09  | Yes    |      |         | From exam 2016-08-23
-| E6.10  | Yes    |      | Rec.    | From exam 2016-Practice
-| E6.11  | Yes    |      | Rec.    | From exam 2017-03-14
-| E6.12  | Yes    |      | Rec.    | From exam 2017-08-22
+| E6.01  | No	  |	 |	   | Stream instances MulGroup, Transcendental
+| E6.02  | No	  |	 |	   | drc k f x = kth derivative of f at x
+| E6.03  | No	  |	 |	   | write expx without recurively (inline solve)
+| E6.04  | No     |      |	   | write ODEs char. sine and cosine
+| E6.05  | TODO   |      | Rec.    | FunExp syntax and eval "by hand"
+| E6.06  | TODO   |      | Rec.    | use derive "by hand"
+| E6.07  | TODO   |      | Rec.    | Compute deriv. in three ways
+| E6.08  | TODO   |      | Rec.    | Three exp. function exercises
+| E6.09  | TODO   |      |         | exp using solve
+| E6.10  | TODO   |      |         | sinx and cosx using solve
+| E6.11  | TODO   | 2019 | Rec.    | ODE solving with series
+| E6.12  | Yes    |      |         | From exam 2016-03-15
+| E6.13  | Yes    |      |         | From exam 2016-08-23
+| E6.14  | Yes    |      | Rec.    | From exam 2016-Practice
+| E6.15  | Yes    |      | Rec.    | From exam 2017-03-14
+| E6.16  | Yes    |      | Rec.    | From exam 2017-08-22
 
 | E7.01  | TODO   |      | Rec.    |
 | E7.02  | TODO   |      |         |
