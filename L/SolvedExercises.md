@@ -98,16 +98,17 @@ Other solutions are in NN/ExerciseSolutions/
 | E4.27  | Yes    |      |         | From exam 2017-03-14
 | E4.28  | TODO   |      | Rec.    | simplify :: FunExp -> FunExp
 
-| E5.01  | TODO   | 2019 | Rec.    |
-| E5.02  | TODO   |      | Rec.    |
-| E5.03  | Yes    |      | Rec.    |
-| E5.04  | TODO   | 2019 |         |
-| E5.05  | TODO   |      | Rec.    |
-| E5.06  | TODO   |      | Rec.    |
-| E5.07  | Yes    |      | Rec.    |
-| E5.08  | TODO   |      | Rec.    |
-| E5.09  | TODO   |      | Rec.    |
-| E5.10  | TODO   |      | Rec.    |
+| E5.01  | TODO   | 2019 | Rec.    | Polynomial mult.
+| E5.02  | TODO   |      | Rec.    | evalL correctness
+| E5.03  | Yes    |      | Rec.    | as = sum ai x^i where x=[0,1]
+| E5.04  | TODO   | 2019 |         | Chebyshev
+| E5.05  | TODO   |      | Rec.    | Chebyshev homomorphism
+| E5.06  | TODO   |      | Rec.    | same as E5.01 [TODO: remove]
+| E5.07  | Yes    |      | Rec.    | polynomial syntax as functions from Nat
+| E5.08  | TODO   |      | Rec.    | degree (p*q) = degreee p + degree q
+| E5.09  | TODO   |      | Rec.    | degree homomorphism
+| E5.10  | TODO   |      | Rec.    | Functor instances
+| E5.11  | Yes    |      |         | maximum homomorphism
 
 | E6.01  | TODO   |      | Rec.    |
 | E6.02  | TODO   |      | Rec.    |
