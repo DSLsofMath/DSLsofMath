@@ -69,17 +69,34 @@ Other solutions are in NN/ExerciseSolutions/
 | E3.09  | Yes    |      | Rec.    | From exam 2016-08-23
 | E3.10  | Yes    |      | Rec.    | From exam 2017-08-22
 
-| E4.01  | Yes    |      | Rec.    |
-| E4.02  | TODO   |      | Rec.    |
-| E4.03  | Yes    |      | Rec.    |
-| E4.04  | TODO   |      | Rec.    |
-| E4.05  | Yes    |      | Rec.    | From exam 2017-08-22
-| E4.06  | TODO   |      | Rec.    |
-| E4.07  | Yes    |      | Rec.    | From exam 2016-03-15
-| E4.08  | Yes    |      | Rec.    | From exam 2016-08-23
-| E4.09  | TODO   | 2019 | Rec.    |
-| E4.10  | Yes    |      |         | From exam 2017-03-14
-| E4.11  | TODO   |      | Rec.    |
+| E4.01  | No     |      |         | Monoids for REAL and endofunctions
+| E4.02  | No     |      |         | Ring ZZ, QQ, RR
+| E4.03  | No     |      |         | Expand H2((*c),(+),(+))
+| E4.04  | Yes    |      |         | Solution in book
+| E4.05  | Yes    |      |         | Solution in book
+| E4.06  | Yes    |      |         | Solution in book
+| E4.07  | No     |      |         | exp, log, inverses
+| E4.08  | No     |      |         | exp-log relating AddGroup, MulGroup
+| E4.09  | No     |      |         | Sketch iso between IPC and STLC
+| E4.10  | No     |      |         | iso pairs and complex
+| E4.11  | No     |      |         | H2(even, Add, evenAdd), ...
+| E4.12  | No     |      |         | pretty with (Prec ->)
+| E4.13  | No	  |	 |	   | FunExp inst. for num. classes
+| E4.14  | No     |      |         | Proved group laws for Free AdditiveGroup
+| E4.15  | No     |      |         | Show that Free Ring () covers most of FunExp
+| E4.16  | No     |      |         | Implement the rest of num. inst. for FD a
+| E4.17  | Yes    |      |         | Implement the rest of num. inst. for Dup a
+| E4.18  | Yes    |      | Rec.    | Prove/disprove som homomorphisms
+| E4.19  | No     |      |         | Same as E4.13
+| E4.20  | Yes    |      | Rec.    | Same as E4.17
+| E4.21  | TODO   |      | Rec.    | Three ways of computing derivative of sin+exp.exp
+| E4.22  | Yes    |      | Rec.    | From exam 2017-08-22
+| E4.23  | TODO   |      | Rec.    | arithmetics mod n 
+| E4.24  | Yes    |      | Rec.    | From exam 2016-03-15
+| E4.25  | Yes    |      | Rec.    | From exam 2016-08-23
+| E4.26  | TODO   | 2021 | Rec.    |
+| E4.27  | Yes    |      |         | From exam 2017-03-14
+| E4.28  | TODO   |      | Rec.    | simplify :: FunExp -> FunExp
 
 | E5.01  | TODO   | 2019 | Rec.    |
 | E5.02  | TODO   |      | Rec.    |
