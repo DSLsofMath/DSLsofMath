@@ -127,15 +127,23 @@ Other solutions are in NN/ExerciseSolutions/
 | E6.15  | Yes    |      | Rec.    | From exam 2017-03-14
 | E6.16  | Yes    |      | Rec.    | From exam 2017-08-22
 
-| E7.01  | TODO   |      | Rec.    |
-| E7.02  | TODO   |      |         |
-| E7.03  | TODO   |      |         |
-| E7.04  | TODO   |      |         |
-| E7.05  | TODO   |      |         |
-| E7.06  | TODO   |      |         |
-| E7.07  | TODO   |      |         |
-| E7.08  | TODO   |      |         |
-| E7.09  | Yes    |      |         | From exam 2017-03-14
+| E7.01  | TODO   |      |         | Compute vector coeff.s in new basis
+| E7.02  | TODO   |      |         | g -> s satisfies VectorSpace laws
+| E7.03  | TODO   |      |         | sketch iso vectorspace and its rep.
+| E7.04  | TODO   |      |         | inner pres. as homomorphism
+| E7.05  | TODO   |      |         | orthog. ops. form a monoid under mult.
+| E7.06  | TODO   |      |         | verify VectorSpace laws for R->R (see E7.2)
+| E7.07  | TODO   |      |         | derive for Fourier series
+| E7.08  | TODO   |      |         | Monad instances for Id, Powerset, Prob, Super
+| E7.09  | TODO   |      | Rec.    | Compute ((M*) . e) g g'
+| E7.10  | TODO   |      |         | M-M- and M-V-multiplications
+| E7.11  | TODO   |      |         | matrix mult. is associative
+| E7.12  | TODO   |      |         | implement derive for polynomials as matrix
+| E7.13  | TODO   |      |         | integration of polynomials of degree n as matrix
+| E7.14  | TODO   |      |         | Iterate non-det-sys "by hand"
+| E7.15  | TODO   |      |         | Iterate stoch.sys. "by hand"
+| E7.16  | TODO   |      |         | implement. prob. transition matrix
+| E7.17  | Yes    |      |         | From exam 2017-03-14
 
 | E8.01  | TODO   |      | Rec.    |
 | E8.02  | TODO   |      | Rec.    |

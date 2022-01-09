@@ -34,9 +34,7 @@ New: 6.5, 6.6, 6.7, 6.8,   6.11, 6.14, 6.15, 6.16
 
 ## Chapter 7
 
-Search the chapter for tasks marked “Exercise”.
-
-7.1
+7.7, 7.9, 7.10, 7.12, 7.13, 7.17
 
 ## Chapter 8
 
