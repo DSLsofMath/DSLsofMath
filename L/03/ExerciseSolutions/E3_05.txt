@@ -1,0 +1,4 @@
+See
+https://github.com/DSLsofMath/DSLsofMath/blob/master/L/DSLsofMath/FunExp.hs
+for the implementation of both the |FunExp| type and the function
+|derive :: FunExp -> FunExp|.

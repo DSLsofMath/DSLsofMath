@@ -30,6 +30,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E1.14  | Yes    |      | Rec.    | From exam 2017-08 (Semiring)
 | E1.15  | Yes    |      |         | From exam 2016-03 (Lattice )
 | E1.16  | Yes    |      |         | From exam 2016-08 (AbMonoid)
+
 | E2.01  | No	  |      |         | freeNames
 | E2.02  | No     |      |         | swap in conjunctionCommProof
 | E2.03  | No     |      |         | swap andElimL and andElimR in conjunctionCommProof'
@@ -57,13 +58,17 @@ Other solutions are in NN/ExerciseSolutions/
 | E2.25  | No	  | 2021 | 	   | a=id not covergent
 | E2.26  | Yes    | 2019 | Rec.    |
 
-| E3.01  | No     |      | Rec.    |
-| E3.02  | Yes    |      | Rec.    |
-| E3.03  | Yes    |      | Rec.    | From exam 2016-Practice
-| E3.04  | Yes    |      |         | From exam 2016-03-15
-| E3.05  | Yes    |      | Rec.    | From exam 2016-08-23
-| E3.06  | Yes    |      |         | From exam 2017-03
-| E3.07  | Yes    |      | Rec.    | From exam 2017-08-22
+| E3.01  | No	  | 2021 |	   | Partial Derivatives
+| E3.02  | Yes    |      |         | Exponentiation operator
+| E3.03  | No     |      |         | fromRational
+| E3.04  | No     |      |         | Experiment with ghci (sin+cos)
+| E3.05  | Yes    |      |         | FunExp and derive
+| E3.06  | Yes    |      | Rec.    | Langrange + 1D fall in gravity
+| E3.07  | Yes    |      | Rec.    | From exam 2016-Practice
+| E3.08  | Yes    |      |         | From exam 2016-03-15
+| E3.09  | Yes    |      | Rec.    | From exam 2016-08-23
+| E3.10  | Yes    |      | Rec.    | From exam 2017-08-22
+
 | E4.01  | Yes    |      | Rec.    |
 | E4.02  | TODO   |      | Rec.    |
 | E4.03  | Yes    |      | Rec.    |
@@ -75,6 +80,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E4.09  | TODO   | 2019 | Rec.    |
 | E4.10  | Yes    |      |         | From exam 2017-03-14
 | E4.11  | TODO   |      | Rec.    |
+
 | E5.01  | TODO   | 2019 | Rec.    |
 | E5.02  | TODO   |      | Rec.    |
 | E5.03  | Yes    |      | Rec.    |
@@ -85,6 +91,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E5.08  | TODO   |      | Rec.    |
 | E5.09  | TODO   |      | Rec.    |
 | E5.10  | TODO   |      | Rec.    |
+
 | E6.01  | TODO   |      | Rec.    |
 | E6.02  | TODO   |      | Rec.    |
 | E6.03  | TODO   |      | Rec.    |
@@ -97,6 +104,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E6.10  | Yes    |      | Rec.    | From exam 2016-Practice
 | E6.11  | Yes    |      | Rec.    | From exam 2017-03-14
 | E6.12  | Yes    |      | Rec.    | From exam 2017-08-22
+
 | E7.01  | TODO   |      | Rec.    |
 | E7.02  | TODO   |      |         |
 | E7.03  | TODO   |      |         |
@@ -106,6 +114,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E7.07  | TODO   |      |         |
 | E7.08  | TODO   |      |         |
 | E7.09  | Yes    |      |         | From exam 2017-03-14
+
 | E8.01  | TODO   |      | Rec.    |
 | E8.02  | TODO   |      | Rec.    |
 | E8.03  | TODO   |      | Rec.    |
