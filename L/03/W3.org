@@ -34,12 +34,12 @@
   D (^2) = (2*)
   D (f .+ g) = D f .+ D g
 
-https://chalmers.instructure.com/courses/12458/files/folder/Blackboard/Week3?preview=1055036
+https://chalmers.instructure.com/courses/17542/files/folder/Blackboard/Week3?preview=1055036
 
-https://chalmers.instructure.com/courses/12458/files/folder/Blackboard/Week3?preview=1055035
+https://chalmers.instructure.com/courses/17542/files/folder/Blackboard/Week3?preview=1055035
 
-https://chalmers.instructure.com/courses/12458/files/folder/Blackboard/Week3?preview=1055034
+https://chalmers.instructure.com/courses/17542/files/folder/Blackboard/Week3?preview=1055034
 
 Live-kodning av FunExp och delar av dess eval samt dess deriv
 
-https://chalmers.instructure.com/courses/12458/files/folder/Blackboard/Week3?preview=1055031
+https://chalmers.instructure.com/courses/17542/files/folder/Blackboard/Week3?preview=1055031

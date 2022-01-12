@@ -5,7 +5,7 @@
 The book and the repository are used in a BSc-level course at Chalmers
 and GU.
 
-The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/12458)
+The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/17542)
 
 Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 

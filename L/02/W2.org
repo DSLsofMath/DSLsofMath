@@ -23,7 +23,7 @@ about the course.
 + Week 1 Grading done (49 pass / 51 submitted) - good work!
 + Week 2 online
 + Week 3 online
-** [[https://chalmers.instructure.com/courses/12458/assignments/30083][Assignment 1]]: (deadline 2021-02-02)
+** [[https://chalmers.instructure.com/courses/17542/assignments/30083][Assignment 1]]: (deadline 2021-02-02)
 + Group formation done
 + Tuesday 2020-02-02: Deadline
 ** Extra Haskell lectures online
@@ -38,7 +38,7 @@ about the course.
   type Table = Name -> Bool
 ** Proofs
 + proof rules
-** Pure set theory (useful for [[https://chalmers.instructure.com/courses/12458/assignments/30083][Assignment 1]])
+** Pure set theory (useful for [[https://chalmers.instructure.com/courses/17542/assignments/30083][Assignment 1]])
 + "untyped sets", "just sets all the way down"
 + Empty set, Singleton set constructor, {braces around enumeration}
 + Cardinality (number of elements)

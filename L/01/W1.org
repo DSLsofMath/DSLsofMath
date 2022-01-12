@@ -1,7 +1,7 @@
 DSLsofMath week 1: a short summary
 * L1.1 Intro / admin
 ** Technology / tooling
-+ [[https://chalmers.instructure.com/courses/12458][Canvas]]     for the course "room" (homepage)
++ [[https://chalmers.instructure.com/courses/17542][Canvas]]     for the course "room" (homepage)
 + [[https://github.com/DSLsofMath/DSLsofMath][github]]     for the "book" (lecture notes) + code
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/01/Live1_2021.lhs][emacs]]      for live coding, etc. (org-mode)
 + [[https://chalmers.zoom.us/j/64966657479][Zoom]]       for delivering the lectures
