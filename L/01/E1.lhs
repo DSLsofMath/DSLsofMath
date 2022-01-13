@@ -209,11 +209,17 @@
 \begin{exercise}
   \label{exc:embedeval}
 
+%if False
+\begin{code}
+import DSLsofMath.ComplexSyn
+import DSLsofMath.CSem (Complex(C))
+\end{code}
+%endif
 We can embed semantic complex numbers in the syntax:
 %
 \begin{code}
-embed :: ComplexSem r -> ComplexSyn r
-embed (CS (x, y)) = ToComplexCart x y
+embed :: Complex r -> ComplexSyn r
+embed (C (x, y)) = ToComplexCart x y
 \end{code}
 %
 The embedding should satisfy a round-trip property:

@@ -1,0 +1,6 @@
+* Ch1
+** Exercises:
+-embed :: ComplexSem r -> ComplexSyn r
+-embed (CS (x, y)) = ToComplexCart x y
++embed :: Complex r -> ComplexSyn r
++embed (C (x, y)) = ToComplexCart x y
