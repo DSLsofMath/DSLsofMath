@@ -5,13 +5,15 @@
 The book and the repository are used in a BSc-level course at Chalmers
 and GU.
 
-The main course homepage is in the Canvas LMS: (https://chalmers.instructure.com/courses/17542)
+The main course homepage is in the Canvas LMS:
+* [Main course page](https://chalmers.instructure.com/courses/17542) including links to zoom lectures and other media
+* [Lecture media](https://chalmers.instructure.com/courses/17542/pages/lecture-media)
 
 Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
 ## News
 
-* Tuesday 2022-01-18: First lecture of the 2022 course instance
+* Tuesday 2022-01-18: First lecture of the 2022 course instance ([zoom links, etc](https://chalmers.instructure.com/courses/17542/pages/lecture-media))
 * 2022: book available from [Amazon](https://www.amazon.co.uk/dp/184890388X).
 * [Lecture note snapshots](L/snapshots/) with drafts of the full course book
 * [YouTube playlist](https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-) with the recorded lectures from the 2021 course instance (most in Swedish, some in English)
