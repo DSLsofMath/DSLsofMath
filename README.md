@@ -1,6 +1,6 @@
 # Domain-Specific Languages of Mathematics
 
-[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related the book "Domain-Specific Languages of Mathematics" published in 2022 by College Publications.
+[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related the book "Domain-Specific Languages of Mathematics" [published in 2022 by College Publications](https://www.amazon.co.uk/dp/184890388X).
 
 The book and the repository are used in a BSc-level course at Chalmers
 and GU.
@@ -12,7 +12,7 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865
 ## News
 
 * Tuesday 2022-01-18: First lecture of the 2022 course instance
-* 2022: final book draft submitted to the printer for publication
+* 2022: book available from [Amazon](https://www.amazon.co.uk/dp/184890388X).
 * [Lecture note snapshots](L/snapshots/) with drafts of the full course book
 * [YouTube playlist](https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-) with the recorded lectures from the 2021 course instance (most in Swedish, some in English)
 
@@ -36,7 +36,8 @@ where AT = @chalmers.se
 ## Course material
 
 This repository is mainly the home of the DSLsofMath book (originating
-from the course lecture notes).
+from the course lecture notes), also available in print from
+[Amazon](https://www.amazon.co.uk/dp/184890388X).
 
 Comments and contributions are always welcome – especially in the form
 of pull requests.
@@ -87,8 +88,8 @@ students at both Chalmers and GU.
 ## Lectures
 
 The latest PDF snapshot of the book can be found in
-[L/snapshots](L/snapshots/) but please also consider buying the "real
-thing".
+[L/snapshots](L/snapshots/) but please also consider buying the ["real
+thing"](https://www.amazon.co.uk/dp/184890388X).
 
 The "source code" for the chapters are in subdirectories of L/:
 [L/01/](L/01), [L/02/](L/02/), etc. where chapter N is approximately

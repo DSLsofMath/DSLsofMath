@@ -4,7 +4,7 @@ DSLsofMath week 1: a short summary
 + [[https://chalmers.instructure.com/courses/17542][Canvas]]     for the course "room" (homepage)
 + [[https://github.com/DSLsofMath/DSLsofMath][github]]     for the "book" (lecture notes) + code
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/01/Live1_2021.lhs][emacs]]      for live coding, etc. (org-mode)
-+ [[https://chalmers.zoom.us/j/64966657479][Zoom]]       for delivering the lectures
++ [[https://chalmers.zoom.us/j/64738429538][Zoom]]       for delivering the lectures
 + [[https://jamboard.google.com/d/1LgE3Hke1KSvgU6Kdraec5ESB77ITDv44879PjDpu-9w/edit?usp=sharing][Jamboard]]   for "drawing on the whiteboard"
 + OBS studio for video recording
 + [[https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-][YouTube]]    for video archiving
@@ -20,9 +20,9 @@ DSLsofMath week 1: a short summary
 ** Course evaluation: student representatives
 | Prg | Namn               |
 |-----+--------------------|
-| D   | Simon Johansson    |
-| D   | Fredrik Österström |
-| TM  | Mats Richardson    |
+| D   | *TODO* rep. wanted |
+| D   | *TODO* rep. wanted |
+| TM  | *TODO* rep. wanted |
 | IT  | *TODO* rep. wanted |
 | DV  | *TODO* rep. wanted |
 
@@ -39,21 +39,9 @@ DSLsofMath week 1: a short summary
 *** JA = Judgement and Approach
 + JA = discuss and compare different software implementations of mathematical concepts
 
-** Lärmål (efter fullgjord kurs ska studenten kunna)
-*** Kunskap och förståelse
-+ designa och implementera ett domänspecifikt språk (DSL) för en ny domän
-+ strukturera delområden inom matematik i termer av DSL
-+ förklara de centrala begreppen i grudläggande reell och komplex analys, algebra och linjär algebra
-*** Färdighet och förmåga
-+ utveckla lämplig notation för matematiska koncept
-+ genomföra och kalkylera bevis
-+ använda potensserier för att lösa differentialekvationer
-+ använda Laplace-transformer för att lösa differentialekvationer
-*** Värderingsförmåga och förhållningssätt
-+ diskutera och jämföra olika implementationer av matematiska begrepp
 ** First break-out rooms to start the discussion
 + brief presentation round
-+ how do you learn mathematics cmp. to programming?
++ share examples of confusing notation in mathematics cmp. to programming
 
 
 
@@ -95,21 +83,13 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** laws, properties, and testing
 * L1.2 Intro / admin
 ** First eval meeting (with student representatives) done
-| Prg | Namn               |
-|-----+--------------------|
-| D   | Simon Johansson    |
-| D   | Fredrik Österström |
-| TM  | Mats Richardson    |
-| IT  | *TODO* rep. wanted |
-| DV  | *TODO* rep. wanted |
-
 ** Weekly exercises (bonusuppgifter)
 ** Exercise sessions (övningar): be prepared with questions
-   2h*2 föreläsning = 4h
-   2h*2 övning = 4h
-   totalt 8h per vecka "schemalagt"
-   Men, 7.5hp = 200h vi har 8 läsveckor -> 200/8 = 25h/vecka "studietid"
-   17h kvar för eget arbete.
+   2h*2 lectures = 4h/w
+   2h*2 exercise sessions = 4h/w
+   total 8h/w "scheduled"
+   But, 7.5hp = 200h spread over 8 study weeks -> 200/8 = 25h/week "study time"
+   Thus 17h left for you to schedule your own work with the course.
 ** Read the book! Chapter N = study week N
 ** Student communication: Canvas discussion forum
 ** Explore the canvas page:
@@ -124,10 +104,9 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 
 
 
-
 * L1.2 learning outcomes:
 ** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
-+ When equations meet types
++ When equations meet types - more and more eq. can be solved.
 ** Active reading of mathematical text [Complex number case study]
 ** Modelling (different versions of) Complex in Haskell
 ** The DSL of types in Haskell:
@@ -139,13 +118,6 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** Syntax and semantics
 ** |eval| for complex number expressions
 * [[file:Live2_2021.lhs::module Live2 where][Live coding]] & [[https://jamboard.google.com/d/1AzorMN1Lzq2ZC3f0kowkmyxxAwV_qOLzthROKjKe9wQ/edit?usp=sharing][Jamboard]]
-
-
-
-
-
-
-
 * E1.2 learning outcomes:
 ** syntax trees for |ComplexSyn r|, the "complex numbers extension" of a type |r|
 ** more use of |Env| and |lookup|
@@ -153,8 +125,8 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** more laws, properties, and testing
 ** TODO: |Maybe|, |Either|
 * Notation for this file:
-** L1.1 means week 1, lecture 1
-** L1.2 means week 1, lecture 2
+** L1.1 means week 1, lecture 1 (Tuesday)
+** L1.2 means week 1, lecture 2 (Thursday)
 ** E1.1 means week 1, exercise session 1 (the presentation / live coding part)
 ** E1.2 means week 1, exercise session 2 (the presentation / live coding part)
 ** The format of the file is Emacs Org-mode
