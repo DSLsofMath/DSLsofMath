@@ -2,9 +2,10 @@ This is an example of an equality proof from week 3 "embedded in Haskell".
 
 \begin{code}
 module DSLsofMath.PoorMansProofs where
+import Prelude hiding (Num(..), Fractional(..), Floating(..),(^))
 import DSLsofMath.EvalD
-import DSLsofMath.FunNumInst
--- import DSLsofMath.FunExp
+import DSLsofMath.Algebra
+import DSLsofMath.FunExpInst
 
 type EqChain a = [a]
 
@@ -61,5 +62,5 @@ allEq :: Eq a => EqChain a -> Bool
 allEq []      = True
 allEq (e:es)  = all (e==) es
 
-main = check 0 (Const 1) && check 1 (X :+: Exp X)
+localmain = check 0 (Const 1) && check 1 (X :+: Exp X)
 \end{code}

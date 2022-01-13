@@ -1,15 +1,15 @@
-resolver: lts-14.1
+resolver:
+  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/21.yaml
+
+# User packages to be built.
 packages:
 - '.'
+
+
 extra-deps:
 - github: DSLsofMath/Hatlab
   commit: 8a842849a7f492c430afb2d648d8ff0e95628d35
 
 
-#  extra-dep: true
-#  - equational-reasoning-0.6.0.0
-#  - ghc-typelits-presburger-0.2.0.5
-#  - monomorphic-0.0.3.3
-#  - type-natural-0.8.2.0
-#  - equational-reasoning-0.5.0.0
 flags: {}
+

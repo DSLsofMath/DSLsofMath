@@ -1,16 +1,15 @@
-# For more information, see: https://github.com/commercialhaskell/stack/blob/release/doc/yaml_configuration.md
+resolver:
+  url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/18/21.yaml
 
-# Specifies the GHC version and set of packages available (e.g., lts-3.5, nightly-2015-09-21, ghc-7.10.2)
-resolver: lts-7.9
-
-# Local packages, usually specified by relative directory name
+# User packages to be built.
 packages:
 - '.'
-- location:
-    git: https://github.com/DSLsofMath/Hatlab.git
-    commit: 8a842849a7f492c430afb2d648d8ff0e95628d35
-  extra-dep: true
-# Packages to be pulled from upstream that are not in the resolver (e.g., acme-missiles-0.3)
-extra-deps: []
+
+
+extra-deps:
+- github: DSLsofMath/Hatlab
+  commit: 8a842849a7f492c430afb2d648d8ff0e95628d35
+
+
 flags: {}
-extra-package-dbs: []
+
