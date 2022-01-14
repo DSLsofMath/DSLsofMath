@@ -1,0 +1,7 @@
+source-repository-package
+  type: git
+  location: https://github.com/DSLsofMath/Hatlab.git
+  tag: 8a842849a7f492c430afb2d648d8ff0e95628d35
+
+packages: ./SignalShape.cabal
+          
