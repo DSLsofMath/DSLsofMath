@@ -51,7 +51,7 @@ A DSL has four components:
 + Semantics: a function from AbsSyn to Sem
 https://en.wikipedia.org/wiki/Domain-specific_language
 ** Variable scope and binding in mathematical expressions [integral, fun.def.]
-** Haskell interpreter use and interp. of error messages [interactive live coding]
+** Haskell interpreter use and interp. of error messages ([[file:Live1_2022.lhs][interactive live coding]])
 ** Syntax trees
 + datatype of syntax trees of simple arith. expr.
 ** First evaluator: |eval :: E -> (String -> Int) -> Int|
