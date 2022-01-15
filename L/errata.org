@@ -1,3 +1,7 @@
+* Ch0
+** L/00/Intro.lhs
+-formal than usual, as least from a linguistic perspective.
++formal than usual, at least from a linguistic perspective.
 * Ch1
 ** Exercises:
 -embed :: ComplexSem r -> ComplexSyn r

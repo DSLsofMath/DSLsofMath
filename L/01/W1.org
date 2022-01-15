@@ -1,17 +1,18 @@
 DSLsofMath week 1: a short summary / overview
 * L1.1 Intro / admin
++ Lecturer: Patrik Jansson
 ** Technology / tooling
-+ [[https://chalmers.instructure.com/courses/17542][Canvas]]     for the course "room" (homepage)
-+ [[https://github.com/DSLsofMath/DSLsofMath][github]]     for the "book" (lecture notes) + code
-+ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/01/Live1_2021.lhs][emacs]]      for live coding, etc. (org-mode)
++ [[file:Live1_2022.lhs][emacs]]      for live coding, etc. (org-mode + Haskell)
++ [[https://chalmers.instructure.com/courses/17542][Canvas]]     for the course homepage 
++ [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][paper+PDF]]  for the course book: [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][Adlibris]] + [[https://chalmers.instructure.com/courses/17542/files/1964546?wrap=1][PDF]]
++ [[https://github.com/DSLsofMath/DSLsofMath][github]]     for source code of the lectures + book
 + [[https://chalmers.zoom.us/j/64738429538][Zoom]]       for delivering the lectures
-+ [[https://jamboard.google.com/d/1LgE3Hke1KSvgU6Kdraec5ESB77ITDv44879PjDpu-9w/edit?usp=sharing][Jamboard]]   for "drawing on the whiteboard"
-+ OBS studio for video recording
-+ [[https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-][YouTube]]    for video archiving
++ [[https://jamboard.google.com/d/1m9B5YYHABrll_tSgbIgSEZVsnogEKOSxQNmy83gyjJg/viewer][Jamboard]]   for "drawing on the whiteboard"
++ [[https://www.youtube.com/playlist?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ][YouTube]]    for video archiving
 ** Examination
-+ Weekly exercises     -> Bonus points for the exam
 + 2 Assignments (labs) -> Pass/fail grade
 + Written Exam         -> grade U/3/4/5 (Chalmers), U/G/VG (GU)
++ Weekly exercises     -> Bonus points for the exam
 ** Reminder about spending time on the course:
 + Advice from last years' students:
   spending time on the course pays off.
@@ -20,11 +21,11 @@ DSLsofMath week 1: a short summary / overview
 ** Course evaluation: student representatives
 | Prg | Namn               |
 |-----+--------------------|
-| D   | *TODO* rep. wanted |
-| D   | *TODO* rep. wanted |
-| TM  | *TODO* rep. wanted |
-| IT  | *TODO* rep. wanted |
-| DV  | *TODO* rep. wanted |
+| D   | Enayatullah Norozi |
+| D   | Jesper Führ        |
+| D   | Samuel Kyletoft    |
+| D   | Eli Adelhult       |
+| TM  | Masoud Shaker      |
 
 ** Learning outcomes (for the whole course, english version)
 *** KU = Knowledge and Understanding
@@ -38,31 +39,9 @@ DSLsofMath week 1: a short summary / overview
 + SA.Laplace  = use Laplace transforms for solving differential equations
 *** JA = Judgement and Approach
 + JA = discuss and compare different software implementations of mathematical concepts
-
-** First break-out rooms to start the discussion
+** First break-out rooms to start the discussion [10min]
 + brief presentation round
 + share examples of confusing notation in mathematics cmp. to programming
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * L1.1 learning outcomes:
 ** What is a Domain-Specific Language (DSL)
 A DSL has four components:
@@ -81,6 +60,61 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** syntax trees with constructor for variables
 ** definition and use of |Env|
 ** laws, properties, and testing
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 * L1.2 Intro / admin
 ** First eval meeting (with student representatives) done
 ** Weekly exercises (bonusuppgifter)
@@ -100,7 +134,6 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 + Files = the book and other (mostly older) material
 + Discussions = a forum for student discussions and questions
 + Announcements = where the teaching teams broadcasts messages
-
 
 
 
