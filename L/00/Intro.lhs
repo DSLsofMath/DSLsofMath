@@ -184,7 +184,7 @@ experience of discrete mathematics: giving specifications of the
 concepts introduced, paying attention to syntax and types, and so on.
 %
 For the mathematics students, the style of this \course{} will be more
-formal than usual, as least from a linguistic perspective.
+formal than usual, at least from a linguistic perspective.
 %
 The increased formality is justified by the need to implement
 (parts of) the languages.
