@@ -54,7 +54,7 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** Haskell interpreter use and interp. of error messages ([[file:Live1_2022.lhs][interactive live coding]])
 ** Syntax trees
 + datatype of syntax trees of simple arith. expr.
-** First evaluator: |eval :: E -> (String -> Int) -> Int|
+** First evaluator: |eval :: E -> Int|
 * E1.1 learning outcomes:
 ** a Haskell environment up and running
 ** syntax trees with constructor for variables
@@ -150,7 +150,7 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 *** |Nat|, |ImagUnits|, |CA|, |CB|, |CE|
 ** Syntax and semantics
 ** |eval| for complex number expressions
-* [[file:Live2_2021.lhs::module Live2 where][Live coding]] & [[https://jamboard.google.com/d/1AzorMN1Lzq2ZC3f0kowkmyxxAwV_qOLzthROKjKe9wQ/edit?usp=sharing][Jamboard]]
+* [[file:Live2_2022.lhs::module Live2 where][Live coding]] & [[https://jamboard.google.com/d/1BomAkVUUucA5VcAEeqZTwsX0YqahYQiOxPm4wv0ylqQ/viewer][Jamboard]]
 * E1.2 learning outcomes:
 ** syntax trees for |ComplexSyn r|, the "complex numbers extension" of a type |r|
 ** more use of |Env| and |lookup|
