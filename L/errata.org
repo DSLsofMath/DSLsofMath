@@ -1,10 +1,16 @@
 * Ch0
-** L/00/Intro.lhs
+** L/00/Intro.lhs: 
+*** Around line 187: as:=at
 -formal than usual, as least from a linguistic perspective.
 +formal than usual, at least from a linguistic perspective.
 * Ch1
-** Exercises:
+** L/01/E1.lhs 
+*** Around line 136: if:=is
+-This kind of transformation if often useful, and it works also for
++This kind of transformation is often useful, and it works also for
+*** Around line 221: ComplexSem:=Complex; CS:=C
 -embed :: ComplexSem r -> ComplexSyn r
 -embed (CS (x, y)) = ToComplexCart x y
 +embed :: Complex r -> ComplexSyn r
 +embed (C (x, y)) = ToComplexCart x y
+
