@@ -9,7 +9,7 @@ The main course homepage is in the Canvas LMS:
 * [Main course page](https://chalmers.instructure.com/courses/17542) including links to zoom lectures and other media
 * [Lecture media](https://chalmers.instructure.com/courses/17542/pages/lecture-media)
 
-Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
 
 ## News
 
@@ -104,9 +104,8 @@ course week N.
 
 Most chapters end with weekly exercises.
 
-(TODO: update the list to handle some reordering during 2021: In
-[L/RecEx.md](L/RecEx.md) you will find a list of recommended exercises
-for each chapter of the lecture notes.)
+In [L/RecEx.md](L/RecEx.md) you will find a list of recommended
+exercises for each chapter of the lecture notes.
 
 ## References
 
