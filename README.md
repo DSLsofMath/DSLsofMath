@@ -16,7 +16,10 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=29865
 * Tuesday 2022-01-18: First lecture of the 2022 course instance ([zoom links, etc](https://chalmers.instructure.com/courses/17542/pages/lecture-media))
 * 2022: book available from [Amazon](https://www.amazon.co.uk/dp/184890388X) and from [other sources](https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883). [Bibtex entry](admin/JanssonIonescuBernardyDSLsofMathBook2022.bib).
 * [Lecture note snapshots](L/snapshots/) with drafts of the full course book
-* [YouTube playlist](https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-) with the recorded lectures from the 2021 course instance (most in Swedish, some in English)
+* [YouTube playlist](https://www.youtube.com/playlist?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ) collecting the 2022 lectures (all in English)
+    * Also available: [the recorded lectures from the 2021 course instance](https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-) (most in Swedish, some in English).
+
+with 
 
 ## Contributors
 

@@ -6,7 +6,7 @@ open import Data.Sum
 open import Data.Product
 open import Data.Nat
 
-data E : Set1 where
+data E : Set where
   Add   : E -> E -> E
   Mul   : E -> E -> E
   Zero  : E
