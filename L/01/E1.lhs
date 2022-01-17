@@ -133,7 +133,7 @@
     p2f :: (a->b, a->c) -> (a -> (b, c))
   \end{spec}
 
-  This kind of transformation if often useful, and it works also for
+  This kind of transformation is often useful, and it works also for
   |n|-tuples.
 
   % Solutions:
