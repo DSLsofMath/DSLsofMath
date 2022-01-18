@@ -13,6 +13,7 @@ r :: Rational
 r = 3%2
 
 f x = x^2
+
 \end{code}
 
 The function |f| can be given different types:
@@ -26,6 +27,18 @@ f3 :: Rational -> Rational
 f3 = f
 -- and the most general:
 f :: Num a =>    a -> a
+
+-- all values of type B->B
+allBtoBs :: [Bool -> Bool]
+allBtoBs = [id,not,const False,const True]
+
+b1 = head allBtoBs   -- b1 x = id x = x
+b2 = allBtoBs !! 1
+b3 = allBtoBs !! 2
+b4 = allBtoBs !! 3
+
+exercise :: [Bool -> Bool -> Bool]
+exercise = [(&&), (||) ] -- ... should be quite a few more
 \end{code}
 
 The type class Num has the operations (+), (*), (-), fromInteger (ask
@@ -42,8 +55,11 @@ Float and Double have
 + finite precision (most real numbers are missing)
 + but also extra values: NaN, Infinity, -Infinity, and a few more
 
+
+div :: Int -> Int -> Maybe Int
+
 \begin{code}
-inf :: Double
+inf :: Double -- an approximation of the REAL number type
 inf = 1/0
 
 nan :: Double
@@ -74,19 +90,31 @@ isAssoc = checkAssoc (1/3) 1 1
 The data declaration below defines the new type E and three new
 constructor functions: Add, Mul, och Con.
 
+forall x. x*0 == 0
+
 \begin{code}
 data E  =  Add E  E  -- constructor function name followed by types of arg.s
         |  Mul E  E
         |  Con Integer
+        |  X         -- intended to model polynomials
   deriving (Eq, Show)
 \end{code}
 
 E is a type of abstract syntax trees.
+   can represent simple functions
+   (not only 1-argument expressions)
+
+semantics = meaning
+
+"meaning-assigning function"
+
+translator from an abstract (un-interpreted) syntax to some meaningful value type (the semantic type)
 
 \begin{code}
-e1, e2 :: E
-e1 = Add (Con 1) (Mul (Con 2) (Con 3))    -- 1+(2*3)
-e2 = Mul (Add (Con 1) (Con 2)) (Con 3)    -- (1+2)*3
+a1, a2 :: E
+a1 = Add (Con 1) (Mul (Con 2) (Con 3))    -- 1+(2*3)
+a2 = Mul (Add (Con 1) (Con 2)) (Con 3)    -- (1+2)*3
+a3 = Mul X X   -- x^2
 \end{code}
 
 We can evaluate (translate) an E to an integer:
@@ -96,11 +124,24 @@ eval  ::  Syntax  ->  Semantics
 eval  ::  E       ->  Integer
 -- the semantic domain is integers
 \begin{code}
-eval :: E  ->  Integer
-eval (Add x y)  =  error "eval: Add TODO" 
-eval (Mul x y)  =  error "eval: Mul TODO" 
-eval (Con c)    =  error "eval: Con TODO" 
+type AbsSyn = E
+type SimpleSem = Integer
+type Sem = Integer -> Integer
+eval :: AbsSyn  ->  Sem
+-- eval :: E    ->  Integer -> Integer
+eval (Add e1 e2)  =  addE (eval e1) (eval e2)    -- e1, e2 :: E, not Integer
+eval (Mul e1 e2)  =  mulE (eval e1) (eval e2)
+eval (Con c)      =  const c
+eval X            =  id
+
+addE :: Sem -> Sem -> Sem
+addE f g = \x -> f x   +    g x
+  -- f, g :: Sem = Integer -> Integer
+mulE :: Sem -> Sem -> Sem
+mulE f g = \x -> f x   *    g x
+
 \end{code}
+-- eval X      =  id
 
 What about variables?
 Start with one variable - call it X.

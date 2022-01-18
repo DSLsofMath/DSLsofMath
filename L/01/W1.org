@@ -42,13 +42,16 @@ DSLsofMath week 1: a short summary / overview
 ** First break-out rooms to start the discussion [10min]
 + brief presentation round
 + share examples of confusing notation in mathematics cmp. to programming
+  d/dx??
+  integral
+  geometry / algebra
 * L1.1 learning outcomes:
 ** What is a Domain-Specific Language (DSL)
 A DSL has four components:
 + Surface syntax (mostly ignored in this course): a set of strings defined by a grammar
 + Abstract syntax: usually a recursive Haskell datatype of syntax trees
 + Semantic type: a type of values (meanings) for the syntax
-+ Semantics: a function from AbsSyn to Sem
++ Semantics: a function from eval : AbsSyn -> Sem
 https://en.wikipedia.org/wiki/Domain-specific_language
 ** Variable scope and binding in mathematical expressions [integral, fun.def.]
 ** Haskell interpreter use and interp. of error messages ([[file:Live1_2022.lhs][interactive live coding]])
