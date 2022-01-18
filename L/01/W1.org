@@ -4,14 +4,14 @@ DSLsofMath week 1: a short summary / overview
 ** Technology / tooling
 + [[file:Live1_2022.lhs][emacs]]      for live coding, etc. (org-mode + Haskell)
 + [[https://chalmers.instructure.com/courses/17542][Canvas]]     for the course homepage 
-+ [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][paper+PDF]]  for the course book: [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][Adlibris]] + [[https://chalmers.instructure.com/courses/17542/files/1964546?wrap=1][PDF]]
++ [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][paper+PDF]]  for the course book: [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][Adlibris]] + [[https://chalmers.instructure.com/courses/17542/files/1964546?wrap=1][PDF]] + [[https://twitter.com/patrikja/status/1481574045606891521][title page]]
 + [[https://github.com/DSLsofMath/DSLsofMath][github]]     for source code of the lectures + book
 + [[https://chalmers.zoom.us/j/64738429538][Zoom]]       for delivering the lectures
 + [[https://jamboard.google.com/d/1m9B5YYHABrll_tSgbIgSEZVsnogEKOSxQNmy83gyjJg/viewer][Jamboard]]   for "drawing on the whiteboard"
 + [[https://www.youtube.com/playlist?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ][YouTube]]    for video archiving
 ** Examination
-+ 2 Assignments (labs) -> Pass/fail grade
-+ Written Exam         -> grade U/3/4/5 (Chalmers), U/G/VG (GU)
++ *2 Assignments (labs)* -> Pass/fail grade
++ *Written Exam*         -> grade U/3/4/5 (Chalmers), U/G/VG (GU)
 + Weekly exercises     -> Bonus points for the exam
 ** Reminder about spending time on the course:
 + Advice from last years' students:
@@ -55,6 +55,36 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** Syntax trees
 + datatype of syntax trees of simple arith. expr.
 ** First evaluator: |eval :: E -> Int|
+* (Just some empty space)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 * E1.1 learning outcomes:
 ** a Haskell environment up and running
 ** syntax trees with constructor for variables
