@@ -1,6 +1,8 @@
 This file is from the "live coding" session at the end of L1.2
 (study week 1, lecture 2, of the DSLsofMath course, 2022).
 
+{- iimage-mode for inlining the quotes -}
+
 \begin{code}
 {-# LANGUAGE GADTs #-}
 module Live2 where
@@ -10,53 +12,62 @@ type REAL = Double
 A datatype for "semantic complex numbers" as defined on page A.2 in
 the book [Adams and Essex, Calculus, 2010].
 
+
+Adams_Complex_01.png
+
 \begin{code}
-data ImagUnit where
-  II :: ImagUnit
- deriving Show
--- data ImagUnit = I
-
---i :: ImagUnit
---i = II
-
+data ImagUnit = IU deriving Show
+i :: ImagUnit
+i = IU
+\end{code}
+Adams_Complex_02.png
+\begin{code}
 data CB where
   Plus1 :: REAL -> REAL -> ImagUnit -> CB
   Plus2 :: REAL -> ImagUnit -> REAL -> CB
  deriving (Show)
 
--- e1 = Plus1 3 2 I     -- 3+2i
--- e3 = Plus2 0 I pi
-
 showCB :: CB -> String
 showCB = error "showCB: TODO"
-
-addCB :: CB -> CB -> CB
-addCB (Plus1 a b j) (Plus1 a' b' j') = error "TODO"
-addCB (Plus1 a b j) (Plus2 a' j' b') = error "TODO"
-addCB (Plus2 a j b) (Plus1 a' b' j') = error "TODO"
-addCB (Plus2 a j b) (Plus2 a' j' b') = error "TODO"
-
-e1 = PlusI 3 2
-e3 = PlusI 0 (-1)
-addCC :: CC -> CC -> CC
-addCC (PlusI re im) (PlusI re' im') = PlusI realpart imagpart
-  where  realpart = re + re'
-         imagpart = im + im'
+\end{code}
+Adams_Complex_03.png
+\begin{code}
+e1, e2, e3, e4 :: CB
+e1 = Plus1 3      2      IU
+e2 = Plus1 (7/2)  (2/3)  IU
+e3 = Plus2 0      IU     pi
+e4 = Plus1 (-3)   0      IU
+\end{code}
+Adams_Complex_04.png
+\begin{code}
 data CC where
   PlusI :: REAL -> REAL -> CC
  deriving (Show)
--- PlusI a b == Plus1 a b I
+-- PlusI a b == Plus1 a b IU == Plus2 a IU b
+\end{code}
+Adams_Complex_05.png
 
---instance Num CC where
---   (+) = addCC
---   (*) = mulCB
-
-
-mulCB :: CB -> CB -> CB
-mulCB = error "TODO mul"
+Adams_Complex_06.png
+We define the functions |re| and |im| using pattern-matching.
+\begin{code}
+re, im :: CC -> REAL
+re z@(PlusI x y) = x
+im z@(PlusI x y) = y
+\end{code}
+An example of its use:
+Adams_Complex_07.png
+\begin{code}
+addCC :: CC -> CC -> CC
+addCC = error "TODO: define addCC"
 \end{code}
 
-Translation from syntax to semantics:
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+So far we have defined "semantic complex numbers" (in cartesian form).
+Now we turn to "syntactic complex number expressions" to define a DSL.
+Three parts:
++ an abstract syntax type CE,
++ a  semantic type CC,
++ an evaluator eval :: CE -> CC
 
 \begin{code}
 data CE where
@@ -66,12 +77,13 @@ data CE where
   I    :: CE
 
 -- "wishful thinking"
-eval :: CE -> CC  -- x :: CE, I need a value of type CC
-eval (Add x y) = addCC (eval x) (eval y)
-eval I         = iCC
-eval (RCon r)  = rconCC r
+eval :: CE -> CC
+eval (Add x y) = error "TODO eval Add"
+eval (Mul x y) = error "TODO eval Mul"
+eval I         = error "TODO eval I"
+eval (RCon r)  = error "TODO eval RCon"
 -- semantic "constructors"
--- addCC  :: CC -> CC -> CC
+-- addCC  :: CC -> CC -> CC  -- defined above
 mulCC   :: CC -> CC -> CC
 rconCC  :: REAL -> CC
 iCC     :: CC
@@ -85,7 +97,6 @@ exercise: implement mulCC
 
 Add    :: CE -> CE -> CE   -- syntactic constructor
 addCC  :: CC -> CC -> CC   -- semantic "smart constructor"
-
 
 \begin{code}
 
