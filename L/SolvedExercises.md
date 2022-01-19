@@ -1,12 +1,9 @@
 # Exercises
 
-TODO: implement solutions for the rest
-
 Status:
 
-* 43 Yes  = solution available in the repo
-* 40 TODO
-* 83 Total number of exercises (2029-01-18)
+* 51 Yes  = solution available in the repo
+* 82 TODO = contributions welcome
 
 Solutions of old exam question are in ../Exam/
 
@@ -31,21 +28,21 @@ Other solutions are in NN/ExerciseSolutions/
 | E1.15  | Yes    |      |         | From exam 2016-03 (Lattice )
 | E1.16  | Yes    |      |         | From exam 2016-08 (AbMonoid)
 
-| E2.01  | No	  |      |         | freeNames
-| E2.02  | No     |      |         | swap in conjunctionCommProof
-| E2.03  | No     |      |         | swap andElimL and andElimR in conjunctionCommProof'
-| E2.04  | No     |      |	   | evalRat
-| E2.05  | No	  |	 |	   | sketch proofChecker for Exists
-| E2.06  | No	  |	 |	   | prove deMorgan dual of types quantifiers
-| E2.07  | No	  |	 |	   | Prove that 0 in the only limit point of {1/n|n>0}
-| E2.08  | No	  |	 |	   | Show that limp p X => infinite X
-| E2.09  | No	  |	 |	   | Prove that limit of seq. is unique
-| E2.10  | No	  |	 |	   | Prove limits preserve sums
-| E2.11  | No     |      |	   | "delta, possibly depending on epsilon"
-| E2.12  | No     |	 |	   | De Morgon on expressions
-| E2.13  | No     |	 |	   | conjunctive normal form
-| E2.14  | No     |	 |	   | disjuntive normal form
-| E2.15  | No     |	 |	   | Propositions as polynomials
+| E2.01  | TODO   |      |         | freeNames
+| E2.02  | TODO   |      |         | swap in conjunctionCommProof
+| E2.03  | TODO   |      |         | swap andElimL and andElimR in conjunctionCommProof'
+| E2.04  | TODO   |      |	   | evalRat
+| E2.05  | TODO   |	 |	   | sketch proofChecker for Exists
+| E2.06  | TODO   |	 |	   | prove deMorgan dual of types quantifiers
+| E2.07  | TODO   |	 |	   | Prove that 0 in the only limit point of {1/n|n>0}
+| E2.08  | TODO   |	 |	   | Show that limp p X => infinite X
+| E2.09  | TODO   |	 |	   | Prove that limit of seq. is unique
+| E2.10  | TODO   |	 |	   | Prove limits preserve sums
+| E2.11  | TODO   |      |	   | "delta, possibly depending on epsilon"
+| E2.12  | TODO   |	 |	   | De Morgon on expressions
+| E2.13  | TODO   |	 |	   | conjunctive normal form
+| E2.14  | TODO   |	 |	   | disjuntive normal form
+| E2.15  | TODO   |	 |	   | Propositions as polynomials
 | E2.16  | Yes    |      | Rec.    | ... notMap ... 
 | E2.17  | Yes    |      |         | De Morgan proofs (with types as theorems)
 | E2.18  | TODO   |      |         | Proofs indep. of (hidden) type impl.
@@ -55,13 +52,13 @@ Other solutions are in NN/ExerciseSolutions/
 | E2.22  | Yes    |      |         | From exam 2016-08-23
 | E2.23  | Yes    |      | Rec.    | From exam 2017-08-22
 | E2.24  | Yes    | 2019 | Rec.    | 0,1,0,1,... not covergent
-| E2.25  | No	  | 2021 | 	   | a=id not covergent
+| E2.25  | TODO   | 2021 | 	   | a=id not covergent
 | E2.26  | Yes    | 2019 | Rec.    |
 
-| E3.01  | No	  | 2021 |	   | Partial Derivatives
+| E3.01  | TODO   | 2021 |	   | Partial Derivatives
 | E3.02  | Yes    |      |         | Exponentiation operator
-| E3.03  | No     |      |         | fromRational
-| E3.04  | No     |      |         | Experiment with ghci (sin+cos)
+| E3.03  | TODO   |      |         | fromRational
+| E3.04  | TODO   |      |         | Experiment with ghci (sin+cos)
 | E3.05  | Yes    |      |         | FunExp and derive
 | E3.06  | Yes    |      | Rec.    | Langrange + 1D fall in gravity
 | E3.07  | Yes    |      | Rec.    | From exam 2016-Practice
@@ -69,25 +66,25 @@ Other solutions are in NN/ExerciseSolutions/
 | E3.09  | Yes    |      | Rec.    | From exam 2016-08-23
 | E3.10  | Yes    |      | Rec.    | From exam 2017-08-22
 
-| E4.01  | No     |      |         | Monoids for REAL and endofunctions
-| E4.02  | No     |      |         | Ring ZZ, QQ, RR
-| E4.03  | No     |      |         | Expand H2((*c),(+),(+))
+| E4.01  | TODO   |      |         | Monoids for REAL and endofunctions
+| E4.02  | TODO   |      |         | Ring ZZ, QQ, RR
+| E4.03  | TODO   |      |         | Expand H2((*c),(+),(+))
 | E4.04  | Yes    |      |         | Solution in book
 | E4.05  | Yes    |      |         | Solution in book
 | E4.06  | Yes    |      |         | Solution in book
-| E4.07  | No     |      |         | exp, log, inverses
-| E4.08  | No     |      |         | exp-log relating AddGroup, MulGroup
-| E4.09  | No     |      |         | Sketch iso between IPC and STLC
-| E4.10  | No     |      |         | iso pairs and complex
-| E4.11  | No     |      |         | H2(even, Add, evenAdd), ...
-| E4.12  | No     |      |         | pretty with (Prec ->)
-| E4.13  | No	  |	 |	   | FunExp inst. for num. classes
-| E4.14  | No     |      |         | Proved group laws for Free AdditiveGroup
-| E4.15  | No     |      |         | Show that Free Ring () covers most of FunExp
-| E4.16  | No     |      |         | Implement the rest of num. inst. for FD a
+| E4.07  | TODO   |      |         | exp, log, inverses
+| E4.08  | TODO   |      |         | exp-log relating AddGroup, MulGroup
+| E4.09  | TODO   |      |         | Sketch iso between IPC and STLC
+| E4.10  | TODO   |      |         | iso pairs and complex
+| E4.11  | TODO   |      |         | H2(even, Add, evenAdd), ...
+| E4.12  | TODO   |      |         | pretty with (Prec ->)
+| E4.13  | TODO   |	 |	   | FunExp inst. for num. classes
+| E4.14  | TODO   |      |         | Proved group laws for Free AdditiveGroup
+| E4.15  | TODO   |      |         | Show that Free Ring () covers most of FunExp
+| E4.16  | TODO   |      |         | Implement the rest of num. inst. for FD a
 | E4.17  | Yes    |      |         | Implement the rest of num. inst. for Dup a
 | E4.18  | Yes    |      | Rec.    | Prove/disprove som homomorphisms
-| E4.19  | No     |      |         | Same as E4.13
+| E4.19  | TODO   |      |         | Same as E4.13
 | E4.20  | Yes    |      | Rec.    | Same as E4.17
 | E4.21  | TODO   |      | Rec.    | Three ways of computing derivative of sin+exp.exp
 | E4.22  | Yes    |      | Rec.    | From exam 2017-08-22
@@ -110,10 +107,10 @@ Other solutions are in NN/ExerciseSolutions/
 | E5.10  | TODO   |      | Rec.    | Functor instances
 | E5.11  | Yes    |      |         | maximum homomorphism
 
-| E6.01  | No	  |	 |	   | Stream instances MulGroup, Transcendental
-| E6.02  | No	  |	 |	   | drc k f x = kth derivative of f at x
-| E6.03  | No	  |	 |	   | write expx without recurively (inline solve)
-| E6.04  | No     |      |	   | write ODEs char. sine and cosine
+| E6.01  | TODO   |	 |	   | Stream instances MulGroup, Transcendental
+| E6.02  | TODO   |	 |	   | drc k f x = kth derivative of f at x
+| E6.03  | TODO   |	 |	   | write expx without recurively (inline solve)
+| E6.04  | TODO   |      |	   | write ODEs char. sine and cosine
 | E6.05  | TODO   |      | Rec.    | FunExp syntax and eval "by hand"
 | E6.06  | TODO   |      | Rec.    | use derive "by hand"
 | E6.07  | TODO   |      | Rec.    | Compute deriv. in three ways
@@ -156,6 +153,3 @@ Other solutions are in NN/ExerciseSolutions/
 
 # Notes
 
-* DONE: fill in all exercises in this list
-* DONE: mark the bonus exercises
-* DONE: mark those with solutions
