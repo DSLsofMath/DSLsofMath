@@ -27,7 +27,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E1.14  | Yes    |      | Rec.    | From exam 2017-08 (Semiring)
 | E1.15  | Yes    |      |         | From exam 2016-03 (Lattice )
 | E1.16  | Yes    |      |         | From exam 2016-08 (AbMonoid)
-
+| ------ | ------ | ---- | ------- | -----------
 | E2.01  | TODO   |      |         | freeNames
 | E2.02  | TODO   |      |         | swap in conjunctionCommProof
 | E2.03  | TODO   |      |         | swap andElimL and andElimR in conjunctionCommProof'
@@ -54,7 +54,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E2.24  | Yes    | 2019 | Rec.    | 0,1,0,1,... not covergent
 | E2.25  | TODO   | 2021 | 	   | a=id not covergent
 | E2.26  | Yes    | 2019 | Rec.    |
-
+| ------ | ------ | ---- | ------- | -----------
 | E3.01  | TODO   | 2021 |	   | Partial Derivatives
 | E3.02  | Yes    |      |         | Exponentiation operator
 | E3.03  | TODO   |      |         | fromRational
@@ -65,7 +65,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E3.08  | Yes    |      |         | From exam 2016-03-15
 | E3.09  | Yes    |      | Rec.    | From exam 2016-08-23
 | E3.10  | Yes    |      | Rec.    | From exam 2017-08-22
-
+| ------ | ------ | ---- | ------- | -----------
 | E4.01  | TODO   |      |         | Monoids for REAL and endofunctions
 | E4.02  | TODO   |      |         | Ring ZZ, QQ, RR
 | E4.03  | TODO   |      |         | Expand H2((*c),(+),(+))
@@ -94,7 +94,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E4.26  | TODO   | 2021 | Rec.    |
 | E4.27  | Yes    |      |         | From exam 2017-03-14
 | E4.28  | TODO   |      | Rec.    | simplify :: FunExp -> FunExp
-
+| ------ | ------ | ---- | ------- | -----------
 | E5.01  | TODO   | 2019 | Rec.    | Polynomial mult.
 | E5.02  | TODO   |      | Rec.    | evalL correctness
 | E5.03  | Yes    |      | Rec.    | as = sum ai x^i where x=[0,1]
@@ -106,7 +106,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E5.09  | TODO   |      | Rec.    | degree homomorphism
 | E5.10  | TODO   |      | Rec.    | Functor instances
 | E5.11  | Yes    |      |         | maximum homomorphism
-
+| ------ | ------ | ---- | ------- | -----------
 | E6.01  | TODO   |	 |	   | Stream instances MulGroup, Transcendental
 | E6.02  | TODO   |	 |	   | drc k f x = kth derivative of f at x
 | E6.03  | TODO   |	 |	   | write expx without recurively (inline solve)
@@ -123,7 +123,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E6.14  | Yes    |      | Rec.    | From exam 2016-Practice
 | E6.15  | Yes    |      | Rec.    | From exam 2017-03-14
 | E6.16  | Yes    |      | Rec.    | From exam 2017-08-22
-
+| ------ | ------ | ---- | ------- | -----------
 | E7.01  | TODO   |      |         | Compute vector coeff.s in new basis
 | E7.02  | TODO   |      |         | g -> s satisfies VectorSpace laws
 | E7.03  | TODO   |      |         | sketch iso vectorspace and its rep.
@@ -141,7 +141,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E7.15  | TODO   |      |         | Iterate stoch.sys. "by hand"
 | E7.16  | TODO   |      |         | implement. prob. transition matrix
 | E7.17  | Yes    |      |         | From exam 2017-03-14
-
+| ------ | ------ | ---- | ------- | -----------
 | E8.01  | TODO   |      | Rec.    | Gen. formula for Laplace f^(k) s
 | E8.02  | TODO   |      | Rec.    | Laplace a few examples
 | E8.03  | TODO   |      | Rec.    | Laplace sin and cos through exp
@@ -150,6 +150,7 @@ Other solutions are in NN/ExerciseSolutions/
 | E8.06  | Yes    | 2021 | Rec.    | From exam 2016-Practice
 | E8.07  | Yes    | 2021 | Rec.    | From exam 2017-03-14
 | E8.08  | Yes    | 2021 |         | From exam 2017-08-22
+| ------ | ------ | ---- | ------- | -----------
 
 # Notes
 
