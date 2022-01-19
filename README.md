@@ -107,6 +107,25 @@ Most chapters end with weekly exercises.
 In [L/RecEx.md](L/RecEx.md) you will find a list of recommended
 exercises for each chapter of the lecture notes.
 
+## Exams
+
+The exams + solutions are available under the [Exam/](Exam/)
+subdirectory: for example
+[2016-Practice](2016-Practice),
+[2016-03](2016-03),
+[2016-08](2016-08),
+[2017-03](2017-03),
+[2017-08](2017-08),
+[2018-03](2018-03),
+[2018-08](2018-08),
+[2019-03](2019-03),
+[2019-08](2019-08),
+[2020-03](2020-03),
+[2020-08](2020-08),
+[2021-03](2021-03),
+[2021-08](2021-08).
+
+
 ## References
 
 Some important references:

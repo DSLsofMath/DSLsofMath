@@ -112,7 +112,7 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** *Read the book!* Chapter N = study week N
 + Not all sections are covered in lectures
 ** Student communication: Canvas discussion forum
-** Explore the [[https://chalmers.instructure.com/courses/17542][canvas page]]:
+** Explore the [[https://chalmers.instructure.com/courses/17542][canvas page]] and the [[https://github.com/DSLsofMath/DSLsofMath][github repo]]:
 + Home = Syllabus = "Course-memo"
 + Assignments     = all deadlines and where you hand in exercises and labs
 + People          = where you can find lab groups, etc.
@@ -120,10 +120,12 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 + Files           = the book and other (mostly older) material
 + Discussions     = a forum for student discussions and questions
 + Announcements   = where the teaching teams broadcasts messages
++ [[https://github.com/DSLsofMath/DSLsofMath/tree/master/Exam][github/Exam]]     = all 13 old exams *with solutions*
++ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/SolvedExercises.md][github/SolvedEx]] = >50 solved exercises from the book
 * L1.2 learning outcomes:
 ** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
 + When equations meet types - more and more eq. can be solved.
-+ https://jamboard.google.com/d/1BomAkVUUucA5VcAEeqZTwsX0YqahYQiOxPm4wv0ylqQ/viewer?f=0
++ [[https://jamboard.google.com/d/1BomAkVUUucA5VcAEeqZTwsX0YqahYQiOxPm4wv0ylqQ/viewer?f=0][Jamboard L1.2]]
 ** Active reading of mathematical text [[[file:Live2_2022.lhs][Complex number case study]]
 ** Modelling (different versions of) Complex in Haskell
 ** The DSL of types in Haskell:
