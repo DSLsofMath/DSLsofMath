@@ -12,15 +12,16 @@ type REAL = Double
 A datatype for "semantic complex numbers" as defined on page A.2 in
 the book [Adams and Essex, Calculus, 2010].
 
-
-Adams_Complex_01.png
+Quote 1:
+file://Adams_Complex_01.png
 
 \begin{code}
 data ImagUnit = IU deriving Show
 i :: ImagUnit
 i = IU
 \end{code}
-Adams_Complex_02.png
+Quote 2:
+file://Adams_Complex_02.png
 \begin{code}
 data CB where
   Plus1 :: REAL -> REAL -> ImagUnit -> CB
@@ -30,7 +31,8 @@ data CB where
 showCB :: CB -> String
 showCB = error "showCB: TODO"
 \end{code}
-Adams_Complex_03.png
+Quote 3:
+file://Adams_Complex_03.png
 \begin{code}
 e1, e2, e3, e4 :: CB
 e1 = Plus1 3      2      IU
@@ -38,24 +40,28 @@ e2 = Plus1 (7/2)  (2/3)  IU
 e3 = Plus2 0      IU     pi
 e4 = Plus1 (-3)   0      IU
 \end{code}
-Adams_Complex_04.png
+Quote 4:
+file://Adams_Complex_04.png
 \begin{code}
 data CC where
   PlusI :: REAL -> REAL -> CC
  deriving (Show)
 -- PlusI a b == Plus1 a b IU == Plus2 a IU b
 \end{code}
-Adams_Complex_05.png
+Quote 5:
+file://Adams_Complex_05.png
 
-Adams_Complex_06.png
+Quote 6:
+file://Adams_Complex_06.png
 We define the functions |re| and |im| using pattern-matching.
 \begin{code}
 re, im :: CC -> REAL
 re z@(PlusI x y) = x
 im z@(PlusI x y) = y
 \end{code}
-An example of its use:
-Adams_Complex_07.png
+An example of the use of pattern-matching:
+Quote 7:
+file://Adams_Complex_07.png
 \begin{code}
 addCC :: CC -> CC -> CC
 addCC = error "TODO: define addCC"

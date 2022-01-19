@@ -93,87 +93,38 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** syntax trees with constructor for variables
 ** definition and use of |Env|
 ** laws, properties, and testing
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 * L1.2 Intro / admin
 ** First eval meeting (with student representatives) done
-** Weekly exercises (bonusuppgifter)
-** Exercise sessions (övningar): be prepared with questions
+** Weekly exercises (-> bonus points for the exam)
++ https://chalmers.instructure.com/courses/17542/assignments/48652
+  Choose any two from 
+  Exc. 1.3 (Counting values), 
+       1,4 (Counting Maybes), 
+       1.8 (Composing sequences), 
+       1.12 (Polar complex)
+  See Chapter 1 in the book.
+** Exercise sessions: be prepared with questions
    2h*2 lectures = 4h/w
    2h*2 exercise sessions = 4h/w
    total 8h/w "scheduled"
    But, 7.5hp = 200h spread over 8 study weeks -> 200/8 = 25h/week "study time"
    Thus 17h left for you to schedule your own work with the course.
-** Read the book! Chapter N = study week N
+** *Read the book!* Chapter N = study week N
++ Not all sections are covered in lectures
 ** Student communication: Canvas discussion forum
-** Explore the canvas page:
-+ Home = Syllabus = "Kurs-pm"
-+ Assignments = all deadlines and where you hand in exercises and labs
-+ People = where you can find lab groups, etc.
-+ Pages = useful information about different parts of the course
-+ Files = the book and other (mostly older) material
-+ Discussions = a forum for student discussions and questions
-+ Announcements = where the teaching teams broadcasts messages
-
-
-
+** Explore the [[https://chalmers.instructure.com/courses/17542][canvas page]]:
++ Home = Syllabus = "Course-memo"
++ Assignments     = all deadlines and where you hand in exercises and labs
++ People          = where you can find lab groups, etc.
++ Pages           = useful information about different parts of the course
++ Files           = the book and other (mostly older) material
++ Discussions     = a forum for student discussions and questions
++ Announcements   = where the teaching teams broadcasts messages
 * L1.2 learning outcomes:
 ** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
 + When equations meet types - more and more eq. can be solved.
-** Active reading of mathematical text [Complex number case study]
++ https://jamboard.google.com/d/1BomAkVUUucA5VcAEeqZTwsX0YqahYQiOxPm4wv0ylqQ/viewer?f=0
+** Active reading of mathematical text [[[file:Live2_2022.lhs][Complex number case study]]
 ** Modelling (different versions of) Complex in Haskell
 ** The DSL of types in Haskell:
 *** |type|, |newtype|, |data|
@@ -184,15 +135,8 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** Syntax and semantics
 ** |eval| for complex number expressions
 * [[file:Live2_2022.lhs::module Live2 where][Live coding]] & [[https://jamboard.google.com/d/1BomAkVUUucA5VcAEeqZTwsX0YqahYQiOxPm4wv0ylqQ/viewer][Jamboard]]
-* E1.2 learning outcomes:
-** syntax trees for |ComplexSyn r|, the "complex numbers extension" of a type |r|
-** more use of |Env| and |lookup|
-** more on pattern matching: deep patterns (in |simplifyStep|)
-** more laws, properties, and testing
-** TODO: |Maybe|, |Either|
 * Notation for this file:
 ** L1.1 means week 1, lecture 1 (Tuesday)
 ** L1.2 means week 1, lecture 2 (Thursday)
 ** E1.1 means week 1, exercise session 1 (the presentation / live coding part)
-** E1.2 means week 1, exercise session 2 (the presentation / live coding part)
 ** The format of the file is Emacs Org-mode
