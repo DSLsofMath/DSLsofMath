@@ -3,7 +3,7 @@ DSLsofMath week 1: a short summary / overview
 + Lecturer: Patrik Jansson
 ** Technology / tooling
 + [[file:Live1_2022.lhs][emacs]]      for live coding, etc. (org-mode + Haskell)
-+ [[https://chalmers.instructure.com/courses/17542][Canvas]]     for the course homepage 
++ [[https://chalmers.instructure.com/courses/17542][Canvas]]     for the course homepage
 + [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][paper+PDF]]  for the course book: [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][Adlibris]] + [[https://chalmers.instructure.com/courses/17542/files/1964546?wrap=1][PDF]] + [[https://twitter.com/patrikja/status/1481574045606891521][title page]]
 + [[https://github.com/DSLsofMath/DSLsofMath][github]]     for source code of the lectures + book
 + [[https://chalmers.zoom.us/j/64738429538][Zoom]]       for delivering the lectures
@@ -97,10 +97,10 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** First eval meeting (with student representatives) done
 ** Weekly exercises (-> bonus points for the exam)
 + https://chalmers.instructure.com/courses/17542/assignments/48652
-  Choose any two from 
-  Exc. 1.3 (Counting values), 
-       1,4 (Counting Maybes), 
-       1.8 (Composing sequences), 
+  Choose any two from
+  Exc. 1.3 (Counting values),
+       1,4 (Counting Maybes),
+       1.8 (Composing sequences),
        1.12 (Polar complex)
   See Chapter 1 in the book.
 ** Exercise sessions: be prepared with questions
@@ -111,15 +111,16 @@ https://en.wikipedia.org/wiki/Domain-specific_language
    Thus 17h left for you to schedule your own work with the course.
 ** *Read the book!* Chapter N = study week N
 + Not all sections are covered in lectures
++ Some sections not included in the course (marked with an *)
 ** Student communication: Canvas discussion forum
 ** Explore the [[https://chalmers.instructure.com/courses/17542][canvas page]] and the [[https://github.com/DSLsofMath/DSLsofMath][github repo]]:
-+ Home = Syllabus = "Course-memo"
-+ Assignments     = all deadlines and where you hand in exercises and labs
-+ People          = where you can find lab groups, etc.
-+ Pages           = useful information about different parts of the course
-+ Files           = the book and other (mostly older) material
-+ Discussions     = a forum for student discussions and questions
-+ Announcements   = where the teaching teams broadcasts messages
++ [[https://chalmers.instructure.com/courses/17542][Home = Syllabus]] = "Course-memo"
++ [[https://chalmers.instructure.com/courses/17542/assignments][Assignments]]     = all deadlines and where you hand in exercises and labs
++ [[https://chalmers.instructure.com/courses/17542/groups][People]]          = where you can find lab groups, etc.
++ [[https://chalmers.instructure.com/courses/17542/pages/lecture-media][Pages]]           = Lecture media links, etc.
++ [[https://chalmers.instructure.com/courses/17542/files/folder/LectureNotes][Files]]           = the book and other (mostly older) material
++ [[https://chalmers.instructure.com/courses/17542/discussion_topics][Discussions]]     = a forum for student discussions and questions
++ [[https://chalmers.instructure.com/courses/17542/announcements][Announcements]]   = where the teaching teams broadcasts messages
 + [[https://github.com/DSLsofMath/DSLsofMath/tree/master/Exam][github/Exam]]     = all 13 old exams *with solutions*
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/SolvedExercises.md][github/SolvedEx]] = >50 solved exercises from the book
 * L1.2 learning outcomes:
@@ -128,6 +129,7 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 + [[https://jamboard.google.com/d/1BomAkVUUucA5VcAEeqZTwsX0YqahYQiOxPm4wv0ylqQ/viewer?f=0][Jamboard L1.2]]
 ** Active reading of mathematical text [[[file:Live2_2022.lhs][Complex number case study]]
 ** Modelling (different versions of) Complex in Haskell
+** |eval| for complex number expressions
 ** The DSL of types in Haskell:
 *** |type|, |newtype|, |data|
 *** types and their constructors
@@ -135,10 +137,12 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 *** datatype of syntax trees of simple arith. expr.
 *** |Nat|, |ImagUnits|, |CA|, |CB|, |CE|
 ** Syntax and semantics
-** |eval| for complex number expressions
 * [[file:Live2_2022.lhs::module Live2 where][Live coding]] & [[https://jamboard.google.com/d/1BomAkVUUucA5VcAEeqZTwsX0YqahYQiOxPm4wv0ylqQ/viewer][Jamboard]]
 * Notation for this file:
 ** L1.1 means week 1, lecture 1 (Tuesday)
 ** L1.2 means week 1, lecture 2 (Thursday)
 ** E1.1 means week 1, exercise session 1 (the presentation / live coding part)
 ** The format of the file is Emacs Org-mode
+* Extras
+Course book, [[http://www.collegepublications.co.uk/computing/?00024][from College Pulications]]:
+file://../../../internal/book/cover/DSLsofMath_front_cover.jpg
