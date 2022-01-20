@@ -37,7 +37,7 @@ $f$ to the value bound to the name $x$.
 
 Examples: let $f(x) = x - 1$ and let $t = 5*f(2)$.
 %
-Then it is clear that the value of $t$ is the constant $15$.
+Then it is clear that the value of $t$ is the constant $5$.
 %
 But if we let $s = 5*f(x)$ it is not clear if $s$ should be seen as a
 constant (for some fixed value $x$) or as a function of $x$.
