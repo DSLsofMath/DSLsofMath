@@ -35,7 +35,7 @@ Otherwise there is a risk of confusion between $f(x)$ as a
 function and $f(x)$ as the value you get from applying the function
 $f$ to the value bound to the name $x$.
 
-Examples: let $f(x) = x - 1$ and let $t = 5*f(2)$.
+Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
 %
 Then it is clear that the value of $t$ is the constant $15$.
 %
