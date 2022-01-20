@@ -1,0 +1,16 @@
+This subdirectory is not part of the learning outcomes of the
+DSLsofMath course 2022 - it is included just as extra material for
+those interested in Agda.
+
+It has two versions of the same program:
+  file:TypeDSL.agda
+is almost self-contained while
+  file:TypeDSL2.agda
+tries to blend in more with the agda "standard library".
+
+There is a live coding video on YouTube where Patrik Jansson
+implements file:TypeDSL.agda:
+
+  https://youtu.be/sFyy9sssK50
+
+
