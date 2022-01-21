@@ -426,7 +426,7 @@ f v  =  f (v 0 *^ e 0 + ... + v n *^ e n)
 \end{spec}
 % that
 It is particularly interesting to study functions which preserve the
-vector space structure: vector-space \index{homomorphism}s.
+vector space structure: vector-space \addtoindex{homomorphism}s.
 %
 Such functions are more commonly called ``linear maps'', but to avoid
 unnecessary confusion with the Haskell |map| function we will refer to

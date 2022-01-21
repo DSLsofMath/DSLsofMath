@@ -17,4 +17,8 @@
 -embed (CS (x, y)) = ToComplexCart x y
 +embed :: Complex r -> ComplexSyn r
 +embed (C (x, y)) = ToComplexCart x y
+* Ch7
+** L/07/W07.lhs around line 429
+-vector space structure: vector-space \index{homomorphism}s.
++vector space structure: vector-space \addtoindex{homomorphism}s.
 
