@@ -4,6 +4,10 @@
 -formal than usual, as least from a linguistic perspective.
 +formal than usual, at least from a linguistic perspective.
 * Ch1
+** L/01/SimpleFunExp.lhs
+*** Around line 38
+-Examples: let $f(x) = x - 1$ and let $t = 5*f(2)$.
++Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
 ** L/01/E1.lhs 
 *** Around line 136: if:=is
 -This kind of transformation if often useful, and it works also for
