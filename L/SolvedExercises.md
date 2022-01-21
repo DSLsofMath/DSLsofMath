@@ -20,8 +20,8 @@ Other solutions are in NN/ExerciseSolutions/
 | E1.07  | Yes    | 2019 | Rec.    | Dual of tupling transform
 | E1.08  | TODO   | 2021 |         | Comp Seq.
 | E1.09  | Yes    | 2020 |         | Operator sections
-| E1.10  | Yes    |      |         | embed.eval
-| E1.11  | TODO   |      | H-intro | NumComplexSyn
+| E1.10  | TODO   |      | H-intro | NumComplexSyn
+| E1.11  | Yes    |      |         | embed.eval
 | E1.12  | TODO   | 2021 | H-intro | ComplexPolar
 | E1.13  | Yes    |      | H-intro | Simplify
 | E1.14  | Yes    |      | Rec.    | From exam 2017-08 (Semiring)
