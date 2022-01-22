@@ -37,7 +37,7 @@ More details below.
 |--------+-------+---------------------+--------|
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
-+ The whole chapter in included in the course.
++ The whole chapter is included in the course.
 + (Some of the material is also parts of the prerequisites.)
 ** 1.1 Types of data and functions {p8}
 | [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 27:00 | Types               | §1.1   |
@@ -63,7 +63,7 @@ More details below.
 ** 1.5 A syntax for (complex) arithmetical expressions {p24}
 | [[https://youtu.be/QSc-kFxXUbA][L1.2.4]] | 14:18 | DSL complex         | §1.5   |
 ** 1.6 Laws, properties and testing {p26}
-+ Included but only partly presented in the lectures.
++ The section is included in the course but only partly presented in the lectures.
 | [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 15:00 | Associative law     | §1.6   |
 ** 1.7 Types of functions, expressions and operators {p29}
 | [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 20:00 | Jamboard examples   | §1.7   |
