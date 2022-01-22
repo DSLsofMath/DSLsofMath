@@ -1,0 +1,148 @@
+* Mapping between the course and the book
+
+Short version: study week N = book chapter N.
+
+More details below.
+
+* Week 1 lecture videos:
++ video short-hands: 
+  Lw.l.p is week w, lecture l, part p
+  The l=0 case are the "extra lectures on Haskell".
+|--------+-------+---------------------+--------|
+| [[https://www.youtube.com/watch?v=u5B-jiFDKto&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=1&t=3s][L1.0.1]] | 00:00 | TDD: id, const, (.) | §1.2   |
+| [[https://www.youtube.com/watch?v=Mr_YFDX0C1w&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=2][L1.0.2]] | 00:00 | (,), swap, fst      | §1.2   |
+| [[https://www.youtube.com/watch?v=Mr_YFDX0C1w&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=2][L1.0.2]] | 10:58 | tupling transform   | §1.2   |
+| [[https://www.youtube.com/watch?v=NsSVRkxDdfQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=3][L1.0.3]] | 00:00 | Either, Left, Right | §1.2   |
+| [[https://www.youtube.com/watch?v=NsSVRkxDdfQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=3][L1.0.3]] | 04:12 | either, patterns    | §1.2   |
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 00:00 | L1.1 Course admin   |        |
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 18:00 | DSL definition      | §1.1.1 |
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 20:00 | Jamboard examples   | §1.7   |
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 25:00 | "the function f(x)" | §1.7   |
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 27:00 | Types               | §1.1   |
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 31:00 | enum Bool->Bool     | §1.1.2 |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 00:00 | Haskell intro       | §1.2   |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 05:20 | enum Bool->Bool     | §1.1.2 |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 09:50 | floating point      | §1.1.3 |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 15:00 | Associative law     | §1.6   |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 18:47 | DSL for expressions | §1.2   |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 26:30 | Expr. of one var.   | §1.7   |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 43:00 | TA intr. themselves |        |
+| [[https://youtu.be/mLqcrYUpHvU][L1.2.1]] | 00:00 | L1.2 Course admin   |        |
+| [[https://youtu.be/SD4rF9VebJc][L1.2.2]] | 00:00 | N->Z->Q->R->C       |        |
+| [[https://www.youtube.com/watch?v=tKznC6F_P0s][L1.2.3]] | 01:00 | Live code complex   | §1.4   |
+| [[https://youtu.be/QSc-kFxXUbA][L1.2.4]] | 00:00 | Complex cont.       | §1.4   |
+| [[https://youtu.be/QSc-kFxXUbA][L1.2.4]] | 02:57 | Eq check + deriving | §1.4   |
+| [[https://youtu.be/QSc-kFxXUbA][L1.2.4]] | 14:18 | DSL complex         | §1.5   |
+| [[https://youtu.be/QSc-kFxXUbA][L1.2.4]] | 38:20 | Types               | §1.2   |
+|--------+-------+---------------------+--------|
+
+* 1. Types, Functions, and DSLs for Expressions (7-42)
++ The whole chapter in included in the course.
++ (Some of the material is also parts of the prerequisites.)
+** 1.1 Types of data and functions {p8}
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 27:00 | Types               | §1.1   |
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 18:00 | DSL definition      | §1.1.1 |
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 31:00 | enum Bool->Bool     | §1.1.2 |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 05:20 | enum Bool->Bool     | §1.1.2 |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 09:50 | floating point      | §1.1.3 |
+** 1.2 Types in Haskell: type, newtype, and data {p14}
+| [[https://www.youtube.com/watch?v=u5B-jiFDKto&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=1&t=3s][L1.0.1]] | 00:00 | TDD: id, const, (.) | §1.2   |
+| [[https://www.youtube.com/watch?v=Mr_YFDX0C1w&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=2][L1.0.2]] | 00:00 | (,), swap, fst      | §1.2   |
+| [[https://www.youtube.com/watch?v=Mr_YFDX0C1w&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=2][L1.0.2]] | 10:58 | tupling transform   | §1.2,1.8   |
+| [[https://www.youtube.com/watch?v=NsSVRkxDdfQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=3][L1.0.3]] | 00:00 | Either, Left, Right | §1.2   |
+| [[https://www.youtube.com/watch?v=NsSVRkxDdfQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=3][L1.0.3]] | 04:12 | either, patterns    | §1.2   |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 00:00 | Haskell intro       | §1.2   |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 18:47 | DSL for expressions | §1.2   |
+| [[https://youtu.be/QSc-kFxXUbA][L1.2.4]] | 38:20 | Types               | §1.2   |
+** 1.3 Notation and abstract syntax for sequences {p16}
++ Included in the course but not presented in a lecture.
+** 1.4 A DSL of complex numbers {p18}
+| [[https://www.youtube.com/watch?v=tKznC6F_P0s][L1.2.3]] | 01:00 | Live code complex   | §1.4   |
+| [[https://youtu.be/QSc-kFxXUbA][L1.2.4]] | 00:00 | Complex cont.       | §1.4   |
+| [[https://youtu.be/QSc-kFxXUbA][L1.2.4]] | 02:57 | Eq check + deriving | §1.4   |
+** 1.5 A syntax for (complex) arithmetical expressions {p24}
+| [[https://youtu.be/QSc-kFxXUbA][L1.2.4]] | 14:18 | DSL complex         | §1.5   |
+** 1.6 Laws, properties and testing {p26}
++ Included but only partly presented in the lectures.
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 15:00 | Associative law     | §1.6   |
+** 1.7 Types of functions, expressions and operators {p29}
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 20:00 | Jamboard examples   | §1.7   |
+| [[https://www.youtube.com/watch?v=nsXgf1HF7E8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=4&t=1019][L1.1.1]] | 25:00 | "the function f(x)" | §1.7   |
+| [[https://www.youtube.com/watch?v=80DeRjb06vI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=8&t=28s][L1.1.2]] | 26:30 | Expr. of one var.   | §1.7   |
+
+
+* 2. DSLs for logic and proofs (43-80)
+** 2.1 Propositional Calculus {p43}
+** 2.2 First Order Logic {p57}
+** 2.3 An aside: Pure set theory {p64}
+** 2.4 Example proofs: contradiction, cases, primes {p66}
+** 2.5 Basic concepts of calculus {p69}
+** 2.6 Exercises {p75}
+
+* 3. Types in Mathematics (81-100)
+** 3.1 Typing Mathematics: derivative of a function {p81}
+** 3.2 Typing Mathematics: partial derivative {p82}
+** 3.3 Typing Mathematics: Lagrangian case study {p85}
+** 3.4 Incremental analysis with types {p88}
+** 3.5 Type classes {p90}
+** 3.6 Computing derivatives {p95}
+** 3.7 Exercises {p98}
+
+* 4. Compositionality and Algebras (101-140)
+** 4.1 Algebraic Structures {p102}
+** 4.2 Homomorphisms {p105}
+** 4.3 Compositional semantics {p109}
+** 4.4 Folds {p111}
+** 4.5 Initial and Free Structures {p116}
+** 4.6 Computing derivatives, reprise {p122}
+** 4.7 Summary {p126}
+** 4.8 Beyond Algebras: Co-algebra and the Stream calculus {p128}
+** 4.9 A solved exercise {p129}
+** 4.10 Exercises {p134}
+
+* 5. Polynomials and Power Series (141-157)
+** 5.1 Polynomials {p141}
+** 5.2 Division and the degree of the zero polynomial {p147}
+** 5.3 Polynomial degree as a homomorphism {p148}
+** 5.4 Power Series {p149}
+** 5.5 Operations on power series {p152}
+** 5.6 Formal derivative {p153}
+** 5.7 Exercises {p155}
+
+* 6. Taylor and Maclaurin series (158-174)
+** 6.1 Taylor series {p161}
+** 6.2 Derivatives and Integrals for Maclaurin series {p164}
+** 6.3 Integral for Formal Power series {p164}
+** 6.4 Simple differential equations {p165}
+** 6.5 Exponentials and trigonometric functions {p168}
+** 6.6 Associated code {p170}
+** 6.7 Exercises {p172}
+
+* 7. Elements of Linear Algebra (175-203)
+** 7.1 Representing vectors as functions {p178}
+** 7.2 Linear transformations {p181}
+** 7.3 Inner products {p184}
+** 7.4 Examples of matrix algebra {p186}
+** 7.5 *Monadic dynamical systems {p197}
+** 7.6 Associated code {p200}
+** 7.7 Exercises {p202}
+
+* 8. Exponentials and Laplace (204-218)
+** 8.1 The Exponential Function {p204}
+** 8.2 The Laplace transform {p209}
+** 8.3 Laplace and other transforms {p216}
+** 8.4 Exercises {p217}
+
+* 9. Probability Theory (219-241)
+** 9.1 Sample spaces {p220}
+** 9.2 *Monad Interface {p223}
+** 9.3 Distributions {p223}
+** 9.4 Semantics of spaces {p225}
+** 9.5 Random Variables {p228}
+** 9.6 Events and probability {p230}
+** 9.7 Examples: Dice, Drugs, Monty Hall {p234}
+** 9.8 *Solving a problem with equational reasoning {p237}
+
+* A The course “DSLs of Mathematics”
+
+* B Parameterised Complex Numbers
