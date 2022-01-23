@@ -420,7 +420,7 @@ range is extended to complex numbers.
 In most programming languages the range is extended in another way.
 %
 The type is |Double -> Double| and |sqrt (-1)| returns the value |NaN
-: Double| (Not a Number).
+:: Double| (Not a Number).
 %
 \index{NaN@@Not a number (|NaN|)}%
 %
