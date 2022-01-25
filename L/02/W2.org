@@ -1,3 +1,4 @@
+*DSLs of Mathematics, Week 2*
 * Admin:
 ** Course book <-> lecture video translation table available
 + Prompted by a student question I have now created a file describing
@@ -6,7 +7,7 @@
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/README.org][github]]: [[file:../README.org][DSLsofMath/L/README.org]]
 + tldr; study week N = book chapter N.
 ** [[https://chalmers.instructure.com/courses/17542/assignments/30083][Assignment 1]]: (deadline 2022-02-01)
-+ Group formation done by today
++ Group formation should be done by today
 + Tuesday 2022-02-01: Deadline
 + Monday 2022-02-07: "Presentation" (Q&A) slots
 ** Extra Haskell lectures online [recommended watching]
