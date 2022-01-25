@@ -1,0 +1,71 @@
+* Admin:
+** Course book <-> lecture video translation table available
++ Prompted by a student question I have now created a file describing
+  which parts of the lectures are connected to which parts of the
+  book.
++ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/README.org][github]]: [[file:../README.org][DSLsofMath/L/README.org]]
++ tldr; study week N = book chapter N.
+** [[https://chalmers.instructure.com/courses/17542/assignments/30083][Assignment 1]]: (deadline 2022-02-01)
++ Group formation done by today
++ Tuesday 2022-02-01: Deadline
++ Monday 2022-02-07: "Presentation" (Q&A) slots
+** Extra Haskell lectures online
++ Three YouTube videos about Haskell and "type driven development" are
+  online covering: polymorphic functions, product types |(a,b)| and
+  sum types |Either a b|. These are recommended watching.
+* Lecture 2.1 ([[https://jamboard.google.com/d/13gEobT8LWbY7bmMztKO2_ZVEESI87d-ngF3aogZeiOc/viewer?f=0][L2.1 Jamboard]])
+** Prop = Propositional Calculus (Satslogik)
++ syntax examples
++ truth tables
++ eval : Prop -> Table -> Bool
+  type Table = Name -> Bool
+** Proofs
++ proof rules, proof terms
+** Pure set theory (useful for [[https://chalmers.instructure.com/courses/17542/assignments/48650][Assignment 1]])
++ "untyped sets", "just sets all the way down"
++ Empty set, Singleton set constructor, {braces around enumeration}
++ Cardinality (number of elements)
++ Membership: x ∈ S
++ Union, Intersection - connection to logic through membership
++ Enumerating some sets (to get thinking started)
+** [[file:Live_2_1.lhs][Live coding (Prop)]] [if there is time]
+* Lecture 2.2: First order logic (FOL) (as a new DSL, extending Prop)
++ [[https://jamboard.google.com/d/1aAzwgHktC5Ha2js9BPnv5IXTNGBrll3LLXpOhh-6rh8/viewer?f=0][L2.2 Jamboard]]
+** FOL = First Order Logic
+** adding a term language (for rationals, or sets, or ...)
+** extend names to n-ary predicates over terms
+** quantifiers: Forall and Exists
+** Typed quantification
+** Pushing negation through other constructors
+** Case study: sqrt 2 is not rational [proof by contradiction]
+** Case study: p^q can be rational even when neither p nor q is [proof by cases]
+** Perhaps: Case study: the limit of a function [from maths text to types and logic]
+** Live coding (towards a DSL for proof terms )
++ building proof terms (Tru, Fals, And, Or, Impl (->))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Book https://www.collegepublications.co.uk/computing/?00024
+/home/patrikj/Pictures/DSLsofMath_book_front_cover.jpg
