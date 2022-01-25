@@ -1,0 +1,10 @@
+https://twitter.com/patrikja/status/1486049666886160384
+Domain-Specific Languages of Mathematics
+Week 2, Lect. 1, Part
+1: https://youtube.com/watch?v=px_b66qzK2w&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=10
+2: https://youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11 Prop. Calc.
+3: https://youtube.com/watch?v=fM2PYaVUH5g&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=12 Pure sets
+4: https://youtube.com/watch?v=4pyw7pw_yr4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=13 live coding Prop
+Book https://collegepublications.co.uk/computing/?00024
+Repo https://github.com/DSLsofMath/DSLsofMath
+#Haskell
