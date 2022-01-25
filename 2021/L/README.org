@@ -1,0 +1,87 @@
+* Partial "Translation table" between lectures and the course/book
+  Domain-Specific Languages of Mathematics
+  
+
+* 2021 week 2 lectures
+|--------+-------+------------------------+--------|
+| [[https://www.youtube.com/watch?v=w6OtHV9Nfp0&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=11&t=14s][L2.1.1]] | 00:00 | L2.1 course admin      |        |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 00:00 | Prop.logic intro       | §2.1   |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 02:30 | Truth tab. (=>)        | §2.1.2 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 05:55 | Truth tab. swap        | §2.1.2 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 10:00 | Tautology              | §2.1.2 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 12:20 | data Prop, eval        | §2.1.1 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 20:20 | AndIntro, OrIntroL     | §2.1.3 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 25.09 | fst, snd, orElim       | §2.1.6 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 32:10 | DSL of pure set theory | §2.3   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 00:00 | card, Elem             | §2.3   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 10:42 | test union (table)     | §2.3   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 16:35 | union commutative      | §2.3   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 17:50 | union idempotent       | §2.3   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 23:00 | live coding Prop, eval | §2.1   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 35:00 | eval: adding Name case | §2.1   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 38:45 | lift2                  | §2.1   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 00:00 | Overview               |        |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 02:00 | From Prop to FOL       | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 04:45 | from Name to Predicate | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 09:20 | quantifiers            | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 12:48 | towards a DSL for FOL  | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 16:10 | data FOL (Jamboard)    | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 19:30 | type of x+y=y+x        | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 27:28 | type quantifiers       | §2.2.4 |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 32.35 | negating quantifiers   | §2.2.4 |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 40:30 | Proof by contradiction | §2.4.1 |
+| [[https://www.youtube.com/watch?v=DrOtvFKMIRs&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.2]] | 00:00 | sqrt 3 irrational      | §2.4.1 |
+| [[https://www.youtube.com/watch?v=DrOtvFKMIRs&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.2]] | 15:25 | Proof by cases         | §2.4.2 |
+| [[https://www.youtube.com/watch?v=DrOtvFKMIRs&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.2]] | 30:55 | Propositions as types  | §2.1.6 |
+| [[https://www.youtube.com/watch?v=0Xzvn5nVbh8&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=17][L3.0.1]] | 00:00 | limit of functions     | §2.5.3 |
+| [[https://www.youtube.com/watch?v=Zky9J949jo4&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=18][L3.0.2]] | 00:00 | lim properties/types   | §3     |
+| [[https://www.youtube.com/watch?v=Zky9J949jo4&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=18][L3.0.2]] | 08:29 | derivative of f:R->R   | §3.1   |
+|--------+-------+------------------------+--------|
+
+* 2. DSLs for logic and proofs (43-80)
+Book chapter 2.
+
+** 2.1 Propositional Calculus {p43}
+| [[https://www.youtube.com/watch?v=w6OtHV9Nfp0&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=11&t=14s][L2.1.1]] | 00:00 | L2.1 course admin      |        |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 00:00 | Overview               |        |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 00:00 | Prop.logic intro       | §2.1   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 23:00 | live coding Prop, eval | §2.1   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 35:00 | eval: adding Name case | §2.1   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 38:45 | lift2                  | §2.1   |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 12:20 | data Prop, eval        | §2.1.1 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 02:30 | Truth tab. (=>)        | §2.1.2 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 05:55 | Truth tab. swap        | §2.1.2 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 10:00 | Tautology              | §2.1.2 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 20:20 | AndIntro, OrIntroL     | §2.1.3 |
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 25.09 | fst, snd, orElim       | §2.1.6 |
+| [[https://www.youtube.com/watch?v=DrOtvFKMIRs&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.2]] | 30:55 | Propositions as types  | §2.1.6 |
+** 2.2 First Order Logic {p57}
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 02:00 | From Prop to FOL       | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 04:45 | from Name to Predicate | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 09:20 | quantifiers            | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 12:48 | towards a DSL for FOL  | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 16:10 | data FOL (Jamboard)    | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 19:30 | type of x+y=y+x        | §2.2   |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 27:28 | type quantifiers       | §2.2.4 |
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 32.35 | negating quantifiers   | §2.2.4 |
+** 2.3 An aside: Pure set theory {p64}
+| [[https://www.youtube.com/watch?v=sO10_bB2kiM&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=12][L2.1.2]] | 32:10 | DSL of pure set theory | §2.3   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 00:00 | card, Elem             | §2.3   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 10:42 | test union (table)     | §2.3   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 16:35 | union commutative      | §2.3   |
+| [[https://www.youtube.com/watch?v=DlC6fSaKQxk&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=13][L2.1.3]] | 17:50 | union idempotent       | §2.3   |
+** 2.4 Example proofs: contradiction, cases, primes {p66}
+| [[https://www.youtube.com/watch?v=BRb8_amQe9k&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.1]] | 40:30 | Proof by contradiction | §2.4.1 |
+| [[https://www.youtube.com/watch?v=DrOtvFKMIRs&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.2]] | 00:00 | sqrt 3 irrational      | §2.4.1 |
+| [[https://www.youtube.com/watch?v=DrOtvFKMIRs&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=15][L2.2.2]] | 15:25 | Proof by cases         | §2.4.2 |
+** 2.5 Basic concepts of calculus {p69}
+| [[https://www.youtube.com/watch?v=0Xzvn5nVbh8&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=17][L3.0.1]] | 00:00 | limit of functions     | §2.5.3  |
+
+* 3. 
+
+| [[https://www.youtube.com/watch?v=Zky9J949jo4&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=18][L3.0.2]] | 00:00 | lim properties/types   | §3   |
+| [[https://www.youtube.com/watch?v=Zky9J949jo4&list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-&index=18][L3.0.2]] | 08:29 | derivative of f:R->R   | §3.1 |
+
+
+
+
