@@ -9,10 +9,10 @@
 + Group formation done by today
 + Tuesday 2022-02-01: Deadline
 + Monday 2022-02-07: "Presentation" (Q&A) slots
-** Extra Haskell lectures online
+** Extra Haskell lectures online [recommended watching]
 + Three YouTube videos about Haskell and "type driven development" are
   online covering: polymorphic functions, product types |(a,b)| and
-  sum types |Either a b|. These are recommended watching.
+  sum types |Either a b|.
 * Lecture 2.1 ([[https://jamboard.google.com/d/13gEobT8LWbY7bmMztKO2_ZVEESI87d-ngF3aogZeiOc/viewer?f=0][L2.1 Jamboard]])
 ** Prop = Propositional Calculus (Satslogik)
 + syntax examples
@@ -29,6 +29,18 @@
 + Union, Intersection - connection to logic through membership
 + Enumerating some sets (to get thinking started)
 ** [[file:Live_2_1.lhs][Live coding (Prop)]] [if there is time]
++ eval for Prop without variable names
++ add table for name lookup
++ generalise: polymorphic lifting functions
+
+
+
+
+
+
+
+
+
 * Lecture 2.2: First order logic (FOL) (as a new DSL, extending Prop)
 + [[https://jamboard.google.com/d/1aAzwgHktC5Ha2js9BPnv5IXTNGBrll3LLXpOhh-6rh8/viewer?f=0][L2.2 Jamboard]]
 ** FOL = First Order Logic
