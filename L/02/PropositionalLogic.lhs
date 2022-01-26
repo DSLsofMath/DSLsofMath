@@ -372,7 +372,7 @@ For conjunction (|And|), we have two eliminations rules:
 %
 So we represent them by |AndElimL :: Prop -> Proof -> Proof| (and
 |AndElimR| symmetrically), where the extra |Prop| arguments corresponds
-to~|P|~and~|Q|~respectively.
+to~|Q|~and~|P|~respectively.
 
 For disjunction (|Or|) the idea is that if we know that \(P ∨ Q\)
 holds, then we have two cases: either |P| holds or |Q| holds.
