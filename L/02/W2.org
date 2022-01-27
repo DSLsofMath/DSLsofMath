@@ -53,8 +53,22 @@
 ** Case study: sqrt 2 is not rational [proof by contradiction]
 ** Case study: p^q can be rational even when neither p nor q is [proof by cases]
 ** Perhaps: Case study: the limit of a function [from maths text to types and logic]
-** Live coding (towards a DSL for proof terms )
+** [[file:Live_2_2.lhs][Live coding]] (towards a DSL for proof terms)
 + building proof terms (Tru, Fals, And, Or, Impl (->))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -82,3 +96,25 @@
 
 * Book https://www.collegepublications.co.uk/computing/?00024
 /home/patrikj/Pictures/DSLsofMath_book_front_cover.jpg
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* DSLsofMath logo
+../../admin/DSL_logo/DSL_logo.png
+
+

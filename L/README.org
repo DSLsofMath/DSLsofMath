@@ -54,6 +54,21 @@ More details below.
 | [[https://www.youtube.com/watch?v=4pyw7pw_yr4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=13&t=441 ][L2.1.4]] | 07:21 | eval: adding Name case  | §2.1   |
 | [[https://www.youtube.com/watch?v=4pyw7pw_yr4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=13&t=755 ][L2.1.4]] | 12:35 | lift2 and friends       | §1.3   |
 |--------+-------+-------------------------+--------|
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14][L2.2.1]] | 00:00 | First Order Logic       | §2.2   |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14&t=269][L2.2.1]] | 04:29 | FOL predicate examples  | §2.2   |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14&t=519][L2.2.1]] | 08:39 | Quantifiers             | §2.2.2 |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14&t=938][L2.2.1]] | 15:38 | data FOL, data Dom      | §2.2   |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14&t=1298][L2.2.1]] | 21:38 | GADTs extension mention | §2.2   |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14][L2.2.1]] | 23:00 | Interpret FOL-syntax    | §2.2   |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14&t=1668][L2.2.1]] | 27:48 | Typed quantifiers       | §2.2.4 |
+| [[https://youtu.be/LwoQjzFBt5k?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&t=1978][L2.2.1]] | 32:58 | de Morgan, not quant.   | §2.2.4 |
+| [[https://www.youtube.com/watch?v=RauIPv-hEY0&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=15][L2.2.2]] | 00:00 | Proof by contradiction  | §2.4.1 |
+| [[https://www.youtube.com/watch?v=RauIPv-hEY0&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=15&t=874][L2.2.2]] | 14:34 | Proof by cases          | §2.4.2 |
+| [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=16][L2.2.3]] | 00:00 | Live code: proof terms  | §2.1.5 |
+| [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=23&t=518s ][L2.2.3]] | 08:38 | inhabited types are Tru | §2.1.6 |
+| [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=23&t=770s ][L2.2.3]] | 13:02 | Or p q => Or q p        | §2.1.6 |
+| [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=23&t=770s ][L2.2.3]] | 15:18 | Not(Not(Or p (Not p)))  | §2.1.7 |
+|--------+-------+-------------------------+--------|
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
 + The whole chapter is included in the course.
@@ -102,16 +117,29 @@ More details below.
 | [[https://www.youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11&t=384 ][L2.1.2]] | 06:24 | Truth tab. swap         | §2.1.2 |
 | [[https://www.youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11&t=630 ][L2.1.2]] | 10:30 | Tautology               | §2.1.2 |
 | [[https://www.youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11&t=1568][L2.1.2]] | 26:08 | AndIntro, OrIntroL      | §2.1.3 |
+| [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=16][L2.2.3]] | 00:00 | Live code: proof terms  | §2.1.5 |
 | [[https://www.youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11&t=1806][L2.1.2]] | 30:06 | fst, snd, orElim        | §2.1.6 |
+| [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=23&t=518s ][L2.2.3]] | 08:38 | inhabited types are Tru | §2.1.6 |
+| [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=23&t=770s ][L2.2.3]] | 13:02 | Or p q => Or q p        | §2.1.6 |
+| [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=23&t=770s ][L2.2.3]] | 15:18 | Not(Not(Or p (Not p)))  | §2.1.7 |
 ** 2.2 First Order Logic {p57}
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14][L2.2.1]] | 00:00 | First Order Logic       | §2.2   |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14&t=269][L2.2.1]] | 04:29 | FOL predicate examples  | §2.2   |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14&t=938][L2.2.1]] | 15:38 | data FOL, data Dom      | §2.2   |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14&t=1298][L2.2.1]] | 21:38 | GADTs extension mention | §2.2   |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14][L2.2.1]] | 23:00 | Interpret FOL-syntax    | §2.2   |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14&t=519][L2.2.1]] | 08:39 | Quantifiers             | §2.2.2 |
+| [[https://www.youtube.com/watch?v=LwoQjzFBt5k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=14&t=1668][L2.2.1]] | 27:48 | Typed quantifiers       | §2.2.4 |
+| [[https://youtu.be/LwoQjzFBt5k?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&t=1978][L2.2.1]] | 32:58 | de Morgan, not quant.   | §2.2.4 |
 ** 2.3 An aside: Pure set theory {p64}
 | [[https://www.youtube.com/watch?v=fM2PYaVUH5g&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=12       ][L2.1.3]] | 00:00 | Pure set theory         | §2.3   |
 | [[https://www.youtube.com/watch?v=fM2PYaVUH5g&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=12&t=529 ][L2.1.3]] | 08:49 | union, card examples    | §2.3   |
 | [[https://www.youtube.com/watch?v=fM2PYaVUH5g&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=12&t=1025][L2.1.3]] | 17:05 | union computation table | §2.3   |
 ** 2.4 Example proofs: contradiction, cases, primes {p66}
+| [[https://www.youtube.com/watch?v=RauIPv-hEY0&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=15][L2.2.2]] | 00:00 | Proof by contradiction  | §2.4.1 |
+| [[https://www.youtube.com/watch?v=RauIPv-hEY0&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=15&t=874][L2.2.2]] | 14:34 | Proof by cases          | §2.4.2 |
 ** 2.5 Basic concepts of calculus {p69}
 ** 2.6 Exercises {p75}
-
 * 3. Types in Mathematics (81-100)
 ** 3.1 Typing Mathematics: derivative of a function {p81}
 ** 3.2 Typing Mathematics: partial derivative {p82}
