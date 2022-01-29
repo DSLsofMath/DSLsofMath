@@ -68,6 +68,9 @@ More details below.
 | [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=23&t=518s ][L2.2.3]] | 08:38 | inhabited types are Tru | §2.1.6 |
 | [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=23&t=770s ][L2.2.3]] | 13:02 | Or p q => Or q p        | §2.1.6 |
 | [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=23&t=770s ][L2.2.3]] | 15:18 | Not(Not(Or p (Not p)))  | §2.1.7 |
+| [[https://www.youtube.com/watch?v=Lz17yvfSacE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18][L2.3.1]] | 00:00 | Prop and its eval       | §2.1.1 |
+| [[https://www.youtube.com/watch?v=Lz17yvfSacE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18&t=196][L2.3.1]] | 03:16 | data Proof + checkProof | §2.1.3 |
+| [[https://www.youtube.com/watch?v=Lz17yvfSacE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18&t=546][L2.3.1]] | 09:06 | checkProof examples     | §2.1.4 |
 |--------+-------+-------------------------+--------|
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
@@ -113,10 +116,13 @@ More details below.
 | [[https://www.youtube.com/watch?v=4pyw7pw_yr4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=13&t=220 ][L2.1.4]] | 03:40 | impl. eval without Name | §2.1   |
 | [[https://www.youtube.com/watch?v=4pyw7pw_yr4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=13&t=441 ][L2.1.4]] | 07:21 | eval: adding Name case  | §2.1   |
 | [[https://www.youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11&t=817 ][L2.1.2]] | 13:37 | data Prop, eval start   | §2.1.1 |
+| [[https://www.youtube.com/watch?v=Lz17yvfSacE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18][L2.3.1]] | 00:00 | Prop and its eval       | §2.1.1 |
 | [[https://www.youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11&t=200 ][L2.1.2]] | 03:20 | Truth table for (=>)    | §2.1.2 |
 | [[https://www.youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11&t=384 ][L2.1.2]] | 06:24 | Truth tab. swap         | §2.1.2 |
 | [[https://www.youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11&t=630 ][L2.1.2]] | 10:30 | Tautology               | §2.1.2 |
 | [[https://www.youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11&t=1568][L2.1.2]] | 26:08 | AndIntro, OrIntroL      | §2.1.3 |
+| [[https://www.youtube.com/watch?v=Lz17yvfSacE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18&t=196][L2.3.1]] | 03:16 | data Proof + checkProof | §2.1.3 |
+| [[https://www.youtube.com/watch?v=Lz17yvfSacE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18&t=546][L2.3.1]] | 09:06 | checkProof examples     | §2.1.4 |
 | [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=16][L2.2.3]] | 00:00 | Live code: proof terms  | §2.1.5 |
 | [[https://www.youtube.com/watch?v=j456QTzS7O4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=11&t=1806][L2.1.2]] | 30:06 | fst, snd, orElim        | §2.1.6 |
 | [[https://www.youtube.com/watch?v=Ey_9KP-9wlU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=23&t=518s ][L2.2.3]] | 08:38 | inhabited types are Tru | §2.1.6 |
