@@ -340,7 +340,7 @@ variable |i|.
 Then the final step is to take the disjunction of this infinite set of formulas
 to obtain |Exists i (A i)|.
 
-The elimination and introduction rules for existential quantification are:
+The introduction and elimination rules for existential quantification are:
 %
 \[
   \frac{P(a)}{∃i. P(i)}\hspace{10em}\frac{{∀x.P(x) → R}  \quad \quad ∃i. P(i)}{R}
