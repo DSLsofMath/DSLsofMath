@@ -445,9 +445,9 @@ Taking the intuitionistic version of FOL (with the same treatment of
 negation as for propositional logic), we additionally expect to be
 able to represent proofs of quantifiers, directly. That is:
 \begin{quote}
-|(t, bt)| is a program of type |Exists x (P x)| if |bt| is has type |P t|.
+|(t, bt)| is a program of type |Exists x (P x)| if |bt| has type |P t|.
 
-|f| is a program of type |Forall x (P x)| if |f t| is has type |P t| for all |t|.
+|f| is a program of type |Forall x (P x)| if |f t| has type |P t| for all |t|.
 \end{quote}
 
 Unfortunately, in its 2010 standard, Haskell does not provide the
