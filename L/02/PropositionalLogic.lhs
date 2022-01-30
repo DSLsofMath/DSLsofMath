@@ -285,7 +285,7 @@ that |t| is a valid proof of |p|:
 checkProof :: Proof -> Prop -> Bool
 \end{code}
 %
-But we still have to figure out what consitutes proofs.
+But we still have to figure out what constitutes proofs.
 %
 We will build up the ``proof DSL'' one step at a time by looking at
 what we need to prove the different propositions.
