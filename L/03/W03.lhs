@@ -712,7 +712,7 @@ int :: X -> X -> (X -> Z) -> Z
 \end{code}
 %
 Now we have reached a stage where all the operations have types and
-pthe type-checker is happy with them.
+the type-checker is happy with them.
 %
 At this point it is possible to experiment with variations based on
 alternative interpretations of the text.
