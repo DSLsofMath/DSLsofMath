@@ -659,7 +659,7 @@ Similarly, |f| has a type, but no proper implementation.
 %
 We will declare types for the rest of the variables as well, and
 because we are not implementing any of them right now, we can just
-make provide a dummy definition for a few of them in one go:
+make a dummy definition for a few of them in one go:
 %
 \begin{code}
 (x, deriv, ff, a, b, int) = undefined
