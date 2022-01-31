@@ -659,7 +659,7 @@ and
 Two homomorphisms which are inverse of each other define an
 \emph{isomorphism}.
 %
-If an isomorphism exist between two sets, we say that they are
+If an isomorphism exists between two sets, we say that they are
 isomorphic.
 %
 For example, the exponential and the logarithm witness an isomorphism
