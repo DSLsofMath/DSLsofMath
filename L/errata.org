@@ -31,7 +31,16 @@
 -to~|Q|.
 +|AndElimR| symmetrically), where the extra |Prop| arguments corresponds
 +to~|Q|~and~|P|~respectively.
-
+** l/02/FOL.lhs
+*** Around line 340
+-The elimination and introduction rules for existential quantification are:
++The introduction and elimination rules for existential quantification are:
+*** Around line 448
+-|(t, bt)| is a program of type |Exists x (P x)| if |bt| is has type |P t|.
++|(t, bt)| is a program of type |Exists x (P x)| if |bt| has type |P t|.
+*** Around line 450
+-|f| is a program of type |Forall x (P x)| if |f t| is has type |P t| for all |t|.
++|f| is a program of type |Forall x (P x)| if |f t| has type |P t| for all |t|.
 * Ch7
 ** L/07/W07.lhs around line 429
 -vector space structure: vector-space \index{homomorphism}s.
