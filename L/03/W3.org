@@ -32,11 +32,22 @@ Learning outcomes
   connect 5min before your slot and make sure all your group members
   are also ready.
 + We reuse the "Exercise session" Zoom link [link and password in canvas].
-* Week 3, Lecture 2, "slides" (Jamboard)
+* Week 3, Lecture 2, "slides" ([[https://jamboard.google.com/d/1jXX4nrptIAQu0NTi8YPF5ADuy8CyagBPHMx9vyz3_dI/viewer][Jamboard L3.2]])
 + Partial derivatives
 + Lagrange Eq's
 + Lagrange example
 ** [[file:Live_3_2.lhs][Live coding]]
++ Type classes
++ numeric instances for functions (x->a)
+
+  implicit type casts
+  collect operations of the same shape
+
+  Numeric classes in more detail
+
+  function instances for numeric classes
+
+  General type classes in Haskell [see code below]
 
 
 
