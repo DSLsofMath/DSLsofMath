@@ -73,6 +73,23 @@ More details below.
 | [[https://www.youtube.com/watch?v=Lz17yvfSacE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18&t=546][L2.3.1]] | 09:06 | checkProof examples     | §2.1.4 |
 |--------+-------+-------------------------+--------|
 
+* Week 3 lecture videos:
+|---------+-------+--------------------------------+--------|
+| [[https://www.youtube.com/watch?v=kqhGY6v7feU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18][L3.1.1]]  | 00:00 | Limit of function              | §2.5.3 |
+| [[https://www.youtube.com/watch?v=kqhGY6v7feU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18&t=365][L3.1.1]]  | 06:01 | Scope check lim logic          | §2.5.3 |
+| [[https://www.youtube.com/watch?v=lBxyARMvhbY&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=19][L3.1.2]]  | 00:00 | Lim properties and types       | §3.1   |
+| [[https://www.youtube.com/watch?v=lBxyARMvhbY&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=19&t=630][L3.1.2]]  | 10:30 | Deriv. of function             | §3.1   |
+| [[https://www.youtube.com/watch?v=wxFVoFZ-Sz4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=20][L3.1.3]]  | 00:00 | Deriv. examples                | §3.1   |
+| [[https://www.youtube.com/watch?v=wxFVoFZ-Sz4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=20&t=300][L3.1.3]]  | 05:00 | D (^2)  =  (2*)                | §3.1   |
+| [[https://www.youtube.com/watch?v=wxFVoFZ-Sz4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=20&t=732][L3.1.3]]  | 12:12 | D (f + g)  =  D f  +  D g      | §3.1   |
+| [[https://www.youtube.com/watch?v=rBj7-4xAzM4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=21][L3.1.4]]  | 00:00 | Live coding deriv in Haskell   | §3.6   |
+| [[https://www.youtube.com/watch?v=rBj7-4xAzM4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=21&t=461][L3.1.4]]  | 07:41 | deriv :: FunExp -> FunExp      | §3.6   |
+| L3.2.1? |       | Partial derivatives            | §3.2   |
+| L3.2.2? |       | Lagrangian case study          | §3.3   |
+| L3.2.3? |       | Haskell type classes           | §3.5   |
+| ?       |       | Incremetal analysis with types | §3.4   |
+
+
 * 1. Types, Functions, and DSLs for Expressions (7-42)
 + The whole chapter is included in the course.
 + (Some of the material is also parts of the prerequisites.)
@@ -145,14 +162,23 @@ More details below.
 | [[https://www.youtube.com/watch?v=RauIPv-hEY0&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=15][L2.2.2]] | 00:00 | Proof by contradiction  | §2.4.1 |
 | [[https://www.youtube.com/watch?v=RauIPv-hEY0&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=15&t=874][L2.2.2]] | 14:34 | Proof by cases          | §2.4.2 |
 ** 2.5 Basic concepts of calculus {p69}
+| [[https://www.youtube.com/watch?v=kqhGY6v7feU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18][L3.1.1]]  | 00:00 | Limit of function              | §2.5.3 |
+| [[https://www.youtube.com/watch?v=kqhGY6v7feU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18&t=365][L3.1.1]]  | 06:01 | Scope check lim logic          | §2.5.3 |
 ** 2.6 Exercises {p75}
 * 3. Types in Mathematics (81-100)
 ** 3.1 Typing Mathematics: derivative of a function {p81}
+| [[https://www.youtube.com/watch?v=lBxyARMvhbY&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=19][L3.1.2]]  | 00:00 | Lim properties and types       | §3.1   |
+| [[https://www.youtube.com/watch?v=lBxyARMvhbY&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=19&t=630][L3.1.2]]  | 10:30 | Deriv. of function             | §3.1   |
+| [[https://www.youtube.com/watch?v=wxFVoFZ-Sz4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=20][L3.1.3]]  | 00:00 | Deriv. examples                | §3.1   |
+| [[https://www.youtube.com/watch?v=wxFVoFZ-Sz4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=20&t=300][L3.1.3]]  | 05:00 | D (^2)  =  (2*)                | §3.1   |
+| [[https://www.youtube.com/watch?v=wxFVoFZ-Sz4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=20&t=732][L3.1.3]]  | 12:12 | D (f + g)  =  D f  +  D g      | §3.1   |
 ** 3.2 Typing Mathematics: partial derivative {p82}
 ** 3.3 Typing Mathematics: Lagrangian case study {p85}
 ** 3.4 Incremental analysis with types {p88}
 ** 3.5 Type classes {p90}
 ** 3.6 Computing derivatives {p95}
+| [[https://www.youtube.com/watch?v=rBj7-4xAzM4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=21][L3.1.4]]  | 00:00 | Live coding deriv in Haskell   | §3.6   |
+| [[https://www.youtube.com/watch?v=rBj7-4xAzM4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=21&t=461][L3.1.4]]  | 07:41 | deriv :: FunExp -> FunExp      | §3.6   |
 ** 3.7 Exercises {p98}
 
 * 4. Compositionality and Algebras (101-140)
