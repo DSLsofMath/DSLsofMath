@@ -19,6 +19,8 @@ Learning outcomes
 + types for some examples, most importantly D : (X->Y) -> (X->Y)
 + using lim to define |D|
 + some derivatives from the definition
++ [[file:Live_3_1.lhs][Live coding derivatives]]
+
 * Week 3, Lecture 2, admin
 ** A1 = Assignment 1
 + hand-in was on Tuesday,
@@ -34,4 +36,36 @@ Learning outcomes
 + Partial derivatives
 + Lagrange Eq's
 + Lagrange example
-* [[file:Live_3_2.lhs][Live coding]]
+** [[file:Live_3_2.lhs][Live coding]]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* Book https://www.collegepublications.co.uk/computing/?00024
+/home/patrikj/Pictures/DSLsofMath_book_front_cover.jpg
+* DSLsofMath logo
+../../admin/DSL_logo/DSL_logo.png
+
+
