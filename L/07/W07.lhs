@@ -936,7 +936,7 @@ our basis vectors |e i|.
 For example, |p x = 2+x^3| is represented by |2 *^ e 0 + e 3|.
 %
 
-The evaluator from the |Vector g s| representation to polynomial
+The evaluator from the |Vector s g| representation to polynomial
 functions is as follows:
 %
 %if False
