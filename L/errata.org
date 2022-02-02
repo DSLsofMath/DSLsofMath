@@ -31,7 +31,7 @@
 -to~|Q|.
 +|AndElimR| symmetrically), where the extra |Prop| arguments corresponds
 +to~|Q|~and~|P|~respectively.
-** l/02/FOL.lhs
+** L/02/FOL.lhs
 *** Around line 340
 -The elimination and introduction rules for existential quantification are:
 +The introduction and elimination rules for existential quantification are:
@@ -41,8 +41,23 @@
 *** Around line 450
 -|f| is a program of type |Forall x (P x)| if |f t| is has type |P t| for all |t|.
 +|f| is a program of type |Forall x (P x)| if |f t| has type |P t| for all |t|.
+** L/03/W03.lhs
+*** Around line 662
+-make provide a dummy definition for a few of them in one go:
++make a dummy definition for a few of them in one go:
+*** Around line 715
+-pthe type-checker is happy with them.
++the type-checker is happy with them.
+* Ch4
+** L/04/W04.lhs
+*** Around line 662
+-If an isomorphism exist between two sets, we say that they are
++If an isomorphism exists between two sets, we say that they are
 * Ch7
-** L/07/W07.lhs around line 429
+** L/07/W07.lhs
+*** Around line 429
 -vector space structure: vector-space \index{homomorphism}s.
 +vector space structure: vector-space \addtoindex{homomorphism}s.
-
+*** Around line 939
+-The evaluator from the |Vector g s| representation to polynomial
++The evaluator from the |Vector s g| representation to polynomial
