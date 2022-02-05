@@ -289,7 +289,7 @@ to stand for complex numbers serves several purposes.
 First, it hints at the implicit typing rule that the symbols |z| and
 |w| should be complex numbers.
 %
-Second, it shows that, in mathematical arguments, one needs not
+Second, it shows that, in mathematical arguments, one need not
 abstract over two real variables: one can instead abstract over a
 single complex variable.
 %
