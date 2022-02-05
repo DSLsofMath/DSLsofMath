@@ -342,7 +342,7 @@ course, you can check your progress towards the final examination.
 %endif
 %
 Sometimes the chapter text contains short, inlined questions, like
-``Exercise~\ref{exc:fmap}: what does function composition do to a
+``Exercise~\ref{exc:fmap}: What does function composition do to a
 sequence?''.
 %
 In such cases there is some more explanation in the exercises section

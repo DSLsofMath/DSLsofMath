@@ -495,7 +495,7 @@ From this, we can deduce
   s^2 * ℒ f s - s * f 0 - f' 0
 \end{spec}
 
-Exercise~\ref{exc:LaplaceDk}: what is the general formula for |ℒ {-"f^{(k)} "-} s|?
+Exercise~\ref{exc:LaplaceDk}: What is the general formula for |ℒ {-"f^{(k)} "-} s|?
 
 Returning to our differential equation, we have
 

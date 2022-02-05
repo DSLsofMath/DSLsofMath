@@ -909,7 +909,7 @@ liftSeq0 :: a -> Seq a
 liftSeq0 c i = c
 \end{code}
 
-Exercise~\ref{exc:fmap}: what does function composition do to a sequence?
+Exercise~\ref{exc:fmap}: What does function composition do to a sequence?
   For a sequence |a| what is |a . (1+)|? What is |(1+) . a|?
 
 Another common mathematical operator on sequences is the limit (of a
