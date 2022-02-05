@@ -373,7 +373,7 @@ We can also make a parameterised version of |ComplexD|, by noting
 that the definitions for complex number operations work fine for a
 range of underlying numeric types.
 %
-The operations for |ComplexSem| are defined in module |CSem|,
+The operations for |ComplexSem| are defined in the module |CSem|,
 available in Appendix~\ref{app:CSem}.
 %
 \begin{figure}[tbph]
