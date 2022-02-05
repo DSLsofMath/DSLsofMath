@@ -728,7 +728,7 @@ in \cref{sec:CompSem}.)
 
 Later in this chapter we use a newtype for the semantics of complex
 numbers as a pair of numbers in the Cartesian representation but it
-may also be useful to have another newtype for complex as a pair of
+may also be useful to have another newtype for complex numbers as a pair of
 numbers in the polar representation.
 
 
