@@ -93,6 +93,10 @@ More details below.
 | [[https://www.youtube.com/watch?v=wIxpj1H-wN8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=24&t=1311][L3.2.3]] | 21:51 | Lagrangian example               | §3.3      |
 | [[https://www.youtube.com/watch?v=2aKYdhahbRA&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=25][L3.2.4]] | 00:00 | Haskell type classes in general  | §3.5      |
 | [[https://www.youtube.com/watch?v=2aKYdhahbRA&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=25&t=281][L3.2.4]] | 04:41 | class Additive, Double, FunExp   | §3.5      |
+| [[https://www.youtube.com/watch?v=mfX6xuOiXkU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=26][L3.3.1]] | 00:00 | data FunExp, eval, R->R          | §3        |
+| [[https://www.youtube.com/watch?v=mfX6xuOiXkU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=26&t=405][L3.3.1]] | 04:45 | deriv :: FunExp -> FunExp        | §3.6      |
+| [[https://www.youtube.com/watch?v=mfX6xuOiXkU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=26&t=1040][L3.3.1]] | 17:20 | class Additive, Multiplicative   | §3.5      |
+| [[https://www.youtube.com/watch?v=mfX6xuOiXkU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=26&t=1551][L3.3.1]] | 25:51 | numeric instances for functions  | §3.5.3    |
 |--------+-------+----------------------------------+-----------|
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
@@ -171,6 +175,7 @@ More details below.
 | [[https://www.youtube.com/watch?v=kqhGY6v7feU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=18&t=365][L3.1.1]]  | 06:01 | Scope check lim logic          | §2.5.3 |
 ** 2.6 Exercises {p75}
 * 3. Types in Mathematics (81-100)
+| [[https://www.youtube.com/watch?v=mfX6xuOiXkU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=26][L3.3.1]] | 00:00 | data FunExp, eval, R->R          | §3        |
 ** 3.1 Typing Mathematics: derivative of a function {p81}
 | [[https://www.youtube.com/watch?v=lBxyARMvhbY&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=19][L3.1.2]]  | 00:00 | Lim properties and types       | §3.1   |
 | [[https://www.youtube.com/watch?v=lBxyARMvhbY&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=19&t=630][L3.1.2]]  | 10:30 | Deriv. of function             | §3.1   |
@@ -190,9 +195,12 @@ More details below.
 ** 3.5 Type classes {p90}
 | [[https://www.youtube.com/watch?v=2aKYdhahbRA&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=25][L3.2.4]] | 00:00 | Haskell type classes             | §3.5      |
 | [[https://www.youtube.com/watch?v=2aKYdhahbRA&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=25&t=281][L3.2.4]] | 04:41 | class Additive, Double, FunExp   | §3.5      |
+| [[https://www.youtube.com/watch?v=mfX6xuOiXkU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=26&t=1040][L3.3.1]] | 17:20 | class Additive, Multiplicative   | §3.5      |
+| [[https://www.youtube.com/watch?v=mfX6xuOiXkU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=26&t=1551][L3.3.1]] | 25:51 | numeric instances for functions  | §3.5.3    |
 ** 3.6 Computing derivatives {p95}
-| [[https://www.youtube.com/watch?v=rBj7-4xAzM4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=21][L3.1.4]]  | 00:00 | Live coding deriv in Haskell   | §3.6   |
-| [[https://www.youtube.com/watch?v=rBj7-4xAzM4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=21&t=461][L3.1.4]]  | 07:41 | deriv :: FunExp -> FunExp      | §3.6   |
+| [[https://www.youtube.com/watch?v=rBj7-4xAzM4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=21][L3.1.4]] | 00:00 | Live coding deriv in Haskell     | §3.6   |
+| [[https://www.youtube.com/watch?v=rBj7-4xAzM4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=21&t=461][L3.1.4]] | 07:41 | deriv :: FunExp -> FunExp        | §3.6   |
+| [[https://www.youtube.com/watch?v=mfX6xuOiXkU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=26&t=405][L3.3.1]] | 04:45 | cont. deriv :: FunExp -> FunExp  | §3.6   |
 ** 3.7 Exercises {p98}
 * 4. Compositionality and Algebras (101-140)
 ** 4.1 Algebraic Structures {p102}

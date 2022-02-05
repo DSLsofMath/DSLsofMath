@@ -55,12 +55,11 @@ Learning outcomes
 + Partial derivatives
 + Lagrange Eq's
 + Lagrange example
-** [[file:Live_3_2.lhs][Live coding]]
+* Week 3, Lecture 2, [[file:Live_3_2.lhs][Live coding]]
 + Type classes
+* Week 3, Lecture 3, cont.  [[file:Live_3_3.lhs][Live coding]]
++ finish implementation of deriv : FunExp -> FunExp
 + numeric instances for functions (x->a)
-
-  implicit type casts
-  collect operations of the same shape
 
   Numeric classes in more detail
 
