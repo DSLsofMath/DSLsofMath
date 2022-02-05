@@ -317,7 +317,7 @@ identity function can be written |\x -> x|, and the constant function
 could also be defined as |const = \x _ -> x|.
 %
 The ASCII syntax uses backslash to start the lambda expression, but
-we render it as a Greek lower case lambda.
+we render it as a Greek lowercase lambda.
 
 %note: perhaps note that λ is a proper character, to be used in
 %      identifiers, and cannot be used instead of backslash.
