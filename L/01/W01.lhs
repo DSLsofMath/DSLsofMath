@@ -559,7 +559,7 @@ to confusing formulations.
 Here, and in many places in later chapters, we will analyse a quote
 from a mathematical textbook.
 %
-You do \emph{not} need to understand the mathematics behind at this
+You do \emph{not} need to understand the mathematics behind it at this
 point (we only get to the Laplace transform in \cref{sec:Laplace}).
 % 
 For example, a standard text on differential equations by
