@@ -563,7 +563,7 @@ You do \emph{not} need to understand the mathematics behind it at this
 point (we only get to the Laplace transform in \cref{sec:Laplace}).
 % 
 For example, a standard text on differential equations by
-\citet*{edwards2008elementary} contains at page 266 the following
+\citet*{edwards2008elementary} contains on page 266 the following
 remark:
 
 \newcommand{\Lap}[1]{\ensuremath{|Lap|\{#1\}}}
