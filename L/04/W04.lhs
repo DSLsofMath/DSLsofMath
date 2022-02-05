@@ -452,7 +452,7 @@ Back to Wikipedia:
   More formally, a homomorphism between two algebras |A| and |B| is a
 function |h : A → B| from the set |A| to the set |B| such that, for
 every operation |fA| of |A| and corresponding |fB| of |B| (of arity,
-say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
+say, |n|), $h(|fA|(|x1|,...,|xn|)) = |fB|(h(|x1|),...,h(|xn|))$.
 \end{quote}
 
 In our Haskell interpretation, the above would mean that we have
