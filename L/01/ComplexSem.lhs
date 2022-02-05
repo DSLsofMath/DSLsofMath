@@ -66,7 +66,7 @@ type.
 %
 We use a capital |I| in the |data| declaration because a lowercase
 constructor name is a syntax error in Haskell, but for
-convenience we add also a value |i = I|.
+convenience we add also a value |i = I|:
 %
 \begin{code}
 data ImagUnits = I
