@@ -28,17 +28,17 @@ expressions).
 %
 \index{DSL!complex expressions}%
 %
-The syntactic expressions can later be evaluated to semantic values.
-%
-The concept of ``an evaluator'', a function from the syntax to the
-semantics, is something we will return to many times in this
-\course{}.
+The syntactic expressions can later be evaluated to semantic values:
 %
 \index{eval@@|eval : Syn -> Sem|}%
 %
 \begin{code}
 evalE :: ComplexE -> ComplexD
 \end{code}
+%
+The concept of ``an evaluator'', a function from the syntax to the
+semantics, is something we will return to many times in this
+\course{}.
 %
 The datatype |ComplexE| should collect ways of building syntactic
 expressions representing complex numbers and we have so far seen
