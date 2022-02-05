@@ -721,7 +721,7 @@ It is not the same as the semantics of |Int| but the sets are
 %
 The function |Cou| is an invertible function, a
 \emph{\addtoindex{bijection}}, also called a
-set-\addtoindex{isomorphism}.
+set \addtoindex{isomorphism}.
 %
 (We talk about isomorphisms between richer algebraic structures
 in \cref{sec:CompSem}.)
