@@ -259,7 +259,7 @@ const x _ = x
 \end{code}
 %
 The underscore (|_|) is here used instead of a variable name (like
-|y|) which is not needed on the right hand side (RHS) of the equality
+|y|) which is not needed on the right-hand side (RHS) of the equality
 sign.
 %
 Above we saw the instance |const False : Bool -> Bool| where |a| and

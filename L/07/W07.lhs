@@ -1706,7 +1706,7 @@ is clearly not of the same type as |a| or |b|, so cannot really be an
 argument to |p|.
 %
 Additionally, the |p a| we are computing with this formula is not the
-|p a| which must eventually appear in the products on the right hand
+|p a| which must eventually appear in the products on the right-hand
 side.
 %
 % We do not know how this notation came about\jp{According to Jaynes in

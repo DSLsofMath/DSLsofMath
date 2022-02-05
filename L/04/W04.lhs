@@ -403,7 +403,7 @@ We have seen several examples in earlier chapters:
 \end{enumerate}
 
 To see how this last item plays out, it can be helpful to study the
-syntax trees of the left and right hand sides of the distributive law:
+syntax trees of the left and right-hand sides of the distributive law:
 |((a+b)*c = (a*c)+(b*c))|.
 %
 We observe that the function |(*c)| is ``pushed down'' to both |a| and |b|:
@@ -472,7 +472,7 @@ h unit        =  unit             -- |h| takes units to units
 h (x `op` y)  =  h x `op` h y     -- and distributes over |op| (for all |x| and |y|)
 \end{spec}
 %
-Note that both |unit| and |op| have different types on the left and right hand sides.
+Note that both |unit| and |op| have different types on the left and right-hand sides.
 %
 On the left they belong to the monoid |(A, unitA, opA)| and on the
 right the belong to |(B, unitB, opB)|.

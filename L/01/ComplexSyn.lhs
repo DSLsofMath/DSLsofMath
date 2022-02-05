@@ -220,8 +220,8 @@ propI2 =  Mul I2 I2 === ToComplex (-1)
 Note that we use a new operator here, |(===)|.
 %
 Indeed, we reserve the usual equality |(==)| for syntactic equality
-(and here the left hand side (LHS) is clearly not syntactically equal
-to the right hand side).
+(and here the left-hand side (LHS) is clearly not syntactically equal
+to the right-hand side).
 %
 \index{semantic equality}%
 The new operator |(===)| corresponds to semantic equality, that is,
