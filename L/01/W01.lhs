@@ -931,7 +931,7 @@ that would take infinitely long time.
 Here we just specify one more common operation: the \addtoindex{sum of
   a sequence} (like
 \(\sigma = \sum_{i=0}^{\infty} 1/i!\)\footnote{Here |n! = 1*2* ... *n|
-  is the \addtoindex{factorial} \lnOnly{(sv: fakultet)}.}).
+  is the \addtoindex{factorial}\lnOnly{ (sv: fakultet)}.}).
 %
 Just as not all sequences have a limit, not all have a sum either.
 %
