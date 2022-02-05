@@ -293,7 +293,7 @@ Second, it shows that, in mathematical arguments, one need not
 abstract over two real variables: one can instead abstract over a
 single complex variable.
 %
-We already know that we have an \addtoindex{isomorphism} between pair
+We already know that we have an \addtoindex{isomorphism} between pairs
 of reals and complex numbers.
 %
 But additionally, we have a notion of \emph{\addtoindex{pattern
