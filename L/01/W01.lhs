@@ -591,9 +591,9 @@ the Laplace transformation could very well return a function of the
 ``old'' variable |t|.
 %
 We can understand that the name of the variable is used to carry
-semantic meaning about its type (this is also common in functional
+semantic meaning about its type. (This is also common in functional
 programming, for example with the conventional use of a plural "s"
-suffix, as in the name |xs|, to denote a list of values.).
+suffix, as in the name |xs|, to denote a list of values.)
 %
 % Moreover, by using this (implicit!)\ convention, it is easier to deal
 % with cases such as that of the Hartley transform (a close relative of
