@@ -501,7 +501,7 @@ support a Boolean equality check (|(==) :: v -> v -> Bool|).
 The next part of the type signature (|Env v s|) shows the type of
 the first argument (|env|) to the function |evalEnv|.
 %
-The final part of the type, |(v -> Maybe s)|), shows that |evalEnv
+The final part of the type (|(v -> Maybe s)|) shows that |evalEnv
 env| is also a function, now taking a |v| and maybe returning an |s|.
 
 The implementation proceeds by searching for the first occurrence of
