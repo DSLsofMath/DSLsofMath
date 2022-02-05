@@ -12,7 +12,7 @@ Now we turn to the study of the \emph{\addtoindex{syntax}} instead
 (``\addtoindex{deep embedding}'').
 %
 We collect these syntactic definitions in a separate module which
-imports the earlier semantic definitions.
+imports the earlier semantic definitions:
 %
 \begin{code}
 module DSLsofMath.ComplexSyn where
