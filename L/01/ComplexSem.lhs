@@ -55,7 +55,7 @@ only know that |i| is not a real number.
 %
 Moreover, we do not know what operations are possible on |i|, only
 that |square i| is another name for |-1| (but it is not obvious that,
-say |i * i| is related in way with |square i|, since the
+say |i * i| is related in any way with |square i|, since the
 operations of multiplication and squaring have only been introduced so
 far for numerical types such as |Nat| or |REAL|, and not for
 ``symbols'').
