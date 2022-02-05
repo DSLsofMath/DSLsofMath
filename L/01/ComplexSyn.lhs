@@ -120,7 +120,7 @@ care of this step (in fact, we implemented it earlier in
 \refSec{sec:complexcase}).
 %
 Continuing in this direction (by structural induction; or ``wishful
-thinking'') we arrive at the following implementation.
+thinking'') we arrive at the following implementation:
 %
 \begin{code}
 evalE I2              = iD
