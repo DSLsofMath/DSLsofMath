@@ -225,14 +225,14 @@ evalPoly as + evalPoly bs = evalPoly (as + bs)
 \end{spec}
 %
 Note that this equation uses |(+)| at two different type: on the left-hand
-side (lhs) two functions of type |a->a| are added (pointwise) and
-on the right-hand side (rhs) two |Poly a| (lists of coefficients) are
+side (LHS) two functions of type |a->a| are added (pointwise) and
+on the right-hand side (RHS) two |Poly a| (lists of coefficients) are
 added.
 %
 We are using the homomorphism condition to find requirements on the
 definition of |(+)| on |Poly a|.
 
-Both sides (lhs and rhs) are functions, thus they are equal if and
+Both sides (LHS and RHS) are functions, thus they are equal if and
 only if they are equal for every argument.
 %
 For an arbitrary |x|
