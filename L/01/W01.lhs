@@ -763,7 +763,7 @@ semantics of |Z| being |0|, |S Z| being 1, etc.
 A way to be complete about the semantics is to state that the
 semantics of |S| is ``add one''.
 
-Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
+Example values: |zero = Z|, |one = S Z|, |three = S (S one)|.
 
 The |data| keyword will be used throughout the \course{} to define
 (inductive) datatypes of \addtoindex{syntax tree}s for different kinds
