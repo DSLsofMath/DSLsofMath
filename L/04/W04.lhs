@@ -1972,7 +1972,7 @@ See
 \href{http://wiki.portal.chalmers.se/cse/pmwiki.php/CTFP14/CoursePlan}{Category
   Theory and Functional Programming} for a whole course around this
 (lecture notes are available on
-\href{https://github.com/DSLsofMath/ctfp2014}{github}).
+\href{https://github.com/DSLsofMath/ctfp2014}{GitHub}).
 %endif
 
 \subsection{Homomorphism as roadmaps}

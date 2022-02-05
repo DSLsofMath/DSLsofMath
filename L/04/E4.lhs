@@ -500,7 +500,7 @@ Here is some useful
 and
 \href{https://github.com/DSLsofMath/DSLsofMath/blob/master/L/DSLsofMath/FunExp.lhs}{|FunExp|}
 modules are also available on
-\href{https://github.com/DSLsofMath/DSLsofMath/}{github}.
+\href{https://github.com/DSLsofMath/DSLsofMath/}{GitHub}.
 
 %include ../A2_Skeleton.lhs
 

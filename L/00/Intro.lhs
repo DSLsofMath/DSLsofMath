@@ -319,7 +319,7 @@ but our typesetting tool renders it as a circle glyph.
 %
 If, when looking at typeset pages, any doubt should remain regarding to
 the form of the Haskell source, we urge the reader to consult the
-github repository.
+GitHub repository.
 
 %
 The reader is encouraged to experiment with the examples to get a
