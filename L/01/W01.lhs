@@ -265,7 +265,7 @@ sign.
 Above we saw the instance |const False : Bool -> Bool| where |a| and
 |b| are both |Bool|.
 %
-Note that this is an example of \emph{partially applied} function:
+Note that this is an example of a \emph{partially applied} function:
 |const| by itself expects two arguments, thus |const False| still
 expects one argument.
 
