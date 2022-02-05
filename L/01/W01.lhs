@@ -102,7 +102,7 @@ we often use just single colon (|:|) in the mathematical text.
 
 So far the syntax for types is trivial --- just names.
 %
-Every time, the semantic is a set.
+Every time, the semantics is a set.
 %
 But we can also combine these names to form more complex types.
 
