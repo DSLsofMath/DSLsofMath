@@ -436,7 +436,7 @@ some special quantities like |NaN| and |Infinity|.
 \index{Maybe@@|Maybe| type!Nothing@@|Nothing|}%
 \index{Maybe@@|Maybe| type!Just@@|Just|}%
 %
-Often the type |Maybe a| with values |Nothing| and |Just a| (for all
+Often the type |Maybe a| with values |Nothing| and |Just x| (for all
 |x::a|) is used as the target of functions which would otherwise be
 partial: any undefined input is mapped to |Nothing|.
 %
