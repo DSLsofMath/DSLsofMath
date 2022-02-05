@@ -290,7 +290,7 @@ any regular value (like |"hi!"|).
 We can also construct functions which manipulate functions.
 %
 They are called \emph{higher-order} functions and as a first example
-we present |flip| which flips the order the two arguments of a binary
+we present |flip| which flips the order of the two arguments of a binary
 operator.
 %
 \index{flip@@|flip|}%
