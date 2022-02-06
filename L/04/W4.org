@@ -19,8 +19,33 @@
 
 
 * Admin
-** video lectures 
-** more Q&A time
 ** Soon back to campus teaching
++ The Swedish Government has decided to remove most pandemic
+  restrictions by 2022-02-09.
++ The universities will soon communicate more details about the
+  "return to campus".
++ Details coming during the week.
+** more Q&A time
++ Based on feedback from the student representatives during the
+  mid-course evaluation meeting we have decided to increase the
+  available time for "Q&A" by converting most lecture slots into
+  opportunities to ask questions and get answers from the lecturer.
++ [Exceptions: Week 7 where Nicola Botta will give the lectures and
+  Week 8 when the lecturer is on vacation.]
++ Concretely, the Tuesday lecture will be a "Q&A session" on the
+  regular zoom link.
++ But soon, perhaps already from Thursday, the "Q&A session" will be
+  on campus in the rooms according to TimeEdit.
+** video lectures remain, but will be pre-recorded.
++ The lectures will instead be uploaded before the "lecture slots" in
+  the schedule and you are expected to watch them before coming to the
+  Q&A.
++ Concretely this means that lecture 4.1 is already on YouTube and you
+  are expected to *watch it before Tuesday 13.15* to make the most of
+  the Q&A session. 
++ Similarly, for future coming "lecture slots" you are expected to
+  watch the video before coming.
 ** A2 info (new groups coming)
-
++ The second Assignment will be done in *different groups* compared to
+  the first assignment.
++ More information will follow during the week.
