@@ -252,7 +252,7 @@ Note that the equality sign is abused in the traditional mathematical
 notation: it looks like |lim| would be a normal function always
 returning a |REAL|, where in fact it is not always defined.
 %
-As mentioned in \cref{sec:infseq}, one way to handle is this to treat
+As mentioned in \cref{sec:infseq}, one way to handle this is to treat
 |lim| as a partial function, modelled in Haskell as returning |Maybe
 REAL|.
 %
