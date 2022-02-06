@@ -32,7 +32,7 @@ Rudin goes on
 \begin{quote}
 It is defined, for every complex number |z|, by the formula
 \[
-         |exp|(z)  =  \sum_{n=0}^{\infty} \frac{z^n}{n!}
+         \exp(z)  =  \sum_{n=0}^{\infty} \frac{z^n}{n!}
 \]
 \end{quote}
 %
