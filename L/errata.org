@@ -5,12 +5,92 @@
 -formal than usual, as least from a linguistic perspective.
 +formal than usual, at least from a linguistic perspective.
 #+END_SRC
+*** Around line 322
+#+BEGIN_SRC diff
+-github repository.
++GitHub repository.
+#+END_SRC
 * Ch1
 ** L/01/W01.lhs
+*** Around line 105
+#+BEGIN_SRC diff
+-Every time, the semantic is a set.
++Every time, the semantics is a set.
+#+END_SRC
+*** Around line 268
+#+BEGIN_SRC diff
+-Note that this is an example of \emph{partially applied} function:
++Note that this is an example of a \emph{partially applied} function:
+#+END_SRC
+*** Around line 290
+#+BEGIN_SRC diff
+-we present |flip| which flips the order the two arguments of a binary
++we present |flip| which flips the order of the two arguments of a binary
+#+END_SRC
 *** Around line 423
 #+BEGIN_SRC diff
 -: Double| (Not a Number).
 +:: Double| (Not a Number).
+#+END_SRC
+*** Around line 439
+#+BEGIN_SRC diff
+-Often the type |Maybe a| with values |Nothing| and |Just a| (for all
++Often the type |Maybe a| with values |Nothing| and |Just x| (for all
+#+END_SRC
+*** Around line 562
+#+BEGIN_SRC diff
+-You do \emph{not} need to understand the mathematics behind at this
++You do \emph{not} need to understand the mathematics behind it at this
+#+END_SRC
+*** Around line 566
+#+BEGIN_SRC diff
+-\citet*{edwards2008elementary} contains at page 266 the following
++\citet*{edwards2008elementary} contains on page 266 the following
+#+END_SRC
+*** Around line 594
+#+BEGIN_SRC diff
+-semantic meaning about its type (this is also common in functional
++semantic meaning about its type. (This is also common in functional
+#+END_SRC
+*** Around line 596
+#+BEGIN_SRC diff
+-suffix, as in the name |xs|, to denote a list of values.).
++suffix, as in the name |xs|, to denote a list of values.)
+#+END_SRC
+*** Around line 731
+#+BEGIN_SRC diff
+-may also be useful to have another newtype for complex as a pair of
++may also be useful to have another newtype for complex numbers as a pair of
+#+END_SRC
+*** Around line 766
+#+BEGIN_SRC diff
+-Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
++Example values: |zero = Z|, |one = S Z|, |three = S (S one)|.
+#+END_SRC
+*** Around line 934
+#+BEGIN_SRC diff
+-  is the \addtoindex{factorial} \lnOnly{(sv: fakultet)}.}).
++  is the \addtoindex{factorial}\lnOnly{ (sv: fakultet)}.}).
+#+END_SRC
+** L/01/ComplexSem.lhs
+*** Around line 58
+#+BEGIN_SRC diff
+-say |i * i| is related in way with |square i|, since the
++say |i * i| is related in any way to |square i|, since the
+*** Around line 292
+#+BEGIN_SRC diff
+-Second, it shows that, in mathematical arguments, one needs not
++Second, it shows that, in mathematical arguments, one need not
+#+END_SRC
+*** Around line 296
+#+BEGIN_SRC diff
+-We already know that we have an \addtoindex{isomorphism} between pair
++We already know that we have an \addtoindex{isomorphism} between pairs
+#+END_SRC
+*** Around line 376
+#+BEGIN_SRC diff
+-The operations for |ComplexSem| are defined in module |CSem|,
++The operations for |ComplexSem| are defined in the module |CSem|,
 #+END_SRC
 ** L/01/SimpleFunExp.lhs
 *** Around line 38
@@ -79,6 +159,17 @@
 -If an isomorphism exist between two sets, we say that they are
 +If an isomorphism exists between two sets, we say that they are
 #+END_SRC
+*** Around line 1975
+#+BEGIN_SRC diff
+-\href{https://github.com/DSLsofMath/ctfp2014}{github}).
++\href{https://github.com/DSLsofMath/ctfp2014}{GitHub}).
+#+END_SRC
+** L/04/E4.lhs
+*** Around line 503
+#+BEGIN_SRC diff
+-\href{https://github.com/DSLsofMath/DSLsofMath/}{github}.
++\href{https://github.com/DSLsofMath/DSLsofMath/}{GitHub}.
+#+END_SRC
 * Ch7
 ** L/07/W07.lhs
 *** Around line 429
@@ -90,4 +181,7 @@
 #+BEGIN_SRC diff
 -The evaluator from the |Vector g s| representation to polynomial
 +The evaluator from the |Vector s g| representation to polynomial
+#+END_SRC
+* notes
+#+BEGIN_SRC diff
 #+END_SRC
