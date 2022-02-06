@@ -102,7 +102,7 @@ we often use just single colon (|:|) in the mathematical text.
 
 So far the syntax for types is trivial --- just names.
 %
-Every time, the semantic is a set.
+Every time, the semantics is a set.
 %
 But we can also combine these names to form more complex types.
 
@@ -259,13 +259,13 @@ const x _ = x
 \end{code}
 %
 The underscore (|_|) is here used instead of a variable name (like
-|y|) which is not needed on the right hand side (RHS) of the equality
+|y|) which is not needed on the right-hand side (RHS) of the equality
 sign.
 %
 Above we saw the instance |const False : Bool -> Bool| where |a| and
 |b| are both |Bool|.
 %
-Note that this is an example of \emph{partially applied} function:
+Note that this is an example of a \emph{partially applied} function:
 |const| by itself expects two arguments, thus |const False| still
 expects one argument.
 
@@ -290,7 +290,7 @@ any regular value (like |"hi!"|).
 We can also construct functions which manipulate functions.
 %
 They are called \emph{higher-order} functions and as a first example
-we present |flip| which flips the order the two arguments of a binary
+we present |flip| which flips the order of the two arguments of a binary
 operator.
 %
 \index{flip@@|flip|}%
@@ -317,7 +317,7 @@ identity function can be written |\x -> x|, and the constant function
 could also be defined as |const = \x _ -> x|.
 %
 The ASCII syntax uses backslash to start the lambda expression, but
-we render it as a Greek lower case lambda.
+we render it as a Greek lowercase lambda.
 
 %note: perhaps note that λ is a proper character, to be used in
 %      identifiers, and cannot be used instead of backslash.
@@ -436,7 +436,7 @@ some special quantities like |NaN| and |Infinity|.
 \index{Maybe@@|Maybe| type!Nothing@@|Nothing|}%
 \index{Maybe@@|Maybe| type!Just@@|Just|}%
 %
-Often the type |Maybe a| with values |Nothing| and |Just a| (for all
+Often the type |Maybe a| with values |Nothing| and |Just x| (for all
 |x::a|) is used as the target of functions which would otherwise be
 partial: any undefined input is mapped to |Nothing|.
 %
@@ -501,7 +501,7 @@ support a Boolean equality check (|(==) :: v -> v -> Bool|).
 The next part of the type signature (|Env v s|) shows the type of
 the first argument (|env|) to the function |evalEnv|.
 %
-The final part of the type, |(v -> Maybe s)|), shows that |evalEnv
+The final part of the type (|(v -> Maybe s)|) shows that |evalEnv
 env| is also a function, now taking a |v| and maybe returning an |s|.
 
 The implementation proceeds by searching for the first occurrence of
@@ -559,11 +559,11 @@ to confusing formulations.
 Here, and in many places in later chapters, we will analyse a quote
 from a mathematical textbook.
 %
-You do \emph{not} need to understand the mathematics behind at this
+You do \emph{not} need to understand the mathematics behind it at this
 point (we only get to the Laplace transform in \cref{sec:Laplace}).
 % 
 For example, a standard text on differential equations by
-\citet*{edwards2008elementary} contains at page 266 the following
+\citet*{edwards2008elementary} contains on page 266 the following
 remark:
 
 \newcommand{\Lap}[1]{\ensuremath{|Lap|\{#1\}}}
@@ -591,9 +591,9 @@ the Laplace transformation could very well return a function of the
 ``old'' variable |t|.
 %
 We can understand that the name of the variable is used to carry
-semantic meaning about its type (this is also common in functional
+semantic meaning about its type. (This is also common in functional
 programming, for example with the conventional use of a plural "s"
-suffix, as in the name |xs|, to denote a list of values.).
+suffix, as in the name |xs|, to denote a list of values.)
 %
 % Moreover, by using this (implicit!)\ convention, it is easier to deal
 % with cases such as that of the Hartley transform (a close relative of
@@ -721,14 +721,14 @@ It is not the same as the semantics of |Int| but the sets are
 %
 The function |Cou| is an invertible function, a
 \emph{\addtoindex{bijection}}, also called a
-set-\addtoindex{isomorphism}.
+set \addtoindex{isomorphism}.
 %
 (We talk about isomorphisms between richer algebraic structures
 in \cref{sec:CompSem}.)
 
 Later in this chapter we use a newtype for the semantics of complex
 numbers as a pair of numbers in the Cartesian representation but it
-may also be useful to have another newtype for complex as a pair of
+may also be useful to have another newtype for complex numbers as a pair of
 numbers in the polar representation.
 
 
@@ -763,7 +763,7 @@ semantics of |Z| being |0|, |S Z| being 1, etc.
 A way to be complete about the semantics is to state that the
 semantics of |S| is ``add one''.
 
-Examples values: |zero = Z|, |one = S Z|, |three = S (S one)|.
+Example values: |zero = Z|, |one = S Z|, |three = S (S one)|.
 
 The |data| keyword will be used throughout the \course{} to define
 (inductive) datatypes of \addtoindex{syntax tree}s for different kinds
@@ -909,7 +909,7 @@ liftSeq0 :: a -> Seq a
 liftSeq0 c i = c
 \end{code}
 
-Exercise~\ref{exc:fmap}: what does function composition do to a sequence?
+Exercise~\ref{exc:fmap}: What does function composition do to a sequence?
   For a sequence |a| what is |a . (1+)|? What is |(1+) . a|?
 
 Another common mathematical operator on sequences is the limit (of a
@@ -931,7 +931,7 @@ that would take infinitely long time.
 Here we just specify one more common operation: the \addtoindex{sum of
   a sequence} (like
 \(\sigma = \sum_{i=0}^{\infty} 1/i!\)\footnote{Here |n! = 1*2* ... *n|
-  is the \addtoindex{factorial} \lnOnly{(sv: fakultet)}.}).
+  is the \addtoindex{factorial}\lnOnly{ (sv: fakultet)}.}).
 %
 Just as not all sequences have a limit, not all have a sum either.
 %

@@ -55,7 +55,7 @@ only know that |i| is not a real number.
 %
 Moreover, we do not know what operations are possible on |i|, only
 that |square i| is another name for |-1| (but it is not obvious that,
-say |i * i| is related in way with |square i|, since the
+say |i * i| is related in any way to |square i|, since the
 operations of multiplication and squaring have only been introduced so
 far for numerical types such as |Nat| or |REAL|, and not for
 ``symbols'').
@@ -66,7 +66,7 @@ type.
 %
 We use a capital |I| in the |data| declaration because a lowercase
 constructor name is a syntax error in Haskell, but for
-convenience we add also a value |i = I|.
+convenience we add also a value |i = I|:
 %
 \begin{code}
 data ImagUnits = I
@@ -89,9 +89,11 @@ Next, in the book, we find the following definition:
 \begin{quote}
   \textbf{Definition:} A \textbf{complex number} is an expression of
   the form
-
-<  a + bi {-"\qquad \mathrm{or} \qquad"-} a + ib,
-
+%
+\begin{equation*}
+   a + bi \qquad \mathrm{or} \qquad a + ib,
+\end{equation*}
+%
   where |a| and |b| are real numbers, and |i| is the imaginary unit.
 \end{quote}
 %
@@ -205,8 +207,8 @@ The text then continues with a parenthetical remark which helps us
 dispel these doubts:
 %
 \begin{quote}
-  (We will normally use |a + bi| unless |b| is a complicated
-  expression, in which case we will write |a + ib| instead.
+  (We will normally use $a + bi$ unless |b| is a complicated
+  expression, in which case we will write $a + ib$ instead.
 %
   Either form is acceptable.)
 \end{quote}
@@ -244,8 +246,8 @@ We read further:
 %
   |w| and |z| are frequently used for this purpose.
 %
-  If |a|, |b|, |x|, and |y| are real numbers, and |w = a + bi| and |z
-  = x + yi|, then we can refer to the complex numbers |w| and |z|.
+  If |a|, |b|, |x|, and |y| are real numbers, and $w = a + bi$ and $z
+  = x + yi$, then we can refer to the complex numbers |w| and |z|.
 %
   Note that |w = z| if and only if |a = x| and |b = y|.
 \end{quote}
@@ -289,27 +291,27 @@ to stand for complex numbers serves several purposes.
 First, it hints at the implicit typing rule that the symbols |z| and
 |w| should be complex numbers.
 %
-Second, it shows that, in mathematical arguments, one needs not
+Second, it shows that, in mathematical arguments, one need not
 abstract over two real variables: one can instead abstract over a
 single complex variable.
 %
-We already know that we have an \addtoindex{isomorphism} between pair
+We already know that we have an \addtoindex{isomorphism} between pairs
 of reals and complex numbers.
 %
 But additionally, we have a notion of \emph{\addtoindex{pattern
   matching}}, as in the following definition:
 %
 \begin{quote}
-  \textbf{Definition:} If |z = x + yi| is a complex number (where |x|
+  \textbf{Definition:} If $z = x + yi$ is a complex number (where |x|
   and |y| are real), we call |x| the \textbf{real part} of |z| and
-  denote it |Re (z)|.
+  denote it $|Re|(z)$.
 %
-  We call |y| the \textbf{imaginary part} of |z| and denote it |Im
-  (z)|:
-
-< Re(z)  =  Re (x + yi)  =  x
-< Im(z)  =  Im (x + yi)  =  y
-
+  We call |y| the \textbf{imaginary part} of |z| and denote it $|Im|(z)$:
+%
+\begin{alignat*}{2}
+  |Re|(z)  &=  |Re|(x + yi)  &&=  x \\
+  |Im|(z)  &=  |Im|(x + yi)  &&=  y
+\end{alignat*}
 \end{quote}
 %
 This is rather similar to Haskell's \emph{as-patterns}:
@@ -333,13 +335,13 @@ complex numbers:
 \begin{quote}
   \textbf{The sum and difference of complex numbers}
 
-  If |w = a + bi| and |z = x + yi|, where |a|, |b|, |x|, and |y| are real numbers,
+  If $w = a + bi$ and $z = x + yi$, where |a|, |b|, |x|, and |y| are real numbers,
   then
-
-< w  +  z  =  (a + x)  +  (b + y)i
-<
-< w  -  z  =  (a - x)  +  (b - y)i
-
+%
+\begin{alignat*}{3}
+  w  &+  z  &&=  (a + x)  &&+  (b + y)i \\
+  w  &-  z  &&=  (a - x)  &&+  (b - y)i
+\end{alignat*}
 \end{quote}
 %
 With the introduction of algebraic operations, the domain-specific
@@ -373,7 +375,7 @@ We can also make a parameterised version of |ComplexD|, by noting
 that the definitions for complex number operations work fine for a
 range of underlying numeric types.
 %
-The operations for |ComplexSem| are defined in module |CSem|,
+The operations for |ComplexSem| are defined in the module |CSem|,
 available in Appendix~\ref{app:CSem}.
 %
 \begin{figure}[tbph]

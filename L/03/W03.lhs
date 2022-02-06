@@ -934,7 +934,7 @@ instance Num r => Num (ComplexSyn r) where
 \end{spec}
 %
 To see why this is not a recursive definition we need to expand the
-type and to do this I will introduce a name for the right hand side
+type and to do this I will introduce a name for the right-hand side
 (RHS): |fromIntC|.
 
 \begin{verbatim}
@@ -995,11 +995,11 @@ instance Additive (REAL -> REAL) where
 %
 The instance declaration of the method |zero| above looks recursive,
 but is not: |zero| is used at a different type on the left- and
-right-hand-side of the equal sign, and thus refers to two different
+right-hand side of the equal sign, and thus refers to two different
 definitions.
 %
-One the left-hand-side we define |zero :: REAL -> REAL|, while on the
-right-hand-side we use |zero :: REAL|.
+One the left-hand side we define |zero :: REAL -> REAL|, while on the
+right-hand side we use |zero :: REAL|.
 
 %
 \begin{figure}[htpb]

@@ -48,7 +48,7 @@
 %
     These are expressions formed from applying the semiring
     operations to the appropriate number of arguments, e.g., all the
-    left hand sides and right hand sides of the above equations.
+    left-hand sides and right-hand sides of the above equations.
 
   \item \lnOnly{(Was not part of the exam)} Implement the expressions from the laws.
 
@@ -135,8 +135,8 @@
     monoid expressions.
     %
     (These are expressions formed from applying the monoid operations
-    to the appropriate number of arguments, e.g., all the left hand
-    sides and right hand sides of the above equations.)
+    to the appropriate number of arguments, e.g., all the left-hand
+    sides and right-hand sides of the above equations.)
 
   \item Define a general evaluator for |AbMonoidExp| expressions on
     the basis of an \addtoindex{assignment function}.

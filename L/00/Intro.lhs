@@ -319,7 +319,7 @@ but our typesetting tool renders it as a circle glyph.
 %
 If, when looking at typeset pages, any doubt should remain regarding to
 the form of the Haskell source, we urge the reader to consult the
-github repository.
+GitHub repository.
 
 %
 The reader is encouraged to experiment with the examples to get a
@@ -342,7 +342,7 @@ course, you can check your progress towards the final examination.
 %endif
 %
 Sometimes the chapter text contains short, inlined questions, like
-``Exercise~\ref{exc:fmap}: what does function composition do to a
+``Exercise~\ref{exc:fmap}: What does function composition do to a
 sequence?''.
 %
 In such cases there is some more explanation in the exercises section

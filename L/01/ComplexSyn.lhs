@@ -12,7 +12,7 @@ Now we turn to the study of the \emph{\addtoindex{syntax}} instead
 (``\addtoindex{deep embedding}'').
 %
 We collect these syntactic definitions in a separate module which
-imports the earlier semantic definitions.
+imports the earlier semantic definitions:
 %
 \begin{code}
 module DSLsofMath.ComplexSyn where
@@ -28,17 +28,17 @@ expressions).
 %
 \index{DSL!complex expressions}%
 %
-The syntactic expressions can later be evaluated to semantic values.
-%
-The concept of ``an evaluator'', a function from the syntax to the
-semantics, is something we will return to many times in this
-\course{}.
+The syntactic expressions can later be evaluated to semantic values:
 %
 \index{eval@@|eval : Syn -> Sem|}%
 %
 \begin{code}
 evalE :: ComplexE -> ComplexD
 \end{code}
+%
+The concept of ``an evaluator'', a function from the syntax to the
+semantics, is something we will return to many times in this
+\course{}.
 %
 The datatype |ComplexE| should collect ways of building syntactic
 expressions representing complex numbers and we have so far seen
@@ -120,7 +120,7 @@ care of this step (in fact, we implemented it earlier in
 \refSec{sec:complexcase}).
 %
 Continuing in this direction (by structural induction; or ``wishful
-thinking'') we arrive at the following implementation.
+thinking'') we arrive at the following implementation:
 %
 \begin{code}
 evalE I2              = iD
@@ -220,8 +220,8 @@ propI2 =  Mul I2 I2 === ToComplex (-1)
 Note that we use a new operator here, |(===)|.
 %
 Indeed, we reserve the usual equality |(==)| for syntactic equality
-(and here the left hand side (LHS) is clearly not syntactically equal
-to the right hand side).
+(and here the left-hand side (LHS) is clearly not syntactically equal
+to the right-hand side).
 %
 \index{semantic equality}%
 The new operator |(===)| corresponds to semantic equality, that is,

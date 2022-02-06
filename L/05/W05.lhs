@@ -224,15 +224,15 @@ For example, the homomorphism condition gives for |(+)|
 evalPoly as + evalPoly bs = evalPoly (as + bs)
 \end{spec}
 %
-Note that this equation uses |(+)| at two different type: on the left
-hand side (lhs) two functions of type |a->a| are added (pointwise) and
-on the right hand side (rhs) two |Poly a| (lists of coefficients) are
+Note that this equation uses |(+)| at two different type: on the left-hand
+side (LHS) two functions of type |a->a| are added (pointwise) and
+on the right-hand side (RHS) two |Poly a| (lists of coefficients) are
 added.
 %
 We are using the homomorphism condition to find requirements on the
 definition of |(+)| on |Poly a|.
 
-Both sides (lhs and rhs) are functions, thus they are equal if and
+Both sides (LHS and RHS) are functions, thus they are equal if and
 only if they are equal for every argument.
 %
 For an arbitrary |x|
@@ -816,7 +816,7 @@ find a |p| such that |1 = (1-x)*p|.
 For polynomials there is no solution to this equation.
 %
 One way to see that is by using the homomorphism |degree|: the degree
-of the left hand side is |0| and the degree of the RHS is |1 +  degree p /= 0|.
+of the left-hand side is |0| and the degree of the RHS is |1 +  degree p /= 0|.
 %
 But there is still hope if we move to formal power series.
 

@@ -32,7 +32,7 @@ Rudin goes on
 \begin{quote}
 It is defined, for every complex number |z|, by the formula
 \[
-         exp(z)  =  \sum_{n=0}^{\infty} \frac{z^n}{n!}
+         |exp|(z)  =  \sum_{n=0}^{\infty} \frac{z^n}{n!}
 \]
 \end{quote}
 %
@@ -495,7 +495,7 @@ From this, we can deduce
   s^2 * ℒ f s - s * f 0 - f' 0
 \end{spec}
 
-Exercise~\ref{exc:LaplaceDk}: what is the general formula for |ℒ {-"f^{(k)} "-} s|?
+Exercise~\ref{exc:LaplaceDk}: What is the general formula for |ℒ {-"f^{(k)} "-} s|?
 
 Returning to our differential equation, we have
 

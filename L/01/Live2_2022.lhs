@@ -72,7 +72,7 @@ file://Adams_Complex_06.png
 We define the functions |re| and |im| using pattern-matching.
 \begin{code}
 re, im :: CC -> REAL
-re z@(PlusI x y) = x  -- left hand side binds z, x, and y (rhs only uses one)
+re z@(PlusI x y) = x  -- left-hand side binds z, x, and y (RHS only uses one)
 im z@(PlusI _ y) = y
 \end{code}
 An example of the use of pattern-matching:

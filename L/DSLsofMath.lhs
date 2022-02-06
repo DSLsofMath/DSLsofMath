@@ -156,6 +156,10 @@
 \newcommand{\fromExam}[1]{\lnOnly{\emph{From exam #1}}}
 \newcommand\crefatpage[1]{\cref{#1}, on page \pageref{#1}}
 
+\hyphenation{%
+  an-a-lyse
+}
+
 \title{Domain-Specific Languages of Mathematics
 %if lectureNotes
 : Lecture Notes

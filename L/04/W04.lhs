@@ -403,7 +403,7 @@ We have seen several examples in earlier chapters:
 \end{enumerate}
 
 To see how this last item plays out, it can be helpful to study the
-syntax trees of the left and right hand sides of the distributive law:
+syntax trees of the left and right-hand sides of the distributive law:
 |((a+b)*c = (a*c)+(b*c))|.
 %
 We observe that the function |(*c)| is ``pushed down'' to both |a| and |b|:
@@ -452,7 +452,7 @@ Back to Wikipedia:
   More formally, a homomorphism between two algebras |A| and |B| is a
 function |h : A → B| from the set |A| to the set |B| such that, for
 every operation |fA| of |A| and corresponding |fB| of |B| (of arity,
-say, |n|), |h(fA(x1,...,xn)) = fB(h(x1),...,h(xn))|.
+say, |n|), $h(|fA|(|x1|,...,|xn|)) = |fB|(h(|x1|),...,h(|xn|))$.
 \end{quote}
 
 In our Haskell interpretation, the above would mean that we have
@@ -472,7 +472,7 @@ h unit        =  unit             -- |h| takes units to units
 h (x `op` y)  =  h x `op` h y     -- and distributes over |op| (for all |x| and |y|)
 \end{spec}
 %
-Note that both |unit| and |op| have different types on the left and right hand sides.
+Note that both |unit| and |op| have different types on the left and right-hand sides.
 %
 On the left they belong to the monoid |(A, unitA, opA)| and on the
 right the belong to |(B, unitB, opB)|.
@@ -1972,7 +1972,7 @@ See
 \href{http://wiki.portal.chalmers.se/cse/pmwiki.php/CTFP14/CoursePlan}{Category
   Theory and Functional Programming} for a whole course around this
 (lecture notes are available on
-\href{https://github.com/DSLsofMath/ctfp2014}{github}).
+\href{https://github.com/DSLsofMath/ctfp2014}{GitHub}).
 %endif
 
 \subsection{Homomorphism as roadmaps}
