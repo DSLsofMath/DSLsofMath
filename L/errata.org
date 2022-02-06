@@ -1,63 +1,93 @@
 * Ch0
 ** L/00/Intro.lhs: 
 *** Around line 187: as:=at
+#+BEGIN_SRC diff
 -formal than usual, as least from a linguistic perspective.
 +formal than usual, at least from a linguistic perspective.
+#+END_SRC
 * Ch1
 ** L/01/W01.lhs
 *** Around line 423
+#+BEGIN_SRC diff
 -: Double| (Not a Number).
 +:: Double| (Not a Number).
+#+END_SRC
 ** L/01/SimpleFunExp.lhs
 *** Around line 38
+#+BEGIN_SRC diff
 -Examples: let $f(x) = x - 1$ and let $t = 5*f(2)$.
 +Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
+#+END_SRC
 ** L/01/E1.lhs 
 *** Around line 136: if:=is
+#+BEGIN_SRC diff
 -This kind of transformation if often useful, and it works also for
 +This kind of transformation is often useful, and it works also for
+#+END_SRC
 *** Around line 221: ComplexSem:=Complex; CS:=C
+#+BEGIN_SRC diff
 -embed :: ComplexSem r -> ComplexSyn r
 -embed (CS (x, y)) = ToComplexCart x y
 +embed :: Complex r -> ComplexSyn r
 +embed (C (x, y)) = ToComplexCart x y
+#+END_SRC
 * Ch2
 ** L/02/PropositionalLogic.lhs
 *** Around line 288
+#+BEGIN_SRC diff
 -But we still have to figure out what consitutes proofs.
 +But we still have to figure out what constitutes proofs.
+#+END_SRC
 *** Around line 374
+#+BEGIN_SRC diff
 -|AndElimR| symmetrically), where the extra |Prop| argument corresponds
 -to~|Q|.
 +|AndElimR| symmetrically), where the extra |Prop| arguments corresponds
 +to~|Q|~and~|P|~respectively.
+#+END_SRC
 ** L/02/FOL.lhs
 *** Around line 340
+#+BEGIN_SRC diff
 -The elimination and introduction rules for existential quantification are:
 +The introduction and elimination rules for existential quantification are:
+#+END_SRC
 *** Around line 448
+#+BEGIN_SRC diff
 -|(t, bt)| is a program of type |Exists x (P x)| if |bt| is has type |P t|.
 +|(t, bt)| is a program of type |Exists x (P x)| if |bt| has type |P t|.
+#+END_SRC
 *** Around line 450
+#+BEGIN_SRC diff
 -|f| is a program of type |Forall x (P x)| if |f t| is has type |P t| for all |t|.
 +|f| is a program of type |Forall x (P x)| if |f t| has type |P t| for all |t|.
+#+END_SRC
 ** L/03/W03.lhs
 *** Around line 662
+#+BEGIN_SRC diff
 -make provide a dummy definition for a few of them in one go:
 +make a dummy definition for a few of them in one go:
+#+END_SRC
 *** Around line 715
+#+BEGIN_SRC diff
 -pthe type-checker is happy with them.
 +the type-checker is happy with them.
+#+END_SRC
 * Ch4
 ** L/04/W04.lhs
 *** Around line 662
+#+BEGIN_SRC diff
 -If an isomorphism exist between two sets, we say that they are
 +If an isomorphism exists between two sets, we say that they are
+#+END_SRC
 * Ch7
 ** L/07/W07.lhs
 *** Around line 429
+#+BEGIN_SRC diff
 -vector space structure: vector-space \index{homomorphism}s.
 +vector space structure: vector-space \addtoindex{homomorphism}s.
+#+END_SRC
 *** Around line 939
+#+BEGIN_SRC diff
 -The evaluator from the |Vector g s| representation to polynomial
 +The evaluator from the |Vector s g| representation to polynomial
+#+END_SRC
