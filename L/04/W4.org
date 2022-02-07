@@ -1,0 +1,51 @@
+* DSLsofMath week 4: Compositionality and Algebras
+** L4.1 has five parts (videos):  
++ two using this Jamboard: https://jamboard.google.com/d/10t31slIWQamXGAtjBHDjRvfcRigvTl2xBFjYN0sOEMw/viewer?f=0
++ three live coding [[file:Live_4_1_2022.lhs][Live_4_1_2022.lhs]]
+** L4.1.1 (Jamboard): definition of H2 and friends
+  H2(f,(+),(*)) = Forall x. Forall y. f(x+y)  ==  (f x) * (f y)
+** L4.1.2 (Jamboard): examples H2(odd,+,xor) not H2(isPrime,+,_)
+| [[https://www.youtube.com/watch?v=WJHVG-IMx-k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=28][L4.1.2]] | 00:00 | Example: H2(odd,+,xor)          | §4.3.1 |
+| [[https://www.youtube.com/watch?v=WJHVG-IMx-k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=28&t=1070][L4.1.2]] | 17:50 | not Exists op. H2(isPrime,+,op) | §4.3.2 |
+** L4.1.3: Week 4, Lecture 1, Part 3
++ Haskell approximation |h2| of the predicate |H2|
+** L4.1.4: Week 4, Lecture 1, Part 4
+| [[https://www.youtube.com/watch?v=qljehEikpkw&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=30][L4.1.4]] | 00:00 | Compositional semantics & Folds | §4.3   |
+| [[https://www.youtube.com/watch?v=qljehEikpkw&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=30&t=444][L4.1.4]] | 07:24 | fold for integer expressions    | §4.4   |
+| [[https://www.youtube.com/watch?v=qljehEikpkw&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=30&t=966][L4.1.4]] | 16:06 | Define your own equality        | §4.4   |
+| [[https://www.youtube.com/watch?v=qljehEikpkw&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=30&t=1139][L4.1.4]] | 18:59 | evenIE as a fold instance       | §4.4   |
+** L4.1.5: Week 4, Lecture 1, Part 5
+| [[https://www.youtube.com/watch?v=aiVgiwQOtU8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=31][L4.1.5]] | 00:00 | Make your own type class        | §4.4   |
+
+
+* Admin
+** Soon back to campus teaching
++ The Swedish Government has decided to remove most pandemic
+  restrictions by 2022-02-09.
++ The universities will soon communicate more details about the
+  "return to campus".
++ Details coming during the week.
+** more Q&A time
++ Based on feedback from the student representatives during the
+  mid-course evaluation meeting we have decided to increase the
+  available time for "Q&A" by converting most lecture slots into
+  opportunities to ask questions and get answers from the lecturer.
++ [Exceptions: Week 7 where Nicola Botta will give the lectures and
+  Week 8 when the lecturer is on vacation.]
++ Concretely, the Tuesday lecture will be a "Q&A session" on the
+  regular zoom link.
++ But soon, perhaps already from Thursday, the "Q&A session" will be
+  on campus in the rooms according to TimeEdit.
+** video lectures remain, but will be pre-recorded.
++ The lectures will instead be uploaded before the "lecture slots" in
+  the schedule and you are expected to watch them before coming to the
+  Q&A.
++ Concretely this means that lecture 4.1 is already on YouTube and you
+  are expected to *watch it before Tuesday 13.15* to make the most of
+  the Q&A session. 
++ Similarly, for future coming "lecture slots" you are expected to
+  watch the video before coming.
+** A2 info (new groups coming)
++ The second Assignment will be done in *different groups* compared to
+  the first assignment.
++ More information will follow during the week.
