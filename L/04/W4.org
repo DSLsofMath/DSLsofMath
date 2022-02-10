@@ -1,5 +1,5 @@
 * DSLsofMath week 4: Compositionality and Algebras
-** L4.1 has five parts (videos):  
+** L4.1 has five parts (videos):
 + two using this Jamboard: https://jamboard.google.com/d/10t31slIWQamXGAtjBHDjRvfcRigvTl2xBFjYN0sOEMw/viewer?f=0
 + three live coding [[file:Live_4_1_2022.lhs][Live_4_1_2022.lhs]]
 ** L4.1.1 (Jamboard): definition of H2 and friends
@@ -22,9 +22,7 @@
 ** Soon back to campus teaching
 + The Swedish Government has decided to remove most pandemic
   restrictions by 2022-02-09.
-+ The universities will soon communicate more details about the
-  "return to campus".
-+ Details coming during the week.
++ The DSLsofMath course will be back on campus from 2022-02-14.
 ** more Q&A time
 + Based on feedback from the student representatives during the
   mid-course evaluation meeting we have decided to increase the
@@ -34,18 +32,38 @@
   Week 8 when the lecturer is on vacation.]
 + Concretely, the Tuesday lecture will be a "Q&A session" on the
   regular zoom link.
-+ But soon, perhaps already from Thursday, the "Q&A session" will be
-  on campus in the rooms according to TimeEdit.
++ Starting 2022-02-14 the "Q&A sessions" will be on campus in the
+  rooms according to TimeEdit.
 ** video lectures remain, but will be pre-recorded.
 + The lectures will instead be uploaded before the "lecture slots" in
   the schedule and you are expected to watch them before coming to the
   Q&A.
-+ Concretely this means that lecture 4.1 is already on YouTube and you
-  are expected to *watch it before Tuesday 13.15* to make the most of
-  the Q&A session. 
-+ Similarly, for future coming "lecture slots" you are expected to
-  watch the video before coming.
-** A2 info (new groups coming)
-+ The second Assignment will be done in *different groups* compared to
-  the first assignment.
-+ More information will follow during the week.
++ For each lecture, *watch it before the scheduled slot* to make the
+  most of the Q&A session.
+** Exam aids and preparation
++ I got a student question about the aids allowed on the exam.
++ You can bring "One textbook of your choice" to the exam.
++ You probably want to choose the course book (but you are allowed to
+  instead bring, say, Beta - Mathematics Handbook, or Adams and Essex,
+  etc. instead if you like).
++ If you plan to bring the course-book it is a good idea to get hold
+  of it now so that you have time to get to know it.
++ The github repo contains all 13 old exams with solution suggestions
+  so that you can prepare in your own time.
++ PS. You are not allowed to bring other notes, or a calculator, to
+  the exam.
+** Reminder: schedule change (just tomorrow): Exc. session at 10.00
++ Thus the Bonus hand-in deadline is also earlier: 09.50
+** A2 info (new groups coming) [deadline 2022-03-01]
++ Now it is time to start looking at assignment 2 which is done in
+  [[https://chalmers.instructure.com/courses/17542/groups#tab-9713][new groups]]: group set "Assignment 2".
++ The first step is to get in touch with your group-mates - I will
+  provide break-out rooms and can answer questions during the Thursday
+  lecture slot.
++ The second step (deadline on Monday the 14:th) is to fill in a
+  little Quiz just to see that you have got the group collaboration
+  started. (I suggest you fill it in tomorrow after meeting in the
+  zoom room.)
++ The third step is the actual work on the assignment - good luck!
++ (PS. Sorry for the confusion caused by last year's quiz being copied
+  to the wrong date.)
