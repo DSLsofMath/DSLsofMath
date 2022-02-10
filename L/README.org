@@ -117,6 +117,7 @@ More details below.
 | [[https://www.youtube.com/watch?v=c4gO76MMXu4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=34][L4.2.3]] | 00:00 | live coding der2, tupling transform | §4.6   |
 | [[https://www.youtube.com/watch?v=c4gO76MMXu4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=34&t=510][L4.2.3]] | 08:30 | der2 :: F -> Bi F; homomorphism     | §4.6   |
 | [[https://www.youtube.com/watch?v=c4gO76MMXu4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=34&t=1167][L4.2.3]] | 19:27 | type class for FunExp + instances   | §4.5   |
+| [[https://www.youtube.com/watch?v=y6weZisWeDM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=35][L4.3.1]] | 00:00 | Structural homomorphism             | §4.2   |
 |--------+-------+-------------------------------------+--------|
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
@@ -225,7 +226,8 @@ More details below.
 * 4. Compositionality and Algebras (101-140)
 ** 4.1 Algebraic Structures {p102}
 ** 4.2 Homomorphisms {p105}
-| [[https://www.youtube.com/watch?v=MMSXqshq_Ys&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=27][L4.1.1]] | 00:00 | Homomorphisms, H2, H1, H0       | §4.2   |
+| [[https://www.youtube.com/watch?v=MMSXqshq_Ys&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=27][L4.1.1]] | 00:00 | Homomorphisms, H2, H1, H0           | §4.2   |
+| [[https://www.youtube.com/watch?v=y6weZisWeDM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=35][L4.3.1]] | 00:00 | Structural homomorphism             | §4.2   |
 ** 4.3 Compositional semantics {p109}
 | [[https://www.youtube.com/watch?v=WJHVG-IMx-k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=28][L4.1.2]] | 00:00 | Example: H2(odd,+,xor)          | §4.3.1 |
 | [[https://www.youtube.com/watch?v=WJHVG-IMx-k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=28&t=1070][L4.1.2]] | 17:50 | not Exists op. H2(isPrime,+,op) | §4.3.2 |

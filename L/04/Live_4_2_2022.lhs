@@ -138,9 +138,10 @@ class Fun s where
   x   :: s
   add :: s -> s -> s
   mul :: s -> s -> s
-instance Fun S where c=cS; x=xS; add=addS; mul=mulS -- eval 
-instance Fun F where c=C;  x=X;  add=Add;  mul=Mul  -- deepcopy 
-instance Fun (Bi F) where c=cder2; x=xder2; add=addder2; mul=mulder2
+instance Fun S       where c=cS;    x=xS;    add=addS;    mul=mulS    -- eval 
+instance Fun F       where c=C;     x=X;     add=Add;     mul=Mul     -- deepcopy 
+instance Fun (Bi F)  where c=cder2; x=xder2; add=addder2; mul=mulder2 -- derivative
+
 sq :: Fun s => s
 sq = mul x x
 \end{code}
