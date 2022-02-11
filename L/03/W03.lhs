@@ -252,9 +252,8 @@ interpret as the operator |∂ / ∂ x| applied to |f| and |(x, y)|
 (remember that |(x, y)| is bound in the context by a universal
 quantifier on line 4).
 %
-There is the added difficulty that, just like the subscript in |f'x|,
-the |x| in |∂ x| is not the |x| bound by the universal quantifier, but
-just a symbol.
+Note that the |x| in |∂ x| is not the |x| bound by the universal
+quantifier, but just a symbol (just like the subscript in |f'x|).
 %}
 
 To sum up, partial derivative operators which mention symbols (such as

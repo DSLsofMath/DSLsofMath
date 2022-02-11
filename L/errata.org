@@ -141,7 +141,22 @@
 -|f| is a program of type |Forall x (P x)| if |f t| is has type |P t| for all |t|.
 +|f| is a program of type |Forall x (P x)| if |f t| has type |P t| for all |t|.
 #+END_SRC
+** L/02/CalculusConcepts.lhs
+*** Around line 255
+#+BEGIN_SRC diff
+As mentioned in \cref{sec:infseq}, one way to handle is this to treat
+As mentioned in \cref{sec:infseq}, one way to handle this is to treat
+#+END_SRC
+* Ch3
 ** L/03/W03.lhs
+*** Around line 255
+#+BEGIN_SRC diff
+-There is the added difficulty that, just like the subscript in |f'x|,
+-the |x| in |∂ x| is not the |x| bound by the universal quantifier, but
+-just a symbol.
++Note that the |x| in |∂ x| is not the |x| bound by the universal
++quantifier, but just a symbol (just like the subscript in |f'x|).
+#+END_SRC
 *** Around line 662
 #+BEGIN_SRC diff
 -make provide a dummy definition for a few of them in one go:
