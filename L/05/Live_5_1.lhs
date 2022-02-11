@@ -3,7 +3,7 @@ Continuing on from Week 4.
 \begin{code}
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE RebindableSyntax #-}
-module Apply where
+module Live_5_1_2022 where
 import DSLsofMath.FunExp
 import DSLsofMath.FunExpInst () -- just import instances
 import DSLsofMath.Simplify
@@ -14,9 +14,8 @@ import DSLsofMath.Algebra
 
 More work on "the DSL of functions and derivatives".
 
-1. Two different, but related, semantics of FunExp
-2. A homomorphism between them
-3. Numeric class instances
+1. Two semantics of FunExp and a homomorphism between them: applyFD
+2. Numeric class instances for Bi
 
 ----------------
 0. Reminder:
@@ -36,7 +35,8 @@ class Additive a => AddGroup a where  negate :: a -> a
 + we need a pair of function + derivative.
 
 ----------------
-1. Two different, but related, semantics of FunExp
+1. Two different, but related, semantics of FunExp: FD a, a -> Bi a
+   and a homomorphism between them: applyFD
 
 \begin{code}
 newtype FD a = FD (a->a, a->a)   -- Function + Derivative
@@ -45,15 +45,16 @@ newtype Bi a = Bi (a,    a)      -- Position + Speed
 
 -- forall c. H2(applyFD c, mulFD, mulBi)
 applyFD :: a -> FD a -> Bi a
-applyFD c (FD (f, f')) = Bi (f c, f' c)
+applyFD = error "TODO"
 
 -- 1a: implement \x -> (x-1)^+2 "by hand" as an FD:
 fd1 :: Ring a => FD a
-fd1 = FD (\x -> (x-1)^+2, \x -> 2*(x-1))
-
+fd1 = error "TODO"
+     --   f                D f
+      
 -- 1b: implement "x" as an FD
 xFD :: Ring a => FD a
-xFD = FD (id, one)
+xFD = error "TODO"
 
 -- 1c: implement \x -> (x-1)^+2 in any Ring:
 e2 :: Ring a => a -> a
@@ -77,7 +78,7 @@ countUp :: Ring a => Int -> a -> [a]
 countUp steps start = take steps (iterate (one+) start)
 
 xBi :: Ring a => a -> Bi a
-xBi x = Bi (x, one)
+xBi = error "TODO"
 
 instance Additive a   => Additive (FD a) where  (+) = addFD;  zero = zeroFD
 instance Ring a => Multiplicative (FD a) where  (*) = mulFD;  one = oneFD
@@ -85,22 +86,24 @@ instance AddGroup a   => AddGroup (FD a) where  negate = negateFD
 
 addFD :: Additive a => FD a -> FD a -> FD a
 addFD (FD (f, f')) (FD (g, g')) = FD (f+g, f'+g')
+  -- (+) :: (a->a) -> (a->a) -> (a->a)
+negateFD :: AddGroup a => FD a -> FD a
+negateFD (FD (f, f')) = FD (negate f, negate f' )
 
 zeroFD :: Additive a => FD a
-zeroFD = FD (zero, zero)
+zeroFD = FD (zero,zero)  -- zero :: Additive a => a -> a
 
 oneFD :: Ring a => FD a
-oneFD = FD (one, zero)
+oneFD = FD (one, zero)     -- (constant function returning 1, its derivative)
 
 mulFD :: Ring a => FD a -> FD a -> FD a
-mulFD (FD (f, f')) (FD (g, g')) = FD (f*g, f*g' + f'*g)
-
--- unary minus
-negateFD :: AddGroup a => FD a -> FD a
-negateFD (FD (f, f')) = FD (negate f, negate f')
+mulFD (FD (f, f')) (FD (g, g')) = FD (f*g, f'*g + f*g')
+  -- (*) :: (a->a) -> (a->a) -> (a->a)
 \end{code}
 
-The same for |Bi|.
+----------------
+2. Numeric instances for Bi
+
 \begin{code}
 instance Additive a   => Additive (Bi a) where  (+) = addBi;  zero = zeroBi
 instance Ring a => Multiplicative (Bi a) where  (*) = mulBi;  one = oneBi
@@ -109,19 +112,19 @@ instance AddGroup a   => AddGroup (Bi a) where  negate = negateBi
 
 -- Spec.: forall c. H2(applyFD c, mulFD, mulBi)
 mulBi :: Ring a => Bi a -> Bi a -> Bi a
-mulBi (Bi (f,f')) (Bi (g,g')) = Bi (f*g, f*g' + f'*g)
+mulBi = error "TODO"
 
 addBi :: Additive a => Bi a -> Bi a -> Bi a
-addBi (Bi (f,f')) (Bi (g,g')) = Bi (f+g, f'+g')
+addBi = error "TODO"
 
 negateBi :: AddGroup a => Bi a -> Bi a
-negateBi (Bi (f,f')) = Bi (negate f, negate f')
+negateBi = error "TODO"
 
 zeroBi :: Additive a => Bi a
-zeroBi = Bi (zero, zero)
+zeroBi = error "TODO"
 
 oneBi :: Ring a => Bi a
-oneBi = Bi (one, zero)
+oneBi = error "TODO"
 \end{code}
 
 H2(applyFD c, mulFD, mulBi)
