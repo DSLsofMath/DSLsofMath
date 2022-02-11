@@ -118,7 +118,20 @@ More details below.
 | [[https://www.youtube.com/watch?v=c4gO76MMXu4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=34&t=510][L4.2.3]] | 08:30 | der2 :: F -> Bi F; homomorphism     | §4.6   |
 | [[https://www.youtube.com/watch?v=c4gO76MMXu4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=34&t=1167][L4.2.3]] | 19:27 | type class for FunExp + instances   | §4.5   |
 | [[https://www.youtube.com/watch?v=y6weZisWeDM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=35][L4.3.1]] | 00:00 | Structural homomorphism             | §4.2   |
+| [[https://www.youtube.com/watch?v=LQjHFSZP-TM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=36][L4.3.2]] | 00:00 | Live coding Monoid, Ring, Field     | §4.1   |
 |--------+-------+-------------------------------------+--------|
+
+* Week 5 lecture videos:
+
+|--------+-------+------------------------------------------+--------|
+| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37][L5.1.1]] | 00:00 | Live coding applyFD                      | §4.6.1 |
+| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37?t=1303][L5.1.1]] | 21:43 | Bi a = (pos, speed)                      | §4.6.1 |
+| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37?t=1651][L5.1.1]] | 27:31 | equational reasoning: mulBi from mulFD   | §4.6.1 |
+| [[https://www.youtube.com/watch?v=ZIRJxd50qQ4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=38][L5.1.2]] | 00:00 | Polynomials: types + eval + examples     | §5.1   |
+| [[https://www.youtube.com/watch?v=ZIRJxd50qQ4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=38&t=1253][L5.1.2]] | 00:00 | Chebyshev polynomials                    | §5.1   |
+| [[https://www.youtube.com/watch?v=DC8DvcA_h4s&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=39][L5.1.3]] | 00:00 | Polynomials and homomorphisms            | §5.1   |
+| [[https://www.youtube.com/watch?v=DC8DvcA_h4s&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=39&t=501][L5.1.3]] | 00:00 | Equational reasoning (eval for Poly (+)) | §5.1   |
+|--------+-------+------------------------------------------+--------|
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
 + The whole chapter is included in the course.
@@ -225,6 +238,7 @@ More details below.
 ** 3.7 Exercises {p98}
 * 4. Compositionality and Algebras (101-140)
 ** 4.1 Algebraic Structures {p102}
+| [[https://www.youtube.com/watch?v=LQjHFSZP-TM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=36][L4.3.2]] | 00:00 | Live coding Monoid, Ring, Field     | §4.1   |
 ** 4.2 Homomorphisms {p105}
 | [[https://www.youtube.com/watch?v=MMSXqshq_Ys&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=27][L4.1.1]] | 00:00 | Homomorphisms, H2, H1, H0           | §4.2   |
 | [[https://www.youtube.com/watch?v=y6weZisWeDM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=35][L4.3.1]] | 00:00 | Structural homomorphism             | §4.2   |
@@ -246,6 +260,9 @@ More details below.
 | [[https://www.youtube.com/watch?v=VgX-bNrPvZI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=33][L4.2.2]] | 00:00 | tupling: der2 : F -> (F, F)         | §4.6   |
 | [[https://www.youtube.com/watch?v=c4gO76MMXu4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=34][L4.2.3]] | 00:00 | live coding der2, tupling transform | §4.6   |
 | [[https://www.youtube.com/watch?v=c4gO76MMXu4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=34&t=510][L4.2.3]] | 08:30 | der2 :: F -> Bi F; homomorphism     | §4.6   |
+| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37][L5.1.1]] | 00:00 | Live coding applyFD                      | §4.6.1 |
+| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37?t=1303][L5.1.1]] | 21:43 | Bi a = (pos, speed)                      | §4.6.1 |
+| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37?t=1651][L5.1.1]] | 27:31 | equational reasoning: mulBi from mulFD   | §4.6.1 |
 ** 4.7 Summary {p126}
 ** 4.8 Beyond Algebras: Co-algebra and the Stream calculus {p128}
 ** 4.9 A solved exercise {p129}
@@ -253,6 +270,10 @@ More details below.
 
 * 5. Polynomials and Power Series (141-157)
 ** 5.1 Polynomials {p141}
+| [[https://www.youtube.com/watch?v=ZIRJxd50qQ4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=38][L5.1.2]] | 00:00 | Polynomials: types + eval + examples     | §5.1   |
+| [[https://www.youtube.com/watch?v=ZIRJxd50qQ4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=38&t=1253][L5.1.2]] | 00:00 | Chebyshev polynomials                    | §5.1   |
+| [[https://www.youtube.com/watch?v=DC8DvcA_h4s&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=39][L5.1.3]] | 00:00 | Polynomials and homomorphisms            | §5.1   |
+| [[https://www.youtube.com/watch?v=DC8DvcA_h4s&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=39&t=501][L5.1.3]] | 00:00 | Equational reasoning (eval for Poly (+)) | §5.1   |
 ** 5.2 Division and the degree of the zero polynomial {p147}
 ** 5.3 Polynomial degree as a homomorphism {p148}
 ** 5.4 Power Series {p149}

@@ -1,59 +1,9 @@
 Week 5: Polynomials and Power Series
-* Recap of homomorphisms (also on Jamboard)
-** H2
-Homomorphism2(h,opA,opB) = forall x, y. h (opA x y) == opB (h x) (h y)
-  where  h   :: A -> B
-         opA :: A -> A -> A
-         opB :: B -> B -> B
-** H1
-Homomorphism1(h,opA,opB) =      forall x. h (opA x) == opB (h x)
-  where  h   :: A -> B
-         opA :: A -> A
-         opB :: B -> B
-** H0
-Homomorphism0(h,opA,opB) =                    h opA == opB
-  where  h   :: A -> B
-         opA :: A
-         opB :: B
-** Examples:
-
-Homomorphism2(eval,Add,(+)) = forall x, y. eval(Add x y) == (eval x)+(eval y)
-  where  eval  :: FunExp -> FunSem
-         Add   :: FunExp -> FunExp -> FunExp
-         (+)   :: FunSem -> FunSem -> FunSem
-
-Homomorphism1(eval,Exp,exp) = forall e. eval(Exp e) == exp (eval e)
-  where  eval  :: FunExp -> FunSem
-         Exp   :: FunExp -> FunExp
-         exp   :: FunSem -> FunSem
-
-** Homomorphism between structures: Monoid
-  "h is a monoid homomorphism"
-={def}
-  H2(h,opA,opB) & H0(h,unitA,unitB)
-** Homomorphism between structures: Syntax to Semantics
-Given
-  data Syn where
-    Foo  :: Syn -> Syn -> Syn
-    Bar  :: Syn -> Syn
-    Leaf :: Syn
-the predicate "h is a homomorphism from Syn to Sem" means
-there exist functions
-    foo  :: Sem -> Sem -> Sem
-    bar  :: Sem -> Sem
-    leaf :: Sem
-such that
-  H2(h, Foo, foo) & H1(h, Bar, bar) & H0(h, Leaf, leaf)
-
-Note that the last line is fulfilled by h = eval where
-  eval (Foo x y) = foo (eval x) (eval y)
-  eval (Bar x)   = bar (eval x)
-  eval Leaf      = leaf
-
-* Homomorphism examples related to A2 (Apply.hs)
+* 5.1.1: Homomorphism examples related to A2 (Apply.hs)
++ Live coding [[file:Live_5_1_2022.lhs]]
 ** apply   :: a -> (a->b) -> b
 ** applyFD :: a -> FD a -> Bi a
-* Polynomials (Jamboard)
+* Polynomials ([[https://jamboard.google.com/d/1uz9cnHTM7g17ojxAsyi-BXGAs9wAD0weI0thxV6dPbw/viewer][Jamboard L5.1]])
 
 \begin{quote}
 P is a polynomial function if
@@ -69,7 +19,10 @@ polynomial, is called the \textbf{degree} of the polynomial.
 %
 (The degree of the zero polynomial is not defined.)
 \end{quote}
-* Power Series
+
+
+
+* TODO L5.2 Power Series
 ** Polynomial degree
 https://chalmers.instructure.com/courses/8975/files/folder/Blackboard/Week5?preview=392737
 ** degree as "almost a homomorphism"
