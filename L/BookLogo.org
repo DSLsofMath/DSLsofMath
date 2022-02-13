@@ -1,5 +1,6 @@
 * Book https://www.collegepublications.co.uk/computing/?00024
 /home/patrikj/Pictures/DSLsofMath_book_front_cover.jpg
+
 * DSLsofMath logo                |
 ../admin/DSL_logo/DSL_logo.png
 
