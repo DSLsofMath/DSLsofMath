@@ -123,15 +123,20 @@ More details below.
 
 * Week 5 lecture videos:
 
-|--------+-------+------------------------------------------+--------|
-| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37][L5.1.1]] | 00:00 | Live coding applyFD                      | §4.6.1 |
-| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37?t=1303][L5.1.1]] | 21:43 | Bi a = (pos, speed)                      | §4.6.1 |
-| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37?t=1651][L5.1.1]] | 27:31 | equational reasoning: mulBi from mulFD   | §4.6.1 |
-| [[https://www.youtube.com/watch?v=ZIRJxd50qQ4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=38][L5.1.2]] | 00:00 | Polynomials: types + eval + examples     | §5.1   |
-| [[https://www.youtube.com/watch?v=ZIRJxd50qQ4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=38&t=1253][L5.1.2]] | 00:00 | Chebyshev polynomials                    | §5.1   |
-| [[https://www.youtube.com/watch?v=DC8DvcA_h4s&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=39][L5.1.3]] | 00:00 | Polynomials and homomorphisms            | §5.1   |
-| [[https://www.youtube.com/watch?v=DC8DvcA_h4s&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=39&t=501][L5.1.3]] | 00:00 | Equational reasoning (eval for Poly (+)) | §5.1   |
-|--------+-------+------------------------------------------+--------|
+|--------+-------+------------------------------------------+------------|
+| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37][L5.1.1]] | 00:00 | Live coding applyFD                      | §4.6.1     |
+| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37?t=1303][L5.1.1]] | 21:43 | Bi a = (pos, speed)                      | §4.6.1     |
+| [[https://www.youtube.com/watch?v=IJcxf7Ar0sE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=37?t=1651][L5.1.1]] | 27:31 | equational reasoning: mulBi from mulFD   | §4.6.1     |
+| [[https://www.youtube.com/watch?v=ZIRJxd50qQ4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=38][L5.1.2]] | 00:00 | Polynomials: types + eval + examples     | §5.1       |
+| [[https://www.youtube.com/watch?v=ZIRJxd50qQ4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=38&t=1253][L5.1.2]] | 00:00 | Chebyshev polynomials                    | §5.1       |
+| [[https://www.youtube.com/watch?v=DC8DvcA_h4s&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=39][L5.1.3]] | 00:00 | Polynomials and homomorphisms            | §5.1       |
+| [[https://www.youtube.com/watch?v=DC8DvcA_h4s&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=39&t=501][L5.1.3]] | 00:00 | Equational reasoning (eval for Poly (+)) | §5.1       |
+| [[https://www.youtube.com/watch?v=gGSDhyYeU4A&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=40][L5.2.1]] | 00:00 | Is degree maybe a homomorphism?          | §5.2, §5.3 |
+| [[https://www.youtube.com/watch?v=3Er6ViQ_LZQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=41][L5.2.2]] | 00:00 | Polynomial division                      | §5.4, §5.5 |
+| [[https://www.youtube.com/watch?v=dTffK5e-PRE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=42][L5.2.3]] | 00:00 | Live coding polynomials: types, eval     | §5.1       |
+| [[https://www.youtube.com/watch?v=z1zBUh4GvOE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=43][L5.2.4]] | 00:00 | Coding the polynomial Ring in Haskell    | §5.1       |
+| [[https://www.youtube.com/watch?v=-eHJgRnCaGE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=44][L5.2.5]] | 00:00 | Power Series, deriv, integ, exp example  | §5.6       |
+|--------+-------+------------------------------------------+------------|
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
 + The whole chapter is included in the course.
@@ -274,13 +279,19 @@ More details below.
 | [[https://www.youtube.com/watch?v=ZIRJxd50qQ4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=38&t=1253][L5.1.2]] | 00:00 | Chebyshev polynomials                    | §5.1   |
 | [[https://www.youtube.com/watch?v=DC8DvcA_h4s&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=39][L5.1.3]] | 00:00 | Polynomials and homomorphisms            | §5.1   |
 | [[https://www.youtube.com/watch?v=DC8DvcA_h4s&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=39&t=501][L5.1.3]] | 00:00 | Equational reasoning (eval for Poly (+)) | §5.1   |
+| [[https://www.youtube.com/watch?v=dTffK5e-PRE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=42][L5.2.3]] | 00:00 | Live coding polynomials: types, eval     | §5.1       |
+| [[https://www.youtube.com/watch?v=z1zBUh4GvOE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=43][L5.2.4]] | 00:00 | Coding the polynomial Ring in Haskell    | §5.1       |
 ** 5.2 Division and the degree of the zero polynomial {p147}
+| [[https://www.youtube.com/watch?v=gGSDhyYeU4A&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=40][L5.2.1]] | 00:00 | Is degree maybe a homomorphism?          | §5.2, §5.3 |
 ** 5.3 Polynomial degree as a homomorphism {p148}
+| [[https://www.youtube.com/watch?v=gGSDhyYeU4A&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=40][L5.2.1]] | 00:00 | Is degree maybe a homomorphism?          | §5.2, §5.3 |
 ** 5.4 Power Series {p149}
+| [[https://www.youtube.com/watch?v=3Er6ViQ_LZQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=41][L5.2.2]] | 00:00 | Polynomial division                      | §5.4, §5.5 |
 ** 5.5 Operations on power series {p152}
+| [[https://www.youtube.com/watch?v=3Er6ViQ_LZQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=41][L5.2.2]] | 00:00 | Polynomial division                      | §5.4, §5.5 |
 ** 5.6 Formal derivative {p153}
+| [[https://www.youtube.com/watch?v=-eHJgRnCaGE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=44][L5.2.5]] | 00:00 | Power Series, deriv, integ, exp example  | §5.6       |
 ** 5.7 Exercises {p155}
-
 * 6. Taylor and Maclaurin series (158-174)
 ** 6.1 Taylor series {p161}
 ** 6.2 Derivatives and Integrals for Maclaurin series {p164}

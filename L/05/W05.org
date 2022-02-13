@@ -1,5 +1,5 @@
 Week 5: Polynomials and Power Series
-* 5.1.1: Homomorphism examples related to A2 (Apply.hs)
+* L5.1.1: Homomorphism examples related to A2 (Apply.hs)
 + Live coding [[file:Live_5_1_2022.lhs]]
 ** apply   :: a -> (a->b) -> b
 ** applyFD :: a -> FD a -> Bi a
@@ -21,25 +21,14 @@ polynomial, is called the \textbf{degree} of the polynomial.
 \end{quote}
 
 
-
-* TODO L5.2 Power Series
-** Polynomial degree
-https://chalmers.instructure.com/courses/8975/files/folder/Blackboard/Week5?preview=392737
+* L5.2 Power Series
+** Polynomial degree [[https://jamboard.google.com/d/1lMyIr4-aIxQduNOcMc8Ui_z37uujGsQGV_QOo3oH3UM/edit?usp=sharing][Jamboard 5.2]]
 ** degree as "almost a homomorphism"
 ** lifting to Maybe
-https://chalmers.instructure.com/courses/8975/files/folder/Blackboard/Week5?preview=392736
-** derivative
-https://chalmers.instructure.com/courses/8975/files/folder/Blackboard/Week5?preview=392733
-** integration
-** Polynomial division with remainder
 ** Power series example: 1/(1-x)
-https://chalmers.instructure.com/courses/8975/files/folder/Blackboard/Week5?preview=392735
-** Radius of convergence
-** Live coding (Live_5_2_2020.lhs)
-+ evalPS
-+ numeric instances (Poly a)
-+ scale, negate, fromInteger, x
-+ degree :: Poly a -> Maybe Int
-+ Examples: hej=1:hej
-+ derP, intP
-+ Using intP to define expP, sinP, cosP
+** Live coding (file:Live_5_2_2022.lhs)
++ DSL for polynomials: newtype Poly, eval, a->a
++ numeric Ring instances for polynomials (Poly a)
++ scale, negate
++ derivP, integP
++ Using integP to define expP
