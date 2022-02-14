@@ -1838,7 +1838,7 @@ Namely, the homomorphism is |apply c|, with the definition:
 apply :: a -> (a -> b) -> b
 apply a = \f -> f a
 \end{spec}
-Because |apply c| is so simple, it is an homomorphism not only for
+Because |apply c| is so simple, it is a homomorphism not only for
 |Additive|, but also |Ring| (and any numeric class we have seen so
 far).
 %
