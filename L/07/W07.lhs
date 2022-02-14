@@ -683,13 +683,13 @@ The associated matrix is
 having |n+1| columns (the dimension of |Vector G|) and one row
 (dimension of |Vector ()|).
 %
-Let |w :: Vector S G|:
+Let |w :: G -> S|:
 %
 \begin{spec}
 M * (V w) = w 0 *^ fv 0 + ... + w n *^ fv n
 \end{spec}
 %
-|M * (V v)| and each of the |fv k| are ``almost scalars'': functions of
+|M * (V w)| and each of the |fv k| are ``almost scalars'': functions of
 type |() -> S|, thus, the only component of |M * (V w)| is
 %
 \begin{spec}
