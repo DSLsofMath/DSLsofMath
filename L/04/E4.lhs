@@ -374,8 +374,8 @@ The evaluation of the second derivative is given by
 \end{spec}
 %
 \begin{enumerate}[label=\alph*)]
-\item Let |P(h) = | ``|h| is a homomorphism from |FunExp| to
-  |FunSem = REAL -> REAL|''.
+\item Let |P(h) = | \emph{|h| is a homomorphism from |FunExp| to
+  |FunSem = REAL -> REAL|}.
   %
   Express |P| in logic and show |not P(eval'')|.
 
