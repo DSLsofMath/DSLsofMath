@@ -137,6 +137,13 @@ More details below.
 | [[https://www.youtube.com/watch?v=z1zBUh4GvOE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=43][L5.2.4]] | 00:00 | Coding the polynomial Ring in Haskell    | §5.1       |
 | [[https://www.youtube.com/watch?v=-eHJgRnCaGE&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=44][L5.2.5]] | 00:00 | Power Series, deriv, integ, exp example  | §5.6       |
 |--------+-------+------------------------------------------+------------|
+* Week 6 lecture videos:
+
+|--------+--------------------------------------------------+-----------|
+| [[https://www.youtube.com/watch?v=FLgx30dhgDg&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=45&pp=sAQB][L6.1.1]] | Power Series and Ordinary Differential Equations | §6.4      |
+| [[https://www.youtube.com/watch?v=9zZK540ROFw&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=46&pp=sAQB][L6.1.2]] | Power Series transform for solving ODEs          | §6.4      |
+| [[https://www.youtube.com/watch?v=g-wf17HLYUU&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=47&pp=sAQB][L6.1.3]] | Taylor & Maclaurin series                        | §6.1&§6.3 |
+
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
 + The whole chapter is included in the course.

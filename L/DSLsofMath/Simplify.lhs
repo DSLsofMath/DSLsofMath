@@ -77,6 +77,8 @@ exercise to try to implement your own version. Spoiler below.
 
 This is one possibility.
 
+SoP = Sum of Products
+
 \begin{code}
 newtype SoP = SoP [(REAL,[FunExp])] deriving (Eq, Show)
   -- sorted on the second component of the pairs, no duplicates
@@ -181,10 +183,11 @@ term2FunExp (c,xs)  = foldr1 (:*:) (Const c : xs)
 
 Possible extensions:
 
-1) make the product part of the "sum of products" use the same
+1) Make the product part of the "sum of products" use the same
    represenation as the sum part: a list of pairs of factors and
    their exponents. Then multiplication and recip could be handled in
    much the same way as addition and negation.
+   (Then X*X := X^2, X*Recip X := X^0 := 1, ...)
 
 2) Extend the representation to rational expressions (a ratio of two
    of the current SoP).
