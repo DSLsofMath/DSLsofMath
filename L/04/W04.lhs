@@ -790,7 +790,7 @@ Still, in this case we are lucky: we can use the ``parity rules''
 taught in elementary school: even + even is even, etc.
 %
 In code we simply get:\footnote{A perhaps more natural alternative
-would be to taken |odd| instead of |even| as the homomorphism.
+would be to take |odd| instead of |even| as the homomorphism.
 %
 You can try it out as an exercise.}
 %
@@ -1838,7 +1838,7 @@ Namely, the homomorphism is |apply c|, with the definition:
 apply :: a -> (a -> b) -> b
 apply a = \f -> f a
 \end{spec}
-Because |apply c| is so simple, it is an homomorphism not only for
+Because |apply c| is so simple, it is a homomorphism not only for
 |Additive|, but also |Ring| (and any numeric class we have seen so
 far).
 %
