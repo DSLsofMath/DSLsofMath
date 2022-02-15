@@ -187,10 +187,132 @@ As mentioned in \cref{sec:infseq}, one way to handle this is to treat
 #+END_SRC
 * Ch7
 ** L/07/W07.lhs
+*** Around line 364
+#+BEGIN_SRC diff
+-    |v  ==  (v 0 *^ e 0) + ... + (v n *^ e n)|
++    |V v  ==  (v 0 *^ e 0) + ... + (v n *^ e n)|
+#+END_SRC
+*** Around line 390
+#+BEGIN_SRC diff
+-    |v == linComb v e|
++    |V v == linComb v e|
+#+END_SRC
+*** Around line 422
+#+BEGIN_SRC diff
+-f v  =  f (v 0 *^ e 0 + ... + v n *^ e n)
++f (V v)  =  f (v 0 *^ e 0 + ... + v n *^ e n)
+#+END_SRC
 *** Around line 429
 #+BEGIN_SRC diff
 -vector space structure: vector-space \index{homomorphism}s.
 +vector space structure: vector-space \addtoindex{homomorphism}s.
+#+END_SRC
+*** Around line 441
+#+BEGIN_SRC diff
+-Because |v = linComb v e = (v 0 *^ e 0 + ... + v n *^ e n)|, we also
++Because |V v = linComb v e = (v 0 *^ e 0 + ... + v n *^ e n)|, we also
+#+END_SRC
+*** Around line 445
+#+BEGIN_SRC diff
+-f v   =  f (  v 0 *^ e 0      + ... +  v n *^ e n)                  {- because |f| is linear -}
+-      =       v 0 *^ f (e 0)  + ... +  v n *^ f (e n)  {-"\quad"-}  {- by def. of |linComb| -}
+-      =  linComb v (f . e)
++f (V v)   =  f (  v 0 *^ e 0      + ... +  v n *^ e n)                  {- because |f| is linear -}
++          =       v 0 *^ f (e 0)  + ... +  v n *^ f (e n)  {-"\quad"-}  {- by def. of |linComb| -}
++          =  linComb v (f . e)
+#+END_SRC
+*** Around line 512
+#+BEGIN_SRC diff
+-f v = linComb v m = v 0 *^ m 0 + ... + v n *^ m n
++f (V v) = linComb v m = v 0 *^ m 0 + ... + v n *^ m n
+#+END_SRC
+*** Around line 515
+#+BEGIN_SRC diff
+-Each of the |m k| is a |Vector S G'|, as is the resulting |f v|.
++Each of the |m k| is a |Vector S G'|, as is the resulting |f (V v)|.
+#+END_SRC
+*** Around line 517
+#+BEGIN_SRC diff
+-If we look at the component |g'| of |f v| we have
++If we look at the component |g'| of |f (V v)| we have
+#+END_SRC
+*** Around line 519
+#+BEGIN_SRC diff
+-  f v g'                           = {- as above -}
++  f (V v) ! g'                     = {- as above -}
+#+END_SRC
+*** Around line 521
+#+BEGIN_SRC diff
+-  (linComb v m) g'                 = {- |linComb|, |(*^)|, |(+)| are all linear -}
++  (linComb v m) ! g'               = {- |linComb|, |(*^)|, |(+)| are all linear -}
+#+END_SRC
+*** Around line 523
+#+BEGIN_SRC diff
+-  linComb v (\g -> m g g')         {-"\ "-}
++  linComb v (\g -> m g ! g')       {-"\ "-}
+#+END_SRC
+*** Around line 546
+#+BEGIN_SRC diff
+-write |M i j| to mean the |i|th element of the |j|th column, i.e., |M
+-i j = m j i|, so that, if we denote the usual matrix-vector
++write |M i ! j| to mean the |i|th element of the |j|th column, i.e.,
++|M i ! j = m j ! i|, so that, if we denote the usual matrix-vector
+#+END_SRC
+*** Around line 550
+#+BEGIN_SRC diff
+-(mulMV M v) i = linComb v (M i)
++(mulMV M (V v)) i = linComb v (M i)
+#+END_SRC
+*** Around line 555
+#+BEGIN_SRC diff
+-(mulMV M v) i                            = -- by def. of |mulMV|
+-linComb v (M i)                          = -- by def. of |M i j|
+-linComb v (\j -> m j i)                  = -- earlier computation (linearity)
+-f v i
++(mulMV M (V v)) i                        = -- by def. of |mulMV|
++linComb v (M i)                          = -- by def. of |(M i) ! j|
++linComb v (\j -> m j ! i)              = -- earlier computation (linearity)
++f (V v) i
+#+END_SRC
+*** Around line 621
+#+BEGIN_SRC diff
+-Moreover |((M*) . e) g g' = M g' g|, i.e., the matrix constructed as
++Moreover |((M*) . e) g ! g' = M g' ! g|, i.e., the matrix constructed as
+#+END_SRC
+*** Around line 624
+#+BEGIN_SRC diff
+-In \cref{exc:Mstarcompose} you verify this by computing |((M*) . e ) g g'|.
++In \cref{exc:Mstarcompose} you verify this by computing |((M*) . e ) g !
++g'|.
+#+END_SRC
+*** Around line 683
+#+BEGIN_SRC diff
+-Let |w :: Vector S G|:
++Let |w :: G -> S|:
+#+END_SRC
+*** Around line 685
+#+BEGIN_SRC diff
+-M * w = w 0 *^ fv 0 + ... + w n *^ fv n
++M * (V w) = w 0 *^ fv 0 + ... + w n *^ fv n
+#+END_SRC
+*** Around line 688
+#+BEGIN_SRC diff
+-|M * v| and each of the |fv k| are ``almost scalars'': functions of
+-type |() -> S|, thus, the only component of |M * w| is
++|M * (V v)| and each of the |fv k| are ``almost scalars'': functions of
++type |() -> S|, thus, the only component of |M * (V w)| is
+#+END_SRC
+*** Around line 689
+#+BEGIN_SRC diff
+-|M * (V v)| and each of the |fv k| are ``almost scalars'': functions of
++|M * (V w)| and each of the |fv k| are ``almost scalars'': functions of
+#+END_SRC
+*** Around line 690
+#+BEGIN_SRC diff
+-(M * w) ()  = w 0 * fv 0 () + ... + w n * fv n ()
+-            = w 0 * v 0 + ... + w n * v n
++(M * (V w)) ()  = w 0 * fv 0 () + ... + w n * fv n ()
++                = w 0 * v 0 + ... + w n * v n
 #+END_SRC
 *** Around line 939
 #+BEGIN_SRC diff
