@@ -1138,7 +1138,7 @@ computing derivatives.
 They are provided by \citet{adams2010calculus} as a series of
 theorems, starting at page 108 of their book.
 %
-We we can summarise those as follows:
+We can summarise those as follows:
 \begin{align*}
   (f + g)'(x)  &=   f'(x) + g'(x)            \\
   (f * g)'(x)  &=   f'(x)*g(x) + f(x)*g'(x)  \\
