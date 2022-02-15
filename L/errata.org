@@ -174,12 +174,29 @@ As mentioned in \cref{sec:infseq}, one way to handle this is to treat
 -If an isomorphism exist between two sets, we say that they are
 +If an isomorphism exists between two sets, we say that they are
 #+END_SRC
+*** Around line 790
+#+BEGIN_SRC diff
+-would be to taken |odd| instead of |even| as the homomorphism.
++would be to take |odd| instead of |even| as the homomorphism.
+#+END_SRC
+*** Around line 1838
+#+BEGIN_SRC diff
+-Because |apply c| is so simple, it is an homomorphism not only for
++Because |apply c| is so simple, it is a homomorphism not only for
+#+END_SRC
 *** Around line 1975
 #+BEGIN_SRC diff
 -\href{https://github.com/DSLsofMath/ctfp2014}{github}).
 +\href{https://github.com/DSLsofMath/ctfp2014}{GitHub}).
 #+END_SRC
 ** L/04/E4.lhs
+*** Around line 374
+#+BEGIN_SRC diff
+-\item Let |P(h) = | ``|h| is a homomorphism from |FunExp| to
+-  |FunSem = REAL -> REAL|''.
++\item Let |P(h) = | \emph{|h| is a homomorphism from |FunExp| to
++  |FunSem = REAL -> REAL|}.
+#+END_SRC
 *** Around line 503
 #+BEGIN_SRC diff
 -\href{https://github.com/DSLsofMath/DSLsofMath/}{github}.
