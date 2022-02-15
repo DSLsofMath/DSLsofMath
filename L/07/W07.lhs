@@ -364,7 +364,7 @@ We can see that, as expected, every |v : g -> s| is a linear combination
 of vectors |e i| where the coefficient of the canonical basis vector |e
 i| is the scalar |v i|:
 \begin{equation*}
-    |v  ==  (v 0 *^ e 0) + ... + (v n *^ e n)|
+    |V v  ==  (v 0 *^ e 0) + ... + (v n *^ e n)|
 \end{equation*}
 %
 This property is called the \emph{characterising equation} for vectors.
@@ -390,7 +390,7 @@ Using |linComb| the characterising equation for vectors reads:
 %
 \begin{equation}
   \label{eq:vector-lincomb}
-    |v == linComb v e|
+    |V v == linComb v e|
 \end{equation}
 %if False
 \begin{code}
@@ -422,7 +422,7 @@ G| and |Vector S G'| for the same set of scalars |S|, we can study
 functions |f : Vector S G -> Vector S G'|:
 %
 \begin{spec}
-f v  =  f (v 0 *^ e 0 + ... + v n *^ e n)
+f (V v)  =  f (v 0 *^ e 0 + ... + v n *^ e n)
 \end{spec}
 % that
 It is particularly interesting to study functions which preserve the
@@ -441,13 +441,13 @@ operations in |Vector S G'| as follows:
 f (u + v)   =  f u + f v
 f (s *^ u)  =  s *^ f u
 \end{spec}
-Because |v = linComb v e = (v 0 *^ e 0 + ... + v n *^ e n)|, we also
+Because |V v = linComb v e = (v 0 *^ e 0 + ... + v n *^ e n)|, we also
 have:
 %
 \begin{spec}
-f v   =  f (  v 0 *^ e 0      + ... +  v n *^ e n)                  {- because |f| is linear -}
-      =       v 0 *^ f (e 0)  + ... +  v n *^ f (e n)  {-"\quad"-}  {- by def. of |linComb| -}
-      =  linComb v (f . e)
+f (V v)   =  f (  v 0 *^ e 0      + ... +  v n *^ e n)                  {- because |f| is linear -}
+          =       v 0 *^ f (e 0)  + ... +  v n *^ f (e n)  {-"\quad"-}  {- by def. of |linComb| -}
+          =  linComb v (f . e)
 \end{spec}
 %if False
 \begin{code}
@@ -512,19 +512,19 @@ basis vector |e i| through~|f|.
 Then
 %
 \begin{spec}
-f v = linComb v m = v 0 *^ m 0 + ... + v n *^ m n
+f (V v) = linComb v m = v 0 *^ m 0 + ... + v n *^ m n
 \end{spec}
 %
-Each of the |m k| is a |Vector S G'|, as is the resulting |f v|.
+Each of the |m k| is a |Vector S G'|, as is the resulting |f (V v)|.
 %
-If we look at the component |g'| of |f v| we have
+If we look at the component |g'| of |f (V v)| we have
 %
 \begin{spec}
-  f v g'                           = {- as above -}
+  f (V v) ! g'                     = {- as above -}
 
-  (linComb v m) g'                 = {- |linComb|, |(*^)|, |(+)| are all linear -}
+  (linComb v m) ! g'               = {- |linComb|, |(*^)|, |(+)| are all linear -}
 
-  linComb v (\g -> m g g')         {-"\ "-}
+  linComb v (\g -> m g ! g')       {-"\ "-}
 \end{spec}
 That is, it suffices to know the behaviour of |f| on the basis vectors
 to know its behaviour on the whole vector space.
@@ -546,23 +546,23 @@ That is, the columns of |M| are |m 0| to |m n|, or, in other words,
 the columns of |M| are |f (e i)|.
 %
 Every |m k| has |card G'| elements, and it has become standard to
-write |M i j| to mean the |i|th element of the |j|th column, i.e., |M
-i j = m j i|, so that, if we denote the usual matrix-vector
+write |M i ! j| to mean the |i|th element of the |j|th column, i.e.,
+|M i ! j = m j ! i|, so that, if we denote the usual matrix-vector
 multiplication by |mulMV|:
 %
 \begin{spec}
-(mulMV M v) i = linComb v (M i)
+(mulMV M (V v)) i = linComb v (M i)
 \end{spec}
 % (M*v) i =
 therefore, one has
 %
 \begin{spec}
-(mulMV M v) i                            = -- by def. of |mulMV|
-linComb v (M i)                          = -- by def. of |M i j|
-linComb v (\j -> m j i)                  = -- earlier computation (linearity)
-f v i
+(mulMV M (V v)) i                        = -- by def. of |mulMV|
+linComb v (M i)                          = -- by def. of |(M i) ! j|
+linComb v (\j -> m j ! i)              = -- earlier computation (linearity)
+f (V v) i
 \end{spec}
-%|f v g' = sum [m j g' * v j || j <- [0 .. n]]| with |g' = i|
+%|f (V v) g' = sum [m j ! g' * v j || j <- [0 .. n]]| with |g' = i|
 %
 If we take |Matrix| to be just a synonym for functions of type |G ->
 Vector S G'|:
@@ -621,10 +621,11 @@ f v = M * v
 %
 and obtain a linear transformation |f = (M*)|.
 %
-Moreover |((M*) . e) g g' = M g' g|, i.e., the matrix constructed as
+Moreover |((M*) . e) g ! g' = M g' ! g|, i.e., the matrix constructed as
 above for |f| is precisely |M|.
 
-In \cref{exc:Mstarcompose} you verify this by computing |((M*) . e ) g g'|.
+In \cref{exc:Mstarcompose} you verify this by computing |((M*) . e ) g !
+g'|.
 
 Therefore, every linear transformation is of the form |(M*)| and every
 |(M*)| is a linear transformation.
@@ -682,18 +683,18 @@ The associated matrix is
 having |n+1| columns (the dimension of |Vector G|) and one row
 (dimension of |Vector ()|).
 %
-Let |w :: Vector S G|:
+Let |w :: G -> S|:
 %
 \begin{spec}
-M * w = w 0 *^ fv 0 + ... + w n *^ fv n
+M * (V w) = w 0 *^ fv 0 + ... + w n *^ fv n
 \end{spec}
 %
-|M * v| and each of the |fv k| are ``almost scalars'': functions of
-type |() -> S|, thus, the only component of |M * w| is
+|M * (V w)| and each of the |fv k| are ``almost scalars'': functions of
+type |() -> S|, thus, the only component of |M * (V w)| is
 %
 \begin{spec}
-(M * w) ()  = w 0 * fv 0 () + ... + w n * fv n ()
-            = w 0 * v 0 + ... + w n * v n
+(M * (V w)) ()  = w 0 * fv 0 () + ... + w n * fv n ()
+                = w 0 * v 0 + ... + w n * v n
 \end{spec}
 %
 i.e., the scalar product of the vectors |v| and |w|.
