@@ -25,4 +25,7 @@ Big picture: a transformation in three stages
 
 In the lecture we worked through the different steps with examples and motivation / explanation.
 * Live coding DS = Derivative Stream: a stream of all derivatives
-See file:Live_6_1_2022.lhs
+See file:Live_6_1_2022.lhs for Ring instances
+* Live coding L6.2 (file:Live_6_1_2022.lhs)
++ DS instances for MulGroup and Transcendental
+

@@ -147,6 +147,10 @@ More details below.
 | [[https://www.youtube.com/watch?v=3Lj2mPNS08c&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=48&t=745][L6.1.4]] | 12:25 | Specification + type of "derivative series"      | §6.1      |
 | [[https://www.youtube.com/watch?v=3Lj2mPNS08c&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=48&t=745][L6.1.4]] | 19:11 | Implement derDS, integDS, xDS, etc.              | §6.2      |
 | [[https://www.youtube.com/watch?v=3Lj2mPNS08c&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=48&t=1971][L6.1.4]] | 32:51 | Implement mulDS (for "derivative series")        | §6        |
+| [[  https://www.youtube.com/watch?v=6u8fuEeau_Q&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=49][L6.2.1]] | 00:00 | FunExp special: fromRational . toRational        | §6.6      |
+| [[  https://www.youtube.com/watch?v=6u8fuEeau_Q&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=49&t=210][L6.2.1]] | 03:30 | FunExp recap: the Transcendental part            | §6.6      |
+| [[  https://www.youtube.com/watch?v=6u8fuEeau_Q&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=49&t=800][L6.2.1]] | 13:20 | Generic evaluator example: exp (-x²)             | §6.6      |
+| [[  https://www.youtube.com/watch?v=6u8fuEeau_Q&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=49&t=1050][L6.2.1]] | 17:30 | derivative series Transcendental instances       | §6.5      |
 |--------+-------+--------------------------------------------------+-----------|
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
@@ -317,7 +321,11 @@ More details below.
 | [[https://www.youtube.com/watch?v=FLgx30dhgDg&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=45&pp=sAQB][L6.1.1]] | 00:00 | Power Series and Ordinary Differential Equations | §6.4      |
 | [[https://www.youtube.com/watch?v=9zZK540ROFw&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=46&pp=sAQB][L6.1.2]] | 00:00 | Power Series transform for solving ODEs          | §6.4      |
 ** 6.5 Exponentials and trigonometric functions {p168}
+| [[  https://www.youtube.com/watch?v=6u8fuEeau_Q&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=49&t=1050][L6.2.1]] | 17:30 | derivative series Transcendental instances       | §6.5      |
 ** 6.6 Associated code {p170}
+| [[  https://www.youtube.com/watch?v=6u8fuEeau_Q&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=49][L6.2.1]] | 00:00 | FunExp special: fromRational . toRational        | §6.6      |
+| [[  https://www.youtube.com/watch?v=6u8fuEeau_Q&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=49&t=210][L6.2.1]] | 03:30 | FunExp recap: the Transcendental part            | §6.6      |
+| [[  https://www.youtube.com/watch?v=6u8fuEeau_Q&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=49&t=800][L6.2.1]] | 13:20 | Generic evaluator example: exp (-x²)             | §6.6      |
 ** 6.7 Exercises {p172}
 
 * 7. Elements of Linear Algebra (175-203)
