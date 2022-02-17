@@ -80,6 +80,9 @@ mulL [] bs = []
 mulL as [] = []
 mulL (a:as) bs = addL (scaleL a bs) (zero:mulL as bs)
 
+scaleP :: Ring a => a -> Poly a -> Poly a
+scaleP c (P as) = P (scaleL c as)
+
 scaleL :: Ring a => a -> [a] -> [a]
 scaleL c = map (c*)
 

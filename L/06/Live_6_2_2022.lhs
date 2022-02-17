@@ -5,7 +5,7 @@
 module Live_6_2 where
 import DSLsofMath.Algebra as Algebra
 import qualified Prelude
-import Prelude (Eq, Ord, Show, Double, Rational, id, const, (.), error, map, take)
+import Prelude (Eq, Ord, Show, Int, Double, Rational, id, const, (.), error, map, take)
 import DSLsofMath.Simplify
 import DSLsofMath.PSDS -- was Live_6_1
 import DSLsofMath.FunExp
@@ -95,11 +95,12 @@ test1REAL = test1 1
 
 test1PS :: PS REAL
 test1PS = test1 xP
-\end{code}
-Check with argument types REAL, FunExp, PS REAL, DS REAL
--- TODO needs instance Transcendental for DS
+
 test1DS :: DS REAL
 test1DS = test1 xDS
+\end{code}
+Check with argument types REAL, FunExp, PS REAL, DS REAL
+
 
 ----------------
 In L6.1 we implemented the Ring instances - here are some more:
@@ -136,13 +137,6 @@ cosDS ds = integDS (cos (valDS ds)) (-sinDS ds * derDS ds)
 
 valDS :: Additive a => DS a -> a
 valDS (DS ds) = valL ds
-
-{-
-valL :: Additive a => DS a -> a
-valL (a0:_) = a0
-valL []     = zero
--}
-
 \end{code}
 
 
@@ -169,7 +163,7 @@ valL (a0:_)  = a0
 \end{code}
 
 
-\begin{spec}
+\begin{code}
 fe2ps :: (Eq r, Transcendental r) => FunExp -> PS r
 fe2ps (Const c)    =  P [real2Field c]
 fe2ps (e1 :+: e2)  =  fe2ps e1 + fe2ps e2
@@ -180,5 +174,65 @@ fe2ps (Recip e)    =  recip   (fe2ps e)
 fe2ps (Exp e)      =  exp     (fe2ps e)
 fe2ps (Sin e)      =  sin     (fe2ps e)
 fe2ps (Cos e)      =  cos     (fe2ps e)
-\end{spec}
+\end{code}
+
+----------------
+L6.2 cont. from L6.1 on solving ODEs
+
+Solve   f'' + 2*f' + f = sin,  f 0 = 2, f' 0 = 1
+
+Step 0: transform to power series with this specification:
+     f = eval as; f' = eval as'; f'' = eval as''
+     sin = eval sinP
+Step 1: compute terms for the rhs
+Step 2: solve for the highest derivative:
+  f''  = sin  - f  -        2*f'
+  as'' = sinP - as - scaleP 2 as'
+Step 3: fill in "integ-equations" for as' and as
+Step 4: If you do this by hand: fill in the coefficient lists step by step.
+\begin{code}
+sinP, cosP :: Field a => PS a
+sinP = integP 0 cosP
+cosP = integP 1 (-sinP)
+
+as, as', as'' :: Field a => PS a
+as'' = sinP - as - scaleP 2 as'
+as'  = integP 1 as''
+as   = integP 2 as'
+\end{code}
+
+sinP = 0    : 1    : ...
+cosP = 1    : 0    : ...
+as'' = (-4) : 8    : 
+as'  = 1    : (-4) :
+as   = 2    : 1    : (-2)
+
+
+----------------
+Step 5: Checking
+
+\begin{code}
+lhs :: Field a => Int -> a -> a
+
+lhs n = f'' + 2*f' + f
+  where f   = evalPS n as
+        f'  = evalPS n as'
+        f'' = evalPS n as''
+rhs :: Transcendental a => Int -> a -> a
+rhs n = evalPS n sinP
+
+testEq n x = lhs n x - rhs n x -- should be close to zero
+\end{code}
+
+Don't forget to check the original equation (often catches simple
+ mistakes).
+
+f' + f = 1
+
+notRhs = 1:1:1:1.... -- not correct!
+  eval notRhs x = 1+x+x^2+x^3...
+rhs = 1:0:0:0:0: ...
+
+
+
 
