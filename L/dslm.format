@@ -60,7 +60,8 @@
 %format Lap                     =  "\mathcal{L}"
 %format CC                      =  "\mathbb{C}"
 %format Sigma                   =  "\Sigma"
-%format @                       =  "\!@\!"
+%format @                       =  "@"
+% %format @                       =  "\!@\!"
 % %format where                   =  "\ \Keyword{where}\ "
 
 % %format +N                      =  "+"
