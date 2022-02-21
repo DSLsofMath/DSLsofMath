@@ -191,6 +191,7 @@ Step 2: solve for the highest derivative:
 Step 3: fill in "integ-equations" for as' and as
 Step 4: If you do this by hand: fill in the coefficient lists step by step.
 \begin{code}
+-- PS = PowerSeries
 sinP, cosP :: Field a => PS a
 sinP = integP 0 cosP
 cosP = integP 1 (-sinP)
