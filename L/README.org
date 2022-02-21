@@ -154,6 +154,8 @@ More details below.
 | [[https://www.youtube.com/watch?v=CL9jLoaRokc&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=50][L6.2.2]] | 00:00 | Power series transform in Haskell                | §6.4      |
 |--------+-------+--------------------------------------------------+-----------|
 
+* Week 7 lecture videos: [guest lectures by Nicola Botta]
+
 * Week 8 lecture videos:
 |--------+-------+----------------------------------------------+--------|
 | [[https://www.youtube.com/watch?v=OwgvSJf61cs&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=51&pp=sAQB][L8.1.1]] | 00:00 | Towards the Laplace transform                | §8.2   |
@@ -161,6 +163,8 @@ More details below.
 | [[https://www.youtube.com/watch?v=qAnjkq8bQYQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=53&pp=sAQB][L8.1.3]] | 00:00 | Laplace transform solving an ODE             | §8.2   |
 | [[https://www.youtube.com/watch?v=OgSgnBnz0uM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=54&pp=sAQB][L8.2.1]] | 00:00 | Live coding Complex, e^ix = cos x + i*sin x  | §8.1   |
 | [[https://www.youtube.com/watch?v=KdxlU4-fy00&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=55&pp=sAQB][L8.2.2]] | 00:00 | Laplace cos from exp, math. notation, FunExp | §8.4   |
+| [[https://www.youtube.com/watch?v=3LGfaQZceAg&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=56][L8.2.3]] | 00:00 | DSLsofMath course / book overview            | DSLM   |
+|--------+-------+----------------------------------------------+--------|
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
 + The whole chapter is included in the course.
@@ -359,6 +363,7 @@ More details below.
 
 | [[https://www.youtube.com/watch?v=KdxlU4-fy00&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=55&pp=sAQB][L8.2.2]] | 00:00 | Laplace cos from exp, math. notation, FunExp | §8.4   |
 * 9. Probability Theory (219-241)
++ This Chapter is not covered by the DSLsofMath course 2022
 ** 9.1 Sample spaces {p220}
 ** 9.2 *Monad Interface {p223}
 ** 9.3 Distributions {p223}
