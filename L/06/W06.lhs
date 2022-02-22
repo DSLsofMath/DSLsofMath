@@ -127,7 +127,7 @@ Now, to see the pattern it is useful to give simpler names to some
 common subexpressions: let |a = eval e1| and |b = eval e2|.
 %
 \begin{spec}
-    (a * b) : (evalAll (d e1 :*: e2) + evalAll (e1 * d e2))
+    (a * b) : (evalAll (d e1 :*: e2) + evalAll (e1 :*: d e2))
 =?
     (a : evalAll (d e1)) * (b : evalAll (d e2))
 \end{spec}
