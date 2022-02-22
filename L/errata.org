@@ -207,6 +207,13 @@ As mentioned in \cref{sec:infseq}, one way to handle this is to treat
 -\href{https://github.com/DSLsofMath/DSLsofMath/}{github}.
 +\href{https://github.com/DSLsofMath/DSLsofMath/}{GitHub}.
 #+END_SRC
+* Ch6
+** L/06/W06.lhs
+*** Around line 130
+#+BEGIN_SRC diff
+-    (a * b) : (evalAll (d e1 :*: e2) + evalAll (e1 * d e2))
++    (a * b) : (evalAll (d e1 :*: e2) + evalAll (e1 :*: d e2))
+#+END_SRC
 * Ch7
 ** L/07/W07.lhs
 *** Around line 364
