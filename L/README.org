@@ -156,13 +156,20 @@ More details below.
 
 * Week 7 lecture videos: [guest lectures by Nicola Botta]
 
-|--------+-------+-------------------------------------------+------|
-| [[https://www.youtube.com/watch?v=gEwtvFEINOY&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=51][L7.1.1]] | 00:00 | class VectorSpace, scalar instance, bases | §7   |
-| [[https://www.youtube.com/watch?v=Nmi1wSpbKek&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=52][L7.1.2]] | 00:00 | vectors as functions, Finite,             | §7.1 |
-| [[https://www.youtube.com/watch?v=UQp3EBaa_eM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=53][L7.1.3]] | 00:00 | AddGroup (g->s) reminder, canonical basis | §7.2 |
-| [[https://www.youtube.com/watch?v=UQp3EBaa_eM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=53&t=776][L7.1.3]] | 12:56 | Linear tranformation, towards Matrix rep. | §7.2 |
-| [[https://www.youtube.com/watch?v=DDJSFM40bt0&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=54][L7.1.4]] | 00:00 | mulMV calculcation, transpose             | §7.2 |
-|--------+-------+-------------------------------------------+------|
+|--------+-------+-----------------------------------------------+------|
+| [[https://www.youtube.com/watch?v=gEwtvFEINOY&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=51][L7.1.1]] | 00:00 | class VectorSpace, scalar instance, bases     | §7   |
+| [[https://www.youtube.com/watch?v=Nmi1wSpbKek&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=52][L7.1.2]] | 00:00 | vectors as functions, Finite,                 | §7.1 |
+| [[https://www.youtube.com/watch?v=UQp3EBaa_eM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=53][L7.1.3]] | 00:00 | AddGroup (g->s) reminder, canonical basis     | §7.2 |
+| [[https://www.youtube.com/watch?v=UQp3EBaa_eM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=53&t=776][L7.1.3]] | 12:56 | Linear tranformation, towards Matrix rep.     | §7.2 |
+| [[https://www.youtube.com/watch?v=DDJSFM40bt0&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=54][L7.1.4]] | 00:00 | mulMV calculcation, transpose                 | §7.2 |
+| [[https://www.youtube.com/watch?v=_-E-yCKCO_4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=55][L7.2.1]] | 00:00 | Q&A, Matrix mult. specification + properties  | §7.2 |
+| [[https://www.youtube.com/watch?v=EzgR-IVugak&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=56][L7.2.2]] | 00:00 | Change of basis, inner product, norm          | §7.3 |
+| [[https://www.youtube.com/watch?v=EzgR-IVugak&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=56&t=715][L7.2.2]] | 11:55 | Examples of matrix alg.,                      | §7.4 |
+| [[https://www.youtube.com/watch?v=G5F1c3SNRMg&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=57][L7.2.3]] | 00:00 | polynomials: eval and deriv as LinTrans       | §7.4 |
+| [[https://www.youtube.com/watch?v=X6vsNgyQmcI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=58][L7.2.4]] | 00:00 | derivative and integration as inf.dim. matrix | §7.4 |
+| [[https://www.youtube.com/watch?v=X6vsNgyQmcI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=58&t=371][L7.2.4]] | 06:11 | dynamical systems using matrices              | §7.4 |
+|--------+-------+-----------------------------------------------+------|
+
 
 * Week 8 lecture videos:
 |--------+-------+----------------------------------------------+--------|
@@ -358,8 +365,14 @@ More details below.
 | [[https://www.youtube.com/watch?v=UQp3EBaa_eM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=53][L7.1.3]] | 00:00 | AddGroup (g->s) reminder, canonical basis | §7.2 |
 | [[https://www.youtube.com/watch?v=UQp3EBaa_eM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=53&t=776][L7.1.3]] | 12:56 | Linear tranformation, towards Matrix rep. | §7.2 |
 | [[https://www.youtube.com/watch?v=DDJSFM40bt0&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=54][L7.1.4]] | 00:00 | mulMV calculcation, transpose             | §7.2 |
+| [[https://www.youtube.com/watch?v=_-E-yCKCO_4&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=55][L7.2.1]] | 00:00 | Q&A, Matrix mult. specification + properties  | §7.2 |
 ** 7.3 Inner products {p184}
+| [[https://www.youtube.com/watch?v=EzgR-IVugak&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=56][L7.2.2]] | 00:00 | Change of basis, inner product, norm          | §7.3 |
 ** 7.4 Examples of matrix algebra {p186}
+| [[https://www.youtube.com/watch?v=EzgR-IVugak&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=56&t=715][L7.2.2]] | 11:55 | Examples of matrix alg.,                      | §7.4 |
+| [[https://www.youtube.com/watch?v=G5F1c3SNRMg&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=57][L7.2.3]] | 00:00 | polynomials: eval and deriv as LinTrans       | §7.4 |
+| [[https://www.youtube.com/watch?v=X6vsNgyQmcI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=58][L7.2.4]] | 00:00 | derivative and integration as inf.dim. matrix | §7.4 |
+| [[https://www.youtube.com/watch?v=X6vsNgyQmcI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=58&t=371][L7.2.4]] | 06:11 | dynamical systems using matrices              | §7.4 |
 ** 7.5 * Monadic dynamical systems {p197}
 ** 7.6 Associated code {p200}
 ** 7.7 Exercises {p202}
