@@ -173,12 +173,12 @@ More details below.
 
 * Week 8 lecture videos:
 |--------+-------+----------------------------------------------+--------|
-| [[https://www.youtube.com/watch?v=OwgvSJf61cs&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=55&pp=sAQB][L8.1.1]] | 00:00 | Towards the Laplace transform                | §8.2   |
-| [[https://www.youtube.com/watch?v=IOpBHmt3LQ8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=56&pp=sAQB][L8.1.2]] | 00:00 | Laplace of exp, sin, cos                     | §8.2.1 |
-| [[https://www.youtube.com/watch?v=qAnjkq8bQYQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=57&pp=sAQB][L8.1.3]] | 00:00 | Laplace transform solving an ODE             | §8.2   |
-| [[https://www.youtube.com/watch?v=OgSgnBnz0uM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=58&pp=sAQB][L8.2.1]] | 00:00 | Live coding Complex, e^ix = cos x + i*sin x  | §8.1   |
-| [[https://www.youtube.com/watch?v=KdxlU4-fy00&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=59&pp=sAQB][L8.2.2]] | 00:00 | Laplace cos from exp, math. notation, FunExp | §8.4   |
-| [[https://www.youtube.com/watch?v=3LGfaQZceAg&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=60][L8.2.3]] | 00:00 | DSLsofMath course / book overview            | DSLM   |
+| [[https://www.youtube.com/watch?v=OwgvSJf61cs&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=59&pp=sAQB][L8.1.1]] | 00:00 | Towards the Laplace transform                | §8.2   |
+| [[https://www.youtube.com/watch?v=IOpBHmt3LQ8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=60&pp=sAQB][L8.1.2]] | 00:00 | Laplace of exp, sin, cos                     | §8.2.1 |
+| [[https://www.youtube.com/watch?v=qAnjkq8bQYQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=61&pp=sAQB][L8.1.3]] | 00:00 | Laplace transform solving an ODE             | §8.2   |
+| [[https://www.youtube.com/watch?v=OgSgnBnz0uM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=62&pp=sAQB][L8.2.1]] | 00:00 | Live coding Complex, e^ix = cos x + i*sin x  | §8.1   |
+| [[https://www.youtube.com/watch?v=KdxlU4-fy00&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=63&pp=sAQB][L8.2.2]] | 00:00 | Laplace cos from exp, math. notation, FunExp | §8.4   |
+| [[https://www.youtube.com/watch?v=3LGfaQZceAg&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=64][L8.2.3]] | 00:00 | DSLsofMath course / book overview            | DSLM   |
 |--------+-------+----------------------------------------------+--------|
 
 * 1. Types, Functions, and DSLs for Expressions (7-42)
@@ -379,14 +379,14 @@ More details below.
 
 * 8. Exponentials and Laplace (204-218)
 ** 8.1 The Exponential Function {p204}
-| [[https://www.youtube.com/watch?v=OgSgnBnz0uM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=58&pp=sAQB][L8.2.1]] | 00:00 | Live coding Complex, e^ix = cos x + i*sin x  | §8.1   |
+| [[https://www.youtube.com/watch?v=OgSgnBnz0uM&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=62&pp=sAQB][L8.2.1]] | 00:00 | Live coding Complex, e^ix = cos x + i*sin x  | §8.1   |
 ** 8.2 The Laplace transform {p209}
-| [[https://www.youtube.com/watch?v=OwgvSJf61cs&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=55&pp=sAQB][L8.1.1]] | 00:00 | Towards the Laplace transform                | §8.2   |
-| [[https://www.youtube.com/watch?v=IOpBHmt3LQ8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=56&pp=sAQB][L8.1.2]] | 00:00 | Laplace of exp, sin, cos                     | §8.2.1 |
-| [[https://www.youtube.com/watch?v=qAnjkq8bQYQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=57&pp=sAQB][L8.1.3]] | 00:00 | Laplace transform solving an ODE             | §8.2   |
+| [[https://www.youtube.com/watch?v=OwgvSJf61cs&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=59&pp=sAQB][L8.1.1]] | 00:00 | Towards the Laplace transform                | §8.2   |
+| [[https://www.youtube.com/watch?v=IOpBHmt3LQ8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=60&pp=sAQB][L8.1.2]] | 00:00 | Laplace of exp, sin, cos                     | §8.2.1 |
+| [[https://www.youtube.com/watch?v=qAnjkq8bQYQ&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=61&pp=sAQB][L8.1.3]] | 00:00 | Laplace transform solving an ODE             | §8.2   |
 ** 8.3 Laplace and other transforms {p216}
 ** 8.4 Exercises {p217}
-| [[https://www.youtube.com/watch?v=KdxlU4-fy00&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=59&pp=sAQB][L8.2.2]] | 00:00 | Laplace cos from exp, math. notation, FunExp | §8.4   |
+| [[https://www.youtube.com/watch?v=KdxlU4-fy00&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=63&pp=sAQB][L8.2.2]] | 00:00 | Laplace cos from exp, math. notation, FunExp | §8.4   |
 * 9. Probability Theory (219-241)
 + This Chapter is not covered by the DSLsofMath course 2022
 ** 9.1 Sample spaces {p220}
