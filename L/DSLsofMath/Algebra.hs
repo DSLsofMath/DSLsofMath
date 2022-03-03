@@ -64,6 +64,8 @@ type Ring a = (AddGroup a, Multiplicative a)
 
 fromInteger :: Ring a => Integer -> a
 fromInteger n = mult n one
+fromIntegral :: (Prelude.Integral a, Ring b) => a -> b
+fromIntegral = fromInteger . Prelude.toInteger
 
 class Multiplicative a => MulGroup a where
   {-# MINIMAL (recip | (/)) #-}

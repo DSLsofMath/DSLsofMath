@@ -163,10 +163,10 @@ discharged.)
 % This solution satisfies the equation if it exists.
 % Here "exists" means computable.
 % Because it produces lists, we only need to check that the solution does
-% not diverge/is productive. 
-% 
-% (a:as) * (b:bs) = (a*b) : (as * (b : bs) + (a : as) * bs) 
-% 
+% not diverge/is productive.
+%
+% (a:as) * (b:bs) = (a*b) : (as * (b : bs) + (a : as) * bs)
+%
 % The head can always be produced depending on the head of the input,
 % and the tail (one element down) needs the tails (one element down) of
 % the arguments, so we are good.
@@ -619,7 +619,7 @@ equations:
 %
 \begin{code}
 type PS a = PowerSeries a
-  
+
 solve :: Field a => a -> (PS a -> PS a) -> PS a
 solve f0 g = f              -- solves |f' = g f|, |f 0 = f0|
   where f = integ f0 (g f)
@@ -754,7 +754,7 @@ For example, can we compute |expPS|?
 Specification:
 %
 \begin{spec}
-eval (expPS as) = exp (eval as)
+eval (expPS as) = exp . eval as
 \end{spec}
 %
 Note that |expx : PS a| is a power series in itself, but |expPS : PS a
@@ -763,9 +763,9 @@ Note that |expx : PS a| is a power series in itself, but |expPS : PS a
 Differentiating both sides of the specification, we obtain
 %
 \begin{spec}
-  D (eval (expPS as)) = exp (eval as) * D (eval as)
+  D (eval (expPS as)) = (exp . eval as) * D (eval as)
 
-<=>  {- |eval| homomorphism -}
+<=>  {- |H1(eval,deriv,D)|, Spec. of |expPS|, |H2(eval,(*),(*))| -}
 
   eval (deriv (expPS as)) = eval (expPS as * deriv as)
 
@@ -773,6 +773,38 @@ Differentiating both sides of the specification, we obtain
 
   deriv (expPS as) = expPS as * deriv as
 \end{spec}
+%if False
+Two ways of writing the equational proof: Alt. 1 uses the function instances.
+\begin{code}
+checkType :: (Eq a, Transcendental a) =>
+  (PS a -> (a -> a)) -> ((a->a) -> (a->a)) -> PS a -> ([[a->a]], [PS a])
+checkType eval dD as =
+  ([ [eval (expPS as),          exp (eval as)                ]
+   , [dD (eval (expPS as)) ,    exp (eval as) * dD (eval as) ]
+   , [eval (deriv (expPS as)) , eval (expPS as * deriv as)   ]
+   ]
+  ,  [deriv (expPS as) , expPS as * deriv as]
+  )
+\end{code}
+Alt. 2 does not use the function instances.
+\begin{code}
+checkType2 :: (Eq a, Transcendental a) =>
+  (PS a -> (a -> a)) -> ((a->a) -> (a->a)) -> PS a -> ([[a->a]], [PS a])
+checkType2 eval dD as =
+  ([ [eval (expPS as),          exp . eval as                 ]
+   , [dD (eval (expPS as)) ,   (exp . eval as) * dD (eval as) ]
+   , [eval (deriv (expPS as)) , eval (expPS as * deriv as)    ]
+   ]
+  ,  [deriv (expPS as) , expPS as * deriv as]
+  )
+\end{code}
+
+  (exp . eval as) * D (eval as)
+=
+  eval (expPS as) * eval (deriv as)
+=
+  eval (expPS as * deriv as)
+%endif
 %
 Now we have reached the form of a differential equation for |expPS
 as|, and we know how to solve them by integration, given the initial
@@ -846,9 +878,9 @@ etc.\ on the right-hand sides of |evalFunExp|.
 evalFunExp  ::  Transcendental a => FunExp -> a -> a
 evalFunExp  (Const alpha)  =   const (fromRational (toRational alpha))
 evalFunExp  X              =   id
-evalFunExp  (e1 :+: e2)    =   evalFunExp e1  +  evalFunExp e2    
-evalFunExp  (e1 :*: e2)    =   evalFunExp e1  *  evalFunExp e2    
-evalFunExp  (Exp e)        =   exp     (evalFunExp e)             
+evalFunExp  (e1 :+: e2)    =   evalFunExp e1  +  evalFunExp e2
+evalFunExp  (e1 :*: e2)    =   evalFunExp e1  *  evalFunExp e2
+evalFunExp  (Exp e)        =   exp     (evalFunExp e)
 evalFunExp  (Sin e)        =   sin     (evalFunExp e)
 evalFunExp  (Cos e)        =   cos     (evalFunExp e)
 evalFunExp  (Recip e)      =   recip   (evalFunExp e)
@@ -909,19 +941,19 @@ instance Transcendental FunExp where
 \end{code}
 
 % \subsection{Not included to avoid overlapping instances}
-% 
+%
 % \begin{spec}
 % instance Num a => Num (FD a) where
 %   (f, f') + (g, g')  = (f + g,  f' + g')
 %   zero               = (zero,   zero)
-% 
+%
 % instance Multiplicative (FD a) where
 %   (f, f') * (g, g')  = (f * g,  f' * g + f * g')
 %   one                = (one,    zero)
-% 
+%
 % instance Field a => MulGroup (FD a) where
 %   (f, f') / (g, g')  = (f / g,  (f' * g - g' * f) / (g * g))
-% 
+%
 % instance Transcendental a => Transcendental (FD a) where
 %   pi = (pi, zero)
 %   exp (f, f')        = (exp f,  (exp f) * f')

@@ -214,6 +214,21 @@ As mentioned in \cref{sec:infseq}, one way to handle this is to treat
 -    (a * b) : (evalAll (d e1 :*: e2) + evalAll (e1 * d e2))
 +    (a * b) : (evalAll (d e1 :*: e2) + evalAll (e1 :*: d e2))
 #+END_SRC
+*** Around line 757
+#+BEGIN_SRC diff
+-eval (expPS as) = exp (eval as)
++eval (expPS as) = exp . eval as
+#+END_SRC
+*** Around line 763
+#+BEGIN_SRC diff
+-  D (eval (expPS as)) = exp (eval as) * D (eval as)
++  D (eval (expPS as)) = (exp . eval as) * D (eval as)
+#+END_SRC
+*** Around line 768
+#+BEGIN_SRC diff
+-<=>  {- |eval| homomorphism -}
++<=>  {- |H1(eval,deriv,D)|, Spec. of |expPS|, |H2(eval,(*),(*))| -}
+#+END_SRC
 * Ch7
 ** L/07/W07.lhs
 *** Around line 364
