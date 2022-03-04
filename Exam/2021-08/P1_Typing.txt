@@ -23,12 +23,12 @@ point of |X|, thus in or "near" |X|.
 1b) [6p] Give the types of |f|, |f'|, |x|, |h| in the definition of
     |f' x|.  Explain your reasoning.
 
-We have |f : X -> Y|, |f' : X' -> Y|, |x : X|, |h : REAL|.
+We have |f : X -> Y|, |f' : X' -> REAL|, |x : X|, |h : REAL|.
 
 The expression |(f (x+h) - f x)/h| indicates that |Y| is a subset of
 |REAL| and the limit |0| for |h| indicates that |h| is also a |REAL|.
 The type |X'| is different from |X| when |f| is not differentiable
-everywhere.
+everywhere. 
 
 ----------------
 1c) [6p] Prove that |s| is differentiable at |x| for all |x : REAL| using
