@@ -857,7 +857,7 @@ barely scratched the surface here.
 Among others, their rows (and columns) are orthogonal to each other.
 %
 They are also invertible (and so they form a group), and the inverse is
-the given by (conjugate-) transpose of the matrix.
+given by the (conjugate-) transpose of the matrix.
 %
 
 \section{Examples of matrix algebra}
