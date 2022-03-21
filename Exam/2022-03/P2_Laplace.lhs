@@ -2,9 +2,10 @@
 {-# LANGUAGE RebindableSyntax #-}
 module P1_Laplace where
 import qualified Prelude
-import Prelude (Rational, (==), take, error)
+import Prelude (Rational, (==), take, error, Double)
 import DSLsofMath.Algebra
 import DSLsofMath.PSDS
+import Data.Complex
 \end{code}
 
 Solve: f'' + 2*f' + 10*f = 0, f 0 = 1, f' 0 = -1
@@ -12,17 +13,17 @@ Solve: f'' + 2*f' + 10*f = 0, f 0 = 1, f' 0 = -1
 \begin{code}
 as, as', as'' :: Field a => PS a
 as'' = scaleP (-2) as' + scaleP (-10) as
-as'  = integP   1  as''
-as   = integP (-1) as'
+as'  = integP (-1)  as''
+as   = integP   1   as'
 \end{code}
 Hand-computing the first few terms
 \begin{code}
 bs, bs', bs'' :: Field a => [a]
-bs'' = -- (-2)*1 + (-10)*(-1) == -2 + 10 == 8
-         8  : -- (-2)*8 + (-10)*1 == -16-10 == -26
-              (-26) : error "TODO"
-bs'  =   1  : 8 : (-13) : error "TODO"
-bs   = (-1) : 1 : 4 : (-13/3) : error "TODO"
+bs'' = -- (-2)*(-1) + (-10)*1 == 2 - 10 == -8
+       (-8) :  -- (-2)*(-8) + (-10)*(-1) == 16+10 == 26
+              26 : error "TODO"
+bs'  = (-1) :(-8): 13 : error "TODO"
+bs   =   1  :(-1):(-4): 13/3 : error "TODO"
 
 
 check = take 4 asL == (bs :: [Rational])
@@ -127,6 +128,24 @@ f t = (1/2)*(exp (s1*t) + exp (s2*t))
 
 f is thus an oscillation with exponentially decaying amplitude.
 
+Just some checking code:
+\begin{code}
+f   t = (1/2)*(     exp (s1*t) +      exp (s2*t))
+f'  t = (1/2)*(s1  *exp (s1*t) +   s2*exp (s2*t))
+f'' t = (1/2)*(s1^2*exp (s1*t) + s2^2*exp (s2*t))
 
+s1, s2 :: Complex Double
+s1 = (-1) + 3*i
+s2 = (-1) - 3*i
+
+i :: Complex Double
+i = 0:+1
+
+lhs :: Complex Double -> Complex Double
+lhs t = f'' t + 2*f' t + 10*f t
+
+fAlt :: Transcendental a => a -> a
+fAlt t = exp(-t)*cos(3*t)
+\end{code}
 
 
