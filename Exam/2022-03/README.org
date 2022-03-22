@@ -2,10 +2,10 @@
 [[file:Exam_2022_03.pdf][Exam 2022-03]]
 
 ** Suggested solutions:
-file:P1_Algebra.lhs
-file:P2_Laplace.lhs
-file:P3_Proof.lhs
-file:P4_Types.lhs
+[[file:P1_Algebra.lhs][Part 1: Algebra]]
+[[file:P2_Laplace.lhs][Part 2: Laplace]]
+[[file:P3_Proof.lhs][Part 3: Proof]]
+[[file:P4_Types.lhs][Part 4: Types]]
 
 ** Grading levels:
 
