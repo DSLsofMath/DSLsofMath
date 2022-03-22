@@ -23,7 +23,7 @@ type REAL = Double
 type X    = REAL -- the domain of f could be some subset of REAL
 type RPos = REAL -- Positive real numbers
 
-f   :: REAL->REAL
+f   :: X->REAL
 eps :: RPos
 L   :: REAL   
 R   :: REAL
