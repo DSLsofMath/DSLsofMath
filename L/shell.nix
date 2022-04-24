@@ -63,6 +63,7 @@ stdenv.mkDerivation {
                        xifthen
                        ifmtarg
                        varwidth
+		       doi
                        ;
                      })
                 ];
