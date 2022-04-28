@@ -77,4 +77,4 @@ zip:
 clean:
 	- rm *.ptb *.pag *.aux *.bbl *.blg *.fdb_latexmk *.log \
              DSLsofMath*.tex *.pdf *.idx *.ilg *.ind *.toc *~ \
-             *.vrb *.snm *.fls *.nav *.out
+             *.vrb *.snm *.fls *.nav *.out *.brf
