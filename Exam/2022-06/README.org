@@ -1,0 +1,14 @@
+* Exam 2022-06 of the DSLsofMath course
+[[file:Exam_2022_06.pdf][Exam 2022-06]]
+
+** Suggested solutions:
+[[file:P1_Algebra.lhs][Part 1: Algebra]]
+[[file:P2_Laplace.lhs][Part 2: Laplace]]
+[[file:P3_Typing.lhs][Part 3: Typing]]
+[[file:P4_Matrix.lhs][Part 4: Matrix / Proofs]]
+
+** Grading levels:
+
+To pass you need
++ a minimum of 5p on each question (1 to 4) and also
++ reach these grade limits:  3: >=48p, 4: >=65p, 5: >=83p, max: 100p
