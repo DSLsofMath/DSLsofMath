@@ -10,16 +10,6 @@ import DSLsofMath.Algebra
 
 Consider the following implementation of 2-by-2 matrices:
 
-%format a00
-%format a01
-%format a10
-%format a11
-
-%format b00
-%format b01
-%format b10
-%format b11
-
 \begin{code}
 data M a = M a a a a
   deriving (Eq, Show)
@@ -51,7 +41,6 @@ instance Ring a => Multiplicative (M a) where one = oneM; (*) = mulM
 propDet :: (Eq a, Ring a) => M a -> M a -> Bool
 propDet m1 m2 = det (m1*m2) == det m1 * det m2
 \end{code}
-
 
 Proof
 \begin{code}
