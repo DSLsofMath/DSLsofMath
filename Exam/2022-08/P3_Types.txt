@@ -1,0 +1,77 @@
+Types: Some names have a "degree index" and some don't.
+
+Alt. 1: (type the indexed names)
+let Po^d be the type of polynomials of degree d with real coefficients
+then
+  A_d, B_d, Q_d, R_d all have type Po^d
+  m, n, k are natural numbers
+  P has type Po^d for some d
+  x, r are real numbers
+
+Alt. 2: (ignore indices)
+  A, B, Q, R, P : Poly REAL
+  m, n, k :: Nat
+  x, r :: REAL
+
+Alt. 3: (not needed, uses dependent types)
+  A, B, Q, R :: (d : Nat) -> Po^d
+  P :: Poly REAL
+  m, n, k :: Nat
+  x, r :: REAL
+
+----------------------------------------------------------------
+
+  A_m(x) / B_n(x) = Q_{m-n}(x) + R_k(x) / B_n(x)
+<=> {- Multiply by B_n(x) -}
+  A_m(x) = Q_{m-n}(x)*B_n(x) + R_k(x)
+<=> {- we know A(x) = x^3 - 4x, and B(x) = x-a
+       let qx = Q(x); rx=R(x) -}
+  x^3 - 4x = qx*(x-a) + rx
+<=> {- m=3, n=1 => m-n=2, k < 1. Thus qx = q0 + q1*x + q2*x^2; rx = r0. -}
+  x^3 - 4x = (q0 + q1*x + q2*x^2)*(x-a) + r0
+<=> simplify
+  x^3 - 4x = q0*(x-a) + q1*x*(x-a) + q2*x^2*(x-a) + r0
+<=> simplify
+  x^3 - 4x = q0*x -q0*a + q1*x^2 -q1*a*x + q2*x^3 - q2*a*a^2 + r0
+<=> collect terms
+  (1-q2)*x^3 +(q2*a-q1)*x^2 +(q1*a-q0-4)*x + (q0*a-r0) = 0
+<=> all coefficients have to be zero
+  1-q2=0 && q2*a-q1=0 && q1*a-q0-4=0 && q0*a-r0=0
+<=> simplify
+  q2=1 && q1=a && q0=a^2-4 && r0=(a^2-4)*a
+
+Thus
+  Q(x) = x^2 + a*x + (a^2-4)
+  R(x) = (a^2-4)*a = P(a)
+
+Checking:
+  a=-2 => R(x)=0 -- OK   (and Q(x) = x^2-2*x)
+  a=0  => R(x)=0 -- OK   (and Q(x) = x^2-4  )
+  a=2  => R(x)=0 -- OK   (and Q(x) = x^2+2*x)
+
+----------------
+
+\item{[10p]} Assume there is a function |roots :: Poly REAL -> [REAL]|
+  which computes all the real roots of a polynomial in increasing order.
+  Prove that |Exists mul. H2(roots,(*),mul)|.
+
+Typing:
+  mul :: [REAL] -> [REAL] -> [REAL]
+
+  H2(roots,(*),mul)
+=
+  Forall p, q. mul (roots p) (roots q) == roots (p*q)
+
+Thus, |mul| has to combine two lists of roots into one list of roots,
+and this list has to be the same as what |roots| would return when
+given the product of the polynomials. We know from the factor theorem
+that |x-r| is a factor of |p| for all |r| in |roots p| and similarly
+for |q|. Thus we also know that |x-r| is a factor of |p*q| for all |r|
+in |roots p| and for all roots in |roots q|. Thus the \emph{set} of
+all roots of |p*q| is the union of the roots of |p| and the roots of |q|.
+(A root |r| of |p*q| must be either a root of |p| or a root of |q|.)
+
+In our case we work with lists, not sets, thus our first attempt could
+be |mul ps qs = ps++qs|, but that would probably not give the roots in
+the right order. Thus we pick |mul ps qs = sort (ps++qs)| which will
+give the roots in the same order as |roots (p*q)|.

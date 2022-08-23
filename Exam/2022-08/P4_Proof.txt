@@ -1,0 +1,58 @@
+For |X included REAL| we can define |phi f| for |x /= a| as follows:
+
+  phi f a x = (f x - f a)/(x-a)
+
+and if the limit exists we can define    
+
+  phi f a a = lim_{x->a} (f x - f a)/(x-a)
+
+----------------------------------------------------------------
+With |s x = x^2| and |s x = s a + (x - a) * phi s a x| we compute:
+
+  x^2 = a^2 + (x-a)*phi s a x
+<=> {- simplify -}
+  (x^2-a^2) = (x-a)*phi s a x
+<=> {- factor -}
+  (x-a)(x+a) = (x-a)*phi s a x
+<=> {- simplify -}
+  (x-a)(x+a - phi s a x) = 0
+<=> {- simplify -}
+ x=a  or  phi s a x = a+x
+
+Thus we can take phi s a = (a+), which is continuous everywhere (thus also at x=a).
+
+Hence, s is differentiable with |s' a = phi s a a = a+a = 2*a|, or |s' = (2*)|.
+
+----------------------------------------------------------------
+
+   (f x) * (g x)
+
+= {- differentiability -}
+
+   (f a + (x - a) * phi f a x) * (g a + (x - a) * phi g a x)
+
+= {- arithmetic -}
+
+   f a * g a                     +      f a * (x - a) * phi g a x  +
+   (x - a) * phi f a x * g a      +      (x - a) * phi f a x * (x - a) * phi g a x
+
+= {- factor out |(x - a)| to get |h a + (x - a) * phi h a x| -}
+
+   f a * g a  +  (x - a)  *  (f a * phi g a x  +  phi f a x * g a  +
+                              phi f a x * (x - a) * phi g a x)
+
+= {- ``pattern-matching'' -}
+
+   h a  +  (x - a) * phi h a x
+     where  h x       =  f x * g x
+            phi h a x  =  f a * phi g a x  +  phi f a x * g a  +
+                          phi f a x * (x - a) * phi g a x
+
+%
+Therefore, by continuity of composition and differentiability:
+
+   h' a = phi h a a = f a * g' a + f' a * g a
+
+or, equivalently,
+
+   h' = f*g' + f'*g
