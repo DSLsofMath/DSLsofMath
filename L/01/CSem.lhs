@@ -69,11 +69,11 @@ divC :: Field a => Complex a -> Complex a -> Complex a
 divC x y = scaleC (one/modSq) (x * conj y)
   where  modSq  =  modulusSquaredC y
 
-re :: Complex r      ->  r
-re z @ (C (x , y))   =   x
+re :: Complex r    ->  r
+re z@(C (x , y))   =   x
 
-im :: Complex r      ->  r
-im z @ (C (x , y))   =   y
+im :: Complex r    ->  r
+im z@(C (x , y))   =   y
 
 instance Show r => Show (Complex r) where
   show = showCS
