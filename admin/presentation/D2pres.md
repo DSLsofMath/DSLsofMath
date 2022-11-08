@@ -1,6 +1,6 @@
-# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=33291) / [DIT982](https://kursplaner.gu.se/pdf/kurs/en/DIT983http://kursplaner.gu.se/english/DIT982.pdf)
 
-(Presentation för D2, Fr 2021-11-05 av Patrik Jansson.)
+(Presentation för D2, On 2022-11-09 av Patrik Jansson.)
 
 * Patrik Jansson: forskare och lärare inom Funktionell Programmering
     * examinator och kursansvarig för kursen DSLsofMath
@@ -44,11 +44,7 @@ på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
 # Resultatstatistik
 
 * Resultat på DSLsofMath:
-    * 2017: 43 reg., godkända: 58%
-    * 2018: 39 reg., godkända: 89%
-    * 2019: 59 reg., godkända: 73%
-    * 2020: 50 reg., godkända: 68%
-    * 2021: 67 reg., godkända: 72%
+    * 2017-2022: ca 60 reg., godkända: ca 70%
 
 * Resultat i D3 (Transformer samt Regler)
 
@@ -132,12 +128,14 @@ Exempel:
 Inspirerat av den här kursen har flera studentgrupper genomfört kandidatarbetesprojekt under de senaste åren med följande resultat:
 
 + 2016: \small Programmering som undervisningsverktyg för Transformer, signaler och system - [Utvecklingen av läromaterialet TSS med DSL](https://hdl.handle.net/20.500.12380/243894)
-  Jacob Jonsson, Joakim Olsson, Filip Lindahl, Peter Ngo, Cecilia Rosvall
+  J Jonsson, J Olsson, F Lindahl, P Ngo, C Rosvall
 + 2018: Ett komplementerande läromaterial för datastudenter som lär sig fysik - [Läromaterialet Learn You a Physics for Great
 Good!](https://hdl.handle.net/20.500.12380/256122)
-  Johan Johansson, Oskar Lundström, Erik Sjöström, Björn Werner
+  J Johansson, O Lundström, E Sjöström, B Werner
 + 2020: A Computer Science Approach to Teaching Control Theory - Developing Learning Material Using Domain-Specific Languages
-  Simon Hägglund, Jakob Alexander Fihlman, Elin Ohlman, Filip Nylander, Christian Josefsson, Tommy Räjert
+  S Hägglund, J A Fihlman, E Ohlman, F Nylander, C Josefsson, T Räjert
++ 2022: HasLin - ett DSL för linjär algebra - Utvecklandet av ett matematiskt domänspecifikt språk för linjär algebra i Haskell
+  Adam Eliasson, Daniel Nikolaev, Filip Nordmark, Sebastian Sjögren, Linus Sundkvist
 
 Några av er kanske också vill gå den vägen, eller ta del av deras material.
 
