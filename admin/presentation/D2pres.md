@@ -135,7 +135,7 @@ Good!](https://hdl.handle.net/20.500.12380/256122)
 + 2020: A Computer Science Approach to Teaching Control Theory - Developing Learning Material Using Domain-Specific Languages
   S Hägglund, J A Fihlman, E Ohlman, F Nylander, C Josefsson, T Räjert
 + 2022: HasLin - ett DSL för linjär algebra - Utvecklandet av ett matematiskt domänspecifikt språk för linjär algebra i Haskell
-  Adam Eliasson, Daniel Nikolaev, Filip Nordmark, Sebastian Sjögren, Linus Sundkvist
+  A Eliasson, D Nikolaev, F Nordmark, S Sjögren, L Sundkvist
 
 Några av er kanske också vill gå den vägen, eller ta del av deras material.
 
