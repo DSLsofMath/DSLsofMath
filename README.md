@@ -1,15 +1,14 @@
 # Domain-Specific Languages of Mathematics
 
-[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related the book "Domain-Specific Languages of Mathematics" [published in 2022 by College Publications](https://www.amazon.co.uk/dp/184890388X).
+[GitHub repository](https://github.com/DSLsofMath/DSLsofMath/) for open source material related the book "Domain-Specific Languages of Mathematics" [published in 2022 by College Publications](https://www.collegepublications.co.uk/computing/?00024) (available from [Adlibris.se](https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883), [Amazon UK](https://www.amazon.co.uk/Domain-Specific-Languages-Mathematics-Patrik-Jansson/dp/184890388X/), [Amazon.com](https://www.amazon.com/Domain-Specific-Languages-Mathematics-Patrik-Jansson/dp/184890388X/).
 
 The book and the repository are used in a BSc-level course at Chalmers
 and GU.
 
 The main course homepage is in the Canvas LMS:
-* [Main course page](https://chalmers.instructure.com/courses/17542) including links to zoom lectures and other media
-* [Lecture media](https://chalmers.instructure.com/courses/17542/pages/lecture-media)
+* [Main course page](https://chalmers.instructure.com/courses/22256) including links to zoom lectures and other media
 
-Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245) / [DIT982](http://kursplaner.gu.se/english/DIT982.pdf)
+Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245) / [DIT983](http://kursplaner.gu.se/english/DIT983.pdf)
 
 ## News
 
