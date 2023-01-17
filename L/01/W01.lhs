@@ -3,7 +3,7 @@
 \chapter{Types, Functions, and DSLs for Expressions}
 \label{sec:DSLComplex}
 
-%**TODO: Better road-mapping needed for this chapter
+%*TODO: Better "road-mapping" welcome for this chapter
 In this chapter we exemplify our method by applying it to the
 domain of types and functions first, and complex numbers second, which we
 assume most readers will already be familiar with.
