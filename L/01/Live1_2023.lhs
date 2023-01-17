@@ -28,9 +28,20 @@ f3 = f
 -- and the most general:
 f :: Num a =>    a -> a
 
+-- B = Bool = {F,T}
 -- all values of type B->B
 allBtoBs :: [Bool -> Bool]
-allBtoBs = error "TODO"
+allBtoBs = [id, not, const False, const True]
+
+-- |f             |   f False     |  f True |
+-- |--------------|---------------|---------|
+-- |id            |   False       |  True   |
+-- |not           |   True        |  False  |
+-- |const False   |   False       |  False  |
+-- |const True    |   True        |  True   |
+
+
+-- id F = F; id T = T  ; id ~= (F,T)
 
 b1 = allBtoBs !! 0  
 b2 = allBtoBs !! 1
@@ -39,8 +50,22 @@ b4 = allBtoBs !! 3
 
 -- all values of type B->B->B
 exercise :: [Bool -> Bool -> Bool]
-exercise = [(&&), (||) ] -- ... should be quite a few more (2^(2^2) in total)
+exercise = [(&&), (||) ] -- ... should be quite a few more: 16 in total
 \end{code}
+-- How many are there?
+
+  Bool -> A  ~=  (A, A)
+  card A = number of values in A 
+  card (Bool->A) = (card A)^2
+
+  A = B->B
+
+  card (B->(B->B)) = (card (B->B))^2 = ((card B)^2)^2 = (2^2)^2
+
+  
+
+
+
 
 The type class Num has the operations (+), (*), (-), fromInteger (ask
  ghci with ":i" to get the full list) but not the operation (/).
@@ -96,7 +121,11 @@ constructor functions: Add, Mul, och Con.
 forall x. x*0 == 0
 
 \begin{code}
-data E
+data E = Add E E
+       | Mul E E
+       | Con Integer
+       | X                   -- Add (Add (Mul X X) X) (Con 1) ~= x² + x + 1
+  deriving Show
 \end{code}
 
 E is a type of abstract syntax trees.
@@ -111,9 +140,12 @@ translator from an abstract (un-interpreted) syntax to some meaningful value typ
 
 \begin{code}
 a1, a2 :: E
-a1 = error "TODO"    -- 1+(2*3)
-a2 = error "TODO"    -- (1+2)*3
-a3 = error "TODO"    -- x^2
+a1 = Add (Con 1) (Mul (Con 2) (Con 3))    -- 1+(2*3)
+a2 = Mul (Add (Con 1) (Con 2)) (Con 3)    -- (1+2)*3
+a3 = Mul a2 a2
+a4 = Mul a3 a3
+
+a5 = Mul X X
 \end{code}
 
 We can evaluate (translate) an E to an integer:
@@ -124,14 +156,26 @@ eval  ::  E       ->  Integer
 -- the semantic domain is integers
 \begin{code}
 type AbsSyn = E
-type SimpleSem = Integer
-type Sem = Integer -> Integer
-eval :: AbsSyn  ->  Sem
-eval = error "TODO"
+type Z = Integer
+type Sem = Z -> Z   -- from the value of X to the value of the full expression
+eval :: AbsSyn  ->        Sem
+eval (Add e1 e2) = addE (eval e1) (eval e2)
+eval (Mul e1 e2) = mulE (eval e1) (eval e2)
+eval (Con c)     = conE c
+eval X           = xE
+
+-- Add := addE; Mul := mulE; Con := conE
 
 addE :: Sem -> Sem -> Sem
-addE = error "TODO"
-
+addE s1 s2 vX = s1 vX    +    s2 vX
+  --   s1, s2 :: Sem = Z -> Z
+  -- bar :: Z
 mulE :: Sem -> Sem -> Sem
-mulE = error "TODO"
+mulE s1 s2 vX = s1 vX    *    s2 vX
+
+conE :: Integer -> Sem -- Z -> Z
+conE c vX = c
+
+xE :: Sem
+xE vX = vX
 \end{code}
