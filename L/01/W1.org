@@ -70,6 +70,11 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** Syntax trees
 + datatype of syntax trees of simple arith. expr.
 ** First evaluator: |eval :: E -> Int|
+* E1.1 learning outcomes:
+** a Haskell environment up and running
+** syntax trees with constructor for variables
+** definition and use of |Env|
+** laws, properties, and testing
 * End of Tuesday
 
 
@@ -97,14 +102,8 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 
 
 
-
-* E1.1 learning outcomes:
-** a Haskell environment up and running
-** syntax trees with constructor for variables
-** definition and use of |Env|
-** laws, properties, and testing
 * L1.2 Intro / admin
-** First eval meeting (with student representatives)
+** Student communication: [[https://dsls-of-math2023.slack.com/][Slack discussion forum]]
 ** Exercise sessions: be prepared with questions
    2h*2 lectures = 4h/w
    2h*2 exercise sessions = 4h/w
@@ -114,24 +113,22 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** *Read the book!* Chapter N = study week N
 + Not all sections are covered in lectures
 + Some sections not included in the course (marked with a "*")
-** Student communication: Canvas discussion forum
-** Explore the [[https://chalmers.instructure.com/courses/17542][canvas page]] and the [[https://github.com/DSLsofMath/DSLsofMath][github repo]]:
-+ [[https://chalmers.instructure.com/courses/17542][Home = Syllabus]] = "Course-memo"
-+ [[https://chalmers.instructure.com/courses/17542/assignments][Assignments]]     = all deadlines and where you hand in exercises and labs
-+ [[https://chalmers.instructure.com/courses/17542/groups][People]]          = where you can find lab groups, etc.
-+ [[https://chalmers.instructure.com/courses/17542/pages/lecture-media][Pages]]           = Lecture media links, etc.
-+ [[https://chalmers.instructure.com/courses/17542/files/folder/LectureNotes][Files]]           = the book and other (mostly older) material
-+ [[https://chalmers.instructure.com/courses/17542/discussion_topics][Discussions]]     = a forum for student discussions and questions
-+ [[https://chalmers.instructure.com/courses/17542/announcements][Announcements]]   = where the teaching teams broadcasts messages
-+ [[https://github.com/DSLsofMath/DSLsofMath/tree/master/Exam][github/Exam]]     = all 13 old exams *with solutions*
-+ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/SolvedExercises.md][github/SolvedEx]] = >50 solved exercises from the book
+** Explore the [[https://chalmers.instructure.com/courses/22256][canvas page]] and the [[https://github.com/DSLsofMath/DSLsofMath][github repo]]:
++ [[https://chalmers.instructure.com/courses/22256][Home = Syllabus]]   = "Course-memo"
++ [[https://chalmers.instructure.com/courses/22256/assignments][Assignments]]       = all deadlines and where you hand in exercises and labs
++ [[https://chalmers.instructure.com/courses/22256/groups][People]]            = where you can find lab groups, etc.
++ [[https://chalmers.instructure.com/courses/22256/pages/lecture-media][Pages]]             = Lecture media links, etc.
++ [[https://chalmers.instructure.com/courses/22256/files/folder/Book][Files]]             = the book and other (mostly older) material
++ [[https://chalmers.instructure.com/courses/22256/announcements][Announcements]]     = where the teaching teams broadcasts messages
++ [[https://github.com/DSLsofMath/DSLsofMath/tree/master/Exam][github/Exam]]       = all 16 old exams *with solutions*
++ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/SolvedExercises.md][github/SolvedEx]]   = >50 solved exercises from the book
++ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/errata.org][github/errata.org]] = corrections after the book was printed
 * L1.2 learning outcomes:
 ** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
 + When equations meet types - more and more eq. can be solved.
-+ [[https://jamboard.google.com/d/1BomAkVUUucA5VcAEeqZTwsX0YqahYQiOxPm4wv0ylqQ/viewer?f=0][Jamboard L1.2]]
-** Active reading of mathematical text [[[file:Live2_2022.lhs][Complex number case study]]
+** Active reading of mathematical text [[[file:Live2_2023.lhs][Complex number case study]]
 ** Modelling (different versions of) Complex in Haskell
-** |eval| for complex number expressions
+** |eval :: Syntax -> Semantics| for complex number expressions
 ** The DSL of types in Haskell:
 *** |type|, |newtype|, |data|
 *** types and their constructors
@@ -139,7 +136,6 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 *** datatype of syntax trees of simple arith. expr.
 *** |Nat|, |ImagUnits|, |CA|, |CB|, |CE|
 ** Syntax and semantics
-* [[file:Live2_2023.lhs][Live coding]] & [[https://jamboard.google.com/d/1BomAkVUUucA5VcAEeqZTwsX0YqahYQiOxPm4wv0ylqQ/viewer][Jamboard]]
 * Notation for this file:
 ** L1.1 means week 1, lecture 1 (Tuesday)
 ** L1.2 means week 1, lecture 2 (Thursday)
@@ -148,3 +144,5 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 * Extras
 Course book, [[http://www.collegepublications.co.uk/computing/?00024][from College Pulications]]:
 file:~/Pictures/DSLsofMath_book_front_cover.jpg
+01234567890123456789012345678901234567890123456789012345678901234567890123456789
+0         1         2         3         4         5         6         7         8
