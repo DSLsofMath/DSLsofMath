@@ -1,5 +1,5 @@
 Some live coding from the second half of lecture 1 (week 1).
-(DSLsofMath course, 2022).
+(DSLsofMath course, 2023).
 
 This file is an example of a "literate Haskell file" where the
 default (like this intro text) is comment and code blocks are
