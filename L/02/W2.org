@@ -1,15 +1,12 @@
 *DSLs of Mathematics, Week 2*
 * Admin:
 ** Course book <-> lecture video translation table available
-+ Prompted by a student question I have now created a file describing
-  which parts of the lectures are connected to which parts of the
-  book.
++ From the 2022 instance: a file describing which parts of the
+  lectures are connected to which parts of the book.
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/README.org][github]]: [[file:../README.org][DSLsofMath/L/README.org]]
 + tldr; study week N = book chapter N.
-** [[https://chalmers.instructure.com/courses/17542/assignments/30083][Assignment 1]]: (deadline 2022-02-01)
-+ Group formation should be done by today
-+ Tuesday 2022-02-01: Deadline
-+ Monday 2022-02-07: "Presentation" (Q&A) slots
+** [[https://chalmers.instructure.com/courses/17542/assignments/30083][Assignment 1]]: (deadline 2023-01-31)
++ Monday 2023-02-06: "Presentation" (Q&A) slots
 ** Extra Haskell lectures online [recommended watching]
 + Three YouTube videos about Haskell and "type driven development" are
   online covering: polymorphic functions, product types |(a,b)| and
@@ -17,9 +14,9 @@
 * Lecture 2.1 ([[https://jamboard.google.com/d/13gEobT8LWbY7bmMztKO2_ZVEESI87d-ngF3aogZeiOc/viewer?f=0][L2.1 Jamboard]])
 ** Prop = Propositional Calculus (Satslogik)
 + syntax examples
-+ truth tables
-+ eval : Prop -> Table -> Bool
++ (truth tables)
   type Table = Name -> Bool
++ eval : Prop -> Table -> Bool
 ** Proofs
 + proof rules, proof terms
 ** Pure set theory (useful for [[https://chalmers.instructure.com/courses/17542/assignments/48650][Assignment 1]])

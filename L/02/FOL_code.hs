@@ -26,3 +26,4 @@ eval formula env = ev formula
          ev (Equal a b)     = evalRat a env == evalRat b env
          ev (And p q)       = ev p  &&  ev q
          ev (Or  p q)       = ev p  ||  ev q
+         -- trouble lies ahead: FORALL, EXISTS cannot be evaluated
