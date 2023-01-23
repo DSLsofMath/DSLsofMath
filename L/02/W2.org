@@ -1,5 +1,9 @@
 *DSLs of Mathematics, Week 2*
 * Admin:
+** Extra Haskell lectures online [recommended watching]
++ Three YouTube videos about Haskell and "type driven development" are
+  online covering: polymorphic functions, product types |(a,b)| and
+  sum types |Either a b|.
 ** Course book <-> lecture video translation table available
 + From the 2022 instance: a file describing which parts of the
   lectures are connected to which parts of the book.
@@ -7,19 +11,15 @@
 + tldr; study week N = book chapter N.
 ** [[https://chalmers.instructure.com/courses/17542/assignments/30083][Assignment 1]]: (deadline 2023-01-31)
 + Monday 2023-02-06: "Presentation" (Q&A) slots
-** Extra Haskell lectures online [recommended watching]
-+ Three YouTube videos about Haskell and "type driven development" are
-  online covering: polymorphic functions, product types |(a,b)| and
-  sum types |Either a b|.
 * Lecture 2.1 ([[https://jamboard.google.com/d/13gEobT8LWbY7bmMztKO2_ZVEESI87d-ngF3aogZeiOc/viewer?f=0][L2.1 Jamboard]])
-** Prop = Propositional Calculus (Satslogik)
+** DSL for Prop = Propositional Calculus (Satslogik)
 + syntax examples
 + (truth tables)
   type Table = Name -> Bool
 + eval : Prop -> Table -> Bool
-** Proofs
+** DSL for Proofs
 + proof rules, proof terms
-** Pure set theory (useful for [[https://chalmers.instructure.com/courses/17542/assignments/48650][Assignment 1]])
+** DSL for Pure set theory (useful for [[https://chalmers.instructure.com/courses/22256/assignments/66210][Assignment 1]])
 + "untyped sets", "just sets all the way down"
 + Empty set, Singleton set constructor, {braces around enumeration}
 + Cardinality (number of elements)
