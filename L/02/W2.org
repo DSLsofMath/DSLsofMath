@@ -9,13 +9,13 @@
   lectures are connected to which parts of the book.
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/README.org][github]]: [[file:../README.org][DSLsofMath/L/README.org]]
 + tldr; study week N = book chapter N.
-** [[https://chalmers.instructure.com/courses/17542/assignments/30083][Assignment 1]]: (deadline 2023-01-31)
+** [[https://chalmers.instructure.com/courses/22256/assignments/66210][Assignment 1]]: (deadline 2023-01-31)
 + Monday 2023-02-06: "Presentation" (Q&A) slots
 * Lecture 2.1 ([[https://jamboard.google.com/d/13gEobT8LWbY7bmMztKO2_ZVEESI87d-ngF3aogZeiOc/viewer?f=0][L2.1 Jamboard]])
 ** DSL for Prop = Propositional Calculus (Satslogik)
 + syntax examples
 + (truth tables)
-  type Table = Name -> Bool
+  type Table = Namn -> Bool
 + eval : Prop -> Table -> Bool
 ** DSL for Proofs
 + proof rules, proof terms

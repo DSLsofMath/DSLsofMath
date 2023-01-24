@@ -10,8 +10,8 @@ data Prop  =  Con      Bool
            |  And      Prop  Prop
            |  Or       Prop  Prop
            |  Implies  Prop  Prop
-           |  Name     Name
-type Name = String
+           |  Name     Namn
+type Namn = String
 
 p1, p2, p3, p4 :: Prop
 p1 = And  (Name "a")  (Not (Name "a"))
@@ -44,7 +44,7 @@ impS :: Sem -> Sem -> Sem
 (==>) :: Bool -> Bool -> Bool
 (==>) = error "TODO: (==>)"
 
-nameS :: Name -> Sem
+nameS :: Namn -> Sem
 nameS = error "TODO: nameS"
 
 
