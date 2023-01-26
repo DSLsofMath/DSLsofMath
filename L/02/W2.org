@@ -47,10 +47,10 @@
 ** quantifiers: Forall and Exists
 ** Typed quantification
 ** Pushing negation through other constructors
+** [[file:Live_2_2_2023.lhs][Live coding]] (syntax and semantics of FOL)
 ** Case study: sqrt 2 is not rational [proof by contradiction]
 ** Case study: p^q can be rational even when neither p nor q is [proof by cases]
 ** Perhaps: Case study: the limit of a function [from maths text to types and logic]
-** [[file:Live_2_2.lhs][Live coding]] (towards a DSL for proof terms)
 + building proof terms (Tru, Fals, And, Or, Impl (->))
 * Lecture 2.3: Extra lecture on Proof terms
 + From Live_2_3.lhs to Live_2_3_2022.lhs
