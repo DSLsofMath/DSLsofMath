@@ -1,0 +1,14 @@
+Kunskap och förståelse
++ designa och implementera ett domänspecifikt språk (DSL) för en ny domän
++ strukturera delområden inom matematik i termer av DSL
++ förklara de centrala begreppen i grundläggande reell och komplex anays, algebra och linjär algebra
+
+Färdighet och förmåga
++ utveckla lämplig notation för matematiska koncept
++ genomföra och kalkylera bevis
++ använda potensserier för att lösa differentialekvationer
++ använda Laplace-transformer för att lösa differentialekvationer
+
+Värderingsförmåga och förhållningssätt
++ diskutera och jämföra olika implementationer av matematiska begrepp
+

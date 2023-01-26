@@ -1,1 +1,1 @@
-Kursen presenterar klassiska matematiska ämnen från ett datavetenskaligt perspektiv: genom att specificera de introducerade begreppen, vara uppmärksam på syntax och typer, och slutligen genom att bygga domänspecifika språk för vissa av de matematiska områden som nämns nedan.
+Kursen presenterar klassiska matematiska ämnen från ett datavetenskapligt perspektiv: genom att specificera de introducerade begreppen, vara uppmärksam på syntax och typer, och slutligen genom att bygga domänspecifika språk för vissa av de matematiska områden som nämns nedan.

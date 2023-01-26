@@ -1,0 +1,140 @@
+INSTITUTIONEN FÖR DATA- OCH
+INFORMATIONSTEKNIK
+
+DIT983
+
+Matematikens domänspecifika språk, 7,5 högskolepoäng
+
+Domain Specific Languages of Mathematics, 7.5 credits
+Grundnivå / First Cycle
+Fastställande
+
+Kursplanen är fastställd av Institutionen för data- och informationsteknik 2021-11-15
+att gälla från och med 2023-01-16, vårterminen 2023.
+Utbildningsområde: Naturvetenskapligt 100 %
+Ansvarig institution: Institutionen för data- och informationsteknik
+Inplacering
+
+Kursen ges inom ett antal program. Den ges även som fristående kurs vid Göteborgs
+universitet.
+Kursen kan ingå i följande program: 1) Datavetenskapligt program (N1COS), 2)
+Computer Science, Master's Programme (N2COS), 3) Matematiska vetenskaper,
+masterprogram (N2MAT), 4) Matematikprogrammet (N1MAT) och 5) Applied Data
+Science masterprogram (N2ADS)
+Huvudområde
+
+Fördjupning
+
+Datavetenskap
+
+G2F, Grundnivå, har minst 60 hp kurs/er
+på grundnivå som förkunskapskrav
+
+Förkunskapskrav
+
+För behörighet till kursen krävs att studenten ska ha avklarat:
+- 7,5 hp i diskret matematik (exempelvis DIT980 Diskret matematik för Datavetare)
+- 15 hp inom matematik (exempelvis MMGD20 Linjär algebra D och MMGD30
+Matematisk analys D)
+- 15 hp inom datavetenskap (exempelvis DIT440 Introduktion till funktionell
+programmering eller MVG300 Programmering med Matlab och DIT012 Imperativ
+programmering med grundläggande objektorientering)
+- Ytterligare 22.5hp inom matematik eller datavetenskap
+
+Lärandemål
+
+Efter godkänd kurs ska studenten kunna:
+Kunskap och förståelse
+
+• designa och implementera ett domänspecifikt språk (DSL) for en ny domän
+• strukturera delområden inom matematik i termer av DSL
+• förklara de centrala begreppen i grundläggande reell och komplex analys, algebra och
+linjär algebra
+Färdigheter och förmåga
+
+• utveckla lämplig notation for matematiska koncept
+• utföra kalkylerande bevis
+• använda potensserier for att lösa differentialekvationer
+• använda Laplace-transformer for att lösa differentialekvationer
+Värderingsförmåga och förhållningssätt
+
+• diskutera och jämföra olika programvaruimplementationer av matematiska begrepp
+Innehåll
+
+Kursen presenterar klassiska matematiska ämnen från ett datavetenskapligt perspektiv:
+genom att specificera de introducerade begreppen, vara uppmärksam på syntax och
+typer, och slutligen genom att bygga domänspecifika språk för vissa av de matematiska
+områden som nämns nedan.
+Föreläsningarna kommer att behandla:
+- Introduktion till funktionell programmering, programkalkyl och bevis
+- Introduktion till domänspecifika språk (DSL) med linjär algebra som exempel
+- DSL och matematik: kategoriteori som exempel
+- Reell analys: medelvärdessatser, Taylors formler
+- Reell analys: ett DSL for potensserier
+- Mer linjär algebra: egenvärden och optimering
+Delkurser
+1. Tentamen (Written exam), 4 hp
+Betygsskala: Mycket väl godkänd (5), Väl godkänd (4), Godkänd (3) och
+
+DIT983 Matematikens domänspecifika språk, 7,5 högskolepoäng / Domain Specific Languages of
+Mathematics, 7.5 credits
+Grundnivå / First Cycle
+
+3/ 4
+
+Underkänd (U)
+2.
+
+Inlämningsuppgifter (Written Assignments), 3,5 hp
+Betygsskala: Godkänd (G) och Underkänd (U)
+
+Former för undervisning
+
+Kursens upplägg inkluderar föreläsningar, seminarier, fallstudier och grupparbete.
+Undervisningsspråk: engelska
+Former för bedömning
+
+Kursen examineras i form av en individuellt genomförd skriftlig tentamen vid slutet av
+kursen och genom skriftliga inlämningar som genomförs av grupper med (normalt 3-4)
+studenter.
+Om student som underkänts två gånger på samma examinerande moment önskar byte
+av examinator inför nästa examinationstillfälle, ska sådan begäran inlämnas skriftligt
+till kursansvarig institution och bifallas om det inte finns särskilda skäl däremot (HF 6
+kap § 22).
+I det fall en kurs har upphört eller genomgått större förändringar ska studenten i
+normalfallet garanteras tillgång till minst tre provtillfällen (inklusive ordinarie
+provtillfälle) under en tid av åtminstone ett år med utgångspunkt i kursens tidigare
+uppläggning.
+Betyg
+
+På kursen ges något av betygen Mycket väl godkänd (5), Väl godkänd (4), Godkänd (3)
+och Underkänd (U).
+För att bli godkänd på kursen krävs att båda modulerna är godkända. Betyget för hela
+kursen avgörs av den skriftliga tentamen.
+Kursvärdering
+
+Kursen utvärderas genom möten både under och efter kursen mellan lärare och
+studentrepresentanter. Därutöver används en anonym enkät för att få skriftlig
+information. Resultatet av utvärderingen används för att förbättra kursen genom att
+visa på delar som kan läggas till, förbättras, ändras eller tas bort.
+Resultatet och eventuella förändringar i kursens upplägg ska förmedlas både till de
+studenter som genomförde värderingen och till de studenter som ska påbörja kursen.
+
+DIT983 Matematikens domänspecifika språk, 7,5 högskolepoäng / Domain Specific Languages of
+Mathematics, 7.5 credits
+Grundnivå / First Cycle
+
+4/ 4
+Övrigt
+
+Kursen är samläst med motsvarande kurs på Chalmers.
+Kurslitteratur kommer att publiceras senast 8 veckor innan kursstart.
+Kursen ersätter kursen DIT982, 7,5 hp. Den här kursen kan inte ingå i en examen som
+innehåller DIT982. Den kan inte heller ingå i en examen som bygger på en annan
+examen där DIT982 ingår.
+
+DIT983 Matematikens domänspecifika språk, 7,5 högskolepoäng / Domain Specific Languages of
+Mathematics, 7.5 credits
+Grundnivå / First Cycle
+
+

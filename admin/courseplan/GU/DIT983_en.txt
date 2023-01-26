@@ -1,0 +1,142 @@
+DEPARTMENT OF COMPUTER SCIENCE AND
+ENGINEERING
+
+DIT983
+
+Domain Specific Languages of Mathematics, 7.5 credits
+
+Matematikens domänspecifika språk, 7,5 högskolepoäng
+First Cycle
+Confirmation
+
+This course syllabus was confirmed by Department of Computer Science and
+Engineering on 2021-11-15 to be valid from 2023-01-16, spring semester of 2023.
+Field of education: Science 100%
+Department: Department of Computer Science and Engineering
+Position in the educational system
+
+The course is offered within the framwork of several degree programmes. The course is
+also a single subject course at the University of Gothenburg.
+The course can be part of the following programmes: 1) Computer Science, Master's
+Programme (N2COS), 2) Mathematical Sciences, Master's Programme (N2MAT), 3)
+Applied Data Science Master's Programme (N2ADS), 4) Bachelor's Programme in
+Mathematics (N1MAT) and 5) Computer Science, Bachelor's Programme (N1COS)
+Main field of studies
+
+Specialization
+
+Computer Science
+
+G2F, First cycle, has at least 60 credits in
+first-cycle course/s as entry requirements
+
+Entry requirements
+
+The student should have successfully completed:
+- 7.5 hec in discrete mathematics, for example DIT980 Introductory Discrete
+Mathematics for Computer Scientists
+- 15 hec in mathematics, for example MMGD20 Linear Algebra D and MMGD30
+Calculus D
+- 15 hec in computer science, for example DIT440 Introduction to Functional
+Programming or MVG300 Programming with Matlab and DIT012
+Imperative Programming with Basic Object-orientation
+
+2/ 4
+
+Additional 22.5 hec of any mathematics or computer science courses.
+
+Learning outcomes
+
+On successful completion of the course the student will be able to:
+Knowledge and understanding
+
+- design and implement a DSL (Domain Specific Language) for a new domain
+- organize areas of mathematics in DSL terms
+- explain main concepts of elementary real and complex analysis, algebra, and linear
+algebra
+Competence and skills
+
+- develop adequate notation for mathematical concepts
+- perform calculational proofs
+- use power series for solving differential equations
+- use Laplace transforms for solving differential equations
+Judgement and approach
+
+- discuss and compare different software implementations of mathematical concepts
+Course content
+
+The course will present classical mathematical topics from a computing science
+perspective: giving specifications of the concepts introduced, paying
+attention to syntax and types, and ultimately constructing DSLs of some
+mathematical areas mentioned below.
+The lecture topics are:
+- Introduction to functional programming and calculational proofs
+- Introduction to Domain Specific Languages (DSLs): case study linear algebra
+- DSLs and mathematics: case study category theory
+- Real analysis: mean value theorems, Taylor formulas
+
+DIT983 Domain Specific Languages of Mathematics, 7.5 credits / Matematikens domänspecifika språk, 7,5
+högskolepoäng
+First Cycle
+
+3/ 4
+
+- Real analysis: a DSL for power series
+- More linear algebra: eigenvalues and optimization
+
+Sub-courses
+1. Written exam (Tentamen), 4 credits
+Grading scale: Pass with distinction (5), Pass with credit (4), Pass (3) and Fail (U)
+2.
+
+Written Assignments (Inlämningsuppgifter), 3.5 credits
+Grading scale: Pass (G) and Fail (U)
+
+Form of teaching
+
+The main forms of instruction are lectures, seminars, case studies and group work
+Language of instruction: English
+Assessment
+
+The course is examined by an individual written exam which is carried out in an
+examination hall at the end of the course and by written assignments carried out in
+groups of normally 3-4 students.
+If a student, who has failed the same examined component twice, wishes to change
+examiner before the next examination, a written application shall be sent to the
+department responsible for the course and shall be granted unless there are special
+reasons to the contrary (Chapter 6, Section 22 of Higher Education Ordinance).
+In cases where a course has been discontinued or has undergone major changes, the
+student shall normally be guaranteed at least three examination occasions (including the
+ordinary examination) during a period of at least one year from the last time the course
+was given.
+Grades
+
+The grading scale comprises: Pass with distinction (5), Pass with credit (4), Pass (3) and
+Fail (U).
+To pass the course, students must receive a passing grade in both modules. The grade
+for the entire course will be determined by the written exam.
+
+DIT983 Domain Specific Languages of Mathematics, 7.5 credits / Matematikens domänspecifika språk, 7,5
+högskolepoäng
+First Cycle
+
+4/ 4
+Course evaluation
+
+The course is evaluated through meetings both during and after the course between
+teachers and student representatives. Further, an anonymous questionnaire is used to
+ensure written information. The outcome of the evaluations serves to improve the
+course by indicating which parts could be added, improved, changed or removed.
+The results of and possible changes to the course will be shared with students who
+participated in the evaluation and students who are starting the course.
+
+Additional information
+
+The course is a joint course toghether with Chalmers.
+Course literature to be announced the latest 8 weeks prior to the start of the course.
+
+DIT983 Domain Specific Languages of Mathematics, 7.5 credits / Matematikens domänspecifika språk, 7,5
+högskolepoäng
+First Cycle
+
+

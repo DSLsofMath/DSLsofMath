@@ -1,3 +1,9 @@
+2023-01-26: Chalmers courseplan updates
+
+Current GU-plan:
+  http://kursplaner.gu.se/pdf/kurs/en/DIT983
+
+
 2016-12-29: GU courseplan: minor updates
 
   http://kursplaner.gu.se/pdf/kurs/en/DIT982
