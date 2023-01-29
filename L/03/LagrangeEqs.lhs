@@ -14,7 +14,7 @@
 \usepackage{hyperref}
 \hypersetup{pdfpagemode={FullScreen}}
 \RequirePackage[T1]{fontenc}
-\RequirePackage[utf8x]{inputenc}
+\RequirePackage[utf8]{inputenc}
 \RequirePackage{ucs}
 \RequirePackage{amsfonts}
 \usepackage{tikz}
@@ -79,10 +79,27 @@
 \subtitle{the Lagrangian Equations}
 \author[Jansson \& Ionescu]{Patrik Jansson \and Cezar Ionescu}
 \institute[FP div., Chalmers]{Functional Programming division, Chalmers University of Technology}
-\date{2021-02-04}
+\date{2023-01-31}
 % {Chalmers University of Technology, Sweden}
 %           {\texttt{patrikj@@chalmers.se}}
 %           {\texttt{cezar@@chalmers.se}}
+\usepackage{newunicodechar}
+\newunicodechar{∂}{\ensuremath{\partial}}
+\newunicodechar{ⁱ}{^i}
+\newunicodechar{ⁿ}{^n}
+\newunicodechar{₀}{\ensuremath{_0}}
+\newunicodechar{₁}{\ensuremath{_1}}
+\newunicodechar{₂}{\ensuremath{_2}}
+\newunicodechar{₃}{\ensuremath{_3}}
+\newunicodechar{∘}{\ensuremath{\circ}} %
+%\newunicodechar{ℒ}{\ensuremath{\mathscr{L}}}
+%\newunicodechar{ℕ}{\mathbb{N}} %
+%\newunicodechar{ℤ}{\ensuremath{\mathbb{Z}}} %
+%\newunicodechar{ℚ}{\ensuremath{\mathbb{Q}}}
+\newunicodechar{ℝ}{\ensuremath{\mathbb{R}}} %
+%\newunicodechar{ℂ}{\ensuremath{\mathbb{C}}} %
+\newunicodechar{≥}{\ensuremath{\ge}} %
+\newunicodechar{⊆}{\ensuremath{\subseteq}} %
 \begin{document}
 \begin{frame}
 \maketitle

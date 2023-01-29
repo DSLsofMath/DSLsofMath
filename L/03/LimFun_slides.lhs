@@ -4,7 +4,7 @@
 % Hide navigation symbols
 \setbeamertemplate{navigation symbols}{}
 \RequirePackage[T1]{fontenc}
-\RequirePackage[utf8x]{inputenc}
+\RequirePackage[utf8]{inputenc}
 \usepackage{xcolor}
 \usepackage{tabu}
 \usepackage{hyperref}
@@ -22,9 +22,13 @@
     \put(7,34){\line(1,0){25}} \put(45,34){\line(1,0){25}}
     \put(7,14){\line(1,0){25}} \put(45,14){\line(1,0){25}}
   \end{picture}}}
+\usepackage{newunicodechar}
+\newunicodechar{⊆}{\ensuremath{\subseteq}} %
+\newunicodechar{ℝ}{\ensuremath{\mathbb{R}}} %
+\newunicodechar{⁺}{\ensuremath{^+}} %% \newunicodechar{⁺}{^+}
 
 \title[DSLM.Ch3.LimFun]{DSLs of Mathematics: limit of functions}
-\date{Lecture 3.1, 2021-02-02}
+\date{Lecture 3.1, 2023-01-31}
 \author{Patrik Jansson}
 \institute[FP, Chalmers]{Functional Programming, Chalmers University of Technology}
 \begin{document}
@@ -32,42 +36,10 @@
 \maketitle
 \end{frame}
 % Introduce course - show example
-
 %% -------------------------------------------------------------------
 
 \begin{frame}
-% TODO: update title & contents!
-\frametitle{Course goal and focus}
-
-\begin{block}{Goal}
-  Encourage students to approach mathematical domains \\
-  from a functional programming perspective.
-\end{block}
-
-\begin{block}{Course focus}
-\begin{itemize}
-\item Make functions and types explicit
-
-\item Explicit distinction between syntax and semantics
-
-\item Types as carriers of semantic information
-
-\item Organize the types and functions in DSLs
-
-\item [Now] Make variable binding and scope explicit
-\end{itemize}
-\end{block}
-
-Lecture notes and more available at:
-  \url{https://github.com/DSLsofMath/DSLsofMath}
-\end{frame}
-
-
-
-%% -------------------------------------------------------------------
-
-\begin{frame}
-\frametitle{Example: The limit of a function}
+\frametitle{Math book quote: The limit of a function}
 \begin{quote}
   We say that \(f(x)\) \textbf{approaches the limit} \(L\) as \(x\)
   \textbf{approaches} \(a\), and we write
@@ -117,6 +89,9 @@ lim a f L  =  Forall (epsilon > 0) (Exists (delta > 0) (P epsilon delta))
   where  P epsilon delta =  (0 < absBar (x - a) < delta) =>
                             (x `elem` Dom f  && absBar (f x - L) < epsilon)
 \end{spec}
+
+\pause
+Scope check: |a|, |f|, |L| bound in the def. of |lim|. Forall binds |epsilon|, exists binds |delta| (and then again in |P epsilon delta|. Anything missing?
 \end{frame}
 
 %% -------------------------------------------------------------------
@@ -133,13 +108,60 @@ lim a f L  =  Forall (epsilon > 0) (Exists (delta > 0) (P epsilon delta))
                               (x `elem` Dom f  && absBar (f x - L) < epsilon)
 \end{spec}
 
+\note{Go through the types of all the symbols:
+  --    a     f        L    lim a F L
+  lim : X -> (X->Y) -> Y -> FOL
+  f : X -> Y
+  X `subsetOf` REAL
+  Y `subsetOf` REAL
+  REAL+ = ``all reals except zero''
+  epsilon, delta  : REAL+
+  P : REAL+ -> REAL+ -> FOL
+  Q : REAL+ -> REAL+ -> X -> FOL
+}
 \pause
 Lesson learned: be careful with scope and binding (of |x| in this case).
 
+\note{The original notation was not quite honest about the use of ``='': \(lim_{x \to a} f(x) = L\) is expressed by by our 3-place predicate lim.}
 \pause
 \vspace{1cm}
 {\small [We will now assume limits exist and use |lim| as a function from |a| and |f| to |L|.]}
 
+\end{frame}
+
+%format limProp = "\ensuremath{\mathcolor{red}{\underline{" lim "}}}"
+%format limMaybe = "\ensuremath{\mathcolor{blue}{\underline{" lim "}}}"
+%format limSloppy  = lim
+% %format limSloppy  = "\ensuremath{\mathcolor{blue}{\underrightarrow{" lim "}}}"
+\begin{frame}{Variants of |lim| and some properties}
+\begin{itemize}
+\item Typing: let |X ⊆ ℝ|; |Y ⊆ ℝ|; |a : X|; |L : Y|; and |f : X -> Y|\\
+  \begin{tabular}{llcl}
+  Version ``limProp''  & |limProp|    & |:| & |X -> (X->Y) -> Y -> Prop| \\
+  Version ``limMaybe'' & |limMaybe|   & |:| & |X -> (X->Y) -> Maybe Y|\\
+  Version ``limSloppy''& |limSloppy|  & |:| & |X -> (X->Y) -> Y|
+  \end{tabular}
+  \pause
+\item |limProp| can be used as a partial function:
+\begin{spec}
+  Forall (a, f, L1, L2) ((limProp a f L1 && limProp a f L2) => L1 == L2)
+\end{spec}
+\pause
+%format oplus f g = f "\oplus" g
+%format oplusOp = "(\oplus)"
+%format scale c f = c "\triangleleft" f
+\item |limSloppy| is linear:
+  \begin{code}
+    limSloppy a (oplus f g)  = limSloppy a f + limSloppy a g
+    limSloppy a (scale c f)  = c * (limSloppy a f)
+  \end{code}
+\pause
+\vspace{-2ex}
+  \begin{code}
+    oplusOp : (X->Y)->(X->Y)->(X->Y)
+    oplus f g = \x -> f x + g x
+  \end{code}
+\end{itemize}
 \end{frame}
 
 %% -------------------------------------------------------------------
@@ -147,8 +169,8 @@ Lesson learned: be careful with scope and binding (of |x| in this case).
 \newsavebox{\diagramD}
 \savebox{\diagramD}{%
 \begin{tikzcd}
-         \pgfmatrixnextcell \arrow[dl, "|D f|", swap] \arrow[d, "|psi f|"] |REAL| \\
-  |REAL| \pgfmatrixnextcell \arrow[l, "|lim 0|"] |(REAL->REAL)|
+         \pgfmatrixnextcell \arrow[dl, "|D f|", swap] \arrow[d, "|psi f|"] |X| \\
+  |Y| \pgfmatrixnextcell \arrow[l, "|lim 0|"] |(ℝ⁺ -> Y)|
 \end{tikzcd}%
 }
 \begin{frame}[fragile]{Example 2: derivative}

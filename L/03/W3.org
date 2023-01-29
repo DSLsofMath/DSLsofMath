@@ -14,42 +14,12 @@ Learning outcomes
 ** Judgement and approach
 + A1: discuss and compare different software implementations of mathematical concepts
 
-* Week 3, Lecture 1: [[https://jamboard.google.com/d/1sqDpuri01uQkep0tA9g_AgRfMMHwTceI8iVTNTfEuo4/edit?usp=sharing][Jamboard L3.1]]
+* Week 3, Lecture 1.2: [[file:LimFun_slides.lhs][LimFun_slides.lhs]], [[https://jamboard.google.com/d/1sqDpuri01uQkep0tA9g_AgRfMMHwTceI8iVTNTfEuo4/edit?usp=sharing][Jamboard L3.1]]
 + limit of a function (math text -> logic, scoping, lim)
 + types for some examples, most importantly D : (X->Y) -> (X->Y)
 + using lim to define |D|
 + some derivatives from the definition
 + [[file:Live_3_1.lhs][Live coding derivatives]]
-
-* Week 3, Lecture 2, admin
-** A1 = Assignment 1: good work!
-+ hand-in was on Tuesday,
-+ Q&A session on Monday ("oral examination")
-  Main goal: ensure that all lab group participants have been active
-  and understand the submitted solution.
-+ Schedule: each group has one slot
-+ There will be one Zoom meeting ongoing, with a waiting room. Please
-  connect 5min before your slot and make sure all your group members
-  are also ready.
-+ We reuse the "Exercise session" Zoom link [link and password in canvas].
-** Mid-course evaluation meeting
-+ Meeting held 2022-02-03
-*** Course actions based on student feedback (already earlier)
-+ Course "homepage" changed from Course-memo to Lecture media
-+ Added [[file:../README.org][L/README.org]] mapping lectures to book sections  -- read Chapter N for study week N
-+ Lecture media uploaded after each lecture
-+ Some book typos fixed through pull requests [Thanks!]
-*** How to read the book
-+ Work with the material - on paper or with Haskell
-+ The code of all chapters is (now) in separate files in the repo
-*** Zoom-meeting video lag
-+ It turns out zoom gives me only 1 (one!) fps (frame per second) when
-  screen-sharing. [And 3-5 seconds lag when typing. Terrible. Sorry.]
-+ Experiments underway to improve this [feedback appreciated].
-*** More active exercise sessions
-+ Many students have questions, but too few questions reach the teaching team.
-+ The "post your zoom link on canvas" mode is not working well enough.
-+ We will try to use the lecture zoom link + breakout rooms instead.
 
 * Week 3, Lecture 2, "slides" ([[https://jamboard.google.com/d/1jXX4nrptIAQu0NTi8YPF5ADuy8CyagBPHMx9vyz3_dI/viewer][Jamboard L3.2]])
 + Partial derivatives
