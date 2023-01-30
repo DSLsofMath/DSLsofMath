@@ -91,7 +91,12 @@ lim a f L  =  Forall (epsilon > 0) (Exists (delta > 0) (P epsilon delta))
 \end{spec}
 
 \pause
-Scope check: |a|, |f|, |L| bound in the def. of |lim|. Forall binds |epsilon|, exists binds |delta| (and then again in |P epsilon delta|. Anything missing?
+Scope check:
+\begin{itemize}
+\item |a|, |f|, |L| bound in the def. of |lim|. \pause
+\item Forall binds |epsilon|, exists binds |delta| (and then again in |P epsilon delta|).\pause
+\item Anything missing?
+\end{itemize}
 \end{frame}
 
 %% -------------------------------------------------------------------
@@ -123,9 +128,6 @@ lim a f L  =  Forall (epsilon > 0) (Exists (delta > 0) (P epsilon delta))
 Lesson learned: be careful with scope and binding (of |x| in this case).
 
 \note{The original notation was not quite honest about the use of ``='': \(lim_{x \to a} f(x) = L\) is expressed by by our 3-place predicate lim.}
-\pause
-\vspace{1cm}
-{\small [We will now assume limits exist and use |lim| as a function from |a| and |f| to |L|.]}
 
 \end{frame}
 
@@ -142,9 +144,10 @@ Lesson learned: be careful with scope and binding (of |x| in this case).
   Version ``limSloppy''& |limSloppy|  & |:| & |X -> (X->Y) -> Y|
   \end{tabular}
   \pause
-\item |limProp| can be used as a partial function:
+\item |limProp| can be used as a partial function |limMaybe|, or |limSloppy|:
 \begin{spec}
   Forall (a, f, L1, L2) ((limProp a f L1 && limProp a f L2) => L1 == L2)
+  Forall (a, f, L) ((limProp a f L) => (limMaybe a f = Just L) && (limSloppy a f = L))
 \end{spec}
 \pause
 %format oplus f g = f "\oplus" g
@@ -156,12 +159,16 @@ Lesson learned: be careful with scope and binding (of |x| in this case).
     limSloppy a (scale c f)  = c * (limSloppy a f)
   \end{code}
 \pause
-\vspace{-2ex}
+\item What is |oplusOp : (X->Y)->(X->Y)->(X->Y)|?\pause
   \begin{code}
-    oplusOp : (X->Y)->(X->Y)->(X->Y)
     oplus f g = \x -> f x + g x
   \end{code}
 \end{itemize}
+
+% \pause
+% \vspace{1cm}
+% {\small [We will now assume limits exist and use |lim| as a function from |a| and |f| to |L|.]}
+
 \end{frame}
 
 %% -------------------------------------------------------------------
@@ -170,7 +177,7 @@ Lesson learned: be careful with scope and binding (of |x| in this case).
 \savebox{\diagramD}{%
 \begin{tikzcd}
          \pgfmatrixnextcell \arrow[dl, "|D f|", swap] \arrow[d, "|psi f|"] |X| \\
-  |Y| \pgfmatrixnextcell \arrow[l, "|lim 0|"] |(ℝ⁺ -> Y)|
+  |Y| \pgfmatrixnextcell \arrow[l, "|lim 0|"] |(H -> Y)|
 \end{tikzcd}%
 }
 \begin{frame}[fragile]{Example 2: derivative}
@@ -191,22 +198,23 @@ Lesson learned: be careful with scope and binding (of |x| in this case).
 
 
 We can write
+%format RPlus = "\ensuremath{\mathbb{R^+}}"
 
 \savecolumns
 \begin{spec}
-  D f x  = lim 0 g        where            g  h = frac (f(x+h) - f x) h
+  D f x  = lim 0 g        where            g  h = frac (f(x+h) - f x) h;                      g ::  H -> Y; type H = RPlus
 \end{spec}
 \pause
 \vspace{-0.5cm}
 \restorecolumns
 \begin{spec}
-  D f x  = lim 0 (phi x)  where       phi  x  h = frac (f(x+h) - f x) h
+  D f x  = lim 0 (phi x)  where       phi  x  h = frac (f(x+h) - f x) h;{-"\quad"-}  phi  ::  X ->  (H -> Y)
 \end{spec}
 \pause
 \vspace{-0.5cm}
 \restorecolumns
 \begin{spec}
-  D f    = lim 0 . psi f  where  psi  f    x  h = frac (f(x+h) - f x) h   {-"\usebox{\diagramD}"-}
+  D f    = lim 0 . psi f  where  psi  f    x  h = frac (f(x+h) - f x) h;             {-"\usebox{\diagramD}"-}
 \end{spec}
 \end{frame}
 

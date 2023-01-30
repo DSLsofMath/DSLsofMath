@@ -1,5 +1,5 @@
 
-deriv :: "some function type" -> "some function type" 
+deriv :: (X->Y) -> (X->Y)
 deriv f = ???
 
 + Attempt 1: pattern matching on "semantic functions"?
@@ -15,8 +15,20 @@ Example functions / expressions:
 sq x = x^2
 tw x = 2*x
 c2 x = 2
+type X = REAL
+type Y = REAL
+type H = REAL -- except for zero
+
+psi :: (X->Y) -> X -> H -> Y
 psi f x h = (f (x+h) - f x)/h
+t1 :: X -> H -> Y
 t1 = psi sq -- leder inte till rätt väg
+
+derivSem :: (X->Y) -> (X->Y)
+derivSem f x = lim 0 (psi f x)
+
+lim :: H -> (H->Y) -> Y
+lim h g = error "TODO"
 
 type REAL = Double
 

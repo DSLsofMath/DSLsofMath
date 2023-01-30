@@ -1,4 +1,4 @@
-\documentclass{beamer}
+\documentclass[aspectratio=1610]{beamer}
 \usetheme{Madrid}
 % Hide navigation symbols
 \setbeamertemplate{navigation symbols}{}
@@ -87,6 +87,8 @@
 \newunicodechar{∂}{\ensuremath{\partial}}
 \newunicodechar{ⁱ}{^i}
 \newunicodechar{ⁿ}{^n}
+\newunicodechar{³}{^3}
+\newunicodechar{×}{\times}
 \newunicodechar{₀}{\ensuremath{_0}}
 \newunicodechar{₁}{\ensuremath{_1}}
 \newunicodechar{₂}{\ensuremath{_2}}
@@ -136,7 +138,7 @@ What could this expression possibly mean?
 \item The use of notation for ``partial derivative'', \(∂L / ∂q\), suggests
 that |L| is a function of at least a pair of arguments:
 \begin{spec}
-  L : ℝⁱ → ℝ,    i ≥ 2
+  L : ℝⁱ -> ℝ,    i ≥ 2
 \end{spec}
 
 This is consistent with the description: ``Lagrangian function of the
@@ -146,7 +148,7 @@ So, if we let ``coordinates'' be just one coordinate, we can take |i =
 3|:
 %
 \begin{spec}
-  L : ℝ³ → ℝ
+  L : ℝ³ -> ℝ
 \end{spec}
 % ×
 The ``system state'' here is a triple, of type |S = T × Q × V|,
@@ -185,7 +187,7 @@ coordinate, and |v : V| for velocity.
   |const 0|:
 
   \begin{spec}
-    const 0  :  T × Q × V  →  ℝ
+    const 0  :  T × Q × V  ->  ℝ
     const 0     (t, q, v)  =   0
   \end{spec}
 \end{itemize}
@@ -202,13 +204,13 @@ coordinate, and |v : V| for velocity.
 %format ddotq =  ∂ dotq
 %format juxtapose f x = f "\," x
 \begin{spec}
-    juxtapose (d / dt) (∂L / ∂dotq)  :  T → ℝ
+    juxtapose (d / dt) (∂L / ∂dotq)  :  T -> ℝ
 \end{spec}
 
 Since we subtract from this the function \(∂L / ∂q\), it follows that
 this, too, must be of type |T -> ℝ|.
 %
-But we already typed it as |T × Q × V → ℝ|, contradiction!
+But we already typed it as |T × Q × V -> ℝ|, contradiction!
 %
 \label{item:L:contra}
 
@@ -227,7 +229,7 @@ But we already typed it as |T × Q × V → ℝ|, contradiction!
   Thus, the path is a function of time, let us say
 %
   \begin{spec}
-    w  :  T → Q  -- with |T| for time and |Q| for coords (|q : Q|)
+    w  :  T -> Q  -- with |T| for time and |Q| for coords (|q : Q|)
   \end{spec}
 
   We can now guess that the use of the plural form ``equations'' might
@@ -238,10 +240,10 @@ But we already typed it as |T × Q × V → ℝ|, contradiction!
   A path would then be
 %
   \begin{spec}
-    w  :  T → Q  -- with |Q = ℝⁿ|
+    w  :  T -> Q  -- with |Q = ℝⁿ|
   \end{spec}
 %
-  which is equivalent to |n| functions of type |T → ℝ|, each computing
+  which is equivalent to |n| functions of type |T -> ℝ|, each computing
   one coordinate as a function of time.
 %
   We would then have an equation for each of them.
@@ -262,17 +264,17 @@ But we already typed it as |T × Q × V → ℝ|, contradiction!
   starting from just the path.
 %
   \begin{spec}
-    q  :  T → Q
+    q  :  T -> Q
     q  =  w            -- or, equivalently, |q(t) = w(t)|
 
-    dotq : T → V
+    dotq : T -> V
     dotq = D w         -- or, equivalently, |dotq t = dw(t)/dt|
   \end{spec}
 %
   We combine these in the ``combinator'' |expand|, given by
   %
   \begin{spec}
-    expand : (T → Q) → (T → T × Q × V)
+    expand : (T -> Q) -> (T -> T × Q × V)
     expand w t  =  (t, w t, D w t)
   \end{spec}
 \end{itemize}
@@ -296,8 +298,8 @@ But we already typed it as |T × Q × V → ℝ|, contradiction!
   combinations for the two terms in the equation:
   %
   \begin{spec}
-    D (  (D₃ L)  ∘  (expand w)  )  :  T → ℝ
-         (D₂ L)  ∘  (expand w)     :  T → ℝ
+    D (  (D₃ L)  ∘  (expand w)  )  :  T -> ℝ
+         (D₂ L)  ∘  (expand w)     :  T -> ℝ
   \end{spec}
 
   The equation becomes
@@ -325,7 +327,7 @@ But we already typed it as |T × Q × V → ℝ|, contradiction!
 
   Thus: If we can describe a mechanical system in terms of ``a
   Lagrangian'' (|L : S -> ℝ|), then we can use the predicate to check
-  if a particular candidate path |w : T → ℝ| qualifies as a ``motion
+  if a particular candidate path |w : T -> ℝ| qualifies as a ``motion
   of the system'' or not.
 %
   The unknown of the equation is the path |w|, and the equation is an

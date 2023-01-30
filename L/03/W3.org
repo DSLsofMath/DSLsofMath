@@ -14,12 +14,18 @@ Learning outcomes
 ** Judgement and approach
 + A1: discuss and compare different software implementations of mathematical concepts
 
+* Week 2, Lecture 3: DSL of proofs, Curry-Howard, proof examples
++ AndIntro, OrIntroL, OrIntroR
++ fst, snd, orElim
++ Proof examples in mathematics (irrational (sqrt 2), ...)
 * Week 3, Lecture 1.2: [[file:LimFun_slides.lhs][LimFun_slides.lhs]], [[https://jamboard.google.com/d/1sqDpuri01uQkep0tA9g_AgRfMMHwTceI8iVTNTfEuo4/edit?usp=sharing][Jamboard L3.1]]
 + limit of a function (math text -> logic, scoping, lim)
 + types for some examples, most importantly D : (X->Y) -> (X->Y)
 + using lim to define |D|
 + some derivatives from the definition
 + [[file:Live_3_1.lhs][Live coding derivatives]]
+* Week 2, Lecture 3: Live-coding proof examples
++ [[file:~/src/DSLM/DSLsofMath/L/02/Live_2_2.lhs::* Live coding part of week 2, lecture 2.][Curry-Howard]]
 
 * Week 3, Lecture 2, "slides" ([[https://jamboard.google.com/d/1jXX4nrptIAQu0NTi8YPF5ADuy8CyagBPHMx9vyz3_dI/viewer][Jamboard L3.2]])
 + Partial derivatives

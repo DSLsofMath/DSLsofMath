@@ -10,16 +10,7 @@ An example class |C|:
 
   "a collection of types with some common properties / methods"
 
-\begin{code}
-class C a where         foo :: a -> a
-instance C Int where    foo i = -i   -- now at least we have 'Elem Int C'
-instance C Bool where   foo b = not b  -- now we have C ~= {Int, Bool}
-instance C String where foo s = reverse s -- now three types are in C
-
-testC1 = foo (3::Int)
-testC2 = foo False
-testC3 = foo "Patrik"
-\end{code}
+----
 
 Define 'Additive' and some instances (Double, FunExp, functions).
 \begin{code}

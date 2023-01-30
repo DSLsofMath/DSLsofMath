@@ -17,7 +17,7 @@ data Fals  -- No constructors - an empty set of proof terms
 data Tru      = Obvious
 
 test1 :: Tru
-test1 = Obvious
+test1 = error "TODO"
 
 type And p q = (p,q)
 
@@ -26,7 +26,15 @@ test2 = error "TODO"
 
 swap :: And p q -> And q p   -- And is commutative
 swap = error "TODO"
+\end{code}
 
+\begin{spec}
+data Either a b where  -- disjoint union
+  Left  :: a -> Either a b  -- orIntroL
+  Right :: b -> Either a b  -- orIntroR
+\end{spec}
+
+\begin{code}
 type Or p q = Either p q
 
 swap2 :: Or p q -> Or q p   -- Or is commutative
@@ -37,9 +45,5 @@ type Not p = p -> Fals
 exc :: Not (Not (Or p (Not p)))   -- law of excluded middle
 exc = error "TODO"
 \end{code}
-
-data Either a b where  -- disjoint union
-  Left  :: a -> Either a b  -- orIntroL
-  Right :: b -> Either a b  -- orIntroR
 
 
