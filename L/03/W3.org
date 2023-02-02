@@ -30,7 +30,7 @@ Learning outcomes
 * Thursday
 ** Week 3, Lecture 2, "slides" ([[https://jamboard.google.com/d/1jXX4nrptIAQu0NTi8YPF5ADuy8CyagBPHMx9vyz3_dI/viewer][Jamboard L3.2]])
 + Partial derivatives
-+ Lagrange Eq's
++ [[file:LagrangeEqs.pdf][Lagrange Eq's]]
 + Lagrange example
 ** Week 3, Lecture 2 [[file:Live_3_2.lhs][Live coding]]
 + Type classes
