@@ -317,11 +317,11 @@ But additionally, we have a notion of \emph{\addtoindex{pattern
 This is rather similar to Haskell's \emph{as-patterns}:
 %
 \begin{code}
-re :: ComplexD        ->  REAL
-re z @ (CD (x , y))   =   x
+re :: ComplexD      ->  REAL
+re z@(CD (x , y))   =   x
 
-im :: ComplexD        ->  REAL
-im z @ (CD (x , y))   =   y
+im :: ComplexD      ->  REAL
+im z@(CD (x , y))   =   y
 \end{code}
 %
 a potential source of confusion being that the symbol |z| introduced
