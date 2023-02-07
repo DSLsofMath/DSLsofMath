@@ -116,7 +116,7 @@ e3 = Add e1 e2  -- 1+2
 e4 = Mul e3 e3  -- (1+2)*(1+2)
 
 ebig 0 = Con 2
-ebig n = Mul (ebig (n-1)) (ebig (n-1)) 
+ebig n = let big = ebig (n-1) in Mul big big
 \end{code}
 
 ----------------

@@ -1,11 +1,3 @@
-* Week 4 admin:
-** Assignment 1: Q&A/presentations done
-+ some groups have fixes to do
-+ deadline for fixes: Fri at 17.00
-** New "group set" for [[https://chalmers.instructure.com/courses/17542/assignments/30084][Assignment 2:]]
-+ You will be assigned new groups for A2
-+ The reason for having two separate "group sets" is that we want you to practice your "math communication and collaboration skills" in different teams.
-+ Quiz "A2-startup"
 * Week 4, L4.1: Compositional semantics (Homomorphisms)
 ** Homomorphism: H2(f,(+),(*)) = forall x, y. f(x+y) == f x * f y
 
