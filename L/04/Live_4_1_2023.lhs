@@ -5,7 +5,7 @@ module Live_4_1 where
 \end{code}
 DSLsofMath week 4: Compositionality and Algebras
 + L4.1.3: Week 4, Lecture 1, Part 3
-  
+
 + L4.1.1 (Jamboard): definition of H2 and friends
 
   H2(f,(+),(*)) = Forall x. Forall y. f(x+y)  ==  (f x) * (f y)
@@ -49,11 +49,11 @@ From Jamboard:
      T | T F
 \begin{code}
 xor :: Bool -> Bool -> Bool
-xor False False = False   
+xor False False = False
 xor True  False = True
 xor False True  = True
 xor True  True  = False
-  
+
 type B = Bool
 type Z = Integer
 mytest :: Z -> Z -> Bool
@@ -89,7 +89,7 @@ which expands into  x, y :: TERM v
  eval (Union x y) = unionSem (eval x) (eval y)
 
   -- this holds "by definition"
-  -- but for commutativity, etc. 
+  -- but for commutativity, etc.
 
  eval (Union x y) == eval (Union y x)
 
@@ -167,8 +167,8 @@ eva2 add mul con = ev
          ev (Mul x y) = mul (ev x) (ev y) -- H2(ev,Mul,mul)
          ev (Con c)   = con c             -- Forall c. H0(ev,Con c, con c)
 {-
-eva2 add mul con (Add x y) = add (eva2 add mul con x) (eva2 add mul con y) 
-eva2 add mul con (Mul x y) = mul (eva2 add mul con x) (eva2 add mul con y) 
+eva2 add mul con (Add x y) = add (eva2 add mul con x) (eva2 add mul con y)
+eva2 add mul con (Mul x y) = mul (eva2 add mul con x) (eva2 add mul con y)
 eva2 add mul con (Con c)   = con c
 -}
 

@@ -54,7 +54,7 @@ instance Multiplicative b => Multiplicative (a->b) where (*) = mulF; one  = oneF
 
 zeroF :: Additive b =>        a -> b
 oneF  :: Multiplicative b =>  a -> b
-zeroF = const zero 
+zeroF = const zero
 oneF  = const one
 
 addF :: Additive b =>        (a -> b) -> (a -> b) -> (a -> b)
@@ -98,10 +98,10 @@ A very common combination is "AddGroup + Multiplicative" - and this is
 called a *ring*. And if we also add MulGroup we get a *field*.
 
 \begin{code}
---   Ring ~=  ((+), zero, negate), ((*), one) 
-type Ring  a = (AddGroup a, Multiplicative a)  -- Sv: ring 
+--   Ring ~=  ((+), zero, negate), ((*), one)
+type Ring  a = (AddGroup a, Multiplicative a)  -- Sv: ring
 type Field a = (Ring a, MulGroup a)            -- Sv: kropp
---   Field ~=  ((+), zero, negate), ((*), one, recip) 
+--   Field ~=  ((+), zero, negate), ((*), one, recip)
 --   Field ~=  (+),(-),(*),(/)
 
 hej :: Ring a => a -> a
@@ -136,7 +136,7 @@ We can define:
 
 + Ring homomorphism:
   RingHom(h, (A,(+A),zeroA,negateA,(*A),oneA),
-             (B,(+B),zeroB,negateB,(*B),oneB) ) = 
+             (B,(+B),zeroB,negateB,(*B),oneB) ) =
     MonHom(h,(A,(+A),zeroA),(B,(+B),zeroB)) &&
     MonHom(h,(A,(*A),oneA), (B,(*B),oneB))  &&
     H1(h,negateA,negateB)
