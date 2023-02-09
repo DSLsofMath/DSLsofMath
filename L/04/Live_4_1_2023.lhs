@@ -204,6 +204,23 @@ evenCon = even
   to keep the type and the parameters together
 
 Implement the example folds as instances.
+
+Reminder:
+  eva :: IE->I
+  --       add         mul           con              e
+  eva2 :: (b->b->b) -> (b->b->b) -> (Integer -> b) -> (IE -> b)
+
+Three examples uses of eva2 (generic fold):
+
+  eva' :: EI->I
+  eva' = eva2 (+) (*) id           -- same as eva
+
+  evaDeepCopy :: IE -> IE
+  evaDeepCopy = eva2 Add Mul Con   -- special identity function
+
+  evenIE :: IE -> Bool
+  evenIE = eva2 evenAdd evenMul evenCon
+
 \begin{code}
 \end{code}
 s1, s2, s3, s4 :: IntExp a => a
