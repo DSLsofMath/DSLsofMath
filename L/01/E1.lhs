@@ -198,7 +198,7 @@
   instance for |Num| for the datatype |ComplexSyn|.
   %
   Also add a constructor for variables to enable writing expressions
-  like |(Var "z") :*: toComplex 1|.
+  like |(Var "z") :*: toComplexSyn 1|.
 \end{exercise}
 
 % \begin{exercise}

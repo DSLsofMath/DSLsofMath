@@ -104,6 +104,11 @@
 -This kind of transformation if often useful, and it works also for
 +This kind of transformation is often useful, and it works also for
 #+END_SRC
+*** Around line 201: toComplex:=toComplexSyn
+#+BEGIN_SRC diff
+-  like |(Var "z") :*: toComplex 1|.
++  like |(Var "z") :*: toComplexSyn 1|.
+#+END_SRC
 *** Around line 221: ComplexSem:=Complex; CS:=C
 #+BEGIN_SRC diff
 -embed :: ComplexSem r -> ComplexSyn r
