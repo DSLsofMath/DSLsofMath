@@ -1,6 +1,7 @@
 \begin{code}
+{-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE GADTs #-}
---  {-# TypeSynonymInstances, FlexibleInstances #-}
+--  {-# FlexibleInstances #-}
 module Live_4_1 where
 \end{code}
 DSLsofMath week 4: Compositionality and Algebras
@@ -206,10 +207,10 @@ evenCon = even
 Implement the example folds as instances.
 
 Reminder:
-  eva :: IE->I
+  eva :: IE->I  -- "monomorf" - dvs. bara def. för typ (I)
   --       add         mul           con              e
   eva2 :: (b->b->b) -> (b->b->b) -> (Integer -> b) -> (IE -> b)
-
+  -- fold -- "generisk" = "polymorf" - dvs. definierad för "alla" typer b
 Three examples uses of eva2 (generic fold):
 
   eva' :: EI->I
@@ -221,10 +222,30 @@ Three examples uses of eva2 (generic fold):
   evenIE :: IE -> Bool
   evenIE = eva2 evenAdd evenMul evenCon
 
+  -- en slags fold -- "generisk" = "polymorf" - dvs. definierad för "alla" typer IntExp b =>
+  eva3 :: IntExp b => IE -> b
+
 \begin{code}
-\end{code}
-s1, s2, s3, s4 :: IntExp a => a
+class IntExp a where
+  add :: a -> a -> a
+  mul :: a -> a -> a
+  con :: I -> a
+instance IntExp I    where add=(+); mul=(*); con=id
+instance IntExp IE   where add=Add; mul=Mul; con=Con
+instance IntExp Bool where add=evenAdd; mul=evenMul; con=evenCon
+--                (a->a->a, a->a->a, I->a) -> a
+s1, s2, s3, s4 :: IntExp a => a  -- det finns en osynlig indataparameter med add,mul,con
 s1 = con 1
 s2 = con 2
 s3 = add s1 s2  -- 1+2
 s4 = mul s3 s3  -- (1+2)*(1+2)
+
+--       add         mul           con              e
+--eva3 :: (b->b->b) -> (b->b->b) -> (Integer -> b) -> (IE -> b)
+eva3 :: IntExp b => IE -> b
+eva3 = ev
+  where  ev (Add x y) = add (ev x) (ev y) -- H2(ev,Add,add)
+         ev (Mul x y) = mul (ev x) (ev y) -- H2(ev,Mul,mul)
+         ev (Con c)   = con c             -- Forall c. H0(ev,Con c, con c)
+
+\end{code}

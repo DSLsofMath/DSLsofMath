@@ -2,17 +2,17 @@
 
 
 ** 2023-02-09 Thursday:
-+ Make your own type class [[file:Live_4_1_2023.lhs::+ L4.1.5: Make your own type class]]
++ Make your own type class [[file:Live_4_1_2023.lhs]]
   (related to exam question type "Algebra")
 
 + der is not a homomorphism
   https://jamboard.google.com/d/1LQq4pINUGRld1QB1AeEisS8eb4EAeC104sUTVj3iwL4/viewer?f=0
   (related to lab A2)
 
-+ Tupling transform (Jamboard)
++ Tupling transform to the rescue (Jamboard)
 
 + Tupling transform (in Haskell)
-  [[file:Live_4_1_2023.lhs][file:~/src/DSLM/DSLsofMath/L/04/Live_4_1_2023.lhs]]
+  [[file:Live_4_2_2023.lhs][Live_4_2_2023.lhs]]
 
 + Connect back to "make your own type class" (in Haskell)
 
