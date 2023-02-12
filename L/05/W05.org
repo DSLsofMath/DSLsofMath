@@ -1,6 +1,6 @@
 Week 5: Polynomials and Power Series
 * L5.1.1: Homomorphism examples related to A2 (Apply.hs)
-+ Live coding [[file:Live_5_1_2022.lhs]]
++ Live coding [[file:Live_5_1_2023.lhs]]
 ** apply   :: a -> (a->b) -> b
 ** applyFD :: a -> FD a -> Bi a
 * Polynomials ([[https://jamboard.google.com/d/1uz9cnHTM7g17ojxAsyi-BXGAs9wAD0weI0thxV6dPbw/viewer][Jamboard L5.1]])
@@ -26,7 +26,7 @@ polynomial, is called the \textbf{degree} of the polynomial.
 ** degree as "almost a homomorphism"
 ** lifting to Maybe
 ** Power series example: 1/(1-x)
-** Live coding (file:Live_5_2_2022.lhs)
+** Live coding (file:Live_5_2_2023.lhs)
 + DSL for polynomials: newtype Poly, eval, a->a
 + numeric Ring instances for polynomials (Poly a)
 + scale, negate

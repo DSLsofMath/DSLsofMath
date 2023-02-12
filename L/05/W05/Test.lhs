@@ -4,7 +4,7 @@ import DSLsofMath.W05
 import Test.QuickCheck
 
 instance (Arbitrary a, Num a) => Arbitrary (Poly a) where
-  arbitrary = fmap fromList arbitrary
+  arbitrary = fmap Poly arbitrary
 checkDegreeMI p = checkDegreeM (p::Poly Integer)
 checkMonoid0Maybe x = op x unit == x  &&  op unit x == x
   where dummy = x :: Maybe Integer
