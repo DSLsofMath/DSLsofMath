@@ -3,7 +3,7 @@ Week 5: Polynomials and Power Series
 + Live coding [[file:Live_5_1_2023.lhs]]
 ** apply   :: a -> (a->b) -> b
 ** applyFD :: a -> FD a -> Bi a
-* Polynomials ([[https://jamboard.google.com/d/1uz9cnHTM7g17ojxAsyi-BXGAs9wAD0weI0thxV6dPbw/viewer][Jamboard L5.1]])
+* Polynomials ([[https://jamboard.google.com/d/1LU8RDW5SRIeE7EhbzZ3Pk5LwmncbCFxhR5ZHNsVXo5A/viewer?f=1][Jamboard L5.1]])
 
 \begin{quote}
 P is a polynomial function if
@@ -22,7 +22,7 @@ polynomial, is called the \textbf{degree} of the polynomial.
 
 
 * L5.2 Power Series
-** Polynomial degree [[https://jamboard.google.com/d/1lMyIr4-aIxQduNOcMc8Ui_z37uujGsQGV_QOo3oH3UM/edit?usp=sharing][Jamboard 5.2]]
+** Polynomial degree [[https://jamboard.google.com/d/1PGIoBWFg3JJZF0q8YYSCijZR4VrjncJtwPtBd90KfTc/viewer?f=0][Jamboard 5.2]]
 ** degree as "almost a homomorphism"
 ** lifting to Maybe
 ** Power series example: 1/(1-x)
