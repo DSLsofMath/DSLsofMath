@@ -1,146 +1,218 @@
 \begin{code}
 {-# LANGUAGE TypeSynonymInstances #-}
--- {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE RebindableSyntax #-}
+-- {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE ConstraintKinds #-}
 module Live_6_2 where
-import DSLsofMath.Algebra as Algebra
+import Prelude (Int, Double, Show, error, Bool, (==), (&&), 
+                (.), zipWith, map, head, tail, take)
 import qualified Prelude
-import Prelude (Eq, Ord, Show, Double, Rational, id, const, (.), error)
-import DSLsofMath.Simplify
-import DSLsofMath.PSDS -- was Live_6_1
 import DSLsofMath.FunExp
-
-{-
-type REAL = Double
-data FunExp  =  Const REAL
-             |  X
-             -- Additive, AddGroup
-             |  FunExp :+: FunExp
-             |  Negate FunExp
-             -- Multiplicative, MulGroup
-             |  FunExp :*: FunExp
-             |  Recip FunExp
-             -- Transcendental
-             |  Exp FunExp
-             |  Sin FunExp
-             |  Cos FunExp
-                -- and so on
-  deriving (Eq, Ord, Show)
--}
+import DSLsofMath.Algebra (Additive((+),zero), AddGroup(negate), (-), 
+                           Multiplicative((*),one), Ring, (^+), 
+                           Field, (/),
+                           Algebraic(sqrt),
+                           Transcendental(pi,sin,cos,exp) )
 \end{code}
+
+Chapter 6. Taylor and Maclaurin series
+ - or -
+Yet another type for representing functions.
+
+Code cont. from file:../04/Live_4_3_2022.lhs and file:../05/Live_5_2_2022.lhs
+
+1. Introduce the remaining type classes Transcendental and Algebraic
+2. Reminder of the numeric instances for Power Series (from L5.2)
+3. Implement "Derivative Series" (as yet another type to rep. functions)
+
+
+----------------
+2. Reminder of the numeric instances for Power Series (from L5.2)
+
+----
+2a. Types + eval
+\begin{code}
+newtype Poly a = P [a] deriving Show
+evalP :: Ring a => Poly a -> (a -> a)
+evalP (P cs) = evalL cs
+
+evalL :: Ring a => [a] -> (a -> a)
+evalL []      = zero
+evalL (a:as)  = evalCons a (evalL as)
+
+evalCons :: Ring a => a -> (a -> a) -> (a -> a)
+evalCons a0 p = \x -> a0 + x * p x
+
+xP :: Ring a => Poly a
+xP = P [zero, one]
+
+type PS = Poly
+takeP :: Int -> PS a -> Poly a
+takeP n (P as) = P (take n as)
+
+evalPS :: Ring a => Int -> Poly a -> (a -> a)
+evalPS n = evalP . takeP n
+\end{code}
+
+2b. Numeric instances for PS a = Poly a
+\begin{code}
+instance Additive a => Additive       (Poly a) where zero=zeroP; (+)=addP
+instance AddGroup a => AddGroup       (Poly a) where negate=negateP
+instance Ring a     => Multiplicative (Poly a) where one=oneP;   (*)=mulP
+
+zeroP :: Poly a;   zeroP = P zeroL
+zeroL :: [a];      zeroL = []
+
+oneP :: Ring a => Poly a;   oneP = P oneL
+oneL :: Ring a => [a];      oneL = [one]
+
+addP :: Additive a => Poly a -> Poly a -> Poly a
+addP (P as) (P bs) = P (addL as bs)
+
+addL :: Additive a => [a] -> [a] -> [a]
+addL = zipWithLonger (+)
+
+zipWithLonger :: (a->a->a) -> ([a] -> [a] -> [a])
+zipWithLonger op = zWL
+  where  zWL []      bs      = bs
+         zWL as      []      = as
+         zWL (a:as)  (b:bs)  = (op a b) : zWL as bs
+
+mulP :: Ring a => Poly a -> Poly a -> Poly a
+mulP (P as) (P bs) = P (mulL as bs)
+
+mulL :: Ring a => [a] -> [a] -> [a]  
+mulL [] bs = []
+mulL as [] = []
+mulL (a:as) bs = addL (scaleL a bs) (zero:mulL as bs)
+
+scaleL :: Ring a => a -> [a] -> [a]
+scaleL c = map (c*)
+
+negateP :: AddGroup a => Poly a -> Poly a
+negateP (P as) = P (negateL as)
+
+negateL :: AddGroup a => [a] -> [a]
+negateL = map negate
+\end{code}
+
+----
+2c. Motivating examples:
+\begin{code}
+two :: Ring a => a
+two = one+one
+
+pythagorean :: Transcendental a => a -> a
+pythagorean = sin*sin + cos*cos
+
+factorials :: Ring a => [a]
+factorials = factorialsFrom zero one
+
+factorialsFrom :: Ring a => a -> a -> [a]
+factorialsFrom n factn = factn : factorialsFrom n' (factn * n')
+  where n' = one+n
+
+p1 :: Ring a => Poly a
+p1 = (xP-one)^+2
+\end{code}
+
+----
+2d. derivative and integral for power series
 
 \begin{code}
-{-
-eval :: Transcendental a => FunExp -> a -> a
+derP :: Ring a => Poly a -> Poly a
+derP (P as) = P (derL as)
 
--- Base cases
-eval (Const c)      =  evalConst c
-eval X              =  id
+derL :: Ring a => [a] -> [a]
+derL [] = []
+derL (_:as) = zipWith (*) as fromOne
 
--- Additive, AddGroup
-eval (e1 :+: e2)    =  eval e1 + eval e2
-eval (Negate e)     =  negate (eval e)
+fromOne :: Ring a => [a]
+fromOne = Prelude.iterate (one+) one
 
--- Multiplicative, MulGroup
-eval (e1 :*: e2)    =  eval e1 * eval e2
-eval (Recip e)      =  recip (eval e)
+integP :: Field a => a -> Poly a -> Poly a
+integP a (P as) = P (integL a as)
 
--- Transcendental
-eval (Exp e)        =  exp (eval e)      
-eval (Sin e)        =  sin (eval e)
-eval (Cos e)        =  cos (eval e)
--}
-
-evalConst :: Field a => REAL -> a -> a
-evalConst c = const (real2Field c)
-
-real2Field :: Field a => REAL -> a
-real2Field real = val
-  where  val  = Algebra.fromRational rat
-         rat  = Prelude.toRational real
+integL :: Field a => a -> [a] -> [a]
+integL a as = a : zipWith (/) as fromOne
 \end{code}
 
-Syntactic instances
-\begin{code}
-{-
-instance Additive       FunExp where (+) = (:+:); zero = Const 0
-instance Multiplicative FunExp where (*) = (:*:); one  = Const 1
-instance AddGroup       FunExp where negate = Negate
-instance MulGroup       FunExp where recip  = Recip
-instance Transcendental FunExp where pi=Const pi; exp=Exp; sin=Sin; cos=Cos
--}
-\end{code}
+----------------
+3. Implement "Derivative Series" (as yet another type to rep. functions)
 
-More DS instances:
+* In the Jamboard lecture parts we saw how
 
-\begin{code}
-test1 :: Transcendental a => a -> a
-test1 = eval (Exp (Negate (X:*:X)))
+  + ODEs could be transformed from equations on functions to equations
+    on power series (infinite lists of coefficients).
 
-test1REAL :: REAL
-test1REAL = test1 1
+  + the power series equations can be solved step by step to obtain
+    better and better approximations
 
-test1PS :: PS REAL
-test1PS = test1 xP
-\end{code}
-Check with argument types REAL, FunExp, PS REAL, DS FunExp
+  + to get from a function f, via the "derivative series" of f, to the
+    coefficients of the Maclaurin series expansion of f.
 
--- TODO needs instance Transcendental for DS
-test1DS :: DS REAL
-test1DS = test1 xDS
+* Here we will focus on the implementation of the "derivative series"
+
++ 3a. Explain DAll (semantic) and derAll (syntactic)
+
+DAll :: (R->R) -> [R->R]  
+DAll f = f : DAll (D f)   -- cannot be directly implemented in Haskell
+  DAll f = f : f' : f'' : ....
+      DAll f'= f' : f''
+specDerAll :: FunExp -> Bool -- cannot actually be run due to inf. lists
+specDerAll e = head (derAll e) == e  &&                
+               tail (derAll e) == derAll (derive e)   -- H1(derAll, derive, tail)
+
+We can implement
+  derAll e = e : derAll (derive e)
+but note that derive is not a homomorphism - can we do better?
+
++ 3b. Explain the type DS, evalDS, translation from DS to PS and back
 
 \begin{code}
-test2 :: Transcendental a => a -> a
-test2 x = exp (negate (x*x))
+newtype DS a = DS [a]   -- basically the same as Poly and PS
+  deriving Show
+-- f 0 : f' 0 : f'' 0 :    (all derivatives of f, evaluated at zero)
+evalDS :: Field a => Int -> DS a -> (a -> a)
+evalDS n ds = evalPS n (fromMaclaurin ds)
 
-instance Field a => MulGroup (DS a)             where recip = recipDS
-instance Transcendental a => Transcendental (DS a) where
-  pi=piDS;exp=expDS;sin=sinDS;cos=cosDS
+fromMaclaurin :: Field a => DS a -> PS a
+fromMaclaurin (DS as) = P (zipWith (/) as factorials)
+-- divFact
 
-recipDS :: Field a => DS a -> DS a
-recipDS = error "recipDS: TODO implement!"
-
-piDS :: Transcendental a => DS a
-piDS = DS [pi]
-expDS :: Transcendental a => DS a -> DS a
-sinDS :: Transcendental a => DS a -> DS a
-cosDS :: Transcendental a => DS a -> DS a
-expDS = error "expDS: TODO implement!"
-sinDS = error "sinDS: TODO implement!"
-cosDS = error "cosDS: TODO implement!"
-
+toMaclaurin :: Ring a => PS a -> DS a
+toMaclaurin (P as) = DS (zipWith (*) factorials as)
+-- mulFact
 \end{code}
 
-
-----------------------------------------------------------------
++ 3c. Implement derDS, integDS
 
 \begin{code}
-type PowerSeries = PS
-
-instance (Eq a, Transcendental a) => Transcendental (PowerSeries a) where
-   pi   =  P [pi]
-   exp  =  expPS
-   sin  =  sinPS
-   cos  =  cosPS
-
-expPS, sinPS, cosPS :: (Eq a, Transcendental a) => PS a -> PS a
-expPS  as  = integP  (exp  (val as))  (expPS as   * derP as)
-sinPS  as  = integP  (sin  (val as))  (cosPS as   * derP as)
-cosPS  as  = integP  (cos  (val as))  (-sinPS as  * derP as)
-
-val ::  Additive a => PS a  ->  a
-val (P (a:_))   =   a
-val _              =   zero
-
-
-fe2ps :: (Eq r, Transcendental r) => FunExp -> PS r
-fe2ps (Const c)    =  P [real2Field c]
-fe2ps (e1 :+: e2)  =  fe2ps e1 + fe2ps e2
-fe2ps (e1 :*: e2)  =  fe2ps e1 * fe2ps e2
-fe2ps X            =  xP
-fe2ps (Negate e)   =  negate  (fe2ps e)
-fe2ps (Recip e)    =  recip   (fe2ps e)
-fe2ps (Exp e)      =  exp     (fe2ps e)
-fe2ps (Sin e)      =  sin     (fe2ps e)
-fe2ps (Cos e)      =  cos     (fe2ps e)
 \end{code}
+
++ 3d. Implement numeric operators on DS a
+  Core question: Is there a definition of |mulDS| which makes |derAll| a
+  homomorphism from (:*:) to mulDS?
+
+We want
+  H2(derAll,(:*:),mulDS)
+which expands to
+  forall f, g :: FunExp.
+    derAll (f :*: g) == mulDS (derAll f) (derAll g)
+and
+  forall e :: FunExp.
+    map eval (derAll e) == DAll (eval e)
+where
+  DAll f = f : DAll (D f)
+
+\begin{code}
+\end{code}
+1. Wishful thinking (also called induction hypothesis): assume the two
+  arguments already satisfy the desired properties (specDerAll).
+
+2. Thus we can match on the pattern fs@(f:fs') knowing that
+     fs == derAll f    
+   and
+     fs' == derAll (derive f) == derDS fs
+   + similarly for gs@(g:gs')
+
+

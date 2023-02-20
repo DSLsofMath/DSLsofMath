@@ -22,13 +22,13 @@ polynomial, is called the \textbf{degree} of the polynomial.
 
 
 * L5.2 Power Series
-** Polynomial degree [[https://jamboard.google.com/d/1PGIoBWFg3JJZF0q8YYSCijZR4VrjncJtwPtBd90KfTc/viewer?f=0][Jamboard 5.2]]
-** degree as "almost a homomorphism"
-** lifting to Maybe
-** Power series example: 1/(1-x)
 ** Live coding (file:Live_5_2_2023.lhs)
 + DSL for polynomials: newtype Poly, eval, a->a
 + numeric Ring instances for polynomials (Poly a)
 + scale, negate
 + derivP, integP
 + Using integP to define expP
+** Polynomial degree [[https://jamboard.google.com/d/1PGIoBWFg3JJZF0q8YYSCijZR4VrjncJtwPtBd90KfTc/viewer?f=0][Jamboard 5.2]]
+** degree as "almost a homomorphism"
+** lifting to Maybe
+** Power series example: 1/(1-x)
