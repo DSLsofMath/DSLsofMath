@@ -1,3 +1,27 @@
+* Small A2 Q&A / logic reminder
++ Links:
+  [[https://youtu.be/y6weZisWeDM?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&t=384][Structural homomorphism (YouTube)]] + [[https://jamboard.google.com/d/1_t3xMPykXNGYIPDZ_10veFG4Grrv47xACEgi4CSmhBc/viewer?f=3][Jamboard]]
++ Example: let S = REAL -> REAL
+  P(h) = " h is a homomorphism from E to S "
+  State and simplify not P(eval') where eval' = D . eval
+
+data E where  Mul :: E->E->E
+              Add :: E->E->E
+              Zer :: E
+
++ P(h) = Exists mul, add, zer. H2(h,Mul,mul) & H2(h,Add,add) & H0(h,Zer,zer)
+
+Calculate:
+
+  not P(eval')
+= -- TODO
+
+
+
+
+
+
+
 * Power Series and Maclaurin series: [[https://jamboard.google.com/d/1fPp1YVocnUKh__v0iqU5YY3a7xVFaHeayVbxkbFiol8/viewer?f=0][Jamboard L6.1]]
 ** definitions of deriv and integ (last week)
 ** transformation from semantics (ODE) to syntax (coefficient equations)
@@ -39,4 +63,3 @@ In the lecture we worked through the different steps with examples and motivatio
 See file:Live_6_2.lhs for Ring instances
 * Live coding L6.2
 + DS instances for MulGroup and Transcendental
-
