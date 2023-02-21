@@ -201,7 +201,6 @@ cosDS :: Transcendental a => DS a -> DS a
 expDS = error "expDS: TODO implement!"
 sinDS = error "sinDS: TODO implement!"
 cosDS = error "cosDS: TODO implement!"
-
 \end{code}
 
 
@@ -223,7 +222,7 @@ cosPS  as  = integP  (cos  (val as))  (-sinPS as  * derP as)
 
 val ::  Additive a => PS a  ->  a
 val (P (a:_))   =   a
-val _              =   zero
+val _           =   zero
 
 
 fe2ps :: (Eq r, Transcendental r) => FunExp -> PS r

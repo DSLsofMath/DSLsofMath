@@ -1,22 +1,35 @@
 * Small A2 Q&A / logic reminder
 + Links:
   [[https://youtu.be/y6weZisWeDM?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&t=384][Structural homomorphism (YouTube)]] + [[https://jamboard.google.com/d/1_t3xMPykXNGYIPDZ_10veFG4Grrv47xACEgi4CSmhBc/viewer?f=3][Jamboard]]
-+ Example: let S = REAL -> REAL
+** Concrete logic example
+data E where  Mul :: E->E->E   -- mul :: S -> S -> S
+              Add :: E->E->E   -- add :: S -> S -> S
+              Zer :: E         -- zer :: S
+type S = REAL -> REAL
+
   P(h) = " h is a homomorphism from E to S "
   State and simplify not P(eval') where eval' = D . eval
-
-data E where  Mul :: E->E->E
-              Add :: E->E->E
-              Zer :: E
 
 + P(h) = Exists mul, add, zer. H2(h,Mul,mul) & H2(h,Add,add) & H0(h,Zer,zer)
 
 Calculate:
 
   not P(eval')
-= -- TODO
+= -- Def. of P
+  not (Exists mul, add, zer. H2(eval',Mul,mul) & H2(eval',Add,add) & H0(eval',Zer,zer))
+= -- By not-propagation ("not Exists ~ Forall not")
+  Forall mul, add, zer. not (H2(eval',Mul,mul) & H2(eval',Add,add) & H0(eval',Zer,zer)))
+= -- de Morgan laws
+  Forall mul, add, zer. (not H2(eval',Mul,mul)) | (not H2(eval',Add,add)) | (not H0(eval',Zer,zer))
 
-
+Pick the first term
+  not H2(eval',Mul,mul)
+= -- Def. of H2
+  not (Forall x, y. eval' (Mul x y) = mul (eval' x) (eval' y)
+= -- By not-propagation again (not Forall ~= Exists not)
+  Exists x, y. not (eval' (Mul x y) = mul (eval' x) (eval' y))
+= -- Def. of /=
+  Exists x, y. eval' (Mul x y) /= mul (eval' x) (eval' y)
 
 
 
@@ -45,6 +58,10 @@ Calculate:
 
 
 
+
+
+--- Later ---
+
 * Maclaurin series
 + (Maclaurin series = Taylor series at the point zero)
 
@@ -60,6 +77,7 @@ Big picture: a transformation in three stages
 
 In the lecture we worked through the different steps with examples and motivation / explanation.
 * Live coding DS = Derivative Stream: a stream of all derivatives
-See file:Live_6_2.lhs for Ring instances
-* Live coding L6.2
++ Introduce clases 
++ See file:Live_6_2_2023.lhs for Ring instances
+* If time permits: cont. live coding L6.2
 + DS instances for MulGroup and Transcendental
