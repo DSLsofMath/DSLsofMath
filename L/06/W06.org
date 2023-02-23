@@ -34,7 +34,6 @@ Pick the first term
 
 
 
-
 * Power Series and Maclaurin series: [[https://jamboard.google.com/d/1fPp1YVocnUKh__v0iqU5YY3a7xVFaHeayVbxkbFiol8/viewer?f=0][Jamboard L6.1]]
 ** definitions of deriv and integ (last week)
 ** transformation from semantics (ODE) to syntax (coefficient equations)
@@ -62,8 +61,14 @@ Pick the first term
 
 --- Later ---
 
-* Maclaurin series
-+ (Maclaurin series = Taylor series at the point zero)
+
+
+* (Thursday lecture) Maclaurin series
+** Book reminder
++ You can bring a (physical) book to the exam.
++ Book https://www.collegepublications.co.uk/computing/?00024
+  /home/patrikj/Pictures/DSLsofMath_book_front_cover.jpg
+** Maclaurin series = Taylor series at the point zero
 
 Big picture: a transformation in three stages
 
@@ -73,9 +78,10 @@ Big picture: a transformation in three stages
 -> apply 0
   [f 0, f' 0, f'' 0, ...]
 -> divide by factorials
-  [f 0/0!, f' 0/1!, f'' 0/2!, ...]
+  [(f 0)/0!, (f' 0)/1!, (f'' 0)/2!, ...]
 
-In the lecture we worked through the different steps with examples and motivation / explanation.
+In the lecture we worke through the different steps with examples and
+motivation / explanation.
 * Live coding DS = Derivative Stream: a stream of all derivatives
 + Introduce clases 
 + See file:Live_6_2_2023.lhs for Ring instances
