@@ -2,10 +2,12 @@
 + Mix of Chapter 7 and Chapter 8 (to get started early on the Laplace
   transform).
 ** Lecture 7.1: Linear Algebra 1
-+ DSL of the this lecture:
++ The DSL of the this lecture describes
   vectors, linear transforms, matrices
 + L7.1a https://jamboard.google.com/d/1uov9xi_I5D27_hoXTDbWo5sPcEg3UHP0yx40xIqLshE/viewer
 + L7.1b https://jamboard.google.com/d/1Kx-uI4J8zi4GejuNuSP-SxxydeqgHguychnbvpUiCxM/viewer
++ Perhaps some live-coding [[Live_7_1_2023.hs]]
+
 ** Lecture 7.2 / 8.1: Laplace Transforms
 *** [[https://jamboard.google.com/d/1n_fYYas1ahuNwJgm8TlcNJFA8KssNFqbQy4RGTRB95I/viewer?f=0][L8.1a]]
 + D (derivative) as a linear transform
