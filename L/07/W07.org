@@ -9,6 +9,9 @@
 + Perhaps some live-coding [[Live_7_1_2023.hs]]
 
 ** Lecture 7.2 / 8.1: Laplace Transforms
++ An application of linear algebra
++ ... and a method for solving ODEs
++ (Note: this transform is not implemented in Haskell in the course.)
 *** [[https://jamboard.google.com/d/1n_fYYas1ahuNwJgm8TlcNJFA8KssNFqbQy4RGTRB95I/viewer?f=0][L8.1a]]
 + D (derivative) as a linear transform
 + Example: D exp = exp

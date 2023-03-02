@@ -180,6 +180,7 @@ Thus we get
 \begin{code}
 \end{code}
 
+Scalars can be seen as 1-dim. vectors:
 \begin{code}
 instance Field a => VectorSpace a a where (*^) = (*)
 \end{code}
