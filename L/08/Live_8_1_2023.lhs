@@ -18,10 +18,18 @@ type REAL = Double
 
 Domain-Specific Languages of Mathematics
 Lecture 8.2: Connecting
-+ Power Series    (Week 5),
-+ Complex numbers  (Week 1),
++ Power Series    (Week 5),       -- is a vector space
++ Complex numbers  (Week 1),      -- is also a vector space
 + Vector spaces     (Week 7), and
-+ Laplace transforms (Week 8).
++ Laplace transforms (Week 8).    -- is a LinTrans between vector spaces
+
+solutions to a linear ODE
+  f'' + 4*f' + f = 0    -- (without starting conditions)
+
+say ps1 is a power series solution
+and ps2 is another series solution
+
+(scaleP alpha ps1 + scaleP beta ps2) is also a solution
 
 Reminder: exp, sin, cos as power series:
 
@@ -49,10 +57,10 @@ New: Power series as a vector space
 instance Field a => VectorSpace (PS a) a where (*^) = scaleP
 
 scaleP :: Multiplicative a => a -> PS a -> PS a
-scaleP = error "TODO scaleP"
+scaleP c = mapP (c*)
 
 mapP :: (a->b) -> (PS a -> PS b)
-mapP = error "TODO mapP"
+mapP f (P as) = P (map f as)
 \end{code}
 
 Can we combine power series with complex numbers?
@@ -60,27 +68,30 @@ Can we combine power series with complex numbers?
 newtype Complex r = C (r , r)  deriving (Eq, Show)
 
 re, im :: Complex a -> a
-re = error "TODO re"
-im = error "TODO im"
+re (C (xr, _ )) = xr
+im (C (_ , xi)) = xi
+-- LinTrans(re, Complex r, r)
+-- LinTrans(im, Complex r, r)
 
 i :: Ring a => Complex a
-i = error "TODO i"
+i = C (zero, one)
 
 zeroC :: Additive r => Complex r
-zeroC = error "TODO zeroC"
+zeroC = C (zero, zero)
 
 addC :: Additive a => Complex a -> Complex a -> Complex a
-addC = error "TODO addC"
+addC (C (xr, xi)) (C (yr, yi)) = C (xr+yr, xi+yi)
 
 instance Additive r => Additive (Complex r) where zero = zeroC; (+) = addC
 
 instance Field a => VectorSpace (Complex a) a where (*^) = scaleC
 
 scaleC :: Multiplicative a => a -> Complex a -> Complex a
-scaleC = error "TODO scaleC"
+--scaleC c (C (xr, xi)) = C (c*xr, c*xi)
+scaleC c = mapC (c*)
 
 mapC :: (a->b) -> (Complex a -> Complex b)
-mapC = error "TODO mapC"
+mapC f (C (xr, xi)) = C (f xr, f xi)
 \end{code}
 
 AddGroup
@@ -88,7 +99,8 @@ AddGroup
 instance AddGroup r => AddGroup (Complex r) where  negate = negateC
 
 negateC :: AddGroup r => Complex r -> Complex r
-negateC = error "TODO negateC"
+negateC = mapC negate
+-- negateC = scaleC (negate one)
 \end{code}
 
 ----------------
@@ -97,11 +109,19 @@ Multiplicative, Ring
 instance Ring r => Multiplicative (Complex r) where one = oneC; (*) = mulC
 
 oneC :: Ring r => Complex r
-oneC = error "TODO oneC"
+oneC = C (one, zero)
+-- (one, i) are base vectors for Complex r   (every z = scale (re z) one + scale (im z) i)
 
 mulC :: Ring a => Complex a -> Complex a -> Complex a
-mulC = error "TODO mulC"
+mulC (C (xr, xi)) (C (yr, yi)) = C ((xr*yr - xi*yi), (xr*yi + xi*yr))
 \end{code}
+  (xr + i*xi) * (yr * i*yi)
+= -- distribute (*)
+  (xr*yr) + (xr*i*yi) + (i*xi*yr) + (i*xi*i*yi)
+= -- collect terms (polynomial in i)
+  (xr*yr) + (xr*yi + xi*yr)*i + (xi*yi)*i^2
+= -- i^2 = -1
+  (xr*yr - xi*yi)*1 + (xr*yi + xi*yr)*i
 
 ----------------
 MulGroup, Field
@@ -109,8 +129,19 @@ MulGroup, Field
 instance Field r => MulGroup (Complex r) where recip = recipC
 
 recipC :: Field a => Complex a -> Complex a
-recipC = error "TODO recipC"
+recipC (C (xr, xi)) = C (xr/m2, negate xi/m2)
+  where  m2 = xr^2 + xi^2
 \end{code}
+   1/(xr + i*xi)
+=
+  (xr-i*xi) / ((xr + i*xi)*(xr-i*xi))
+= konjugatregeln
+  (xr-i*xi) / (xr^2 - (i*xi)^2)
+= förenkla
+  (xr-i*xi) / (xr^2 + xi^2)
+
+
+
 
 
 Some test values
@@ -139,14 +170,31 @@ and   expa a 0 = exp (a*0) = exp 0 = 1
 Thus we can find the power series by integP + recursion:
 \begin{code}
 expa :: Field a => a -> PS a
-expa = error "TODO expa"
+expa a = integP one (scaleP a (expa a))
 
 expi :: Field a => PS (Complex a)
-expi = error "TODO"
+expi = expa i
+
 
 cosPsinP :: Field a => PS (Complex a)
 cosPsinP = error "TODO implement cos + i sin"
 \end{code}
+
+-- expi
+P [ C (1,        0)
+  , C (0,        1)
+  , C ((-1)%2,   0)
+  , C (0,      (-1)%6)
+  , C (1%24,     0)
+  ]
+-- sin
+P [0
+  ,1
+  ,0
+  ,(-1) % 6
+  ,0
+  ]
+
 
 
 ----------------
@@ -165,14 +213,14 @@ and similarly
   (exp (i*x) - exp(-i*x))/2 = i * sin x
 or equivalently
   cos x = (exp (i*x) + exp(-i*x))/2
-and 
+and
   sin x = (exp (i*x) - exp(-i*x))/(2*i)
 
 We know the Laplace transform of \x->exp (a*x) is \s->1/(s-a)
 
 Thus we get
   L cos s = (1/(s-i) + 1/(s-(-i)))/2
-          = (1/(s-i) + 1/(s+i))/2 
+          = (1/(s-i) + 1/(s+i))/2
           = ((s+i) + (s-i))/((s-i)*(s+i)*2)
           = (2*s)/((s²-i²)*2)
           = s/(s²+1)
@@ -184,4 +232,3 @@ Scalars can be seen as 1-dim. vectors:
 \begin{code}
 instance Field a => VectorSpace a a where (*^) = (*)
 \end{code}
-

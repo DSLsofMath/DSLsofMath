@@ -1,18 +1,57 @@
 * DSLsofMath: Week 8
-** L8.1 / L7.2: Linear algebra & Dynamical systems
+* L8.1 / L7.2: Linear algebra & Dynamical systems
 + [[https://jamboard.google.com/d/1qRu6vMgjyxlzd1uhXXS1lg7aup8u3KrgJXyyWGmJMEE/viewer?f=0][L8.1 / 7.2]] LinAlg + DynSys
-+ Periodic functions
-  A function |f : A -> B| is said to be periodic if there exists |T ∈ A|
-  such that  |∀ x ∈ A.  f x = f (x + T)|.
-
++ [[https://jamboard.google.com/d/1Lv7Kc3ZX4sQM07BEDdT8B2aKpS0a4wQ1FewNmWkeZ2Q/viewer?f=0][L8.2 start]]
 + Live-coding: [[file:Live_8_1_2023.lhs][Live_8_1_2023.lhs]]
   Connecting
     Complex numbers  (Week 1),
     Power Series      (Week 5),
     Vector spaces      (Week 7), and
     Laplace transforms  (Week 8).
-
-** L8.2
-+ [[https://jamboard.google.com/d/1Lv7Kc3ZX4sQM07BEDdT8B2aKpS0a4wQ1FewNmWkeZ2Q/viewer?f=0][L8.2 start]] + [[https://jamboard.google.com/d/12UtJxCCKS_LBHpkoFF_Bx-9G0lwPeg78xkhpAIG0pIc/viewer][L8.2]]
+* L8.2
++ Jamboard: [[https://jamboard.google.com/d/12UtJxCCKS_LBHpkoFF_Bx-9G0lwPeg78xkhpAIG0pIc/viewer][L8.2]] - course overview
 ** Focus on exam questions
-+ 16 exams + solutions available
++ 16 exams + solutions available in the github repo
+
++ Solving 2020-08 P4 (Laplace)
+  *note:* pandemic exams a bit harder (unlimited computer access, etc.)
+
++ Solving 2022-08 P4 (Diff from Cont)
+
+* Lärandemål för DSLsofMath (hela kursen)
+
+Efter godkänd kurs ska studenten kunna:
+
+** Kunskap och förståelse
++ designa och implementera ett domänspecifikt språk (DSL) for en ny domän
++ strukturera delområden inom matematik i termer av DSL
++ förklara de centrala begreppen i grundläggande reell och komplex analys, algebra och linjär algebra
+
+** Färdigheter och förmåga
++ utveckla lämplig notation for matematiska koncept
++ utföra kalkylerande bevis
++ använda potensserier for att lösa differentialekvationer
++ använda Laplace-transformer for att lösa differentialekvationer
+
+** Värderingsförmåga och förhållningssätt
++ diskutera och jämföra olika programvaruimplementationer av matematiska begrepp
+
+* Learning outcomes
+
+On successful completion of the course the student will be able to:
+
+** Knowledge and understanding
++ design and implement a DSL (Domain Specific Language) for a new domain
++ organize areas of mathematics in DSL terms
++ explain main concepts of elementary real and complex analysis, algebra, and linear algebra
+
+** Competence and skills
+
++ develop adequate notation for mathematical concepts
++ perform calculational proofs
++ use power series for solving differential equations
++ use Laplace transforms for solving differential equations
+
+** Judgement and approach
+
++ discuss and compare different software implementations of mathematical concepts
