@@ -13,10 +13,10 @@
 ** Focus on exam questions
 + 16 exams + solutions available in the github repo
 
-+ Solving 2020-08 P4 (Laplace)
++ Solving [[file:Exam_2020-08_P4_Laplace.png][2020-08 P4 (Laplace)]]
   *note:* pandemic exams a bit harder (unlimited computer access, etc.)
 
-+ Solving 2022-08 P4 (Diff from Cont)
++ Solving [[file:Exam_2022-08_P4_Diff_from_Cont.png][2022-08 P4 (Diff from Cont)]]
 
 * Lärandemål för DSLsofMath (hela kursen)
 
