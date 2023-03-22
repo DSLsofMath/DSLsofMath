@@ -1,0 +1,92 @@
+Solve: f'' - f = sin, f 0 = 0, f' 0 = -1/2
+
+a) Power series version:
+
+Let fs, fs', fs'', si, co :: PS Rational be such that
+  map eval [fs, fs', fs'', si, co] == [f, f', f'', sin, cos]
+
+Then we have
+
+  fs'' = si + fs
+  fs'  = integ (-1/2) fs''
+  fs   = integ   0    fs'
+  si   = integ   0    co
+  co   = integ   1   (-si)
+
+and we can compute step by step:
+
+Step 0:
+  fs  !!0  = 0        -- Def. integ
+  fs' !!0  = -1/2     -- Def. integ
+  si  !!0  = 0        -- Def. integ
+  co  !!0  = 1        -- Def. integ
+  fs''!!0  = 0+0 = 0  -- Def. fs'' and (+)
+
+Step 1:
+  fs  !!1  = (-1/2)/1 = -1/2  -- Def. integ, fs'
+  fs' !!1  = 0/1 = 0	      -- Def. integ, fs''
+  si  !!1  = 1/1 = 1	      -- Def. integ, co
+  co  !!1  = -0/1 = 0	      -- Def. integ, si
+  fs''!!1  =  1+(-1/2) = 1/2  -- Def. fs'' and (+)
+
+Step 2:
+  fs  !!2  = 0/2 = 0          -- Def. integ, fs'
+  fs' !!2  = 1/2/2 = 1/4      -- Def. integ, fs''
+
+Step 3:
+  fs  !!2  = 1/4/3 = 1/12     -- Def. integ, fs'
+
+Summing up: take 4 fs = [0, -1/2, 0, 1/12]
+  {- which is also == scale (-1/2) [0, 1, 0, -1/6]
+                   == scale (-1/2) (take 4 si) -}
+
+----------------
+b) Laplace transform version
+
+Step 1: Use given equation to compute ℒ sin
+
+ ℒ sin s = ℒ (\t-> 1/2i * (exp(i*t)-exp(-i*t))) s
+         = 1/2i * (ℒ (\t-> exp(i*t)) s - ℒ (\t-> exp(-i*t)) s)
+         = 1/2i * (1/(s-i) - 1/(s+i))
+         = 1/2i * (s+i-(s-i))/((s-i)*(s+i))
+         = 1/(s^2+1)
+
+Step 2: Use the Laplace-D-law to compute ℒ f''
+
+Here we have f 0 = 0 =>
+  ℒ f' s = ℒ (D f) s = -0 + s*ℒ f s = s*ℒ f s
+For the second derivative we get
+  ℒ f'' s
+= ℒ (D f') s          -- f' 0 = -1/2
+= 1/2 + s*ℒ f' s      -- comp. above
+= 1/2 + s*s*ℒ f s     -- simplify
+= 1/2 + s^2*ℒ f s
+
+Then we apply ℒ to the LHS of the main equation:
+
+  ℒ (f'' - f) s
+= -- Linearity
+  ℒ f'' s - ℒ f s
+= -- L-D-law results from above
+ 1/2 + s^2*ℒ f s - ℒ f s
+= -- Let F = ℒ f and simplify
+ 1/2 + (s^2-1) * F s
+
+Equating with RHS, using step 1 and solving for F s gives:
+ 1/2 + (s^2-1) * F s = 1/(s^2+1)
+=>
+ F s = 1/((s^2+1)(s^2-1)) - 1/(2(s^2-1))
+     -- algebraic simplification (or partial fraction decomposition)
+     = (-1/2) * (1/(s^2+1))
+
+And using Step 1 again (backwards), suggests the solution:
+
+  f t   = -1/2 * sin t
+
+Checking:
+  f' t  = -1/2 * cos t
+  f'' t =  1/2 * sin t
+
+LHS = f'' - f = 1/2 * sin t - (-1/2 * sin t) = sin t = RHS  -- OK!
+f 0  = -1/2 * sin 0 = 0     -- OK!
+f' 0 = -1/2 * cos 0 = -1/2  -- OK!

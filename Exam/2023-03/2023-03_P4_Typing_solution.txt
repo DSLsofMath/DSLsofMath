@@ -1,0 +1,93 @@
+a)
+x :: REAL
+S :: REAL -> Bool  -- or Pow REAL (the powerset of the real numbers)
+y :: REAL
+eps :: RPos -- or just REAL
+
+Reasoning: the text explicitly says that x is a real number. When the
+predicate holds, x is even in S, but not in general. S is a subset of
+the reals, which can be modelled as a predicate (a function from reals
+to Bool) or as an element of the powerset (the set of all subsets). As
+y is compared to x with equality (and subtracted from x) it also needs
+to be of the same type as x. Finally, eps is a positive real number
+because abs returns a (non-negative) real number and the text requires
+it to be >0.
+
+b)
+I(S,x) = (x `elem` S) &&
+          (Exists eps. (eps > 0)
+            & Forall y. (abs (x - y) < eps) => (not (y `elem` S) || (x == y)))
+
+A(S,x) = (x `elem` S) &&
+          (Forall eps. (eps > 0) =>
+            Exists y. (abs (x - y) < eps) && (y `elem` S) && (x /= y))
+
+c)
+Part 1: Show I(S,1)
+
+To show I(S,1), we first have to show 1 is in S.
+  We have 1 = 1/1 with 1 a positive natural number, so 1 is in S.
+
+Then we have to find an eps > 0 with a certain property.
+  We can take eps = 1/2.
+  To show 1/2 has the desired property, suppose given y such that
+  abs (1 - y) < 1/2.
+  We need to show that either y is not a member of S, or y = 1.
+  If y = 1, we are done, so suppose not.
+  We claim y is not a member of S.
+  [Start of proof of negation]
+  Suppose y were a member of S, i.e. y = 1/n with n > 0 a natural number,
+  or y = 0. We cannot have y = 0, since |1 - 0| = 1 is not less than 1/2,
+  so we may suppose y is of the form 1/n.
+  Since we supposed y is not 1, n is not 1. Thus n is at least 2.
+  This means 1/n <= 1/2.
+  So abs (1 - y)  >=  1 - y  >=  1 - 1/2  =  1/2.
+  This contradicts the assumption abs (1 - y) < 1/2, so we are done.
+  [End of proof of negation]
+Thus we have found an eps we the desired property.
+
+Part 2: Show A(S,0)
+
+To show A(s,0), we first have to show 0 is in S. Indeed 0 is in {0} so
+  it is in S.
+
+Next, suppose given eps > 0. We have to produce a y with |0 - y| < eps
+  and y different from 0 and y in S.
+  Since eps > 0, 1 / eps is a real number.
+  Take N large enough that N > 1 / eps.
+  Let y = 1/N.
+  Now abs (0 - y) = abs (-1/N) = 1/N < eps since N > 1/eps.
+  y is different from 0 since it is positive.
+  y is in S since it is of the form 1/n.
+This finishes the proof.
+
+d)
+Let S be a subset of the reals, and x an element of S. We compute
+
+    not I(S,x)
+<=> (by definition)
+    not ((x `elem` S) &&
+      (Exists eps. (eps > 0)
+        && Forall y. (abs (x - y) < eps) => (not (y `elem` S) || (x == y))))
+<=> (using de Morgan's law)
+    not (x `elem` S) ||
+        not (Exists eps. (eps > 0)
+            && Forall y. (abs (x - y) < eps) => (not (y `elem` S) || (x == y)))
+<=> (the first clause is impossible as x is an element of S)
+    not (Exists eps. (eps > 0)
+        && Forall y. (abs (x - y) < eps) => (not (y `elem` S) || (x == y)))
+<=> (using de Morgan)
+    Forall eps. not ((eps > 0)
+        && Forall y. (abs (x - y) < eps) => (not (y `elem` S) || (x == y)))
+<=> (using (not (P && Q)) <=> (P => not Q))
+    Forall eps. (eps > 0) =>
+        && not (Forall y. (abs (x - y) < eps) => (not (y `elem` S) || (x == y)))
+<=> (using de Morgan)
+    Forall eps. (eps > 0) =>
+        && Exists y. not ((abs (x - y) < eps) => (not (y `elem` S) || (x == y)))
+<=> (using (not (P => Q)) <=> (P && not Q), as well as de Morgan)
+    Forall eps. (eps > 0) =>
+        && Exists y. (abs (x - y) < eps) && (y `elem` S) && not (x == y)
+
+This is how A(S,x) was defined, except for the part about x being an
+element of S, which is irrelevant since we assume x `elem` S.
