@@ -8,15 +8,16 @@
     Power Series      (Week 5),
     Vector spaces      (Week 7), and
     Laplace transforms  (Week 8).
-* L8.2
+* L8.2: DSLsofMath: final lecture
 + Jamboard: [[https://jamboard.google.com/d/12UtJxCCKS_LBHpkoFF_Bx-9G0lwPeg78xkhpAIG0pIc/viewer][L8.2]] - course overview
 ** Focus on exam questions
 + 16 exams + solutions available in the github repo
 
++ Solving [[file:Exam_2022-08_P4_Diff_from_Cont.png][2022-08 P4 (Diff from Cont)]]
+
 + Solving [[file:Exam_2020-08_P4_Laplace.png][2020-08 P4 (Laplace)]]
   *note:* pandemic exams a bit harder (unlimited computer access, etc.)
 
-+ Solving [[file:Exam_2022-08_P4_Diff_from_Cont.png][2022-08 P4 (Diff from Cont)]]
 
 * Lärandemål för DSLsofMath (hela kursen)
 
@@ -55,3 +56,6 @@ On successful completion of the course the student will be able to:
 ** Judgement and approach
 
 + discuss and compare different software implementations of mathematical concepts
+* Final words
++ I want you to pass! 
++ Make sure to ask questions. (On slack, email, canvas, etc.)
