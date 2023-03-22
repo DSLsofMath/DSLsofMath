@@ -1,11 +1,11 @@
-* Exam 2023-03 of the DSLsofMath course
+* Exam 2023-03 of the [[../../README.md][DSLsofMath course]]
 [[file:Exam_2023_03.pdf][Exam 2023-03]]
 
 ** Suggested solutions:
-[[file:2023-03_P1_Algebra_solution.hs][Part 1: Algebra]]
-[[file:2023-03_P2_Laplace_solution.txt][Part 2: Laplace]]
-[[file:2023-03_P3_Proof_solution.lhs][Part 3: Proof]]
-[[file:2023-03_P4_Typing_solution.txt][Part 4: Types]]
++ [[file:2023-03_P1_Algebra_solution.hs][Part 1: Algebra]]
++ [[file:2023-03_P2_Laplace_solution.txt][Part 2: Laplace]]
++ [[file:2023-03_P3_Proof_solution.lhs][Part 3: Proof]]
++ [[file:2023-03_P4_Typing_solution.txt][Part 4: Types]]
 
 ** Grading levels:
 
