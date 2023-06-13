@@ -1,0 +1,15 @@
+* Exam 2023-06 of the [[../../README.md][DSLsofMath course]]
++ [[file:Exam_2023_06.pdf][Exam 2023-06 script]]
+
+** Suggested solutions:
+[[file:2023-06_P1_Algebra_solution.lhs][Part 1: Algebra]]
+[[file:2023-06_P2_Laplace_solution.lhs][Part 2: Laplace]]
+[[file:2023-06_P3_Proof_solution.lhs][Part 3: Proof]]
+[[file:2023-06_P4_Types_solution.lhs][Part 4: Types]]
+
+** Grading levels:
+
+To pass you need
++ a minimum of 5p on each question (1 to 4) and also
++ reach these grade limits:  3: >=48p, 4: >=65p, 5: >=83p, max: 100p
+
