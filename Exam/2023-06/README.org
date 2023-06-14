@@ -13,3 +13,18 @@ To pass you need
 + a minimum of 5p on each question (1 to 4) and also
 + reach these grade limits:  3: >=48p, 4: >=65p, 5: >=83p, max: 100p
 
+** Anonymous results
+These are informal exam results - the LADOK grade is the formal result.
+
+Bonus points (from the academic year 2022/23, if any) are added later
+when the exam scripts have been de-anonymized.
+
+| Code     | Pages | P1 | P2 | P3 | P4 | Bonus | Sum | Grade |
+|----------+-------+----+----+----+----+-------+-----+-------|
+| 0004-BKX |     5 | 32 | 10 | 20 | 28 | ?     |  90 | 5     |
+| 0008-HFE |    11 | 24 | 25 | 20 | 13 | ?     |  82 | 4     |
+| 0005-CGM |     7 | 24 | 25 | 11 | 21 | ?     |  81 | 4     |
+| 0014-SSX |     7 | 16 | 15 | 18 |  5 | ?     |  54 | 3     |
+| 0006-SRG |     6 | 11 | 17 |  2 |  9 | ?     |  39 | U     |
+| 0015-TYM |    10 | 11 |  7 |  1 |  2 | ?     |  21 | U     |
+
