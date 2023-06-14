@@ -16,13 +16,13 @@ This looks difficult in general because |op| cannot know the sign of
 
 Try with a=1, b=1:
 
-  (1+1)^2 == op (1^2) (1^2)  =>  c = op 1 1 = 1
+  (1+1)^2 == op (1^2) (1^2)  =>  c = op 1 1 = 4
 
 Try with a=-1, b=1:
 
   (-1+1)^2 == op ((-1)^2) (1^2) => c = op 1 1 = 0
 
-But then we get 0 = 1 which is a contradiction.
+But then we get 0 = 4 which is a contradiction.
 
 Thus the claim has been disproven.
 
