@@ -25,7 +25,7 @@ These are informal exam results - the LADOK grade is the formal result.
 | 0006-SRG |     6 | 11 | 17 |  2 |  9 |     8 |  47 |     U |
 | 0015-TYM |    10 | 11 |  7 |  1 |  2 |     7 |  28 |     U |
 
-** Uppdated statistics for the 2023 course instance:
+** Updated statistics for the 2023 course instance:
 + The combined results from 2023-03 and 2023-06 are very good:
 
 | Grade |  # | ratio |
