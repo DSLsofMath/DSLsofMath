@@ -2,10 +2,10 @@
 + [[file:Exam_2023_06.pdf][Exam 2023-06 script]]
 
 ** Suggested solutions:
-[[file:2023-06_P1_Algebra_solution.lhs][Part 1: Algebra]]
-[[file:2023-06_P2_Laplace_solution.lhs][Part 2: Laplace]]
-[[file:2023-06_P3_Proof_solution.lhs][Part 3: Proof]]
-[[file:2023-06_P4_Types_solution.lhs][Part 4: Types]]
++ [[file:2023-06_P1_Algebra_solution.lhs][Part 1: Algebra]]
++ [[file:2023-06_P2_Laplace_solution.lhs][Part 2: Laplace]]
++ [[file:2023-06_P3_Proof_solution.lhs][Part 3: Proof]]
++ [[file:2023-06_P4_Types_solution.lhs][Part 4: Types]]
 
 ** Grading levels:
 
@@ -16,15 +16,23 @@ To pass you need
 ** Anonymous results
 These are informal exam results - the LADOK grade is the formal result.
 
-Bonus points (from the academic year 2022/23, if any) are added later
-when the exam scripts have been de-anonymized.
-
 | Code     | Pages | P1 | P2 | P3 | P4 | Bonus | Sum | Grade |
 |----------+-------+----+----+----+----+-------+-----+-------|
-| 0004-BKX |     5 | 32 | 10 | 20 | 28 | ?     |  90 | 5     |
-| 0008-HFE |    11 | 24 | 25 | 20 | 13 | ?     |  82 | 4     |
-| 0005-CGM |     7 | 24 | 25 | 11 | 21 | ?     |  81 | 4     |
-| 0014-SSX |     7 | 16 | 15 | 18 |  5 | ?     |  54 | 3     |
-| 0006-SRG |     6 | 11 | 17 |  2 |  9 | ?     |  39 | U     |
-| 0015-TYM |    10 | 11 |  7 |  1 |  2 | ?     |  21 | U     |
+| 0004-BKX |     5 | 32 | 10 | 20 | 28 |     3 |  93 |     5 |
+| 0008-HFE |    11 | 24 | 25 | 20 | 13 |     6 |  88 |     5 |
+| 0005-CGM |     7 | 24 | 25 | 11 | 21 |     0 |  81 |     4 |
+| 0014-SSX |     7 | 16 | 15 | 18 |  5 |     4 |  58 |     3 |
+| 0006-SRG |     6 | 11 | 17 |  2 |  9 |     8 |  47 |     U |
+| 0015-TYM |    10 | 11 |  7 |  1 |  2 |     7 |  28 |     U |
 
+** Uppdated statistics for the 2023 course instance:
++ The combined results from 2023-03 and 2023-06 are very good:
+
+| Grade |  # | ratio |
+|-------+----+-------|
+|     5 |  3 |    9% |
+|     4 |  9 |   28% |
+|     3 | 16 |   50% |
+|     U |  4 |   13% |
+|-------+----+-------|
+|   Tot | 32 |  100% |
