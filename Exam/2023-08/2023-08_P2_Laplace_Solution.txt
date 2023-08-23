@@ -1,0 +1,136 @@
+Solve: 2f+2f'+f'' =0, f(0) = -2, f'(0) = 2
+
+a) Power series version:
+
+Let fs, fs', fs'' :: PS Rational be such that
+  map eval [fs, fs', fs''] == [f, f', f'']
+
+Then we have
+
+  fs   = integ (-2)  fs'
+  fs'  = integ   2   fs''
+  fs'' = scale (-2) (fs + fs')
+
+and we can compute step by step:
+
+Step 0: (base case in integ)
+  fs  !!0  = -2             -- Def. integ
+  fs' !!0  =  2             -- Def. integ
+  fs''!!0  = -2*(-2+2) = 0  -- Def. fs'', scale, (+)
+
+Step 1: (divide by 1 in integ)
+  fs  !!1  = 2/1 = 2        -- Def. integ, fs'!!0
+  fs' !!1  = 0/1 = 0        -- Def. integ, fs''!!0
+  fs''!!1  = -2*(2+0) = -4  -- Def. fs'', scale, (+)
+
+Step 2: (divide by 2 in integ)
+  fs  !!2  = 0/2 = 0        -- Def. integ, fs'!!1
+  fs' !!2  = -4/2 = -2      -- Def. integ, fs''!!1
+
+Step 3: (divide by 3 in integ)
+  fs  !!3  = -2/3           -- Def. integ, fs'!!2
+
+Answer: take 4 fs == [-2, 2, 0 -2/3]
+
+Optional check:
+  take 3 fs'  == [2,0,-2]
+  take 2 fs'' == [0,-4]
+
+  take 2 (scale 2 fs + scale 2 fs' + fs'')
+  = [-4,4] + [4,0] + [0, -4]
+  = [0,0] -- OK
+
+----------------
+b) Laplace transform version
+
+Solve: 2f+2f'+f'' =0, f(0) = -2, f'(0) = 2
+
+Step 1: Apply the Laplace transform to the equation.
+
+  L (2f) s + L (2f') s + L f'' s = L 0 s
+<=> -- Linearity
+  2*L f s + 2*L f' s + L f'' s = 0
+
+Step 2: Use the Laplace-D-law to compute L f' and L f''
+  (let F = L f)
+
+L f' s = L (D f) s = -f 0 + s*L f s = 2 + s*F s
+
+L f'' s = L (D f') s = -f' 0 + s*L f' s = -2 + s*(2 + s*F s)
+        = -2 + 2*s + s²*F s
+
+Step 3: Splice in the L-D-law results
+
+  2*F s + 2*(2 + s*F s) + ( -2 + 2*s + s²*F s) = 0
+<=> -- collect terms  
+  (2+2*s+s²)*F s + 4 - 2 + 2*s = 0
+<=> -- extract F s
+  F s = -2*(1+s)/(2+2*s+s²)
+
+Step 4: Partial fraction decomposition
+
+Step 4.1: factor 2+2*s+s² by root-finding
+
+  2+2*s+s² = (s+1)^2 + 1 = (s+1-i)*(s+1+i) = (s-s1)*(s-s2)
+  where s1=-1+i; s2=-1-i
+  Note that s1-s2 = 2*i (useful later)
+
+Step 4.2: Ansatz: F s = A / (s-s1) + B / (s-s2)
+
+Multiply eq. by (s-s1)*(s-s2) and simplify:
+
+  A*(s-s2) + B*(s-s1) = -2*(1+s)
+
+Step 4.3: specialize to s=s1 and s=s2 and simplify
+
+  s=s1: A*(s1-s2) = -2*(1+s1)
+      <=> -- simplify
+        A*2*i = -2*i
+      <=> -- simplify
+        A = -1
+  s=s2: B*(s2-s1) = -2*(1+s2)
+      <=> -- simplify
+        B*(-2*i) = 2*i    
+      <=> -- simplify
+        B = -1
+
+Step 4.4: Conclude
+
+  F s = -1 / (s-s1) - 1 / (s-s2)
+
+Step 5: "inverse Laplace" by table lookup + linearity
+
+  f   t = - exp (s1*t) - exp (s2*t)
+
+Step 6: Check the three equations:
+
+Step 6.1: f(0)=-2
+  f(0) = - exp (s1*0) - exp (s2*0) = -1-1 = -2 -- OK
+
+Step 6.2: f'(0)=2
+  f'  t = - s1  *exp (s1*t) - s2  *exp (s2*t)
+  f'  0 = - s1  *exp (s1*0) - s2  *exp (s2*0)
+        = - (s1+s2) = -(-2) = 2 -- OK
+
+Step 6.3: main equation:
+
+  f'' t = - s1^2*exp (s1*t) - s2^2*exp (s2*t)
+
+LHS t = (2f+2f'+f'') t
+   = -- expand definitions
+     - 2   *exp (s1*t) - 2   *exp (s2*t)
+     - 2*s1*exp (s1*t) - s2  *exp (s2*t)
+     - s1^2*exp (s1*t) - s2^2*exp (s2*t)
+   = -- collect terms
+     -(2+2*s1+s1^2)*exp (s1*t)
+     -(2+2*s2+s2^2)*exp (s2*t)
+   = -- note that s=s1 and s=s2 are zeroes of p s = 2+2*s+s^2
+     0  -- OK
+     
+Answer:
+
+  f(t) =  - exp (s1*t) - exp (s2*t)
+    where s1 = -1-i
+          s2 = -1+i
+	  
+

@@ -12,6 +12,7 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245
 
 ## News
 
+* 2023-08-22: [Re-exam 2023-08](Exam/2023-08)
 * Tuesday 2023-01-17: First lecture of the 2023 course instance.
 * 2022: Course book available from [Amazon](https://www.amazon.co.uk/dp/184890388X) and from [other sources](https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883). [Bibtex entry](admin/JanssonIonescuBernardyDSLsofMathBook2022.bib).
 * [Lecture note snapshots](L/snapshots/) with drafts of the full course book
