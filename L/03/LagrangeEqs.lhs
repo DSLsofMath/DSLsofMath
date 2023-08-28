@@ -79,7 +79,7 @@
 \subtitle{the Lagrangian Equations}
 \author[Jansson \& Ionescu]{Patrik Jansson \and Cezar Ionescu}
 \institute[FP div., Chalmers]{Functional Programming division, Chalmers University of Technology}
-\date{2023-01-31}
+\date{2023-08-30}
 % {Chalmers University of Technology, Sweden}
 %           {\texttt{patrikj@@chalmers.se}}
 %           {\texttt{cezar@@chalmers.se}}
@@ -263,12 +263,13 @@ But we already typed it as |T × Q × V -> ℝ|, contradiction!
   actually compute the trajectory of the full system state |T × Q × V|
   starting from just the path.
 %
+%format $ = " "
   \begin{spec}
     q  :  T -> Q
-    q  =  w            -- or, equivalently, |q(t) = w(t)|
+    q  =  w            -- or, equivalently, |q$(t) = w$(t)|
 
     dotq : T -> V
-    dotq = D w         -- or, equivalently, |dotq t = dw(t)/dt|
+    dotq = D w         -- or, equivalently, |dotq$(t) = dw$(t)/dt|
   \end{spec}
 %
   We combine these in the ``combinator'' |expand|, given by

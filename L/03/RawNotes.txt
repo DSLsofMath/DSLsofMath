@@ -55,6 +55,6 @@ Using these:
 = --  Linear(psi)
   lim0 . (psi f + psi g)
 = -- Linear((q.))
-  (lim0 . psi f) + (lim+ . psi g)
+  (lim0 . psi f) + (lim0 . psi g)
 = -- def.
   D f + D g

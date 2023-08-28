@@ -28,7 +28,8 @@
 \newunicodechar{⁺}{\ensuremath{^+}} %% \newunicodechar{⁺}{^+}
 
 \title[DSLM.Ch3.LimFun]{DSLs of Mathematics: limit of functions}
-\date{Lecture 3.1, 2023-01-31}
+%\date{Lecture 3.1, 2023-01-31}
+\date{2023-08-30}
 \author{Patrik Jansson}
 \institute[FP, Chalmers]{Functional Programming, Chalmers University of Technology}
 \begin{document}
@@ -37,6 +38,15 @@
 \end{frame}
 % Introduce course - show example
 %% -------------------------------------------------------------------
+%\begin{frame}
+%\end{frame}
+% Dependencies:
+% "predicate", FOL = First Order Logic,
+% Haskell notation for function application
+% Maybe type (data Maybe a = Nothing | Just a)
+% lambda expressions: (f = \ x -> e  same as f(x) = e but without the name f)
+% operator sections (^2) for squaring, (2*) for doubling
+
 
 \begin{frame}
 \frametitle{Math book quote: The limit of a function}
@@ -198,11 +208,11 @@ Lesson learned: be careful with scope and binding (of |x| in this case).
 
 
 We can write
-%format RPlus = "\ensuremath{\mathbb{R^+}}"
-
+%format RPlus = "\ensuremath{\mathbb{R}^{\neq 0}}"
+%{-"= \mathbb{R} \setminus \{ 0 \}"-}
 \savecolumns
 \begin{spec}
-  D f x  = lim 0 g        where            g  h = frac (f(x+h) - f x) h;                      g ::  H -> Y; type H = RPlus
+  D f x  = lim 0 g        where            g  h = frac (f(x+h) - f x) h;                      g ::  H -> Y; type H = RPlus 
 \end{spec}
 \pause
 \vspace{-0.5cm}
