@@ -1,5 +1,5 @@
 %-*-Latex-*-
-\documentclass[aspectratio=1610]{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usetheme{Madrid}
 % Hide navigation symbols
 \setbeamertemplate{navigation symbols}{}
@@ -116,6 +116,10 @@ Examples:
 % DONE lambda expressions: (f = \ x -> e  same as f(x) = e but without the name f)
 % DONE operator sections (^2) for squaring, (2*) for doubling
 
+\begin{frame}
+  \frametitle{Haskell introduction}
+  \Huge Live coding\\ \texttt{\href{file:HaskellIntro.lhs}{HaskellIntro.lhs}}
+\end{frame}
 \end{document}
 
 \begin{code}
