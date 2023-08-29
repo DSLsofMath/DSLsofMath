@@ -1,3 +1,5 @@
+Anything I write outside the code blocks is a comment.
+
 \begin{code}
 {-# LANGUAGE GADTs #-}
 module HaskellIntro where
@@ -53,10 +55,11 @@ const = error "TODO"
 
 
 
-*Pairs*
-
-The type (a,b) has values of the
-    form (x,y) where x :: a and y :: b.
+Part 2: *Pairs* (cartesian product)
+Mathematical syntax: A⨯B = { (x,y) | x∈A, y∈B }
+Haskell syntax:
+  The type (a,b) has values of
+  the form (x,y) where x :: a and y :: b.
 \begin{code}
 fst :: (a,b) -> a
 fst = error "TODO"
@@ -136,3 +139,5 @@ l1 :: [Either String Bool]
 l1 =  [ei1, ei2]
 
 \end{code}
+01234567890123456789012345678901234567890123456789012345678901234567890123456789
+(The numbers are just here to help choose the font size when presenting.)

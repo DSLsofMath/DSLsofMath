@@ -340,7 +340,7 @@ But we already typed it as |T × Q × V -> ℝ|, contradiction!
 
 \bibliographystyle{abbrvnat}
 \begin{frame}{Bibliography}
-\bibliography{../ref}
+\bibliography{../L/ref}
 Domain-Specific Languages of Mathematics, BSc level course at Chalmers and GU,
 \url{https://github.com/DSLsofMath/}
 \end{frame}

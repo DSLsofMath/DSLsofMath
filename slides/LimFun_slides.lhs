@@ -1,5 +1,5 @@
 %-*-Latex-*-
-\documentclass[aspectratio=1610]{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usetheme{Madrid}
 % Hide navigation symbols
 \setbeamertemplate{navigation symbols}{}
@@ -160,15 +160,17 @@ Lesson learned: be careful with scope and binding (of |x| in this case).
   Forall (a, f, L) ((limProp a f L) => (limMaybe a f = Just L) && (limSloppy a f = L))
 \end{spec}
 \pause
+\vspace{-0.5cm}
 %format oplus f g = f "\oplus" g
 %format oplusOp = "(\oplus)"
 %format scale c f = c "\triangleleft" f
-\item |limSloppy| is linear:
+\item The function |limSloppy a : (X -> Y) -> Y| is linear:
   \begin{code}
     limSloppy a (oplus f g)  = limSloppy a f + limSloppy a g
     limSloppy a (scale c f)  = c * (limSloppy a f)
   \end{code}
 \pause
+\vspace{-0.5cm}
 \item What is |oplusOp : (X->Y)->(X->Y)->(X->Y)|?\pause
   \begin{code}
     oplus f g = \x -> f x + g x
@@ -202,8 +204,8 @@ Lesson learned: be careful with scope and binding (of |x| in this case).
   \]
 %
   at all points |x| for which the limit exists (i.e., is a finite real
-  number). If \(f'(x)\) exists, we say that |f| is \textbf{differentiable}
-  at |x|.
+  number).
+  %If \(f'(x)\) exists, we say that |f| is \textbf{differentiable} at |x|.
 \end{quote}
 
 
@@ -219,6 +221,7 @@ We can write
 \restorecolumns
 \begin{spec}
   D f x  = lim 0 (phi x)  where       phi  x  h = frac (f(x+h) - f x) h;{-"\quad"-}  phi  ::  X ->  (H -> Y)
+  D f    = lim 0 . phi    where       phi  x  h = frac (f(x+h) - f x) h;{-"\quad"-}  phi  ::  X ->  (H -> Y)
 \end{spec}
 \pause
 \vspace{-0.5cm}
