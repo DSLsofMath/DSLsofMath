@@ -1,6 +1,7 @@
 Domain-Specific Languages of Mathematics course, Chalmers and UGOT
 (from Week & chapter 3: Types in mathematics)
 
+0. Motivating the need for working with syntax
 1. Reminder about the DSL definition.
 2. Define a DSL for functions
 3. Define a "syntactic derivative" function
@@ -37,9 +38,9 @@ psi :: (X->Y) -> X -> H -> Y
 psi f x h = (f (x+h) - f x)/h
 
 t1 :: X -> H -> Y
-t1 = psi sq -- leder inte till rätt väg
+t1 = psi sq -- leads us astray ...
 
-exempel = map (t1 1) (iterate (/10) 1)
+example = take 20 (map (t1 3) (iterate (/10) 1))
 
 derivSem :: (X->Y) -> (X->Y)
 derivSem f x = lim 0 (psi f x)
@@ -57,8 +58,6 @@ Each DSL needs
 Syntax datatype for 1-argument function expressions:
 
 \begin{code}
-type Nat = Int
-
 data SynF 
   deriving Show
 
@@ -95,12 +94,12 @@ deriv = error "TODO"
 Just the start of a symbolic "simplifier" for expressions.
 \begin{spec}
 simplify :: SynF -> SynF
-simplify (Add e (Con 0)) = e
-simplify (Add (Con 0) e) = e
-simplify (Mul (Con 0) e) = Con 0
-simplify (Mul (Con 1) e) = e
-simplify (Mul e (Con 0)) = Con 0
-simplify (Mul e (Con 1)) = e
+simplify (Add e (C 0)) = simplify e
+simplify (Add (C 0) e) = simplify e
+simplify (Mul (C 0) e) = C 0
+simplify (Mul (C 1) e) = simplify e
+simplify (Mul e (C 0)) = C 0
+simplify (Mul e (C 1)) = simplify e
 simplify (Add e1 e2) = Add (simplify e1) (simplify e2)
 simplify e = e
   -- 1*e -> e
@@ -108,4 +107,7 @@ simplify e = e
   -- 0+e -> e
   -- etc.
 \end{spec}
+          1         2         3         4         5         6         7         8
+012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789
+(The column numbers are just here to help choose the font size when presenting.)
 
