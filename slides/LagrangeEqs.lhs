@@ -1,4 +1,4 @@
-\documentclass[aspectratio=1610]{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usetheme{Madrid}
 % Hide navigation symbols
 \setbeamertemplate{navigation symbols}{}
