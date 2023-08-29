@@ -19,3 +19,21 @@ Homepage: https://github.com/DSLsofMath/DSLsofMath/
 To pass you need
 + a minimum of 5p on each question (1 to 4) and also
 + reach these grade limits:  3: >=48p, 4: >=65p, 5: >=83p, max: 100p
+
+** (inofficial) Results
+
+Six students participated, 3 passed (with grades 4, 4, 3) and 3 failed.
+Official results are delivered through LADOK.
+
+| Code     | Pages | P1 | P2 | P3 | P4 | Bonus | Sum | Grade |   |   |   |
+|----------+-------+----+----+----+----+-------+-----+-------+---+---+---|
+| 0003-XZG |     9 | 24 | 22 | 14 | 11 |       |  71 | 4     |   |   |   |
+| 0010-PBU |     6 | 20 | 20 | 11 | 10 |     8 |  69 | 4     |   |   |   |
+| 0005-WJA |     7 | 12 |  9 | 18 | 10 |       |  49 | 3     |   |   |   |
+| 0004-SPC |     6 | 12 | 22 |  5 |  7 |       |  46 | U     |   |   |   |
+| 0013-UPA |     8 | 17 | 11 |  2 |  1 |       |  31 | U     |   |   |   |
+| 0015-BZH |     5 | 11 |  8 | 12 |  3 |       |  34 | U     |   |   |   |
+
+Exam check (granskning) will be on Friday 2023-09-01 from 12.15-12.45 in my office (EDIT-6452).
+
+Welcome!
