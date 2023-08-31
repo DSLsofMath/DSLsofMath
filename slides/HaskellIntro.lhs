@@ -1,4 +1,5 @@
-Anything I write outside the code blocks is a comment.
+Literate programming - anything I write outside the code blocks is a
+comment.
 
 \begin{code}
 {-# LANGUAGE GADTs #-}

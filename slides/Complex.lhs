@@ -1,16 +1,7 @@
-This file is from the "live coding" session at the end of L1.2
-(study week 1, lecture 2, of the DSLsofMath course, 2023).
-
-It is all from Chapter 1 in the book
+This file shows some "live coding" from Chapter 1 of
   Domain-Specific Languages of Mathematics
   https://www.collegepublications.co.uk/computing/?00024
-More specifically it covers
-  Section 1.4 (A DSL of complex numbers)
-  Section 1.5 (A syntax for (complex) arithmetical expressions)
-and some of
-  Section 1.2 (Types in Haskell: |type|, |newtype|, and |data|)
-
-{- iimage-mode for inlining the quotes -}
+  (iimage-mode for inlining the quotes)
 
 \begin{code}
 {-# LANGUAGE GADTs #-}
@@ -130,3 +121,5 @@ exercise: implement mulCC
 Add    :: CE -> CE -> CE   -- syntactic constructor
 addCC  :: CC -> CC -> CC   -- semantic "smart constructor"
 
+01234567890123456789012345678901234567890123456789012345678901234567890123456789
+(The numbers are just here to help choose the font size when presenting.)

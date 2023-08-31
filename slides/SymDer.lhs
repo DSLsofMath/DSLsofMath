@@ -5,25 +5,23 @@ Domain-Specific Languages of Mathematics course, Chalmers and UGOT
 1. Reminder about the DSL definition.
 2. Define a DSL for functions
 3. Define a "syntactic derivative" function
-    deriv :: SymF -> SymF
+    deriv :: SymF -> SymF  -- can (and will) be implemented
+    D     :: SemF -> SemF  -- cannot be implemented
+    type SemF = REAL -> REAL
 
-Towards a DSL for derivatives ={here} a DSL for 1-argument functions (or 1-var. epressions)
+Towards a DSL for derivatives ={here} a DSL for 1-argument functions
+(or one-variable epressions)
 
 Motivation:
 
-deriv :: (X->Y) -> (X->Y)
-deriv f = ???
+D :: (X->Y) -> (X->Y)
+D f = ???
 
-+ Attempt 1: pattern matching on "semantic functions"?
++ Attempt 1: pattern matching on "semantic functions"? Does not work
 + Attempt 2: using lim and psi? (from the LimFun slides)
 + Attempt 3: build a DSL (called SymF)
 
 Example functions / expressions:
-
-We cannot "tease apart" general function (in Haskell).
-
-  derivSem (f .+ g) = derivSem f .+ derivSem g
-  derivSem (c .* f) = c .* derivSem f
 
 \begin{code}
 type REAL = Double
@@ -40,13 +38,17 @@ psi f x h = (f (x+h) - f x)/h
 t1 :: X -> H -> Y
 t1 = psi sq -- leads us astray ...
 
-example = take 20 (map (t1 3) (iterate (/10) 1))
+example = (  mapM_ print
+          .  take 20
+          .  map (t1 3)
+          .  iterate (/10)
+          ) 1
 
 derivSem :: (X->Y) -> (X->Y)
 derivSem f x = lim 0 (psi f x)
 
 lim :: X -> (X->Y) -> Y
-lim a g = error "TODO" -- cannot be implemented 
+lim a g = error "TODO" -- cannot be implemented (due to rounding error)
 \end{code}
 
 

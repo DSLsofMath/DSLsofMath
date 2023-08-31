@@ -29,7 +29,7 @@
 
 \title[DSLM.Ch3.LimFun]{DSLs of Mathematics: limit of functions}
 %\date{Lecture 3.1, 2023-01-31}
-\date{2023-08-30}
+\date{2023-08-31}
 \author{Patrik Jansson}
 \institute[FP, Chalmers]{Functional Programming, Chalmers University of Technology}
 \begin{document}
@@ -210,7 +210,7 @@ Lesson learned: be careful with scope and binding (of |x| in this case).
 
 
 We can write
-%format RPlus = "\ensuremath{\mathbb{R}^{\neq 0}}"
+%format RPlus = "\ensuremath{\mathbb{R}_{\neq 0}}"
 %{-"= \mathbb{R} \setminus \{ 0 \}"-}
 \savecolumns
 \begin{spec}
@@ -253,6 +253,9 @@ Given only |f : REAL -> REAL| as a ``black box'' we
 cannot compute the actual derivative |f' : REAL -> REAL|.
 
 We need the ``source code'' of |f| to apply rules from calculus.
+
+Next: We implement a DSL (embedded in Haskell) to solve this and then
+\emph{we implement} a ``symbolic derivative'' function.
 
 \end{frame}
 %% -------------------------------------------------------------------

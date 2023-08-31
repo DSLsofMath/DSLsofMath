@@ -102,7 +102,8 @@ Examples:
   \pause
 \item Text-book examples:
   \begin{itemize}
-  \item scoping, limit of function, derivative in terms of limits, typing
+  \item Complex numbers (from text to code, semantics, syntax trees)
+  \item Scoping, limit of function, derivative in terms of limits, typing
   \item Lagrangian: give type and formal predicate from a text-book quote
   \end{itemize}
   \pause
