@@ -1,11 +1,11 @@
 The mini-course on Domain-Specific Languages of Mathematics as part of
-the Wisla23 summer school has the following material:
+the [[http://www.baltinmat.com/wisla23/][Wisla23]] summer school & Workshop has the following material:
 
 + [[file:DSLsofMath_Wisla23.pdf][Intro slides]]
 + [[file:HaskellIntro.lhs][Live coding short introduction to Haskell]] ([[file:HaskellIntro_after.lhs][after]])
 + [[file:Complex.lhs][Live coding Complex number DSL]] ([[file:Complex_after.lhs][after]])  
 + [[file:LimFun_slides.pdf][Slides about limits and derivatives]]
 + [[file:SymDer.lhs][Live coding Function expression DSL + derivatives]] ([[file:SymDer_after.lhs][after]])  
-+ Related but not covered: file:LagrangeEqs.pdf
++ Related but not covered: [[file:LagrangeEqs.pdf][Lagrange Eq's]]
 
 The video recordings are available on YouTube: [[https://youtu.be/wbZURbNwGuA][Lectures 1 & 2]], [[https://youtu.be/BOLdEOeuigk][Lecture 3]].
