@@ -14,3 +14,7 @@ implements file:TypeDSL.agda:
   https://youtu.be/sFyy9sssK50
 
 
+Here are some exercises starting from this:
++ Implement a constructor |Pow| for which |card (Pow a b) = (card a) ^ (card b)| and |typ (Pow a b) = typ b -> typ a|.
++ Implement decidable equality.
+  
