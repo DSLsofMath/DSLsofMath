@@ -1,13 +1,16 @@
-# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=33291) / [DIT982](https://kursplaner.gu.se/pdf/kurs/en/DIT983http://kursplaner.gu.se/english/DIT982.pdf)
+---
+aspectratio: 169
+---
+# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=36211) / [DIT983](https://kursplaner.gu.se/pdf/kurs/en/DIT983)
 
-(Presentation för D2, On 2022-11-09 av Patrik Jansson.)
+(Presentation för D2, On 2023-11-15 av Patrik Jansson.)
 
 * Patrik Jansson: forskare och lärare inom Funktionell Programmering
     * examinator och kursansvarig för kursen DSLsofMath
     * XPA för D (2011–13), "inspektor" för D-sektionen (-2021)
 * LP3 i D2: ett första smakprov på programmets valfrihet
     * Vi tror på er förmåga att själva kombinera kurser till en bra helhet
-    * Budskap: *Välj både DSLsofMath (i LP3) och PCP (i LP1)*
+    * Budskap: *Välj både DSLsofMath (nu i LP3) och PCP (sedan i D3, LP1)*
 * Tidigare gästföreläsare:
     * Nicola Botta, Docent, Potsdam Institute of Climate Impact Research
     * Cezar Ionescu, Professor inom AI och funktionell programmering, Tyskland
@@ -43,17 +46,18 @@ på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
 
 # Resultatstatistik
 
-* Resultat på DSLsofMath:
-    * 2017-2022: ca 60 reg., godkända: ca 70%
-
-* Resultat i D3 (Transformer samt Regler)
+* Resultat på DSLsofMath (DAT326, 2017-2023):
+    * 311 labbade varav 96% godkända
+    * 280 tentade varav 65% godkända
+\pause
+* Resultat i D3 (Transformer samt Regler) 2018
 
 | D3-kurs       | Valde inte DSL | Valde DSL | Godkänd DSL |
 | ------------- | ----:| ---:| ---:|
 | Transformer   | 36% | 57% | **77%**  |
 | Regler        | 40% | 45% | **68%**  |
 
-Dvs. de som tar DSL-kursen får mycket bättre resultat hösten i D3.
+Dvs. de som tog DSL-kursen fick mycket bättre resultat hösten i D3.
 
 \small (Totalt 145 varav 'Valde inte DSL'=92, Valde=53, Godk.=34.)
 
@@ -77,15 +81,15 @@ Undervisning på sv/en och implementering i Haskell.
 
 ```haskell
 
-kvadrat x = x^2
+kvadrat x    =  x^2
 
-twice f = \x -> f(f(x))
+twice f      =  \x -> f(f(x))
 
-upphöjtFyra = twice kvadrat
+upphöjtFyra  =  twice kvadrat
 
-test = upphöjtFyra 3
+test         =  upphöjtFyra 3
 
-list = [(1+), (2*), kvadrat, upphöjtFyra]
+list         =  [(1+), (2*), kvadrat, upphöjtFyra]
 ```
 
 # Funktionell programmering (FP) och *typer*
@@ -95,6 +99,8 @@ list = [(1+), (2*), kvadrat, upphöjtFyra]
 * Historik: matematiska bevisverktyg och algoritmer
 * Nutid: Konkurrensfördel, FP-experter eftertraktade!
 * Vackert möte mellan matematik och maskin.
+
+Undervisning på sv/en och implementering i Haskell.
 
 ```haskell
 kvadrat      :: Num a =>  a -> a
@@ -114,7 +120,7 @@ list         =  [(1+), (2*), kvadrat, upphöjtFyra]
 Exempel:
 
 * datum:
-    * Syntax: "2011-11-11", "tredje onsdagen i oktober", "nästa lördag"
+    * Syntax: "2023-11-18", "tredje lördagen i november", "nu på lördag"
     * Semantik: Date, eller kanske Date -> Date
 * excel-formler:
     * Syntax: "SUM(A1:A9)", "RIGHT(LEFT(C7,4),2)", ...
@@ -142,7 +148,7 @@ Några av er kanske också vill gå den vägen, eller ta del av deras material.
 # Exempel: 2018: Learn you a physics for great good ...
 Johan Johansson, Oskar Lundström, Erik Sjöström, Björn Werner
 
-![Learn you a physics](LearnYouAPhysics.png)
+![Learn you a physics](LearnYouAPhysics.png){ height=80% }
 
 # Sammanfattning
 
@@ -156,17 +162,15 @@ Välkomna i januari önskar lärarlaget
 
   Patrik, m.fl.
 
-
-\begin{align*}
-   f(x) &= x^2
-\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
-\end{align*}
+\vspace*{-0.8cm}
+![DSLsofMath logo](../DSL_logo/DSL_logo_500x500.png){height=40%}
+![DSLsofMath book](../../Wisla23/DSLsofMath_book_front_cover.jpg){height=50%}
 
 ----------------
 
 # Exempel på tillämpning: LinAlg, matris, maskininlärning
 
-![Upper triangular](UpperTriangularChocolateTwitter.png)
+![Upper triangular](UpperTriangularChocolateTwitter.png){height=80%}
 
 # Extra: Domänspecifika språk (DSL) i fo.&utv.
 
