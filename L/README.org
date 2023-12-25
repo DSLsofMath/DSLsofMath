@@ -170,7 +170,6 @@ More details below.
 | [[https://www.youtube.com/watch?v=X6vsNgyQmcI&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=58&t=371][L7.2.4]] | 06:11 | dynamical systems using matrices              | §7.4 |
 |--------+-------+-----------------------------------------------+------|
 
-
 * Week 8 lecture videos:
 |--------+-------+----------------------------------------------+--------|
 | [[https://www.youtube.com/watch?v=OwgvSJf61cs&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=59&pp=sAQB][L8.1.1]] | 00:00 | Towards the Laplace transform                | §8.2   |

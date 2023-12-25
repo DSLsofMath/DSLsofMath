@@ -160,25 +160,47 @@
   an-a-lyse
 }
 
-\title{Domain-Specific Languages of Mathematics
+\newcommand{\bookTitle}{Domain-Specific Languages of Mathematics%
 %if lectureNotes
 : Lecture Notes
 %endif lectureNotes
-%if not submit
-\\{\small Draft of 2nd edition}
-%endif
 }
-\author{Patrik Jansson \and Cezar Ionescu  \and Jean-Philippe Bernardy}
-%           {Chalmers University of Technology, Sweden}
-%           {\texttt{patrikj@@chalmers.se}}
-%           {\texttt{cezar@@chalmers.se}}
-\date{Work in progress: draft of \today\\[3ex]\includegraphics{../admin/DSL_logo/DSL_logo.pdf}}
+
+\title{\bookTitle}
+%if not submit
+\newcommand{\bookSubtitle}{Draft of 2nd edition}
+%endif
+
 \makeindex
 \begin{document}
 \frontmatter
 %if not submit
 % Publisher instruction: The submitted file should not include titlepage etc.
-\maketitle
+\begin{titlepage}
+   \begin{center}
+       \vspace*{2em}
+
+       {\Large \textbf{\bookTitle}}
+
+       \vspace{1em}
+       \bookSubtitle
+            
+       \vspace{1.5em}
+
+%       {\textbf{Patrik Jansson \qquad Cezar Ionescu  \qquad Jean-Philippe Bernardy}}
+       {\textbf{
+        Patrik Jansson\\
+        Cezar Ionescu\\
+        Jean-Philippe Bernardy}}
+
+       \vspace{1em}
+       Work in progress: draft of \the\year-\ifnum\month<10\relax0\fi\the\month-\ifnum\day<10\relax0\fi\the\day
+       \vfill
+       \includegraphics{../admin/DSL_logo/DSL_logo.pdf}
+       \par
+       \vspace*{2em}
+   \end{center}
+\end{titlepage}
 \paragraph{Abstract}
 %
   The main idea behind this book is to encourage readers to

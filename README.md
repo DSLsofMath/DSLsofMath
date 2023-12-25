@@ -8,10 +8,11 @@ and GU.
 The main course homepage is in the Canvas LMS:
 * [Main course page](https://chalmers.instructure.com/courses/22256)
 
-Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245) / [DIT983](http://kursplaner.gu.se/english/DIT983.pdf)
+Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245) / [DIT983](https://kursplaner.gu.se/pdf/kurs/en/DIT983)
 
 ## News
 
+* 2023-12-25: New book pdf snapshot in preparation of the 2024 course instance.
 * 2023-08-22: [Re-exam 2023-08](Exam/2023-08)
 * Tuesday 2023-01-17: First lecture of the 2023 course instance.
 * 2022: Course book available from [Amazon](https://www.amazon.co.uk/dp/184890388X) and from [other sources](https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883). [Bibtex entry](admin/JanssonIonescuBernardyDSLsofMathBook2022.bib).
@@ -19,7 +20,7 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245
 * [YouTube playlist](https://www.youtube.com/playlist?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ) collecting the 2022 lectures (all in English)
     * Also available: [the recorded lectures from the 2021 course instance](https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-) (most in Swedish, some in English).
 
-with 
+with
 
 ## Contributors
 
@@ -27,7 +28,7 @@ with
 * First version (and continued support): Cezar Ionescu (cezar AT)
 * Book co-author: Jean-Philippe Bernardy
 * Teaching assistants:
-  * 2023: David Wärn (warnd AT), Felix Cherubini (felixche AT), Sikai Lu (sikai AT), 
+  * 2023: David Wärn (warnd AT), Felix Cherubini (felixche AT), Sikai Lu (sikai AT),
   * 2022: Sólrún Einarsdóttir (slrn AT), David Wärn (warnd AT), and Felix Cherubini (felixche AT)
   * 2021: Maximilian Algehed (algehed AT) and Víctor López Juan (lopezv AT)
   * 2020: Sólrún Einarsdóttir (slrn AT) and Víctor López Juan (lopezv AT)

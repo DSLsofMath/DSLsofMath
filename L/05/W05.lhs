@@ -193,7 +193,7 @@ largest, see also \cref{ex:maximum-homo}), and we have the intended
 definition.
 
 \paragraph{Representing polynomials}
-So, we can simply use any list of coefficients to \emph{represent} a
+So, we can simply use any\footnote{Equality should not depending on trailing zeroes, thus |deriving| should not be used for the |Eq| type class. Exercise: implement a better equality check.} list of coefficients to \emph{represent} a
 polynomial:
 %
 \index{Poly@@|Poly|{}||textbf}

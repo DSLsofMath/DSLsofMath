@@ -3,6 +3,7 @@ aspectratio: 169
 ---
 # Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=36211) / [DIT983](https://kursplaner.gu.se/pdf/kurs/en/DIT983)
 
+
 (Presentation för D2, On 2023-11-15 av Patrik Jansson.)
 
 * Patrik Jansson: forskare och lärare inom Funktionell Programmering
