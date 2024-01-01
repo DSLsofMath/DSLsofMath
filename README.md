@@ -6,12 +6,13 @@ The book and the repository are used in a BSc-level course at Chalmers
 and GU.
 
 The main course homepage is in the Canvas LMS:
-* [Main course page](https://chalmers.instructure.com/courses/22256)
+* [Main course page](https://chalmers.instructure.com/courses/27857)
 
-Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245) / [DIT983](https://kursplaner.gu.se/pdf/kurs/en/DIT983)
+Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=36211) / [DIT983](https://kursplaner.gu.se/pdf/kurs/en/DIT983)
 
 ## News
 
+* 2024-01-16: First lecture of the 2024 course instance.
 * 2023-12-25: New book pdf snapshot in preparation of the 2024 course instance.
 * 2023-08-22: [Re-exam 2023-08](Exam/2023-08)
 * Tuesday 2023-01-17: First lecture of the 2023 course instance.
@@ -20,14 +21,13 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=32245
 * [YouTube playlist](https://www.youtube.com/playlist?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ) collecting the 2022 lectures (all in English)
     * Also available: [the recorded lectures from the 2021 course instance](https://www.youtube.com/playlist?list=PLf5C73P7ab-4kc8Z4S7adKdm-nTkn-ND-) (most in Swedish, some in English).
 
-with
-
 ## Contributors
 
 * Main author, examiner, lecturer: Patrik Jansson (patrikj AT)
 * First version (and continued support): Cezar Ionescu (cezar AT)
 * Book co-author: Jean-Philippe Bernardy
 * Teaching assistants:
+  * 2024: Felix Cherubini (felixche AT), Freek Geerligs (geerligs AT), Rachel Samuelsson (lambda AT)
   * 2023: David Wärn (warnd AT), Felix Cherubini (felixche AT), Sikai Lu (sikai AT),
   * 2022: Sólrún Einarsdóttir (slrn AT), David Wärn (warnd AT), and Felix Cherubini (felixche AT)
   * 2021: Maximilian Algehed (algehed AT) and Víctor López Juan (lopezv AT)
@@ -59,7 +59,7 @@ paying attention to syntax and types, and ultimately constructing DSLs
 of some mathematical areas mentioned below.
 
 Learning outcomes as in the
-[course syllabus](https://www.student.chalmers.se/sp/course?course_id=32245).
+[course syllabus](https://www.student.chalmers.se/sp/course?course_id=36211).
 
 * Knowledge and understanding
     * design and implement a DSL (Domain-Specific Language) for a new domain
