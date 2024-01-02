@@ -141,7 +141,8 @@ Climate Impact Research in the context of
   DBLP:conf/ifl/IonescuJ12,%       {Dependently-Typed Programming in Scientific Computing - Examples from Economic Modelling}
   DBLP:journals/jfp/BottaJI17,%    {Contributions to a computational theory of policy advice and avoidability},
   DBLP:journals/corr/BottaJICB16,% {Sequential decision problems, dependent types and generic solutions},
-  esd-9-525-2018%                  {The impact of uncertainty on optimal emission policies}
+  esd-9-525-2018,%                 {The impact of uncertainty on optimal emission policies}
+  Botta2023MatterMost%             {Responsibility Under Uncertainty: Which Climate Decisions Matter Most?}
 }.
 % Perhaps cite
 %    DBLP:conf/icfp/BernardyJZSP08 connecting Haskell and C++ {A comparison of {C++} concepts and {Haskell} type classes}
@@ -295,7 +296,7 @@ code) is available on GitHub in the repository
 
 Our code snippets are typeset using \texttt{lhs2tex} \citep{lhs2TeXGuide},
 to hit a compromise between fidelity to the Haskell source and
-maximize readability from the point of view of someone used to
+maximimum readability from the point of view of someone used to
 conventional mathematical notation.
 %
 For example, function composition is typically represented as a circle
@@ -362,7 +363,7 @@ Some more advanced material that can be skipped is marked with a star
 \section{Acknowledgments}
 
 The support from Chalmers Quality Funding 2015 (Dnr C 2014-1712, based
-on Swedish Higher Education Authority evaluation results) is
+on excellent results in the Swedish Higher Education Authority evaluation) is
 gratefully acknowledged.
 %
 Thanks also to Roger Johansson (as Head of Programme in CSE) and Peter
@@ -378,7 +379,7 @@ agreement No 640954) and CoeGSS (grant agreement No 676547), which
 have received funding from the European Union's Horizon 2020 research
 and innovation programme.
 
-Bernardy is supported by the Swedish Research Council, via grant
+Bernardy was supported by the Swedish Research Council, via grant
 2014-39, funding the Centre for Linguistic Theory and Studies in
 Probability.
 

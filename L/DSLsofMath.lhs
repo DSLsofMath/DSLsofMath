@@ -37,6 +37,7 @@
 \usepackage[margin=2cm,a4paper]{geometry}
 % \usepackage{a4wide} (the above is even more compact and easier to control)
 %endif
+\usepackage{tocloft}
 \usepackage{layout}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -242,6 +243,7 @@ Publications \citep{JanssonIonescuBernardyDSLsofMathBook2022}.
 \setcounter{page}{5}
 %endif % submit
 \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
+\setlength\cftparskip{-0.4pt plus 1pt}
 \tableofcontents
 \mainmatter
 
