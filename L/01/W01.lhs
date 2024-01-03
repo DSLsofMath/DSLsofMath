@@ -93,7 +93,7 @@ rationals, and |REAL| of real numbers.
 \index{type judgment (|e : t| or |e :: t|)}%
 %\index{:!type judgment (|e : t|)}%
 %
-The judgment |e : t| states that the expression |e| has type |t|.
+The typing judgment |e : t| states that the expression |e| has type |t|.
 %
 For example |False : Bool|, |2 : Nat|, and |sqrt 2 : REAL|.
 %
@@ -240,9 +240,9 @@ the compiler gives more help when implementing functions with such
 types.
 %
 We have seen one example use of the identity function already, as one
-of the four functions from |Bool| to |Bool|.
+of the four functions from |BB| to |BB|.
 %
-That instance of |id| has type |Bool -> Bool|.
+That instance of |id| has type |BB -> BB|.
 
 \paragraph{Constant functions}
 %
@@ -262,8 +262,8 @@ The underscore (|_|) is here used instead of a variable name (like
 |y|) which is not needed on the right-hand side (RHS) of the equality
 sign.
 %
-Above we saw the instance |const False : Bool -> Bool| where |a| and
-|b| are both |Bool|.
+Above we saw the instance |(const False) : BB -> BB| where the types |a| and
+|b| are both |BB|.
 %
 Note that this is an example of a \emph{partially applied} function:
 |const| by itself expects two arguments, thus |const False| still
@@ -522,7 +522,7 @@ Another equivalent definition is |evalEnv = flip lookup|, where
 \index{lookup@@|lookup|}%
 %
 \begin{spec}
-lookup :: Eq a => a -> [(a, b)] -> Maybe b
+lookup :: Eq v => v -> [(v, s)] -> Maybe s
 \end{spec}
 
 % \begin{tikzcd}

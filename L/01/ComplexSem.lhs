@@ -3,7 +3,7 @@
 %TODO: May benefit from more "sectioning" structure (now 5p + just one subsection of 3p)
 
 This section is partly based on material by
-\citet{DBLP:journals/corr/IonescuJ16}.
+\citet{DBLP:journals/corr/IonescuJ16}
 %
 and we collect our definitions in a Haskell module which is available
 in the GitHub repository of the book.
@@ -117,9 +117,9 @@ We can give the translation from the (abstract) syntax to its concrete
 representation as a string of characters, as the function |showCA|:
 %
 \begin{code}
-showCA ::  ComplexA       ->  String
-showCA     (CPlus1 x y i)  =  show x ++ " + " ++ show y ++ showIU i
-showCA     (CPlus2 x i y)  =  show x ++ " + " ++ showIU i ++ show y
+showCA ::  ComplexA        ->  String
+showCA     (CPlus1 x y i)  =   show x ++ " + " ++ show y ++ showIU i
+showCA     (CPlus2 x i y)  =   show x ++ " + " ++ showIU i ++ show y
 \end{code}
 %
 \index{real@@|REAL| (real numbers)}%
@@ -289,7 +289,7 @@ As we see it, the somewhat confusing discussion of using ``letters''
 to stand for complex numbers serves several purposes.
 %
 First, it hints at the implicit typing rule that the symbols |z| and
-|w| should be complex numbers.
+|w| should represent complex numbers.
 %
 Second, it shows that, in mathematical arguments, one need not
 abstract over two real variables: one can instead abstract over a

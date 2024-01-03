@@ -73,10 +73,16 @@
 +  is the \addtoindex{factorial}\lnOnly{ (sv: fakultet)}.}).
 #+END_SRC
 ** L/01/ComplexSem.lhs
+*** Around line 6
+#+BEGIN_SRC diff
+-\citet{DBLP:journals/corr/IonescuJ16}.
++\citet{DBLP:journals/corr/IonescuJ16}
+#+END_SRC
 *** Around line 58
 #+BEGIN_SRC diff
 -say |i * i| is related in way with |square i|, since the
 +say |i * i| is related in any way to |square i|, since the
+#+END_SRC
 *** Around line 292
 #+BEGIN_SRC diff
 -Second, it shows that, in mathematical arguments, one needs not
@@ -91,6 +97,12 @@
 #+BEGIN_SRC diff
 -The operations for |ComplexSem| are defined in module |CSem|,
 +The operations for |ComplexSem| are defined in the module |CSem|,
+#+END_SRC
+** L/01/ComplexSyn.lhs
+*** Around line 424
+#+BEGIN_SRC diff
+-Note that |propAssocA| is a higher-order function: it takes a function
++Note that |propAssoc| is a higher-order function: it takes a function
 #+END_SRC
 ** L/01/SimpleFunExp.lhs
 *** Around line 38

@@ -421,7 +421,7 @@ propAssoc :: SemEq a => (a -> a -> a) -> a -> a -> a -> Bool
 propAssoc (⊛) x y z =  (x ⊛ y) ⊛ z === x ⊛ (y ⊛ z)
 \end{code}
 %
-Note that |propAssocA| is a higher-order function: it takes a function
+Note that |propAssoc| is a higher-order function: it takes a function
 |(⊛)| (declared as a binary operator) as its first parameter, and
 tests if it is associative.
 %

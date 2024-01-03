@@ -214,7 +214,7 @@ the sum of two expressions is interpreted as the sum of the evaluation
 of the operands, etc.
 
 The second reading is that we can define an arithmetic structure
-(|*|,|+|, etc.) on functions, by lifting the operators to work
+(|+|, |*|, etc.) on functions, by lifting the operators to work
 pointwise (as we did in \cref{def:pointwise}).
 
 To wrap it up, if we are so inclined, we can redefine the evaluator of
