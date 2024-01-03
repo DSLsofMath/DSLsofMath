@@ -7,6 +7,7 @@ data E : Set where
   One   : E
   Add   : (x : E) -> (y : E) -> E
   Mul   : (x : E) -> (y : E) -> E
+-- Exercise: add Pow x y ~=  x^y  ~  y -> x
 
 two : E
 two = Add One One
@@ -72,6 +73,9 @@ enumerate (Mul x y) = enumMul (enumerate x) (enumerate y)
 test2 : Vec (typ two) (card two) -- Vec Bool 2
 test2 = enumerate two
   -- false ∷ true ∷ []
+
+-- eqCheck : (t : E) -> (e1 e2 : typ t) -> Bool
+-- another exercise
 
 test4 : Vec (typ four) (card four) -- Vec BothBoolBool 4
 test4 = enumerate four
