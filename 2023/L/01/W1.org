@@ -1,0 +1,148 @@
+DSLsofMath week 1: a short summary / overview
+* L1.1 Intro / admin
++ Lecturer: Patrik Jansson
+** Technology / tooling
++ [[file:Live1_2023.lhs][emacs]]      for live coding, etc. (org-mode + Haskell)
++ [[https://chalmers.instructure.com/courses/22256][Canvas]]     for the course homepage + assignments
++ [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][paper+PDF]]  for the course book: [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][Adlibris]] + [[https://chalmers.instructure.com/courses/22256/files/folder/Book][PDF]] + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/errata.org][errata]]
++ [[https://github.com/DSLsofMath/DSLsofMath][github]]     for source code of the lectures + book
+*** Last year (2022 course instance)
++ [[https://jamboard.google.com/d/1m9B5YYHABrll_tSgbIgSEZVsnogEKOSxQNmy83gyjJg/viewer][Jamboard]]   for "drawing on the whiteboard"
++ [[https://www.youtube.com/playlist?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ][YouTube]]    for video archiving - from 2022 course instance
++ [[https://chalmers.zoom.us/j/64738429538][Zoom]]       for delivering the lectures (in 2021 and 2022)
+** Examination
++ *Written Exam*         -> grade U/3/4/5
++ *2 Assignments (labs)* -> Pass/fail grade
++ Weekly exercises       -> Bonus points for the exam
+** Weekly exercises (-> bonus points for the exam)
++ [[https://chalmers.instructure.com/courses/22256/assignments/66212][Week 1 bonus]]
+  Choose any two from
+  Exc. 1.3 (Counting values),
+       1.4 (Counting Maybes),
+       1.8 (Composing sequences),
+       1.12 (Polar complex)
++ See Chapter 1 in the book.
++ Make sure to *read the chapter first*, and ask questions if anything is unclear.
+** Reminder about spending time on the course:
++ Advice from last years' students:
+  spending time on the course pays off.
+  It is not enough to just focus on the labs.
++ Patrik's advice: *read the book*, solve exercises: Ch. N = Week N
+** Course evaluation: student representatives
+| Prg | Namn               |               |
+|-----+--------------------+---------------|
+| D   | Zackarias Leesment |               |
+| D   | William Sjölin     | (from week 3) |
+| IT  | Jacob Bengtsson    |               |
+| DV  | vakant             |               |
+| TM  | vakant             |               |
++ Get in touch if you want to join the group!
+** Learning outcomes (for the whole course, english version)
+*** KU = Knowledge and Understanding
++ KU.DSL      = design and implement a DSL for a new domain
++ KU.Org      = organize areas of mathematics in DSL terms
++ KU.Explain  = explain main concepts of elementary real and complex analysis, algebra, and linear algebra
+*** SA = Skills and Abilities
++ SA.Notation = develop adequate notation for mathematical concepts
++ SA.Calc     = perform calculational proofs
++ SA.Power    = use power series for solving differential equations
++ SA.Laplace  = use Laplace transforms for solving differential equations
+*** JA = Judgement and Approach
++ JA = discuss and compare different software implementations of mathematical concepts
+** Note-takers wanted (Anteckningsstödjare sökes)
++ (från Catarina Olsson, handläggare för anteckningsstöd till studenter med behov av pedagogiskt stöd)
++ Du hjälper andra studenter som annars hade haft det svårt att ta till sig studierna på ett bra sätt.
++ Du hjälper också dig själv då egna anteckningar gör att du presterar bättre och minns längre.
++ Genom arbetet du gör lär du dig att planera och strukturera upp dina anteckningar vilket du kommer ha nytta av även efter studierna.
++ Du får också betalt för ditt arbete som anteckningsstödjare!
++ Mer information finns på utskickat mejl från Anteckningsstöd.
++ [[https://student.portal.chalmers.se/sv/chalmersstudier/funktionsvariation-funktionsnedsattning/anteckningsstod/Sidor/F%c3%b6r-dig-som-vill-bli-anteckningsstodjare.aspx][Länk]] [[file:Anteckningsstöd-slide-sv.pdf][Anteckningsstöd-slide-sv.pdf]]
+* L1.1 learning outcomes:
+** What is a Domain-Specific Language (DSL)
+A DSL has four components:
++ Surface syntax (mostly ignored in this course): a set of strings defined by a grammar
++ Abstract syntax: usually a recursive Haskell datatype of syntax trees
++ Semantic type: a type of values (meanings) for the syntax
++ Semantics: a function from eval : AbsSyn -> Sem
+https://en.wikipedia.org/wiki/Domain-specific_language
+** Variable scope and binding in mathematical expressions [integral, fun.def.]
+** Haskell interpreter use and interp. of error messages ([[file:Live1_2023.lhs][interactive live coding]])
+** Syntax trees
++ datatype of syntax trees of simple arith. expr.
+** First evaluator: |eval :: E -> Int|
+* E1.1 learning outcomes:
+** a Haskell environment up and running
+** syntax trees with constructor for variables
+** definition and use of |Env|
+** laws, properties, and testing
+* End of Tuesday
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+* L1.2 Intro / admin
+** Student communication: [[https://dsls-of-math2023.slack.com/][Slack discussion forum]]
+** Exercise sessions: be prepared with questions
+   2h*2 lectures = 4h/w
+   2h*2 exercise sessions = 4h/w
+   total 8h/w "scheduled"
+   But, 7.5hp = 200h spread over 8 study weeks -> 200/8 = 25h/week "study time"
+   Thus 17h left for you to schedule your own work with the course.
+** *Read the book!* Chapter N = study week N
++ Not all sections are covered in lectures
++ Some sections not included in the course (marked with a "*")
+** Explore the [[https://chalmers.instructure.com/courses/22256][canvas page]] and the [[https://github.com/DSLsofMath/DSLsofMath][github repo]]:
++ [[https://chalmers.instructure.com/courses/22256][Home = Syllabus]]   = "Course-memo"
++ [[https://chalmers.instructure.com/courses/22256/assignments][Assignments]]       = all deadlines and where you hand in exercises and labs
++ [[https://chalmers.instructure.com/courses/22256/groups][People]]            = where you can find lab groups, etc.
++ [[https://chalmers.instructure.com/courses/22256/pages/lecture-media][Pages]]             = Lecture media links, etc.
++ [[https://chalmers.instructure.com/courses/22256/files/folder/Book][Files]]             = the book and other (mostly older) material
++ [[https://chalmers.instructure.com/courses/22256/announcements][Announcements]]     = where the teaching teams broadcasts messages
++ [[https://github.com/DSLsofMath/DSLsofMath/tree/master/Exam][github/Exam]]       = all 16 old exams *with solutions*
++ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/SolvedExercises.md][github/SolvedEx]]   = >50 solved exercises from the book
++ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/errata.org][github/errata.org]] = corrections after the book was printed
+* L1.2 learning outcomes:
+** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
++ When equations meet types - more and more eq. can be solved.
+** Active reading of mathematical text [[[file:Live2_2023.lhs][Complex number case study]]
+** Modelling (different versions of) Complex in Haskell
+** |eval :: Syntax -> Semantics| for complex number expressions
+** The DSL of types in Haskell:
+*** |type|, |newtype|, |data|
+*** types and their constructors
+*** |data|: choice, recursion, parameters
+*** datatype of syntax trees of simple arith. expr.
+*** |Nat|, |ImagUnits|, |CA|, |CB|, |CE|
+** Syntax and semantics
+* Notation for this file:
+** L1.1 means week 1, lecture 1 (Tuesday)
+** L1.2 means week 1, lecture 2 (Thursday)
+** E1.1 means week 1, exercise session 1 (the presentation / live coding part)
+** The format of the file is Emacs Org-mode
+* Extras
+Course book, [[http://www.collegepublications.co.uk/computing/?00024][from College Pulications]]:
+file:~/Pictures/DSLsofMath_book_front_cover.jpg
+01234567890123456789012345678901234567890123456789012345678901234567890123456789
+0         1         2         3         4         5         6         7         8
