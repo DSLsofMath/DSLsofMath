@@ -70,7 +70,7 @@ andS = lift2 (&&)
 orS  :: Sem -> Sem -> Sem
 impS :: Sem -> Sem -> Sem
 
-(notS, andS, orS, impS) = error "TODO: implement semantic functions"
+(orS, impS) = error "TODO: implement semantic functions"
 
 (==>) :: Bool -> Bool -> Bool
 (==>) = error "TODO: (==>)"
