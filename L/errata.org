@@ -1,5 +1,5 @@
 * Ch0
-** L/00/Intro.lhs: 
+** L/00/Intro.lhs:
 *** Around line 187: as:=at
 #+BEGIN_SRC diff
 -formal than usual, as least from a linguistic perspective.
@@ -110,7 +110,7 @@
 -Examples: let $f(x) = x - 1$ and let $t = 5*f(2)$.
 +Examples: let $f(x) = x + 1$ and let $t = 5*f(2)$.
 #+END_SRC
-** L/01/E1.lhs 
+** L/01/E1.lhs
 *** Around line 136: if:=is
 #+BEGIN_SRC diff
 -This kind of transformation if often useful, and it works also for
@@ -130,10 +130,25 @@
 #+END_SRC
 * Ch2
 ** L/02/PropositionalLogic.lhs
+*** Around line 236
+#+BEGIN_SRC diff
+-evaluate top-level truth value of the expression for each row.
++evaluate the top-level truth value of the expression for each row.
+#+END_SRC
+*** Around line 268
+#+BEGIN_SRC diff
+-There are much better algorithms to evaluate truth values than the
++There are much better algorithms to evaluate propositions than the
+#+END_SRC
 *** Around line 288
 #+BEGIN_SRC diff
 -But we still have to figure out what consitutes proofs.
 +But we still have to figure out what constitutes proofs.
+#+END_SRC
+*** Around line 369
+#+BEGIN_SRC diff
+-For conjunction (|And|), we have two eliminations rules:
++For conjunction (|And|), we have two elimination rules:
 #+END_SRC
 *** Around line 374
 #+BEGIN_SRC diff
@@ -158,6 +173,17 @@
 -|f| is a program of type |Forall x (P x)| if |f t| is has type |P t| for all |t|.
 +|f| is a program of type |Forall x (P x)| if |f t| has type |P t| for all |t|.
 #+END_SRC
+*** Around line 475
+#+BEGIN_SRC diff
+-as in the Haskell data type representing our proof DSL.
++in the Haskell data type representing our proof DSL.
+#+END_SRC
+*** Around line 649
+#+END_SRC
+-theorem-proving in mind.  For this reason it is easily possible make
++theorem-proving in mind.  For this reason it is easily possible to make
+#+END_SRC
+
 ** L/02/CalculusConcepts.lhs
 *** Around line 255
 #+BEGIN_SRC diff

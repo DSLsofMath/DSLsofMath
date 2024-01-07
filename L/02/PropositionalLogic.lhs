@@ -66,7 +66,7 @@ we can model the abstract syntax of propositions as a datatype:
 %           |  Name     Name   |  Implies  Prop  Prop
 \begin{code}
 data Prop  =  Implies  Prop  Prop  |  And      Prop  Prop  |  Or       Prop  Prop
-           |  Not      Prop        |  Name     Name        |  Con      Bool   
+           |  Not      Prop        |  Name     Name        |  Con      Bool
 type Name = String
 \end{code}
 %
@@ -233,7 +233,7 @@ As an example, for |p4| above, |freeNames| would return the list
 each row in the truth table.
 %
 The |map| would then apply |eval p4| to each element in the list to
-evaluate top-level truth value of the expression for each row.
+evaluate the top-level truth value of the expression for each row.
 %
 Finally |and| combines the results with |(&&)| to ensure that they are
 all |True|.
@@ -265,7 +265,7 @@ check: for |n| names we get $2^n$ different rows in a truth table.
 Define the function |freeNames|.
 \end{exercise}
 
-There are much better algorithms to evaluate truth values than the
+There are much better algorithms to evaluate propositions than the
 naive one we just showed, but we will not go this route.
 %
 Rather, we can introduce the notion of \emph{proof}.
@@ -366,7 +366,7 @@ To complete the system, in addition to introduction rules (where the
 connective appears as conclusion), we also need elimination rules
 (where the connective appears as premise).
 %
-For conjunction (|And|), we have two eliminations rules:
+For conjunction (|And|), we have two elimination rules:
 %
 \[\frac{P ∧ Q}{P} \qquad \text{and} \qquad \frac{P ∧ Q}{Q}\]
 %
@@ -472,7 +472,7 @@ assumption in this (local) proof of $Q$.
 
 By adding a constructor corresponding to implication introduction:
 |ImplyIntro :: (Proof -> Proof) -> Proof|, we can formalise this rule
-as in the Haskell data type representing our proof DSL. 
+in the Haskell data type representing our proof DSL.
 %
 The fact that the premise can depend on the assumption |Q| is
 represented by a function whose parameter is the proof of |Q| in
@@ -529,7 +529,7 @@ The most worried readers can also define the following version of
 |checkProof|, which uses an extra context to check that assumption
 have been rightfully introduced earlier.\footnote{For the \textit{cognoscenti}, this kind of
   presentation of the checker matches well the sequent calculus
-  presentation of the proof system} 
+  presentation of the proof system}
 
 \begin{spec}
 checkProof' :: Context -> Proof -> Prop -> Bool
@@ -646,7 +646,7 @@ not only the checker comes for free, but we additionally get all
 the engineering tools of the Haskell tool-chain.
 
 One should be careful however that Haskell is not designed with
-theorem-proving in mind.  For this reason it is easily possible make
+theorem-proving in mind.  For this reason it is easily possible to make
 the compiler accept invalid proofs. The main two sources of invalid
 proofs are 1. non-terminating programs and 2. exception-raising
 programs. In sum, the issue is that Haskell allows the programmer to
@@ -738,7 +738,7 @@ introduced representations we get:
   P2Q   = p `Implies` q      = p -> q
   P2nQ  = p `Implies` Not q  = p -> Not q  = p -> q -> False
 \end{spec}
-And as we know |And| is just the pair type constructor, the type of |notIntro| is 
+And as we know |And| is just the pair type constructor, the type of |notIntro| is
 \begin{spec}
   And P2Q P2nQ -> Not p = (P2Q, P2nQ) -> p -> False
 \end{spec}
@@ -746,7 +746,7 @@ And as we know |And| is just the pair type constructor, the type of |notIntro| i
 Thus we can start the definition by matching on a pair and a proof:
 \savecolumns
 \begin{code}
-notIntro (evPimpQ, evPimpNotQ) evP = 
+notIntro (evPimpQ, evPimpNotQ) evP =
     {-""-} -- a proof of |False| wanted
 \end{code}
 where |evPimpQ :: P2Q| and |evPimpNotQ :: P2nQ| are functions from
@@ -855,11 +855,11 @@ First we expand the type using the definitions of |Not| and |Or|:
   Not (Not (p `Or` Not p))
 =  {- Def. of the outermost |Not| -}
   Not (p `Or` Not p) -> False
-=  {- Def. of |Not| on the left-}   
+=  {- Def. of |Not| on the left-}
   ((p `Or` Not p) -> False) -> False
-=  {- Def. of |Or| -}   
+=  {- Def. of |Or| -}
   (Either p (Not p) -> False) -> False
-=  {- Def. of the last |Not| -}   
+=  {- Def. of the last |Not| -}
   (Either p (p -> False) -> False) -> False
 \end{spec}
 %
@@ -894,7 +894,7 @@ excludedMiddle k = -- ... assume |Not (Or p (Not p))| and prove falsity.
 which can be shortened to a one-liner if we cut out the comments:
 \begin{code}
 excludedMiddle' :: Not (Not (p `Or` Not p))
-excludedMiddle' k = k (Right (\evP -> k (Left evP))) 
+excludedMiddle' k = k (Right (\evP -> k (Left evP)))
 \end{code}
 % excludedMiddle k = k (Right (\evP -> k (Left evP)))
 % excludedMiddle k = k (Right (k . Left))
