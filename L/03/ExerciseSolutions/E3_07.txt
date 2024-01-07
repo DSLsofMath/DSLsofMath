@@ -1,3 +1,3 @@
 See Problem 4 in
-  ../../Exam/2016-Practice/MockE.hs
+  file:../../../Exam/2016-Practice/MockE.hs
   

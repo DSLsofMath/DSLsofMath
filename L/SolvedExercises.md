@@ -7,7 +7,8 @@ Status:
 
 Solutions of old exam question are in ../Exam/
 
-Other solutions are in NN/ExerciseSolutions/
+Other solutions are in NN/ExerciseSolutions/ (for example
+  file:01/ExerciseSolutions/, file:02/ExerciseSolutions/ )
 
 | Number | Solved | Bonus| Rec.    | Comment
 | ------ | ------ | ---- | ------- | -----------
