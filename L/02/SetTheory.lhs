@@ -13,16 +13,16 @@ To classify the sets we will often talk about the \emph{cardinality}
 of a set which is defined as the number of elements in it.
 
 The core of the language of pure set theory is captured by four
-function symbols (|{}|, |S|, |Union|, and |Intersection|).
+function symbols (|{}|, |Sing|, |Union|, and |Intersection|).
 %\begin{code}
-%data Set = EmptySet | S | Union | Intersection
+%data Set = EmptySet | Sing | Union | Intersection
 %\end{code}
 %
 We use a nullary function symbol |{}| to denote the empty set
-(sometimes written $\emptyset$) and a unary function symbol |S| for
+(sometimes written $\emptyset$) and a unary function symbol |Sing| for
 the function that builds a singleton set from an ``element''.
 %
-All non-variable terms so far are |{}|, |S {}|, |S (S {})|, \ldots
+All non-variable terms so far are |{}|, |Sing {}|, |Sing (Sing {})|, \ldots
 %
 The first set is empty but all the others denote (different)
 one-element sets.
@@ -31,7 +31,7 @@ Next we add two binary function symbols for union and intersection of
 sets (denoted by terms).
 %
 Using union we can build sets of more than one element, for example
-|Union (S {}) (S (S {}))| which has two ``elements'': |{}| and |S {}|.
+|Union (Sing {}) (Sing (Sing {}))| which has two ``elements'': |{}| and |Sing {}|.
 %
 
 In pure set theory we don't actually have any distinguished
@@ -49,16 +49,16 @@ cardinality 0, 1, 2, and 3.
 There is really just one set of cardinality 0: the empty set |s0 =
 {}|.
 %
-Using |S| we can then construct |s1 = S s0| of cardinality 1.
+Using |Sing| we can then construct |s1 = Sing s0| of cardinality 1.
 %
-Continuing in this manner we can build |s2 = S s1|, also of
+Continuing in this manner we can build |s2 = Sing s1|, also of
 cardinality 1, and so on.
 %
 Now we can combine different sets (like |s1| and |s2|) with |Union| to
 build sets of cardinality 2: |s3 = Union s1 s2|, |s4 = Union s2 s3|, etc.
 %
-And we can at any point apply |S| to get back a new set of cardinality
-1, like |s5 = S s3|.
+And we can at any point apply |Sing| to get back a new set of cardinality
+1, like |s5 = Sing s3|.
 
 \paragraph{Natural numbers}
 %
@@ -75,7 +75,7 @@ Here is some pseudocode defining the ``von Neumann'' encoding:
   vN 0      = {}
   vN (n+1)  = step (vN n)
 
-  step x = Union x (S x)
+  step x = Union x (Sing x)
 \end{spec}
 %
 If we use conventional set notation we get |vN 0 = {}|, |vN 1 = {{}}|,
@@ -95,17 +95,17 @@ of the DSLsofMath course.}
 The constructions presented so far show that, even starting from no
 elements, we can embed all natural numbers in pure set theory.
 %
-We can also embed unordered pairs: |{a, b} =~= Union (S a) (S b)|
-and normal, ordered pairs: |(a, b) =~= {S a, {a, b}}|.
+We can also embed unordered pairs: |{a, b} =~= Union (Sing a) (Sing b)|
+and normal, ordered pairs: |(a, b) =~= {Sing a, {a, b}}|.
 %
-% |{S a, {a, b}} = Union (S (S a)) (S (Union (S a) (S b)))|
+% |{Sing a, {a, b}} = Union (Sing (Sing a)) (Sing (Union (Sing a) (Sing b)))|
 With a bit more machinery it is possible to step by step encode |Nat|,
 |ZZ|, |QQ|, |REAL|, and |COMPLEX|.
 %
 A good read in this direction is ``The Haskell Road to Logic, Maths
 and Programming'' \citep{doets-haskellroadto-2004}.
 
-%*TODO: Perhaps add a bit about laws for pure set theory: x /= S x, Commutative(Union), etc.
+%*TODO: Perhaps add a bit about laws for pure set theory: x /= Sing x, Commutative(Union), etc.
 
 \subsection{Project: DSLs, sets and von Neumann}
 \label{dsls-sets-and-von-neumann}
@@ -130,7 +130,7 @@ with variables of type |v| (as in \cref{sec:polyvar}) and a datatype
 \begin{itemize}
 
 \item the |Empty| set
-\item the one-element set constructor |Singleton|
+\item the one-element set constructor |Sing| (short for ``singleton'')
 \item |Union|, and |Intersection|
   \begin{itemize}
   \item you can also try |Powerset|
@@ -172,7 +172,7 @@ sets is defined recursively as
 \begin{spec}
   vonNeumann 0        =  Empty
   vonNeumann (n + 1)  =  Union  (vonNeumann n)
-                                (Singleton (vonNeumann n))
+                                (Sing (vonNeumann n))
 \end{spec}
 
 Implement |vonNeumann| and explore, explain and implement the following
