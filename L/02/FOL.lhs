@@ -72,7 +72,7 @@ predicate symbols or formulas.
 %
 As an arbitrary example, if we have the predicate symbols |Positive| of
 arity |1| and |LessThan| of arity |2| we can form \emph{formulas} like
-|Positive(x)|, |LessThan(f(x,x),y)|, etc.
+|Positive#(x)|, |LessThan#(f#(x,x),y)|, etc.
 %
 Note that we have two separate layers, with terms at the bottom:
 %
@@ -93,8 +93,8 @@ first the logical connectives from the propositional calculus:
 Thus the following are examples of FOL formulas:
 %
 \begin{spec}
-  Forall x (Positive(x) => (Exists y (LessThan(f(x,x),y))))
-  Forall x (Forall y (Equal(plus(x,y),plus(y,x))))   -- |plus| is commutative
+  Forall x (Positive#(x) => (Exists y (LessThan#(f#(x,x),y))))
+  Forall x (Forall y (Equal#(plus#(x,y),plus#(y,x))))            -- |plus| is commutative
 \end{spec}
 %
 Here is the second formula again, but with infix operators:
@@ -108,7 +108,7 @@ while |(+)| is a binary function symbol (written |plus| above).
 
 
 
-% 
+%
 The fact that quantification is over individuals is a defining
 characteristic of FOL.  If one were to, say, quantify over predicates,
 we would have a higher-order logic, with completely different properties.
@@ -165,7 +165,7 @@ So we would use the following type, and go our merry way for most cases:
 eval :: FOL -> (VarT -> RatSem) -> Bool
 eval formula env = ev formula
   where  ev (PName n args)  = eval0 n (map (flip evalRat env) args)
-         ev (Equal a b)     = evalRat a env == evalRat b env       
+         ev (Equal a b)     = evalRat a env == evalRat b env
          ev (And p q)       = ev p  &&  ev q
          ev (Or  p q)       = ev p  ||  ev q
 \end{code}
@@ -209,9 +209,9 @@ of |And|.
 To see this, we can begin by generalising the binary operator |And| to
 an |n|-ary version: |Andn|.
 %
-To prove |Andn(A1,A2, ..., An)| we need a proof of each |Ai|.
+To prove |Andn#(A1,A2, ..., An)| we need a proof of each |Ai|.
 %
-Thus we could define |Andn(A1,A2, ..., An) = A1 & A2 & ... & An| where
+Thus we could define |Andn#(A1,A2, ..., An) = A1 & A2 & ... & An| where
 |&| is the infix version of binary |And|.
 %
 The next step is to require the formulas |Ai| to be of the same form, i.e.\ the result of applying a constant function |A| to
@@ -220,22 +220,22 @@ the individual |i|.
 And, we can think of the variable |i| ranging over the full set of
 individuals |i1|, |i2|, \ldots.
 %
-Then the final step is to introduce the notation |Forall i A(i)| for
-|A(i1) & A(i2) & ... |.
+Then the final step is to introduce the notation |Forall i (A#(i))| for
+|A#(i1) & A#(i2) & ... |.
 %
 
-Now, a proof of |Forall x A(x)| should in some way contain a proof of
-|A(x)| for every possible |x|.
+Now, a proof of |Forall x (A#(x))| should in some way contain a proof of
+|A#(x)| for every possible |x|.
 %
 For the binary |And| we simply provide the two proofs, but in the
 infinite case, we need an infinite collection of proofs.
 %
 To do so, a possible procedure is to introduce a fresh (meaning that
 we know nothing about this new term) constant term |a| and prove
-|A(a)|.
+|A#(a)|.
 %
-Intuitively, if we can show |A(a)| without knowing anything about |a|,
-we have proved |Forall x A(x)|.
+Intuitively, if we can show |A#(a)| without knowing anything about |a|,
+we have proved |Forall x (A#(x))|.
 %
 Another way to view this is to say that a proof of |Forall x (P x)| is
 a function |f| from individuals to proofs such that |f t| is a proof
@@ -283,17 +283,17 @@ quantifiers in natural language.
 Let us now consider the elimination rule for universal
 quantification.
 %
-The idea here is that if |A(x)| holds for every abstract individual
+The idea here is that if |A#(x)| holds for every abstract individual
 |x|, then it also holds for any concrete individual |a|:
 \(\frac{∀x. A(x)}{A(a)}\).
 %
 As for |And| we had to provide the other argument to recover |p `And`
-q|, here we have to be able reconstruct the general form |A(x)| ---
+q|, here we have to be able reconstruct the general form |A#(x)| ---
 indeed, it is not simply a matter of substituting |x| for |a|, because
 there can be several occurrences of |a| in the formula to prove.
 %
 So, in fact, the proof constructor must contain the general form
-|A(x)|, for example as a function from individuals:
+|A#(x)|, for example as a function from individuals:
 %
 |AllElim :: (RatSem -> Prop) -> Proof -> Proof|.
 
@@ -330,15 +330,15 @@ quantifier as a generalisation of |Or|.
 
 First we generalise the binary |Or| to an |n|-ary |Orn|.
 %
-To prove |Orn A1 A2 ... An| it is enough (and necessary) to find one
+To prove |Orn#(A1, A2, ..., An)| it is enough (and necessary) to find one
 |i| for which we can prove |Ai|.
 %
 As before we then take the step from a family of formulas |Ai| to a single
-unary predicate |A| expressing the formulas |A(i)| for the (term)
+unary predicate |A| expressing the formulas |A#(i)| for the (term)
 variable |i|.
 %
 Then the final step is to take the disjunction of this infinite set of formulas
-to obtain |Exists i (A i)|.
+to obtain |Exists i (A#(i))|.
 
 The introduction and elimination rules for existential quantification are:
 %
@@ -375,7 +375,7 @@ The constructors for proofs can be |ExistsIntro :: RatSem -> Proof ->
 Proof| and |ExistsElim :: Proof -> Proof -> Proof|.
 %
 In this case we would have |i| as the first argument of |ExistsIntro| and
-a proof of |A(i)| as its second argument.
+a proof of |A#(i)| as its second argument.
 
 \begin{exercise}
   Sketch the |proofChecker| cases for existential quantification.
@@ -457,7 +457,7 @@ Therefore, one would have to use a different tool than Haskell as a
 proof assistant for (intuitionistic) FOL.
 %
 The quantification that Haskell provides (|forall a? ...|) is \emph{over
-  types} rather than individuals.%
+  types} rather than individuals.
 %
 What we would need is:
 %

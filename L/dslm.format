@@ -264,3 +264,6 @@
 %format ... = "\ldots"
 %format rowvec m = "\rowvec{" m "}"
 %format rowvecc m0 mn = "\rowvecc{" m0 "}{" mn "}"
+
+% Use when no space is wanted (in math-mode simulated by Haskell-mode: |f#(x)| for \(f(x)\)).
+%format # = " "
