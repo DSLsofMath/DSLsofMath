@@ -15,7 +15,7 @@ The formula ``x is irrational'' is just |not(R x)| where |R| is the
 predicate ``is rational''.\footnote{In fact we additionally require the rational to be normalised (no common factor between the denominator and numerator) to simplify the proof.}
 %
 \begin{spec}
-  R x = Exists (a:ZZ) (Exists (b:Pos) (b*x==a & GCD(a,b)==1))
+  R x = Exists (a:ZZ) (Exists (b:Pos) (b*x==a & GCD#(a,b)==1))
 \end{spec}
 The pattern ``proof by contradiction'' says that a way to prove some
 statement |P| is to assume |not P| and derive something absurd.
@@ -27,7 +27,7 @@ The traditional ``absurd'' statement is to prove simultaneously some
 |Q| and |not Q|, for example.
 
 Let us take |P = not (R r)| so that |not P = not (not (R r)) = R r|
-and try with |Q = GCD(a,b)==1|.
+and try with |Q = GCD#(a,b)==1|.
 %
 Assuming |not P| we immediately get |Q| so what we need is to prove
 |not Q|, that is |GCD(a,b)/=1|.
@@ -44,7 +44,7 @@ But then |b^2*2==a^2==4*c^2| which means that |b^2==2*c^2|.
 By the same reasoning again we have that also |b| is even.
 %
 But then |2| is a factor of both |a| and |b|, which means that
-|GCD(a,b)>=2|, which in turn implies |not Q|.
+|2| is a factor of |GCD#(a,b)|, which in turn implies |not Q|.
 
 To sum up: by assuming |not P| we can prove both |Q| and |not Q|.
 %

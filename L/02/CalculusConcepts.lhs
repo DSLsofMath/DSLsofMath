@@ -1,4 +1,3 @@
-
 \section{Basic concepts of calculus}
 
 Now we have built up quite a bit of machinery to express logic

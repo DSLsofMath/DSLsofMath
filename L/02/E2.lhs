@@ -6,7 +6,11 @@
 % TODO: Perhaps introduce GADT datatype notation use in some exercise solutions
 
 \begin{exercise}
-  Define a function for De Morgan dualisation.
+
+  Define a function |doNot : Prop -> Prop| for De Morgan dualisation,
+  such that |eval (doNot e) == eval (Not e)| and so that the only
+  remaining uses of |Not| are on |Name|s.
+
 \end{exercise}
 
 \begin{exercise}
@@ -52,10 +56,12 @@
 
 \subsection{Proofs}
 \label{exercises-for-dslsofmath-week-2-2017}
+\vspace*{-1em}
 \begin{code}
 {-# LANGUAGE EmptyCase #-}
 import PropositionalLogic
 \end{code}
+\vspace*{-3em}
 %
 \paragraph{Short technical note}\label{short-technical-note}
 %
@@ -281,16 +287,16 @@ monotonic) without formalisation.
   predicate |Q|):
 
   \begin{spec}
-    C(f)        =  ∀ c : X? Cat(f,c)
-    Cat(f,c)    =  ∀ ε > 0? ∃ δ > 0? Q(f,c,ε,δ)
-    Q(f,c,ε,δ)  =  ∀ x : X?  absBar(x - c) < δ  ⇒  absBar(f x - f c) < ε
+    C#(f)        =  ∀ c : X? Cat#(f,c)
+    Cat#(f,c)    =  ∀ ε > 0? ∃ δ > 0? Q#(f,c,ε,δ)
+    Q#(f,c,ε,δ)  =  ∀ x : X?  absBar(x - c) < δ  ⇒  absBar(f x - f c) < ε
   \end{spec}
 
   By moving the existential quantifier outwards we can introduce the
   function |getδ| which computes the required |δ| from |c| and |ε|:
 
   \begin{spec}
-      C'(f)       =  ∃ getδ : X -> RPos -> RPos? ∀ c : X? ∀ ε > 0? Q(f,c,ε,getδ c ε)
+      C'#(f)       =  ∃ getδ : X -> RPos -> RPos? ∀ c : X? ∀ ε > 0? Q#(f,c,ε,getδ c ε)
   \end{spec}
 
   Now, consider this definition of \emph{uniform continuity}:
@@ -304,15 +310,15 @@ monotonic) without formalisation.
 
   \begin{enumerate}
 
-  \item Write the definition of |UC(f)| = ``|f| is uniformly
+  \item Write the definition of |UC#(f)| = ``|f| is uniformly
     continuous'' formally, using logical connectives and quantifiers.
     Try to use |Q|.
 
-  \item Transform |UC(f)| into a new definition |UC'(f)| by
-    a transformation similar to the one from |C(f)| to |C'(f)|.
+  \item Transform |UC#(f)| into a new definition |UC'#(f)| by
+    a transformation similar to the one from |C#(f)| to |C'#(f)|.
     Explain the new function |newδ| introduced.
 
-  \item Prove that |∀ f : X -> ℝ? UC'(f) => C'(f)|. Explain
+  \item Prove that |∀ f : X -> ℝ? UC'#(f) => C'#(f)|. Explain
     your reasoning in terms of |getδ| and |newδ|.
 
   \end{enumerate}

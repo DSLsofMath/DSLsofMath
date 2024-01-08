@@ -179,11 +179,16 @@
 +in the Haskell data type representing our proof DSL.
 #+END_SRC
 *** Around line 649
-#+END_SRC
+#+BEGIN_SRC diff
 -theorem-proving in mind.  For this reason it is easily possible make
 +theorem-proving in mind.  For this reason it is easily possible to make
 #+END_SRC
-
+** L/02/Examples.lhs
+*** Around line 47
+#+BEGIN_SRC diff
+-|GCD(a,b)>=2|, which in turn implies |not Q|.
++|2| is a factor of |GCD#(a,b)|, which in turn implies |not Q|.
+#+END_SRC
 ** L/02/CalculusConcepts.lhs
 *** Around line 255
 #+BEGIN_SRC diff
