@@ -14,9 +14,19 @@
 \newcommand{\ex}[1]{\section*{Exercise #1}}
 \newcommand{\subex}[1]{\subsection*{Part #1}}
 
+\newcommand{\back}{\char`\\}
+
 \tikzset{level/.style={sibling distance={2.5cm/#1}}}
 
+\title{Demo Session Notes}
+\author{Rachel Samuelsson}
+\date{Week 1}
+
 \begin{document}
+
+\maketitle
+
+If you want to play with this haskell code yourself can load the source for this document (the \texttt{.lhs} file, not the \texttt{.pdf} one) in ghci, just like any other haskell file.
 
 \ex{1.1}
 
@@ -144,12 +154,83 @@ eval (Var s) = varVal s
 We can then evaluate $c_1$ and see that it evaluates to $-2600$.
 
 \ex{1.2}
-\textbf{TODO}
+
+Note that in the previous exercise we chose to look only at evaluations to the integers, and our constant contstructor \texttt{Con} only took integers. In reality there are many more types for which it makes sense to talk about addition, subtraction, and multiplication, so we may want to talk about expressions over many types. To this end the exercise introduces a new type:
+\begin{code}
+data E2 a = Con' a
+          | Var' String
+          | Plus'  (E2 a) (E2 a)
+          | Minus' (E2 a) (E2 a)
+          | Times' (E2 a) (E2 a)
+\end{code}
+\textbf{Note:} The constructors are given a name ending in \texttt{'} here, unlike the exercise, this is due to Haskell not allowing multiple constructors of the same name being defined in one file, and this file being a valid Literate Haskell file.
+
+\subex{1}
+
+Translating expressions into this type is exactly analagous to before, except now we can have \texttt{Con} values which are not integers.
+
+\subex{2}
+
+There is another, arguably bigger, issue with the first implementation: the way names are associated to values. Associating names to values with a hardcoded function requires one to change the function each time the value of a variable is supposed to be changed. It would be nicer if the evaluation function used a table which was easier to edit. In Haskell we define the type of a table to be a list of pairs of strings and values. 
+\begin{code}
+type Table a = [(String, a)]
+\end{code}
+We think of \texttt{x} having value \texttt{5}, if the list contains an entry \texttt{("x", 5)}.
+
+We then define the given table in code by writing a list of all the name, value pairs.
+\begin{code}
+vars :: Table Double
+vars = [ ("a", 1.5)
+       , ("b", 4.8)
+       , ("c", 2.4)
+       , ("d", 7.4)
+       , ("e", 5.8)
+       , ("f", 1.7)
+       ]
+\end{code}
+
+In order to be able to retrieve the value of a variable we need a function which takes a teble, and a string, and returns the proper table. We do this by recursing on the list till we find a matching string.
+\begin{code}
+varVal' :: Table a -> String -> a
+varVal' ((str, val):xs) s
+  | str == s = val
+  | otherwise = varVal' xs s
+\end{code}
+\textbf{Note:} if the name is not in the list this function will error.
+
+We are now ready to update the evaluation function. The new function will take a table, in addition to an expression, which will define the variable names. Now we decide what variables to use when we call the function, not when we write it. Most of the function will be the same, we only really need to add the new table argument, remember to pass it on when we recurse, and use the new varVal to look up variables.
+\begin{code}
+eval' :: Num a => Table a -> E2 a -> a
+eval' table (Con' i) = i
+eval' table (Plus' e1 e2) = eval' table e1 + eval' table e2
+eval' table (Minus' e1 e2) = eval' table e1 - eval' table e2
+eval' table (Times' e1 e2) = eval' table e1 * eval' table e2
+eval' table (Var' s) = varVal' table s
+\end{code}
 
 \ex{1.7}
-\textbf{TODO}
+We want to show that having a function from the type \texttt{Either b c} to \texttt{a} is the same as having a pair of functions \texttt{b -> a} and \texttt{c -> a}. Intuitively this makes sense, as when we want to define a function out of the \texttt{Either} type, we usually do so by pattern matching on the \texttt{Left} and \texttt{Right} constructors, which requires us to give a case, or a function, for both types.
 
-\ex{1.14}
+The way we prove these are the same are by giving functions back and forth. The first of which is \texttt{s2p :: (Either a b -> c) -> (b -> a, c -> a)}. We know this function should look something like \texttt{s2p f = x}, where \texttt{x :: (b -> a, c -> a)}. As \texttt{x} is a pair we could then try to construct a pair ourselfs, which yields \texttt{s2p f = (g, h)}, where \texttt{g :: b -> a} and \texttt{h :: c -> a}. Continuing this pattern we realise we need functions and use lambdas, which gives us \texttt{s2p f = (\back b -> a1, \back c -> a2)}. We then only need to construct \texttt{a1, a2 :: a}. We can do this using the function \texttt{f :: Either a b -> c}, given as an input, by first applying \texttt{Left} to \texttt{a} and \texttt{Right} to \texttt{b}.
+\begin{code}
+s2p :: (Either b c -> a) -> (b -> a, c -> a)
+s2p f = (\a -> f (Left a), \b -> f (Right b))
+\end{code}
+
+If we wish to, we could rewrite this using function composition
+\begin{code}
+s2p' :: (Either b c -> a) -> (b -> a, c -> a)
+s2p' f = (f . Left, f . Right)
+\end{code}
+
+The other direction of the equivalence was already hinted at, with the intuiton I gave above. We can patter match on the \texttt{Either b c}, and apply one of the functions given as an input depending on if we matched on \texttt{Left} or \texttt{Right}. Note that the function arrows in Haskell are right associative (if there are no parenthesis written out, they are implicitly grouped to the right, e.g \texttt{a -> b -> c -> d} means \texttt{a -> (b -> (c -> d))}), as such, we can match on the either from the returned function as well.
+\begin{code}
+p2s :: (b -> a, c -> a) -> (Either b c -> a)
+p2s (f, g) (Left a) = f a
+p2s (f, g) (Right b) = g b
+\end{code}
+
+\ex{1.14 (If there is time)}
 \textbf{TODO?}
 
 \end{document}
