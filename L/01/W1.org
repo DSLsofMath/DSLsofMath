@@ -26,11 +26,12 @@ DSLsofMath week 1: a short summary / overview
   It is not enough to just focus on the labs.
 + Patrik's advice: *read the book*, solve exercises: Ch. N = Week N
 ** Course evaluation: student representatives
-| Prg | Namn |   |
-|-----+------+---|
-| D   | TODO |   |
-| IT  | TODO |   |
-| DV  | TODO |   |
+| Prg   | Name          | Email                 |
+|-------+---------------+-----------------------|
+| D     | Adam Lindholm | adalindh@chalmers.se  |
+| D     | Egil Morén    | egil.moren@gmail.com  |
+| D     | Simon Uggla   | simon.uggla@gmail.com |
+| IT/DV | TODO          |                       |
 + Get in touch if you want to join the group!
 ** Learning outcomes (for the whole course, english version)
 *** KU = Knowledge and Understanding
