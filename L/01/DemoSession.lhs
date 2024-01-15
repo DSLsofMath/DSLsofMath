@@ -26,7 +26,7 @@
 
 \maketitle
 
-If you want to play with this haskell code yourself can load the source for this document (the \texttt{.lhs} file, not the \texttt{.pdf} one) in ghci, just like any other haskell file.
+If you want to play with this haskell code yourself can load the source for this document (the \texttt{.lhs} file, not the \texttt{.pdf}) in ghci, just like any other haskell file.
 
 \ex{1.1}
 
@@ -89,7 +89,6 @@ Another approach is to draw the expressions as trees, where a node is an operati
 
 This is nice cause it lets us easily see what the outermost operation is at each point, which is a bit harder in infix expressions. Generally it can be benifical to think about expressions as trees, rather than strings of symbols/text.
 
-\newpage
 We can now translate these into Haskell by replacing the operands with their corresponding constructor by taking the left tree as the first argument and the right as the second. Numbers are translated using the \texttt{Con} constructor.
 \begin{code}
 a1, a2, a3 :: Exp
@@ -155,7 +154,7 @@ We can then evaluate $c_1$ and see that it evaluates to $-2600$.
 
 \ex{1.2}
 
-Note that in the previous exercise we chose to look only at evaluations to the integers, and our constant contstructor \texttt{Con} only took integers. In reality there are many more types for which it makes sense to talk about addition, subtraction, and multiplication, so we may want to talk about expressions over many types. To this end the exercise introduces a new type:
+Note that in the previous exercise we chose to look only at evaluations to the integers, and the constant contstructor \texttt{Con} only took integers. In reality there are many more types for which it makes sense to talk about addition, subtraction, and multiplication, so we may want to talk about expressions over many types. To this end the exercise introduces a new type:
 \begin{code}
 data E2 a = Con' a
           | Var' String
@@ -230,8 +229,36 @@ p2s (f, g) (Left a) = f a
 p2s (f, g) (Right b) = g b
 \end{code}
 
-\ex{1.14 (If there is time)}
-\textbf{TODO?}
+\ex{1.11}
+
+Recall the type \texttt{ComplexSyn r} from the book:
+\begin{code}
+data ComplexSyn r
+  = ToComplexCart r r
+  | ComplexSyn r :+: ComplexSyn r
+  | ComplexSyn r :*: ComplexSyn r
+\end{code}
+
+\subex{0}
+
+Since eval is applied to e, e must be of type \texttt{ComplexSyn r}, we also see that \texttt{e} is compared to the result of the embed function, which also indicates the type is \texttt{ComplexSyn p}.
+
+\subex{1}
+
+The equality for the syntax just tells us how things are written. Here $1 + 1 \neq 2$, since they are different syntactic representations, even if they have the same semantics (value).
+
+\subex{2}
+
+Using the syntactic equality \texttt{embed (eval s)} is equal to \texttt{s} only if \texttt{s} is of the form \texttt{ToComplexCart x y}, as that is all \texttt{embed} outputs. However, using equality up to evaluation we have
+\begin{code_tex}
+      embed (eval s) == s 
+      -- up to eval
+  <=> eval (embed (eval s)) == eval s
+      -- eval (embed x) == x for all x
+      -- thus eval (embed (eval s)) == eval s, with x = eval s
+  <=> eval s == s
+\end{code_tex}
+
+Meaning it trivially holds up to evaluation.
 
 \end{document}
-
