@@ -7,6 +7,7 @@ DSLsofMath week 1: a short summary / overview
 + [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][paper+PDF]]  for the course book: [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][Adlibris]] + [[https://chalmers.instructure.com/courses/27857/files/folder/Book][PDF]] + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/errata.org][errata]]
 + [[https://github.com/DSLsofMath/DSLsofMath][github]]     for source code of the lectures + book (in [[https://github.com/DSLsofMath/DSLsofMath/tree/master/L][subdir L/]])
 + [[https://dslsofmath2024.slack.com/][slack]]      for course communication / discussion forum
++([[https://github.com/DSLsofMath/DSLsofMath/tree/master/L#readme][YouTube]]    for recorded lectures from 2021 and 2022)
 ** Examination
 + *Written Exam*         -> grade U/3/4/5
 + *2 Assignments (labs)* -> Pass/fail grade
@@ -18,13 +19,13 @@ DSLsofMath week 1: a short summary / overview
        1.4 (Counting Maybes),
        1.8 (Composing sequences),
        1.12 (Polar complex)
-+ See Chapter 1 in the book.
-+ Make sure to *read the chapter first*, and ask questions if anything is unclear.
++ See Chapter 1 in the book and *ask questions* if anything is unclear.
++ Make sure to *read the chapter* as well.
 ** Reminder about spending time on the course:
 + Advice from last years' students:
   spending time on the course pays off.
   It is not enough to just focus on the labs.
-+ Patrik's advice: *read the book*, solve exercises: Ch. N = Week N
++ Patrik's advice: read the book, solve exercises: Ch. N = Week N
 ** Course evaluation: student representatives
 | Prg   | Name          | Email                 |
 |-------+---------------+-----------------------|
@@ -45,6 +46,10 @@ DSLsofMath week 1: a short summary / overview
 + SA.Laplace  = use Laplace transforms for solving differential equations
 *** JA = Judgement and Approach
 + JA = discuss and compare different software implementations of mathematical concepts
+** Other info
++ DSLM Teaching team will come by at 14.50 to say hi.
++ Please fill in "Studentbarometern" (see school mail for individual link).
++ [[https://chalmerscoding.club/][Chalmers Challenge]] (Julia Mårtensson at 14.55).
 * L1.1 learning outcomes:
 ** What is a Domain-Specific Language (DSL)
 A DSL has four components:
