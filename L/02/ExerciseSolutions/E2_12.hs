@@ -53,7 +53,7 @@ doNot (Name n)  = Not (Name n)
 doNot (Not p)   = case doNot p of
   Not e -> e
   Con b -> Con (not b)
-  e     -> Not e
+  e     -> doNot e
 doNot (Implies p q) = doNot (Or (Not p) q)
 
 -- Some test examples:
