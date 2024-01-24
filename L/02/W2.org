@@ -1,5 +1,10 @@
 *DSLs of Mathematics, Week 2*
 * Admin:
+** Bonus exercises:
++ Good work on Week 1: more than 20 submissions.
++ Hand-in is online (via canvas) before the exercise session
++ Then be ready (in person) to present/answer questions about your
+  submission (in a separate room, with one TA).
 ** Extra Haskell lectures online [recommended watching]
 + Three YouTube videos about Haskell and "type driven development" are
   online covering: polymorphic functions, product types |(a,b)| and
@@ -11,7 +16,7 @@
 + tldr; study week N = book chapter N.
 ** [[https://chalmers.instructure.com/courses/27857/assignments/81051][Assignment 1]]: (deadline 2024-01-30)
 + Monday 2023-02-05: "Presentation" (Q&A) slots
-* Lecture 2.1 ([[https://jamboard.google.com/d/13gEobT8LWbY7bmMztKO2_ZVEESI87d-ngF3aogZeiOc/viewer?f=0][L2.1 Jamboard]])
+* Lecture 2.1 (2023: [[https://jamboard.google.com/d/13gEobT8LWbY7bmMztKO2_ZVEESI87d-ngF3aogZeiOc/viewer?f=0][L2.1 Jamboard]] - now on the black-board)
 ** DSL for Prop = Propositional Calculus (Satslogik)
 + syntax examples
 + (truth tables)
@@ -30,6 +35,19 @@
 + eval for Prop without variable names
 + add table for name lookup
 + generalise: polymorphic lifting functions
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

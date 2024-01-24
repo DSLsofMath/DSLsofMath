@@ -40,5 +40,3 @@ main = do
   testF
   testD
 \end{code}
-
-
