@@ -15,11 +15,13 @@ Learning outcomes
 + A1: discuss and compare different software implementations of mathematical concepts
 
 * Tuesday
-** Week 3, Lecture 1: [[file:LimFun_slides.lhs][LimFun_slides.lhs]], [[https://jamboard.google.com/d/1sqDpuri01uQkep0tA9g_AgRfMMHwTceI8iVTNTfEuo4/edit?usp=sharing][Jamboard L3.1]]
+** Week 3, Lecture 1: [[file:LimFun_slides.lhs][LimFun_slides.lhs]] + work on the blackboard
 + limit of a function (math text -> logic, scoping, lim)
 + types for some examples, most importantly D : (X->Y) -> (X->Y)
 + using lim to define |D|
 + some derivatives from the definition
+  D (^2) = (2*)
+  D (f+g) = D f + D g
 + Later (Exc. session): [[file:Live_3_1.lhs][Live coding derivatives]]
 ** Week 2, Lecture 3: DSL of proofs, Curry-Howard, proof examples
 + AndIntro, OrIntroL, OrIntroR

@@ -254,3 +254,94 @@ We need the ``source code'' of |f| to apply rules from calculus.
 \end{frame}
 %% -------------------------------------------------------------------
 \end{document}
+
+* Compute (D sq):
+
+sq : R -> R
+sq x = x^2
+sq = (^2)
+
+  psi sq x h
+=  -- Def. of psi
+  (sq (x+h) - sq x)/h
+=  -- Def. of sq
+  ((x+h)^2 - x^2)/h
+=  -- Expand first square
+  (x^2 + 2*x*h + h^2 - x^2)/h
+=  -- Simplify / cancel terms
+  (2*x*h + h^2)/h
+=  -- Simplify / perform division
+  2*x + h
+Thus
+  psi sq x h = 2*x + h
+or equvalently
+  psi sq x = (2*x +)   :: R+ -> R
+
+Now we can compute the derivative:
+  D sq x
+= -- Def. of D
+  lim 0 (psi sq x)
+= -- Def. of psi
+  lim 0 (2*x +)
+= -- limit of continuous function
+  2*x + 0
+= -- simplify
+  2*x
+
+Thus
+  D sq x = 2*x
+or, equvalently,
+  D sq = (2*)
+  
+
+----------------------------------------------------------------
+* Compute D (f+g)
+
+Assume we have derivatives for f and g, what is the derivative for
+(f+g)?
+
+First question: what kind of plus is this?  To avoid confusion, let us
+write (.+) for this ``function addition'' or ``pointwise addition
+operator''.
+
+(.+) :: Num b => (a->b) -> (a->b) -> (a->b)
+(.+) f g x = (f x) + (g x)
+
+Then, let's start by computing psi (f.+g)
+
+  psi (f.+g) x h
+= -- Def. of psi
+  ((f.+g) (x+h) - (f.+g) x)/h
+= -- Def. of (.+)
+  ((f (x+h) + g (x+h)) - ((f x) + (g x)))/h
+= -- Simplify / collect terms related to f and related to g
+  (f (x+h) - f x)/h  +  (g (x+h) - g x)/h
+= -- Def. of psi (twice)
+  psi f x h  + psi g x h
+= -- Def. of (.+)
+  (psi f x  .+  psi g x) h
+
+Thus
+  psi (f.+g) x h = (psi f x  .+  psi g x) h
+or, equvalently,
+  psi (f.+g) x   =  psi f x  .+  psi g x 
+
+Now we can compute D (f.+g)
+
+  D (f.+g) x
+= -- Def. of D
+  lim 0 (psi (f.+g) x)
+= -- Calc. above
+  lim 0 (psi f x  .+  psi g x)
+= -- lim is linear
+  lim 0 (psi f x)  +  lim 0 (psi g x)
+= -- Def. of D (twice)
+  D f x  +  D g x
+= -- Def. of .+
+  (D f  .+  D g) x
+
+Thus we have computed
+  D (f.+g) x =   (D f .+ D g) x
+or, equvalently,
+  D (f.+g)   =    D f .+ D g
+  

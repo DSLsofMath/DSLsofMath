@@ -1,3 +1,4 @@
+{-# LANGUAGE GADTs #-}
 -- Lecture 2.2: First order logic (FOL)
 -- ====================================
 
