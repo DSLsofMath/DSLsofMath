@@ -1,83 +1,79 @@
+\begin{code}
+module Live_3_1_2024 where
+type REAL = Double
+\end{code}
 deriv :: (X->Y) -> (X->Y)
 deriv f = ???
 
 + Attempt 1: pattern matching on "semantic functions"?
+  derivSem (f .+ g) = derivSem f .+ derivSem g
+  derivSem (c <* f) = c <* derivSem f
 + Attempt 2: using lim and psi?
-+ Attempt 3: build a DSL (called FunExp)
+  (how to pick h?)
++ Attempt 3: build a DSL SynF (later called FunExp)
 
 * Live coding
 DSL for derivatives ={here} a DSL for 1-argument functions (or 1-var. epressions)
 
+
+** Attempt 2:
+
 Example functions / expressions:
 
-Vi kan inte "plocka isär" en allmän funktion (i Haskell).
-
-  derivSem (f .+ g) = derivSem f .+ derivSem g
-  derivSem (c .* f) = c .* derivSem f
-
 \begin{code}
-
 sq x = x^2
 tw x = 2*x
 c2 x = 2
 type X = REAL
 type Y = REAL
 type H = REAL -- except for zero
+\end{code}
 
+Definition from the book / slides / blackboard:
+\begin{code}
 psi :: (X->Y) -> X -> H -> Y
 psi f x h = (f (x+h) - f x)/h
-
-t1 :: X -> H -> Y
-t1 = psi sq -- leder inte till rätt väg
-
-exempel = map (t1 1) (iterate (/10) 1)
 
 derivSem :: (X->Y) -> (X->Y)
 derivSem f x = lim 0 (psi f x)
 
 lim :: X -> (X->Y) -> Y
-lim a g = error "TODO"
+lim a g = error "TODO" -- cannot be implemented in general
+\end{code}
 
-type REAL = Double
+What goes wrong with attempt 2?
+\begin{code}
+t1 :: X -> H -> Y
+t1 = psi sq
 
--- Syntax datatype for 1-argument function expressions 
-type Nat = Int
+smallh :: [H]
+smallh = iterate (/10) 1
+example :: [Y]
+example = map (t1 1) smallh
+showExample :: IO ()
+showExample = mapM_ print (take 20 example)
+\end{code}
 
-data SynF = Sq | Tw | Con REAL | X | Pow SynF REAL
-          | Add SynF SynF
-          | Mul SynF SynF
+Attempt 3: A Domain-Specific Language approach
+
+Reminder: each DSL needs
++ a type of syntax trees:     Syn
++ a type of semantic values:         Sem
++ a function          eval :: Syn -> Sem
+
+We can then start crafting the DSL step by step.
+\begin{code}
+-- Syntax datatype for 1-argument function expressions
+data SynF = Sq  -- TODO
   deriving Show
 
-s1 = X
-s2 = Pow X 3
-s3 = Pow Sq 3
-s4 = Add s1 s2
-s5 = Mul X X
-
--- λ> deriv s4
--- ds4 = Add (Con 1.0) (Mul (Mul (Con 3.0) (Pow X 2.0)) (Con 1.0))
-ds4 = Add (Con 1.0) (Mul (Con 3.0) (Pow X 2.0))
-ds5 = Add X X
--- dds5 = Add (Add (Mul (Con 0.0) X) (Mul (Con 1.0) (Con 1.0))) (Add (Mul (Con 1.0) (Con 1.0)) (Mul X (Con 0.0)))
-dds5 = Add (Add (Mul (Con 0.0) X)
-                (Mul (Con 1.0) (Con 1.0)))
-
-           (Add (Mul (Con 1.0) (Con 1.0))
-                (Mul X (Con 0.0)))
-
-
-
+e1, e2, e3, e4 :: SynF
+(e1, e2, e3, e4) = error "TODO: examples"
 
 -- Semantic type   for 1-argument function expressions
 type SemF = REAL -> REAL
 eval :: SynF -> SemF
 eval Sq          = (^2)
-eval Tw          = (2*)
-eval (Con c)     = const c
-eval X           = \x -> x   -- id
-eval (Pow e n)   = \x -> (eval e x)**n
-eval (Add e1 e2) = eval e1 .+ eval e2
-eval (Mul e1 e2) = eval e1 .* eval e2
 
 (.+) :: SemF -> SemF -> SemF
 f .+ g = \x -> f x  +  g x
@@ -86,28 +82,25 @@ f .+ g = \x -> f x  +  g x
 f .* g = \x -> f x  *  g x
 
 deriv :: SynF -> SynF
-deriv Sq         = Tw
-deriv Tw         = Con 2
-deriv (Con c)    = Con 0
-deriv X          = Con 1
-deriv (Add e1 e2)= Add (deriv e1) (deriv e2)
-deriv (Pow e n)  = Mul (Mul (Con n) (Pow e (n-1)))
-                       (deriv e)
-                 -- n*e^(n-1) * deriv e
-deriv (Mul e1 e2)= Add (Mul (deriv e1) e2)
-                       (Mul e1 (deriv e2))
-  -- 
-e1, e2, e3, e4 :: SynF
-(e1, e2, e3, e4) = error "TODO: examples"
+deriv Sq         = error "TODO"
+
 \end{code}
 
-Each DSL needs
--- type of syntax trees:     Syn
--- type of semantic values:         Sem
--- a function        eval :: Syn -> Sem
 
 
-\begin{code}
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{spec}
 simplify :: SynF -> SynF
 simplify (Add e (Con 0)) = e
 simplify (Add (Con 0) e) = e
@@ -121,5 +114,4 @@ simplify e = e
   -- 0*e -> 0
   -- 0+e -> e
   -- etc.
-\end{code}
-
+\end{spec}

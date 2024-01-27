@@ -14,36 +14,42 @@ Learning outcomes
 ** Judgement and approach
 + A1: discuss and compare different software implementations of mathematical concepts
 
-* Tuesday
+* Tuesday (L3.1)
++ A1 submission deadline today (23.59).
++ Presentation slot / Q&A on Monday (2024-02-05).
 ** Week 3, Lecture 1: [[file:LimFun_slides.lhs][LimFun_slides.lhs]] + work on the blackboard
 + limit of a function (math text -> logic, scoping, lim)
 + types for some examples, most importantly D : (X->Y) -> (X->Y)
 + using lim to define |D|
-+ some derivatives from the definition
++ some derivatives from the definition (intro to calculational proofs
+  through equational reasoning)
+
   D (^2) = (2*)
   D (f+g) = D f + D g
-+ Later (Exc. session): [[file:Live_3_1.lhs][Live coding derivatives]]
-** Week 2, Lecture 3: DSL of proofs, Curry-Howard, proof examples
-+ AndIntro, OrIntroL, OrIntroR
-+ fst, snd, orElim
-+ Proof examples in mathematics (irrational (sqrt 2), ...)
-+ Later (Exc. session): Live-coding proof examples: [[file:~/src/DSLM/DSLsofMath/L/02/Live_2_3.lhs][Curry-Howard]]
 
-* Thursday
++ If there is time: [[file:Live_3_1_2024.lhs][Live coding derivatives]]
+
+* Thursday (L3.2)
 ** Week 3, Lecture 2, "slides" ([[https://jamboard.google.com/d/1jXX4nrptIAQu0NTi8YPF5ADuy8CyagBPHMx9vyz3_dI/viewer][Jamboard L3.2]])
-+ Partial derivatives
-+ [[file:LagrangeEqs.pdf][Lagrange Eq's]]
-+ Lagrange example
-** Week 3, Lecture 2 [[file:Live_3_2.lhs][Live coding]]
-+ Type classes
++ §3.2: Partial derivatives: practice analysing mathematical text again
+ [[./Book_Partial_p83.png]] 
+  + Get to def. of D1 : (R²->R)->(R²->R) using
+    psi1 f (x,y) h = (f(x+h,y)-f(x,y))/h
+  + mention "matching by name" versus "matching by position/index"    
++ 3.3: [[file:LagrangeEqs.pdf][Lagrange Eq's]]
++ (If time permits: Lagrange example - [[https://www.youtube.com/watch?v=wIxpj1H-wN8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=25&t=1311s][available on YouTube from earlier years]].)
+  L : T x Q x V -> R
+  L ( t , x , v) = -m*g*x + m*v²/2
+** Week 3, Lecture 2 [[file:Live_3_2_2024.lhs][Live coding]]
 + finish implementation of deriv : FunExp -> FunExp
++ Type classes
 + numeric instances for functions (x->a)
 
   Numeric classes in more detail
 
   function instances for numeric classes
 
-  General type classes in Haskell [see code below]
+  General type classes in Haskell
 
 
 

@@ -18,7 +18,7 @@ Lecture 3.2
 2. Define a "syntactic derivative" function
     deriv :: FunExp -> FunExp
 3. Define type classes Additive, Multiplicative, and some instances
-   (REAL, FunExp, functions).  
+   (REAL, FunExp, functions).
 
 ----------------
 1. Reminder about the DSL definition
@@ -34,10 +34,11 @@ data FunExp = C REAL
             | X
             | Add FunExp FunExp
             | Mul FunExp FunExp
+         -- | Sin FunExp | Exp FunExp | Div FunExp FunExp | ...
   deriving Show
 
 e1, e2, e3, e4 :: FunExp
-e1 = Add X X       -- 
+e1 = Add X X       --
 e2 = Mul X X
 e3 = Add e1 e2     -- \x ->  (x+x) + x^2
 e4 = Mul e3 e3
@@ -60,7 +61,7 @@ mulFun f g = \x -> f x  Prelude.*  g x
 2. Define a "syntactic derivative" function
     deriv :: FunExp -> FunExp
 
-Specification:   D (eval e) = eval (deriv e)
+Specification: Forall e:FunExp.  D (eval e) = eval (deriv e)
    (where D is not implementable in Haskell)
 \begin{code}
 deriv :: FunExp -> FunExp
@@ -76,15 +77,17 @@ deriv = error "TODO"
 
 
 3.2 Define type classes Additive, Multiplicative, and some instances
-   (Double, FunExp, functions).  
+   (Double, FunExp, functions).
 
-Additive + REAL instance 
+Additive + REAL instance
 \begin{code}
 \end{code}
 
-Multiplicative + REAL instance 
+Multiplicative + REAL instance
 \begin{code}
 \end{code}
+infixl 6 +
+infixl 7 *
 
 FunExp instances for Additive and Multiplicative
 \begin{code}
