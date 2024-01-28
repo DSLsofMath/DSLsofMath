@@ -5,7 +5,7 @@
 
 % TODO: Perhaps introduce GADT datatype notation use in some exercise solutions
 
-\begin{exercise}
+\begin{exercise}\label{exc:doNot}
 
   Define a function |doNot : Prop -> Prop| for De Morgan dualisation,
   such that |eval (doNot e) == eval (Not e)| and so that the only

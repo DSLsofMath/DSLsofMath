@@ -334,7 +334,8 @@ Not (a  `And`  b)  =  Not a  `Or`   Not b
 ...
 \end{spec}
 %
-Negation can then be pushed all the way down to names, which can
+Negation can then be pushed all the way down to names
+(see Exercise~\ref{exc:doNot}), which can
 recieve a special treatment in proof-checking.
 
 However, we will instead apply the same treatment to negation as to
@@ -650,7 +651,7 @@ theorem-proving in mind.  For this reason it is easily possible to make
 the compiler accept invalid proofs. The main two sources of invalid
 proofs are 1. non-terminating programs and 2. exception-raising
 programs. In sum, the issue is that Haskell allows the programmer to
-define partial functions (instead of total ones, see
+define partial functions (instead of only total ones, see
 \cref{sec:partial-and-total-functions}).
 
 
