@@ -114,7 +114,7 @@ scope (otherwise one informally says that there is a ``name clash'').
 \index{DSL!expr. of one variable}%
 %
 To clarify this situation, we will now formalise expressions of one
-variables as a DSL.
+variable as a DSL.
 %
 For simplicity we will focus on arithmetic expressions only.
 %

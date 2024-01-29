@@ -97,7 +97,7 @@ The definition is given for a fixed (but arbitrary) |x|.
 The |lim| expression is using the
 %
 \index{anonymous function}%
-(anonymous) function |g h = frac (f(x+h) - f x) h| and that the limit
+(anonymous) function |g h = frac (f (x+h) - f x) h| and that the limit
 of |g| is taken at |0|.
 %
 Note that |g| is defined in the scope of |x| and that its definition
@@ -616,11 +616,11 @@ Consider the following quote from \citet[page
   \begin{linenumbers}[1]
      In these cases one tries to find not the values of
      |x|\linelabel{line:exam1603_x} which make a given function |y =
-     f(x)| a minimum, but the values of a given function |f(x)| which
+     f#(x)| a minimum, but the values of a given function |f#(x)| which
      make a given quantity a minimum.  Typically, that quantity is
      usually measured by an integral whose integrand is some
      expression |F|\linelabel{line:exam1603_F} involving both |x|,
-     values of the function |y = f(x)| at interest and the values of
+     values of the function |y = f#(x)| at interest and the values of
      its derivatives --- say an integral
   \begin{linenomath*}
     \[\int_a^b F(y, y', x)dx,\quad y = f(x).\]\linelabel{line:exam1603_int}%
@@ -665,7 +665,7 @@ make a dummy definition for a few of them in one go:
 \end{code}
 %
 We write |ff| for the capital |F| (to satisfy Haskell rules for
-variable names), |deriv| for the derivation operator (|D| above), and
+variable names), |deriv| for the differential operator (|D| above), and
 |int| for the integral operator.
 %
 On line~\ref{line:exam1603_x} ``values of |x|'' hints at the type |X|
@@ -814,7 +814,7 @@ In the above, the expression |Eq a => Eq [a]| means that for any type
 an instance of Eq.
 %
 Thus, for example, by recursion we now have an infinite collection of
-instances of |Eq|: |Char|, |[Char]|, |[[Char]]|, etc.
+instances of |Eq|: |Bool|, |[Bool]|, |[[Bool]]|, etc.
 %
 
 \subsection{Numeric operations}
@@ -977,7 +977,7 @@ As an example we have that
 Type classes are related to mathematical structures which, in turn,
 are related to DSLs.
 %
-As an example, consider again the DSL of expressions of one variables.
+As an example, consider again the DSL of expressions of one variable.
 %
 We saw that such expressions can be represented by the type |REAL ->
 REAL| in the shallow embedding.
@@ -1209,7 +1209,7 @@ one variable).
 This means that we can in fact implement the derivative of |FunExp|
 expressions (from \cref{sec:FunExp}), using the rules of derivatives.
 %
-Because the specification of derivation rules is already in the right
+Because the specification of the differentiation rules is already in the right
 format, the way to obtain this implementation may seem obvious, but we
 will go through the steps as a way to show the process in a simple
 case.

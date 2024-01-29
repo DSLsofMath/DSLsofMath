@@ -2122,7 +2122,7 @@ f x = sin x + two * x
 \begin{enumerate}
 \item Using |FunExp|
 
-  Recall expressions (or functions) of one variables, from
+  Recall expressions (or functions) of one variable, from
   \cref{sec:FunExp}:
 %
 \index{FunExp@@|FunExp| (type)}%

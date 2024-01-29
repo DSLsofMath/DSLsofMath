@@ -17,6 +17,11 @@
 -Every time, the semantic is a set.
 +Every time, the semantics is a set.
 #+END_SRC
+*** Around line 117
+#+BEGIN_SRC diff
+-variables as a DSL.
++variable as a DSL.
+#+END_SRC
 *** Around line 268
 #+BEGIN_SRC diff
 -Note that this is an example of \emph{partially applied} function:
@@ -210,15 +215,46 @@ As mentioned in \cref{sec:infseq}, one way to handle this is to treat
 -make provide a dummy definition for a few of them in one go:
 +make a dummy definition for a few of them in one go:
 #+END_SRC
+*** Around line 668
+#+BEGIN_SRC diff
+-variable names), |deriv| for the derivation operator (|D| above), and
++variable names), |deriv| for the differential operator (|D| above), and
+#+END_SRC
 *** Around line 715
 #+BEGIN_SRC diff
 -pthe type-checker is happy with them.
 +the type-checker is happy with them.
 #+END_SRC
+*** Around line 816
+#+BEGIN_SRC diff
+-instances of |Eq|: |Char|, |[Char]|, |[[Char]]|, etc.
++instances of |Eq|: |Bool|, |[Bool]|, |[[Bool]]|, etc.
+#+END_SRC
+*** Around line 980
+#+BEGIN_SRC diff
+-As an example, consider again the DSL of expressions of one variables.
++As an example, consider again the DSL of expressions of one variable.
+#+END_SRC
 *** Around line 1138
 #+BEGIN_SRC diff
 -We we can summarise those as follows:
 +We can summarise those as follows:
+#+END_SRC
+*** Around line 1212
+#+BEGIN_SRC diff
+-Because the specification of derivation rules is already in the right
++Because the specification of the differentiation rules is already in the right
+#+END_SRC
+** L/03/E3.lhs
+*** Around line 14
+#+BEGIN_SRC diff
+-  due to gravity |g| which makes the equations hold.
++  due to gravity |g| which make the equations hold.
+#+END_SRC
+*** Around line 154
+#+BEGIN_SRC diff
+-    Let |A| and |B| be events with |P B > 0|.  given that |B| occurs,
++    Let |A| and |B| be events with |P B > 0|.  Given that |B| occurs,
 #+END_SRC
 * Ch4
 ** L/04/W04.lhs
@@ -241,6 +277,11 @@ As mentioned in \cref{sec:infseq}, one way to handle this is to treat
 #+BEGIN_SRC diff
 -\href{https://github.com/DSLsofMath/ctfp2014}{github}).
 +\href{https://github.com/DSLsofMath/ctfp2014}{GitHub}).
+#+END_SRC
+*** Around line 2125
+#+BEGIN_SRC diff
+-  Recall expressions (or functions) of one variables, from
++  Recall expressions (or functions) of one variable, from
 #+END_SRC
 ** L/04/E4.lhs
 *** Around line 374

@@ -11,7 +11,7 @@
   %
   If, in one of the cases, the equation is not satisfied in general,
   see if you can find some values of the mass |m| and the acceleration
-  due to gravity |g| which makes the equations hold.
+  due to gravity |g| which make the equations hold.
   \begin{itemize}
   \item |w1 = id| or
   \item |w2 = sin| or
@@ -151,7 +151,7 @@
   \citep{stirzaker_2003}:
 
   \begin{quote}
-    Let |A| and |B| be events with |P B > 0|.  given that |B| occurs,
+    Let |A| and |B| be events with |P B > 0|.  Given that |B| occurs,
     the \textit{conditional probability} that |A| occurs is denoted by
     |P(A||B)| and defined by
 %
