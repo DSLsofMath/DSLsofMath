@@ -258,6 +258,11 @@ As mentioned in \cref{sec:infseq}, one way to handle this is to treat
 #+END_SRC
 * Ch4
 ** L/04/W04.lhs
+*** Around line 53
+#+BEGIN_SRC diff
+-As two examples, we have the homomorphisms |exp| and |log|, specified
++As two examples, we have the homomorphisms |exp| and |log|, partially specified
+#+END_SRC
 *** Around line 641
 #+BEGIN_SRC diff
 -Such homomorphisms take the form |apply c|, for any |c|.

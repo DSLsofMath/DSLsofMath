@@ -50,7 +50,7 @@ When such mappings preserve the structure, they are called
 %
 \index{homomorphism}%
 %
-As two examples, we have the homomorphisms |exp| and |log|, specified
+As two examples, we have the homomorphisms |exp| and |log|, partially specified
 as follows:
 %
 \begin{spec}
