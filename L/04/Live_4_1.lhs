@@ -3,14 +3,19 @@
 module Live_4_1 where
 \end{code}
 DSLsofMath week 4: Compositionality and Algebras
-+ L4.1.3: Week 4, Lecture 1, Part 3
-  
-+ L4.1.1 (Jamboard): definition of H2 and friends
 
-  H2(f,(+),(*)) = Forall x. Forall y. f(x+y)  ==  (f x) * (f y)
++ (blackboard): definition of H2 and friends
 
-+ L4.1.2 (Jamboard): examples H2(odd,(+),xor), not H2(isPrime,(+),_)
+  H2(f,(+),(*)) = ∀ x. ∀ y. f(x+y)  ==  (f x) * (f y)
+  – make sure all types are clarified
+  f :   A     ->       B
+  x   : A;       f x : B
+  y   : A;       f y : B
+  x+y : A;    (f x) * (f y) : B
 
++ (blackboard): examples H2(odd,(+),xor), not H2(isPrime,(+),_)
+
++ Haskell approximation |h2| of the predicate |H2|
 \begin{code}
 h2 :: Eq b =>  (a -> b)           -- f
            ->  (a -> a -> a)      -- (+)
@@ -28,15 +33,15 @@ The equality check has type |(==) :: b -> b -> Bool|.
 
 Note that the real predicate H2 would be
 
-  H2(f,(+),(*)) = Forall x. Forall y. h2 f (+) (*) x y
+  H2(f,(+),(*)) = ∀ x. ∀ y. h2 f (+) (*) x y
 
-but we cannot in general implement Forall in Haskell.
+but we cannot in general implement ∀ in Haskell.
 
 ----
 Examples: testing h2
 
 H2(odd,(+),xor)
-From Jamboard:
+From blackboard:
   xor    F T
        -----
      F | F T
@@ -44,7 +49,7 @@ From Jamboard:
 \begin{code}
 xor :: Bool -> Bool -> Bool
 xor = error "TODO"
-  
+
 type B = Bool
 type Z = Integer
 mytest :: Z -> Z -> Bool
@@ -69,7 +74,7 @@ If we instantiate it to some usual suspects (from A1) we get
 which expands into  x, y :: TERM v
  eval (Union x y) == unionSem (eval x) (eval y)
   -- this holds "by definition"
-  -- but for commutativity, etc. 
+  -- but for commutativity, etc.
  eval (Union x y) == eval (Union y x)
   -- you need to provide a proof.
 

@@ -17,7 +17,9 @@ data FunExp = C REAL
             | Mul FunExp FunExp
   deriving Show
 \end{code}
-Then some examples from Jamboard 4.2
+
+Then some examples from the blackboard (proof that der is _not_ a
+homomorphism).
 
 \begin{code}
 type F = FunExp
@@ -110,6 +112,8 @@ Sum up so far:
 
 ----------------
 * 4. Make your own type class (now for F = FunExp)
+(If time permits)
+
 Reminder: Earlier lecture had data IE ~= DSL for Integer expressions
   and we made a class IntExp to collect the constructors as methods.
 
