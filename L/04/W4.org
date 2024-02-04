@@ -1,8 +1,126 @@
 * DSLsofMath week 4: Compositionality and Algebras
+* L4.1: Tuesday: Compositional semantics (Homomorphisms)
+** Homomorphism: H2(f,(+),(*)) = ∀ x, y. f(x+y) == f x * f y
+
+In general, we have seen many examples of H2
+
+  H2(f,(+),(*)) = ∀ x, y. f(x+y) == f x * f y
+
+with
+  f = eval :: a -> b
+  a = Syntax type     and (+) = a syntactic constructor
+  b = Semantic domain and (*) = semantic operator (function)
+
+** Examples (blackboard) 
++ Homomorphism examples (exp, log, odd)
++ Non-homomorphism example (isPrime)
+** (Live-coding) Folds and compositionality
++ file:Live_4_1_2024.lhs TODO check
+TODO: |data IE| for integer expressions
+TODO: eva :: ... -> IE->I
+TODO: eva :: (I->I->I)->(I->I->I)->(I->I)->IE->I
+TODO: eva :: (a->a->a)->(a->a->a)->(I->a)->IE->a
+TODO: Num instance version
+TODO: |class IntExp|
+TODO: instance S
+TODO: instance I
+TODO: instance IntExt
+TODO: Final note: compositional semantics means we can work without syntax trees.
+
+TODO: from |eval| to |foldE|
 
 
-** 2023-02-09 Thursday:
-+ Make your own type class [[file:Live_4_1_2023.lhs]]
+* L4.2: Thursday: Homomorphisms and derivatives
+
+** black-board: def. of eval' (specified as D . eval)
+type FunSem = REAL -> REAL
+** More about homomorphisms (see definitions below)
+*** H2
+ Homomorphism2(h,op1,op2) = forall x, y. h(op1 x y) == op2 (h x) (h y)
+   where  h   :: A1 -> A2
+          op1 :: A1 -> A1 -> A1
+          op2 :: A2 -> A2 -> A2
+
+*** H1
+ Homomorphism1(h,op1,op2) = forall x. h(op1 x) == op2 (h x)
+   where  h   :: A1 -> A2
+          op1 :: A1 -> A1
+          op2 :: A2 -> A2
+
+*** Examples:
+
+ Homomorphism2(eval,(:+:),( + )) = forall x, y. eval (x:+:y) == (eval x) + (eval y)
+   where  eval  :: FunExp -> FunSem
+          (:+:) :: FunExp -> FunExp -> FunExp
+          (+)   :: FunSem -> FunSem -> FunSem
+
+ Homomorphism1(eval,Exp,exp) = forall e. eval (Exp e) == exp (eval e)
+   where  eval  :: FunExp -> FunSem
+          Exp   :: FunExp -> FunExp
+          exp   :: FunSem -> FunSem
+
+** show that eval' is *not* a homomorphism from (:*:) to (*)
+*** not H2(eval',(:*:),(*))
+ + push not through foralls -> exists
+ + find example values (evidence for the exists proof)
+** show that evalD *is* a homomorphism
+*** exists mul. H2(evalD,(:*:),mul)
+ type FD a = (a -> a, a -> a)
+
+ -- Specification of evalD:
+ evalD e = (eval e, eval' e) where eval' = D . eval
+ -- can be rewritten to (still a specification)
+ evalD e = let f = eval e in (f, D f)
+
+ -- Typing
+ evalD :: FunExp -> FD Double
+ (:*:) :: FunExp    -> FunExp    -> FunExp   -- Mul
+ mulD  :: FD Double -> FD Double -> FD Double
+
+ Def.: H2(h,op1,op2) = forall x, y. h(op1 x y) == op2 (h x) (h y)
+   H2(evalD,(:*:),mulD)
+ =
+   forall x, y. evalD (x :*: y) == mulD (evalD x) (evalD y)
+
+ We can simplify the lhs
+   evalD (x :*: y)
+ = {- Spec. evalD e = let f = eval e in (f, D f) -}
+   let f = eval (x :*: y) in (f, D f)
+ = {- Def. of eval -}
+   let f = eval x * eval y in (f, D f)
+ = {- Derivative of a product -}
+   let f = eval x * eval y
+   in (f, eval x * D (eval y) + D (eval x) * eval y)
+ = {- name terms for readability -}
+   let g = eval x; h = eval y;
+       f = g * h
+   in (f, g * D h + D g * h)
+ = {- name terms for readability, substitute f -}
+   let g = eval x; g' = D g; h = eval y; h' = D h
+   in (g * h, g * h' + g' * h)
+ = {- package in pairs, use spec. of evalD -}
+   let  (g, g') = evalD x;   (h, h') = evalD y
+   in (g * h, g * h' + g' * h)
+ = {- Invent the operator mulD -}
+   let mulD (g, g') (h, h') = (g * h, g * h' + g' * h)
+   in  mulD (evalD x) (evalD y)
+ =
+   rhs
+
+ Thus we have calculated a definition for mulD which satisfies
+   H2(evalD,(:*:),mulD)
+
+mulD (g, g') (h, h') = (g * h, g * h' + g' * h)
+
+ This means that we can work directly with pairs of functions (f, D f).
+
+*** Old
+** Perhaps the tupling transform: a->(b,c) ~ (a->b, a->c)
+** Teaser: an unusual stream & the fundamental theorem of (integral) calculus
+** TODO: |apply c| is a |Num|-homomorphism
+** TODO: |applyFD c| as well
+
++ Make your own type class [[file:Live_4_1_2023.lhs]]  TODO update
   (related to exam question type "Algebra")
 
 + der is not a homomorphism
@@ -12,16 +130,19 @@
 + Tupling transform to the rescue (Jamboard)
 
 + Tupling transform (in Haskell)
-  [[file:Live_4_2_2023.lhs][Live_4_2_2023.lhs]]
+  [[file:Live_4_2_2023.lhs][Live_4_2_2023.lhs]]   TODO update
 
 + Connect back to "make your own type class" (in Haskell)
 
-* 2022 lectures on YouTube:
+
+
+
+* For reference: 2022 lectures on YouTube:
 ** L4.1 has five parts (videos):
 + two using this Jamboard: https://jamboard.google.com/d/10t31slIWQamXGAtjBHDjRvfcRigvTl2xBFjYN0sOEMw/viewer?f=0
 + three live coding [[file:Live_4_1.lhs][Live_4_1.lhs]]
 ** L4.1.1 (Jamboard): definition of H2 and friends
-  H2(f,(+),(*)) = Forall x. Forall y. f(x+y)  ==  (f x) * (f y)
+  H2(f,(+),(*)) = ∀ x. ∀ y. f(x+y)  ==  (f x) * (f y)
 ** L4.1.2 (Jamboard): examples H2(odd,+,xor) not H2(isPrime,+,_)
 | [[https://www.youtube.com/watch?v=WJHVG-IMx-k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=28][L4.1.2]] | 00:00 | Example: H2(odd,+,xor)          | §4.3.1 |
 | [[https://www.youtube.com/watch?v=WJHVG-IMx-k&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=28&t=1070][L4.1.2]] | 17:50 | not Exists op. H2(isPrime,+,op) | §4.3.2 |
