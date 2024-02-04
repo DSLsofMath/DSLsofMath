@@ -709,7 +709,7 @@ subexpressions.
 Earlier, we have presented several DSLs as a syntax datatype |Syn|
 connected to a type |Sem| for the semantic values by a compositional
 semantic function |eval : Syn -> Sem|.
-% 
+%
 In this section we show that compositional functions are homomorphisms
 and provide some examples with proofs of compositionality (or the
 opposite).
@@ -1020,13 +1020,13 @@ foldList :: (a -> s -> s) -> s -> ([a] -> s)
 foldList cons nil = rec
   where  rec (x : xs)  = cons x (rec xs)
          rec []        = nil
-\end{code}  
+\end{code}
 %
 This is (a special case of) the function called |foldr| in the Haskell prelude.
 %if False
 \begin{code}
 checktypes = [foldr, foldList]
-\end{code}  
+\end{code}
 %endif
 
 \subsection{Even folds can be wrong!}
@@ -1151,11 +1151,11 @@ prVerCon i  | i < 0      =  (s,  ps,  ps)     -- parens needed except at top lev
 \begin{exercise}
   Another way to make this example go through is to refine the
   semantic domain from |String| to |Precedence -> String|.
-  % 
+  %
   This can be seen as another variant of the result after the tupling
   transform: if |Precedence| is an |n|-element type then |Precedence ->
   String| can be seen as an |n|-tuple.
-  % 
+  %
   In our case a three-element |Precedence| would be enough.
 \end{exercise}
 
@@ -1245,7 +1245,7 @@ For example:
 %
 So far we have only the natural numbers, but the last operation,
 |negate|, adds the negative numbers as well.
-% 
+%
 By following this line of reasoning to its conclusion, we will find
 that the initial |Ring| is the set of integers.
 %
@@ -2333,7 +2333,7 @@ Therefore
 %
 Introducing |var x = (x, one)| we can, as in the case of |FD|,
 simplify matters a little:
-% 
+%
 \begin{spec}
 f' x = snd (f (var x))
 \end{spec}

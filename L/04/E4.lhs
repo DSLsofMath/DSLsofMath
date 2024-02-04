@@ -2,8 +2,15 @@
 \section{Exercises}
 %if False
 \begin{code}
+{-# LANGUAGE FlexibleContexts #-}
 import DSLsofMath.FunExp
 import DSLsofMath.Simplify
+import Prelude hiding ((+), (-), (^), (/), sin, exp)
+import DSLsofMath.Algebra
+type Tri a     = (a, a, a)
+constTri :: Additive a => a -> Tri a
+constTri c = (c, zero, zero)
+
 \end{code}
 %endif
 
@@ -274,8 +281,8 @@ Prove or disprove the following claims:
 \end{exercise}
 
 \begin{exercise}
-  \fromExam{2017-03-14} (Note that the |Num| hierarchy has been
-  replaced by |Additive|, |AddGroup|, etc.)
+  \fromExam{2017-03-14}
+(Note that the |Num| hierarchy has been replaced by |Additive|, |AddGroup|, etc.)
 
   Recall the type of expressions of one variable from
   \cref{sec:FunExp}.
@@ -300,10 +307,9 @@ f x = exp (sin x) + x
   \item Find an expression |e| such that |eval e == f| and show this
     using equational reasoning.
 
-
   \item Implement a function |deriv2| such that, for any
 %
-    |f :: Fractional a => a -> a| constructed with the grammar of
+    |f :: Field a => a -> a| constructed with the grammar of
     |FunExp| and any |x| in the domain of |f|, we have that
     %
     |deriv2 f x| computes the second derivative of |f| at |x|.
@@ -313,10 +319,9 @@ f x = exp (sin x) + x
   %
     What instance declarations do you need?
 
-    The type of |deriv2 f| should be |Fractional a => a -> a|.
+    The type of |deriv2 f| should be |Field a => a -> a|.
 
   \end{enumerate}
-
 
 \end{exercise}
 
@@ -429,7 +434,7 @@ Test your implementation on the following functions:
 \begin{code}
 test0 x = x^2                   -- one (double) zero, in zero
 test1 x = x^2 - one             -- two zeros, in +-one
-test2 x = sin x                 -- many, many zeros (in |n*pi| for all |n :: ZZ|)
+test2 x = sin x                 -- many zeros (in |n*pi| for all |n :: ZZ|)
 test3 n x y = y^n - constTri x  -- |test3 n x|, has zero in "nth roots of |x|"
   -- where |constTri| is the embedding of |Const|
 \end{code}
@@ -503,4 +508,3 @@ modules are also available on
 \href{https://github.com/DSLsofMath/DSLsofMath/}{GitHub}.
 
 %include ../A2_Skeleton.lhs
-
