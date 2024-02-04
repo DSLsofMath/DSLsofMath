@@ -258,6 +258,11 @@ As mentioned in \cref{sec:infseq}, one way to handle this is to treat
 #+END_SRC
 * Ch4
 ** L/04/W04.lhs
+*** Around line 641
+#+BEGIN_SRC diff
+-Such homomorphisms take the form |apply c|, for any |c|.
++The simplest such homomorphisms take the form |apply c|, for any |c|.
+#+END_SRC
 *** Around line 662
 #+BEGIN_SRC diff
 -If an isomorphism exist between two sets, we say that they are

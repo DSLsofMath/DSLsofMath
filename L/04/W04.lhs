@@ -398,15 +398,15 @@ We have seen several examples in earlier chapters:
 \item
   \label{distributivity-as-homomorphism}
   If |(*)| distributes
-  over |(+)| for some type |A| then |(*c) : A -> A| is a homomorphism
-  from |(+)| to |(+)|: |H2((*c),(+),(+))|.
+  over |(+)| for some type |A| then |(c*) : A -> A| is a homomorphism
+  from |(+)| to |(+)|: |H2((c*),(+),(+))|.
 \end{enumerate}
 
 To see how this last item plays out, it can be helpful to study the
 syntax trees of the left and right-hand sides of the distributive law:
-|((a+b)*c = (a*c)+(b*c))|.
+|(c*(a+b) = (c*a)+(c*b))|.
 %
-We observe that the function |(*c)| is ``pushed down'' to both |a| and |b|:
+We observe that the function |(c*)| is ``pushed down'' to both |a| and |b|:
 
 \tikzset{
   AbsSyn/.style={%
@@ -418,15 +418,27 @@ We observe that the function |(*c)| is ``pushed down'' to both |a| and |b|:
   bold/.style={font=\boldmath}
 }
 
+% \begin{tikzpicture}[AbsSyn]
+% \node [bold] {|*|}
+% child {node {|+|} child {node {|a|}} child {node {|b|}}}
+% child[emph] {node {|c|}};
+% \end{tikzpicture}
+% \begin{tikzpicture}[AbsSyn]
+% \node{|+|}
+% child {node [bold] {|*|} child {node {|a|}} child[emph] {node {|c|}}}
+% child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
+% \end{tikzpicture}
+% %
+
 \begin{tikzpicture}[AbsSyn]
 \node [bold] {|*|}
-child {node {|+|} child {node {|a|}} child {node {|b|}}}
-child[emph] {node {|c|}};
+child[emph] {node {|c|}}
+child {node {|+|} child {node {|a|}} child {node {|b|}}};
 \end{tikzpicture}
 \begin{tikzpicture}[AbsSyn]
 \node{|+|}
-child {node [bold] {|*|} child {node {|a|}} child[emph] {node {|c|}}}
-child {node [bold] {|*|} child {node {|b|}} child[emph] {node {|c|}}};
+child {node [bold] {|*|} child[emph] {node {|c|}} child {node {|a|}} }
+child {node [bold] {|*|} child[emph] {node {|c|}} child {node {|b|}} };
 \end{tikzpicture}
 %
 
@@ -626,7 +638,7 @@ wonder if there is a homomorphism in the other direction.
 %
 The answer is ``Yes, many''.
 %
-Such homomorphisms take the form |apply c|, for any |c|.
+The simplest such homomorphisms take the form |apply c|, for any |c|.
 %
 \begin{exercise}
 \index{apply@@|apply|}%

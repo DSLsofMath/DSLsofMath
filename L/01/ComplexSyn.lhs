@@ -399,7 +399,7 @@ we introduce a few definitions already here:
 
 |Commutative (⊛) = Forall (a, b) (a⊛b = b⊛a)|
 
-|Distributive (⊗) (⊕) = Forall (a, b, c) ((a⊕b)⊗c = (a⊗c)⊕(b⊗c))|
+|Distributive (⊗) (⊕) = Forall (a, b, c) (a⊗(b⊕c) = (a⊗b)⊕(a⊗c))|
 
 \index{parameterised laws}%
 %
