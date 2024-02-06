@@ -1,4 +1,32 @@
 * DSLsofMath week 4: Compositionality and Algebras
+** Admin:
++ A1 presentation day done - good work!
++ A2 has suggested (but flexible) groups - will be fixed on Thursday.
++ mid-course eval. meeting (2024-02-07, 12:30, EDIT-6128)
+  | Prg   | Name          | Email                 |
+  |-------+---------------+-----------------------|
+  | D     | Adam Lindholm | adalindh@chalmers.se  |
+  | D     | Egil Morén    | egil.moren@gmail.com  |
+  | D     | Simon Uggla   | simon.uggla@gmail.com |
+** Learning outcomes (for this week / chapter)
+*** KU = Knowledge and Understanding
++ KU.DSL      = design and implement a DSL for a new domain
+  + Here:       DSL for IntExpr, DSL for 1-arg. functions,
+                eval as fold, "make your own type class", etc.
++ KU.Org      = organize areas of mathematics in DSL terms
+  + Here:       homomorphisms, compositionality, eval
++ KU.Explain  = explain main concepts of elementary real and complex analysis, algebra, and linear algebra
+  + Here:       derivatives (not homomorphism + how to fix it)
+*** SA = Skills and Abilities
++ SA.Notation = develop adequate notation for mathematical concepts
+  + Here:       work with homorphisms
++ SA.Calc     = perform calculational proofs
+  + Here:       prove Exists op. H2(odd,+,op)
+                prove not (Exists op. H2(isPrime,+,op))
+*** JA = Judgement and Approach
++ JA = discuss and compare different software implementations of mathematical concepts
+  Here:        eva, eva2, evaIE, fold, etc.
+  
 * L4.1: Tuesday: Compositional semantics (Homomorphisms)
 ** Homomorphism: H2(f,(+),(*)) = ∀ x, y. f(x+y) == f x * f y
 
@@ -20,7 +48,7 @@ TODO: |data IE| for integer expressions
 TODO: eva :: ... -> IE->I
 TODO: eva :: (I->I->I)->(I->I->I)->(I->I)->IE->I
 TODO: eva :: (a->a->a)->(a->a->a)->(I->a)->IE->a
-TODO: Num instance version
+TODO: type class version
 TODO: |class IntExp|
 TODO: instance S
 TODO: instance I
@@ -120,7 +148,7 @@ mulD (g, g') (h, h') = (g * h, g * h' + g' * h)
 ** TODO: |apply c| is a |Num|-homomorphism
 ** TODO: |applyFD c| as well
 
-+ Make your own type class [[file:Live_4_1_2023.lhs]]  TODO update
++ Make your own type class [[file:Live_4_1_2023.lhs]]
   (related to exam question type "Algebra")
 
 + der is not a homomorphism (related to lab A2)
@@ -128,7 +156,7 @@ mulD (g, g') (h, h') = (g * h, g * h' + g' * h)
 + Tupling transform to the rescue (blackboard)
 
 + Tupling transform (in Haskell)
-  [[file:Live_4_2_2023.lhs][Live_4_2_2023.lhs]]   TODO update
+  [[file:Live_4_2_2023.lhs][Live_4_2_2023.lhs]]
 
 + Connect back to "make your own type class" (in Haskell)
 
