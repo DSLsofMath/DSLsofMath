@@ -14,9 +14,6 @@ of a set which is defined as the number of elements in it.
 
 The core of the language of pure set theory is captured by four
 function symbols (|{}|, |Sing|, |Union|, and |Intersection|).
-%\begin{code}
-%data Set = EmptySet | Sing | Union | Intersection
-%\end{code}
 %
 We use a nullary function symbol |{}| to denote the empty set
 (sometimes written $\emptyset$) and a unary function symbol |Sing| for
@@ -75,7 +72,7 @@ Here is some pseudocode defining the ``von Neumann'' encoding:
   vN 0      = {}
   vN (n+1)  = step (vN n)
 
-  step x = Union x (Sing x)
+  step x = Union (Sing x) x
 \end{spec}
 %
 If we use conventional set notation we get |vN 0 = {}|, |vN 1 = {{}}|,
@@ -171,8 +168,8 @@ sets is defined recursively as
 
 \begin{spec}
   vonNeumann 0        =  Empty
-  vonNeumann (n + 1)  =  Union  (vonNeumann n)
-                                (Sing (vonNeumann n))
+  vonNeumann (n + 1)  =  step (vonNeumann n)
+    where  step s = Union (Sing s) s
 \end{spec}
 
 Implement |vonNeumann| and explore, explain and implement the following
@@ -187,5 +184,5 @@ You need to insert some embeddings and types and you should use the
 |eval| and |check| functions.
 %
 (For debugging it is useful to implement a |show| function for |Set|
-which uses numerals to show the von Neumann naturals.)
+which makes the expressions shorter.)
 
