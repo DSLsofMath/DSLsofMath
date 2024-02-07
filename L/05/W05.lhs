@@ -193,14 +193,20 @@ largest, see also \cref{ex:maximum-homo}), and we have the intended
 definition.
 
 \paragraph{Representing polynomials}
-So, we can simply use any\footnote{Equality should not depending on trailing zeroes, thus |deriving| should not be used for the |Eq| type class. Exercise: implement a better equality check.} list of coefficients to \emph{represent} a
+So, we can simply use any list of coefficients to \emph{represent} a
 polynomial:
 %
 \index{Poly@@|Poly|{}||textbf}
 %
 \begin{code}
-newtype Poly a = Poly [a] deriving (Show,Eq)
+newtype Poly a = Poly [a] deriving (Show)
 \end{code}
+%
+Equality of polynomials should not depend on trailing zeroes, thus
+|deriving| should not be used for the |Eq| type class.
+%
+We get back to the equality definition later, but it is also a good
+exercise.
 
 Since we only use the arithmetic operations, we can generalise our
 evaluator to an arbitrary |Ring| type.
@@ -208,29 +214,31 @@ evaluator to an arbitrary |Ring| type.
 \index{eval@@|eval : Syn -> Sem|}%
 \begin{code}
 evalPoly :: Ring a => Poly a -> (a -> a)
-evalPoly (Poly [])        _   =  0
-evalPoly (Poly (a:as))    x   =  a + x * evalPoly (Poly as) x
+evalPoly (Poly as) = eval as
+
+eval :: Ring a => [a] -> (a -> a)
+eval []        _   =  0
+eval (a:as)    x   =  a + x * eval as x
 \end{code}
 %
 Since we have |Ring a|, there is a |Ring| structure on |a -> a|, and
-|evalPoly| looks like a homomorphism.
+|eval| looks like a homomorphism.
 %
-Question: is there a |Ring| structure on |Poly a|, such that |evalPoly|
+Question: is there a |Ring| structure on |Poly a|, such that |eval|
 is a homomorphism?
 
 For example, the homomorphism condition gives for |(+)|
 %
 \begin{spec}
-evalPoly as + evalPoly bs = evalPoly (as + bs)
+eval as + eval bs = eval (as + bs)
 \end{spec}
 %
 Note that this equation uses |(+)| at two different type: on the left-hand
 side (LHS) two functions of type |a->a| are added (pointwise) and
-on the right-hand side (RHS) two |Poly a| (lists of coefficients) are
-added.
+on the right-hand side (RHS) two |[a]| are added.
 %
 We are using the homomorphism condition to find requirements on the
-definition of |(+)| on |Poly a|.
+definition of |(+)| on |[a]|.
 
 Both sides (LHS and RHS) are functions, thus they are equal if and
 only if they are equal for every argument.
@@ -239,41 +247,37 @@ For an arbitrary |x|
 
 %
 \begin{spec}
-  (evalPoly as + evalPoly bs) x = evalPoly (as + bs) x
+  (eval as + eval bs) x = eval (as + bs) x
 
 <=> {- |(+)| on functions is defined point-wise -}
 
-  evalPoly as x + evalPoly bs x = evalPoly (as + bs) x
+  eval as x + eval bs x = eval (as + bs) x
 \end{spec}
 %
 To proceed further, we need to consider the various cases in the
-definition of |evalPoly| and use list induction.
+definition of |eval| and use list induction.
 %
-We give the computation for the step case, dropping the |Poly|
-constructor by using |eval cs = evalPoly (Poly cs)| for brevity.
+We give the computation for the step case.
 %
-%{
-%format evalPoly = eval
 \begin{spec}
-evalPoly (a : as) x  +  evalPoly (b : bs) x  =  evalPoly ((a : as)  +  (b : bs)) x
+eval (a : as) x  +  eval (b : bs) x  =  eval ((a : as)  +  (b : bs)) x
 \end{spec}
 %
 We use the \addtoindex{homomorphism} condition for |as| and |bs|.
 %
-For the left-hand side, we have:
+For the LHS, we have:
 %
 \begin{spec}
-  evalPoly (a : as) x  +  evalPoly (b : bs) x        =  {- def. |evalPoly| -}
+  eval (a : as) x  +  eval (b : bs) x        =  {- def. |eval| -}
 
-  (a + x * evalPoly as x) + (b + x * evalPoly bs x)  =  {- arithmetic (ring laws) -}
+  (a + x * eval as x) + (b + x * eval bs x)  =  {- arithmetic (ring laws) -}
 
-  (a + b) + x * (evalPoly as x + evalPoly bs x)      =  {- homomorphism condition -}
+  (a + b) + x * (eval as x + eval bs x)      =  {- homomorphism condition -}
 
-  (a + b) + x * (evalPoly (as + bs) x)               =  {- def. |evalPoly| -}
+  (a + b) + x * (eval (as + bs) x)           =  {- def. |eval| -}
 
-  evalPoly ((a + b) : (as + bs)) x
+  eval ((a + b) : (as + bs)) x
 \end{spec}
-%}
 
 The homomorphism condition will hold for every |x| if we define
 %
@@ -335,11 +339,29 @@ scaleList :: Multiplicative a => a -> [a] -> [a]
 scaleList a = map (a*)
 \end{code}
 
+Now we return to the question of when two polynomials are equal.
+%
+If the difference |p-q| is zero, then |p==q|, thus with the numeric
+instances in place, we can implement our own equality check.
+%
+\begin{code}
+instance (Eq a, Additive a) => Eq (Poly a) where (==) = eqPoly
+
+eqPoly :: (Eq a, Additive a) => Poly a -> Poly a -> Bool
+eqPoly p q = isZeroPoly (p-q)
+
+isZeroPoly :: (Eq a, Additive a) => Poly a -> Bool
+isZeroPoly (Poly as) = all (zero==) as
+\end{code}
+%
+Note that subtraction may leave some zero-coefficients, thus we check
+that all of them are zero.
+
 % polyCons :: a -> Poly a -> Poly a
 % polyCons x (Poly xs) = Poly (x:xs)
 
 \index{zipWithLonger@@|zipWithLonger|}%
-As we \emph{can} define a |Ring| structure on |Poly a|, and we
+To sum up, we \emph{can} define a |Ring| structure on |Poly a|, and we
 have arrived at the canonical definition of polynomials, as found in
 any algebra book (see, for example, \cite{rotman2006first} for a very
 readable text):
@@ -352,7 +374,7 @@ readable text):
 %
 Note that from here on we will use the term ``polynomial'' for the
 abstract syntax (the list of coefficients, |as|) and ``polynomial
-function'' for its semantics (the function |evalPoly as : A -> A|).
+function'' for its semantics (the function |eval as : A -> A|).
 %
 \index{abstract syntax tree}%
 

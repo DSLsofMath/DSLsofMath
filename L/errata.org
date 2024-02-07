@@ -306,6 +306,21 @@ As mentioned in \cref{sec:infseq}, one way to handle this is to treat
 -\href{https://github.com/DSLsofMath/DSLsofMath/}{github}.
 +\href{https://github.com/DSLsofMath/DSLsofMath/}{GitHub}.
 #+END_SRC
+* Ch5
+** L/05/W05.lhs
+*** Around line 202
+#+BEGIN_SRC diff
+-newtype Poly a = Poly [a] deriving (Show, Eq)
+-\end{code}
++newtype Poly a = Poly [a] deriving (Show)
++\end{code}
+%
+Equality should not depend on trailing zeroes, thus |deriving| should
+not be used for the |Eq| type class.
+%
+We get back to the equality definition later, but it is also a good
+exercise.
+#+END_SRC
 * Ch6
 ** L/06/W06.lhs
 *** Around line 130
