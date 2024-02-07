@@ -80,10 +80,10 @@ der2 = p2f (deepcopy, der)  -- specification alt. 1
 * 3. Implement der2 :: F -> (F,F)
 
 Specification of der:
-  forall fe. eval (der fe) = D (eval fe)
+  ∀ fe. eval (der fe) = D (eval fe)
 
 Specification of der2:
-  forall fe.  let (f, f') = der2 fe
+  ∀ fe.  let (f, f') = der2 fe
               in (eval f  ==    eval fe )  &&
                  (eval f' == D (eval fe))
 
@@ -107,7 +107,7 @@ mulder2 :: Bi F -> Bi F -> Bi F
 
 Sum up so far:
   eval      :: F -> S    -- S = REAL -> REAL
-  deepcopy  :: F -> F   
+  deepcopy  :: F -> F
   der2      :: F -> Bi F
 
 ----------------

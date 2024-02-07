@@ -21,8 +21,8 @@
 + SA.Notation = develop adequate notation for mathematical concepts
   + Here:       work with homorphisms
 + SA.Calc     = perform calculational proofs
-  + Here:       prove Exists op. H2(odd,+,op)
-                prove not (Exists op. H2(isPrime,+,op))
+  + Here:       prove ∃ op. H2(odd,+,op)
+                prove not (∃ op. H2(isPrime,+,op))
 *** JA = Judgement and Approach
 + JA = discuss and compare different software implementations of mathematical concepts
   Here:        eva, eva2, evaIE, fold, etc.
@@ -50,9 +50,9 @@ TODO: eva :: (I->I->I)->(I->I->I)->(I->I)->IE->I
 TODO: eva :: (a->a->a)->(a->a->a)->(I->a)->IE->a
 TODO: type class version
 TODO: |class IntExp|
-TODO: instance S
 TODO: instance I
 TODO: instance IntExt
+TODO: instance Bool -- even
 TODO: Final note: compositional semantics means we can work without syntax trees.
 
 TODO: from |eval| to |foldE|
@@ -64,33 +64,33 @@ TODO: from |eval| to |foldE|
 type FunSem = REAL -> REAL
 ** More about homomorphisms (see definitions below)
 *** H2
- Homomorphism2(h,op1,op2) = forall x, y. h(op1 x y) == op2 (h x) (h y)
+ Homomorphism2(h,op1,op2) = ∀ x, y. h(op1 x y) == op2 (h x) (h y)
    where  h   :: A1 -> A2
           op1 :: A1 -> A1 -> A1
           op2 :: A2 -> A2 -> A2
 
 *** H1
- Homomorphism1(h,op1,op2) = forall x. h(op1 x) == op2 (h x)
+ Homomorphism1(h,op1,op2) = ∀ x. h(op1 x) == op2 (h x)
    where  h   :: A1 -> A2
           op1 :: A1 -> A1
           op2 :: A2 -> A2
 
 *** Examples:
 
- Homomorphism2(eval,(:+:),( + )) = forall x, y. eval (x:+:y) == (eval x) + (eval y)
+ Homomorphism2(eval,(:+:),( + )) = ∀ x, y. eval (x:+:y) == (eval x) + (eval y)
    where  eval  :: FunExp -> FunSem
           (:+:) :: FunExp -> FunExp -> FunExp
           (+)   :: FunSem -> FunSem -> FunSem
 
- Homomorphism1(eval,Exp,exp) = forall e. eval (Exp e) == exp (eval e)
+ Homomorphism1(eval,Exp,exp) = ∀ e. eval (Exp e) == exp (eval e)
    where  eval  :: FunExp -> FunSem
           Exp   :: FunExp -> FunExp
           exp   :: FunSem -> FunSem
 
 ** show that eval' is *not* a homomorphism from (:*:) to (*)
 *** not H2(eval',(:*:),(*))
- + push not through foralls -> exists
- + find example values (evidence for the exists proof)
+ + push not through ∀s -> ∃s
+ + find example values (evidence for the ∃ proof)
 ** show that evalD *is* a homomorphism
 *** exists mul. H2(evalD,(:*:),mul)
  type FD a = (a -> a, a -> a)
@@ -105,10 +105,10 @@ type FunSem = REAL -> REAL
  (:*:) :: FunExp    -> FunExp    -> FunExp   -- Mul
  mulD  :: FD Double -> FD Double -> FD Double
 
- Def.: H2(h,op1,op2) = forall x, y. h(op1 x y) == op2 (h x) (h y)
+ Def.: H2(h,op1,op2) = ∀ x, y. h(op1 x y) == op2 (h x) (h y)
    H2(evalD,(:*:),mulD)
  =
-   forall x, y. evalD (x :*: y) == mulD (evalD x) (evalD y)
+   ∀ x, y. evalD (x :*: y) == mulD (evalD x) (evalD y)
 
  We can simplify the lhs
    evalD (x :*: y)
