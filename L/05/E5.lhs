@@ -51,7 +51,7 @@ above.
 \end{exercise}
 
 \begin{exercise}\label{exc:polySpecList}
-  Prove that, with the definitions |x = [0, 1]| and |as = [a0, a1,
+  Prove that, with the definitions |x = Poly [0, 1]| and |as = Poly [a0, a1,
   ..., an]|, we really have
 %
 %{
