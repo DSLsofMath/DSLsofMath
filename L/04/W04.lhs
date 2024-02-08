@@ -2173,7 +2173,7 @@ f' 2 = FunExp.eval (derive e) 2
 %
 This can hardly be called ``automatic'', look at all the work we did
 in deducing |e|!\footnote{Besides, manipulating symbolic
-  representations (even in a program), is not was is usually called
+  representations (even in a program), is not what is usually called
   automatic differentiation.}
 
 However, consider this definition:
