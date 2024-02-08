@@ -233,7 +233,7 @@ For example, the homomorphism condition gives for |(+)|
 eval as + eval bs = eval (as + bs)
 \end{spec}
 %
-Note that this equation uses |(+)| at two different type: on the left-hand
+Note that this equation uses |(+)| at two different types: on the left-hand
 side (LHS) two functions of type |a->a| are added (pointwise) and
 on the right-hand side (RHS) two |[a]| are added.
 %
@@ -526,7 +526,7 @@ However, we now have a problem.
 Every polynomial is divisible by any non-zero constant polynomial,
 resulting in a zero polynomial remainder.
 %
-But the degree of a constant polynomial is zero.
+But the degree of a non-zero constant polynomial is zero.
 %
 If the degree of the zero polynomial were a natural number, it would
 have to be smaller than zero.
