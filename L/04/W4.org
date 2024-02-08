@@ -26,7 +26,7 @@
 *** JA = Judgement and Approach
 + JA = discuss and compare different software implementations of mathematical concepts
   Here:        eva, eva2, evaIE, fold, etc.
-  
+
 * L4.1: Tuesday: Compositional semantics (Homomorphisms)
 ** Homomorphism: H2(f,(+),(*)) = ∀ x, y. f(x+y) == f x * f y
 
@@ -39,7 +39,7 @@ with
   a = Syntax type     and (+) = a syntactic constructor
   b = Semantic domain and (*) = semantic operator (function)
 
-** Examples (blackboard) 
+** Examples (blackboard)
 + Homomorphism examples (exp, log, odd)
 + Non-homomorphism example (isPrime)
 ** (Live-coding) Folds and compositionality
@@ -57,29 +57,27 @@ TODO: Final note: compositional semantics means we can work without syntax trees
 
 TODO: from |eval| to |foldE|
 
-
 * L4.2: Thursday: Homomorphisms and derivatives
-
 ** black-board: def. of eval' (specified as D . eval)
 type FunSem = REAL -> REAL
 ** More about homomorphisms (see definitions below)
 *** H2
- Homomorphism2(h,op1,op2) = ∀ x, y. h(op1 x y) == op2 (h x) (h y)
+ Homomorphism2(h,op1,op2) = ∀ x, y. h (op1 x y) == op2 (h x) (h y)
    where  h   :: A1 -> A2
           op1 :: A1 -> A1 -> A1
           op2 :: A2 -> A2 -> A2
 
 *** H1
- Homomorphism1(h,op1,op2) = ∀ x. h(op1 x) == op2 (h x)
+ Homomorphism1(h,op1,op2) =    ∀ x. h (op1 x) == op2 (h x)
    where  h   :: A1 -> A2
           op1 :: A1 -> A1
           op2 :: A2 -> A2
 
 *** Examples:
 
- Homomorphism2(eval,(:+:),( + )) = ∀ x, y. eval (x:+:y) == (eval x) + (eval y)
+ Homomorphism2(eval,Add,( + )) = ∀ x, y. eval (Add x y) == (eval x) + (eval y)
    where  eval  :: FunExp -> FunSem
-          (:+:) :: FunExp -> FunExp -> FunExp
+          Add   :: FunExp -> FunExp -> FunExp
           (+)   :: FunSem -> FunSem -> FunSem
 
  Homomorphism1(eval,Exp,exp) = ∀ e. eval (Exp e) == exp (eval e)
@@ -87,12 +85,59 @@ type FunSem = REAL -> REAL
           Exp   :: FunExp -> FunExp
           exp   :: FunSem -> FunSem
 
-** show that eval' is *not* a homomorphism from (:*:) to (*)
-*** not H2(eval',(:*:),(*))
- + push not through ∀s -> ∃s
- + find example values (evidence for the ∃ proof)
+** show that der : F -> F is *not* a homomorphism from Mul
++ Specification: H1(eval, der, D) = ∀ a. eval (der a) == D (eval a)
+                                  =        eval . der == D . eval
++ Ascii-art version: this diagram "commutes"
+         der
+    F   -->    F
+    |          |
+eval|	       |eval
+    v	       v
+    S   -->    S
+          D
+*** Prove not (∃ op. H2(der,Mul,op))
++ Types:
+  der : F -> F
+  Mul : F -> F -> F
+  op  : F -> F -> F
++ Use proof of negation: assume P, prove falsity, thus not P holds.
++ Here we assume P = ∃ op. H2(der,Mul,op) && eval . der == D . eval
++ We can expand the definition of P:
+  ∃ op. ∀ a, b : F.   der (Mul a b) == op (der a) (der b) &&
+  ∀ a. eval (der a) == D (eval a)
++ Then calculate for a = X and b = Add C (C c)    (for any c)
+  der (Mul X (Add X (C c)))
+== -- By the first part of P
+  op (der X) (der (Add X (Con c)))
+== -- Def. of der for X and Add
+  op (C 1) (Add (C 1) (Con 0))
+== -- make up a new name q = op (C 1) (Add (C 1) (Con 0))
+  q
++ But from the second part of P (the spec. of der) we have
+  eval (der (Mul X (Add X (C c))))
+== -- spec.
+  D (eval (Mul X (Add X (C c))))
+== -- Def. of eval
+  D (\x -> x*(x+c))
+== -- Laws for D
+  \x -> 2*x+c
++ Summing up: for every c we have
+  eval (der (Mul X (Add X (C c)))) == \x -> 2*x+c
++ But we also (for every c) have
+  eval (der (Mul X (Add X (C c)))) == eval q
++ Combining them, with c=0 and c=1 we get
+  \x -> 2*x+0  == \x -> 2*x+1
+=> -- Apply both sides to x=0
+  0  ==  1
++ Thus, the claim P is False
++ Thus, we have proven not P
+  not (∃ op. H2(der,Mul,op) && eval . der == D . eval)
+
+
+** file:Live_4_1_2024.lhs
 ** show that evalD *is* a homomorphism
-*** exists mul. H2(evalD,(:*:),mul)
+*** exists mul. H2(evalD,Mul,mul)
  type FD a = (a -> a, a -> a)
 
  -- Specification of evalD:
@@ -102,18 +147,18 @@ type FunSem = REAL -> REAL
 
  -- Typing
  evalD :: FunExp -> FD Double
- (:*:) :: FunExp    -> FunExp    -> FunExp   -- Mul
+ Mul :: FunExp    -> FunExp    -> FunExp   -- Mul
  mulD  :: FD Double -> FD Double -> FD Double
 
  Def.: H2(h,op1,op2) = ∀ x, y. h(op1 x y) == op2 (h x) (h y)
-   H2(evalD,(:*:),mulD)
+   H2(evalD,Mul,mulD)
  =
-   ∀ x, y. evalD (x :*: y) == mulD (evalD x) (evalD y)
+   ∀ x, y. evalD (Mul x y) == mulD (evalD x) (evalD y)
 
  We can simplify the lhs
-   evalD (x :*: y)
+   evalD (Mul x y)
  = {- Spec. evalD e = let f = eval e in (f, D f) -}
-   let f = eval (x :*: y) in (f, D f)
+   let f = eval (Mul x y) in (f, D f)
  = {- Def. of eval -}
    let f = eval x * eval y in (f, D f)
  = {- Derivative of a product -}
@@ -136,30 +181,50 @@ type FunSem = REAL -> REAL
    rhs
 
  Thus we have calculated a definition for mulD which satisfies
-   H2(evalD,(:*:),mulD)
+   H2(evalD,Mul,mulD)
 
 mulD (g, g') (h, h') = (g * h, g * h' + g' * h)
 
  This means that we can work directly with pairs of functions (f, D f).
 
-*** Old
+* Old
+** show that eval' is *not* a homomorphism from Mul
+*** Prove not (∃ op. H2(eval',Mul,op))
++ Assume the opposite: ∃ op. H2(eval',Mul,op)
+  = ∃ op. ∀ a, y. eval' (Mul a y) = op (eval' a) (eval' y)
++ Explore properties of op (in the hope of finding something
+  impossible).
++ Let a = X; b = Add X (C c) (for any c) then simplify:
+  eval' (Mul a b) = op (eval' a) (eval' b)
+<=> -- Def. of a and b
+  eval' (Mul X (X+C c)) = op (eval' X) (eval' (X+C c))
+<=> -- Spec. of eval' = D . eval
+  D (\x-> x*(x+c)) = op (D (\x->x)) (D (\x->x+c))
+<=> -- Compute derivatives
+  \x-> 2*x+c   =  op (\x->1) (\x->1)
++ OK - this holds for any c - let's specialise to c=0 and c=1
+  \x-> 2*x+0   =  op (\x->1) (\x->1)
+and
+  \x-> 2*x+1   =  op (\x->1) (\x->1)
++ Thus
+  \x-> 2*x+0   =  \x-> 2*x+1
+=> -- Apply to x=0 on both sides
+  0  =  1
+<=>
+  Absurd!
++ Thus, the claim ∃ op. H2(eval',Mul,op) is False
++ Thus, not (∃ op. H2(eval',Mul,op)) is True
++ QED
+
 ** Perhaps the tupling transform: a->(b,c) ~ (a->b, a->c)
 ** Teaser: an unusual stream & the fundamental theorem of (integral) calculus
 ** TODO: |apply c| is a |Num|-homomorphism
 ** TODO: |applyFD c| as well
-
-+ Make your own type class [[file:Live_4_1_2023.lhs]]
-  (related to exam question type "Algebra")
 
 + der is not a homomorphism (related to lab A2)
 
 + Tupling transform to the rescue (blackboard)
 
 + Tupling transform (in Haskell)
-  [[file:Live_4_2_2023.lhs][Live_4_2_2023.lhs]]
 
 + Connect back to "make your own type class" (in Haskell)
-
-
-
-
