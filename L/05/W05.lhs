@@ -526,7 +526,7 @@ However, we now have a problem.
 Every polynomial is divisible by any non-zero constant polynomial,
 resulting in a zero polynomial remainder.
 %
-But the degree of a constant polynomial is zero.
+But the degree of a non-zero constant polynomial is zero.
 %
 If the degree of the zero polynomial were a natural number, it would
 have to be smaller than zero.
