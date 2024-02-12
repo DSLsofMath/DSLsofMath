@@ -8,14 +8,14 @@ import DSLsofMath.FunExp
 import DSLsofMath.FunExpInst () -- just import instances
 import DSLsofMath.Simplify
 import qualified Prelude
-import Prelude (Eq, Show, id, map, Int, Integer, iterate, take, error)
+import Prelude (Eq, Show, id, map, Int, Integer, iterate, take, error, const)
 import DSLsofMath.Algebra
 \end{code}
 
 More work on "the DSL of functions and derivatives".
 
 1. Two semantics of FunExp and a homomorphism between them: applyFD
-2. Numeric class instances for Bi
+2. Numeric class instances for Bi (pairs of "position + speed")
 
 ----------------
 0. Reminder:
@@ -25,13 +25,14 @@ data FunExp  =  Const REAL
              |  FunExp :+: FunExp
              |  FunExp :*: FunExp
              |  Negate FunExp
+
 --             |  -- some more not covered today ...
 eval :: Ring a => FunExp -> a -> a
 class Additive a       where  zero :: a;  (+) :: a -> a -> a
 class Multiplicative a where  one  :: a;  (*) :: a -> a -> a
 class Additive a => AddGroup a where  negate :: a -> a
 -- Ring a = (AddGroup a, Multiplicative a)
-+ Remember that derive :: FunExp -> FunExp is not a homomorphism by itself - 
++ Remember that derive :: FunExp -> FunExp is not a homomorphism by itself -
 + we need a pair of function + derivative.
 
 ----------------
@@ -51,7 +52,7 @@ applyFD = error "TODO"
 fd1 :: Ring a => FD a
 fd1 = error "TODO"
      --   f                D f
-      
+
 -- 1b: implement "x" as an FD
 xFD :: Ring a => FD a
 xFD = error "TODO"
@@ -91,7 +92,7 @@ negateFD :: AddGroup a => FD a -> FD a
 negateFD (FD (f, f')) = FD (negate f, negate f' )
 
 zeroFD :: Additive a => FD a
-zeroFD = FD (zero,zero)  -- zero :: Additive a => a -> a
+zeroFD = FD (zero, zero)  -- zero :: Additive a => a -> a
 
 oneFD :: Ring a => FD a
 oneFD = FD (one, zero)     -- (constant function returning 1, its derivative)
@@ -111,6 +112,7 @@ instance AddGroup a   => AddGroup (Bi a) where  negate = negateBi
 
 
 -- Spec.: forall c. H2(applyFD c, mulFD, mulBi)
+--   (expand)
 mulBi :: Ring a => Bi a -> Bi a -> Bi a
 mulBi = error "TODO"
 

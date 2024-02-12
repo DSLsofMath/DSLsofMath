@@ -19,7 +19,7 @@ The Ring of polynomials (as lists of coefficients).
 \end{code}
 
 ----------------
-1. Define the Ring methods for polynomials
+1. Define (some of) the Ring methods for polynomials
 
 Ring a = (Additive a, AddGroup a, Multiplicative a)
           (+), zero,  negate,     (*), one

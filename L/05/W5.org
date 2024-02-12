@@ -1,9 +1,9 @@
 Week 5: Polynomials and Power Series
-* L5.1.1: Homomorphism examples related to A2 (Apply.hs)
-+ Live coding [[file:Live_5_1_2023.lhs]]
+* L5.1.1: Homomorphism examples related to A2 (file:Apply.lhs)
++ Live coding [[file:Live_5_1_2024.lhs]]
 ** apply   :: a -> (a->b) -> b
 ** applyFD :: a -> FD a -> Bi a
-* Polynomials ([[https://jamboard.google.com/d/1LU8RDW5SRIeE7EhbzZ3Pk5LwmncbCFxhR5ZHNsVXo5A/viewer?f=1][Jamboard L5.1]])
+* Polynomials (blackboard)
 
 \begin{quote}
 P is a polynomial function if
@@ -22,13 +22,13 @@ polynomial, is called the \textbf{degree} of the polynomial.
 
 
 * L5.2 Power Series
-** Live coding (file:Live_5_2_2023.lhs)
+** Live coding (file:Live_5_2_2024.lhs)
 + DSL for polynomials: newtype Poly, eval, a->a
 + numeric Ring instances for polynomials (Poly a)
 + scale, negate
 + derivP, integP
 + Using integP to define expP
-** Polynomial degree [[https://jamboard.google.com/d/1PGIoBWFg3JJZF0q8YYSCijZR4VrjncJtwPtBd90KfTc/viewer?f=0][Jamboard 5.2]]
+** Polynomial degree (blackboard)
 ** degree as "almost a homomorphism"
 ** lifting to Maybe
 ** Power series example: 1/(1-x)
