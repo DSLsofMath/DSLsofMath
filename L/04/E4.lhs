@@ -370,6 +370,8 @@ use to practice what you have learnt so far.
 It is heavily based on \cref{sec:types} and \cref{sec:CompSem} (the
 |FunExp| type, |eval|, |derive|, |D|, tupling, homomorphisms, |FD|,
 |apply|, \ldots) so it pays off to work through those parts carefully.
+%
+There is some skeleton code to start from at the end of this subsection.
 
 \paragraph{Part 1}
 The evaluation of the second derivative is given by
@@ -386,7 +388,7 @@ The evaluation of the second derivative is given by
 
 \item Given the types in the skeleton code below, define instances of
   the classes |Additive|, |AddGroup|, |Multiplicative|, |MulGroup|,
-  and |Transcendental|, for |Tri a|.
+  and |Transcendental|, for the |type Tri a = (a, a, a)|.
 %
   Test your results using algebraic identities like |sin^2 + cos^2 =
   const one|.

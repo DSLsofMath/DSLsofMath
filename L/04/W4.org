@@ -58,7 +58,7 @@ TODO: Final note: compositional semantics means we can work without syntax trees
 TODO: from |eval| to |foldE|
 
 * L4.2: Thursday: Homomorphisms and derivatives
-** black-board: def. of eval' (specified as D . eval)
+** black-board: def. of eval' (specified as D . eval) and der : F -> F
 type FunSem = REAL -> REAL
 ** More about homomorphisms (see definitions below)
 *** H2
@@ -135,7 +135,7 @@ eval|	       |eval
   not (∃ op. H2(der,Mul,op) && eval . der == D . eval)
 
 
-** file:Live_4_1_2024.lhs
+** file:Live_4_2_2024.lhs
 ** show that evalD *is* a homomorphism
 *** exists mul. H2(evalD,Mul,mul)
  type FD a = (a -> a, a -> a)
@@ -151,6 +151,9 @@ eval|	       |eval
  mulD  :: FD Double -> FD Double -> FD Double
 
  Def.: H2(h,op1,op2) = ∀ x, y. h(op1 x y) == op2 (h x) (h y)
+          h :: A1 -> A2
+	  op1 :: A1 -> A1 -> A1
+	  op2 :: A2 -> A2 -> A2
    H2(evalD,Mul,mulD)
  =
    ∀ x, y. evalD (Mul x y) == mulD (evalD x) (evalD y)
