@@ -845,8 +845,8 @@ But there is still hope if we move to formal power series.
 Remember that |p| is then represented by a stream of coefficients,
 and let that stream be |[p0, p1, ...]|.
 %
-We make a table of the coefficients of the RHS |= (1-x)*p =
-p - x*p| and of the LHS |= 1| (seen as a power series).
+We line up the coefficients of the RHS |= (1-x)*p =
+p - x*p| and of the LHS |= 1| (seen as a power series) in a tabular format.
 %
 \begin{spec}
   p      ==  [  p0,  p1,     p2,     ...

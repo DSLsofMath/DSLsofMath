@@ -1,5 +1,5 @@
 Week 5: Polynomials and Power Series
-* L5.1.1: Homomorphism examples related to A2 (file:Apply.lhs)
+* L5.1.1: Homomorphism examples related to A2
 + Live coding [[file:Live_5_1_2024.lhs]]
 ** apply   :: a -> (a->b) -> b
 ** applyFD :: a -> FD a -> Bi a
@@ -19,6 +19,10 @@ polynomial, is called the \textbf{degree} of the polynomial.
 %
 (The degree of the zero polynomial is not defined.)
 \end{quote}
+
+** The first few Chebyshev Polynomials
+file:Chebyshev_Polynomials_of_the_First_Kind.svg
+By Glosser.ca - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=52799132
 
 
 * L5.2 Power Series
