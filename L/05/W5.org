@@ -1,5 +1,8 @@
 Week 5: Polynomials and Power Series
 * Polynomials (blackboard)
+** Quote (def. of "polynomial function" from Adams and Essex [2010, p39])
+PolyDefQuote.png
+*** Text version
 \begin{quote}
 P is a polynomial function if
 
@@ -14,7 +17,7 @@ polynomial, is called the \textbf{degree} of the polynomial.
 %
 (The degree of the zero polynomial is not defined.)
 \end{quote}
-
+*** Poly quote analysis
 + Typing -> syntax for "polynomials"
 + Examples, define eval
 + In between FunExp and semantics. ("byte code"?)
