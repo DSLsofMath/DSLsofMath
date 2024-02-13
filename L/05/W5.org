@@ -1,10 +1,5 @@
 Week 5: Polynomials and Power Series
-* L5.1.1: Homomorphism examples related to A2
-+ Live coding [[file:Live_5_1_2024.lhs]]
-** apply   :: a -> (a->b) -> b
-** applyFD :: a -> FD a -> Bi a
 * Polynomials (blackboard)
-
 \begin{quote}
 P is a polynomial function if
 
@@ -20,11 +15,54 @@ polynomial, is called the \textbf{degree} of the polynomial.
 (The degree of the zero polynomial is not defined.)
 \end{quote}
 
++ Typing -> syntax for "polynomials"
++ Examples, define eval
++ In between FunExp and semantics. ("byte code"?)
+** We have a Ring structure on the semantics - can we do it on syntax?
++ Yes - here are some of the building blocks.
+** ∃ add. H₂(eval,add,oplus)
++ Typing, code skeleton
+  add : [R] ->  [R]    ->  [R]
+  add   []      []      =  []
+  add   []      bs      =  bs
+  add   as      []      =  as
+  add   (a:as)  (b:bs)  =  addCore -- see below
++ Ind.Hyp.:
+  P(as,bs) = (eval as) .+ (eval bs) == eval (add as bs)
++ Calculational proof: assume Ind.Hyp.
+  (eval (a:as) .+ eval (b:bs)) x            = -- def. of (.+)
+  (eval (a:as) x) + (eval (b:bs) x)         = -- def. of eval
+  (a+x*eval as x) + (b+x*eval bs x)         = -- Ring laws
+  (a+b) + x*(eval as x + eval bs x)         = -- def. of (.+)
+  (a+b) + x*((eval as .+ eval bs) x)        = -- Ind. Hyp.
+  (a+b) + x*( eval (add as bs)    x)        = -- def. of eval
+  eval ((a+b):(add as bs)) x                = -- *Define addCore*
+  eval (add (a:as) (b:bs)) x
++ Thus we have proven add exists if we use this for the last case
+  add   (a:as)  (b:bs)  = (a+b):(add as bs)
+** Chebyshev Polynomials
++ Let I be the real number interval from -1 to +1
++ Specification: for every n : Nat
+  ∃ Tₙ : I -> I. H₁(cos, (n*), Tₙ)
++ Expanded to
+  ∃ Tₙ : I -> I. ∀ v. cos (n*v) = Tₙ (cos v)
++ Claim: Tₙ is a polynomial function of degree n
++ Types? Expand specification.
++ Compute (by hand) the first few examples.
++ General defintion (trigonometric)
+  (Exercise for you: prove the claim by induction.)
 ** The first few Chebyshev Polynomials
++ T₀ x = 1
++ T₁ x = x
++ T₂ x = 2x²-1
++ Tₙ x = cos (n*arccos x)
 file:Chebyshev_Polynomials_of_the_First_Kind.svg
 By Glosser.ca - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=52799132
 
-
+* L5.1.1: Homomorphism examples related to Assignment 2
++ Live coding [[file:Live_5_1_2024.lhs]]
+** apply   :: a -> (a->b) -> b
+** applyFD :: a -> FD a -> Bi a
 * L5.2 Power Series
 ** Live coding (file:Live_5_2_2024.lhs)
 + DSL for polynomials: newtype Poly, eval, a->a
