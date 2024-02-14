@@ -41,8 +41,20 @@ class Additive a => AddGroup a where  negate :: a -> a
 
 \begin{code}
 newtype FD a = FD (a->a, a->a)   -- Function + Derivative
-newtype Bi a = Bi (a,    a)      -- Position + Speed
+newtype Bi a = Bi (a,    a)      -- Position + Speed       -- Dual numbers
   deriving (Eq, Show)
+-- Bi (x, x')   motsvarar (x + eps*x')
+
+-- Dual numbers
+--    Bi (x,x') * Bi (y, y')
+-- =  (x + eps*x')*(y + eps*y')
+-- =  x*y + eps*x'*y + x*eps*y' + eps*x'*eps*y'
+-- =  x*y + eps*(x'*y + x*y') + eps^2*x'*y'
+-- = -- eps^2 = 0
+-- =  x*y + eps*(x'*y + x*y')
+-- =  Bi (x*y, x'*y + x*y')
+
+
 
 -- forall c. H2(applyFD c, mulFD, mulBi)
 applyFD :: a -> FD a -> Bi a
@@ -79,7 +91,9 @@ countUp :: Ring a => Int -> a -> [a]
 countUp steps start = take steps (iterate (one+) start)
 
 xBi :: Ring a => a -> Bi a
-xBi = error "TODO"
+xBi c = Bi (c, 1)
+
+-- foo c = Bi (c^2, 2*c) -- what function would this be?  f = (^2)
 
 instance Additive a   => Additive (FD a) where  (+) = addFD;  zero = zeroFD
 instance Ring a => Multiplicative (FD a) where  (*) = mulFD;  one = oneFD
@@ -112,12 +126,12 @@ instance AddGroup a   => AddGroup (Bi a) where  negate = negateBi
 
 
 -- Spec.: forall c. H2(applyFD c, mulFD, mulBi)
---   (expand)
+--   FD a ~= (a->a, a->a) ~= a -> (a, a) ~= a -> Bi a
 mulBi :: Ring a => Bi a -> Bi a -> Bi a
-mulBi = error "TODO"
+mulBi (Bi (x,x')) (Bi (y,y')) = Bi (x*y, x'*y + x*y')
 
 addBi :: Additive a => Bi a -> Bi a -> Bi a
-addBi = error "TODO"
+addBi (Bi (x,x')) (Bi (y,y')) = Bi (x+y, x'+y')  -- follows from the FD instance
 
 negateBi :: AddGroup a => Bi a -> Bi a
 negateBi = error "TODO"

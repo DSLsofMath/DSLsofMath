@@ -67,13 +67,15 @@ By Glosser.ca - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.ph
 ** apply   :: a -> (a->b) -> b
 ** applyFD :: a -> FD a -> Bi a
 * L5.2 Power Series
-** Live coding (file:Live_5_2_2024.lhs)
-+ DSL for polynomials: newtype Poly, eval, a->a
-+ numeric Ring instances for polynomials (Poly a)
-+ scale, negate
-+ derivP, integP
-+ Using integP to define expP
 ** Polynomial degree (blackboard)
 ** degree as "almost a homomorphism"
 ** lifting to Maybe
+** (Perhaps continue) Live coding [[file:Live_5_1_2024.lhs]]
+** Live coding (file:Live_5_2_2024.lhs)
++ DSL for polynomials: newtype Poly, eval, a->a
++ some numeric Ring instances for polynomials (Poly a)
++ scale, negate
++ derivP, integP
++ *Using integP to define expP*
 ** Power series example: 1/(1-x)
+
