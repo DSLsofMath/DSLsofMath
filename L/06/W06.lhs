@@ -635,10 +635,12 @@ idx  =   solve 0 (\_f -> 1)         -- \(f'(x) = 1\), \(f(0) = 0\)
 
 expx  ::  Field a => PS a
 expx  =   solve 1 (\f -> f)         -- \(f'(x) = f(x)\), \(f(0) = 1\)
+
 expf  ::  Field a => a -> a
-expf  =   evalPS 100 expx
+expf  =   evalPS 20 expx
 \end{code}
 \index{exp@@|exp|{}}%
+Note that the |x| in |idx| and |expx| is part of the name, not an argument.
 
 \begin{exercise}
   Write |expx| as a recursive equation (inline |solve| in the
