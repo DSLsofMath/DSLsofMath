@@ -2,13 +2,14 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 -- {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE RebindableSyntax #-}
 module Live_6_2 where
 import Prelude (Int, Double, Show, error, Bool, (==), (&&), 
                 (.), zipWith, map, head, tail, take)
 import qualified Prelude
 import DSLsofMath.FunExp
 import DSLsofMath.Algebra (Additive((+),zero), AddGroup(negate), (-), 
-                           Multiplicative((*),one), Ring, (^+), 
+                           Multiplicative((*),one), Ring, (^+), fromInteger,
                            Field, (/),
                            Algebraic(sqrt),
                            Transcendental(pi,sin,cos,exp) )
@@ -18,9 +19,10 @@ Chapter 6. Taylor and Maclaurin series
  - or -
 Yet another type for representing functions.
 
-Code cont. from file:../04/Live_4_3_2022.lhs and file:../05/Live_5_2_2022.lhs
+Code continued from file:../04/Live_4_3_2023.lhs and file:../05/Live_5_2_2023.lhs
 
 1. Introduce the remaining type classes Transcendental and Algebraic
+  See file:../DSLsofMath/Algebra.hs::87
 2. Reminder of the numeric instances for Power Series (from L5.2)
 3. Implement "Derivative Series" (as yet another type to rep. functions)
 
@@ -59,8 +61,8 @@ instance Additive a => Additive       (Poly a) where zero=zeroP; (+)=addP
 instance AddGroup a => AddGroup       (Poly a) where negate=negateP
 instance Ring a     => Multiplicative (Poly a) where one=oneP;   (*)=mulP
 
-zeroP :: Poly a;   zeroP = P zeroL
-zeroL :: [a];      zeroL = []
+zeroP :: Poly a;            zeroP = P zeroL
+zeroL :: [a];               zeroL = []
 
 oneP :: Ring a => Poly a;   oneP = P oneL
 oneL :: Ring a => [a];      oneL = [one]
@@ -73,17 +75,21 @@ addL = zipWithLonger (+)
 
 zipWithLonger :: (a->a->a) -> ([a] -> [a] -> [a])
 zipWithLonger op = zWL
-  where  zWL []      bs      = bs
-         zWL as      []      = as
+  where  zWL []      bs      = bs   -- 0 + b = b
+         zWL as      []      = as   -- a + 0 = a
          zWL (a:as)  (b:bs)  = (op a b) : zWL as bs
 
 mulP :: Ring a => Poly a -> Poly a -> Poly a
 mulP (P as) (P bs) = P (mulL as bs)
 
-mulL :: Ring a => [a] -> [a] -> [a]  
-mulL [] bs = []
-mulL as [] = []
-mulL (a:as) bs = addL (scaleL a bs) (zero:mulL as bs)
+mulL :: Ring a => [a] -> [a] -> [a]
+mulL []      bs  =  []    -- 0*b=0
+mulL as      []  =  []    -- a*0=0
+mulL (a:as)  bs  =  addL (scaleL a bs) (zero:mulL as bs)
+ -- a:as = (a:zeroL) `addL` (zero:as) 
+
+scaleP :: Ring a => a -> PS a -> PS a
+scaleP c (P as) = P (scaleL c as)
 
 scaleL :: Ring a => a -> [a] -> [a]
 scaleL c = map (c*)
@@ -124,16 +130,16 @@ derP (P as) = P (derL as)
 
 derL :: Ring a => [a] -> [a]
 derL [] = []
-derL (_:as) = zipWith (*) as fromOne
+derL (_:as) = zipWith (*) as countUp
 
-fromOne :: Ring a => [a]
-fromOne = Prelude.iterate (one+) one
+countUp :: Ring a => [a]
+countUp = Prelude.iterate (one+) one
 
 integP :: Field a => a -> Poly a -> Poly a
 integP a (P as) = P (integL a as)
 
 integL :: Field a => a -> [a] -> [a]
-integL a as = a : zipWith (/) as fromOne
+integL a as = a : zipWith (/) as countUp
 \end{code}
 
 ----------------
@@ -154,13 +160,15 @@ integL a as = a : zipWith (/) as fromOne
 
 + 3a. Explain DAll (semantic) and derAll (syntactic)
 
-DAll :: (R->R) -> [R->R]  
+DAll :: (R->R) -> [R->R]
 DAll f = f : DAll (D f)   -- cannot be directly implemented in Haskell
+
+Informally:
   DAll f = f : f' : f'' : ....
       DAll f'= f' : f''
 specDerAll :: FunExp -> Bool -- cannot actually be run due to inf. lists
-specDerAll e = head (derAll e) == e  &&                
-               tail (derAll e) == derAll (derive e)   -- H1(derAll, derive, tail)
+specDerAll e =  head (derAll e) == e  &&
+                tail (derAll e) == derAll (derive e)   -- H1(derAll, derive, tail)
 
 We can implement
   derAll e = e : derAll (derive e)
@@ -169,7 +177,7 @@ but note that derive is not a homomorphism - can we do better?
 + 3b. Explain the type DS, evalDS, translation from DS to PS and back
 
 \begin{code}
-newtype DS a = DS [a]   -- basically the same as Poly and PS
+newtype DS a = DS [a]   -- basically the same type as Poly and PS
   deriving Show
 -- f 0 : f' 0 : f'' 0 :    (all derivatives of f, evaluated at zero)
 evalDS :: Field a => Int -> DS a -> (a -> a)
@@ -186,6 +194,7 @@ toMaclaurin (P as) = DS (zipWith (*) factorials as)
 
 + 3c. Implement derDS, integDS
 
+Spec: derDS (derAll e) = derAll (derive e)
 \begin{code}
 \end{code}
 
@@ -210,9 +219,73 @@ where
   arguments already satisfy the desired properties (specDerAll).
 
 2. Thus we can match on the pattern fs@(f:fs') knowing that
-     fs == derAll f    
+     fs == derAll f
    and
      fs' == derAll (derive f) == derDS fs
    + similarly for gs@(g:gs')
 
+----------------
+If we have time:
 
+Payback time: ODE solving again (even easier this time).
+\begin{spec}
+expX :: Ring a => DS a
+expX = integDS 1 expX
+
+expx :: Ring a => [a]
+expx = 1:expx
+
+sinX :: Ring a => DS a
+sinX = integDS 0 cosX
+cosX :: Ring a => DS a
+cosX = integDS 1 (-sinX)
+
+-- pythagorean :: Ring a => DS a
+-- pythagorean = sinX * sinX + cosX * cosX
+
+takeDS :: Int -> DS a -> [a]
+takeDS n (DS ds) = take n ds
+\end{spec}
+
+Extra material:
+MulGroup and Transcendental instances.
+
+MulGroup:
+\begin{spec}
+instance Field a => MulGroup (DS a) where recip = recipDS
+
+recipDS :: Field a => DS a -> DS a
+recipDS (DS ds) = DS (recipDL ds)
+
+recipDL :: Field a => [a] -> [a]
+recipDL [] = error "recipDL: divide by zero"
+recipDL (fs@(f:fs')) = rs
+  where  rs  = r : rs'
+         r   = recip f
+         rs' = mulDL (negateDL fs') (mulDL rs rs)
+         -- D(1/fs) = -1/fs² * fs' = negate (rs*rs)*fs'
+\end{spec}
+
+   1/(1-x) = 1+x+x²+x³+...
+           ~= P  [1,1,1,1,1,1,1,]
+           ~= DS [1,1,2,6,24,720,...]
+
+
+
+Transcendental:
+\begin{spec}
+instance Transcendental a => Transcendental (DS a) where
+  pi=piDS;exp=expDS;sin=sinDS;cos=cosDS
+
+piDS :: Transcendental a => DS a
+piDS = DS [pi]
+
+expDS, sinDS, cosDS :: Transcendental a => DS a -> DS a
+expDS  ds  = integDS  (exp  (val0 ds))  (expDS ds   * derDS ds)
+sinDS  ds  = integDS  (sin  (val0 ds))  (cosDS ds   * derDS ds)
+cosDS  ds  = integDS  (cos  (val0 ds))  (-sinDS ds  * derDS ds)
+
+val0 :: Additive a => DS a  ->  a
+val0 (DS [])     = zero
+val0 (DS (d:_))  = d
+\end{spec}

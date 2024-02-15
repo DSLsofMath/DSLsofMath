@@ -18,6 +18,7 @@ Solve   f'' + 2*f' + f = sin,  f 0 = 2, f' 0 = 1
 
 Step 0: transform to power series with this specification:
      f = eval as; f' = eval as'; f'' = eval as''
+-- introduce instead of f, f', f'' the series as, as', as''
      sin = eval sinP
 Step 1: compute terms for the rhs
 Step 2: solve for the highest derivative:
@@ -42,12 +43,11 @@ as'' =      :      :
 as'  =      :      :
 as   =      :      :
 
-
 ----------------
 Step 5: Checking
 
 \begin{code}
-lhs :: Field a => Int -> a -> a
+lhs :: Field a => Int -> (a -> a)
 
 lhs n =  f'' + 2*f' + f
   where  f   = evalPS n as
