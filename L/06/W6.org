@@ -33,9 +33,10 @@ Pick the first term
 
 
 
-
 * Power Series and Maclaurin series: [[https://jamboard.google.com/d/1fPp1YVocnUKh__v0iqU5YY3a7xVFaHeayVbxkbFiol8/viewer?f=0][Jamboard L6.1]]
-** definitions of deriv and integ (last week)
+** definitions of deriv and integ + numeric instances
+
+
 ** transformation from semantics (ODE) to syntax (coefficient equations)
 + f x = f 0 + \int_0^x f'   -- semantics
 + fs = integ (f 0) fs'      -- syntax, with f = eval fs

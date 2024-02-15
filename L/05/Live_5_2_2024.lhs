@@ -1,7 +1,8 @@
 \begin{code}
 module Live_5_2 where
 import qualified Prelude
-import Prelude (Int, Double, Maybe(Nothing, Just), error, reverse, (.), dropWhile, (==), length, zipWith)
+import Prelude (Int, Double, Maybe(Nothing, Just), Show, Eq, 
+                error, reverse, (.), dropWhile, (==), length, zipWith)
 import DSLsofMath.Algebra
 \end{code}
 Domain-Specific Languages of Mathematics course
@@ -16,6 +17,7 @@ The Ring of polynomials (as lists of coefficients).
 ----------------
 0. Define the DSL (types for syntax & semantics, eval)
 \begin{code}
+data Poly a = P [a] deriving Show
 \end{code}
 
 ----------------
@@ -35,11 +37,17 @@ Spec. of derP: H₁(evalP, derP, D)
   forall cs. evalP (derP cs) = D (evalP cs)
 
 \begin{code}
-derP :: [REAL] -> [REAL]
-derP [] = []
-derP (_a:as) = zipWith (*) [1..] as
+derP :: Ring a => Poly a -> Poly a
+derP (P as) = P (derL as)
+
+derL :: Ring a => [a] -> [a]
+derL [] = []
+derL (_a:as) = zipWith (*) countUp as
 -- eval [2,1,4] x = 2 + x + 4*x^2
--- eval (derP [2,1,4]) x = 1 + 2*4*x = eval [1*1,2*4]
+-- eval (derL [2,1,4]) x = 1 + 2*4*x = eval [1*1,2*4]
+
+countUp :: Ring a => [a]
+countUp = Prelude.iterate (one+) one
 \end{code}
 
 Specification of integ:
@@ -58,18 +66,17 @@ Degree variations
 type Nat = Int
 type REAL =Double
 degr :: [REAL] -> Maybe Nat
-degr = degre . normalize
+degr = degreL . normalizeL
 
-degre :: Poly REAL -> Maybe Nat
-degre [] = Nothing
-degre as = Just (length as - one)
+degreL :: [REAL] -> Maybe Nat
+degreL [] = Nothing
+degreL as = Just (length as - one)
 -- forall m. z = z + m
 -- forall m. -1 = -1 + m
 
 -- eval . normalize = eval
-type Poly a = [a]
-normalize :: [REAL] -> Poly REAL
-normalize = reverse . dropWhile (0==) . reverse
+normalizeL :: (Eq a, Additive a) => [a] -> [a]
+normalizeL = reverse . dropWhile (zero==) . reverse
   
 addMaybe :: Maybe Nat -> Maybe Nat -> Maybe Nat
 addMaybe Nothing Nothing   = Nothing  -- "eval Nothing = -inf"
