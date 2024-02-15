@@ -13,14 +13,14 @@
 
   As shown in \cref{exc:findFunExp0}, we can find expressions |e ::
   FunExp| such that |eval e = f| automatically using the assignment |e
-  = f Id|.
+  = f X|.
   %
   This is possible thanks to the |Ring|, |Transcendental|, etc.\
   instances of |FunExp|.
   %
   Use this method to find |FunExp| representations of the functions
   below, and show step by step how the application of the function to
-  |Id| is evaluated in each case.
+  |X| is evaluated in each case.
 
   \begin{enumerate}
   \item |f1 x = x^2 + 4|
