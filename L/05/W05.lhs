@@ -345,9 +345,9 @@ If the difference |p-q| is zero, then |p==q|, thus with the numeric
 instances in place, we can implement our own equality check.
 %
 \begin{code}
-instance (Eq a, Additive a) => Eq (Poly a) where (==) = eqPoly
+instance (Eq a, AddGroup a) => Eq (Poly a) where (==) = eqPoly
 
-eqPoly :: (Eq a, Additive a) => Poly a -> Poly a -> Bool
+eqPoly :: (Eq a, AddGroup a) => Poly a -> Poly a -> Bool
 eqPoly p q = isZeroPoly (p-q)
 
 isZeroPoly :: (Eq a, Additive a) => Poly a -> Bool
