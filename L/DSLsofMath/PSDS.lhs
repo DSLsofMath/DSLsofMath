@@ -4,29 +4,37 @@
 {-# LANGUAGE RebindableSyntax #-}
 {-# LANGUAGE ConstraintKinds #-}
 module DSLsofMath.PSDS where
-import Prelude (Int, Double, Show, Eq, Bool, (==), (&&), 
-                error, (.), zipWith, map, head, tail, take)
+import Prelude (Int, Double,
+                Show, String,
+                Ord, Ordering, (<), (<=), (>=), compare,
+                Eq, Bool, (==), (&&), otherwise, snd,
+                error, (.),
+                (++), zipWith, map, head, tail, init, last, take, reverse, length, replicate)
 import qualified Prelude
 import DSLsofMath.FunExp
 import DSLsofMath.Algebra (Additive((+),zero), AddGroup(negate), (-),
-                           Ring, fromInteger, (^+), 
-                           Multiplicative((*),one), 
+                           Ring, fromInteger, (^+),
+                           Multiplicative((*),one),
                            MulGroup(recip), (/), Field, (/),
                            Algebraic(sqrt),
                            Transcendental(pi,sin,cos,exp) )
 \end{code}
 
-Chapter 6. Taylor and Maclaurin series
+From Chapter 6. Taylor and Maclaurin series
 
- - or -
-Yet another type for representing functions.
 
-----------------
 2. Reminder of the numeric instances for Power Series (from L5.2)
 
 2a. Types + eval
 \begin{code}
-newtype Poly a = P [a] deriving Show
+newtype Poly a = P {unP :: [a]}
+
+instance Show a => Show (Poly a) where show = showP
+
+showP :: Show a => Poly a -> String
+showP (P cs) = "P " ++ Prelude.show cs
+
+
 evalP :: Ring a => Poly a -> (a -> a)
 evalP (P cs) = evalL cs
 
@@ -75,7 +83,8 @@ zipWithLonger op = zWL
 mulP :: Ring a => Poly a -> Poly a -> Poly a
 mulP (P as) (P bs) = P (mulL as bs)
 
-mulL :: Ring a => [a] -> [a] -> [a]  
+-- Compare also to mulD later
+mulL :: Ring a => [a] -> [a] -> [a]
 mulL [] bs = []
 mulL as [] = []
 mulL (a:as) bs = addL (scaleL a bs) (zero:mulL as bs)
@@ -121,8 +130,8 @@ derP :: Ring a => Poly a -> Poly a
 derP (P as) = P (derL as)
 
 derL :: Ring a => [a] -> [a]
-derL [] = []
-derL (_:as) = zipWith (*) as fromOne
+derL []      = []
+derL (_:as)  = zipWith (*) as fromOne
 
 fromOne :: Ring a => [a]
 fromOne = Prelude.iterate (one+) one
@@ -168,14 +177,14 @@ zeroDS :: Additive a => DS a
 zeroDS = DS zeroL
 
 oneDS :: Ring a => DS a
-oneDS = DS oneL    -- const 1 0, (const 1)' 0, 
+oneDS = DS oneL    -- const 1 0, (const 1)' 0,
 
 derDS :: DS a -> DS a
 derDS (DS as) = DS (derD as)
 
 derD :: [a] -> [a]
-derD [] = []
-derD as@(_:as') = as'
+derD []          = []
+derD as@(_:as')  = as'
   -- a   == head as
   -- as' == tail as =~ derDS as
 
@@ -190,11 +199,12 @@ integD c cs = c : cs   -- c here is f(0), cs are all the derivatives
 
 \begin{code}
 addDS :: Additive a => DS a -> DS a -> DS a
-addDS (DS as) (DS bs) = DS (addL as bs)  
+addDS (DS as) (DS bs) = DS (addL as bs)
 
 mulDS :: Ring a => DS a -> DS a -> DS a
 mulDS (DS as) (DS bs) = DS (mulD as bs)
 
+-- Note that the name "mulL" is already taken.
 mulD :: Ring a => [a] -> [a] -> [a]
 mulD [] _ = []
 mulD _ [] = []
@@ -233,14 +243,191 @@ divL as      [b]     =  scaleL (recip b) as            -- case |p/c|
 divL (a:as)  (b:bs)  =  c : divL (addL as (scaleL (-c) bs)) (b:bs)
                         where c = a/b
 divL _       []      = error "divL: division by zero"
+
+--alternative with remainder
+divP :: (Eq a, Field a) => PS a -> PS a -> (PS a, PS a)
+divP (P as) (P bs) = (P q, P r)
+  where (q,r) = divR as bs
+
+divR :: (Eq a, Field a) => [a] -> [a] -> ([a],[a])
+divR []      _bs     =  ([],[])                        -- case |0/q|
+divR (0:as)  (0:bs)  =  divR as bs                     -- case |xp/xq|
+--divL (0:as)  bs      =  zero : divR as bs              -- case |xp/q|
+divR as      [b]     =  (scaleL (recip b) as,[])       -- case |p/c|
+divR _       []      = error "divR: division by zero"
+divR as bs | length as >= length bs = divrec bs ([],as)
+--divP (P (a:as)) (P (b:bs)) | degree (P (a:as)) == degree (P (b:bs)) = (P [q], P ((a:as) - q*(b:bs)))
+--  where al = tail as
+--        bl = tail bs
+--        q = al/bl
+--divP p q = (divPS p q, P [])
+
+divrec :: (Eq a, Field a) => [a] -> ([a],[a]) -> ([a],[a])
+divrec d (q,[]) = (q,[])
+divrec d (q,r) | last r == 0 = divrec d (q, init r)
+               | diff >= 0 = divrec d (addL q t, addL r (negateL (mulL t d)))
+               | Prelude.otherwise = (q,r)
+  where t = replicate diff 0 ++ [last r / last d]
+        diff = rd - dd
+        rd = length r
+        dd = length d
 \end{code}
 
 
 \begin{code}
 instance Prelude.Functor PS where fmap=fmapPS
 instance Prelude.Functor DS where fmap=fmapDS
--- TODO add types
+fmapPS :: (a->b) -> (PS a -> PS b)
+fmapDS :: (a->b) -> (DS a -> DS b)
 fmapPS f (P  as) = P  (map f as)
 fmapDS f (DS as) = DS (map f as)
 \end{code}
 
+Note that degree will return |-1| as the "degree" of the zero polynomial  (which is wrong).
+\begin{code}
+degree :: (Eq a, Additive a) => Poly a -> Int
+degree p = Prelude.length (unP (normalPoly p)) - 1
+
+normalPoly :: (Eq a, Additive a) => Poly a -> Poly a
+normalPoly (P cs) = P (normalL cs)
+
+normalL :: (Eq a, Additive a) => [a] -> [a]
+normalL xs | isZeroL xs = []
+normalL (x:rest) = x : normalL rest
+
+eqPoly :: (Eq a, Additive a) => Poly a -> Poly a -> Bool
+eqPoly p1 p2 = let p1L = unP (normalPoly p1)
+                   p2L = unP (normalPoly p2)
+               in p1L == p2L
+
+comparePoly :: (Ord a, Additive a) => Poly a -> Poly a -> Ordering
+comparePoly p1 p2 = let P p1N = normalPoly p1
+                        P p2N = normalPoly p2
+                    in compare p1N p2N
+
+instance (Eq  a, Additive a) => Eq  (Poly a) where (==) = eqPoly
+instance (Ord a, Additive a) => Ord (Poly a) where compare = comparePoly
+
+isZero :: (Eq a, Additive a) => Poly a -> Bool
+isZero = isZeroL . unP
+
+isZeroL :: (Eq a, Additive a) => [a] -> Bool
+isZeroL = Prelude.all (zero==)
+\end{code}
+
+Function composition as an operation on polynomials.
+\begin{code}
+comP :: Ring a => Poly a -> Poly a -> Poly a
+comP (P xs) (P ys) = P (comL xs ys)
+
+comL :: Ring a => [a] -> [a] -> [a]
+comL  []      q   = []
+comL  (a:as)  []  = [a]
+comL  (a:as)  bs  = addL [a] (mulL bs (comL as bs))
+\end{code}
+
+Specification:
+  (cs, rs) = divModPS as bs
+when
+  as == bs*cs + rs && degree rs < degree bs
+
+\begin{code}
+divModP :: (Eq a, Field a) => PS a -> PS a -> (PS a, PS a)
+divModP p q = divModP' (normalPoly p) (normalPoly q)
+divModP' :: (Eq a, Field a) => PS a -> PS a -> (PS a, PS a)
+divModP' (P as) (P bs) = (P (reverse cs), P (reverse rs))
+  where (cs, rs) = divModL (length as - length bs) (reverse as) (reverse bs)
+
+-- Note that the lists start with the highest degree
+divModL :: (Eq a, Field a) => Int -> [a] -> [a] -> ([a], [a])
+divModL d _ [] = error "divModL: div. by zero"
+divModL d as bs | d < 0 = ([], as)
+divModL d [] _ = ([],[])
+divModL d (a:as) q@(b:bs) = (c:cs, rs)
+  where  c = a/b
+         (cs, rs) = divModL (d-1) (addL as (scaleL (-c) bs)) q
+
+
+\end{code}
+TODO: Unfinished notes
+case |xp/xq|:
+  (0:as) == (0:bs)*cs + (0:rs) && degree (0:rs) < degree (0:bs)
+  as == bs*cs + rs && degree rs < degree bs
+case |xp/q|:
+ (0:as) == bs*(0:cs) + (0:rs)     -- TODO fix degrees
+  as == bs*cs + rs && degree rs < degree bs
+case (a+xp)/(b+xq):
+  as == c*bs+b*cs + 0:bs*cs + rs
+  (as-c*bs) == (b:bs)*cs + rs && degree rs < degree (b:bs)
+
+
+Example:
+  (1+x*(3+x))/(1+x)
+== let a=1, as=[3,1], b=1, bs=[1], c=a/b=1
+  let (cs, rs) = divMod (as-bs) (b:bs)
+  in ?
+==
+  let (cs, rs) = divMod [2,1] [1,1]
+  in ?
+==
+  let (cs, rs) = ([2],[-1])
+  in (
+
+
+Computing a "Greatest Common Divisor".
+Divisor(p,q) = Exists s. q*s==q
+DivBoth(a,p,q) = Divisor(a,p) && Divisor(a,q)
+Let g = gcdP p q
+then  DivBoth(g,p,q)
+      && Forall d. DivBoth(d,p,q) =>  d <= g
+    where p <= q = degree p <= degree q
+
+There are many GCDs, so it makes sense to further restrict it to have
+A) integral coefficients or B) leading coefficient == one. For our use
+case we only need to know if the GCD has degree <= 0, thus it does not
+really matter (but may be good further on).
+
+\begin{code}
+gcdP :: (Field a, Eq a) => Poly a -> Poly a -> Poly a
+gcdP a b  | isZero b = toMonic a
+          | degree b <= degree a = gcdP b (snd (divModP a b))
+          | otherwise            = gcdP b a
+
+
+toMonic :: (Eq a, Field a) => Poly a -> Poly a
+toMonic p = P (map (/cn) cs)
+  where  pn@(P cs) = normalPoly p
+         cn = last cs
+\end{code}
+
+Square-free factorisation by Yun's algorithm
+https://en.wikipedia.org/wiki/Square-free_polynomial#Yun's_algorithm
+
+If f = Prod_{i=1}^{k} a_i^i
+is the desired factorization, we have
+  a_0   = gcd(f,f')
+  a_0   = Prod_{i=2}^{k} a_i^{i-1}
+  f/a_0 = Prod_{i=1}^{k} a_i
+
+let a0 = gcd(f,f')
+    b1 = f/a0
+    c1 = f'/a0
+    d1 = c1 - b1'
+    i  = 1
+
+\begin{code}
+yun :: (Eq a, Field a) => Poly a -> [Poly a]
+yun f = yunGo b1 c1 d1
+  where  a0 = gcdP f f'
+         f' = derP f
+         b1 = f/a0
+         c1 = f'/a0
+         d1 = c1 - derP b1
+yunGo bi ci di  | degree bi <= 0 = []
+                | otherwise =
+  let  ai = gcdP bi di
+       bi1 = bi / ai
+       ci1 = di / ai
+       di1 = ci1 - derP bi1
+  in ai : yunGo bi1 ci1 di1
+\end{code}
