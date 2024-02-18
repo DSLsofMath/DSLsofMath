@@ -26,16 +26,16 @@ Pick the first term
   not H2(eval',Mul,mul)
 = -- Def. of H2
   not (Forall x, y. eval' (Mul x y) = mul (eval' x) (eval' y)
-= -- By not-propagation again (not Forall ~= Exists not)
-  Exists x, y. not (eval' (Mul x y) = mul (eval' x) (eval' y))
-= -- Def. of /=
-  Exists x, y. eval' (Mul x y) /= mul (eval' x) (eval' y)
 
+Now the proof can continue in the same way as the examples earlier
+which were not homomorphisms (|isPrime :: Nat -> Bool| and |eval' ::
+FunExp -> (R->R)|, both in Chapter 4).
 
+* Power Series
 
-* Power Series and Maclaurin series: [[https://jamboard.google.com/d/1fPp1YVocnUKh__v0iqU5YY3a7xVFaHeayVbxkbFiol8/viewer?f=0][Jamboard L6.1]]
++ See file:Live_6_1.lhs for Ring instances
+
 ** definitions of deriv and integ + numeric instances
-
 
 ** transformation from semantics (ODE) to syntax (coefficient equations)
 + f x = f 0 + \int_0^x f'   -- semantics
@@ -46,7 +46,7 @@ Pick the first term
   si = [0,  1,  0  ,-1/6, 0   , ...]
   co = [1,  0, -1/2,  0 , 1/24, ...]
 
-* Live coding "solving ODEs with Power Series" (file:Live_6_1.lhs)
+* Live coding "solving ODEs with Power Series" (file:Live_6_2.lhs)
 
 
 
@@ -84,7 +84,7 @@ Big picture: a transformation in three stages
 In the lecture we worke through the different steps with examples and
 motivation / explanation.
 * Live coding DS = Derivative Stream: a stream of all derivatives
-+ Introduce clases 
-+ See file:Live_6_2_2023.lhs for Ring instances
++ Introduce clases
++ See file:Live_6_3.lhs for Ring instances
 * If time permits: cont. live coding L6.2
 + DS instances for MulGroup and Transcendental
