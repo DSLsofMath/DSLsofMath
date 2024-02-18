@@ -32,11 +32,36 @@ which were not homomorphisms (|isPrime :: Nat -> Bool| and |eval' ::
 FunExp -> (R->R)|, both in Chapter 4).
 
 * Power Series
++ Last week we talked mainly about the domain-specific language of
+  polynomials and how that matches the Ring class.
++ Now we extend the language handle many more (continuous) functions
+  by moving to power series.
++ The pay-off is the ability to compute (approximate) solutions to
+  ordinarie differential equations.
+** Learning outcomes for this week
++ KU.DSL      = design and implement a DSL for power series
++ KU.Explain  = explain main concepts of elementary real analysis
++ SA.Notation = develop adequate notation for mathematical concepts
++ SA.Power    = use power series for solving differential equations
++ JA = discuss and compare different software implementations of
+  mathematical concepts
+** Learning outcomes (for the whole course, english version)
+*** KU = Knowledge and Understanding
++ KU.DSL      = design and implement a DSL for a new domain
++ KU.Org      = organize areas of mathematics in DSL terms
++ KU.Explain  = explain main concepts of elementary real and complex analysis, algebra, and linear algebra
+*** SA = Skills and Abilities
++ SA.Notation = develop adequate notation for mathematical concepts
++ SA.Calc     = perform calculational proofs
++ SA.Power    = use power series for solving differential equations
++ SA.Laplace  = use Laplace transforms for solving differential equations
+*** JA = Judgement and Approach
++ JA = discuss and compare different software implementations of mathematical concepts
 
-+ See file:Live_6_1.lhs for Ring instances
+
++ See file:Live_6_1.lhs for instances.
 
 ** definitions of deriv and integ + numeric instances
-
 ** transformation from semantics (ODE) to syntax (coefficient equations)
 + f x = f 0 + \int_0^x f'   -- semantics
 + fs = integ (f 0) fs'      -- syntax, with f = eval fs
