@@ -1,5 +1,5 @@
 See
-  ../../Exam/2016-Practice/MockE.hs (problem 2)
+  ../../../Exam/2016-Practice/MockE.hs (problem 2)
   
   
   
