@@ -29,7 +29,9 @@ Pick the first term
 
 Now the proof can continue in the same way as the examples earlier
 which were not homomorphisms (|isPrime :: Nat -> Bool| and |eval' ::
-FunExp -> (R->R)|, both in Chapter 4).
+FunExp -> (R->R)|, both in Chapter 4): assume an operator (mul here)
+exists and satisfies H2, then show (by picking suitable examples for x
+and y) that this leads to a contradiction.
 
 * Power Series
 + Last week we talked mainly about the domain-specific language of
@@ -70,6 +72,21 @@ FunExp -> (R->R)|, both in Chapter 4).
 + sinx, cosx
   si = [0,  1,  0  ,-1/6, 0   , ...]
   co = [1,  0, -1/2,  0 , 1/24, ...]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 * Live coding "solving ODEs with Power Series" (file:Live_6_2.lhs)
 
