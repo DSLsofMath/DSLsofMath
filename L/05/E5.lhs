@@ -69,14 +69,14 @@ above.
 Let
 \(T_n(x) = \cos (n*\arccos(x))\) for |x| in the interval |[-1,1]|.
 %
-Compute \(T_0\), \(T_1\), and \(T_2\) by hand to get a
+First, compute \(T_0\), \(T_1\), and \(T_2\) by hand to get a
 feeling for how it works.
 %
 Note that they all turn out to be polynomial functions.
 %
 In fact, \(T_n\) is a polynomial function of degree |n| for all |n|.
 %
-To prove this, here are a few hints:
+Your task is to to prove this, using these five hints:
 %
 \begin{itemize}
 \item \(cos(\alpha)+cos(\beta)=2*\cos(\frac{\alpha+\beta}{2})*\cos(\frac{\alpha-\beta}{2})\)
