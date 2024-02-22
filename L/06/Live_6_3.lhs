@@ -145,7 +145,7 @@ integL a as = a : zipWith (/) as countUp
 ----------------
 3. Implement "Derivative Series" (as yet another type to rep. functions)
 
-* In the Jamboard lecture parts we saw how
+* In the blackboard lecture parts we saw how
 
   + ODEs could be transformed from equations on functions to equations
     on power series (infinite lists of coefficients).

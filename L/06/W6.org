@@ -86,47 +86,36 @@ and y) that this leads to a contradiction.
 
 
 
-
-
-* Live coding "solving ODEs with Power Series" (file:Live_6_2.lhs)
-
-
-
-
-
-
-
-
-
-
-
-
-
---- Later ---
-
-
-
 * (Thursday lecture) Maclaurin series
 ** Book reminder
 + You can bring a (physical) book to the exam.
 + Book https://www.collegepublications.co.uk/computing/?00024
   /home/patrikj/Pictures/DSLsofMath_book_front_cover.jpg
 ** Maclaurin series = Taylor series at the point zero
-
-Big picture: a transformation in three stages
-
++ Main use: "local approximation"
++ Let M n f be the "order n" approximation of f near 0:  
+  M : Nat -> (R->R) -> (R->R)
+  M 0 f x = f 0 
+  M 1 f x = f 0 + (f' 0)*x
+  M 2 f x = f 0 + (f' 0)*x + (f'' 0 / 2)*x^2
+  ...
+  M n f x = M (n-1) f x + (D^n f 0 / fact n)*x^n
++ As n -> inf we get a power series
+  (which will equal f inside the radius of convergence)
+** Maclaurin big picture: a transformation in three stages
   f
 -> compute all derivatives
   [f, f', f'', ...]
--> apply 0
+-> apply all of them to 0
   [f 0, f' 0, f'' 0, ...]
 -> divide by factorials
   [(f 0)/0!, (f' 0)/1!, (f'' 0)/2!, ...]
 
-In the lecture we worke through the different steps with examples and
+In the lecture we work through the different steps with examples and
 motivation / explanation.
-* Live coding DS = Derivative Stream: a stream of all derivatives
-+ Introduce clases
-+ See file:Live_6_3.lhs for Ring instances
-* If time permits: cont. live coding L6.2
+* perhaps: Live coding DS = Derivative Stream: a stream of all derivatives
++ Introduce classes Algebraic(sqrt), Transcendental(pi,sin,cos,exp)
++ See file:Live_6_3.lhs for instances
+* Perhaps: Live coding "solving ODEs with Power Series" (file:Live_6_2.lhs)
 + DS instances for MulGroup and Transcendental
+

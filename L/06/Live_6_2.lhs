@@ -12,7 +12,7 @@ import DSLsofMath.FunExp
 \end{code}
 
 ----------------
-L6.1 live coding on solving ODEs
+L6.2 live coding on solving ODEs
 
 Solve   f'' + 2*f' + f = sin,  f 0 = 2, f' 0 = 1
 

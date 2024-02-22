@@ -21,7 +21,7 @@ The Ring of polynomials (as lists of coefficients).
 Domain(s): polynomial functions and power series
 
 \begin{code}
-data Poly a = P [a] deriving Show
+newtype Poly a = P [a] deriving Show
 type PSem a = a->a
 evalP :: Ring a => Poly a -> (a->a)
 evalP = error "evalP: TODO"
