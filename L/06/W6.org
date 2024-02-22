@@ -92,6 +92,7 @@ and y) that this leads to a contradiction.
 + Book https://www.collegepublications.co.uk/computing/?00024
   /home/patrikj/Pictures/DSLsofMath_book_front_cover.jpg
 ** Maclaurin series = Taylor series at the point zero
++ See Jamboard/blackboard
 + Main use: "local approximation"
 + Let M n f be the "order n" approximation of f near 0:  
   M : Nat -> (R->R) -> (R->R)
@@ -113,9 +114,9 @@ and y) that this leads to a contradiction.
 
 In the lecture we work through the different steps with examples and
 motivation / explanation.
-* perhaps: Live coding DS = Derivative Stream: a stream of all derivatives
+** Perhaps: Live coding DS = Derivative Stream: a stream of all derivatives
 + Introduce classes Algebraic(sqrt), Transcendental(pi,sin,cos,exp)
 + See file:Live_6_3.lhs for instances
-* Perhaps: Live coding "solving ODEs with Power Series" (file:Live_6_2.lhs)
+** Perhaps: Live coding "solving ODEs with Power Series" (file:Live_6_2.lhs)
 + DS instances for MulGroup and Transcendental
 
