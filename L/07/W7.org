@@ -4,8 +4,128 @@
 ** Lecture 7.1: Linear Algebra 1
 + The DSL of the this lecture describes
   vectors, linear transforms, matrices
-+ L7.1a https://jamboard.google.com/d/1uov9xi_I5D27_hoXTDbWo5sPcEg3UHP0yx40xIqLshE/viewer
-+ L7.1b https://jamboard.google.com/d/1Kx-uI4J8zi4GejuNuSP-SxxydeqgHguychnbvpUiCxM/viewer
+*** L7.1a https://jamboard.google.com/d/1uov9xi_I5D27_hoXTDbWo5sPcEg3UHP0yx40xIqLshE/viewer
++ class (Field s, AddGroup v) => VectorSpace v s where
+    scale :: s -> v -> v  -- s for "scalars", v for "vectors"
++ Laws: {- very compact: add types, expand -}
+  ∀ c. GroupHom(scale c, (addV,zeroV,negateV), (addV,zeroV,negateV))
+       GroupHom(scale,   (addS,zeroS,negateS), (addF,zeroF,negateF))
+      MonoidHom(scale,   (mulS,oneS)         , ((.), id))
++ Laws expanded one step + with types
+  scale c :: v->v;
+  addV :: v->v->v; zeroV :: v; negateV :: v->v
+  ∀ c. H2(scale c, addV,    addV   )  &&
+       H0(scale c, zeroV,   zeroV  )  &&
+	 H1(scale c, negateV, negateV)
+
+  scale :: s -> (v->v)
+  addS :: s->s->s;                zeroS :: s;      negateS :: s->s
+  addF :: (v->v)->(v->v)->(v->v); zeroF :: (v->v); negateF :: (v->v)->(v->v)
+       H2(scale, addS,    addF   ) &&
+	 H0(scale, zeroS,   zeroF  ) &&
+	 H1(scale, negateS, negateF)
+
+  scale :: s -> (v->v)
+  mulS :: s->s->s;                oneS :: s
+  (.)  :: (v->v)->(v->v)->(v->v); id :: (v->v)
+       H2(scale, mulS, (.)) &&
+       H0(scale, oneS, id)
++ Laws expanded two steps: (types unchanged)
+  ∀ c. (∀ v₁, v₂. scale c (addV v₁ v₂) = addV (scale c v₁) (scale c v₂)) &&
+       (scale c zeroV = zeroV) &&
+	 (∀ v. scale c (negateV v) = negateV (scale c v))
+
+       (∀ s₁, s₂. scale (addS s₁ s₂) = addF (scale s₁) (scale s₂)) &&
+	 (scale zeroS = zeroF) &&
+	 (∀ s. scale (negateS s) = negateF (scale s))
+
+       (∀ s₁, s₂. scale (mulS s₁ s₂) = scale s₁ . scale s₂) &&
+       (scale oneS = id)
++ Laws expanded three steps: (first group unchanged)
+  ∀ c. (∀ v₁, v₂. scale c (addV v₁ v₂) = addV (scale c v₁) (scale c v₂)) &&
+       (scale c zeroV = zeroV) &&
+	 (∀ v. scale c (negateV v) = negateV (scale c v))
+
+       (∀ s₁, s₂, v. scale (addS s₁ s₂) v = addV (scale s₁ v) (scale s₂ v)) &&
+	 (∀ v. scale zeroS v = zeroV) &&
+	 (∀ s, v. scale (negateS s) v = negateV (scale s v))
+
+       (∀ s₁, s₂, v. scale (mulS s₁ s₂) v = scale s₁ (scale s₂ v)) &&
+       (∀ v. scale oneS v = v)
++ Laws with (overloaded) operators, 0, and 1:
+    ∀ c. (∀ v₁, v₂. c ◃ (v₁+v₂) = (c◃v₁) + (c◃v₂)) &&
+         (c◃0 = 0) &&
+	 (∀ v. c◃(-v) = -(c◃v))
+
+    ∀ v. (∀ s₁, s₂. (s₁+s₂)◃v = (s₁◃v)+(s₂◃v)) &&
+	 (0◃v = 0) &&
+	 (∀ s. (-s)◃v = -(s◃v))
+
+    ∀ v. (∀ s₁, s₂. (s₁·s₂)◃v = s₁◃(s₂◃v)) &&
+         (1◃v = v)
++ instance Field s => VectorSpace s s where scale = (*)
+  + here |s = v|, so |scale : s->v->v| becomes |scale : s->s->s|
+  + we can see the scalars as a "1-dimensional vector space" with canonical basis one
+    + scale s one = s*one = s
++ A two-dimensional example: file:XYPlaneExampleVectors.png
+  data Axes   = X | Y
+  type XYVec  = Axes -> REAL
+  + Example vectors:
+    v₁ X = TODO; v₁ Y = TODO;
+    v₂ X = TODO; v₂ Y = TODO;
+    v₃ X = TODO; v₃ Y = TODO;
+  + instance VectorSpace XYVec REAL where scale = scaleF
+    scaleF :: REAL -> (Axes -> REAL) -> (Axes -> REAL)
+    scaleF c v = \g -> c * v g
++ Linear Combinations
+  -- Math notation: Σᵢ aᵢ◃vᵢ = Σᵢ (scale aᵢ vᵢ)
+  linComb :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
+  linComb a v = sum (map (\i->scale (a i) (v i) finiteDomain)
++ Linearly independent, span, and basis:
+  + A collection of vectors v₀, ..., vₙ is *linearly independent* iff
+    ∀ a:{0..n}->s. (linComb a v == 0) ⇔ (∀ i. aᵢ==0)
+  + The span S of a collection of vectors V (over a field S) is the
+    set of all linear combinations of those vectors.
+  + A basis B for a vector space V over a field S is a linearly
+    independent collection of vectors which spans V.
++ Example (canonical) basis: for
+  + let G = {0..n}; V = G->s; e : G -> V;
+        eᵢ j = if i==j then 1 else 0
+  + Then e is a basis for V
++ Next up: linear transformation (homomorphism between vector spaces)
+*** L7.1b https://jamboard.google.com/d/1Kx-uI4J8zi4GejuNuSP-SxxydeqgHguychnbvpUiCxM/viewer
++ h : U -> V   where U and V and vector spaces over the same scalars s
++ LinTran(h,U,V) =    H₀(h,zeroᵤ,zeroᵥ)
+                 ∧   H₂(h,(+ᵤ),(+ᵥ))
+		 ∧∀c.H₁(h,scaleᵤ c,scaleᵥ c)
++ Examples:   ∀c. LinTran(scaleᵥ c, V, V)
+              ∀i. LinTran(apply i, g->s, s)  -- "projections"
++ Linear transformations between U = G -> s and V = G' -> s
+  h v = *TODO* (or see calculation below)
+  + Calculation
+    h v
+      = -- e is the canonical basis => v = Σᵁᵢ (scaleᵁ vᵢ eᵢ)
+    h (Σᵁᵢ (scaleᵁ vᵢ eᵢ))
+      = -- h distributes over Σ - note the change of type
+    Σⱽᵢ (h (scaleᵁ vᵢ eᵢ))
+      = -- h distributes over scale - note the change of type (again)
+    Σⱽᵢ (scaleⱽ vᵢ (h eᵢ))
+      = -- Def. of linComb
+   linComb v (h ∘ e)
+  + Note: to compute h v for any (infinitely many) v it is enough to
+    store the results of h eᵢ for every i (finitely many). Each h eᵢ
+    is a vector in V, thus we can store this collection in a table,
+    usually called a *matrix*.
+
+      |     |      |     |     |
+      |     |      |     |     |
+      | h eₒ | h e₁ | ... | h eₙ |
+      |     |      |     |     |
+      |     |      |     |     |
+  + This matrix is the "syntax" of a linear transformation and the
+    linear function h : U -> V is the semantics.
+  + evalMV m v = linComb v m
++ TODO cont. from Jamboard "slide" 6/19
 + Perhaps some live-coding [[Live_7_1_2023.hs]]
 
 ** Lecture 7.2 / 8.1: Laplace Transforms
