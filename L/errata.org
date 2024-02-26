@@ -345,6 +345,17 @@ exercise.
 #+END_SRC
 * Ch7
 ** L/07/W07.lhs
+*** Around line 298
+#+BEGIN_SRC diff
+-For |Vector|, it can is defined indexwise.
++For |Vector|, it can be defined indexwise.
+#+END_SRC
+
+*** Around line 347
+#+BEGIN_SRC diff
+-The canonical basis for |Vector| are given by
++The canonical basis for |Vector| is given by
+#+END_SRC
 *** Around line 364
 #+BEGIN_SRC diff
 -    |v  ==  (v 0 *^ e 0) + ... + (v n *^ e n)|

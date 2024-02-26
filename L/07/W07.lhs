@@ -90,7 +90,7 @@ the same length as |v| but points in the opposite direction, etc.
     s *^ (negate a)  = negate (s *^ a)
   \end{spec}
   This means that scaling can be ``pushed inside'' any sum or difference.
-\item On the other side, |(*^ a)| is a homomorphism from the additive
+\item On the other side, (|(*^ a) :: s -> v|) is a homomorphism from the additive
   group structure of |s| to the group structure of |v|.
   %
   Thus, for all scalars |s| and |t| we have:
@@ -101,7 +101,7 @@ the same length as |v| but points in the opposite direction, etc.
   \end{spec}
   For the examples above this means that |2 *^ v == (1+1)*^v ==
   1*^v+1*^v| and |(-1) *^ v == negate (1*^v)|.
-\item Finally |(*^)| is a homomorphism from the multiplicative monoid
+\item Finally (|(*^) :: s -> (v->v)|) is a homomorphism from the multiplicative monoid
   of |s| to the monoid of endofunctions over |v| (see
   \cref{ex:endofunction}).
   %
@@ -295,7 +295,7 @@ This can only be done if |s| is a |Field|.
 Then, we must provide an associative and commutative addition
 operation.
 %
-For |Vector|, it can is defined indexwise.
+For |Vector|, it can be defined indexwise.
 %
 Because indexwise addition is already our definition of addition for
 functions (|g -> s|), from \cref{sec:FunNumInst}, we can simply reuse
@@ -323,7 +323,7 @@ spaces.
 %
 Consequently, vector spaces are in general \emph{not} rings.
 
-Indeed, the scaling operator |(*^) :: s -> v -> v|, is inhomogeneous:
+Indeed, the scaling operator |(*^) :: s -> v -> v|, is heterogeneous:
 the first argument is a scalar and the second one is a vector.
 %
 For our representation it can be defined as follows:
@@ -344,7 +344,7 @@ scaleV s (V a) = V (\i -> s * a i)
 
 
 %
-The canonical basis for |Vector| are given by
+The canonical basis for |Vector| is given by
 %
 \begin{code}
 e :: (Eq g, Ring s) => g -> Vector s g
@@ -360,7 +360,7 @@ is i j = if i == j then one else zero
 It is 1 if its arguments are equal and 0 otherwise. Thus |e i| has
 zeros everywhere, except at position |i| where it has a one.
 
-We can see that, as expected, every |v : g -> s| is a linear combination
+We can see that, as expected, every vector |V v :: Vector s g| is a linear combination
 of vectors |e i| where the coefficient of the canonical basis vector |e
 i| is the scalar |v i|:
 \begin{equation*}
@@ -498,7 +498,7 @@ But this means that we can determine the whole function
 %
 |f : Vector S G -> Vector S G'|
 %
-on all vectors from just |f| on the base vectors: 
+on all vectors from just |f| on the base vectors:
 %
 |f . e : G -> Vector S G'|,
 %
@@ -551,21 +551,21 @@ write |M i ! j| to mean the |i|th element of the |j|th column, i.e.,
 multiplication by |mulMV|:
 %
 \begin{spec}
-(mulMV M (V v)) i = linComb v (M i)
+(mulMV M (V v)) ! i = linComb v ((M i) !)
 \end{spec}
 % (M*v) i =
 therefore, one has
 %
 \begin{spec}
-(mulMV M (V v)) i                        = -- by def. of |mulMV|
-linComb v (M i)                          = -- by def. of |(M i) ! j|
-linComb v (\j -> m j ! i)              = -- earlier computation (linearity)
-f (V v) i
+(mulMV M (V v)) ! i                      = -- by def. of |mulMV|
+linComb v ((M i) !)                      = -- by def. of |(M i) ! j|
+linComb v (\j -> m j ! i)                = -- earlier computation (linearity)
+f (V v) ! i
 \end{spec}
 %|f (V v) g' = sum [m j ! g' * v j || j <- [0 .. n]]| with |g' = i|
 %
-If we take |Matrix| to be just a synonym for functions of type |G ->
-Vector S G'|:
+If we take |Matrix| to be just a synonym for functions of type |G' ->
+Vector S G|:
 %
 \begin{code}
 type Matrix s g g' = g' -> Vector s g
@@ -898,7 +898,7 @@ the list of their coefficients.
 This is the same representation as the vectors represented by |n+1|
 coordinates which we referred to in the introduction to this chapter.
 %
-Indeed, polynomials of degree |n| form a vector space, and we could
+Indeed, polynomials of degree |<=n| form a vector space, and we could
 interpret that as |{0, ..., n} -> REAL| (or, more generally, |Field a
 => {0, ..., n} -> a|).
 %
@@ -930,7 +930,7 @@ matter of converting lists to functions |{0, ..., n} -> REAL|).
 This way, the vector |\j -> if j == 3 then 1 else 0| is equal to |\j
 -> 3 `is` j| or simply |e 3|.
 %
-Any other polynomial function |p| equals the linear combination of
+Any other polynomial function |p| equals a linear combination of
 monomials, and can therefore be represented as a linear combination of
 our basis vectors |e i|.
 %
@@ -1035,7 +1035,7 @@ representing the polynomial function |p' x = 2 + 6*x|.
 As an interesting follow-up, \cref{exc:Dmatrixpowerseries} asks you to write the
 (infinite-dimensional) matrix representing |D| for power series.
 %
-Similarly, in~\cref{exc:matrixIntegPoly} you compute the matrix |In|
+Similarly, in~\cref{exc:matrixIntegPoly} you compute the matrix \(I_n\)
 associated with integration of polynomials.
 
 \subsection{\extraMaterial Inner product for functions and Fourier series}
@@ -1192,7 +1192,7 @@ v = V vf
          vf (Cos  2)  = 1
          vf (Cos  0)  = -1
          vf _         = 0
-\end{code}  
+\end{code}
 
 
 %
@@ -1279,7 +1279,7 @@ To write the matrix associated to |f|, we have to compute what vector
 is associated to each canonical basis vector:
 %
 \[
-  M = \rowvecc{|f (e 0)|}{|f (e n)|} 
+  M = \rowvecc{|f (e 0)|}{|f (e n)|}
 \]
 % \begin{spec}
 % M = [ f (e 0), f (e 1), ..., f (e n) ]
