@@ -6,7 +6,7 @@ more.
 
 \begin{exercise}
 \label{exc:Mstarcompose}
-Compute |((M*) . e ) g g'|.
+Compute |((M*) . e ) g ! g'|.
 \end{exercise}
 
 \begin{exercise}
