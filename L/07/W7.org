@@ -116,7 +116,7 @@
     store the results of h eᵢ for every i (finitely many). Each h eᵢ
     is a vector in V, thus we can store this collection in a table,
     usually called a *matrix*.
-
+    file:Matrix_shape.png
       |     |      |     |     |
       |     |      |     |     |
       | h eₒ | h e₁ | ... | h eₙ |
@@ -125,7 +125,147 @@
   + This matrix is the "syntax" of a linear transformation and the
     linear function h : U -> V is the semantics.
   + evalMV m v = linComb v m
-+ TODO cont. from Jamboard "slide" 6/19
++ Example: der : P₃ -> P₂ as a linear transformation
+  Def. Pₙ = { polynomials of degree ≤ n} = {0..n} -> REAL
+    -- represented as coefficients
+  evalₚ : Pₙ -> (REAL -> REAL)
+  evalₚ a = Σᵢ scale aᵢ pᵢ
+  Basis:
+    p : {0..n} -> REAL -> REAL
+    p i x = xⁱ
++ Example cont.: the matrix version DER of der
+  + Step 1: type / dimensions of the target
+    each column of the matrix represents a vector in the target space
+    thus, here a polynomial in P₂
+    represented by three coefficients: (think of a₀ + a₁*x + a₂*x²)
+    thus we need three rows
+  + Step 2: type / dimensions of the source
+    there is one column for each basis vector in the source space
+    thus, one for each of 1, x, x², x³
+    thus we need four columns
+  + file:DER3_shape.png
+          | 0 | 1 | 0 | 0 |
+    DER = | 0 | 0 | 2 | 0 |
+          | 0 | 0 | 0 | 3 |
+  + Step 3: fill in the resulting shape with the
+    der (p i) = scale i (p (i-1))
+          | 0 | 1 | 0 | 0 |
+    DER = | 0 | 0 | 2 | 0 |
+          | 0 | 0 | 0 | 3 |
++ Composing homomorphisms (here LinTran)
+  + Typing: let A, B, C be vector spaces and hᵢ linear transformations
+	 h₂      h₁
+     C <———— B <———— A
+	    h₂∘h₁
+     C <———————————— A
+
+  + Property: "homomorphisms compose"
+     LinTran(h₁,   A,B) ∧
+     LinTran(h₂,     B,C) ⇒
+     LinTran(h₂∘h₁,A,  C)
+
++ Composing LinTran (towards matrix multiplication)
+  + Typing + specification: let hᵢ = evalMV Mᵢ
+	 h₂      h₁
+     C <———— B <———— A
+         M₂      M₁
+
+	    h₂∘h₁
+     C <———————————— A
+         mulM M₂ M₁
+
+  + Property? (three variants)
+     ∃ mulM . evalMV (mulM M₂ M₁) = evalMV M₂ ∘ evalMV M₁
+     "can we compute a matrix for the composition h₂ ∘ h₁ from just M₂ and M₁?"
+     ∃ mulM . H2(evalMV, mulM, (∘))
++ Example:
+  A = a->REAL; B=b->REAL; C=c->REAL
+  a={U,V}; b={0,1,2}; c={1}
+       |      |      |      | 1 | 0 |
+  M₁ = |h₁ eᵤ | h₁ eᵥ |  =   | 1 | 1 |
+       |      |      |      | 0 | 1 |
+
+  M₂ = | 0 | 2 | 0 |
+  h₂ w = \i -> scale 2 (w i)   -- scaled projection
+
+  mulM M₂ M₁ = | 2 | 2 |
++ Helper functions for vectors and matrices
+  + Define some type synonyms:
+    type Vec s a = a -> s    -- a for "axes", s for "scalars"
+    type Mat s a b = b -> Vec s a  =  b -> (a -> s)
+  + And helper functions:
+    flip : (b -> a -> s) -> (a -> b -> s)
+    flip op i j = op j i
+    transpose : Mat s a b -> Mat s b a
+    transpose m = \i j -> m j i
+    getCol : Mat s a b -> a -> V s b
+    getCol = flip
+  + Also note a property of flip: (it is its own inverse)
+      ∀ m. flip (flip m) == m
+    or, equivalently,
+      flip ∘ flip == id
++ How do we compute the matrix from a LinTran?
+  Suppose we know
+    h : A -> B; LinTran(h,A,B)
+  but we want to find an m such that
+    h = evalMV m
+  Specification: the matrix should store the columns of h of the basis
+    getCol m i == h (e i)
+  = -- Def. of (∘), simplification
+    getCol m == h ∘ e
+  = -- Def. getCol = flip
+    flip m == h ∘ e
+  = -- Apply flip to both sides
+    flip (flip m) == flip (h ∘ e)
+  = -- flip is its own inverse
+    m == flip (h ∘ e)
+  Thus, we can get from h to the corresponding matrix and back
+    m == flip (h ∘ e)
+    h == evalMV m
+  thus also the "round-trip property":
+    m == flip (evalMV m ∘ e)
+  which can be seen as a specification of evalMV.
++ Compute the matrix multiplication (in a similar way):
+  Start from the setting above:
+	 h₂      h₁
+     C <———— B <———— A
+         m₂      m₁
+
+	    h₂∘h₁
+     C <———————————— A
+         mulM m₂ m₁
+  where we know
+    h₁ = evalMV m₁;
+    h₂ = evalMV m₂;
+
+  Start computing (towards a definition of mulM):
+    getCol (mulM m₂ m₁) i
+  = -- Specification of (mulM m₂ m₁)
+    (h₂ ∘ h₁) eᵢ
+  = -- Def. of (∘)
+    h₂ (h₁ eᵢ)
+  = -- Def. of h₂ and specification of m₁
+    evalMV m₂ (getCol m₁ i)
+  = -- Def. of (∘)
+    (evalMV m₂ ∘ getCol m₁) i
+  Thus we have
+    getCol (mulM m₂ m₁) == evalMV m₂ ∘ getCol m₁
+  and we can apply flip to both sides (as before)
+    flip (getCol (mulM m₂ m₁)) == flip (evalMV m₂ ∘ getCol m₁)
+  we notice  getCol = flip  and  flip ∘ flip = id
+    mulM m₂ m₁ == flip (evalMV m₂ ∘ getCol m₁)
+  This is now a definition of mulM which satisfies its specification.
+  (Reminder: evalMV m v = linComb v m = Σᵢ scale vᵢ mᵢ)
++ Summing up:
+  type A = Vec s a
+  type B = Vec s b
+  type C = Vec s c
+  -- Notice that the b parameters makes sure the matrix dimensions match:
+  mulM : Mat s a b -> Mat s b c -> Mat s a c
+  mulM m₂ m₁ == flip (evalMV m₂ ∘ getCol m₁)
+
+  evalMV = mulMV : Mat s a b -> Vec s a -> Vec s b
+
 + Perhaps some live-coding [[Live_7_1_2023.hs]]
 
 ** Lecture 7.2 / 8.1: Laplace Transforms
