@@ -16,12 +16,12 @@
   addV :: v->v->v; zeroV :: v; negateV :: v->v
   ∀ c. H2(scale c, addV,    addV   )  &&
        H0(scale c, zeroV,   zeroV  )  &&
-	 H1(scale c, negateV, negateV)
+       H1(scale c, negateV, negateV)
 
   scale :: s -> (v->v)
   addS :: s->s->s;                zeroS :: s;      negateS :: s->s
   addF :: (v->v)->(v->v)->(v->v); zeroF :: (v->v); negateF :: (v->v)->(v->v)
-       H2(scale, addS,    addF   ) &&
+         H2(scale, addS,    addF   ) &&
 	 H0(scale, zeroS,   zeroF  ) &&
 	 H1(scale, negateS, negateF)
 
@@ -33,7 +33,7 @@
 + Laws expanded two steps: (types unchanged)
   ∀ c. (∀ v₁, v₂. scale c (addV v₁ v₂) = addV (scale c v₁) (scale c v₂)) &&
        (scale c zeroV = zeroV) &&
-	 (∀ v. scale c (negateV v) = negateV (scale c v))
+       (∀ v. scale c (negateV v) = negateV (scale c v))
 
        (∀ s₁, s₂. scale (addS s₁ s₂) = addF (scale s₁) (scale s₂)) &&
 	 (scale zeroS = zeroF) &&
@@ -71,16 +71,18 @@
   data Axes   = X | Y
   type XYVec  = Axes -> REAL
   + Example vectors:
-    v₁ X = TODO; v₁ Y = TODO;
-    v₂ X = TODO; v₂ Y = TODO;
-    v₃ X = TODO; v₃ Y = TODO;
+    v₁ X = 4   ; v₁ Y = 1   ;
+    v₂ X =   1 ; v₂ Y =   3 ;
+    v₃ X = 4+1 ; v₃ Y = 1+3 ;
   + instance VectorSpace XYVec REAL where scale = scaleF
     scaleF :: REAL -> (Axes -> REAL) -> (Axes -> REAL)
-    scaleF c v = \g -> c * v g
+    scaleF c v = \a -> c * v a
 + Linear Combinations
   -- Math notation: Σᵢ aᵢ◃vᵢ = Σᵢ (scale aᵢ vᵢ)
   linComb :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
-  linComb a v = sum (map (\i->scale (a i) (v i) finiteDomain)
+  linComb a v = sum  (map  (\i->scale (a i) (v i))
+                           finiteDomain
+	             )
 + Linearly independent, span, and basis:
   + A collection of vectors v₀, ..., vₙ is *linearly independent* iff
     ∀ a:{0..n}->s. (linComb a v == 0) ⇔ (∀ i. aᵢ==0)
@@ -89,19 +91,23 @@
   + A basis B for a vector space V over a field S is a linearly
     independent collection of vectors which spans V.
 + Example (canonical) basis: for
-  + let G = {0..n}; V = G->s; e : G -> V;
-        eᵢ j = if i==j then 1 else 0
+  + let G = {0..n}; V = G->s; e : G -> V;  e : G -> (G -> s)
+        eᵢ j = if i==j then 1 else 0    --      i     j
   + Then e is a basis for V
 + Next up: linear transformation (homomorphism between vector spaces)
 *** L7.1b https://jamboard.google.com/d/1Kx-uI4J8zi4GejuNuSP-SxxydeqgHguychnbvpUiCxM/viewer
 + h : U -> V   where U and V and vector spaces over the same scalars s
-+ LinTran(h,U,V) =    H₀(h,zeroᵤ,zeroᵥ)
-                 ∧   H₂(h,(+ᵤ),(+ᵥ))
-		 ∧∀c.H₁(h,scaleᵤ c,scaleᵥ c)
++ LinTran(h,U,V) =    H₀(h,zeroᵤ,zeroᵥ)        --   h zeroᵤ == zeroᵥ
+                 ∧   H₂(h,(+ᵤ),(+ᵥ))          -- ∀ x, y. h (x +ᵤ y) == (h x) +ᵥ (h y)
+		 ∧∀c.H₁(h,scaleᵤ c,scaleᵥ c)  -- ∀ c, x. h (scaleᵤ c x) = scaleᵥ c (h x)
 + Examples:   ∀c. LinTran(scaleᵥ c, V, V)
               ∀i. LinTran(apply i, g->s, s)  -- "projections"
+	      apply i v = v i
 + Linear transformations between U = G -> s and V = G' -> s
-  h v = *TODO* (or see calculation below)
+  v = linComb v e = Σᵘᵢ (vᵢ ◃ eᵢ)
+  h v = h (Σᵘᵢ (vᵢ ◃ᵘ eᵢ))     -- LinTran(h,U,V)
+      = Σᵛᵢ ( h (vᵢ ◃ᵘ eᵢ) )   -- LinTran(h,U,V)
+      = Σᵛᵢ ( vᵢ ◃ᵛ h eᵢ)
   + Calculation
     h v
       = -- e is the canonical basis => v = Σᵁᵢ (scaleᵁ vᵢ eᵢ)
@@ -133,7 +139,7 @@
   Basis:
     p : {0..n} -> REAL -> REAL
     p i x = xⁱ
-+ Example cont.: the matrix version DER of der
++ Example cont.: the matrix version DER of der : P₃ -> P₂
   + Step 1: type / dimensions of the target
     each column of the matrix represents a vector in the target space
     thus, here a polynomial in P₂
@@ -163,7 +169,6 @@
      LinTran(h₁,   A,B) ∧
      LinTran(h₂,     B,C) ⇒
      LinTran(h₂∘h₁,A,  C)
-
 + Composing LinTran (towards matrix multiplication)
   + Typing + specification: let hᵢ = evalMV Mᵢ
 	 h₂      h₁
@@ -265,7 +270,6 @@
   mulM m₂ m₁ == flip (evalMV m₂ ∘ getCol m₁)
 
   evalMV = mulMV : Mat s a b -> Vec s a -> Vec s b
-
 + Perhaps some live-coding [[Live_7_1_2023.hs]]
 
 ** Lecture 7.2 / 8.1: Laplace Transforms
