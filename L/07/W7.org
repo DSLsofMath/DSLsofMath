@@ -277,11 +277,30 @@
 + ... and a method for solving ODEs
 + (Note: this transform is not implemented in Haskell in the course.)
 *** [[https://jamboard.google.com/d/1n_fYYas1ahuNwJgm8TlcNJFA8KssNFqbQy4RGTRB95I/viewer?f=0][L8.1a]]
++ Infinite-dimensional vector space
+  + let V = {f : REAL -> REAL | f is smooth}
+  + V is a vector space
+  + Example vectors: exp, sin, cos, all polynomials, etc.
+  + But not abs, discontinuous functions,
 + D (derivative) as a linear transform
-+ Example: D exp = exp
-+ g s t = exp (-s*t)
-+ g s : V
+  + D : V -> V
+  + Example: D exp = exp
++ A family of exponentials (which will be used for Laplace later)
+  + let gₛ t = exp (-s*t)
+  + g is a family of smooth vectors
+  + g : REAL -> V
+  + D gₛ t = -s*exp (-s*t) = -s * g s t = scaleF (-s) gₛ t
+  + D gₛ t = scaleF (-s) gₛ
+  + file:gs_geogebra_with_def.png
 + Integral as a linear transform
+  + I : V -> V
+  + I f x = integral 0 x f
++ Some properties of D and I
+  + D (I f) = D F = f
+  + I (D F) x = I f x = F x - F 0
+  + D (f*g) = D f * g  +  f * D g
+  + I (D (F*G)) x = (F*G) x - (F*G) 0 = F x * G x  -  F 0 * G 0
+
 + "discovering" the Laplace transform
 *** [[https://jamboard.google.com/d/1xaJLOHtVOI0zwkLRrXAiuSjpn3NpLfDjlTpHrigc6S0/viewer][L8.1b]]
 + Laplace transform examples: exp, sin, cos
