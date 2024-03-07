@@ -2,14 +2,15 @@
 * L8.1 / L7.2: Linear algebra & Dynamical systems
 + [[https://jamboard.google.com/d/1qRu6vMgjyxlzd1uhXXS1lg7aup8u3KrgJXyyWGmJMEE/viewer?f=0][L8.1 / 7.2]] LinAlg + DynSys
 + [[https://jamboard.google.com/d/1Lv7Kc3ZX4sQM07BEDdT8B2aKpS0a4wQ1FewNmWkeZ2Q/viewer?f=0][L8.2 start]]
-+ Live-coding: [[file:Live_8_1_2023.lhs][Live_8_1_2023.lhs]]
++ Live-coding: start [[file:Live_8_2.lhs][Live_8_2.lhs]] end [[file:Live_8_2_2024.lhs][Live_8_2_2024.lhs]]
   Connecting
     Complex numbers  (Week 1),
     Power Series      (Week 5),
     Vector spaces      (Week 7), and
     Laplace transforms  (Week 8).
-* L8.2: DSLsofMath: final lecture
 + Jamboard: [[https://jamboard.google.com/d/12UtJxCCKS_LBHpkoFF_Bx-9G0lwPeg78xkhpAIG0pIc/viewer][L8.2]] - course overview
++ Blackboard: inner product of vectors (including functions on an bounded interval)
+* L8.2: DSLsofMath: final exercise session
 ** Focus on exam questions
 + 19 exams + solutions available in the github repo
 

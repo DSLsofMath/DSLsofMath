@@ -51,10 +51,10 @@ scale = (*^)
 instance Field a => VectorSpace (PS a) a where (*^) = scaleP
 
 scaleP :: Multiplicative a => a -> PS a -> PS a
-scaleP = error "TODO scaleP"
+scaleP c = mapP (c*)
 
 mapP :: (a->b) -> (PS a -> PS b)
-mapP = error "TODO mapP"
+mapP f (P as) = P (map f as)
 \end{code}
 
 Example use:
@@ -78,28 +78,28 @@ newtype Complex r = C (r , r)  deriving (Eq, Show)
 --      LinTrans(re, Complex r, r)
 --   && LinTrans(im, Complex r, r)
 re, im :: Complex a -> a
-re = error "TODO re"
-im = error "TODO im"
+re (C (x,_y)) = x
+im (C (_x,y)) = y
 
--- What are the basis vectors?
+-- What are the basis vectors? one and i    forall z.  z = scale (re z) one + scale (im z) i
 i :: Ring a => Complex a
-i = error "TODO i"
+i = C (zero, one)
 
 zeroC :: Additive r => Complex r
-zeroC = error "TODO zeroC"
+zeroC = C (zero, zero)
 
 addC :: Additive a => Complex a -> Complex a -> Complex a
-addC = error "TODO addC"
+addC (C (x1, y1)) (C (x2, y2)) = C (x1 + x2, y1 + y2)
 
 instance Additive r => Additive (Complex r) where zero = zeroC; (+) = addC
 
 instance Field a => VectorSpace (Complex a) a where (*^) = scaleC
 
 scaleC :: Multiplicative a => a -> Complex a -> Complex a
-scaleC = error "TODO scaleC"
+scaleC c = mapC (c*)
 
 mapC :: (a->b) -> (Complex a -> Complex b)
-mapC = error "TODO mapC"
+mapC f (C (x, y)) = C (f x, f y)
 \end{code}
 
 AddGroup
@@ -107,7 +107,7 @@ AddGroup
 instance AddGroup r => AddGroup (Complex r) where  negate = negateC
 
 negateC :: AddGroup r => Complex r -> Complex r
-negateC = error "TODO negateC"
+negateC = mapC negate
 \end{code}
 
 ----------------
@@ -116,10 +116,10 @@ Multiplicative, Ring
 instance Ring r => Multiplicative (Complex r) where one = oneC; (*) = mulC
 
 oneC :: Ring r => Complex r
-oneC = error "TODO oneC"
+oneC = C (one, zero)
 
 mulC :: Ring a => Complex a -> Complex a -> Complex a
-mulC = error "TODO mulC"
+mulC (C (x1, y1)) (C (x2, y2)) = C (x1*x2 - y1*y2, x1*y2 + x2*y1)
 \end{code}
 
 ----------------
@@ -128,7 +128,10 @@ MulGroup, Field
 instance Field r => MulGroup (Complex r) where recip = recipC
 
 recipC :: Field a => Complex a -> Complex a
-recipC = error "TODO recipC"
+recipC (C (x, y)) = C (rx, ry)
+  where m2 = x*x + y*y
+        rx = x / m2
+        ry = negate y / m2
 \end{code}
 
 ----------------
@@ -162,16 +165,24 @@ We want to define "eᵃˣ" = \x -> exp (a*x) as a power series (for all a)
   and   expaf a 0 = exp (a*0) = exp 0 = 1
 
 Thus we can find the power series by integP + recursion:
+
+P [C (1    , 0      )  -- one
+  ,C (0    , 1      )  --          i
+  ,C ((-1) % 2,0    )  -- -1/2
+  ,C (0    ,(-1) % 6)  --         -i/6
+  ,C (1 % 24,0      )  -- 1/24
+  ]
+
+
 \begin{code}
 expa :: Field a => a -> PS a
-expa = error "TODO expa"
+expa c = integP one (scaleP c (expa c))
 
 expi :: Field a => PS (Complex a)
 expi = expa i
 
-
 cosPsinP :: Field a => PS (Complex a)
-cosPsinP = error "TODO implement cos + i sin"
+cosPsinP = cosP   +  scaleP i sinP
 \end{code}
 
 
