@@ -2,7 +2,7 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE FlexibleContexts #-}
-{-# LANGUAGE RebindableSyntax #-}
+-- {-# LANGUAGE RebindableSyntax #-}  -- make it possible to use 0 for zero, 1 for one, etc.
 {-# LANGUAGE MultiParamTypeClasses #-}
 module DSLsofMath.Live_8_2 where
 import DSLsofMath.Algebra (Additive(..), AddGroup(..), (-),
@@ -14,7 +14,7 @@ import Prelude (Bool(..), Eq(..), Show(..), Integer, Rational,
                 pi, Double, Functor(fmap),
                 error, const, id, (.), map, take, iterate, ($))
 type REAL = Double
--- default (Rational, Integer)
+default (Rational, Integer)    -- Prefer Rational coefficients when possible
 \end{code}
 
 Domain-Specific Languages of Mathematics
@@ -23,14 +23,6 @@ Lecture 8.2: Connecting
 + Complex numbers  (Week 1),      -- is also a vector space
 + Vector spaces     (Week 7), and
 + Laplace transforms (Week 8).    -- is a LinTrans between vector spaces
-
-solutions to a linear ODE
-  f'' + 4*f' + f = 0    -- (without starting conditions)
-
-say ps1 is a power series solution
-and ps2 is another series solution
-
-(scaleP alpha ps1 + scaleP beta ps2) is also a solution
 
 Reminder: exp, sin, cos as power series:
 
@@ -52,7 +44,8 @@ scale :: VectorSpace v s => s -> v -> v
 scale = (*^)
 \end{code}
 
-New: Power series as a vector space
+----------------
+* Step 1: Power series as a vector space
 
 \begin{code}
 instance Field a => VectorSpace (PS a) a where (*^) = scaleP
@@ -64,7 +57,20 @@ mapP :: (a->b) -> (PS a -> PS b)
 mapP = error "TODO mapP"
 \end{code}
 
-Can we combine power series with complex numbers?
+Example use:
+
+Solutions to a linear, homogenous ODE
+  f'' + 4*f' + f = 0    -- (without starting conditions)
+
+say ps1 is a power series solution
+and ps2 is another series solution
+
+(scaleP alpha ps1 + scaleP beta ps2) is also a solution
+
+
+----------------
+* Step 2: Connect back to complex numbers - another vector space
+
 \begin{code}
 newtype Complex r = C (r , r)  deriving (Eq, Show)
 
@@ -125,6 +131,8 @@ recipC :: Field a => Complex a -> Complex a
 recipC = error "TODO recipC"
 \end{code}
 
+----------------
+* Step 3: Can we combine power series with complex numbers?
 
 Some test values
 \begin{code}
@@ -145,10 +153,13 @@ s1 = sinf one
 ----------------
 * Relating exp, sin, and cos as power series
 
-Informally: (invisible eval)
-  let   expa a x = exp (a*x)
-  then  D (expa a) x = a * expa a x
-  and   expa a 0 = exp (a*0) = exp 0 = 1
+We want to define "eᵃˣ" as a power series (for all a)
+  expa  :: Field a => a -> PS a
+  expaf :: Field a => a -> (a ->a)
+
+  Spec.   expaf a x = exp (a*x)
+  then  D (expaf a) x = a * expaf a x
+  and   expaf a 0 = exp (a*0) = exp 0 = 1
 
 Thus we can find the power series by integP + recursion:
 \begin{code}
