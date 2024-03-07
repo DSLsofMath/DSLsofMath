@@ -14,14 +14,23 @@ import Prelude (Bool(..), Eq(..), Show(..), Integer, Rational,
                 pi, Double, Functor(fmap),
                 error, const, id, (.), map, take, iterate, ($))
 type REAL = Double
+-- default (Rational, Integer)
 \end{code}
 
 Domain-Specific Languages of Mathematics
 Lecture 8.2: Connecting
-+ Power Series    (Week 5),
-+ Complex numbers  (Week 1),
++ Power Series    (Week 5),       -- is a vector space
++ Complex numbers  (Week 1),      -- is also a vector space
 + Vector spaces     (Week 7), and
-+ Laplace transforms (Week 8).
++ Laplace transforms (Week 8).    -- is a LinTrans between vector spaces
+
+solutions to a linear ODE
+  f'' + 4*f' + f = 0    -- (without starting conditions)
+
+say ps1 is a power series solution
+and ps2 is another series solution
+
+(scaleP alpha ps1 + scaleP beta ps2) is also a solution
 
 Reminder: exp, sin, cos as power series:
 
@@ -59,10 +68,14 @@ Can we combine power series with complex numbers?
 \begin{code}
 newtype Complex r = C (r , r)  deriving (Eq, Show)
 
+-- Projections: we want
+--      LinTrans(re, Complex r, r)
+--   && LinTrans(im, Complex r, r)
 re, im :: Complex a -> a
 re = error "TODO re"
 im = error "TODO im"
 
+-- What are the basis vectors?
 i :: Ring a => Complex a
 i = error "TODO i"
 
@@ -132,9 +145,10 @@ s1 = sinf one
 ----------------
 * Relating exp, sin, and cos as power series
 
-let   expa a x = exp (a*x)
-then  D (expa a) x = a * expa a x
-and   expa a 0 = exp (a*0) = exp 0 = 1
+Informally: (invisible eval)
+  let   expa a x = exp (a*x)
+  then  D (expa a) x = a * expa a x
+  and   expa a 0 = exp (a*0) = exp 0 = 1
 
 Thus we can find the power series by integP + recursion:
 \begin{code}
@@ -142,7 +156,8 @@ expa :: Field a => a -> PS a
 expa = error "TODO expa"
 
 expi :: Field a => PS (Complex a)
-expi = error "TODO expi"
+expi = expa i
+
 
 cosPsinP :: Field a => PS (Complex a)
 cosPsinP = error "TODO implement cos + i sin"
@@ -151,7 +166,7 @@ cosPsinP = error "TODO implement cos + i sin"
 
 ----------------
 Connecting to Laplace of sin, cos
-  (on Jamboard)
+  (on blackboard)
 
 We now know that
   expi = cosP + scaleP i sinP
@@ -165,14 +180,14 @@ and similarly
   (exp (i*x) - exp(-i*x))/2 = i * sin x
 or equivalently
   cos x = (exp (i*x) + exp(-i*x))/2
-and 
+and
   sin x = (exp (i*x) - exp(-i*x))/(2*i)
 
 We know the Laplace transform of \x->exp (a*x) is \s->1/(s-a)
 
 Thus we get
   L cos s = (1/(s-i) + 1/(s-(-i)))/2
-          = (1/(s-i) + 1/(s+i))/2 
+          = (1/(s-i) + 1/(s+i))/2
           = ((s+i) + (s-i))/((s-i)*(s+i)*2)
           = (2*s)/((s²-i²)*2)
           = s/(s²+1)
@@ -184,4 +199,3 @@ Scalars can be seen as 1-dim. vectors:
 \begin{code}
 instance Field a => VectorSpace a a where (*^) = (*)
 \end{code}
-

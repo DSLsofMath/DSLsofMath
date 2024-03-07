@@ -14,6 +14,7 @@ import Prelude (Bool(..), Eq(..), Show(..), Integer, Rational,
                 pi, Double, Functor(fmap),
                 error, const, id, (.), map, take, iterate, ($))
 type REAL = Double
+-- default (Rational, Integer)
 \end{code}
 
 Domain-Specific Languages of Mathematics
@@ -175,9 +176,8 @@ expa a = integP one (scaleP a (expa a))
 expi :: Field a => PS (Complex a)
 expi = expa i
 
-
 cosPsinP :: Field a => PS (Complex a)
-cosPsinP = error "TODO implement cos + i sin"
+cosPsinP = cosP + scaleP i sinP
 \end{code}
 
 -- expi
@@ -187,7 +187,7 @@ P [ C (1,        0)
   , C (0,      (-1)%6)
   , C (1%24,     0)
   ]
--- sin
+-- takeP 5 sinP :: Poly Rational
 P [0
   ,1
   ,0
