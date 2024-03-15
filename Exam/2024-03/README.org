@@ -1,0 +1,10 @@
+* Exam 2024-03 of the [[../../README.md][DSLsofMath course]]
+[[file:Exam_2024-03.pdf][Exam 2023-04]]
+
+Suggested solutions: [[file:Solution_2024-03.pdf][Solution 2023-04]]
+
+** Grading levels:
+
+To pass you need
++ a minimum of 5p on each question (1 to 4) and also
++ reach these grade limits:  3: >=48p, 4: >=65p, 5: >=83p, max: 100p
