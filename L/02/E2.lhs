@@ -1,7 +1,7 @@
 \newpage
 \section{Exercises}
 
- \subsection{Representations of propositions}
+\subsection{Representations of propositions}
 
 % TODO: Perhaps introduce GADT datatype notation use in some exercise solutions
 
@@ -237,6 +237,38 @@ Can you prove the converse?
   Hint: The key is to use the function argument to |noContra| twice.
 
 \end{exercise}
+
+
+\subsection{First order logic examples}
+
+Here the focus is on understanding the combinators and how to prove or
+disprove FOL propositions (with no requirement on special syntax for
+the proofs).
+
+\begin{exercise}
+Prove or disprove the following claims where |f : Bool -> Nat|:
+\begin{enumerate}
+\item |Exists f (Forall x (Forall y (f x == y)))|
+\item |Forall x (Exists f (Forall y (f x == y)))|
+\item |Forall y (Exists f (Forall x (f x == y)))|
+\item |Forall x (Forall y (Exists f (f x == y)))|
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}
+Prove or disprove the following claims where |exp x = pow e x| and |op : REAL -> REAL -> REAL|:
+\begin{enumerate}
+\item |Forall x (Forall y (exp (x+y) == (exp x) + (exp y)))|
+\item |Exists op (Forall x (Forall y (exp (x+y) == op (exp x) (exp y))))|
+\item |Exists op (Forall x (Forall y (exp (op x y) == exp x + exp y)))|
+\end{enumerate}
+\end{exercise}
+
+% \begin{exercise}
+% \end{exercise}
+%
+% \begin{exercise}
+% \end{exercise}
 
 
 \subsection{Continuity and limits}
