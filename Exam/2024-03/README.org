@@ -1,10 +1,24 @@
 * Exam 2024-03 of the [[../../README.md][DSLsofMath course]]
-[[file:Exam_2024-03.pdf][Exam 2023-04]]
-
-Suggested solutions: [[file:Solution_2024-03.pdf][Solution 2023-04]]
++ [[file:Exam_2024-03.pdf][Exam 2023-04]]
++ Suggested solutions: [[file:Solution_2024-03.pdf][Solution 2023-04]]
++ Exam check (granskning): 2024-04-08, 12.15-12.45 in EDIT 6128
 
 ** Grading levels:
 
 To pass you need
 + a minimum of 5p on each question (1 to 4) and also
 + reach these grade limits:  3: >=48p, 4: >=65p, 5: >=83p, max: 100p
+
+** Grade distribution 2024-03:
+
+| Grade | Students | All results, sorted by falling point sum incl. bonus |
+|-------+----------+------------------------------------------------------|
+|     5 |       12 | 102, 100, 100, 98, 94, 91, 91, 90, 90, 88, 88, 87    |
+|     4 |        6 | 80, 77, 77, 72, 67, 65                               |
+|     3 |       13 | 63, 59, 59, 59, 59, 58, 57, 51, 51, 51, 51, 48, 48   |
+|     U |        7 | 52[1], 43, 39, 39, 34, 31, 9                         |
+|-------+----------+------------------------------------------------------|
+| Total |       38 |                                                      |
+
+[1] In this solution, Q3 gave <5p, thus leading to a failing grade
+even though the total sum was >= 48p.
