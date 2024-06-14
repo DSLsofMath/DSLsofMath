@@ -1,0 +1,7 @@
+* Exam 2024-06 with suggested solutions:
++ file:Exam_2024-06.pdf
++ file:P1_Algebra.hs
++ file:P2_Laplace.lhs
++ file:P3_Homomorphisms.txt
++ file:P4_D_Inv.lhs
+  

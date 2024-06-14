@@ -1,0 +1,144 @@
+P3 [25p]: Proofs and homomorphisms:
+
+H2(h,Op,op)  =  Forall x (Forall y (h(Op x y) == op (h x) (h y)))
+
+----------------
+
+3a: [5p] Prove |Exists op (H2(odd,(+),op))| where |odd :: ZZ -> Bool|
+  checks if a number is odd.
+
+----------------
+
+3b: [10p] Prove or disprove |Exists add (H2(degree,(+),add))| where
+  |degree :: Poly REAL -> Maybe Nat| computes |Just| the degree of a
+  polynomial (or |Nothing| for the zero polyomial).
+
+----------------
+3c: [10p] With |D : Fun -> Fun| being the usual derivative operator
+  for functions of one argument (|Fun = REAL -> REAL|), prove |not
+  (Exists mul (H2(D,(*),mul)))|, where |(*)| is pointwise
+  multplication of functions.
+
+Motivate your steps and make sure to keep track of types, scope,
+etc. of your expressions.
+
+----------------------------------------------------------------
+
+3a: We first derive |op| and then prove it correct.
+Start from 0 and 1 and use H = H2(odd,(+),op)
+  op (odd 0) (odd 0) = odd (0+0) = odd 0 = False
+  op (odd 0) (odd 1) = odd (0+1) = odd 1 = True
+  op (odd 1) (odd 0) = odd (1+0) = odd 1 = True
+  op (odd 1) (odd 1) = odd (1+1) = odd 2 = False
+thus (as we know odd 0 = False and odd 1 = True):
+  op False False = False
+  op False True  = True
+  op True  False = True
+  op True  True  = False
+which is the truth table of xor.
+
+Now to the proof:
+  H2(odd,(+),xor) = Forall x, y. odd (x+y) == xor (odd x) (odd y)
+We know that all n can be written as n=2*nh+nr for nr in {0,1}
+and that odd n = odd nr
+Thus
+  x = 2*xh + xr; odd x = odd xr
+  y = 2*yh + yr; odd y = odd yr
+We also know that
+  odd (x+y)
+= -- def.
+  odd (2*xh + xr + 2*yh + yr)
+= -- modulo comp.
+  odd (xr + yr)
+and that odd 2 = odd 0 = False
+Thus we have reduced a general pair (x,y) to a pair (xr,yr) and those
+four cases were covered above. QED.
+
+----------------
+3b: First we attempt a proof:
+
+Expand the core of the claim:
+  H2(degree,(+),add))
+=
+  Forall p, q. degreee (p+q) == add (degree p) (degreee q)
+where
+  type MN = Maybe Nat
+  add : MN -> MN -> MN
+
+Proof by cases:
+case (degree p, degree q) of
+  (Nothing, mb) -> degree (p+q) = degree (0+q) = degree q = mb
+    -- OK if we define |add Nothing mb = mb|
+
+  (ma, Nothing) -> degree (p+q) = degree (p+0) = degree p = ma
+    -- OK if add ma Nothing = ma
+
+  (Just a, Just b) -> problem: p+q can have many different degrees
+    example: p==-q => degree (p+q) = degree zero = Nothing
+             p==q  => degree (p+q) = degree p = Just a /= Nothing
+    -- thus it seems to be impossible. Let's prove it.
+
+Assume there exists an add such that H2(degree,(+),add))
+Let p1=[0,1]=q, p2=[0,-1]
+Then
+  degree p1 = degree p2 = degree q = Just 1
+  degree (p1+q) = degree [0,2] = Just 1
+  degree (p2+q) = degree [] = Nothing
+And we get
+  add (Just 1) (Just 1)
+=
+  add (degree p1) (degree q)
+= -- H2 above
+  degree (p1+q)
+=
+  Just 1
+But we also get
+  add (Just 1) (Just 1)
+=
+  add (degree p2) (degree q)
+= -- H2 above
+  degree (p2+q)
+=
+  Nothing
+
+Thus we get Nothing == Just 1 which is a contradiction.
+
+Thus we conclude
+  not (Exists add (H2(degree,(+),add)))
+
+----------------
+
+3c: Let H = Exists mul (H2(D,(*),mul))
+
+We prove not H by contradiction:
+Assume H. Then we have mul : Fun -> Fun -> Fun such that H2(D,(*),mul).
+This means
+  Forall f, g. D (f*g) = mul (D f) (D g)
+Now let g x = f1 x = x and f2 x = x+1
+Then D g = D f1 = const 1 = D f2 -- they all have the same derivative.
+let c : Fun = mul (const 1) (const 1), what mul returns for this derivative.
+We will find two incompatible claims about c.
+
+In more details: we can now prove
+  Q =  mul (D f1) (D g) == mul (D f2) (D g)
+by this computation:
+  mul (D f1) (D g) = mul (const 1) (const 1) = c = mul (D f2) (D g)
+
+But we can also prove not Q:
+  mul (D f1) (D g)
+= {- use H -}
+  D (f1*g)
+= {- Def. of f1 and g -}
+  D (\x -> x^2)
+= {- Derivative of polynomial -}
+  \x -> 2*x
+/=  -- for example, apply both sides to 0 => 0/=1
+  \x -> 2*x + 1
+= {- Derivative of polynomial -}
+  D (\x -> x^2 + x)
+= {- algebra -}
+  D (f2*g)
+= {- use H -}
+  mul (D f2) (D g)
+
+As we have reached a contradiction from assuming H, we have proven not H.
