@@ -19,6 +19,9 @@
 ----------------
 
 3a.
+Rewrite:
+  f'' = 2*f - f'
+
 \begin{code}
 module P3 where
 import Data.Ratio

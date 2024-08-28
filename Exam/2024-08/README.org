@@ -1,0 +1,6 @@
+* Exam 2024-08 with suggested solutions:
++ file:Exam_2024-08.pdf
++ file:P1_Algebra.lhs
++ file:P2_Laplace.lhs
++ file:P3_Proof.agda
++ file:P4_Typing.lhs
