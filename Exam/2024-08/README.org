@@ -4,3 +4,20 @@
 + file:P2_Laplace.lhs
 + file:P3_Proof.agda
 + file:P4_Typing.lhs
+
+Seven students sat the re-exam in August, and three of them passed (with grades 4, 3, 3).
+
+* Exam check (granskning) for the 2024-08 exam upon appointment
+
+The time for exam exam check (granskning) written on the exam script will need to change due to a trip.
+
+Instead, contact me via email or phone no later than 2024-09-08 if you want to book a slot (see below for my availability).
+
+Kind regards,
+
+  Patrik
+
+Availability for exam check (on appointment):
+
++ Wed. 2024-09-11: 11.10-11.40; 15:10-15:40
++ Thu. 2024-09-12: 11.00-13.00

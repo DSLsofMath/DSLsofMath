@@ -12,6 +12,8 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=36211
 
 ## News
 
+* 2024-08-29: [Exam 2024-08](Exam/2024-08) available, with suggested solutions. Exam check (granskning) upon appointment.
+* 2024-06-14: [Exam 2024-06](Exam/2024-06) available, with suggested solutions.
 * 2024-03-15: [Exam 2024-03](Exam/2024-03) available, with suggested solutions.
 * 2024-01-16: First lecture of the 2024 course instance.
 * 2023-12-25: New book pdf snapshot in preparation of the 2024 course instance.
