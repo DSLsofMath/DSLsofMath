@@ -1,38 +1,32 @@
 ---
 aspectratio: 169
 ---
-# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=36211) / [DIT983](https://kursplaner.gu.se/pdf/kurs/en/DIT983)
+# Matematikens domänspecifika språk [DAT326](https://www.student.chalmers.se/sp/course?course_id=38990) / [DIT983](https://kursplaner.gu.se/pdf/kurs/en/DIT983)
 
-
-(Presentation för D2, On 2023-11-15 av Patrik Jansson.)
+(Presentation för D2, Ti 2024-11-12 av Patrik Jansson.)
 
 * Patrik Jansson: forskare och lärare inom Funktionell Programmering
     * examinator och kursansvarig för kursen DSLsofMath
     * XPA för D (2011–13), "inspektor" för D-sektionen (-2021)
 * LP3 i D2: ett första smakprov på programmets valfrihet
     * Vi tror på er förmåga att själva kombinera kurser till en bra helhet
-    * Budskap: *Välj både DSLsofMath (nu i LP3) och PCP (sedan i D3, LP1)*
-* Tidigare gästföreläsare:
-    * Nicola Botta, Docent, Potsdam Institute of Climate Impact Research
-    * Cezar Ionescu, Professor inom AI och funktionell programmering, Tyskland
+    * Budskap: *Välj både DSLsofMath (nu i LP3) och "Principer för parallell programmering" (sedan i D3, LP1)*
 
-# Kursidé för "Matematikens domänspecifika språk"
+
+![DSLsofMath book](../../Wisla23/DSLsofMath_book_front_cover.jpg){height=50%}
+
+# Kursidé för "Matematikens domänspecifika språk" (DSLsofMath)
 
 Presentera klassiska matematiska ämnen från ett datavetenskapligt perspektiv:
 
 * att tydligt beskriva de begrepp som introduceras,
-* vara uppmärksam på syntax och typer,
+* vara uppmärksam på syntax, typer, och vad det betyder (semantik)
 * att bygga domänspecifika språk för: algebra, funktioner, derivator, polynom och potensserier, transformer
-* att implementera (Haskell-)program för dessa områden (och därigenom nå en djupare förståelse)
+* att implementera (Haskell-)program för dessa områden ($\Rightarrow$ djupare förståelse)
 
-Kursen är tänkt att ge en fördjupad matematisk förståelse för
-datastudenter och en fördjupad datavetenskaplig förståelse för
-matematikstudenter.
+![DSLsofMath logo](../DSL_logo/DSL_logo_500x500.png){height=40%}
+![DSLsofMath book](../../Wisla23/DSLsofMath_book_front_cover.jpg){height=50%}
 
-\begin{align*}
-   f(x) &= 3*x^2
-\\ g(x) &= \int_{x}^{2x} f(x) dx &= \int_{x}^{2x} f(y) dy
-\end{align*}
 
 # Historisk bakgrund och motivation för DSLsofMath
 
@@ -72,14 +66,6 @@ Dvs. de som tog DSL-kursen fick mycket bättre resultat hösten i D3.
 
 # Funktionell programmering (FP) och typer
 
-* Typer (`Int`, `String`, `[Int]`, `a -> a -> a`, `[a -> a]`, ...)
-* Rena funktioner som bas: från indata till utdata
-* Historik: matematiska bevisverktyg och algoritmer
-* Nutid: Konkurrensfördel, FP-experter eftertraktade!
-* Vackert möte mellan matematik och maskin.
-
-Undervisning på sv/en och implementering i Haskell.
-
 ```haskell
 
 kvadrat x    =  x^2
@@ -93,8 +79,6 @@ test         =  upphöjtFyra 3
 list         =  [(1+), (2*), kvadrat, upphöjtFyra]
 ```
 
-# Funktionell programmering (FP) och *typer*
-
 * Typer (`Int`, `String`, `[Int]`, `a -> a -> a`, `[a -> a]`, ...)
 * Rena funktioner som bas: från indata till utdata
 * Historik: matematiska bevisverktyg och algoritmer
@@ -102,6 +86,9 @@ list         =  [(1+), (2*), kvadrat, upphöjtFyra]
 * Vackert möte mellan matematik och maskin.
 
 Undervisning på sv/en och implementering i Haskell.
+
+
+# Funktionell programmering (FP) och *typer*
 
 ```haskell
 kvadrat      :: Num a =>  a -> a
@@ -115,6 +102,14 @@ test         =  upphöjtFyra 3
 list         :: Num a =>  [a -> a]
 list         =  [(1+), (2*), kvadrat, upphöjtFyra]
 ```
+
+* Typer (`Int`, `String`, `[Int]`, `a -> a -> a`, `[a -> a]`, ...)
+* Rena funktioner som bas: från indata till utdata
+* Historik: matematiska bevisverktyg och algoritmer
+* Nutid: Konkurrensfördel, FP-experter eftertraktade!
+* Vackert möte mellan matematik och maskin.
+
+Undervisning på sv/en och implementering i Haskell.
 
 # Domänspecifika språk (DSL)
 
