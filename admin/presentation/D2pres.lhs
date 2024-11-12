@@ -34,10 +34,7 @@
   \frame{\partpage}
 }
 \AtBeginSection{
-  \ifbibliography
-  \else
-    \frame{\sectionpage}
-  \fi
+  \frame{\sectionpage}
 }
 \AtBeginSubsection{
   \frame{\subsectionpage}
@@ -69,6 +66,10 @@
 \author{}
 \date{}
 
+\renewcommand\Varid[1]{\mathord{\textsf{\small #1}}}
+\renewcommand\Conid[1]{\mathord{\textsf{\small #1}}}
+\newcommand\Keyword[1]{\textbf{\textsf{\small #1}}}
+
 \begin{document}
 
 \begin{frame}{Matematikens domänspecifika språk
@@ -76,11 +77,11 @@
 / \href{https://kursplaner.gu.se/pdf/kurs/en/DIT983}{DIT983}}
 \framesubtitle{Presentation för D2, Ti 2024-11-12 av Patrik Jansson.}
 \begin{columns}
-\begin{column}{0.7\textwidth}
+\begin{column}{0.75\textwidth}
 \begin{itemize}
 \tightlist
 \item
-  Patrik Jansson: forskare och lärare inom ämnet Funktionell Programmering
+  Patrik Jansson: professor i Funktionell Programmering
 
   \begin{itemize}
     \tightlist
@@ -88,19 +89,21 @@
   \item 2011-2013: PA för D-programmet
   \item 2014-2021: ``inspektor'' för D-sektionen
   \item 2023-: Examinator för Kandidatarbetet på CSE
+    \pause
+  \item (Hösten 2024: sabbatical i Oxford)
   \end{itemize}
 \item LP3 i D2: ett första smakprov på programmets valfrihet
   \begin{itemize}
     \tightlist
   \item Vi tror på er förmåga att själva kombinera kurser till en bra
     helhet
-  \item Budskap: \emph{Välj både DSLsofMath (nu i LP3) och ``Principer
+  \item Budskap: \emph{Välj både DSLsofMath (nu i LP3) och \\``Principer
       för parallell programmering'' (sedan i D3, LP1)}
   \end{itemize}
 \end{itemize}
 \end{column}
-\begin{column}{0.3\textwidth}
-\includegraphics[width=\textwidth]{../../Wisla23/DSLsofMath_book_front_cover.jpg}
+\begin{column}{0.25\textwidth}
+\only<2->{\includegraphics[angle=-90,origin=c,width=0.9\textwidth]{../../../OxfordVisit2024/img/20241013_173212.jpg}}
 \end{column}
 \end{columns}
 \end{frame}
@@ -134,17 +137,31 @@ perspektiv:
 \end{frame}
 
 \begin{frame}{Historisk bakgrund och motivation för DSLsofMath}
-\protect\hypertarget{historisk-bakgrund-och-motivation-fuxf6r-dslsofmath}{}
-Det har under många år funnits en del problem med resultaten på kurserna
-``Transformer'' samt ``Regler'' i D3. Ett av målen med den här kursen är
-att se till att förbereda er i D2 så att ni kan ta er an hösten i trean
-med ett gott självförtroende på mattesidan.
+\begin{columns}
+\begin{column}{0.75\textwidth}
 
-Ett annat återkommande önskemål från D-studenter är en
-``mellan-avancerad FP-kurs''. DSLsofMath kan ses som ett naturligt steg
-på vägen från grundkursen i FP till den avancerade FP-kursen (AFP).
+  \begin{itemize}
+  \item Det hade under många år funnits en del problem med resultaten
+    på kurserna ``Transformer'' samt ``Regler'' i D3. Ett av målen med
+    den här kursen är att se till att förbereda er i D2 så att ni kan
+    ta er an hösten i trean med ett gott självförtroende på
+    mattesidan.
+  \item Ett annat återkommande önskemål från D-studenter är en
+    ``mellan-avancerad FP-kurs''. DSLsofMath kan ses som ett naturligt
+    steg på vägen från grundkursen i FP till de mer avancerade FP-kurserna
+    (Avancerad FP, Parallell FP).
+  \end{itemize}
+\end{column}
+\begin{column}{0.25\textwidth}
+\includegraphics[angle=-90,origin=c,width=0.9\textwidth]{../../../OxfordVisit2024/img/20241003_181744.jpg}
+\end{column}
+\end{columns}
 \end{frame}
 
+{
+  \usebackgroundtemplate{%
+    \parbox{\paperwidth}{\hfill\includegraphics[width=0.4\paperwidth]{../../../OxfordVisit2024/img/20241008_081039.jpg}}
+  }
 \begin{frame}{Resultatstatistik}
 \protect\hypertarget{resultatstatistik}{}
 \begin{itemize}
@@ -176,22 +193,9 @@ Regler & 40\% & 45\% & \textbf{68\%} \\
 Dvs. de som tog DSL-kursen fick mycket bättre resultat hösten i D3.
 
 \small (Totalt 145 varav `Valde inte DSL'=92, Valde=53, Godk.=34.)
-\end{frame}
 
-\begin{frame}{Aktiva studier}
-\begin{itemize}
-\tightlist
-\item föreläsningar växlat med övningar + grupparbete.
-\item Aktiva studier: det räcker inte att bara ``läsa (eller lyssna)
-  och hålla med''
-\item \emph{D är en bra bakgrund}: programmering och datavetenskap
-  $\simeq$ matematisk problemlösning \& logik
-\item plocka isär \& reda ut begrepp $\Rightarrow$ källkod
-  (funktioner och \emph{typer})
-\item datorn (kompilatorn) ger direkt återkoppling när något inte
-  stämmer.
-\end{itemize}
 \end{frame}
+}
 
 %include Haskell.lhs
 
@@ -212,43 +216,84 @@ Dvs. de som tog DSL-kursen fick mycket bättre resultat hösten i D3.
 \item<2->
   Typer (|Int|, |String|, |[Int]|,
   |a -> a|, |[a -> a]|, |Poly a|, \ldots)
-\item<3-> Passar bra för att modellera matematik.
-% \item<3->
-%   Historik: matematiska bevisverktyg och algoritmer
-% \item<3->
-%   Nutid: Konkurrensfördel, FP-experter eftertraktade!
-% \item<3->
-%   Vackert möte mellan matematik och maskin.
+\item<3-> Kursen ``Matematikens Domänspecifika Språk'' (DSLsofMath):
+  \begin{itemize}
+  \item plocka isär \& reda ut begrepp $\Rightarrow$ källkod
+    (funktioner och typer)
+%\emph{D är en bra bakgrund}: programmering och datavetenskap
+%  $\simeq$ matematisk problemlösning \& logik
+  \item<3-> datorn (kompilatorn) ger direkt återkoppling när något
+    inte stämmer.
+  \end{itemize}
 \end{itemize}
 
 \end{frame}
+
+\begin{frame}{Mer om kursen (DSLsofMath) och mig (Patrik Jansson)}
+  \begin{itemize}
+  \item Allt kursmaterial finns på nätet:
+    \begin{itemize}
+    \item \href{https://github.com/DSLsofMath/DSLsofMath}{github: DSLsofMath}
+    \item \href{https://www.youtube.com/playlist?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ}{YouTube playlist: lectures from 2022}
+    \end{itemize}
+  \pause
+  \item \href{https://photos.app.goo.gl/efDXX2yKiE99KRjQ7}{Jag är i
+      Oxford nu under hösten (länk till mer bildbevis)}
+  \pause
+  \item Jag forskar också: \href{https://www.youtube.com/playlist?list=PLf5C73P7ab-4OCYhM1STDCgki_pUTD7w8}{{\small (playlist: Research talks by Patrik Jansson)}}
+    \begin{itemize}
+%    \item Domain-Specific Languages for Societal Challenges
+    \item Dimensionsanalysis och ``graderad algebra''
+    \item Komplexitet för Booleska funktioner mha programspråkstekniker
+    \item Domänspecifika språk för tensorer med exempel på Einsteins krökta rumtid
+    \item Optimering av hållbar energy med hjälp av funktionell programmering
+    \item \href{https://link.springer.com/article/10.1007/s10666-022-09867-w}{Ansvar vid osäkerhet: vilka klimatbeslut är viktigast?}
+    \end{itemize}
+  \end{itemize}
+  
+\end{frame}
+
+\begin{frame}{Sammanfattning}
+Jag rekommenderar er att välja \emph{både} DSLsofMath \emph{och} PCP
+under er utbildning, men att börja med DSLsofMath eftersom den ger er
+bättre chanser att segla igenom D3 utan att gå på grund.
+
+(De som tar DSL-kursen verkar få bättre resultat hösten i D3.)
+
+Välkomna i januari önskar lärarlaget
+
+Patrik, m.fl.
+
+\vspace*{-0.8cm}\hfill
+\includegraphics[height=0.4\textheight]{../DSL_logo/DSL_logo_500x500.png}
+\hfill
+\includegraphics[height=0.5\textheight]{../../Wisla23/DSLsofMath_book_front_cover.jpg}
+\end{frame}
+
+\section{Extra slides}
 
 \begin{frame}{Domänspecifika språk (DSL)}
 Exempel:
 
 \begin{itemize}
 \item datum:
+  \begin{itemize}
+  \tightlist
+\item Syntax: ``2024-11-12'', ``andra tisdagen i november'', ``idag''
+\item Semantisk typ: |Date|, eller kanske |Date -> Date|
+  \end{itemize}
+\pause
+\item excel-formler:
 
   \begin{itemize}
   \tightlist
-  \item
-    Syntax: ``2024-11-12'', ``andra tisdagen i november'', ``idag''
-  \item
-    Semantisk typ: |Date|, eller kanske |Date -> Date|
+\item Syntax: ``SUM(A1:A9)'', ``RIGHT(LEFT(C7,4),2)'', \ldots{}
+\item Semantisk typ: |[[Cell]] -> Value|
   \end{itemize}
-\item
-  excel-formler:
-
-  \begin{itemize}
-  \tightlist
-  \item
-    Syntax: ``SUM(A1:A9)'', ``RIGHT(LEFT(C7,4),2)'', \ldots{}
-  \item
-    Semantisk typ: |[[Cell]] -> Value|
-  \end{itemize}
-\item
-  integraler:
-
+\pause
+\item integraler:
+  \[f(x) = \int_x^{2x} x^2 dx \only<4->{= \int_x^{2x} t^2 dt}\]
+  \pause
   \includegraphics[width=5cm]{integral_scope.png}
 \end{itemize}
 \end{frame}
@@ -294,22 +339,6 @@ Johan Johansson, Oskar Lundström, Erik Sjöström, Björn Werner
 \includegraphics[height=0.8\textheight]{LearnYouAPhysics.png}
 \end{frame}
 
-\begin{frame}{Sammanfattning}
-Jag rekommenderar er att välja \emph{både} DSLsofMath \emph{och} PCP
-under er utbildning, men att börja med DSLsofMath eftersom den ger er
-bättre chanser att segla igenom D3 utan att gå på grund.
-
-(De som tar DSL-kursen får mycket bättre resultat hösten i D3.)
-
-Välkomna i januari önskar lärarlaget
-
-Patrik, m.fl.
-
-\vspace*{-0.8cm}\hfill
-\includegraphics[height=0.4\textheight]{../DSL_logo/DSL_logo_500x500.png}
-\hfill
-\includegraphics[height=0.5\textheight]{../../Wisla23/DSLsofMath_book_front_cover.jpg}
-\end{frame}
 
 \begin{frame}{Exempel på tillämpning: LinAlg, matris, maskininlärning}
 \includegraphics[height=0.8\textheight]{UpperTriangularChocolateTwitter.png}
