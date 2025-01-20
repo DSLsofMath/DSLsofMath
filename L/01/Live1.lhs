@@ -12,6 +12,7 @@ import Data.Ratio
 r :: Rational
 r = 3%2
 
+-- What are possible types of f?
 f x = x^2
 
 \end{code}
@@ -122,7 +123,7 @@ forall x. x*0 == 0
 data E = Add E E
        | Mul E E
        | Con Integer
-       | X                   -- Add (Add (Mul X X) X) (Con 1) ~= x² + x + 1
+       | X                   -- Add (Add (Mul X X) X) (Con 1) ~= (x² + x) + 1
   deriving Show
 \end{code}
 
@@ -137,13 +138,19 @@ semantics = meaning
 translator from an abstract (un-interpreted) syntax to some meaningful value type (the semantic type)
 
 \begin{code}
+a0 :: E
+a0 = error "TODO" -- ~= (x² + x) + 1
 a1, a2 :: E
-a1 = Add (Con 1) (Mul (Con 2) (Con 3))    -- 1+(2*3)
-a2 = Mul (Add (Con 1) (Con 2)) (Con 3)    -- (1+2)*3
+a1 = Add (Con 1) (Mul (Con 2) (Con 3))    -- 1+(2*3) == 7
+a2 = Mul (Add (Con 1) (Con 2)) (Con 3)    -- (1+2)*3 == 9
 a3 = Mul a2 a2
 a4 = Mul a3 a3
 
 a5 = Mul X X
+
+simplify :: E -> E
+simplify = error "TODO"
+
 \end{code}
 
 We can evaluate (translate) an E to an integer:
@@ -165,15 +172,14 @@ eval X           = error "TODO"
 -- Add := addE; Mul := mulE; Con := conE
 
 addE :: Sem -> Sem -> Sem
-addE s1 s2 vX = s1 vX    +    s2 vX
-  --   s1, s2 :: Sem = Z -> Z
-  -- bar :: Z
+addE = error "TODO"
+
 mulE :: Sem -> Sem -> Sem
-mulE s1 s2 vX = s1 vX    *    s2 vX
+mulE = error "TODO"
 
 conE :: Integer -> Sem -- Z -> Z
-conE c vX = c
+conE = error "TODO"
 
 xE :: Sem
-xE vX = vX
+xE = error "TODO"
 \end{code}
