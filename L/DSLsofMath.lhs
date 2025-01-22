@@ -37,6 +37,12 @@
 \usepackage[margin=2cm,a4paper]{geometry}
 % \usepackage{a4wide} (the above is even more compact and easier to control)
 %endif
+%if book
+%\usepackage[backref=page,colorlinks=true,allcolors=blue]{hyperref}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+%else
+\usepackage{hyperref}
+%endif
 \usepackage{tocloft}
 \usepackage{layout}
 \usepackage{amsmath}
@@ -72,12 +78,6 @@
 \usepackage{enumitem}
 \usepackage{pdfpages}
 \usepackage{tabu}
-%if book
-%\usepackage[backref=page,colorlinks=true,allcolors=blue]{hyperref}
-\usepackage[colorlinks=true,allcolors=blue]{hyperref}
-%else
-\usepackage{hyperref}
-%endif
 \usepackage[capitalize]{cleveref} % \cref
 \usepackage{doi}
 % \usepackage{backref} % does not work with cleveref
