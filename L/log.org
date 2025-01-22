@@ -1,9 +1,11 @@
+* 2025-01-22: Small fixes.
++ DONE check numbering from 2.22 and up (in chapter 2)
+  + Now changed in RecEx.md and SolvedExercises.md
 * 2025-01-07: Checking diffs from 2024
 + Exercises 2.22 and 2.23 inserted (check
-  TODO check numbering from 2.22 and up (in chapter 2)
-
+  Later: check numbering from 2.22 and up (in chapter 2)
 * Older
-2021-12-27: Paragraph styles
+** 2021-12-27: Paragraph styles
 
 01/W01.lhs: 109:\paragraph{Pairs and tuple types}
 01/W01.lhs: 137:\paragraph{\addtoindex{List types}}
@@ -78,7 +80,7 @@
 09/W09.lhs: 281:\paragraph{Summary}
 09/W09.lhs: 558:\paragraph{Properties of |integrator|}
 
-2021-12-26: Looking over Ch3:
+** 2021-12-26: Looking over Ch3:
 ToC at section level:
 
 |   3 | Types in Mathematics                         | 81 |
@@ -100,13 +102,13 @@ Quotes from maths books
 
 Haskell content
   3.4: coding up (typing) a quote about "minimum of functional"
-  3.5: class Eq 
+  3.5: class Eq
   3.5.1: class Additive, class AddGroup, class Multiplicative, class MulGroup
   3.5.2: fromInteger (overloaded literals)
   3.5.3: FunNumInst, class Algebraic, class Transcendental
   3.6: derive :: FunExp -> FunExp
 
-2021-12-25: Duplicate limit of sequence
+** 2021-12-25: Duplicate limit of sequence
 
 p18: 1.3: limit from wikpedia
   1. binding syntax, typing series ans function from Nat
@@ -151,7 +153,7 @@ Removed most of the first example in favour of the second.
   9.5: random variable
   9.9: Independent events
 
-2021-12-16: fonts
+** 2021-12-16: fonts
 
 Publisher remarks that some fonts are "Type 3" and need to be replaced
 by "Type 1".  Solved by installing a suitable LaTeX package (sudo apt
@@ -159,8 +161,8 @@ install cm-super) and rebuilding the pdf.
 
 Checking done with
   pdffonts DSLsofMathBook.pdf
-  
-Before cm-super:
+
+*** Before cm-super:
 
 name                                 type              encoding         emb sub uni object ID
 ------------------------------------ ----------------- ---------------- --- --- --- ---------
@@ -184,7 +186,7 @@ UJMVDM+URWPalladioL-BoldItal         Type 1            Custom           yes yes 
 UCOMTU+rsfs10                        Type 1            Builtin          yes yes no    2345  0
 [none]                               Type 3            Custom           yes no  no    2375  0
 
-After cm-super:
+*** After cm-super:
 name                                 type              encoding         emb sub uni object ID
 ------------------------------------ ----------------- ---------------- --- --- --- ---------
 SVMXOP+URWPalladioL-Roma             Type 1            Custom           yes yes no     589  0
@@ -210,7 +212,7 @@ YRYXWY+SFTT0800                      Type 1            Custom           yes yes 
 
 
 
-2021-11-23: ToC overview
+** 2021-11-23: ToC overview
 Page counts:
 | Ch  0 |  8 |       |
 | Ch  1 | 27 |       |
@@ -225,11 +227,11 @@ Page counts:
 
 
 
-2021-01-16: Time to set the license: CC-by-nc-sa
+** 2021-01-16: Time to set the license: CC-by-nc-sa
 
   https://creativecommons.org/licenses/by-nc-sa/4.0/
 
-2019-01-19: Debugging spacing
+** 2019-01-19: Debugging spacing
 
 I'd like the spacing before and after a code block to be the
 same. Currently it seems like the space below is sometimes larger.
