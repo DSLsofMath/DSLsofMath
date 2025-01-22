@@ -9,61 +9,61 @@ stdenv.mkDerivation {
                   # python3Packages.pygments
                   biber
                   # zip
-                  (texlive.withPackages (pkgs: [
-                       pkgs.algorithm2e
-                       pkgs.a4wide
-                       pkgs.acmart
-                       pkgs.biblatex
-                       pkgs.boondox
-                       pkgs.collection-fontsrecommended
-                       pkgs.comment
-                       pkgs.cleveref
-                       pkgs.ccicons
-                       pkgs.csquotes
-                       pkgs.doclicense
-                       pkgs.enumitem
-                       pkgs.environ
-                       pkgs.fontaxes
-                       pkgs.framed
-                       pkgs.fvextra
-                       pkgs.ifplatform
-                       pkgs.ifsym
-                       pkgs.imakeidx
-                       pkgs.inconsolata
-                       pkgs.kastrup
-                       pkgs.latexmk
-                       pkgs.libertine
-                       pkgs.listings
-                       pkgs.lm
-                       pkgs.logreq
-                       pkgs.mathpartir
-                       pkgs.minted
-                       pkgs.mweights
-                       pkgs.ncclatex
-                       pkgs.ncctools
-                       pkgs.newtx
-                       pkgs.newtxsf
-                       pkgs.newtxtt
-                       pkgs.newunicodechar
-                       pkgs.prftree
-                       pkgs.relsize
-                       pkgs.scheme-small pkgs.wrapfig pkgs.marvosym pkgs.wasysym
-                       pkgs.stmaryrd
-                       pkgs.lazylist pkgs.polytable # lhs2tex
-                       pkgs.tabu
-                       pkgs.todonotes
-                       pkgs.totpages
-                       pkgs.tikz-cd
-                       pkgs.trimspaces
-                       pkgs.thmtools
-                       pkgs.ucs
-                       pkgs.wasy pkgs.cm-super pkgs.unicode-math pkgs.filehook pkgs.lm-math pkgs.capt-of
-                       pkgs.xargs
-                       pkgs.xstring pkgs.ucharcat
-                       pkgs.xifthen
-                       pkgs.ifmtarg
-                       pkgs.varwidth
-		       pkgs.doi
+                  (texlive.withPackages (pkgs: with pkgs; [
+                       algorithm2e
+                       a4wide
+                       acmart
+                       biblatex
+                       boondox
+                       collection-fontsrecommended
+                       comment
+                       cleveref
+                       ccicons
+                       csquotes
+                       doclicense
+                       enumitem
+                       environ
+                       fontaxes
+                       framed
+                       fvextra
+                       ifplatform
+                       ifsym
+                       imakeidx
+                       inconsolata
+                       kastrup
+                       latexmk
+                       libertine
+                       listings
+                       lm
+                       logreq
+                       mathpartir
+                       minted
+                       mweights
+                       ncclatex
+                       ncctools
+                       newtx
+                       newtxsf
+                       newtxtt
+                       newunicodechar
+                       prftree
+                       relsize
+                       scheme-small wrapfig marvosym wasysym
+                       stmaryrd
+                       lazylist polytable # lhs2tex
+                       tabu
+                       todonotes
+                       totpages
+                       tikz-cd
+                       trimspaces
+                       thmtools
+                       ucs
+                       wasy cm-super unicode-math filehook lm-math capt-of
+                       xargs
+                       xstring ucharcat
+                       xifthen
+                       ifmtarg
+                       varwidth
+		       doi
                        ]
                      ))
                 ];
