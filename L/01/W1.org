@@ -27,10 +27,12 @@ DSLsofMath week 1: a short summary / overview
   It is not enough to just focus on the labs.
 + Patrik's advice: read the book, solve exercises: Ch. N = Week N
 ** Course evaluation: student representatives
-| Prg   | Name | Email |
-|-------+------+-------|
-| D     | TODO |       |
-| IT/DV | TODO |       |
+| Name              | Email (@student.chalmers.se) |
+|-------------------+------------------------------|
+| Emily Tiberg      | emilyti                      |
+| Martin Martinsson | martmar                      |
+| Shawn Wang        | shawnw                       |
+| Simon Renhult     | renhult                      |
 + Get in touch if you want to join the group!
 ** Learning outcomes (for the whole course, english version)
 *** KU = Knowledge and Understanding
