@@ -22,8 +22,6 @@
 + (truth tables)
   type Table = Namn -> Bool
 + eval : Prop -> Table -> Bool
-** DSL for Proofs
-+ proof rules, proof terms
 ** DSL for Pure set theory (useful for [[https://chalmers.instructure.com/courses/33098/assignments/101419][Assignment 1]])
 + "untyped sets", "just sets all the way down"
 + Empty set, Singleton set constructor, {braces around enumeration}
@@ -35,7 +33,6 @@
 + eval for Prop without variable names
 + add table for name lookup
 + generalise: polymorphic lifting functions
-
 
 
 
