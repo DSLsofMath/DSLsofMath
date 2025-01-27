@@ -1,7 +1,7 @@
 *DSLs of Mathematics, Week 2*
 * Admin:
 ** Bonus exercises:
-+ Good work on Week 1: more than 20 submissions.
++ Good work on Week 1: 17 submissions (~50% of course participants).
 + Hand-in is online (via canvas) before the exercise session
 + Then be ready (in person) to present/answer questions about your
   submission (in a separate room, with one TA).
@@ -14,9 +14,9 @@
   lectures are connected to which parts of the book.
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/README.org][github]]: [[file:../README.org][DSLsofMath/L/README.org]]
 + tldr; study week N = book chapter N.
-** [[https://chalmers.instructure.com/courses/27857/assignments/81051][Assignment 1]]: (deadline 2024-01-30)
-+ Monday 2023-02-05: "Presentation" (Q&A) slots
-* Lecture 2.1 (2023: [[https://jamboard.google.com/d/13gEobT8LWbY7bmMztKO2_ZVEESI87d-ngF3aogZeiOc/viewer?f=0][L2.1 Jamboard]] - now on the black-board)
+** [[https://chalmers.instructure.com/courses/33098/assignments/101419][Assignment 1]]: (deadline 2025-02-04)
++ Monday 2025-02-10: "Presentation" (Q&A) slots
+* Lecture 2.1
 ** DSL for Prop = Propositional Calculus (Satslogik)
 + syntax examples
 + (truth tables)
@@ -24,7 +24,7 @@
 + eval : Prop -> Table -> Bool
 ** DSL for Proofs
 + proof rules, proof terms
-** DSL for Pure set theory (useful for [[https://chalmers.instructure.com/courses/27857/assignments/81051][Assignment 1]])
+** DSL for Pure set theory (useful for [[https://chalmers.instructure.com/courses/33098/assignments/101419][Assignment 1]])
 + "untyped sets", "just sets all the way down"
 + Empty set, Singleton set constructor, {braces around enumeration}
 + Cardinality (number of elements)
