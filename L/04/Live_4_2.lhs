@@ -6,6 +6,100 @@ type REAL = Double
 
 Domain-Specific Languages of Mathematics
 Course Week 4, Lecture 2, Live-coding.
+
+
+---------------
+L4.2.1: Week 4, Lecture 2, Part 1
+  Book §4.3 Compositional semantics
+   and §4.4 Folds
+\begin{code}
+data IE where
+  Add :: IE -> IE -> IE
+  Mul :: IE -> IE -> IE
+  Con :: Integer -> IE
+ deriving Show
+\end{code}
+Spec.:  H2(eva,Add,(+)) = -- TODO
+Spec.:  H2(eva,Mul,(*))
+\begin{code}
+type I = Integer
+eva :: IE->I
+eva = error "TODO"
+
+e1, e2, e3, e4 :: IE
+e1 = Con 1
+e2 = Con 2
+e3 = Add e1 e2  -- 1+2
+e4 = Mul e3 e3  -- (1+2)*(1+2)
+
+ebig 0 = Con 2
+ebig n = let big = ebig (n-1) in Mul big big
+\end{code}
+
+----------------
+Step 2: refactor to eva2 with three parameters (+), (*), id
+H2(eva,              Add, (+))
+H2(eva2 add mul con, Add, add)
+
+Pattern: use a local helper for the recursion
+
+\begin{code}
+--       add         mul           con              e
+eva2 :: (b->b->b) -> (b->b->b) -> (Integer -> b) -> IE->b
+eva2 = error "TODO"
+
+eva' :: IE -> I
+eva' = error "TODO"
+
+evaDeepCopy :: IE -> IE
+evaDeepCopy = error "TODO"
+\end{code}
+
+Try to use eva2 for checking if an expression denotes an even number.
+
+Specification:
+  evenIE == even . eva
+  H2(evenIE,Add,evenAdd)
+  H2(evenIE,Mul,evenMul)
+  H0(evenIE,Con c,evenCon c)
+
+\begin{code}
+evenIE :: IE -> Bool
+evenIE = eva2 evenAdd evenMul evenCon
+
+evenAdd = error "TODO"
+evenMul = error "TODO"
+evenCon = error "TODO"
+\end{code}
+
+----------------
++ L4.1.5: Make your own type class
+  to keep the type and the parameters together
+
+Implement the example folds as instances.
+\begin{code}
+\end{code}
+s1, s2, s3, s4 :: IntExp a => a
+s1 = con 1
+s2 = con 2
+s3 = add s1 s2  -- 1+2
+s4 = mul s3 s3  -- (1+2)*(1+2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+L4.2.1: Week 4, Lecture 2, Part 2
+
 ----------------
 * 1. We reuse the definition of FunExp (from L3.3 and book §1.7.1).
 
@@ -13,8 +107,8 @@ FunExp is a syntax (DSL) for "1-argument function expressions".
 \begin{code}
 data FunExp = C REAL
             | X
-            | Add FunExp FunExp  -- Add :: F -> F -> F
-            | Mul FunExp FunExp
+            | Ad FunExp FunExp  -- Ad :: F -> F -> F
+            | Mu FunExp FunExp
   deriving Show
 \end{code}
 
@@ -24,11 +118,11 @@ homomorphism).
 \begin{code}
 type F = FunExp
 f, fbar, g :: F
-f    = Add X (C 1)
-fbar = Add X (C 0)
+f    = Ad X (C 1)
+fbar = Ad X (C 0)
 g    = X
-h    = Mul f g
-hbar = Mul fbar g
+h    = Mu f g
+hbar = Mu fbar g
 \end{code}
 
 ----
@@ -38,8 +132,8 @@ type S = REAL -> REAL
 eval :: F -> S
 eval (C c)        = cS c     -- :: REAL -> REAL
 eval X            = xS
-eval (Add e1 e2)  = addS (eval e1) (eval e2)
-eval (Mul e1 e2)  = mulS (eval e1) (eval e2)
+eval (Ad e1 e2)  = addS (eval e1) (eval e2)
+eval (Mu e1 e2)  = mulS (eval e1) (eval e2)
 
 cS :: REAL -> S
 xS :: S
@@ -123,8 +217,8 @@ Now we do it for FunExp
 For reference: the types of our constructors:
   C   :: REAL -> F
   X   :: F
-  Add :: F -> F -> F
-  Mul :: F -> F -> F
+  Ad :: F -> F -> F
+  Mu :: F -> F -> F
 
 \begin{code}
 

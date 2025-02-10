@@ -2,7 +2,7 @@
 {-# LANGUAGE GADTs, TypeSynonymInstances, FlexibleInstances #-}
 module Live_4_1 where
 \end{code}
-DSLsofMath week 4: Compositionality and Algebras
+DSLsofMath week 4: Compositionality and Algebras (part 1)
 
 + (blackboard): definition of H2 and friends
 
@@ -96,79 +96,6 @@ with
   a = Syntax type     and (+) = a syntactic constructor
   b = Semantic domain and (*) = semantic operator (function)
 
----------------
-L4.1.4: Week 4, Lecture 1, Part 4
-  Book §4.3 Compositional semantics
-   and §4.4 Folds
-\begin{code}
-data IE where
-  Add :: IE -> IE -> IE
-  Mul :: IE -> IE -> IE
-  Con :: Integer -> IE
- deriving Show
-\end{code}
-Spec.:  H2(eva,Add,(+)) = -- TODO
-Spec.:  H2(eva,Mul,(*))
-\begin{code}
-type I = Integer
-eva :: IE->I
-eva = error "TODO"
-
-e1, e2, e3, e4 :: IE
-e1 = Con 1
-e2 = Con 2
-e3 = Add e1 e2  -- 1+2
-e4 = Mul e3 e3  -- (1+2)*(1+2)
-
-ebig 0 = Con 2
-ebig n = let big = ebig (n-1) in Mul big big
-\end{code}
-
-----------------
-Step 2: refactor to eva2 with three parameters (+), (*), id
-H2(eva,              Add, (+))
-H2(eva2 add mul con, Add, add)
-
-Pattern: use a local helper for the recursion
-
-\begin{code}
---       add         mul           con              e
-eva2 :: (b->b->b) -> (b->b->b) -> (Integer -> b) -> IE->b
-eva2 = error "TODO"
-
-eva' :: IE -> I
-eva' = error "TODO"
-
-evaDeepCopy :: IE -> IE
-evaDeepCopy = error "TODO"
-\end{code}
-
-Try to use eva2 for checking if an expression denotes an even number.
-
-Specification:
-  evenIE == even . eva
-  H2(evenIE,Add,evenAdd)
-  H2(evenIE,Mul,evenMul)
-  H0(evenIE,Con c,evenCon c)
-
-\begin{code}
-evenIE :: IE -> Bool
-evenIE = eva2 evenAdd evenMul evenCon
-
-evenAdd = error "TODO"
-evenMul = error "TODO"
-evenCon = error "TODO"
-\end{code}
-
-----------------
-+ L4.1.5: Make your own type class
-  to keep the type and the parameters together
-
-Implement the example folds as instances.
-\begin{code}
-\end{code}
-s1, s2, s3, s4 :: IntExp a => a
-s1 = con 1
-s2 = con 2
-s3 = add s1 s2  -- 1+2
-s4 = mul s3 s3  -- (1+2)*(1+2)
+----
+DSLsofMath week 4: Compositionality and Algebras (part 1)
+See separate file
