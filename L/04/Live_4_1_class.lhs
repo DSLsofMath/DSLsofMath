@@ -13,12 +13,12 @@ Lecture 4.3 (cont. from L3.3 about numeric classes)
 
 Based on the book §4.1: Algebraic structure.
 
-1. Reminder about the type classes Additive, Multiplicative.
+1. Type classes Additive, Multiplicative.
 2. Definition of classes AddGroup, Ring, MulGroup, Field
 3. Homomorphisms in this context
 
 ----------------
-1. Reminder about the type classes Additive, Multiplicative.
+1. Type classes Additive, Multiplicative.
 
 + The common underlying structure in that of a *monoid*.
 + A monoid is a triple (A,op,e) where op:A->A->A is associative and
@@ -32,10 +32,10 @@ infixl 7 *
 -- infixl 7 /
 
 class    Additive a    where (+) :: a -> a -> a; zero :: a
-instance Additive REAL where (+) = (Prelude.+);  zero = 0
+-- TODO instance Additive REAL where ...
 
 class    Multiplicative a    where (*) :: a -> a -> a; one :: a
-instance Multiplicative REAL where (*) = (Prelude.*);  one = 1
+-- TODO instance Multiplicative REAL where ...
 
 two :: (Additive a, Multiplicative a) => a
 two = one + one
@@ -48,17 +48,17 @@ instance Multiplicative b => Multiplicative (a->b) where (*) = mulF; one  = oneF
 
 zeroF :: Additive b =>        a -> b
 oneF  :: Multiplicative b =>  a -> b
-zeroF = const zero 
-oneF  = const one
+zeroF = error "TODO: zeroF"
+oneF  = error "TODO: oneF"
 
 addF :: Additive b =>        (a -> b) -> (a -> b) -> (a -> b)
 mulF :: Multiplicative b =>  (a -> b) -> (a -> b) -> (a -> b)
-addF f g = \x -> f x  +  g x
-mulF f g = \x -> f x  *  g x
+addF  = error "TODO: addF"
+mulF  = error "TODO: mulF"
 
 -- Motivating example:
 pythagorean :: REAL -> REAL
-pythagorean = sin*sin + cos*cos
+pythagorean = error "sin*sin + cos*cos"
 \end{code}
 
 ----------------

@@ -42,7 +42,7 @@ with
 + Homomorphism examples (exp, log, odd)
 + Non-homomorphism example (isPrime)
 ** (Live-coding) Folds and compositionality
-+ file:Live_4_1_2024.lhs TODO check
++ file:Live_4_1_2025.lhs TODO check
 TODO: |data IE| for integer expressions
 TODO: eva :: ... -> IE->I
 TODO: eva :: (I->I->I)->(I->I->I)->(I->I)->IE->I
@@ -134,7 +134,7 @@ eval|	       |eval
   not (∃ op. H2(der,Mul,op) && eval . der == D . eval)
 
 
-** file:Live_4_2_2024.lhs
+** file:Live_4_2_2025.lhs
 ** show that evalD *is* a homomorphism
 *** exists mul. H2(evalD,Mul,mul)
  type FD a = (a -> a, a -> a)
