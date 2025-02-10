@@ -52,10 +52,7 @@
 
 
 
-
-
 * Lecture 2.2: First order logic (FOL) (as a new DSL, extending Prop)
-+ [[https://jamboard.google.com/d/1aAzwgHktC5Ha2js9BPnv5IXTNGBrll3LLXpOhh-6rh8/viewer?f=0][L2.2 Jamboard]]
 ** FOL = First Order Logic
 ** adding a term language (for rationals, or sets, or ...)
 ** extend names to n-ary predicates over terms
