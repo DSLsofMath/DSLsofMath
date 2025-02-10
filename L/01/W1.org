@@ -30,8 +30,6 @@ DSLsofMath week 1: a short summary / overview
 | Name              | Email (@student.chalmers.se) |
 |-------------------+------------------------------|
 | Emily Tiberg      | emilyti                      |
-| Martin Martinsson | martmar                      |
-| Shawn Wang        | shawnw                       |
 | Simon Renhult     | renhult                      |
 + Get in touch if you want to join the group!
 ** Learning outcomes (for the whole course, english version)
