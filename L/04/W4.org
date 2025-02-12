@@ -42,7 +42,8 @@ with
 + Homomorphism examples (exp, log, odd)
 + Non-homomorphism example (isPrime)
 ** (Live-coding) Folds and compositionality
-+ file:Live_4_1_2025.lhs TODO check
++ file:Live_4_1_2025.lhs
+*** Details
 TODO: |data IE| for integer expressions
 TODO: eva :: ... -> IE->I
 TODO: eva :: (I->I->I)->(I->I->I)->(I->I)->IE->I
