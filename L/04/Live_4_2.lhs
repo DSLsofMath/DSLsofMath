@@ -13,7 +13,7 @@ L4.2.1: Week 4, Lecture 2, Part 1
   Book §4.3 Compositional semantics
    and §4.4 Folds
 \begin{code}
-data IE where
+data IE where  -- "IE" stands for "Integer Expression"
   Add :: IE -> IE -> IE
   Mul :: IE -> IE -> IE
   Con :: Integer -> IE
@@ -98,7 +98,7 @@ s4 = mul s3 s3  -- (1+2)*(1+2)
 
 
 
-L4.2.1: Week 4, Lecture 2, Part 2
+L4.2.1: Week 4, Lecture 2, Part 2 (if time permits)
 
 ----------------
 * 1. We reuse the definition of FunExp (from L3.3 and book §1.7.1).
