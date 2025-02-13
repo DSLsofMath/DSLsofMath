@@ -1,6 +1,6 @@
 * Small A2 Q&A / logic reminder
 + Links:
-  [[https://youtu.be/y6weZisWeDM?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&t=384][Structural homomorphism (YouTube)]] + [[https://jamboard.google.com/d/1_t3xMPykXNGYIPDZ_10veFG4Grrv47xACEgi4CSmhBc/viewer?f=3][Jamboard]]
+  [[https://youtu.be/y6weZisWeDM?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&t=384][Structural homomorphism (YouTube)]] + [[file:../05/DSLsofMath L4.3.pdf][PDF]]
 ** Concrete logic example
 data E where  Mul :: E->E->E   -- mul :: S -> S -> S
               Add :: E->E->E   -- add :: S -> S -> S

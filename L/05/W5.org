@@ -1,4 +1,7 @@
 Week 5: Polynomials and Power Series
+* Left-overs:
++ "Structural homomorphism"
+  see [[file:DSLsofMath L4.3.pdf]]
 * Polynomials (blackboard)
 ** Quote (def. of "polynomial function" from Adams and Essex [2010, p39])
 PolyDefQuote.png
