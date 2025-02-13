@@ -1,0 +1,60 @@
+Summary of the contents of DSLsofMath:
+* Week 1: Types, Functions, and DSLs for Expressions
++ Type driven development
++ Basic Haskell (id, const, (.), (,), swap, fst, Either, Left, Right, ...)
++ Domain-Specific Language (Abstract syntax, semantic datatype, eval : Syn -> Sem)
++ The language of types (Bool, (->), (,), enumerations, syntax trees)
++ Laws, properties and testing: Associative, Commutative, Caveats of Float+Double
++ The language of (numeric) expressions (expr. of 1 variable)
++ Math: types and equations: N->Z->Q->R->C
++ How to "encode" / "formalise" / "implement" a specification
+
+* Week 2: DSLs for logic and proofs
++ Propositional Calculus, (syntax, semantics)
++ First Order Logic (mentions proof terms)
++ An aside: Pure set theory
++ Example proofs: contradiction, cases, primes
++ Basic concepts of calculus
+
+* Week 3: Types in Mathematics
++ derivative of a function (limits, but also syntax -> syntax)
++ partial derivative
++ Lagrangian case study
++ Incremental analysis with types
++ Haskell type classes (Additive, Multiplicative, Ring, Field)
++ Computing derivatives
+
+* Week 4: Compositionality and Algebras
++ Algebraic Structures
++ Homomorphisms
++ Compositional semantics
++ Folds
++ Initial and Free Structures
++ Make your own type class
+
+* Week 5: Polynomials and Power Series
++ Polynomials (polynomial Ring in Haskell)
++ Division and the degree of the zero polynomial
++ Polynomial degree as a homomorphism
++ Power Series
++ Operations on power series
++ Formal derivative
+
+* Week 6: Taylor and Maclaurin series
++ Taylor series
++ Derivatives and Integrals for Maclaurin series
++ Integral for Formal Power series
++ Simple differential equations
++ Exponentials and trigonometric functions
++ Associated code
+
+* Week 7: Elements of Linear Algebra
++ Representing vectors as functions
++ Linear transformations
++ Inner products
++ Examples of matrix algebra
+
+* Week 8: Exponentials and Laplace
++ The Exponential Function
++ The Laplace transform (Haskell impl. as power series)
++ Laplace and other transforms
