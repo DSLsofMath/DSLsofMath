@@ -123,6 +123,12 @@ eval|	       |eval
 ** file:Live_4_2_2025.lhs
 
 * L4.2: Thursday: Homomorphisms, folds, and type classes
+** Admin
++ A2 groups
+** Contents
++ file:Live_4_2_2025.lhs
++ file:Live_4_2_FunExp_2025.lhs
+** Details
 TODO: |data IE| for integer expressions
 TODO: eva :: ... -> IE->I
 TODO: eva :: (I->I->I)->(I->I->I)->(I->I)->IE->I
