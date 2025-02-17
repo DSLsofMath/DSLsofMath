@@ -65,20 +65,21 @@ polynomial, is called the \textbf{degree} of the polynomial.
 file:Chebyshev_Polynomials_of_the_First_Kind.svg
 By Glosser.ca - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=52799132
 
-* L5.1.1: Homomorphism examples related to Assignment 2
-+ Live coding [[file:Live_5_1_2024.lhs]]
+* L5.1a: Homomorphism examples related to Assignment 2
++ Live coding [[file:Live_5_1_2025.lhs]]
 ** apply   :: a -> (a->b) -> b
 ** applyFD :: a -> FD a -> Bi a
+* L5.1b (extra lecture at 15.15)
++ Power series example: 1/(1-x)
 * L5.2 Power Series
 ** Polynomial degree (blackboard)
 ** degree as "almost a homomorphism"
 ** lifting to Maybe
-** (Perhaps continue) Live coding [[file:Live_5_1_2024.lhs]]
-** Live coding (file:Live_5_2_2024.lhs)
+** (Perhaps continue) Live coding [[file:Live_5_1_2025.lhs]]
+** Live coding (file:Live_5_2_2025.lhs)
 + DSL for polynomials: newtype Poly, eval, a->a
 + some numeric Ring instances for polynomials (Poly a)
 + scale, negate
 + derivP, integP
 + *Using integP to define expP*
-** Power series example: 1/(1-x)
 

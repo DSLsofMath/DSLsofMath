@@ -59,7 +59,7 @@ xFD = error "TODO"
 
 -- 1c: implement \x -> (x-1)^+2 in any Ring:
 e2 :: Ring a => a -> a
-e2 x = (x-1)^+2
+e2 x = (x-1) ^+ 2
 
 -- 1d: implement \x -> (x-1)^+2 "automatically" as an FD:
 e2FD :: Ring a => FD a

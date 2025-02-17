@@ -30,7 +30,8 @@ Ring a = (Additive a, AddGroup a, Multiplicative a)
 ----------------
 2. Define methods for derivative and integral
 
-Spec. of derP:
+Spec. of derP: H₁(evalP, derP, D)
+ which expands to
   forall cs. evalP (derP cs) = D (evalP cs)
 
 \begin{code}
