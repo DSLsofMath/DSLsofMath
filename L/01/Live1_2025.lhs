@@ -1,12 +1,12 @@
 Some live coding from the second half of lecture 1 (week 1).
-(DSLsofMath course, 2024).
+(DSLsofMath course, 2025).
 
 This file is an example of a "literate Haskell file" where the
 default (like this intro text) is comment and code blocks are
 enclosed in "\begin{code}" and "\end{code}."
 
 \begin{code}
-module Live1_2024 where
+module Live1_2025 where
 import Data.Ratio
 
 r :: Rational
@@ -19,6 +19,10 @@ f x = x^2
 
 The function |f| can be given different types:
 
+  The type of f is "a->a" for all "numeric types" a
+
+f0 :: Integer -> Float  -- not type-correct: no conversion is done.
+f0 = f
 \begin{code}
 f1 :: Integer -> Integer
 f1 = f
@@ -32,7 +36,7 @@ f :: Num a =>    a -> a
 -- B = Bool = {F,T}
 -- all values of type B->B
 allBtoBs :: [Bool -> Bool]
-allBtoBs = error "TODO"
+allBtoBs = [not, id, const False, const True]
 
 -- |f             | f False   | f True  |
 -- |--------------|-----------|---------|
@@ -42,19 +46,29 @@ allBtoBs = error "TODO"
 -- |              |           |         |
 
 
-b1 = allBtoBs !! 0  
+b1 = allBtoBs !! 0
 b2 = allBtoBs !! 1
 b3 = allBtoBs !! 2
 b4 = allBtoBs !! 3
 
+xor :: Bool -> Bool -> Bool
+xor = (/=)
+
+cF, cT :: Bool -> Bool -> Bool
+cF _ _ = False
+cT _ _ = True
 -- all values of type B->B->B
 exercise :: [Bool -> Bool -> Bool]
-exercise = [(&&), (||) ] -- ... should be quite a few more: 16 in total
+exercise = [(&&), (||), xor, cF, cT ] -- ... should be quite a few more: 16 in total
 \end{code}
 -- How many are there?
+  card Bool = 2
+  card Weekday = 7
+  card (Bool -> Bool) = 4
+
 
   Bool -> A  ~=  (A, A)
-  card A = number of values in A 
+  card A = number of values in A
   card (Bool->A) = (card A)^2
 
   A = B->B
@@ -79,6 +93,9 @@ g x = x / x    -- 1 om x/=0, annars?
 Float and Double have
 + finite precision (most real numbers are missing)
 + but also extra values: NaN, Infinity, -Infinity, and a few more
+
+Var försiktig med specifikation av Double-funktioner.
+
 
 
 div :: Int -> Int -> Maybe Int
@@ -111,6 +128,11 @@ nonAssoc = checkAssoc (1/3) 1 1
 isAssoc :: (Rational, Rational, Rational, Bool)
 isAssoc = checkAssoc (1/3) 1 1
 \end{code}
+Två sorters fel:
+  + numeriska / approximative fel
+  + logiska fel
+Nyttigt:
+  + skriv "Num-polymorfa" funktioner
 
 ----------------
 
@@ -123,7 +145,7 @@ forall x. x*0 == 0
 data E = Add E E
        | Mul E E
        | Con Integer
-       | X                   -- Add (Add (Mul X X) X) (Con 1) ~= (x² + x) + 1
+       | X                   -- Add (Add (Mul X X) X)   (Con 1) ~= (x² + x) + 1
   deriving Show
 \end{code}
 
@@ -139,7 +161,7 @@ translator from an abstract (un-interpreted) syntax to some meaningful value typ
 
 \begin{code}
 a0 :: E
-a0 = error "TODO" -- ~= (x² + x) + 1
+a0 = Add (Add (Mul X X) X)   (Con 1)   -- ~= (x² + x) + 1
 a1, a2 :: E
 a1 = Add (Con 1) (Mul (Con 2) (Con 3))    -- 1+(2*3) == 7
 a2 = Mul (Add (Con 1) (Con 2)) (Con 3)    -- (1+2)*3 == 9
@@ -150,7 +172,6 @@ a5 = Mul X X
 
 simplify :: E -> E
 simplify = error "TODO"
-
 \end{code}
 
 We can evaluate (translate) an E to an integer:
@@ -161,12 +182,12 @@ eval  ::  E       ->  Integer
 -- the semantic domain is integers
 \begin{code}
 type AbsSyn = E
-type Z = Integer
-type Sem = Z -> Z   -- from the value of X to the value of the full expression
+type Z = Integer  -- will not work
+type Sem = Z
 eval :: AbsSyn  ->        Sem
-eval (Add e1 e2) = error "TODO"
-eval (Mul e1 e2) = error "TODO"
-eval (Con c)     = error "TODO"
+eval (Add e1 e2) = (eval e1) + (eval e2)  -- next step is to use addE instead
+eval (Mul e1 e2) = (eval e1) * (eval e2)  -- ... and mulE
+eval (Con c)     = c                      -- etc.
 eval X           = error "TODO"
 
 -- Add := addE; Mul := mulE; Con := conE

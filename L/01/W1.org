@@ -2,18 +2,18 @@ DSLsofMath week 1: a short summary / overview
 * L1.1 Intro / admin
 + Lecturer: Patrik Jansson
 ** Technology / tooling
-+ [[file:Live1_2024.lhs][emacs]]      for live coding, etc. (org-mode + Haskell)
-+ [[https://chalmers.instructure.com/courses/27857][Canvas]]     for the course homepage + assignments
-+ [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][paper+PDF]]  for the course book: [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][Adlibris]] + [[https://chalmers.instructure.com/courses/27857/files/folder/Book][PDF]] + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/errata.org][errata]]
-+ [[https://github.com/DSLsofMath/DSLsofMath][github]]     for source code of the lectures + book (in [[https://github.com/DSLsofMath/DSLsofMath/tree/master/L][subdir L/]])
-+ [[https://dslsofmath2024.slack.com/][slack]]      for course communication / discussion forum
++ [[file:Live1_2025.lhs][emacs]]      for live coding, etc. (org-mode + Haskell)
++ [[https://chalmers.instructure.com/courses/33098][Canvas]]     for the course homepage + assignments
++ [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][paper+PDF]]  for the course book: [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][Adlibris]] + [[https://chalmers.instructure.com/courses/33098/files/folder/Book][PDF]] + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/errata.org][errata]]
++ [[https://github.com/DSLsofMath/DSLsofMath][github]]     for source code of the lectures + book (in [[https://github.com/DSLsofMath/DSLsofMath/tree/master/L][subdir L/]] for Lectures)
++ [[https://app.slack.com/client/T087VGGKQM6/C087KD8AGKT][slack]]      for course communication / discussion forum
 +([[https://github.com/DSLsofMath/DSLsofMath/tree/master/L#readme][YouTube]]    for recorded lectures from 2021 and 2022)
 ** Examination
 + *Written Exam*         -> grade U/3/4/5
 + *2 Assignments (labs)* -> Pass/fail grade
 + Weekly exercises       -> Bonus points for the exam
 ** Weekly exercises (-> bonus points for the exam)
-+ [[https://chalmers.instructure.com/courses/27857/assignments/81053][Week 1 bonus]]
++ [[https://chalmers.instructure.com/courses/33098/assignments/101421][Week 1 bonus]]
   Choose any two from
   Exc. 1.3 (Counting values),
        1.4 (Counting Maybes),
@@ -27,12 +27,10 @@ DSLsofMath week 1: a short summary / overview
   It is not enough to just focus on the labs.
 + Patrik's advice: read the book, solve exercises: Ch. N = Week N
 ** Course evaluation: student representatives
-| Prg   | Name          | Email                 |
-|-------+---------------+-----------------------|
-| D     | Adam Lindholm | adalindh@chalmers.se  |
-| D     | Egil Morén    | egil.moren@gmail.com  |
-| D     | Simon Uggla   | simon.uggla@gmail.com |
-| IT/DV | TODO          |                       |
+| Name              | Email (@student.chalmers.se) |
+|-------------------+------------------------------|
+| Emily Tiberg      | emilyti                      |
+| Simon Renhult     | renhult                      |
 + Get in touch if you want to join the group!
 ** Learning outcomes (for the whole course, english version)
 *** KU = Knowledge and Understanding
@@ -49,7 +47,6 @@ DSLsofMath week 1: a short summary / overview
 ** Other info
 + DSLM Teaching team will come by at 14.50 to say hi.
 + Please fill in "Studentbarometern" (see school mail for individual link).
-+ [[https://chalmerscoding.club/][Chalmers Challenge]] (Julia Mårtensson at 14.55).
 * L1.1 learning outcomes:
 ** What is a Domain-Specific Language (DSL)
 A DSL has four components:
@@ -59,7 +56,7 @@ A DSL has four components:
 + Semantics: a function from eval : AbsSyn -> Sem
 https://en.wikipedia.org/wiki/Domain-specific_language
 ** Variable scope and binding in mathematical expressions [integral, fun.def.]
-** Haskell interpreter use and interp. of error messages ([[file:Live1_2024.lhs][interactive live coding]])
+** Haskell interpreter use and interp. of error messages ([[file:Live1_2025.lhs][interactive live coding]])
 ** Syntax trees
 + datatype of syntax trees of simple arith. expr.
 ** First evaluator: |eval :: E -> Int|
@@ -96,7 +93,7 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 
 
 * L1.2 Intro / admin
-** Student communication: [[https://dslsofmath2024.slack.com/][Slack discussion forum]]
+** Student communication: [[https://dslsofmath2025.slack.com/][Slack discussion forum]]
 ** Exercise sessions: be prepared with questions
    2h*2 lectures = 4h/w
    2h*2 exercise sessions = 4h/w
@@ -106,20 +103,20 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** *Read the book!* Chapter N = study week N
 + Not all sections are covered in lectures
 + Some sections not included in the course (marked with a "*")
-** Explore the [[https://chalmers.instructure.com/courses/27857][canvas page]] and the [[https://github.com/DSLsofMath/DSLsofMath][github repo]]:
-+ [[https://chalmers.instructure.com/courses/27857/assignments/syllabus][Home = Syllabus]]   = "Course-memo"
-+ [[https://chalmers.instructure.com/courses/27857/assignments][Assignments]]       = all deadlines and where you hand in exercises and labs
-+ [[https://chalmers.instructure.com/courses/27857/groups][People]]            = where you can find lab groups, etc.
-+ [[https://chalmers.instructure.com/courses/27857/pages/lecture-media][Pages]]             = Lecture media links, etc.
-+ [[https://chalmers.instructure.com/courses/27857/files/folder/Book][Files]]             = the book and other (mostly older) material
-+ [[https://chalmers.instructure.com/courses/27857/announcements][Announcements]]     = where the teaching teams broadcasts messages
+** Explore the [[https://chalmers.instructure.com/courses/33098][canvas page]] and the [[https://github.com/DSLsofMath/DSLsofMath][github repo]]:
++ [[https://chalmers.instructure.com/courses/33098/assignments/syllabus][Home = Syllabus]]   = "Course-memo"
++ [[https://chalmers.instructure.com/courses/33098/assignments][Assignments]]       = all deadlines and where you hand in exercises and labs
++ [[https://chalmers.instructure.com/courses/33098/groups][People]]            = where you can find lab groups, etc.
++ [[https://chalmers.instructure.com/courses/33098/pages/lecture-media][Pages]]             = Lecture media links, etc.
++ [[https://chalmers.instructure.com/courses/33098/files/folder/Book][Files]]             = the book and other (mostly older) material
++ [[https://chalmers.instructure.com/courses/33098/announcements][Announcements]]     = where the teaching teams broadcasts messages
 + [[https://github.com/DSLsofMath/DSLsofMath/tree/master/Exam][github/Exam]]       = all 19 old exams *with solutions*
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/SolvedExercises.md][github/SolvedEx]]   = >50 solved exercises from the book
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/errata.org][github/errata.org]] = corrections after the book was printed
 * L1.2 learning outcomes:
 ** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
 + When equations meet types - more and more eq. can be solved.
-** Active reading of mathematical text [[[file:Live2_2024.lhs][Complex number case study]]]
+** Active reading of mathematical text [[[file:Live2_2025.lhs][Complex number case study]]]
 ** Modelling (different versions of) Complex in Haskell
 ** |eval :: Syntax -> Semantics| for complex number expressions
 ** The DSL of types in Haskell:
@@ -135,7 +132,7 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 ** E1.1 means week 1, exercise session 1 (the presentation / live coding part)
 ** The format of the file is Emacs Org-mode
 * Extras
-Course book, [[http://www.collegepublications.co.uk/computing/?00024][from College Pulications]]:
-file:~/Pictures/DSLsofMath_book_front_cover.jpg
+Course book, [[http://www.collegepublications.co.uk/computing/?00024][from College Publications]]:
+../../Wisla23/DSLsofMath_book_front_cover.jpg
 01234567890123456789012345678901234567890123456789012345678901234567890123456789
 0         1         2         3         4         5         6         7         8

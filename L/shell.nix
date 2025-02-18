@@ -9,8 +9,7 @@ stdenv.mkDerivation {
                   # python3Packages.pygments
                   biber
                   # zip
-                  (texlive.combine {
-                       inherit (texlive)
+                  (texlive.withPackages (pkgs: with pkgs; [
                        algorithm2e
                        a4wide
                        acmart
@@ -35,7 +34,7 @@ stdenv.mkDerivation {
                        latexmk
                        libertine
                        listings
-                       lm3
+                       lm
                        logreq
                        mathpartir
                        minted
@@ -65,7 +64,7 @@ stdenv.mkDerivation {
                        ifmtarg
                        varwidth
 		       doi
-                       ;
-                     })
+                       ]
+                     ))
                 ];
 }

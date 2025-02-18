@@ -23,30 +23,71 @@ p4 = Imp  (And a b)   (And b a)
 
 type Syn  = Prop
 type Sem1 = Bool  -- first attempt - does not work
+type Tab = [(NameT,Bool)]  -- the boolean value for each variable name
+type Sem2 = Tab -> Bool  -- second attempt -- works?
 
-eval :: Syn -> Sem1
-eval (Con b)       = conS b
-eval (Not  e)      = notS  (eval e)
-eval (And  e1 e2)  = andS  (eval e1) (eval e2)
-eval (Or   e1 e2)  = orS   (eval e1) (eval e2)
-eval (Imp  e1 e2)  = impS  (eval e1) (eval e2)
-eval (Nam n)       = nameS n
+-- eval :: Syn -> (Tab -> Bool)
+eval :: Syn -> Sem2
+eval (And  e1 e2)  = andS2  (eval e1) (eval e2)
+eval (Or   e1 e2)  = orS2   (eval e1) (eval e2)
+eval (Not  e)      = notS2  (eval e)
+eval (Imp  e1 e2)  = impS2  (eval e1) (eval e2)
+eval (Con b)       = conS2 b
+eval (Nam n)       = nameS2 n
 
 -- eval "replaces constructor C by function cS" for all C i the type Prop
 
-conS :: Bool -> Sem1
+conS :: Bool -> Sem1  -- Prop ~ Sem1
 notS :: Sem1 -> Sem1
 andS :: Sem1 -> Sem1 -> Sem1
 orS  :: Sem1 -> Sem1 -> Sem1
 impS :: Sem1 -> Sem1 -> Sem1
 
-(conS, notS, andS, orS, impS) = error "TODO: implement semantic functions"
+conS2 :: Bool -> Sem2  -- Prop ~ Sem2
+notS2 :: Sem2 -> Sem2
+andS2 :: Sem2 -> Sem2 -> Sem2
+orS2  :: Sem2 -> Sem2 -> Sem2
+impS2 :: Sem2 -> Sem2 -> Sem2
+
+
+-- Bool -> Sem2 = Bool -> (Tab -> Bool)
+conS2 b _tab = b
+-- Sem2 -> Sem2 = (Tab -> Bool) -> (Tab -> Bool) = (Tab -> Bool) -> Tab -> Bool
+notS2 p tab = not (p tab)
+-- Sem2 -> Sem2 -> Sem2 = (Tab->Bool) -> (Tab->Bool) -> (Tab->Bool)
+andS2 p1 p2 = \tab -> p1 tab && p2 tab
+orS2  p1 p2 = \tab -> p1 tab || p2 tab
+impS2 p1 p2 = \tab -> p1 tab ==> p2 tab
+
+{-
+Con :: Bool -> Prop
+Not :: Prop -> Prop
+And :: Prop -> Prop -> Prop
+Or  :: Prop -> Prop -> Prop
+Imp :: Prop -> Prop -> Prop
+-}
+(conS, orS, impS) = error "TODO: implement semantic functions"
+
+notS = not
+-- notS False = True
+-- notS True = False
+-- Bool -> Bool -> Bool
+andS = (&&)
 
 (==>) :: Bool -> Bool -> Bool
-(==>) = error "TODO: (==>)"
+False ==> _ = True
+True  ==> b = b
 
-nameS :: NameT -> Sem1
-nameS = error "TODO: nameS"
+
+-- nameS -- impossible
+
+myLookup :: Tab -> NameT -> Bool
+myLookup [] n = error ("Variable "++n++" not found")
+myLookup ((a,b):rest) n | n == a = b
+                        | otherwise = myLookup rest n
+
+nameS2 :: NameT -> (Tab -> Bool)
+nameS2 n tab = myLookup tab n
 
 
 

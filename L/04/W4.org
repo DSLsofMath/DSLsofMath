@@ -2,12 +2,11 @@
 ** Admin:
 + A1 presentation day done - good work!
 + A2 has suggested (but flexible) groups - will be fixed on Thursday.
-+ mid-course eval. meeting (2024-02-07, 12:30, EDIT-6128)
-  | Prg   | Name          | Email                 |
-  |-------+---------------+-----------------------|
-  | D     | Adam Lindholm | adalindh@chalmers.se  |
-  | D     | Egil Morén    | egil.moren@gmail.com  |
-  | D     | Simon Uggla   | simon.uggla@gmail.com |
++ mid-course eval. meeting was today (2025-02-11, 12:30, EDIT-6128)
+| Name              | Email (@student.chalmers.se) |
+|-------------------+------------------------------|
+| Emily Tiberg      | emilyti                      |
+| Simon Renhult     | renhult                      |
 ** Learning outcomes (for this week / chapter)
 *** KU = Knowledge and Understanding
 + KU.DSL      = design and implement a DSL for a new domain
@@ -19,15 +18,15 @@
   + Here:       derivatives (not homomorphism + how to fix it)
 *** SA = Skills and Abilities
 + SA.Notation = develop adequate notation for mathematical concepts
-  + Here:       work with homorphisms
+  + Here:       type clases in Haskell, work with homorphisms
 + SA.Calc     = perform calculational proofs
   + Here:       prove ∃ op. H2(odd,+,op)
                 prove not (∃ op. H2(isPrime,+,op))
 *** JA = Judgement and Approach
 + JA = discuss and compare different software implementations of mathematical concepts
-  Here:        eva, eva2, evaIE, fold, etc.
-
-* L4.1: Tuesday: Compositional semantics (Homomorphisms)
+  Here:        Monoid, Additive, Multiplicative, etc.
+               eva, eva2, evaIE, fold, etc.
+* L4.1: Tuesday: Compositional semantics (Homomorphisms) and type classes
 ** Homomorphism: H2(f,(+),(*)) = ∀ x, y. f(x+y) == f x * f y
 
 In general, we have seen many examples of H2
@@ -42,22 +41,9 @@ with
 ** Examples (blackboard)
 + Homomorphism examples (exp, log, odd)
 + Non-homomorphism example (isPrime)
-** (Live-coding) Folds and compositionality
-+ file:Live_4_1_2024.lhs TODO check
-TODO: |data IE| for integer expressions
-TODO: eva :: ... -> IE->I
-TODO: eva :: (I->I->I)->(I->I->I)->(I->I)->IE->I
-TODO: eva :: (a->a->a)->(a->a->a)->(I->a)->IE->a
-TODO: type class version
-TODO: |class IntExp|
-TODO: instance I
-TODO: instance IntExt
-TODO: instance Bool -- even
-TODO: Final note: compositional semantics means we can work without syntax trees.
-
-TODO: from |eval| to |foldE|
-
-* L4.2: Thursday: Homomorphisms and derivatives
+** (Live-coding) Haskell type classes
++ file:Live_4_1_class_2025.lhs
+* L4.1b: Tuesday: non-homomorphism: derivative
 ** black-board: def. of eval' (specified as D . eval) and der : F -> F
 type FunSem = REAL -> REAL
 ** More about homomorphisms (see definitions below)
@@ -134,9 +120,29 @@ eval|	       |eval
 + Thus, we have proven not P
   not (∃ op. H2(der,Mul,op) && eval . der == D . eval)
 
+** file:Live_4_2_2025.lhs
 
-** file:Live_4_2_2024.lhs
-** show that evalD *is* a homomorphism
+* L4.2: Thursday: Homomorphisms, folds, and type classes
+** Admin
++ A2 groups
+** Contents
++ file:Live_4_2_2025.lhs
++ file:Live_4_2_FunExp_2025.lhs
+** Details
+TODO: |data IE| for integer expressions
+TODO: eva :: ... -> IE->I
+TODO: eva :: (I->I->I)->(I->I->I)->(I->I)->IE->I
+TODO: eva :: (a->a->a)->(a->a->a)->(I->a)->IE->a
+TODO: type class version
+TODO: |class IntExp|
+TODO: instance I
+TODO: instance IntExt
+TODO: instance Bool -- even
+TODO: Final note: compositional semantics means we can work without syntax trees.
+
+TODO: from |eval| to |foldE|
+
+** (if time allows) show that evalD *is* a homomorphism
 *** exists mul. H2(evalD,Mul,mul)
  type FD a = (a -> a, a -> a)
 

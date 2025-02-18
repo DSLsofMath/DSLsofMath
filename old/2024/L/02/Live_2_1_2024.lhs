@@ -2,9 +2,33 @@
 module Live_2_1 where
 \end{code}
 
+Some pure set theory (relevant for A1).
+\begin{code}
+newtype Set = S [Set] deriving Show
+m0 = error "TODO"
+
+sing :: Set -> Set
+sing = error "TODO"
+
+m1 = error "TODO"
+
+m :: Int -> Set
+m = error "TODO"
+
+cardSem :: Set -> Int
+cardSem = error "TODO"
+
+cardSyn :: M -> Int
+cardSyn = error "TODO"
+
+data M -- TODO
+
+
+
 Propositional Calculus = Prop
   (from Chapter 2 in the book)
 \begin{code}
+-- Satslogik syntax
 data Prop  =  Con      Bool
            |  Not      Prop
            |  And      Prop  Prop

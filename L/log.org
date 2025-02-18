@@ -1,0 +1,263 @@
+* 2025-01-22: Small fixes.
++ DONE check numbering from 2.22 and up (in chapter 2)
+  + Now changed in RecEx.md and SolvedExercises.md
+* 2025-01-07: Checking diffs from 2024
++ Exercises 2.22 and 2.23 inserted (check
+  Later: check numbering from 2.22 and up (in chapter 2)
+* Older
+** 2021-12-27: Paragraph styles
+
+01/W01.lhs: 109:\paragraph{Pairs and tuple types}
+01/W01.lhs: 137:\paragraph{\addtoindex{List types}}
+01/W01.lhs: 182:\paragraph{Pure and impure functions}
+01/W01.lhs: 216:\paragraph{Identity function}
+01/W01.lhs: 247:\paragraph{Constant functions}
+01/W01.lhs: 286:\paragraph{Higher-order functions}
+01/W01.lhs: 306:\paragraph{Lambda expressions}
+01/W01.lhs: 325:\paragraph{Function composition}
+01/W01.lhs: 451:\paragraph{Partial functions with finite domain}
+01/W01.lhs: 636:\paragraph{|type| -- abbreviating type expressions}
+01/W01.lhs: 676:\paragraph{|newtype| -- more protection}
+01/W01.lhs: 735:\paragraph{The keyword |data| for syntax trees}
+01/W01.lhs: 789:\paragraph{|Maybe| and \addtoindex{parameterised type}s}
+01/CSem.lhs: 16:\paragraph{Lifting operations to a parameterised type}
+01/SimpleFunExp.lhs: 49:\paragraph{Examples of types in mathematics}
+01/SimpleFunExp.lhs: 241:\paragraph{Scoping the integral operator}
+01/SimpleFunExp.lhs: 286:\paragraph{The ``big sum'' operator}
+01/SimpleFunExp.lhs: 435:\paragraph{The data type of expressions of multiple variables}
+01/SimpleFunExp.lhs: 578:\paragraph{Polymorphic variables}
+
+02/PropositionalLogic.lhs: 519:\paragraph{Aside}
+02/PropositionalLogic.lhs: 540:\paragraph{Example proof}
+02/PropositionalLogic.lhs: 585:\paragraph{|Or| is the dual of |And|}
+02/PropositionalLogic.lhs: 699:\paragraph{Representing |Implies| and |And|}
+02/PropositionalLogic.lhs: 729:\paragraph{Proof of |notIntro|}
+02/PropositionalLogic.lhs: 782:\paragraph{Back to representations}
+02/PropositionalLogic.lhs: 828:\paragraph{The law of the excluded middle}
+02/PropositionalLogic.lhs: 903:\paragraph{Revisiting the tupling transform}
+02/PropositionalLogic.lhs: 947:\paragraph{Logic as impoverished typing rules}
+02/SetTheory.lhs: 63:\paragraph{Natural numbers}
+02/SetTheory.lhs: 93:\paragraph{Pairs}
+02/SetTheory.lhs: 128:\paragraph{Part 1.} |TERM| should have constructors for
+02/SetTheory.lhs: 147:\paragraph{Part 2.} A possible semantic domain for pure sets is
+02/SetTheory.lhs: 169:\paragraph{Part 3.} The \emph{von Neumann encoding} of natural numbers as
+02/CalculusConcepts.lhs: 20:\paragraph{Limit point}\label{sec:LimPoint}
+02/E2.lhs: 60:\paragraph{Short technical note}\label{short-technical-note}
+
+04/W04.lhs: 592:\paragraph{Other homomorphisms}
+04/W04.lhs: 1053:\paragraph{For the curious}
+04/W04.lhs: 1122:\paragraph{The Initial Monoid}
+04/W04.lhs: 1158:\paragraph{The Initial Ring}
+04/W04.lhs: 1266:\paragraph{Free Monoid}
+04/W04.lhs: 1355:\paragraph{Functions of one variable as free algebras}
+04/W04.lhs: 2291:\paragraph{Numeric instances for |Dup|}
+04/AbstractStream.lhs: 9:\paragraph{Streams as an abstract datatype.}
+04/UnusualStream.lhs: 45:\paragraph{For the curious.}
+04/UnusualStream.lhs: 9:\paragraph{An unusual stream}
+
+05/W05.lhs: 195:\paragraph{Representing polynomials}
+05/W05.lhs: 289:\paragraph{Numeric instances for polynomials}
+05/W05.lhs: 361:\paragraph{An alternative representation}
+05/W05.lhs: 400:\paragraph{Syntax |/=| semantics}
+05/W05.lhs: 432:\paragraph{Algebra of syntactic polynomials}
+05/W05.lhs: 85:\paragraph{Syntax and semantics of polynomials}
+
+07/W07.lhs: 1495:\paragraph{Implementation:}
+07/W07.lhs: 2349:\paragraph{One-dimensional space}
+07/W07.lhs: 688:\paragraph{Dot product}
+07/W07.lhs: 722:\paragraph{Orthogonal transformations}
+
+08/W08.lhs: 177:\paragraph{Euler's formula and periodic functions}
+08/W08.lhs: 226:\paragraph{Taylor meets transcendental functions}
+08/W08.lhs: 718:\paragraph{Deriving |ℒ exp|:}
+08/W08.lhs: 762:\paragraph{Deriving |ℒ sin| and |ℒ cos|:}
+
+09/W09.lhs: 132:\paragraph{Finite space}
+09/W09.lhs: 155:\paragraph{Scaling space}
+09/W09.lhs: 193:\paragraph{Product of spaces}
+09/W09.lhs: 259:\paragraph{Projections}
+09/W09.lhs: 270:\paragraph{Real line}
+09/W09.lhs: 281:\paragraph{Summary}
+09/W09.lhs: 558:\paragraph{Properties of |integrator|}
+
+** 2021-12-26: Looking over Ch3:
+ToC at section level:
+
+|   3 | Types in Mathematics                         | 81 |
+| 3.1 | Typing Mathematics: derivative of a function | 81 |*
+| 3.2 | Typing Mathematics: partial derivative       | 82 |**
+| 3.3 | Typing Mathematics: Lagrangian case study    | 84 |****
+| 3.4 | Incremental analysis with types              | 88 |**
+| 3.5 | Type classes                                 | 90 |*****
+| 3.6 | Computing derivatives                        | 95 |***
+| 3.7 | Exercises                                    | 98 |***
+
+Quotes from maths books
+  3.1: derivative
+  3.2: partial derivative
+  3.3: Lagrangian
+  3.4: minimum of functional
+
+  3.7: chain rule, minimum of functional again, conditional probability
+
+Haskell content
+  3.4: coding up (typing) a quote about "minimum of functional"
+  3.5: class Eq
+  3.5.1: class Additive, class AddGroup, class Multiplicative, class MulGroup
+  3.5.2: fromInteger (overloaded literals)
+  3.5.3: FunNumInst, class Algebraic, class Transcendental
+  3.6: derive :: FunExp -> FunExp
+
+** 2021-12-25: Duplicate limit of sequence
+
+p18: 1.3: limit from wikpedia
+  1. binding syntax, typing series ans function from Nat
+  2. partial function - use Maybe in return type
+     (not all sequences have a limit)
+
+p72: 2.5.1: limit from Adams and Essex
+  sequence is a function
+  typing a : Nat -> REAL
+  predicate haslim
+
+Removed most of the first example in favour of the second.
+
+2021-12-22: Quote overview
+  1.1.4: Variable names as type hints
+  1.3: lim from wikipedia
+  1.4: Complex numbers (several quotes in this section)
+  1.7: Types of funtions, expr., ops: miniquote "the function f(x)", integral notation, big sum
+
+  2.5.1: lim of sequence again (now from Adams and Essex)
+  2.5.2: lim of function
+  2.6.3: continuity, uniform continuity,
+
+  3.1: derivative
+  3.2: partial derivative
+  3.3: Lagrangian
+  3.4: minimum of functional
+  3.7: chain rule, minimum of functional again, conditional probability
+
+  4.1: algebraic structure
+  4.2.2: homomorphism
+
+  5.1: Polynomial (several times), ring of polynomials
+  5.2: division and remainder (naturals), division and remainder (polynomials)
+
+  6.2: fundamental theorem of calculus
+
+  7: definition of vector
+
+  8.1: exponential function
+
+  9.5: random variable
+  9.9: Independent events
+
+** 2021-12-16: fonts
+
+Publisher remarks that some fonts are "Type 3" and need to be replaced
+by "Type 1".  Solved by installing a suitable LaTeX package (sudo apt
+install cm-super) and rebuilding the pdf.
+
+Checking done with
+  pdffonts DSLsofMathBook.pdf
+
+*** Before cm-super:
+
+name                                 type              encoding         emb sub uni object ID
+------------------------------------ ----------------- ---------------- --- --- --- ---------
+SVMXOP+URWPalladioL-Roma             Type 1            Custom           yes yes no     589  0
+RZWFFF+URWPalladioL-Bold             Type 1            Custom           yes yes no     598  0
+AKCWGZ+URWPalladioL-Roma-Slant_167   Type 1            Custom           yes yes no     665  0
+GDIRAE+URWPalladioL-Ital             Type 1            Custom           yes yes no     666  0
+MCRXPL+CMSY10                        Type 1            Builtin          yes yes no     667  0
+[none]                               Type 3            Custom           yes no  no     865  0
+SOSTRQ+CMR10                         Type 1            Builtin          yes yes no     874  0
+TYJPZC+CMEX10                        Type 1            Builtin          yes yes no     875  0
+ERNWEQ+PazoMathBlackboardBold        Type 1            Builtin          yes yes no     890  0
+TRMKLC+PazoMath-Italic               Type 1            Builtin          yes yes no     907  0
+IRDBMC+PazoMath                      Type 1            Builtin          yes yes no     964  0
+NTZREF+CMMI10                        Type 1            Builtin          yes yes no     975  0
+MMRUZC+MSAM10                        Type 1            Builtin          yes yes no     976  0
+[none]                               Type 3            Custom           yes no  no    1436  0
+ULZEWH+MSBM10                        Type 1            Builtin          yes yes no    1575  0
+KDZWRK+CMBSY10                       Type 1            Builtin          yes yes no    1627  0
+UJMVDM+URWPalladioL-BoldItal         Type 1            Custom           yes yes no    1628  0
+UCOMTU+rsfs10                        Type 1            Builtin          yes yes no    2345  0
+[none]                               Type 3            Custom           yes no  no    2375  0
+
+*** After cm-super:
+name                                 type              encoding         emb sub uni object ID
+------------------------------------ ----------------- ---------------- --- --- --- ---------
+SVMXOP+URWPalladioL-Roma             Type 1            Custom           yes yes no     589  0
+RZWFFF+URWPalladioL-Bold             Type 1            Custom           yes yes no     598  0
+AKCWGZ+URWPalladioL-Roma-Slant_167   Type 1            Custom           yes yes no     665  0
+GDIRAE+URWPalladioL-Ital             Type 1            Custom           yes yes no     666  0
+MCRXPL+CMSY10                        Type 1            Builtin          yes yes no     667  0
+YHBJJG+SFTT1000                      Type 1            Custom           yes yes no     865  0
+SOSTRQ+CMR10                         Type 1            Builtin          yes yes no     874  0
+TYJPZC+CMEX10                        Type 1            Builtin          yes yes no     875  0
+ERNWEQ+PazoMathBlackboardBold        Type 1            Builtin          yes yes no     890  0
+TRMKLC+PazoMath-Italic               Type 1            Builtin          yes yes no     907  0
+IRDBMC+PazoMath                      Type 1            Builtin          yes yes no     964  0
+NTZREF+CMMI10                        Type 1            Builtin          yes yes no     975  0
+MMRUZC+MSAM10                        Type 1            Builtin          yes yes no     976  0
+ZZMKIG+SFSS0500                      Type 1            Custom           yes yes no    1436  0
+ULZEWH+MSBM10                        Type 1            Builtin          yes yes no    1575  0
+KDZWRK+CMBSY10                       Type 1            Builtin          yes yes no    1627  0
+UJMVDM+URWPalladioL-BoldItal         Type 1            Custom           yes yes no    1628  0
+UCOMTU+rsfs10                        Type 1            Builtin          yes yes no    2345  0
+YRYXWY+SFTT0800                      Type 1            Custom           yes yes no    2375  0
+
+
+
+
+** 2021-11-23: ToC overview
+Page counts:
+| Ch  0 |  8 |       |
+| Ch  1 | 27 |       |
+| Ch  2 | 33 |       |
+| Ch  3 | 23 |       |
+| Ch  4 | 35 |       |
+| Ch  5 | 17 | short |
+| Ch  6 | 16 | short |
+| Ch  7 | 17 | short |
+| Ch  8 | 11 | short |
+| Ch  9 | 22 |       |
+
+
+
+** 2021-01-16: Time to set the license: CC-by-nc-sa
+
+  https://creativecommons.org/licenses/by-nc-sa/4.0/
+
+** 2019-01-19: Debugging spacing
+
+I'd like the spacing before and after a code block to be the
+same. Currently it seems like the space below is sometimes larger.
+After some searching I found that the environment plainhscode is used
+for the code blocks:
+
+\newenvironment{plainhscode}%
+  {\hsnewpar\abovedisplayskip
+   \advance\leftskip\mathindent
+   \hscodestyle
+   \let\hspre\(\let\hspost\)%
+   \pboxed}%
+  {\endpboxed%
+   \hsnewpar\belowdisplayskip
+   \ignorespacesafterend}
+
+But the lengths
+  \the\abovedisplayskip
+  \the\belowdisplayskip
+are both the same: 8.5pt plus 3.0pt minus 4.0pt
+
+Then perhaps there is an additional "skip" after the code?
+
+Yes - that turns out to be the case if there is a "new paragraph"
+after the code. In my particular test case ("which converts integers
+to the actual type |a|." in Chapter 3) there was a paragraph break
+which I removed and thus fixed the spacing.
+
+I'll make a quick search for other cases.

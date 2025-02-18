@@ -44,17 +44,17 @@ Other solutions are in NN/ExerciseSolutions/ (for example
 | E2.13  | TODO   |	 |	   | conjunctive normal form
 | E2.14  | TODO   |	 |	   | disjuntive normal form
 | E2.15  | TODO   |	 |	   | Propositions as polynomials
-| E2.16  | Yes    |      | Rec.    | ... notMap ... 
+| E2.16  | Yes    |      | Rec.    | ... notMap ...
 | E2.17  | Yes    |      |         | De Morgan proofs (with types as theorems)
 | E2.18  | TODO   |      |         | Proofs indep. of (hidden) type impl.
 | E2.19  | Yes    |      | Rec.    | Distrib.laws in different ways
 | E2.05  | Yes    |      |         | notIntro, etc.
 | E2.06  | TODO   |      |         | noContra, etc.
-| E2.22  | Yes    |      |         | From exam 2016-08-23
-| E2.23  | Yes    |      | Rec.    | From exam 2017-08-22
-| E2.24  | Yes    | 2019 | Rec.    | 0,1,0,1,... not covergent
-| E2.25  | TODO   | 2021 | 	   | a=id not covergent
-| E2.26  | Yes    | 2019 | Rec.    |
+| E2.24  | Yes    |      |         | From exam 2016-08-23
+| E2.25  | Yes    |      | Rec.    | From exam 2017-08-22
+| E2.26  | Yes    | 2019 | Rec.    | 0,1,0,1,... not covergent
+| E2.27  | TODO   | 2021 | 	   | a=id not covergent
+| E2.28  | Yes    | 2019 | Rec.    |
 | ------ | ------ | ---- | ------- | -----------
 | E3.01  | TODO   | 2021 |	   | Partial Derivatives
 | E3.02  | Yes    |      |         | Exponentiation operator
@@ -89,7 +89,7 @@ Other solutions are in NN/ExerciseSolutions/ (for example
 | E4.20  | Yes    |      | Rec.    | Same as E4.17
 | E4.21  | TODO   |      | Rec.    | Three ways of computing derivative of sin+exp.exp
 | E4.22  | Yes    |      | Rec.    | From exam 2017-08-22
-| E4.23  | TODO   |      | Rec.    | arithmetics mod n 
+| E4.23  | TODO   |      | Rec.    | arithmetics mod n
 | E4.24  | Yes    |      | Rec.    | From exam 2016-03-15
 | E4.25  | Yes    |      | Rec.    | From exam 2016-08-23
 | E4.26  | TODO   | 2021 | Rec.    |
@@ -154,4 +154,3 @@ Other solutions are in NN/ExerciseSolutions/ (for example
 | ------ | ------ | ---- | ------- | -----------
 
 # Notes
-
