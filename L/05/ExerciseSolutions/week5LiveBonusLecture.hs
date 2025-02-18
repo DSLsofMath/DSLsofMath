@@ -17,7 +17,7 @@ onePoly 0 = 1
 onePoly _ = 0
 
 recipPoly :: (Fractional a , Num a) => PolynomialCoefficients a -> PolynomialCoefficients a 
--- mulPoly f (recip f)   == onePoly
+-- specification : mulPoly (recip f) f  == onePoly
 -- Note onePoly is defined differently on 0 than on any other number, 
 -- so we can look at the value at 0 specifically
 -- mulPoly (recip f) f 0 == onePoly 0  == 1
