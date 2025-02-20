@@ -26,6 +26,15 @@ polynomial, is called the \textbf{degree} of the polynomial.
 + In between FunExp and semantics. ("byte code"?)
 ** We have a Ring structure on the semantics - can we do it on syntax?
 + Yes - here are some of the building blocks.
+* L5.1a: Homomorphism examples related to Assignment 2
++ Live coding [[file:Live_5_1_2025.lhs]]
+** apply   :: a -> (a->b) -> b
+** applyFD :: a -> FD a -> Bi a
+* L5.1b (extra lecture at 15.15)
++ Power series example: 1/(1-x)
+* L5.2 Polynomials and Power Series
+** Polynomial degree (blackboard)
+** degree as "almost a homomorphism"
 ** ∃ add. H₂(eval,add,oplus)
 + Typing, code skeleton
   add : [R] ->  [R]    ->  [R]
@@ -46,6 +55,7 @@ polynomial, is called the \textbf{degree} of the polynomial.
   eval (add (a:as) (b:bs)) x
 + Thus we have proven add exists if we use this for the last case
   add   (a:as)  (b:bs)  = (a+b):(add as bs)
+** (Perhaps: lifting to Maybe)
 ** Chebyshev Polynomials
 + Let I be the real number interval from -1 to +1
 + Specification: for every n : Nat
@@ -65,16 +75,6 @@ polynomial, is called the \textbf{degree} of the polynomial.
 file:Chebyshev_Polynomials_of_the_First_Kind.svg
 By Glosser.ca - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.php?curid=52799132
 
-* L5.1a: Homomorphism examples related to Assignment 2
-+ Live coding [[file:Live_5_1_2025.lhs]]
-** apply   :: a -> (a->b) -> b
-** applyFD :: a -> FD a -> Bi a
-* L5.1b (extra lecture at 15.15)
-+ Power series example: 1/(1-x)
-* L5.2 Power Series
-** Polynomial degree (blackboard)
-** degree as "almost a homomorphism"
-** lifting to Maybe
 ** (Perhaps continue) Live coding [[file:Live_5_1_2025.lhs]]
 ** Live coding (file:Live_5_2_2025.lhs)
 + DSL for polynomials: newtype Poly, eval, a->a
