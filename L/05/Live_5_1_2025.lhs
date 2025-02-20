@@ -31,7 +31,7 @@ eval :: Ring a => FunExp -> a -> a
 class Additive a       where  zero :: a;  (+) :: a -> a -> a
 class Multiplicative a where  one  :: a;  (*) :: a -> a -> a
 class Additive a => AddGroup a where  negate :: a -> a
--- Ring a = (AddGroup a, Multiplicative a)
+-- Ring a = (AddGroup a, Multiplicative a)  -- (0, 1, +, -, *)
 + Remember that derive :: FunExp -> FunExp is not a homomorphism by itself -
 + we need a pair of function + derivative.
 
@@ -44,22 +44,23 @@ newtype FD a = FD (a->a, a->a)   -- Function + Derivative
 newtype Bi a = Bi (a,    a)      -- Position + Speed
   deriving (Eq, Show)
 
--- forall c. H2(applyFD c, mulFD, mulBi)
+-- forall t. H2(applyFD t, mulFD, mulBi)
 applyFD :: a -> FD a -> Bi a
-applyFD = error "TODO"
+applyFD t (FD (f, f')) = Bi (f t, f' t)
+  -- f :: a -> a; t :: a; f t :: a
 
 -- 1a: implement \x -> (x-1)^+2 "by hand" as an FD:
 fd1 :: Ring a => FD a
-fd1 = error "TODO"
+fd1 = FD (\x -> (x-1) ^+ 2, \x -> 2*(x-1))
      --   f                D f
 
 -- 1b: implement "x" as an FD
 xFD :: Ring a => FD a
-xFD = error "TODO"
+xFD = FD (\x -> x, \x -> one)
 
 -- 1c: implement \x -> (x-1)^+2 in any Ring:
 e2 :: Ring a => a -> a
-e2 x = (x-1) ^+ 2
+e2 x = (x-1) ^+ 2  -- (x-1)*(x-1) = mulFD (xFD - oneFD) (xFD - oneFD)
 
 -- 1d: implement \x -> (x-1)^+2 "automatically" as an FD:
 e2FD :: Ring a => FD a
