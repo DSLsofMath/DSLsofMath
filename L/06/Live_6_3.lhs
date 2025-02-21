@@ -3,23 +3,49 @@
 -- {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE RebindableSyntax #-}
-module Live_6_2 where
-import Prelude (Int, Double, Show, error, Bool, (==), (&&), 
-                (.), zipWith, map, head, tail, take)
-import qualified Prelude
+module Live_6_3 where
+
+import DSLsofMath.Algebra (
+    AddGroup (negate),
+    Additive (zero, (+)),
+    Algebraic (sqrt),
+    Field,
+    Multiplicative (one, (*)),
+    Ring,
+    Transcendental (cos, exp, pi, sin),
+    fromInteger,
+    (-),
+    (/),
+    (^+),
+ )
 import DSLsofMath.FunExp
-import DSLsofMath.Algebra (Additive((+),zero), AddGroup(negate), (-), 
-                           Multiplicative((*),one), Ring, (^+), fromInteger,
-                           Field, (/),
-                           Algebraic(sqrt),
-                           Transcendental(pi,sin,cos,exp) )
+import DSLsofMath.Simplify
+import Prelude (
+    Bool (False, True),
+    Double,
+    Eq ((==)),
+    Int,
+    Show,
+    const,
+    error,
+    head,
+    id,
+    map,
+    tail,
+    take,
+    zipWith,
+    (&&),
+    (.),
+    (==),
+ )
+import qualified Prelude
 \end{code}
 
 Chapter 6. Taylor and Maclaurin series
  - or -
 Yet another type for representing functions.
 
-Code continued from file:../04/Live_4_3_2023.lhs and file:../05/Live_5_2_2023.lhs
+Code continued from file:../04/Live_4_1_class_2025.lhs and file:../05/Live_5_2_2025.lhs
 
 1. Introduce the remaining type classes Transcendental and Algebraic
   See file:../DSLsofMath/Algebra.hs::87
@@ -32,21 +58,26 @@ Code continued from file:../04/Live_4_3_2023.lhs and file:../05/Live_5_2_2023.lh
 
 ----
 2a. Types + eval
+
+First polynomials:
 \begin{code}
 newtype Poly a = P [a] deriving Show
-evalP :: Ring a => Poly a -> (a -> a)
+type Fun a = a -> a
+evalP :: Ring a => Poly a -> Fun a
 evalP (P cs) = evalL cs
 
-evalL :: Ring a => [a] -> (a -> a)
-evalL []      = zero
-evalL (a:as)  = evalCons a (evalL as)
-
-evalCons :: Ring a => a -> (a -> a) -> (a -> a)
-evalCons a0 p = \x -> a0 + x * p x
+evalL :: Ring a => [a] -> Fun a
+evalL []      =  zero
+evalL (c:cs)  =  const c  +  (id * (evalL cs))
+-- evalL (c:cs) x = const c x +  (id x * (evalL cs) x)
+-- evalL (c:cs) x = c + x * evalL cs x
 
 xP :: Ring a => Poly a
 xP = P [zero, one]
+\end{code}
 
+Then power series - we can use the same datatype!
+\begin{code}
 type PS = Poly
 takeP :: Int -> PS a -> Poly a
 takeP n (P as) = P (take n as)
@@ -86,7 +117,7 @@ mulL :: Ring a => [a] -> [a] -> [a]
 mulL []      bs  =  []    -- 0*b=0
 mulL as      []  =  []    -- a*0=0
 mulL (a:as)  bs  =  addL (scaleL a bs) (zero:mulL as bs)
- -- a:as = (a:zeroL) `addL` (zero:as) 
+ -- a:as = (a:zeroL) `addL` (zero:as)
 
 scaleP :: Ring a => a -> PS a -> PS a
 scaleP c (P as) = P (scaleL c as)
@@ -121,9 +152,44 @@ p1 :: Ring a => Poly a
 p1 = (xP-one)^+2
 \end{code}
 
+Equality:
+
+For polynomials we can check equality, but note that for power series
+it will often not terminate.
+
+\begin{code}
+instance (Eq a, Additive a) => Eq (Poly a) where (==) = eqP
+
+eqP :: (Eq a, Additive a) => Poly a -> Poly a -> Bool
+eqP (P as) (P bs) = eqL as bs
+
+eqL :: (Eq a, Additive a) => [a] -> [a] -> Bool
+eqL [] bs = isZeroL bs
+eqL as [] = isZeroL as
+eqL (a:as) (b:bs) = (a==b) && (eqL as bs)
+
+eqP' :: (Eq a, AddGroup a) => Poly a -> Poly a -> Bool
+eqP' p q = isZeroP (p-q)
+
+isZeroP :: (Eq a, Additive a) => Poly a -> Bool
+isZeroP (P as) = isZeroL as
+
+isZeroL :: (Eq a, Additive a) => [a] -> Bool
+isZeroL [] = True
+isZeroL (a:as) = (a == zero) && isZeroL as
+\end{code}
+
+Note: an alternative definition is eqP' (using subtraction) but then
+we need a slightly stronger context: AddGroup a instead of Additive a.
+Ideally there should be a separate type class IsZero a where isZero ::
+a -> Bool because then we would not need the full Eq a constraint.
+
 ----
 2d. derivative and integral for power series
 
+Spec. of derP: H₁(evalP, derP, D)
+ which expands to
+  forall cs. evalP (derP cs) = D (evalP cs)
 \begin{code}
 derP :: Ring a => Poly a -> Poly a
 derP (P as) = P (derL as)
@@ -134,12 +200,24 @@ derL (_:as) = zipWith (*) as countUp
 
 countUp :: Ring a => [a]
 countUp = Prelude.iterate (one+) one
+\end{code}
 
+Specification of integ:
+  forall c, cs. derP (integP c cs) = cs
+
+\begin{code}
 integP :: Field a => a -> Poly a -> Poly a
 integP a (P as) = P (integL a as)
 
 integL :: Field a => a -> [a] -> [a]
 integL a as = a : zipWith (/) as countUp
+\end{code}
+
+Example: Power Series and the exponential
+
+\begin{code}
+expP :: Field a => Poly a
+expP = integP one expP
 \end{code}
 
 ----------------
@@ -176,6 +254,9 @@ but note that derive is not a homomorphism - can we do better?
 
 + 3b. Explain the type DS, evalDS, translation from DS to PS and back
 
+H2(derAll, Mul, mulDS)
+... Forall f, g. derAll (Mul f g) = mulDS (derAll f) (derAll g)
+
 \begin{code}
 newtype DS a = DS [a]   -- basically the same type as Poly and PS
   deriving Show
@@ -193,7 +274,7 @@ toMaclaurin (P as) = DS (zipWith (*) factorials as)
 \end{code}
 
 + 3c. Implement derDS, integDS
-
+derAll :: FunExp -> DS FunExp
 Spec: derDS (derAll e) = derAll (derive e)
 \begin{code}
 \end{code}

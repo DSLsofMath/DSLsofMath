@@ -85,7 +85,6 @@ and y) that this leads to a contradiction.
 
 
 
-
 * (Thursday lecture) Maclaurin series
 ** Book reminder
 + You can bring a (physical) book to the exam.

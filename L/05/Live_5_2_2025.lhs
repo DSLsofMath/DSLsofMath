@@ -27,6 +27,9 @@ evalL (c:cs)  =  const c  +  (id * (evalL cs))
 -- evalL (c:cs) x = const c x +  (id x * (evalL cs) x)
 -- evalL (c:cs) x = c + x * evalL cs x
 
+xP :: Ring a => Poly a
+xP = P [zero,one]
+
 p1 = P [1,2]
 p2 = P [1,2,3]
 
@@ -158,11 +161,6 @@ integP c (P cs) = P (integL c cs)
 
 integL :: Field a => a -> [a] -> [a]
 integL c cs = c : Prelude.zipWith (/) cs oneUp
-
-xP :: Ring a => Poly a
-xP = P [zero,one]
-
-
 \end{code}
 
 Example: Power Series and the exponential

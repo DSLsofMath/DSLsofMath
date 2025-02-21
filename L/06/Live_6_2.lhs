@@ -2,7 +2,7 @@
 {-# LANGUAGE TypeSynonymInstances #-}
 -- {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE RebindableSyntax #-}
-module Live_6_1 where
+module Live_6_2 where
 import DSLsofMath.Algebra as Algebra
 import qualified Prelude
 import Prelude (Eq, Ord, Show, Int, Double, Rational, id, const, (.), error)

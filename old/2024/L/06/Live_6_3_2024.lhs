@@ -4,12 +4,12 @@
 {-# LANGUAGE ConstraintKinds #-}
 {-# LANGUAGE RebindableSyntax #-}
 module Live_6_2 where
-import Prelude (Int, Double, Show, error, Bool, (==), (&&), 
+import Prelude (Int, Double, Show, error, Bool, (==), (&&),
                 (.), zipWith, map, head, tail, take)
 import qualified Prelude
 import DSLsofMath.Simplify
 import DSLsofMath.FunExp
-import DSLsofMath.Algebra (Additive((+),zero), AddGroup(negate), (-), 
+import DSLsofMath.Algebra (Additive((+),zero), AddGroup(negate), (-),
                            Multiplicative((*),one), Ring, (^+), fromInteger,
                            Field, (/),
                            Algebraic(sqrt),
@@ -87,7 +87,7 @@ mulL :: Ring a => [a] -> [a] -> [a]
 mulL []      bs  =  []    -- 0*b=0
 mulL as      []  =  []    -- a*0=0
 mulL (a:as)  bs  =  addL (scaleL a bs) (zero:mulL as bs)
- -- a:as = (a:zeroL) `addL` (zero:as) 
+ -- a:as = (a:zeroL) `addL` (zero:as)
 
 scaleP :: Ring a => a -> PS a -> PS a
 scaleP c (P as) = P (scaleL c as)
@@ -177,8 +177,9 @@ but note that derive is not a homomorphism - can we do better?
 
 + 3b. Explain the type DS, evalDS, translation from DS to PS and back
 
-derAll (Mul f g) = mulDS (derAll f) (derAll g) 
 H2(derAll, Mul, mulDS)
+... Forall f, g. derAll (Mul f g) = mulDS (derAll f) (derAll g)
+
 \begin{code}
 newtype DS a = DS [a]   -- basically the same type as Poly and PS
   deriving Show
@@ -216,7 +217,7 @@ mulD :: Ring a => [a] -> [a] -> [a]
 mulD [] bs = []
 mulD as [] = []
 mulD f@(f0:f') g@(g0:g') = (f0*g0) : error "övning"
-  
+
 \end{code}
 
 + 3d. Implement numeric operators on DS a

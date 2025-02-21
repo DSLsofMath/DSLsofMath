@@ -1,9 +1,11 @@
 \begin{code}
 module Live_6_1 where
 import qualified Prelude
-import Prelude (Int, Double, Maybe(Nothing, Just), Show, Eq, 
-                error, reverse, (.), dropWhile, (==), length, zipWith)
-import DSLsofMath.Algebra
+import Prelude (Int, Double, Maybe(Nothing, Just), Show, Eq, Rational,
+                error, reverse, (.), dropWhile, (==), length, zipWith
+               , id, const, take, map
+               )
+import DSLsofMath.Algebra  -- defines some numerical type classes
 type REAL = Double
 \end{code}
 Domain-Specific Languages of Mathematics course
@@ -13,7 +15,8 @@ The Ring of polynomials (as lists of coefficients).
 
 0. Define the DSL (types for syntax & semantics, eval)
 1. Define the Ring methods for polynomials & Power Series
-2. Defined methods for derivative and integral
+2. Define methods for derivative and integral
+3. Solve simple ODEs with power series [if time permits]
 
 ----------------
 0. Define the DSL (types for syntax & semantics, eval)
@@ -49,7 +52,7 @@ Ring a = (Additive a,  AddGroup a, Multiplicative a)
 2. Define methods for derivative and integral
 
 Spec. of derP: H₁(evalP, derP, D)
- which expands to 
+ which expands to
   forall cs. evalP (derP cs) = D (evalP cs)
 
 \begin{code}
@@ -65,7 +68,7 @@ countUp = Prelude.iterate (one+) one
 \end{code}
 
 Specification of integ:
-  forall c, cs. derP (integP c cs) = cs
+  forall c, cs.  derP (integP c cs) = cs
 
 \begin{code}
 \end{code}
