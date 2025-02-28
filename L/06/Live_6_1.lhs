@@ -1,10 +1,25 @@
 \begin{code}
 module Live_6_1 where
 import qualified Prelude
-import Prelude (Int, Double, Maybe(Nothing, Just), Show, Eq, Rational,
-                error, reverse, (.), dropWhile, (==), length, zipWith
-               , id, const, take, map
-               )
+import Prelude (
+    Double,
+    Eq,
+    Int,
+    Maybe (Just, Nothing),
+    Rational,
+    Show,
+    const,
+    dropWhile,
+    error,
+    id,
+    length,
+    map,
+    reverse,
+    take,
+    zipWith,
+    (.),
+    (==),
+ )
 import DSLsofMath.Algebra  -- defines some numerical type classes
 type REAL = Double
 \end{code}

@@ -277,6 +277,8 @@ toMaclaurin (P as) = DS (zipWith (*) factorials as)
 derAll :: FunExp -> DS FunExp
 Spec: derDS (derAll e) = derAll (derive e)
 \begin{code}
+derAll (Const c) = error "TODO"
+derAll X         = error "TODO"
 \end{code}
 
 + 3d. Implement numeric operators on DS a

@@ -4,8 +4,8 @@
 module A2_Skeleton where
 import Prelude hiding (  (+), (-), (*), (/), negate, recip, (^),
                          pi, sin, cos, exp, fromInteger, fromRational)
-import DSLsofMath.Algebra
-import DSLsofMath.FunExp
+import DSLsofMath.Algebra  -- see https://github.com/DSLsofMath/DSLsofMath/blob/master/L/DSLsofMath/Algebra.hs
+import DSLsofMath.FunExp   -- see https://github.com/DSLsofMath/DSLsofMath/blob/master/L/DSLsofMath/FunExp.lhs
 
 type Tri a     = (a, a, a)
 type TriFun a  = Tri (a->a)   -- = |(a->a, a->a, a->a)|

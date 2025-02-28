@@ -1,3 +1,7 @@
+* Book reminder
++ You can bring a (physical) book to the exam.
++ Book https://www.collegepublications.co.uk/computing/?00024
+  /home/patrikj/Pictures/DSLsofMath_book_front_cover.jpg
 * Small A2 Q&A / logic reminder
 + Links:
   [[https://youtu.be/y6weZisWeDM?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&t=384][Structural homomorphism (YouTube)]] + [[file:../05/DSLsofMath L4.3.pdf][PDF]]
@@ -44,7 +48,7 @@ and y) that this leads to a contradiction.
 + KU.DSL      = design and implement a DSL for power series
 + KU.Explain  = explain main concepts of elementary real analysis
 + SA.Notation = develop adequate notation for mathematical concepts
-+ SA.Power    = use power series for solving differential equations
++ SA.Power    = *use power series for solving differential equations*
 + JA = discuss and compare different software implementations of
   mathematical concepts
 ** Learning outcomes (for the whole course, english version)
@@ -67,7 +71,8 @@ and y) that this leads to a contradiction.
 ** transformation from semantics (ODE) to syntax (coefficient equations)
 + f x = f 0 + \int_0^x f'   -- semantics
 + fs = integ (f 0) fs'      -- syntax, with f = eval fs
-** solving differential equations "by hand"
+** solving differential equations "by hand" and with Haskell
++ file:Live_6_2_2025.lhs
 + expx,
 + sinx, cosx
   si = [0,  1,  0  ,-1/6, 0   , ...]
@@ -83,15 +88,11 @@ and y) that this leads to a contradiction.
 
 
 
-
-
 * (Thursday lecture) Maclaurin series
-** Book reminder
-+ You can bring a (physical) book to the exam.
-+ Book https://www.collegepublications.co.uk/computing/?00024
-  /home/patrikj/Pictures/DSLsofMath_book_front_cover.jpg
++ file:Live_6_3_2025.lhs
 ** Maclaurin series = Taylor series at the point zero
-+ See Jamboard/blackboard
++ https://en.wikipedia.org/wiki/Taylor_series
++ See blackboard
 + Main use: "local approximation"
 + Let M n f be the "order n" approximation of f near 0:  
   M : Nat -> (R->R) -> (R->R)
@@ -113,9 +114,12 @@ and y) that this leads to a contradiction.
 
 In the lecture we work through the different steps with examples and
 motivation / explanation.
-** Perhaps: Live coding DS = Derivative Stream: a stream of all derivatives
+** Live coding DS = Derivative Stream: a stream of all derivatives
++ Context: think of writing eval :: ... => FunExp -> (a -> a)
+  in such a way that you can get (all) derivatives as well
++ [[file:Live_6_3_FunExp.lhs]]
 + Introduce classes Algebraic(sqrt), Transcendental(pi,sin,cos,exp)
-+ See file:Live_6_3.lhs for instances
++ See file:Live_6_3_2025.lhs for instances
 ** Perhaps: Live coding "solving ODEs with Power Series" (file:Live_6_2.lhs)
 + DS instances for MulGroup and Transcendental
 

@@ -4,7 +4,7 @@
 ** Lecture 7.1: Linear Algebra 1
 + The DSL of the this lecture describes
   vectors, linear transforms, matrices
-*** L7.1a https://jamboard.google.com/d/1uov9xi_I5D27_hoXTDbWo5sPcEg3UHP0yx40xIqLshE/viewer
+*** L7.1a [[file:DSLsofMath L7.1.pdf]]
 + class (Field s, AddGroup v) => VectorSpace v s where
     scale :: s -> v -> v  -- s for "scalars", v for "vectors"
 + Laws: {- very compact: add types, expand -}
@@ -95,7 +95,7 @@
         eᵢ j = if i==j then 1 else 0    --      i     j
   + Then e is a basis for V
 + Next up: linear transformation (homomorphism between vector spaces)
-*** L7.1b https://jamboard.google.com/d/1Kx-uI4J8zi4GejuNuSP-SxxydeqgHguychnbvpUiCxM/viewer
+*** L7.1b [[file:DSLsofMath L7.1b.pdf]]
 + h : U -> V   where U and V and vector spaces over the same scalars s
 + LinTran(h,U,V) =    H₀(h,zeroᵤ,zeroᵥ)        --   h zeroᵤ == zeroᵥ
                  ∧   H₂(h,(+ᵤ),(+ᵥ))          -- ∀ x, y. h (x +ᵤ y) == (h x) +ᵥ (h y)
@@ -276,7 +276,7 @@
 + An application of linear algebra
 + ... and a method for solving ODEs
 + (Note: this transform is not implemented in Haskell in the course.)
-*** [[https://jamboard.google.com/d/1n_fYYas1ahuNwJgm8TlcNJFA8KssNFqbQy4RGTRB95I/viewer?f=0][L8.1a]]
+*** [[file:DSLsofMath L7.2_L8.1 towards Laplace.pdf][L8.1a]]
 + Infinite-dimensional vector space
   + let V = {f : REAL -> REAL | f is smooth}
   + V is a vector space
@@ -302,7 +302,7 @@
   + I (D (F*G)) x = (F*G) x - (F*G) 0 = F x * G x  -  F 0 * G 0
 
 + "discovering" the Laplace transform
-*** [[https://jamboard.google.com/d/1xaJLOHtVOI0zwkLRrXAiuSjpn3NpLfDjlTpHrigc6S0/viewer][L8.1b]]
+*** [[file:../08/DSLsofMath L8.2a start.pdf][L8.1b]]
 + Laplace transform examples: exp, sin, cos
 + Laplace for solving f''+2f=3f', f 0 = 0, f' 0 = 1
 + Laplace summary
