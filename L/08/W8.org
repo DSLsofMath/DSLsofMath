@@ -1,7 +1,7 @@
 * DSLsofMath: Week 8
 * L8.1 / L7.2: Linear algebra & Dynamical systems
-+ [[https://jamboard.google.com/d/1qRu6vMgjyxlzd1uhXXS1lg7aup8u3KrgJXyyWGmJMEE/viewer?f=0][L8.1 / 7.2]] LinAlg + DynSys
-+ [[https://jamboard.google.com/d/1Lv7Kc3ZX4sQM07BEDdT8B2aKpS0a4wQ1FewNmWkeZ2Q/viewer?f=0][L8.2 start]]
++ [[file:DSLsofMath L8.1_7.2 LinAlg + DynSys.pdf][L8.1 / 7.2]] LinAlg + DynSys
++ [[+ \[\[\]\[L8.2 start\]\]][L8.2 start]]
 + Live-coding: start [[file:Live_8_2.lhs][Live_8_2.lhs]] end [[file:Live_8_2_2024.lhs][Live_8_2_2024.lhs]]
   Connecting
     Complex numbers  (Week 1),
