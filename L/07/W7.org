@@ -171,6 +171,7 @@
      LinTran(h₂∘h₁,A,  C)
 + Composing LinTran (towards matrix multiplication)
   + Typing + specification: let hᵢ = evalMV Mᵢ
+#+BEGIN_SRC text
 	 h₂      h₁
      C <———— B <———— A
          M₂      M₁
@@ -178,12 +179,13 @@
 	    h₂∘h₁
      C <———————————— A
          mulM M₂ M₁
-
+#+END_SRC
   + Property? (three variants)
      ∃ mulM . evalMV (mulM M₂ M₁) = evalMV M₂ ∘ evalMV M₁
      "can we compute a matrix for the composition h₂ ∘ h₁ from just M₂ and M₁?"
      ∃ mulM . H2(evalMV, mulM, (∘))
 + Example:
+#+BEGIN_SRC text
   A = a->REAL; B=b->REAL; C=c->REAL
   a={U,V}; b={0,1,2}; c={1}
        |      |      |      | 1 | 0 |
@@ -194,27 +196,41 @@
   h₂ w = \i -> scale 2 (w i)   -- scaled projection
 
   mulM M₂ M₁ = | 2 | 2 |
+#+END_SRC
 + Helper functions for vectors and matrices
   + Define some type synonyms:
+#+BEGIN_SRC haskell
     type Vec s a = a -> s    -- a for "axes", s for "scalars"
     type Mat s a b = b -> Vec s a  =  b -> (a -> s)
+#+END_SRC
   + And helper functions:
+#+BEGIN_SRC haskell
     flip : (b -> a -> s) -> (a -> b -> s)
     flip op i j = op j i
     transpose : Mat s a b -> Mat s b a
     transpose m = \i j -> m j i
     getCol : Mat s a b -> a -> V s b
     getCol = flip
+#+END_SRC
   + Also note a property of flip: (it is its own inverse)
+#+BEGIN_SRC haskell
       ∀ m. flip (flip m) == m
+#+END_SRC
     or, equivalently,
+#+BEGIN_SRC haskell
       flip ∘ flip == id
+#+END_SRC
 + How do we compute the matrix from a LinTran?
   Suppose we know
+#+BEGIN_SRC haskell
     h : A -> B; LinTran(h,A,B)
+#+END_SRC
   but we want to find an m such that
+#+BEGIN_SRC haskell
     h = evalMV m
+#+END_SRC
   Specification: the matrix should store the columns of h of the basis
+#+BEGIN_SRC haskell
     getCol m i == h (e i)
   = -- Def. of (∘), simplification
     getCol m == h ∘ e
@@ -224,14 +240,20 @@
     flip (flip m) == flip (h ∘ e)
   = -- flip is its own inverse
     m == flip (h ∘ e)
+#+END_SRC
   Thus, we can get from h to the corresponding matrix and back
+#+BEGIN_SRC haskell
     m == flip (h ∘ e)
     h == evalMV m
+#+END_SRC
   thus also the "round-trip property":
+#+BEGIN_SRC haskell
     m == flip (evalMV m ∘ e)
+#+END_SRC
   which can be seen as a specification of evalMV.
 + Compute the matrix multiplication (in a similar way):
   Start from the setting above:
+#+BEGIN_SRC text
 	 h₂      h₁
      C <———— B <———— A
          m₂      m₁
@@ -239,6 +261,7 @@
 	    h₂∘h₁
      C <———————————— A
          mulM m₂ m₁
+#+END_SRC
   where we know
     h₁ = evalMV m₁;
     h₂ = evalMV m₂;
