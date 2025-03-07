@@ -160,15 +160,18 @@
           | 0 | 0 | 0 | 3 |
 + Composing homomorphisms (here LinTran)
   + Typing: let A, B, C be vector spaces and hᵢ linear transformations
+#+BEGIN_SRC text
 	 h₂      h₁
      C <———— B <———— A
 	    h₂∘h₁
      C <———————————— A
-
+#+END_SRC
   + Property: "homomorphisms compose"
+#+BEGIN_SRC text
      LinTran(h₁,   A,B) ∧
      LinTran(h₂,     B,C) ⇒
      LinTran(h₂∘h₁,A,  C)
+#+END_SRC
 + Composing LinTran (towards matrix multiplication)
   + Typing + specification: let hᵢ = evalMV Mᵢ
 #+BEGIN_SRC text
@@ -181,9 +184,9 @@
          mulM M₂ M₁
 #+END_SRC
   + Property? (three variants)
-     ∃ mulM . evalMV (mulM M₂ M₁) = evalMV M₂ ∘ evalMV M₁
-     "can we compute a matrix for the composition h₂ ∘ h₁ from just M₂ and M₁?"
-     ∃ mulM . H2(evalMV, mulM, (∘))
+     + ∃ mulM . evalMV (mulM M₂ M₁) = evalMV M₂ ∘ evalMV M₁
+     + "can we compute a matrix for the composition h₂ ∘ h₁ from just M₂ and M₁?"
+     + ∃ mulM . H2(evalMV, mulM, (∘))
 + Example:
 #+BEGIN_SRC text
   A = a->REAL; B=b->REAL; C=c->REAL
@@ -263,10 +266,13 @@
          mulM m₂ m₁
 #+END_SRC
   where we know
+#+BEGIN_SRC haskell
     h₁ = evalMV m₁;
     h₂ = evalMV m₂;
+#+END_SRC
 
   Start computing (towards a definition of mulM):
+#+BEGIN_SRC haskell
     getCol (mulM m₂ m₁) i
   = -- Specification of (mulM m₂ m₁)
     (h₂ ∘ h₁) eᵢ
@@ -276,15 +282,23 @@
     evalMV m₂ (getCol m₁ i)
   = -- Def. of (∘)
     (evalMV m₂ ∘ getCol m₁) i
+#+END_SRC
   Thus we have
+#+BEGIN_SRC haskell
     getCol (mulM m₂ m₁) == evalMV m₂ ∘ getCol m₁
+#+END_SRC
   and we can apply flip to both sides (as before)
+#+BEGIN_SRC haskell
     flip (getCol (mulM m₂ m₁)) == flip (evalMV m₂ ∘ getCol m₁)
+#+END_SRC
   we notice  getCol = flip  and  flip ∘ flip = id
+#+BEGIN_SRC haskell
     mulM m₂ m₁ == flip (evalMV m₂ ∘ getCol m₁)
+#+END_SRC
   This is now a definition of mulM which satisfies its specification.
   (Reminder: evalMV m v = linComb v m = Σᵢ scale vᵢ mᵢ)
 + Summing up:
+#+BEGIN_SRC haskell
   type A = Vec s a
   type B = Vec s b
   type C = Vec s c
@@ -293,6 +307,7 @@
   mulM m₂ m₁ == flip (evalMV m₂ ∘ getCol m₁)
 
   evalMV = mulMV : Mat s a b -> Vec s a -> Vec s b
+#+END_SRC
 + Perhaps some live-coding [[Live_7_1_2023.hs]]
 
 ** Lecture 7.2 / 8.1: Laplace Transforms
