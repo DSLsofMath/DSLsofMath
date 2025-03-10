@@ -344,3 +344,6 @@
 + Laplace transform examples: exp, sin, cos
 + Laplace for solving f''+2f=3f', f 0 = 0, f' 0 = 1
 + Laplace summary
+* Note
++ Nice examples of vectors, matrices, including Show instances:
+  [[file:../../old/2021/L/07/Live_7_2.lhs]]
