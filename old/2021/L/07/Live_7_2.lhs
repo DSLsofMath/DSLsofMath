@@ -6,15 +6,6 @@
 module DSLsofMath.Live_7_2 where
 import DSLsofMath.FunNumInst
 type REAL = Double
-
-class Finite a where
-  finiteDomain :: [a]
-
-newtype G = G Int  -- Here used to represent the set {0..6}
-  deriving Show
-
-instance Finite G where
-  finiteDomain = map G [0..6]
 \end{code}
 
 Define vectors and matrices as functions:
@@ -61,10 +52,32 @@ main_theorem m1 m2 =
 Matrix multiplication definition:
 
 \begin{code}
+mulMatMat' ::
+  (Num s, Finite a, Finite b, Finite c) =>
+  Mat s b c -> Mat s a b -> Mat s a c
+mulMatMat' m1 m2 = \r c -> mulMatVec m1 (getCol m2 c) r
+
+class Enum a => Finite a where
+  finiteDomain :: [a]
+
+newtype G = G Int  -- Here used to represent the set {0..6}
+  deriving Show
+
+instance Enum G where
+  toEnum = G
+  fromEnum (G i) = i
+
+instance Finite G where
+  finiteDomain = map G [0..6]
+
+tabulate2 :: (Finite t1, Finite t2) => (t1 -> t2 -> s) -> (t1 -> t2 -> s)
+tabulate2 fun = \r c -> (table!!fromEnum r) !! fromEnum c
+  where table = map (\r -> map (\c -> fun r c) finiteDomain) finiteDomain
+
 mulMatMat ::
   (Num s, Finite a, Finite b, Finite c) =>
   Mat s b c -> Mat s a b -> Mat s a c
-mulMatMat m1 m2 = \r c -> mulMatVec m1 (getCol m2 c) r
+mulMatMat m1 m2 = tabulate2 (mulMatMat' m1 m2)
 \end{code}
 
 

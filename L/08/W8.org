@@ -10,7 +10,10 @@
     Laplace transforms  (Week 8).
 + Jamboard: [[https://jamboard.google.com/d/12UtJxCCKS_LBHpkoFF_Bx-9G0lwPeg78xkhpAIG0pIc/viewer][L8.2]] - course overview
 + Blackboard: inner product of vectors (including functions on an bounded interval)
-* L8.2: DSLsofMath: final exercise session
+* L8.2: Connecting concepts:
++ VectorSpace, Complex, PS, Eulers formula, etc.
++ file:Live_8_2.lhs
+* E8.2: DSLsofMath: final exercise session
 ** Focus on exam questions
 + 19 exams + solutions available in the github repo
 
@@ -57,5 +60,5 @@ On successful completion of the course the student will be able to:
 
 + discuss and compare different software implementations of mathematical concepts
 * Final words
-+ I want you to pass! 
++ I want you to pass!
 + Make sure to ask questions. (On slack, email, canvas, etc.)

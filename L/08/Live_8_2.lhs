@@ -124,6 +124,10 @@ mulC = error "TODO mulC"
 
 ----------------
 MulGroup, Field
+
+conjugate :: ?
+magSq :: ?    -- Magnitude squared
+
 \begin{code}
 instance Field r => MulGroup (Complex r) where recip = recipC
 
@@ -169,9 +173,8 @@ expa = error "TODO expa"
 expi :: Field a => PS (Complex a)
 expi = expa i
 
-
-cosPsinP :: Field a => PS (Complex a)
-cosPsinP = error "TODO implement cos + i sin"
+cosPisinP :: Field a => PS (Complex a)
+cosPisinP = error "TODO implement cos + i sin"
 \end{code}
 
 
