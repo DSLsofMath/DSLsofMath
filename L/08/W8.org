@@ -1,18 +1,14 @@
 * DSLsofMath: Week 8
-* L8.1 / L7.2: Linear algebra & Dynamical systems
+** L8.1 / L7.2: Linear algebra & Dynamical systems
 + [[file:DSLsofMath L8.1_7.2 LinAlg + DynSys.pdf][L8.1 / 7.2]] LinAlg + DynSys
-+ [[+ \[\[\]\[L8.2 start\]\]][L8.2 start]]
-+ Live-coding: start [[file:Live_8_2.lhs][Live_8_2.lhs]] end [[file:Live_8_2_2024.lhs][Live_8_2_2024.lhs]]
+** L8.2: Connecting concepts:
++ VectorSpace, Complex, PS, Eulers formula, etc.
++ Live-coding: start [[file:Live_8_2.lhs][Live_8_2.lhs]] end [[file:Live_8_2_2025.lhs][Live_8_2_2025.lhs]]
   Connecting
     Complex numbers  (Week 1),
     Power Series      (Week 5),
     Vector spaces      (Week 7), and
     Laplace transforms  (Week 8).
-+ Jamboard: [[https://jamboard.google.com/d/12UtJxCCKS_LBHpkoFF_Bx-9G0lwPeg78xkhpAIG0pIc/viewer][L8.2]] - course overview
-+ Blackboard: inner product of vectors (including functions on an bounded interval)
-* L8.2: Connecting concepts:
-+ VectorSpace, Complex, PS, Eulers formula, etc.
-+ file:Live_8_2.lhs
 * E8.2: DSLsofMath: final exercise session
 ** Focus on exam questions
 + 19 exams + solutions available in the github repo
