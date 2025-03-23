@@ -1,0 +1,15 @@
+* Exam 2025-03 of the [[../../README.md][DSLsofMath course]]
+** Suggested solutions:
++ [[file:Solution_202503_Algebra.lhs][Part 1: Algebra]]
++ [[file:Solution_202503_Laplace.lhs][Part 2: Laplace]]
++ [[file:Solution_202503_Typing.txt][Part 3: Typing]]
++ [[file:Solution_202503_Proof.lhs][Part 4: Proof]]
+
++ Exam check (granskning): 2025-04-08, 12.15-12.45 in EDIT 6128
+
+** Grading levels:
+
+To pass you need
++ a minimum of 5p on each question (1 to 4) and also
++ reach these grade limits:  3: >=48p, 4: >=65p, 5: >=83p, max: 100p
+

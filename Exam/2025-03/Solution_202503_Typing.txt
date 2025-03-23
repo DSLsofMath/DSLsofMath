@@ -1,0 +1,36 @@
+3. Typing
+
+(a)
+
+L: subset of RR^n (set of points in "this space", where "this space" refers to RR^n)
+d_1: R_{>0} (positive real number, a distance has to be non-negative and for 0 this condition would be meaningless)
+a: L     (a and b are introduced as "lattice points")
+b: L\{a} (the condition only makes sense if the points are different)
+d_2: R_{>0} (positive real number, since it is a distance)
+
+(b)
+
+isLattice(U,n):=
+    forall a,b in U. a+b in U
+and forall a,b in U. a-b in U
+and exists d_1 in RR. d_1>0 and forall a,b in U. d(a,b) > d_1
+and exists d_2 in RR. d_2>0 and forall x. exists a in U. d(x,a) < d_2
+
+(c)
+
+Assume $U=\{(x,0)\in\mathbb{R}^2\vert x\in \mathbb{Z}\}$ is a lattice in $\mathbb{R}^2$.
+Then we have a maximum distance $d_2>0$ with the property $\forall x.\exists a. a\in U \wedge d(a,x)<d_2$.
+But we can pick a point $(0,y)$ with $y > d_2$. This point is in $\mathbb{R}^2$ and has a distance more than $y$ to any point in $U$, so we have a contradiction.
+
+(d)
+
+Let $U=\{(x,y)\in\mathbb{R}^2\vert ax,by\in \mathbb{Z}\}$.
+Then for $u,v\in U$, we have $a(u+v)=au+av \in\mathbb{Z}$ and similar for "$-$".
+We also have $d(ax_1,ax_2)=ad(x_1,x_2)$ for all $x_1,x_2\in\mathbb{R}$, so it is enough to find $d_1$ and $d_2$ for the lattive $\mathbb{Z}\times \mathbb{Z}$.
+In the latter case, we can choose $d_1=1/2$ and $d_2=2$. TODO: argument.
+
+(e)
+
+Simple example: $\{(x,y)\in\mathbb{R}^2\vert 2x,y \in \mathbb{Z}\}$.
+
+More interesting example: $(-1,1)\mathbb{Z}+(1,1)\mathbb{Z}$.
