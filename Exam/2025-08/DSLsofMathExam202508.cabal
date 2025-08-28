@@ -1,0 +1,15 @@
+cabal-version:  3.0
+name:           DSLsofMath-exam202508
+version:        0.1.0.0
+license:        BSD-3-Clause
+author:         Patrik Jansson
+
+library
+    hs-source-dirs: .
+    exposed-modules: Solution_202508_Algebra
+                   , Solution_202508_Laplace
+                   , Solution_202508_Proof
+                   , PS
+    build-depends: base ^>=4.17
+                 , QuickCheck
+

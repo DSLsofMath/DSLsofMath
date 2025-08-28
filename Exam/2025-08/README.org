@@ -1,0 +1,14 @@
+* Exam 2025-08 of the [[../../README.md][DSLsofMath course]]
++ [[file:Exam_2025-08.pdf][Exam text]]
+** Suggested solutions:
++ [[file:Solution_202508_Algebra.lhs][Part 1: Algebra]]
++ [[file:Solution_202508_Laplace.lhs][Part 2: Laplace]]
++ [[file:Solution_202508_Typing.txt][Part 3: Typing]]
++ [[file:Solution_202508_Proof.lhs][Part 4: Proof]]
+
+** Grading levels:
+
+To pass you need
++ a minimum of 5p on each question (1 to 4) and also
++ reach these grade limits:  3: >=48p, 4: >=65p, 5: >=83p, max: 100p
+
