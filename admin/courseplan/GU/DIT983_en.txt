@@ -45,25 +45,27 @@ Imperative Programming with Basic Object-orientation
 
 Additional 22.5 hec of any mathematics or computer science courses.
 
-Learning outcomes
+** Learning outcomes
 
 On successful completion of the course the student will be able to:
-Knowledge and understanding
+*** Knowledge and understanding
 
 - design and implement a DSL (Domain Specific Language) for a new domain
 - organize areas of mathematics in DSL terms
 - explain main concepts of elementary real and complex analysis, algebra, and linear
 algebra
-Competence and skills
+
+*** Competence and skills
 
 - develop adequate notation for mathematical concepts
 - perform calculational proofs
 - use power series for solving differential equations
 - use Laplace transforms for solving differential equations
-Judgement and approach
 
+*** Judgement and approach
 - discuss and compare different software implementations of mathematical concepts
-Course content
+
+** Course content
 
 The course will present classical mathematical topics from a computing science
 perspective: giving specifications of the concepts introduced, paying
@@ -74,13 +76,6 @@ The lecture topics are:
 - Introduction to Domain Specific Languages (DSLs): case study linear algebra
 - DSLs and mathematics: case study category theory
 - Real analysis: mean value theorems, Taylor formulas
-
-DIT983 Domain Specific Languages of Mathematics, 7.5 credits / Matematikens domänspecifika språk, 7,5
-högskolepoäng
-First Cycle
-
-3/ 4
-
 - Real analysis: a DSL for power series
 - More linear algebra: eigenvalues and optimization
 
@@ -95,7 +90,9 @@ Grading scale: Pass (G) and Fail (U)
 Form of teaching
 
 The main forms of instruction are lectures, seminars, case studies and group work
+
 Language of instruction: English
+
 Assessment
 
 The course is examined by an individual written exam which is carried out in an
@@ -116,11 +113,6 @@ Fail (U).
 To pass the course, students must receive a passing grade in both modules. The grade
 for the entire course will be determined by the written exam.
 
-DIT983 Domain Specific Languages of Mathematics, 7.5 credits / Matematikens domänspecifika språk, 7,5
-högskolepoäng
-First Cycle
-
-4/ 4
 Course evaluation
 
 The course is evaluated through meetings both during and after the course between

@@ -1,5 +1,6 @@
 DSLsofMath week 1: a short summary / overview
 * L1.1 Intro / admin
+{- Activate winner-mode, file:../BookLogo.org, iimage-mode, C-c left when needed-}
 + Lecturer: Patrik Jansson
 ** Technology / tooling
 + [[file:Live1_2025.lhs][emacs]]      for live coding, etc. (org-mode + Haskell)
