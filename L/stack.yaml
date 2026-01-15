@@ -1,6 +1,6 @@
 resolver:
-  lts-21.25   # uses ghc-9.4.8
-#  lts-22.4    # uses ghc-9.6.3
+#  lts-21.25   # uses ghc-9.4.8
+  lts-22.44    # uses ghc-9.6.7
 
 # User packages to be built.
 packages:

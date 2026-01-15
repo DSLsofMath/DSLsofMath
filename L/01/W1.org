@@ -3,11 +3,10 @@ DSLsofMath week 1: a short summary / overview
 {- Activate winner-mode, file:../BookLogo.org, iimage-mode, C-c left when needed-}
 + Lecturer: Patrik Jansson
 ** Technology / tooling
-+ [[file:Live1_2025.lhs][emacs]]      for live coding, etc. (org-mode + Haskell)
++ [[file:Live1_2026.lhs][emacs]]      for live coding, etc. (org-mode + Haskell)
 + [[https://chalmers.instructure.com/courses/33098][Canvas]]     for the course homepage + assignments
 + [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][paper+PDF]]  for the course book: [[https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883][Adlibris]] + [[https://chalmers.instructure.com/courses/33098/files/folder/Book][PDF]] + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/errata.org][errata]]
 + [[https://github.com/DSLsofMath/DSLsofMath][github]]     for source code of the lectures + book (in [[https://github.com/DSLsofMath/DSLsofMath/tree/master/L][subdir L/]] for Lectures)
-+ [[https://app.slack.com/client/T087VGGKQM6/C087KD8AGKT][slack]]      for course communication / discussion forum
 +([[https://github.com/DSLsofMath/DSLsofMath/tree/master/L#readme][YouTube]]    for recorded lectures from 2021 and 2022)
 ** Examination
 + *Written Exam*         -> grade U/3/4/5
@@ -27,11 +26,14 @@ DSLsofMath week 1: a short summary / overview
   spending time on the course pays off.
   It is not enough to just focus on the labs.
 + Patrik's advice: read the book, solve exercises: Ch. N = Week N
-** Course evaluation: student representatives
-| Name              | Email (@student.chalmers.se) |
-|-------------------+------------------------------|
-| Emily Tiberg      | emilyti                      |
-| Simon Renhult     | renhult                      |
+** Course evaluation: student representatives [randomly selected]
+| Prog  | Email                          | Name                |
+|-------+--------------------------------+---------------------|
+| TKDAT | nova.allden@gmail.com          | Nova Alldén         |
+| TKITE | maxenf@outlook.com             | Max Fägersten       |
+| TKDAT | fobbahedstrom@gmail.com        | Fabian Hedström     |
+| TKTEM | alexanderranefjard04@gmail.com | Alexander Ranefjärd |
+| TKDAT | viktorschewenius@gmail.com     | Viktor Schewenius   |
 + Get in touch if you want to join the group!
 ** Learning outcomes (for the whole course, english version)
 *** KU = Knowledge and Understanding
@@ -47,7 +49,6 @@ DSLsofMath week 1: a short summary / overview
 + JA = discuss and compare different software implementations of mathematical concepts
 ** Other info
 + DSLM Teaching team will come by at 14.50 to say hi.
-+ Please fill in "Studentbarometern" (see school mail for individual link).
 * L1.1 learning outcomes:
 ** What is a Domain-Specific Language (DSL)
 A DSL has four components:
@@ -57,11 +58,11 @@ A DSL has four components:
 + Semantics: a function from eval : AbsSyn -> Sem
 https://en.wikipedia.org/wiki/Domain-specific_language
 ** Variable scope and binding in mathematical expressions [integral, fun.def.]
-** Haskell interpreter use and interp. of error messages ([[file:Live1_2025.lhs][interactive live coding]])
+** Haskell interpreter use and interp. of error messages ([[file:Live1_2026.lhs][interactive live coding]])
 ** Syntax trees
 + datatype of syntax trees of simple arith. expr.
 ** First evaluator: |eval :: E -> Int|
-* E1.1 learning outcomes:
+* Extra lecture 1 (learning outcomes):
 ** a Haskell environment up and running
 ** syntax trees with constructor for variables
 ** definition and use of |Env|

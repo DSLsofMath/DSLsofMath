@@ -19,10 +19,6 @@ f x = x^2
 
 The function |f| can be given different types:
 
-  The type of f is "a->a" for all "numeric types" a
-
-f0 :: Integer -> Float  -- not type-correct: no conversion is done.
-f0 = f
 \begin{code}
 f1 :: Integer -> Integer
 f1 = f
@@ -161,7 +157,7 @@ translator from an abstract (un-interpreted) syntax to some meaningful value typ
 
 \begin{code}
 a0 :: E
-a0 = Add (Add (Mul X X) X)   (Con 1)   -- ~= (x² + x) + 1
+a0 = error "TODO" -- ~= (x² + x) + 1
 a1, a2 :: E
 a1 = Add (Con 1) (Mul (Con 2) (Con 3))    -- 1+(2*3) == 7
 a2 = Mul (Add (Con 1) (Con 2)) (Con 3)    -- (1+2)*3 == 9
@@ -182,8 +178,8 @@ eval  ::  E       ->  Integer
 -- the semantic domain is integers
 \begin{code}
 type AbsSyn = E
-type Z = Integer  -- will not work
-type Sem = Z
+type Z = Integer  
+type Sem = Z        -- will not work
 eval :: AbsSyn  ->        Sem
 eval (Add e1 e2) = (eval e1) + (eval e2)  -- next step is to use addE instead
 eval (Mul e1 e2) = (eval e1) * (eval e2)  -- ... and mulE
