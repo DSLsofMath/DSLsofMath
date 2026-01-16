@@ -95,7 +95,6 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 
 
 * L1.2 Intro / admin
-** Student communication: [[https://dslsofmath2025.slack.com/][Slack discussion forum]]
 ** Exercise sessions: be prepared with questions
    2h*2 lectures = 4h/w
    2h*2 exercise sessions = 4h/w
@@ -112,7 +111,7 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 + [[https://chalmers.instructure.com/courses/33098/pages/lecture-media][Pages]]             = Lecture media links, etc.
 + [[https://chalmers.instructure.com/courses/33098/files/folder/Book][Files]]             = the book and other (mostly older) material
 + [[https://chalmers.instructure.com/courses/33098/announcements][Announcements]]     = where the teaching teams broadcasts messages
-+ [[https://github.com/DSLsofMath/DSLsofMath/tree/master/Exam][github/Exam]]       = all 19 old exams *with solutions*
++ [[https://github.com/DSLsofMath/DSLsofMath/tree/master/Exam][github/Exam]]       = over 20 old exams *with solutions*
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/SolvedExercises.md][github/SolvedEx]]   = >50 solved exercises from the book
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/errata.org][github/errata.org]] = corrections after the book was printed
 * L1.2 learning outcomes:

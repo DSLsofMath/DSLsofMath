@@ -14,15 +14,15 @@
   lectures are connected to which parts of the book.
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/README.org][github]]: [[file:../README.org][DSLsofMath/L/README.org]]
 + tldr; study week N = book chapter N.
-** [[https://chalmers.instructure.com/courses/33098/assignments/101419][Assignment 1]]: (deadline 2025-02-04)
-+ Monday 2025-02-10: "Presentation" (Q&A) slots
+** [[https://chalmers.instructure.com/courses/38137/assignments/120178][Assignment 1]]: (deadline 2026-02-03)
++ Monday 2026-02-09: "Presentation" (Q&A) slots
 * Lecture 2.1
 ** DSL for Prop = Propositional Calculus (Satslogik)
 + syntax examples
 + (truth tables)
   type Table = Namn -> Bool
 + eval : Prop -> Table -> Bool
-** DSL for Pure set theory (useful for [[https://chalmers.instructure.com/courses/33098/assignments/101419][Assignment 1]])
+** DSL for Pure set theory (useful for [[https://chalmers.instructure.com/courses/38137/assignments/120178][Assignment 1]])
 + "untyped sets", "just sets all the way down"
 + Empty set, Singleton set constructor, {braces around enumeration}
 + Cardinality (number of elements)
