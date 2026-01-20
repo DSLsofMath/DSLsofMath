@@ -26,6 +26,10 @@ f2 :: Float -> Float
 f2 = f
 f3 :: Rational -> Rational
 f3 = f
+
+-- fBad :: Integer -> Float
+-- fBad = f
+
 -- and the most general:
 f :: Num a =>    a -> a
 \end{code}
@@ -36,8 +40,12 @@ f0 = f
 -- B = Bool = {F,T}
 -- all values of type B->B
 \begin{code}
+always :: Bool -> Bool
+always = \ _ -> True
+never :: Bool -> Bool
+never = \ _ -> False
 allBtoBs :: [Bool -> Bool]
-allBtoBs = error "TODO"
+allBtoBs = [id, not, always, never]
 
 -- |f             | f False   | f True  |
 -- |--------------|-----------|---------|
