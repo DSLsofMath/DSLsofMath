@@ -93,32 +93,24 @@ https://en.wikipedia.org/wiki/Domain-specific_language
 
 
 
-
-
-* L1.2 Intro / admin
-** Exercise sessions: be prepared with questions
-   2h*2 lectures = 4h/w
-   2h*2 exercise sessions = 4h/w
-   total 8h/w "scheduled"
-   But, 7.5hp = 200h spread over 8 study weeks -> 200/8 = 25h/week "study time"
-   Thus 17h/week left for you to schedule your own work with the course.
-** *Read the book!* Chapter N = study week N
-+ Not all sections are covered in lectures
-+ Some sections not included in the course (marked with a "*")
-** Explore the [[https://chalmers.instructure.com/courses/33098][canvas page]] and the [[https://github.com/DSLsofMath/DSLsofMath][github repo]]:
-+ [[https://chalmers.instructure.com/courses/33098/assignments/syllabus][Home = Syllabus]]   = "Course-memo"
-+ [[https://chalmers.instructure.com/courses/33098/assignments][Assignments]]       = all deadlines and where you hand in exercises and labs
-+ [[https://chalmers.instructure.com/courses/33098/groups][People]]            = where you can find lab groups, etc.
-+ [[https://chalmers.instructure.com/courses/33098/pages/lecture-media][Pages]]             = Lecture media links, etc.
-+ [[https://chalmers.instructure.com/courses/33098/files/folder/Book][Files]]             = the book and other (mostly older) material
-+ [[https://chalmers.instructure.com/courses/33098/announcements][Announcements]]     = where the teaching teams broadcasts messages
-+ [[https://github.com/DSLsofMath/DSLsofMath/tree/master/Exam][github/Exam]]       = over 20 old exams *with solutions*
-+ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/SolvedExercises.md][github/SolvedEx]]   = >50 solved exercises from the book
-+ [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/errata.org][github/errata.org]] = corrections after the book was printed
 * L1.2 learning outcomes:
 ** Expanding a number system [N -> Z -> Q -> REAL -> Complex]
 + When equations meet types - more and more eq. can be solved.
-** Active reading of mathematical text [[[file:Live2_2025.lhs][Complex number case study]]]
+** Active reading of mathematical text [[[file:Live2_2026.lhs][Complex number case study]]]
+*** Quote 1:
+Adams_Complex_01.png
+*** Quote 2:
+Adams_Complex_02.png
+*** Quote 3:
+Adams_Complex_03.png
+*** Quote 4:
+Adams_Complex_04.png
+*** Quote 5:
+Adams_Complex_05.png
+*** Quote 6:
+Adams_Complex_06.png
+*** Quote 7:
+Adams_Complex_07.png
 ** Modelling (different versions of) Complex in Haskell
 ** |eval :: Syntax -> Semantics| for complex number expressions
 ** The DSL of types in Haskell:
