@@ -149,7 +149,7 @@ newtype Set = S [Set]
 
 Implement the evaluation functions
 \begin{code}
-eval   :: Eq v => Env v Set ->  TERM v   -> Set
+eval   :: Eq v => Env v Set ->  TERM v  -> Set
 check  :: Eq v => Env v Set ->  PRED v  -> Bool
 \end{code}
 

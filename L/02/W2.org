@@ -1,10 +1,14 @@
 *DSLs of Mathematics, Week 2*
 * Admin:
+** Student barometer
++ Please share your experience
++ [[file:Info Studentbarometer 2026 eng.pptx][info slides]]
 ** Bonus exercises:
-+ Good work on Week 1: 17 submissions (~50% of course participants).
++ Good work on Week 1: 10 submissions (>50% of course participants).
 + Hand-in is online (via canvas) before the exercise session
 + Then be ready (in person) to present/answer questions about your
-  submission (in a separate room, with one TA).
+  submission (in a separate room, with one TA). Basically a short
+  one-to-one tutoring session.
 ** Extra Haskell lectures online [recommended watching]
 + Three YouTube videos about Haskell and "type driven development" are
   online covering: polymorphic functions, product types |(a,b)| and
@@ -14,14 +18,18 @@
   lectures are connected to which parts of the book.
 + [[https://github.com/DSLsofMath/DSLsofMath/blob/master/L/README.org][github]]: [[file:../README.org][DSLsofMath/L/README.org]]
 + tldr; study week N = book chapter N.
-** [[https://chalmers.instructure.com/courses/38137/assignments/120178][Assignment 1]]: (deadline 2026-02-03)
-+ Monday 2026-02-09: "Presentation" (Q&A) slots
+** [[https://chalmers.instructure.com/courses/38137/assignments/120178][Assignment 1]]: (deadline *2026-02-03*)
++ Deadline for hand-in, and for book a "slot" in in 7 days.
++ Then, Monday 2026-02-09: "Presentation" (Q&A) slots [20min per group]
 * Lecture 2.1
 ** DSL for Prop = Propositional Calculus (Satslogik)
 + syntax examples
 + (truth tables)
   type Table = Namn -> Bool
 + eval : Prop -> Table -> Bool
+** Start of FOL = First Order Logic
++ adding a term language (for rationals, or sets, or ...)
++ extend names to n-ary predicates over terms
 ** DSL for Pure set theory (useful for [[https://chalmers.instructure.com/courses/38137/assignments/120178][Assignment 1]])
 + "untyped sets", "just sets all the way down"
 + Empty set, Singleton set constructor, {braces around enumeration}
@@ -51,22 +59,18 @@
 
 
 
-
 * Lecture 2.2: First order logic (FOL) (as a new DSL, extending Prop)
 ** FOL = First Order Logic
-** adding a term language (for rationals, or sets, or ...)
-** extend names to n-ary predicates over terms
-** quantifiers: Forall and Exists
-** Typed quantification
-** Pushing negation through other constructors
-** [[file:Live_2_2_2023.lhs][Live coding]] (syntax and semantics of FOL)
++ Type parameters
++ [[file:Live_2_2.lhs][Live coding]] (syntax and semantics of FOL)
 ** Case study: sqrt 2 is not rational [proof by contradiction]
 ** Case study: p^q can be rational even when neither p nor q is [proof by cases]
 ** Perhaps: Case study: the limit of a function [from maths text to types and logic]
 + building proof terms (Tru, Fals, And, Or, Impl (->))
+** Perhaps: Typed quantification
+** Perhaps: Pushing negation through other constructors
 * Lecture 2.3: Extra lecture on Proof terms
 + From Live_2_3.lhs to Live_2_3_2022.lhs
-
 
 
 
