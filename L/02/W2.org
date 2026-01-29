@@ -60,16 +60,30 @@
 
 
 * Lecture 2.2: First order logic (FOL) (as a new DSL, extending Prop)
+** Motivating examples of what Patrik is doing when not teaching
++ Grant application submitted yesterday: "Trustable and Adaptable
+  Software for Multi-Objective Decision Making under Uncertainty"
++ Research paper in preparation: Optimization under uncertainty
+  [[http://arxiv.org/abs/2503.18561][arXiv:2503.18561]] with examples of FOL formulas.
 ** FOL = First Order Logic
-+ Type parameters
-+ [[file:Live_2_2.lhs][Live coding]] (syntax and semantics of FOL)
-** Case study: sqrt 2 is not rational [proof by contradiction]
-** Case study: p^q can be rational even when neither p nor q is [proof by cases]
-** Perhaps: Case study: the limit of a function [from maths text to types and logic]
++ [[file:Live_2_2_2026.lhs][Live coding]] (syntax and semantics of FOL, based on §2.2 in the book)
++ Haskell: parametererised types:
+  + data Term v: FOL terms over variables of type v
+  + data FOL p v: FOL formulas with predicate symbols of type p and
+    terms of type Term v
+** Quantification
++ Using Forall and Exists quantifiers
++ negation of quantifiers
++ "typed quantifiers"
++ negation of typed quantifiers
+** Model-finding intro
++ Simple examples of FOL formulas and possible models
++ Writing good specifications in logic is something of an art.
+** "Functional interpetation" of types and proofs
++ Brief mention of Curry-Howard with an example of an "epsilon-delta"
+  proof.
+* Lecture 2.3: Extra lecture on Proof terms [see YouTube]
 + building proof terms (Tru, Fals, And, Or, Impl (->))
-** Perhaps: Typed quantification
-** Perhaps: Pushing negation through other constructors
-* Lecture 2.3: Extra lecture on Proof terms
 + From Live_2_3.lhs to Live_2_3_2022.lhs
 
 
@@ -131,5 +145,3 @@
 
 * DSLsofMath logo
 ../../admin/DSL_logo/DSL_logo.png
-
-
