@@ -23,20 +23,20 @@ Learning outcomes
   D (^2) = (2*)
   D (f+g) = D f + D g
 
-+ If there is time: [[file:Live_3_1_2024.lhs][Live coding derivatives]]
++ If there is time: [[file:Live_3_1.lhs][Live coding derivatives]]
 
 * Thursday (L3.2)
-** Week 3, Lecture 2, "slides" ([[https://jamboard.google.com/d/1jXX4nrptIAQu0NTi8YPF5ADuy8CyagBPHMx9vyz3_dI/viewer][Jamboard L3.2]])
+** Week 3, Lecture 2, "slides" ([[file:DSLsofMath L3.2.pdf][Jamboard L3.2]])
 + §3.2: Partial derivatives: practice analysing mathematical text again
- [[./Book_Partial_p83.png]] 
+ [[./Book_Partial_p83.png]]
   + Get to def. of D1 : (R²->R)->(R²->R) using
     psi1 f (x,y) h = (f(x+h,y)-f(x,y))/h
-  + mention "matching by name" versus "matching by position/index"    
+  + mention "matching by name" versus "matching by position/index"
 + 3.3: [[file:LagrangeEqs.pdf][Lagrange Eq's]]
 + (If time permits: Lagrange example - [[https://www.youtube.com/watch?v=wIxpj1H-wN8&list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&index=25&t=1311s][available on YouTube from earlier years]].)
   L : T x Q x V -> R
   L ( t , x , v) = -m*g*x + m*v²/2
-** Week 3, Lecture 2 [[file:Live_3_2_2024.lhs][Live coding]]
+** Week 3, Lecture 2 [[file:Live_3_2.lhs][Live coding]]
 + finish implementation of deriv : FunExp -> FunExp
 + Type classes
 + numeric instances for functions (x->a)

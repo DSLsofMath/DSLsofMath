@@ -29,7 +29,7 @@
 
 \title[DSLM.Ch3.LimFun]{DSLs of Mathematics: limit of functions}
 %\date{Lecture 3.1, 2023-01-31}
-\date{2023-08-30}
+\date{2026-02-03}
 \author{Patrik Jansson}
 \institute[FP, Chalmers]{Functional Programming, Chalmers University of Technology}
 \begin{document}
@@ -72,7 +72,7 @@
 %% -------------------------------------------------------------------
 
 \begin{frame}
-  \frametitle{Limit of a function -- continued}
+  \frametitle{Limit of a function -- continued: fragments translated to logic}
 \begin{quote}
 %
   \[\lim_{x\to a} f(x) = L,\]
