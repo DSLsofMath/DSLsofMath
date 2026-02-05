@@ -1,4 +1,4 @@
-\documentclass[aspectratio=1610]{beamer}
+\documentclass[aspectratio=169]{beamer}
 \usetheme{Madrid}
 % Hide navigation symbols
 \setbeamertemplate{navigation symbols}{}
@@ -79,7 +79,7 @@
 \subtitle{the Lagrangian Equations}
 \author[Jansson \& Ionescu]{Patrik Jansson \and Cezar Ionescu}
 \institute[FP div., Chalmers]{Functional Programming division, Chalmers University of Technology}
-\date{2023-08-30}
+\date{2026-02-05}
 % {Chalmers University of Technology, Sweden}
 %           {\texttt{patrikj@@chalmers.se}}
 %           {\texttt{cezar@@chalmers.se}}
@@ -144,7 +144,9 @@ that |L| is a function of at least a pair of arguments:
 This is consistent with the description: ``Lagrangian function of the
 system state (time, coordinates, and velocities)''.
 %
-So, if we let ``coordinates'' be just one coordinate, we can take |i =
+So, if we let ``coordinates'' be just one%
+%coordinate
+, we can take |i =
 3|:
 %
 \begin{spec}
@@ -166,7 +168,9 @@ coordinate, and |v : V| for velocity.
 \item Looking again at \(∂L / ∂q\), \(q\) is the name of a variable,
   one of the 3 args to \(L\).
 %
-  In the context, which we do not have, we would expect to find
+  In the context,
+%which we do not have,
+we would expect to find
   somewhere the definition of the Lagrangian as
   %
   \begin{spec}
