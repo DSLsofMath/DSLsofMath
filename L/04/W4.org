@@ -1,12 +1,16 @@
 * DSLsofMath week 4: Compositionality and Algebras
 ** Admin:
 + A1 presentation day done - good work!
-+ A2 has suggested (but flexible) groups - will be fixed on Thursday.
-+ mid-course eval. meeting was today (2025-02-11, 12:30, EDIT-6128)
-| Name              | Email (@student.chalmers.se) |
-|-------------------+------------------------------|
-| Emily Tiberg      | emilyti                      |
-| Simon Renhult     | renhult                      |
++ Prel. A2 groups announced: new teams to the "discuss and compare" learning outcome
+  + I will fix them on Thursday.
++ Mid-course eval. meeting was today (2026-02-10, 12:20, EDIT-6128)
+  | Name                | Program |
+  |---------------------+---------|
+  | Fabian Hedström     | TKDAT   |
+  | Viktor Schewenius   | TKDAT   |
+  | Nova Alldén         | TKDAT   |
+  | Alexander Ranefjärd | TKTEM   |
+  |---------------------+---------|
 ** Learning outcomes (for this week / chapter)
 *** KU = Knowledge and Understanding
 + KU.DSL      = design and implement a DSL for a new domain
@@ -27,22 +31,20 @@
   Here:        Monoid, Additive, Multiplicative, etc.
                eva, eva2, evaIE, fold, etc.
 * L4.1: Tuesday: Compositional semantics (Homomorphisms) and type classes
-** Homomorphism: H2(f,(+),(*)) = ∀ x, y. f(x+y) == f x * f y
+** Homomorphism: H2(h,(+),(*)) = ∀ x, y. h(x+y) == h x * h y
 
 In general, we have seen many examples of H2
 
-  H2(f,(+),(*)) = ∀ x, y. f(x+y) == f x * f y
+  H2(h,(+),(*)) = ∀ x, y. h(x+y) == h x * h y
 
 with
-  f = eval :: a -> b
+  h = eval :: a -> b
   a = Syntax type     and (+) = a syntactic constructor
   b = Semantic domain and (*) = semantic operator (function)
 
 ** Examples (blackboard)
 + Homomorphism examples (exp, log, odd)
 + Non-homomorphism example (isPrime)
-** (Live-coding) Haskell type classes
-+ file:Live_4_1_class_2025.lhs
 * L4.1b: Tuesday: non-homomorphism: derivative
 ** black-board: def. of eval' (specified as D . eval) and der : F -> F
 type FunSem = REAL -> REAL
@@ -122,6 +124,8 @@ eval|	       |eval
 
 ** file:Live_4_2_2025.lhs
 
+* L4.1c: Extra lecture (Live-coding) Haskell type classes
++ file:Live_4_1_class_2025.lhs
 * L4.2: Thursday: Homomorphisms, folds, and type classes
 ** Admin
 + A2 groups
