@@ -134,10 +134,10 @@ eval|	       |eval
 + file:Live_4_2_FunExp_2025.lhs
 ** Details
 TODO: |data IE| for integer expressions
-TODO: eva :: ... -> IE->I
-TODO: eva :: (I->I->I)->(I->I->I)->(I->I)->IE->I
-TODO: eva :: (a->a->a)->(a->a->a)->(I->a)->IE->a
-TODO: type class version
+TODO: eva   :: ... -> IE->I
+TODO: eva'' :: (I->I->I)->(I->I->I)->(I->I)->IE->I
+TODO: eva2  :: (a->a->a)->(a->a->a)->(I->a)->IE->a
+TODO: evaIE :: IntExt a => IE -> a
 TODO: |class IntExp|
 TODO: instance I
 TODO: instance IntExt
