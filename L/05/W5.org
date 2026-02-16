@@ -31,7 +31,8 @@ polynomial, is called the \textbf{degree} of the polynomial.
 ** apply   :: a -> (a->b) -> b
 ** applyFD :: a -> FD a -> Bi a
 * L5.1b (extra lecture at 15.15)
-+ Power series example: 1/(1-x)
++ Polynomials as functions from Exponent -> Coefficient where type
+  Exponent = Nat, type Coefficient = some ring.
 * L5.2 Polynomials and Power Series
 ** Polynomial degree (blackboard)
 ** degree as "almost a homomorphism"
@@ -82,4 +83,3 @@ By Glosser.ca - Own work, CC BY-SA 4.0, https://commons.wikimedia.org/w/index.ph
 + scale, negate
 + derivP, integP
 + *Using integP to define expP*
-

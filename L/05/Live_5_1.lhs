@@ -31,7 +31,7 @@ eval :: Ring a => FunExp -> a -> a
 class Additive a       where  zero :: a;  (+) :: a -> a -> a
 class Multiplicative a where  one  :: a;  (*) :: a -> a -> a
 class Additive a => AddGroup a where  negate :: a -> a
--- Ring a = (AddGroup a, Multiplicative a)
+-- Ring a = (AddGroup a, Multiplicative a)  -- (0, 1, +, -, *)
 + Remember that derive :: FunExp -> FunExp is not a homomorphism by itself -
 + we need a pair of function + derivative.
 

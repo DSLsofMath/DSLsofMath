@@ -44,7 +44,7 @@ newtype FD a = FD (a->a, a->a)   -- Function + Derivative
 newtype Bi a = Bi (a,    a)      -- Position + Speed
   deriving (Eq, Show)
 
--- forall t. H2(applyFD t, mulFD, mulBi)
+-- forall c. H2(applyFD c, mulFD, mulBi)
 applyFD :: a -> FD a -> Bi a
 applyFD t (FD (f, f')) = Bi (f t, f' t)
   -- f :: a -> a; t :: a; f t :: a
