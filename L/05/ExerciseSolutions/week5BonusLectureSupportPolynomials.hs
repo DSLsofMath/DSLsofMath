@@ -36,6 +36,6 @@ combineTermsQuickly xs = helper Map.empty xs where
 
 mulPolySupportQuickly :: (Num a) => PolynomialSupport a -> PolynomialSupport a -> PolynomialSupport a
 mulPolySupportQuickly p q = Map.toList (combineTermsQuickly (allTerms p q))
-
+-- Exercise: perhaps we can be even quicker if we build the "allTerms" listed in a sorted way.
 
 
