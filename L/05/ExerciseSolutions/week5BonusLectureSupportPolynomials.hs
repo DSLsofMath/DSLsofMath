@@ -1,69 +1,60 @@
-import Data.List
-import qualified Data.Map as Map
+import Control.Applicative (liftA2)
+import qualified Data.Map.Strict as Map
 
-type PolynomialSupport a = [(Int , a)] 
--- The idea now is that such a support xs corresponds to sum [ a * x^n | (n,a) <- xs]
--- We only save the non-zero indices, which means we have to store less information. 
-
-eval :: (Num a) => PolynomialSupport a -> a -> a
-eval poly x = sum [ coeff * (x ^ n) | (n, coeff) <- poly ]
-
-fromListSup :: (Num a, Eq a) => [a] -> PolynomialSupport a 
-fromListSup as = [ (i , a) | (i ,a ) <- zip [ 0 .. ] as ,  not (a == 0) ]
-
--- we know how to multiply polynomials if they have only one index as support
--- the problem is that we still need to take sums over things with the same index.
-
-miniMul :: (Num a) => (Int , a) -> (Int , a) -> (Int , a)
-miniMul (n , a) (m , b) = (n + m , a * b) 
-
-allTerms :: (Num a) => PolynomialSupport a -> PolynomialSupport a -> [ (Int , a)]
-allTerms as bs = [ miniMul a b | a <- as , b <- bs]
-
-combineTerms :: (Num a) => [ (Int , a) ] -> PolynomialSupport a
-combineTerms xs = [ (i , sum [ b | (j,b) <- xs , j == i ] ) | i <- indexList xs ] where
-  indexList :: [ (Int , a) ] -> [Int]
-  indexList = nub . map fst 
-
-mulPolySupport :: (Num a) => PolynomialSupport a -> PolynomialSupport a -> PolynomialSupport a
-mulPolySupport xs ys = combineTerms $ allTerms xs ys 
--- Note that while this works, it recurses over the list many times. Perhaps we can be quicker with an aggregator (which we distinguish by using Map).
-
-combineTermsQuickly :: (Num a) => [(Int , a)] -> Map.Map Int a
-combineTermsQuickly xs = helper Map.empty xs where
-  helper :: (Num a) => Map.Map Int a -> [(Int , a)] -> Map.Map Int a 
-  helper mapSoFar [] = mapSoFar
-  helper mapSoFar ((i , a) : inputList) = case Map.lookup i mapSoFar of 
-    Nothing -> helper (Map.insert i  a mapSoFar) inputList
-    Just b -> helper (Map.insert i  (a + b) mapSoFar) inputList
-
-mulPolySupportQuickly :: (Num a) => PolynomialSupport a -> PolynomialSupport a -> PolynomialSupport a
-mulPolySupportQuickly p q = Map.toList (combineTermsQuickly (allTerms p q))
--- Exercise: perhaps we can be even quicker if we build the "allTerms" listed in a sorted way.
-
-
--- Some properties and helpers
+type Monomial a = (Int, a)
+type PolynomialSupport a = [Monomial a]
 newtype Poly a = Poly { unPoly :: PolynomialSupport a }
+  deriving (Show)
 
-mulPoly p q = Poly $ canonicalize $ allTerms (unPoly p) (unPoly q)
-
+-- 0. Equality and Properties
+canonicalize :: (Num a, Eq a) => PolynomialSupport a -> PolynomialSupport a
+canonicalize =
+  filter ((0/=) . snd) .  -- remove zero monomials
+  Map.toAscList .         -- extract a list sort by the keys
+  Map.fromListWith (+)    -- combine coefficients with equal keys (exponents)
 
 instance (Num a, Eq a) => Eq (Poly a) where
   (Poly p1) == (Poly p2) = canonicalize p1 == canonicalize p2
 
-canonicalize :: (Num a, Eq a) => PolynomialSupport a -> PolynomialSupport a
-canonicalize =
-    filter (\(_, coeff) -> coeff /= 0) .  -- remove zero coefficients
-    Map.toAscList .                       -- extract list sorted by exponent
-    Map.fromListWith (+)                  -- merge duplicate exponents by adding coeffs
-    
--- H2(eval, mulPolySupportQuickly, (*))
-propMulCorrect :: (Num a, Eq a) => PolynomialSupport a -> PolynomialSupport a -> a -> Bool
-propMulCorrect p q x = 
-    eval (mulPolySupportQuickly p q) x == (eval p x * eval q x)
+-- Specification: H2(eval, mulPoly, (*))
+propMulCorrect :: (Num a, Eq a) => Poly a -> Poly a -> a -> Bool
+propMulCorrect p q x =
+    eval (mulPoly p q) x == (eval p x * eval q x)
 
-p1, p2, p3, p4 :: (Enum a, Num a, Eq a) => PolynomialSupport a
-p1 = [(17,3), (38, 5)]
-p2 = [(1,7),(3,8)]
-p3 = fromListSup [1..100]
-p4 = fromListSup (reverse [1..1000])
+-- 2. Core Utilities
+evalMono :: (Num a) => Monomial a -> (a -> a)
+evalMono (n, coeff) x = coeff * (x ^ n)
+
+eval :: (Num a) => Poly a -> a -> a
+eval (Poly ms) x = sum [evalMono m x | m <- ms ]
+
+fromListSup :: (Num a, Eq a) => [a] -> PolynomialSupport a
+fromListSup as = [ (i, a) | (i, a) <- zip [ 0 .. ] as, a /= 0 ]
+
+-- 3. Multiplication Logic
+-- Multiplies two monomials (single terms)
+monoMul :: (Num a) => (Int, a) -> (Int, a) -> (Int, a)
+monoMul (n, a) (m, b) = (n + m, a * b)
+
+-- The "cross product" of all terms
+allTerms :: (Num a) => [Monomial a] -> [Monomial a] -> [Monomial a]
+allTerms = liftA2 monoMul
+-- Perhaps more readable:
+--   allTerms as bs = [ miniMul a b | a <- as , b <- bs]
+
+mulPoly :: (Num a, Eq a) => Poly a -> Poly a -> Poly a
+mulPoly (Poly p) (Poly q) = Poly (canonicalize (allTerms p q))
+
+-- Some test data
+
+p1, p2, p3, p4 :: (Enum a, Num a, Eq a) => Poly a
+p1 = Poly [(17,3), (38, 5)]
+p2 = Poly [(1,7),(3,8)]
+p3 = Poly (fromListSup [1..100])
+p4 = Poly (fromListSup (reverse [1..1000]))
+
+main = do
+  print (all (propMulCorrect p1 p2) [1,2,5])
+  print (all (propMulCorrect p1 p3) [1,2,5])
+  print (all (propMulCorrect p2 p3) [1,2,5])
+  print (all (propMulCorrect p3 p4) [1,2,5])
