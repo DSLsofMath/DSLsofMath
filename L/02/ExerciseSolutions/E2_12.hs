@@ -50,10 +50,14 @@ doNot (And p q) = Or  (doNot p) (doNot q)
 doNot (Or  p q) = And (doNot p) (doNot q)
 doNot (Con b)   = Con (not b)
 doNot (Name n)  = Not (Name n)
-doNot (Not p)   = case doNot p of
+doNot (Not p)   = simplify p
+doNot (Implies p q) = doNot (Or (Not p) q)
+
+-- This is an inefficient "simplifier" (often two calls to doNot)
+simplify :: Prop -> Prop
+simplify p = case doNot p of
   Not e -> e -- this case is needed not to get stuck on negated names
   e     -> doNot e
-doNot (Implies p q) = doNot (Or (Not p) q)
 
 -- Some test examples:
 x = Name "x"
