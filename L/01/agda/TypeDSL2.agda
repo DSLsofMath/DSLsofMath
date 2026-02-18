@@ -1,5 +1,5 @@
 -- A DSL example in the language Agda: "polynomial types"
-module TypeDSL where
+module TypeDSL2 where
 open import Data.Empty
 open import Data.Unit
 open import Data.Sum
@@ -57,7 +57,7 @@ enumerate (Mul x y)  =  enumMul  (enumerate x) (enumerate y)
 enumerate Zero       =  []
 enumerate One        =  [ tt ]
 
-test : Vec (eval three) 3
+test : Vec (eval three) (card three)
 test = enumerate three
 -- inj₁ tt ∷ inj₂ (inj₁ tt) ∷ inj₂ (inj₂ tt) ∷ []
 
