@@ -15,6 +15,7 @@ The Ring of polynomials (as lists of coefficients).
 
 ----------------
 0. Define the DSL (types for syntax & semantics, eval)
+newtype P ...
 \begin{code}
 \end{code}
 
@@ -47,45 +48,5 @@ Example: Power Series and the exponential
 
 \begin{code}
 \end{code}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-A. Appendix: From Ring to Field.
-
-\begin{spec}
-instance Field a => MulGroup (Poly a) where recip = recipP
-recipP :: Field a => Poly a -> Poly a
-recipP (Poly as) = Poly (recipL as)
-
-recipL :: Field a => [a] -> [a]
-recipL [] = error "recipL: division by zero"
-recipL (a:as) = r
-  where  r  = b:bs
-         b  = recip a
-         bs = scaleL (negate b) (mulL as r)
-
-test1 :: Field a => Poly a
-test1 = takeP 5 (recip (one-xP))
-\end{spec}
+takeP :: Int -> Poly a -> Poly a
+takeP n (P as) = P (take n as)

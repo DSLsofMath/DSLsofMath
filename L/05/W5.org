@@ -35,6 +35,8 @@ polynomial, is called the \textbf{degree} of the polynomial.
   Exponent = Nat, type Coefficient = some ring.
 * L5.2 Polynomials and Power Series
 ** Polynomial degree (blackboard)
++ Exists op. H2(degree,mulP,op)  ?
++ Type of degree?
 ** degree as "almost a homomorphism"
 ** ∃ add. H₂(eval,add,oplus)
 + Typing, code skeleton
