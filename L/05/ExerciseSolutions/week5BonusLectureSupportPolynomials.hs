@@ -57,4 +57,4 @@ main = do
   print (all (propMulCorrect p1 p2) [1,2,5])
   print (all (propMulCorrect p1 p3) [1,2,5])
   print (all (propMulCorrect p2 p3) [1,2,5])
-  print (all (propMulCorrect p3 p4) [1,2,5])
+  print (all (propMulCorrect p3 p4) [1..10])
