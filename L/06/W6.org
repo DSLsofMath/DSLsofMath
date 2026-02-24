@@ -2,48 +2,10 @@
 + You can bring a (physical) book to the exam.
 + Book https://www.collegepublications.co.uk/computing/?00024
   /home/patrikj/Pictures/DSLsofMath_book_front_cover.jpg
-* Small A2 Q&A / logic reminder
-+ Links:
-  [[https://youtu.be/y6weZisWeDM?list=PLf5C73P7ab-5sdvsqCjnF8iaYOtXMRNaZ&t=384][Structural homomorphism (YouTube)]] + [[file:../05/DSLsofMath L4.3.pdf][PDF]]
-** Concrete logic example
-data E where  Mul :: E->E->E   -- mul :: S -> S -> S
-              Add :: E->E->E   -- add :: S -> S -> S
-              Zer :: E         -- zer :: S
-type S = REAL -> REAL
-
-  P(h) = " h is a homomorphism from E to S "
-  State and simplify not P(eval') where eval' = D . eval
-
-+ P(h) = Exists mul, add, zer. H2(h,Mul,mul) & H2(h,Add,add) & H0(h,Zer,zer)
-
-Calculate:
-
-  not P(eval')
-= -- Def. of P
-  not (Exists mul, add, zer. H2(eval',Mul,mul) & H2(eval',Add,add) & H0(eval',Zer,zer))
-= -- By not-propagation ("not Exists ~ Forall not")
-  Forall mul, add, zer. not (H2(eval',Mul,mul) & H2(eval',Add,add) & H0(eval',Zer,zer)))
-= -- de Morgan laws
-  Forall mul, add, zer. (not H2(eval',Mul,mul)) | (not H2(eval',Add,add)) | (not H0(eval',Zer,zer))
-
-Pick the first term
-  not H2(eval',Mul,mul)
-= -- Def. of H2
-  not (Forall x, y. eval' (Mul x y) = mul (eval' x) (eval' y)
-
-Now the proof can continue in the same way as the examples earlier
-which were not homomorphisms (|isPrime :: Nat -> Bool| and |eval' ::
-FunExp -> (R->R)|, both in Chapter 4): assume an operator (mul here)
-exists and satisfies H2, then show (by picking suitable examples for x
-and y) that this leads to a contradiction.
-
 * Power Series
-+ Last week we talked mainly about the domain-specific language of
-  polynomials and how that matches the Ring class.
-+ Now we extend the language handle many more (continuous) functions
-  by moving to power series.
-+ The pay-off is the ability to compute (approximate) solutions to
-  ordinarie differential equations.
++ Last week we talked mainly about the domain-specific language of polynomials and how that matches the Ring class.
++ Now we extend the language handle many more (continuous) functions by moving to power series.
++ The pay-off is the ability to compute (approximate) solutions to ordinarie differential equations.
 ** Learning outcomes for this week
 + KU.DSL      = design and implement a DSL for power series
 + KU.Explain  = explain main concepts of elementary real analysis
