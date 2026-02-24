@@ -59,7 +59,7 @@ gs  = 0 : c : 0     : c^2/6 : _
 fs  = c : 0 : c^2/2 : 0     : _
 \end{spec}
 
-Answer: take 4 fs = [0, c, 0, c^2/6]
+Answer: take 4 fs = [c, 0, c^2/2, 0]
 More specifically, for the ten different digits, we get:
 \begin{code}
 answer :: Rational -> [Rational]
