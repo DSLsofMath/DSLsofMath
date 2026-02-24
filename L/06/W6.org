@@ -67,19 +67,18 @@ and y) that this leads to a contradiction.
 
 + See file:Live_6_1.lhs for instances.
 
-** definitions of deriv and integ + numeric instances
 ** transformation from semantics (ODE) to syntax (coefficient equations)
 + f x = f 0 + \int_0^x f'   -- semantics
 + fs = integ (f 0) fs'      -- syntax, with f = eval fs
 ** solving differential equations "by hand" and with Haskell
-+ file:Live_6_2_2025.lhs
++ file:Live_6_2_2026.lhs
 + expx,
 + sinx, cosx
   si = [0,  1,  0  ,-1/6, 0   , ...]
   co = [1,  0, -1/2,  0 , 1/24, ...]
-
-
-
+** Implementing instance Transcendental (PS a)
++ Still the same file, lower part
+   file:Live_6_2_2026.lhs
 
 
 
