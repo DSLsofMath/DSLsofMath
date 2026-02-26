@@ -105,6 +105,7 @@ addP :: Additive a => Poly a -> Poly a -> Poly a
 addP (P as) (P bs) = P (addL as bs)
 
 addL :: Additive a => [a] -> [a] -> [a]
+-- addL = zipWith (+)  -- Wrong - truncated
 addL = zipWithLonger (+)
 
 zipWithLonger :: (a->a->a) -> ([a] -> [a] -> [a])
@@ -290,9 +291,75 @@ toMaclaurin (P as) = DS (zipWith (*) factorials as)
 Spec: derDS (derAll e) = derAll (derive e)
 \begin{code}
 derAll :: FunExp -> DS FunExp
-derAll (Const c) = error "TODO"
-derAll X         = error "TODO"
+derAll (Const c) = constDS (Const c)
+derAll X         = xDS
+derAll (f :+: g) = addDS (derAll f) (derAll g)
+derAll (f :*: g) = mulDS (derAll f) (derAll g)
+
+zeroDS :: DS a
+zeroDS = DS zeroL
+
+negateDS :: AddGroup a => DS a -> DS a
+negateDS (DS as) = DS (negateL as)
+
+instance Additive a => Additive (DS a) where (+) = addDS; zero = zeroDS
+instance AddGroup a => AddGroup (DS a) where negate = negateDS
+instance Ring a => Multiplicative (DS a) where (*) = mulDS; one = constDS one
+
+
+mulDS :: Ring a => DS a -> DS a -> DS a
+mulDS (DS as) (DS bs) = DS (mulD as bs)
+
+-- "tail" is "all the derivatives" and the head is "value at zero"
+mulD :: Ring a => L a -> L a -> L a
+mulD [] _ = zeroL
+mulD _ [] = zeroL
+mulD f@(f0:f') g@(g0:g') = m0:m'
+  where   m0 = f0*g0
+          m' = addL (mulD f' g) (mulD f g')
+  -- f  :: L a
+  -- f0 :: a
+  -- f' :: L a
+{-
+  mulD [1,3] [1,1]
+~=
+  (\x-> 1 + 3*x) * (\x -> 1 + x)
+=
+  \x -> (1 + 3*x) * (1 + x)
+=
+  \x -> 1*1 + 1*x + 3*x*1 + 3*x*x
+=
+  \x -> 1 + 4*x + 3*x^2
+  {- D \x -> 1 + 4*x + 3*x^2 = \x -> 4 + 3*2*x -}
+~=
+  [1, 4, 6]
+-}
+addDS :: Additive a => DS a -> DS a -> DS a
+addDS (DS as) (DS bs) = DS (addL as bs)
+
+xDS :: Ring a => DS a
+xDS = DS xL
+
+constDS :: a -> DS a
+constDS c = DS (constL c)
+
+constL :: a -> L a
+constL c = [c]
+
+expX :: Transcendental a => DS a
+expX = integDS 1 expX
+
+integDS :: a -> DS a -> DS a
+integDS c (DS f) = DS (integD c f)
+
+integD :: a -> L a -> L a
+integD = (:)
+
 \end{code}
+integD c f = c : f
+integD c f = i0 : i'
+  where  i0 = c
+         i' = f
 
 + 3d. Implement numeric operators on DS a
   Core question: Is there a definition of |mulDS| which makes |derAll| a

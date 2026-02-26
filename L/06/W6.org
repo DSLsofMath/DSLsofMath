@@ -45,19 +45,17 @@
 
 
 
-
-
-
-
 * (Thursday lecture) Maclaurin series
 + file:Live_6_3_2025.lhs
++ A2 deadline reminder: Tuesday 2026-03-03:
+** der & integ spec
 ** Maclaurin series = Taylor series at the point zero
 + https://en.wikipedia.org/wiki/Taylor_series
 + See blackboard
 + Main use: "local approximation"
-+ Let M n f be the "order n" approximation of f near 0:  
++ Let M n f be the "order n" approximation of f near 0:
   M : Nat -> (R->R) -> (R->R)
-  M 0 f x = f 0 
+  M 0 f x = f 0
   M 1 f x = f 0 + (f' 0)*x
   M 2 f x = f 0 + (f' 0)*x + (f'' 0 / 2)*x^2
   ...
@@ -83,4 +81,3 @@ motivation / explanation.
 + See file:Live_6_3_2025.lhs for instances
 ** Perhaps: Live coding "solving ODEs with Power Series" (file:Live_6_2.lhs)
 + DS instances for MulGroup and Transcendental
-
