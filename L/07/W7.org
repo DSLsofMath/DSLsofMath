@@ -1,88 +1,117 @@
 * DSLsofMath Week 7: Linear Algebra and the Laplace transform
-+ Mix of Chapter 7 and Chapter 8 (to get started early on the Laplace
-  transform).
++ Mix of Chapter 7 and Chapter 8 (to get started early on the Laplace transform).
 ** Lecture 7.1: Linear Algebra 1
-+ The DSL of the this lecture describes
-  vectors, linear transforms, matrices
++ The DSL of this lecture describes *vectors, linear transforms, matrices*
 *** L7.1a [[file:DSLsofMath L7.1.pdf]]
-+ class (Field s, AddGroup v) => VectorSpace v s where
-    scale :: s -> v -> v  -- s for "scalars", v for "vectors"
+#+BEGIN_SRC haskell
+class (Field s, AddGroup v) => VectorSpace v s where
+  scale :: s -> v -> v  -- s for "scalars", v for "vectors"
+#+END_SRC
 + Laws: {- very compact: add types, expand -}
+  #+BEGIN_SRC text
   ∀ c. GroupHom(scale c, (addV,zeroV,negateV), (addV,zeroV,negateV))
        GroupHom(scale,   (addS,zeroS,negateS), (addF,zeroF,negateF))
       MonoidHom(scale,   (mulS,oneS)         , ((.), id))
-+ Laws expanded one step + with types
+  #+END_SRC
++ Laws expanded one step + with types (three groups).
++ First group: scale c additive
+  #+BEGIN_SRC text
   scale c :: v->v;
   addV :: v->v->v; zeroV :: v; negateV :: v->v
-  ∀ c. H2(scale c, addV,    addV   )  &&
-       H0(scale c, zeroV,   zeroV  )  &&
-       H1(scale c, negateV, negateV)
 
+  ∀ c. H2(scale c, addV,    addV   )  ∧
+       H0(scale c, zeroV,   zeroV  )  ∧
+       H1(scale c, negateV, negateV)
+  #+END_SRC
++ Second group: scale additive
+  #+BEGIN_SRC text
   scale :: s -> (v->v)
   addS :: s->s->s;                zeroS :: s;      negateS :: s->s
   addF :: (v->v)->(v->v)->(v->v); zeroF :: (v->v); negateF :: (v->v)->(v->v)
-         H2(scale, addS,    addF   ) &&
-	 H0(scale, zeroS,   zeroF  ) &&
-	 H1(scale, negateS, negateF)
 
+         H2(scale, addS,    addF   ) ∧
+         H0(scale, zeroS,   zeroF  ) ∧
+         H1(scale, negateS, negateF)
+  #+END_SRC
++ Third group: scale multiplicative
+  #+BEGIN_SRC
   scale :: s -> (v->v)
   mulS :: s->s->s;                oneS :: s
   (.)  :: (v->v)->(v->v)->(v->v); id :: (v->v)
-       H2(scale, mulS, (.)) &&
+
+       H2(scale, mulS, (.)) ∧
        H0(scale, oneS, id)
+  #+END_SRC
 + Laws expanded two steps: (types unchanged)
-  ∀ c. (∀ v₁, v₂. scale c (addV v₁ v₂) = addV (scale c v₁) (scale c v₂)) &&
-       (scale c zeroV = zeroV) &&
+  #+BEGIN_SRC
+  ∀ c. (∀ v₁, v₂. scale c (addV v₁ v₂) = addV (scale c v₁) (scale c v₂)) ∧
+       (scale c zeroV = zeroV) ∧
        (∀ v. scale c (negateV v) = negateV (scale c v))
-
-       (∀ s₁, s₂. scale (addS s₁ s₂) = addF (scale s₁) (scale s₂)) &&
-	 (scale zeroS = zeroF) &&
-	 (∀ s. scale (negateS s) = negateF (scale s))
-
-       (∀ s₁, s₂. scale (mulS s₁ s₂) = scale s₁ . scale s₂) &&
+    ∧
+       (∀ s₁, s₂. scale (addS s₁ s₂) = addF (scale s₁) (scale s₂)) ∧
+       (scale zeroS = zeroF) ∧
+       (∀ s. scale (negateS s) = negateF (scale s))
+    ∧
+       (∀ s₁, s₂. scale (mulS s₁ s₂) = scale s₁ . scale s₂) ∧
        (scale oneS = id)
+  #+END_SRC
 + Laws expanded three steps: (first group unchanged)
-  ∀ c. (∀ v₁, v₂. scale c (addV v₁ v₂) = addV (scale c v₁) (scale c v₂)) &&
-       (scale c zeroV = zeroV) &&
-	 (∀ v. scale c (negateV v) = negateV (scale c v))
-
-       (∀ s₁, s₂, v. scale (addS s₁ s₂) v = addV (scale s₁ v) (scale s₂ v)) &&
-	 (∀ v. scale zeroS v = zeroV) &&
-	 (∀ s, v. scale (negateS s) v = negateV (scale s v))
-
-       (∀ s₁, s₂, v. scale (mulS s₁ s₂) v = scale s₁ (scale s₂ v)) &&
+  #+BEGIN_SRC
+  ∀ c. (∀ v₁, v₂. scale c (addV v₁ v₂) = addV (scale c v₁) (scale c v₂)) ∧
+       (scale c zeroV = zeroV) ∧
+       (∀ v. scale c (negateV v) = negateV (scale c v))
+    ∧
+       (∀ s₁, s₂, v. scale (addS s₁ s₂) v = addV (scale s₁ v) (scale s₂ v)) ∧
+       (∀ v. scale zeroS v = zeroV) ∧
+       (∀ s, v. scale (negateS s) v = negateV (scale s v))
+    ∧
+       (∀ s₁, s₂, v. scale (mulS s₁ s₂) v = scale s₁ (scale s₂ v)) ∧
        (∀ v. scale oneS v = v)
+  #+END_SRC
 + Laws with (overloaded) operators, 0, and 1:
-    ∀ c. (∀ v₁, v₂. c ◃ (v₁+v₂) = (c◃v₁) + (c◃v₂)) &&
-         (c◃0 = 0) &&
-	 (∀ v. c◃(-v) = -(c◃v))
-
-    ∀ v. (∀ s₁, s₂. (s₁+s₂)◃v = (s₁◃v)+(s₂◃v)) &&
-	 (0◃v = 0) &&
-	 (∀ s. (-s)◃v = -(s◃v))
-
-    ∀ v. (∀ s₁, s₂. (s₁·s₂)◃v = s₁◃(s₂◃v)) &&
+  #+BEGIN_SRC
+    ∀ c. (∀ v₁, v₂. c ◃ (v₁+v₂) = (c◃v₁) + (c◃v₂)) ∧
+         (c◃0 = 0) ∧
+         (∀ v. c◃(-v) = -(c◃v))
+    ∧
+    ∀ v. (∀ s₁, s₂. (s₁+s₂)◃v = (s₁◃v)+(s₂◃v)) ∧
+         (0◃v = 0) ∧
+         (∀ s. (-s)◃v = -(s◃v))
+    ∧
+    ∀ v. (∀ s₁, s₂. (s₁·s₂)◃v = s₁◃(s₂◃v)) ∧
          (1◃v = v)
-+ instance Field s => VectorSpace s s where scale = (*)
+  #+END_SRC
++ Scalars are "trivial" vectors:
+  #+BEGIN_SRC haskell
+  instance Field s => VectorSpace s s where scale = (*)
+  #+END_SRC
   + here |s = v|, so |scale : s->v->v| becomes |scale : s->s->s|
   + we can see the scalars as a "1-dimensional vector space" with canonical basis one
     + scale s one = s*one = s
 + A two-dimensional example: file:XYPlaneExampleVectors.png
+  #+BEGIN_SRC haskell
   data Axes   = X | Y
   type XYVec  = Axes -> REAL
+  #+END_SRC
   + Example vectors:
+  #+BEGIN_SRC haskell
     v₁ X = 4   ; v₁ Y = 1   ;
     v₂ X =   1 ; v₂ Y =   3 ;
     v₃ X = 4+1 ; v₃ Y = 1+3 ;
-  + instance VectorSpace XYVec REAL where scale = scaleF
-    scaleF :: REAL -> (Axes -> REAL) -> (Axes -> REAL)
-    scaleF c v = \a -> c * v a
-+ Linear Combinations
-  -- Math notation: Σᵢ aᵢ◃vᵢ = Σᵢ (scale aᵢ vᵢ)
+  #+END_SRC
+  + Instance declaration for |XYVec|
+  #+BEGIN_SRC haskell
+  instance VectorSpace XYVec REAL where scale = scaleF
+  scaleF :: REAL -> (Axes -> REAL) -> (Axes -> REAL)
+  scaleF c v = \a -> c * v a
+  #+END_SRC
++ Linear Combinations (Math notation: Σᵢ aᵢ◃vᵢ = Σᵢ (scale aᵢ vᵢ))
+  #+BEGIN_SRC haskell
   linComb :: (Finite g, VectorSpace v s) => (g->s) -> (g->v) -> v
   linComb a v = sum  (map  (\i->scale (a i) (v i))
                            finiteDomain
-	             )
+                     )
+  #+END_SRC
 + Linearly independent, span, and basis:
   + A collection of vectors v₀, ..., vₙ is *linearly independent* iff
     ∀ a:{0..n}->s. (linComb a v == 0) ⇔ (∀ i. aᵢ==0)
@@ -91,24 +120,35 @@
   + A basis B for a vector space V over a field S is a linearly
     independent collection of vectors which spans V.
 + Example (canonical) basis: for
-  + let G = {0..n}; V = G->s; e : G -> V;  e : G -> (G -> s)
-        eᵢ j = if i==j then 1 else 0    --      i     j
+  #+BEGIN_SRC text
+  let  G = {0..n}; V = G->s; e : G -> V;  e : G -> (G -> s)
+  in   eᵢ j = if i==j then 1 else 0    --      i     j
+  #+END_SRC
   + Then e is a basis for V
 + Next up: linear transformation (homomorphism between vector spaces)
 *** L7.1b [[file:DSLsofMath L7.1b.pdf]]
 + h : U -> V   where U and V and vector spaces over the same scalars s
-+ LinTran(h,U,V) =    H₀(h,zeroᵤ,zeroᵥ)        --   h zeroᵤ == zeroᵥ
-                 ∧   H₂(h,(+ᵤ),(+ᵥ))          -- ∀ x, y. h (x +ᵤ y) == (h x) +ᵥ (h y)
-		 ∧∀c.H₁(h,scaleᵤ c,scaleᵥ c)  -- ∀ c, x. h (scaleᵤ c x) = scaleᵥ c (h x)
-+ Examples:   ∀c. LinTran(scaleᵥ c, V, V)
-              ∀i. LinTran(apply i, g->s, s)  -- "projections"
-	      apply i v = v i
+  #+BEGIN_SRC text
+ LinTran(h,U,V) =
+          H₀(h,zeroᵤ,zeroᵥ)        --   h zeroᵤ == zeroᵥ
+  ∧       H₂(h,(+ᵤ),(+ᵥ))          -- ∀ x, y. h (x +ᵤ y) == (h x) +ᵥ (h y)
+  ∧  ∀c.  H₁(h,scaleᵤ c,scaleᵥ c)  -- ∀ c, x. h (scaleᵤ c x) = scaleᵥ c (h x)
+  #+END_SRC
++ Examples:
+  #+BEGIN_SRC text
+  ∀c. LinTran(scaleᵥ c, V, V)
+  ∀i. LinTran(apply i, g->s, s)  -- "projections"
+  apply i v = v i
+  #+END_SRC
 + Linear transformations between U = G -> s and V = G' -> s
+  #+BEGIN_SRC text
   v = linComb v e = Σᵘᵢ (vᵢ ◃ eᵢ)
   h v = h (Σᵘᵢ (vᵢ ◃ᵘ eᵢ))     -- LinTran(h,U,V)
       = Σᵛᵢ ( h (vᵢ ◃ᵘ eᵢ) )   -- LinTran(h,U,V)
       = Σᵛᵢ ( vᵢ ◃ᵛ h eᵢ)
+  #+END_SRC
   + Calculation
+  #+BEGIN_SRC haskell
     h v
       = -- e is the canonical basis => v = Σᵁᵢ (scaleᵁ vᵢ eᵢ)
     h (Σᵁᵢ (scaleᵁ vᵢ eᵢ))
@@ -118,20 +158,22 @@
     Σⱽᵢ (scaleⱽ vᵢ (h eᵢ))
       = -- Def. of linComb
    linComb v (h ∘ e)
-  + Note: to compute h v for any (infinitely many) v it is enough to
-    store the results of h eᵢ for every i (finitely many). Each h eᵢ
-    is a vector in V, thus we can store this collection in a table,
-    usually called a *matrix*.
+  #+END_SRC
+  + Note: to compute h v for any (infinitely many) v it is enough to store the results of h eᵢ for every i (finitely many). Each h eᵢ is a vector in V, thus we can store this collection in a table, usually called a *matrix*.
     file:Matrix_shape.png
-      |     |      |     |     |
-      |     |      |     |     |
+#+BEGIN_SRC text
+      |      |      |     |      |
+      |      |      |     |      |
       | h eₒ | h e₁ | ... | h eₙ |
-      |     |      |     |     |
-      |     |      |     |     |
-  + This matrix is the "syntax" of a linear transformation and the
-    linear function h : U -> V is the semantics.
-  + evalMV m v = linComb v m
+      |      |      |     |      |
+      |      |      |     |      |
+#+END_SRC
+  + This matrix is the "syntax" of a linear transformation and the linear function h : U -> V is the semantics.
+#+BEGIN_SRC haskell
+  evalMV m v = linComb v (getCol m)
+#+END_SRC
 + Example: der : P₃ -> P₂ as a linear transformation
+#+BEGIN_SRC text
   Def. Pₙ = { polynomials of degree ≤ n} = {0..n} -> REAL
     -- represented as coefficients
   evalₚ : Pₙ -> (REAL -> REAL)
@@ -139,6 +181,7 @@
   Basis:
     p : {0..n} -> REAL -> REAL
     p i x = xⁱ
+#+END_SRC
 + Example cont.: the matrix version DER of der : P₃ -> P₂
   + Step 1: type / dimensions of the target
     each column of the matrix represents a vector in the target space
@@ -150,20 +193,25 @@
     thus, one for each of 1, x, x², x³
     thus we need four columns
   + file:DER3_shape.png
+#+BEGIN_SRC text
           | 0 | 1 | 0 | 0 |
     DER = | 0 | 0 | 2 | 0 |
           | 0 | 0 | 0 | 3 |
+#+END_SRC
   + Step 3: fill in the resulting shape with the
+#+BEGIN_SRC text
     der (p i) = scale i (p (i-1))
           | 0 | 1 | 0 | 0 |
     DER = | 0 | 0 | 2 | 0 |
           | 0 | 0 | 0 | 3 |
+#+END_SRC
 + Composing homomorphisms (here LinTran)
   + Typing: let A, B, C be vector spaces and hᵢ linear transformations
 #+BEGIN_SRC text
-	 h₂      h₁
+         h₂      h₁
      C <———— B <———— A
-	    h₂∘h₁
+
+            h₂∘h₁
      C <———————————— A
 #+END_SRC
   + Property: "homomorphisms compose"
@@ -175,11 +223,11 @@
 + Composing LinTran (towards matrix multiplication)
   + Typing + specification: let hᵢ = evalMV Mᵢ
 #+BEGIN_SRC text
-	 h₂      h₁
+         h₂      h₁
      C <———— B <———— A
          M₂      M₁
 
-	    h₂∘h₁
+            h₂∘h₁
      C <———————————— A
          mulM M₂ M₁
 #+END_SRC
@@ -191,28 +239,28 @@
 #+BEGIN_SRC text
   A = a->REAL; B=b->REAL; C=c->REAL
   a={U,V}; b={0,1,2}; c={1}
-       |      |      |      | 1 | 0 |
-  M₁ = |h₁ eᵤ | h₁ eᵥ |  =   | 1 | 1 |
-       |      |      |      | 0 | 1 |
+       |       |       |      | 1 | 0 |
+  M₁ = | h₁ eᵤ | h₁ eᵥ |  =   | 1 | 1 |
+       |       |       |      | 0 | 1 |
 
   M₂ = | 0 | 2 | 0 |
-  h₂ w = \i -> scale 2 (w i)   -- scaled projection
+  h₂ w = \i -> scale 2 (w i)   -- scaled projection, i=1
 
   mulM M₂ M₁ = | 2 | 2 |
 #+END_SRC
 + Helper functions for vectors and matrices
   + Define some type synonyms:
 #+BEGIN_SRC haskell
-    type Vec s a = a -> s    -- a for "axes", s for "scalars"
-    type Mat s a b = b -> Vec s a  =  b -> (a -> s)
+    type Vec s a = a -> s           -- a for "axes", s for "scalars"
+    type Mat s a b = b -> Vec s a   -- which expands to: b -> (a -> s)
 #+END_SRC
   + And helper functions:
 #+BEGIN_SRC haskell
-    flip : (b -> a -> s) -> (a -> b -> s)
+    flip :: (b -> a -> s) -> (a -> b -> s)
     flip op i j = op j i
-    transpose : Mat s a b -> Mat s b a
+    transpose :: Mat s a b -> Mat s b a
     transpose m = \i j -> m j i
-    getCol : Mat s a b -> a -> V s b
+    getCol :: Mat s a b -> a -> Vec s b
     getCol = flip
 #+END_SRC
   + Also note a property of flip: (it is its own inverse)
@@ -225,7 +273,7 @@
 #+END_SRC
 + How do we compute the matrix from a LinTran?
   Suppose we know
-#+BEGIN_SRC haskell
+#+BEGIN_SRC text
     h : A -> B; LinTran(h,A,B)
 #+END_SRC
   but we want to find an m such that
@@ -257,11 +305,11 @@
 + Compute the matrix multiplication (in a similar way):
   Start from the setting above:
 #+BEGIN_SRC text
-	 h₂      h₁
+         h₂      h₁
      C <———— B <———— A
          m₂      m₁
 
-	    h₂∘h₁
+            h₂∘h₁
      C <———————————— A
          mulM m₂ m₁
 #+END_SRC
@@ -296,17 +344,17 @@
     mulM m₂ m₁ == flip (evalMV m₂ ∘ getCol m₁)
 #+END_SRC
   This is now a definition of mulM which satisfies its specification.
-  (Reminder: evalMV m v = linComb v m = Σᵢ scale vᵢ mᵢ)
+  (Reminder: evalMV m v = linComb v (getCol m) = Σᵢ scale vᵢ mᵢ)
 + Summing up:
 #+BEGIN_SRC haskell
   type A = Vec s a
   type B = Vec s b
   type C = Vec s c
   -- Notice that the b parameters makes sure the matrix dimensions match:
-  mulM : Mat s a b -> Mat s b c -> Mat s a c
+  mulM :: Mat s b c -> Mat s a b -> Mat s a c
   mulM m₂ m₁ == flip (evalMV m₂ ∘ getCol m₁)
 
-  evalMV = mulMV : Mat s a b -> Vec s a -> Vec s b
+  evalMV = mulMV :: Mat s a b -> Vec s a -> Vec s b
 #+END_SRC
 + Perhaps some live-coding [[Live_7_1_2023.hs]]
 
@@ -324,22 +372,55 @@
   + D : V -> V
   + Example: D exp = exp
 + A family of exponentials (which will be used for Laplace later)
-  + let gₛ t = exp (-s*t)
-  + g is a family of smooth vectors
-  + g : REAL -> V
-  + D gₛ t = -s*exp (-s*t) = -s * g s t = scaleF (-s) gₛ t
-  + D gₛ t = scaleF (-s) gₛ
+  #+BEGIN_SRC text
+  let gₛ t = exp (-s*t)
+  -- g is a family of smooth vectors
+  g : REAL -> V
+  D gₛ t = -s*exp (-s*t) = -s * g s t = scaleF (-s) gₛ t
+  D gₛ = scaleF (-s) gₛ  -- point-free
+  #+END_SRC
   + file:gs_geogebra_with_def.png
-+ Integral as a linear transform
++ Integral as a linear transform (fix the constant to 0)
+  #+BEGIN_SRC text
   + I : V -> V
   + I f x = integral 0 x f
+  #+END_SRC
 + Some properties of D and I
+  #+BEGIN_SRC text
   + D (I f) = D F = f
   + I (D F) x = I f x = F x - F 0
   + D (f*g) = D f * g  +  f * D g
   + I (D (F*G)) x = (F*G) x - (F*G) 0 = F x * G x  -  F 0 * G 0
+  #+END_SRC
 
-+ "discovering" the Laplace transform
+*** "discovering" the Laplace transform
++ Start with the product rule for derivatives:
+  D (f*g) = D f * g  +  f * D g
++ Apply the integral operator I to both sides, evaluated at x, and use the property I (D f) x = f x - f 0:
+    I (D (f*g)) x = (f*g) x - (f*g) 0
++ Expand the integral of the derivative of the product:
+    (f*g) x - (f*g) 0 = I (D f * g) x  +  I (f * D g) x
++ Substitute our exponential family of functions for g:
+    let g = gₛ = \t -> exp (-s*t)
++ Recall the derivative of gₛ is scaled by -s: D gₛ = scale (-s) gₛ
++ Substitute gₛ and D gₛ into the equation and evaluate as x -> ∞.
++ Assume f does not grow too fast, so (f * gₛ) x -> 0 as x -> ∞
++ Because gₛ 0 = 1, the left side evaluates to 0 - f 0 * gₛ 0 = -f 0
++ By linearity, we can pull the -s out of the second integral:
+    -f 0 = I (D f * gₛ) ∞  -  s * I (f * gₛ) ∞
++ We now define the Laplace transform L of a function f evaluated at s as this infinite integral:
+    #+BEGIN_SRC text
+    L f s = I (f * gₛ) ∞ = integral 0 ∞ (\t -> f t * exp (-s*t))
+    #+END_SRC
++ Substituting L back into our equation gives:
+    -f 0 = L (D f) s  -  s * L f s
++ Rearranging this yields the fundamental property of the Laplace transform for solving ODEs:
+    L (D f) s = -f 0  +  s * L f s   -- Later called the L-D-law
++ Types and linear properties:
+    + The Laplace transform is a function between vector spaces: L : V -> W
+    + The source space is V ~ REAL -> REAL
+    + The target space is W ~ COMPLEX -> COMPLEX
+    + Proving that L is a linear transformation ( LinTrans(L, V, W) ) is left as an exercise
 *** [[file:../08/DSLsofMath L8.2a start.pdf][L8.1b]]
 + Laplace transform examples: exp, sin, cos
 + Laplace for solving f''+2f=3f', f 0 = 0, f' 0 = 1

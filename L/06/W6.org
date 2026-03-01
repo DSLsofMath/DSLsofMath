@@ -44,7 +44,6 @@
 
 
 
-
 * (Thursday lecture) Maclaurin series
 + file:Live_6_3_2025.lhs
 + A2 deadline reminder: Tuesday 2026-03-03:
