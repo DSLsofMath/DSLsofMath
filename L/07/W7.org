@@ -422,9 +422,124 @@ class (Field s, AddGroup v) => VectorSpace v s where
     + The target space is W ~ COMPLEX -> COMPLEX
     + Proving that L is a linear transformation ( LinTrans(L, V, W) ) is left as an exercise
 *** [[file:../08/DSLsofMath L8.2a start.pdf][L8.1b]]
-+ Laplace transform examples: exp, sin, cos
-+ Laplace for solving f''+2f=3f', f 0 = 0, f' 0 = 1
-+ Laplace summary
+**** Laplace transform examples: exp, sin, cos
++ We can compute some Laplace transforms purely algebraically using the L-D-law:
+    L (D f) s = -f 0  +  s * L f s
++ Example 1: f = exp
+  + ODE specification: D exp = exp, and exp 0 = 1
+  + Let E = L exp. Substitute into L-D-law:
+    #+BEGIN_SRC text
+      L (D exp) s = -exp 0  +  s * E s
+      E s         = -1      +  s * E s
+    #+END_SRC
+  + Solve for E s:
+    #+BEGIN_SRC text
+      E s - s * E s = -1
+      (1 - s) * E s = -1
+      E s           = 1 / (s - 1)
+    #+END_SRC
++ Example 2: f = sin and g = cos
+  + ODE specification: D sin = cos, sin 0 = 0; and D cos = -sin, cos 0 = 1
+  + Let S = L sin and C = L cos.
+  + Apply L-D-law to sin:
+    #+BEGIN_SRC text
+      L (D sin) s = -sin 0  +  s * S s
+      C s         = 0       +  s * S s    -- (Eq. A)
+    #+END_SRC
+  + Apply L-D-law to cos:
+    #+BEGIN_SRC text
+      L (D cos) s = -cos 0  +  s * C s
+      L (-sin) s  = -1      +  s * C s
+      -S s        = -1      +  s * (s * S s)  -- Substitute C s from (Eq. A)
+    #+END_SRC
+  + Solve for S s:
+    #+BEGIN_SRC text
+      1 = s^2 * S s  +  S s
+      1 = (s^2 + 1) * S s
+      S s = 1 / (s^2 + 1)
+    #+END_SRC
+  + Substitute back into (Eq. A) to get C s:
+    #+BEGIN_SRC text
+      C s = s / (s^2 + 1)
+    #+END_SRC
+**** Laplace for solving f'' + 2f = 3f', with f 0 = 0, f' 0 = 1
++ Step 0: Define F s = L f s, and state LHS and RHS of the ODE.
+  #+BEGIN_SRC text
+    LHS = f'' + 2*f
+    RHS = 3*f'
+  #+END_SRC
++ Step 1 & 2: Use the L-D-law to compute L f' and L f''
+  #+BEGIN_SRC text
+    L f' s  = -f 0 + s * L f s
+            = 0 + s * F s = s * F s
+
+    L f'' s = -f' 0 + s * L f' s
+            = -1 + s * (s * F s)
+            = s^2 * F s - 1
+  #+END_SRC
++ Step 3: Apply L to both LHS and RHS (using linearity)
+  #+BEGIN_SRC text
+    L LHS s = L f'' s  +  2 * L f s
+            = (s^2 * F s - 1)  +  2 * F s
+            = (s^2 + 2) * F s  -  1
+
+    L RHS s = 3 * L f' s
+            = 3 * s * F s
+  #+END_SRC
++ Step 4: Equate LHS = RHS and isolate F s
+  #+BEGIN_SRC text
+    (s^2 + 2) * F s  -  1 = 3*s * F s
+    (s^2 - 3*s + 2) * F s = 1
+    F s = 1 / (s^2 - 3*s + 2)
+  #+END_SRC
++ Step 5: Factor the polynomial in the denominator
+  #+BEGIN_SRC text
+    s^2 - 3*s + 2 = (s - 1)*(s - 2)
+    F s = 1 / ((s - 1)*(s - 2))
+  #+END_SRC
++ Step 6: Partial fraction decomposition (Ansatz)
+  #+BEGIN_SRC text
+    F s = A/(s - 1)  +  B/(s - 2)
+    -- Multiply by (s - 1)*(s - 2) to get:
+    A*(s - 2)  +  B*(s - 1) = 1
+  #+END_SRC
++ Step 7: Solve by specializing s to the roots (1, 2)
+  #+BEGIN_SRC text
+    s=1:   A * (1 - 2) = 1  =>  -A = 1  =>  A = -1
+    s=2:   B * (2 - 1) = 1  =>   B = 1
+  #+END_SRC
++ Step 8: Inverse Laplace transform
+  #+BEGIN_SRC text
+    F s = -1/(s - 1)  +  1/(s - 2)
+    -- Recognize as transforms of exponentials (from earlier example):
+    f t = -1 * exp(1*t)  +  1 * exp(2*t)
+    f t = exp(2*t) - exp(t)
+  #+END_SRC
++ Step 9: Checking the result (Important!)
+  #+BEGIN_SRC text
+    Let e1 = exp(t) and e2 = exp(2*t)
+    f t   = e2 - e1
+    f' t  = 2*e2 - e1
+    f'' t = 4*e2 - e1
+
+    -- Check initial conditions:
+    f 0  = 1 - 1 = 0        -- OK!
+    f' 0 = 2 - 1 = 1        -- OK!
+
+    -- Check ODE:
+    LHS t = f'' t + 2*f t
+          = (4*e2 - e1) + 2*(e2 - e1)
+          = 6*e2 - 3*e1
+
+    RHS t = 3*f' t
+          = 3*(2*e2 - e1)
+          = 6*e2 - 3*e1 = LHS t   -- OK!
+  #+END_SRC
+**** Laplace summary
++ *Calculus meets Linear Algebra:* The derivative (D) and integral (I) operators are exactly linear transformations over the infinite-dimensional vector space of smooth functions.
++ *The L-D Law:* The Laplace transform is a linear transformation that converts the derivative operator into simple algebraic multiplication (`L (D f) s = -f 0 + s * L f s`).
++ *Algebraic ODE Solving:* By applying Laplace, we convert differential equations into standard algebraic polynomials, solve them via partial fractions, and translate them back, completely bypassing the need for integrations.
++ *Multiple Representations:* We can solve ODEs analytically using Laplace, or computationally by evaluating them as lazily evaluated Power Series (PSDS). Both rely heavily on viewing mathematical structures through functional programming interfaces.
 * Note
 + Nice examples of vectors, matrices, including Show instances:
   [[file:../../old/2021/L/07/Live_7_2.lhs]]
