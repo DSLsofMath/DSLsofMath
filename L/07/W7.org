@@ -9,12 +9,12 @@ class (Field s, AddGroup v) => VectorSpace v s where
 #+END_SRC
 + Laws: {- very compact: add types, expand -}
   #+BEGIN_SRC text
-  ∀ c. GroupHom(scale c, (addV,zeroV,negateV), (addV,zeroV,negateV))
-       GroupHom(scale,   (addS,zeroS,negateS), (addF,zeroF,negateF))
+  ∀ c. GroupHom(scale c, (addV,zeroV,negateV), (addV,zeroV,negateV))   ∧
+       GroupHom(scale,   (addS,zeroS,negateS), (addF,zeroF,negateF))   ∧
       MonoidHom(scale,   (mulS,oneS)         , ((.), id))
   #+END_SRC
 + Laws expanded one step + with types (three groups).
-+ First group: scale c additive
++ First group: |scale c| is additive
   #+BEGIN_SRC text
   scale c :: v->v;
   addV :: v->v->v; zeroV :: v; negateV :: v->v
@@ -23,7 +23,7 @@ class (Field s, AddGroup v) => VectorSpace v s where
        H0(scale c, zeroV,   zeroV  )  ∧
        H1(scale c, negateV, negateV)
   #+END_SRC
-+ Second group: scale additive
++ Second group: |scale| is additive
   #+BEGIN_SRC text
   scale :: s -> (v->v)
   addS :: s->s->s;                zeroS :: s;      negateS :: s->s
@@ -33,7 +33,7 @@ class (Field s, AddGroup v) => VectorSpace v s where
          H0(scale, zeroS,   zeroF  ) ∧
          H1(scale, negateS, negateF)
   #+END_SRC
-+ Third group: scale multiplicative
++ Third group: |scale| is multiplicative
   #+BEGIN_SRC
   scale :: s -> (v->v)
   mulS :: s->s->s;                oneS :: s
@@ -392,7 +392,6 @@ class (Field s, AddGroup v) => VectorSpace v s where
   + D (f*g) = D f * g  +  f * D g
   + I (D (F*G)) x = (F*G) x - (F*G) 0 = F x * G x  -  F 0 * G 0
   #+END_SRC
-
 *** "discovering" the Laplace transform
 + Start with the product rule for derivatives:
   D (f*g) = D f * g  +  f * D g
