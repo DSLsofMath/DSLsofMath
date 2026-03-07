@@ -3,15 +3,15 @@
 + [[file:DSLsofMath L8.1_7.2 LinAlg + DynSys.pdf][L8.1 / 7.2]] LinAlg + DynSys
 ** L8.2: Connecting concepts:
 + VectorSpace, Complex, PS, Eulers formula, etc.
-+ Live-coding: start [[file:Live_8_2.lhs][Live_8_2.lhs]] end [[file:Live_8_2_2025.lhs][Live_8_2_2025.lhs]]
++ Live-coding: start [[file:Live_8_2.lhs][Live_8_2.lhs]] end [[file:Live_8_2_2026.lhs][Live_8_2_2026.lhs]]
   Connecting
-    Complex numbers  (Week 1),
-    Power Series      (Week 5),
-    Vector spaces      (Week 7), and
-    Laplace transforms  (Week 8).
+   | Complex numbers    | Week 1     |
+   | Power Series       | Week 5     |
+   | Vector spaces      | Week 7 and |
+   | Laplace transforms | Week 8     |
 * E8.2: DSLsofMath: final exercise session
 ** Focus on exam questions
-+ 19 exams + solutions available in the github repo
++ 25 old exams + solutions available in the github repo
 
 + Solving [[file:Exam_2022-08_P4_Diff_from_Cont.png][2022-08 P4 (Diff from Cont)]]
 
