@@ -46,10 +46,10 @@ class (Field s, AddGroup v) => VectorSpace v s where
 instance Field a => VectorSpace (PS a) a where scale = scaleP
 
 scaleP :: Multiplicative a => a -> PS a -> PS a
-scaleP = error "TODO scaleP"
+scaleP c = mapP (c*)
 
 mapP :: (a->b) -> (PS a -> PS b)
-mapP = error "TODO mapP"
+mapP f (P as) = P (map f as)
 \end{code}
 
 ----------------
@@ -62,24 +62,27 @@ newtype Complex r = C (r , r)  deriving (Eq, Show)
 --      LinTrans(re, Complex r, r)
 --   && LinTrans(im, Complex r, r)
 re, im :: Complex a -> a
-re = error "TODO re"
-im = error "TODO im"
+re (C (r, _i)) = r
+im (C (_r, i)) = i
 
 zeroC :: Additive r => Complex r
-zeroC = error "TODO zeroC"
+zeroC = C (zero, zero)   -- to satisfy the LinTran from above
 
+-- to satisfy the LinTran from above
 addC :: Additive a => Complex a -> Complex a -> Complex a
-addC = error "TODO addC"
+addC (C (x1, y1)) (C (x2, y2)) = C (x3, y3)
+  where   x3 = x1 + x2
+          y3 = y1 + y2
 
 instance Additive r => Additive (Complex r) where zero = zeroC; (+) = addC
 
 instance Field a => VectorSpace (Complex a) a where scale = scaleC
 
 scaleC :: Multiplicative a => a -> Complex a -> Complex a
-scaleC = error "TODO scaleC"
+scaleC c = mapC (c*)
 
 mapC :: (a->b) -> (Complex a -> Complex b)
-mapC = error "TODO mapC"
+mapC f (C (x, y)) = C (f x, f y)
 \end{code}
 
 AddGroup
@@ -87,7 +90,8 @@ AddGroup
 instance AddGroup r => AddGroup (Complex r) where  negate = negateC
 
 negateC :: AddGroup r => Complex r -> Complex r
-negateC = error "TODO negateC"
+-- negateC (C (x, y)) = C (negate x, negate y)
+negateC = mapC negate
 \end{code}
 
 ----------------
@@ -96,28 +100,50 @@ Multiplicative, Ring
 instance Ring r => Multiplicative (Complex r) where one = oneC; (*) = mulC
 
 oneC :: Ring r => Complex r
-oneC = error "TODO oneC"
+oneC = C (one, zero)
 
 -- What are the basis vectors?
 i :: Ring a => Complex a
-i = error "TODO i"
+i = C (zero, one)
 
 mulC :: Ring a => Complex a -> Complex a -> Complex a
-mulC = error "TODO mulC"
+mulC (C (x1, y1)) (C (x2, y2)) = C (x1*x2 - y1*y2, x1*y2 + y1*x2)
 \end{code}
+z = " x + y*i "  math notation
+z = scaleC x oneC + scaleC y i
+ =~ linComb [x,y] [oneC,i]
+
 
 ----------------
 MulGroup, Field
 
-conjugate :: ?
-magSq :: ?    -- Magnitude squared
 
 \begin{code}
 instance Field r => MulGroup (Complex r) where recip = recipC
 
+conjugate :: AddGroup a => Complex a -> Complex a
+conjugate (C (x, y)) = C (x, negate y)
+
+-- Magnitude squared
+magSq :: Ring a => Complex a -> a
+magSq (C (x, y)) = x*x + y*y
+
 recipC :: Field a => Complex a -> Complex a
-recipC = error "TODO recipC"
+recipC z = scaleC factor (conjugate z)
+  where factor = recip (magSq z)
+
+ex1, ex2 :: Ring a => Complex a
+ex1 = oneC + i
+ex2 = ex1 + oneC
 \end{code}
+Spec.: forall z. (recipC z) * z == oneC
+  (recipC z) * z == oneC  -- has angle 0
+  angle (recipC z) == negate (angle z)
+ conjugate
+  abs (recipC z)  == recip (abs z)
+
+
+
 
 ----------------
 * Step 3: Can we combine power series with complex numbers?
@@ -136,6 +162,11 @@ c1, s1 :: Field s => s
 c1 = cosf one
 s1 = sinf one
 \end{code}
+expf i = C (0.5403023058681398,0.8414709848078965)
+sinf 1 =                                        0.8414709848078965
+cosf 1 =      0.5403023058681398
+expf i = scaleC (cosf 1) oneC    + scaleC (sinf 1) i
+
 -- expf i == C (cosf 1, sinf 1)
 
 ----------------
@@ -150,18 +181,50 @@ We want to define "eᵃˣ" = \x -> exp (a*x) as a power series (for all a)
   and   expaf a 0 = exp (a*0) = exp 0 = 1
 
 Thus we can find the power series by integP + recursion:
+
+\begin{code}
+test :: PS (Complex Rational)
+test =
+  P [ C (1        ,0   )
+    , C (0        ,1    )
+    , C (-1/2     ,0   )
+    , C (0        ,-1/6)
+    , C (1/ 24    ,0   )
+    , C (0        ,1/120)
+    , C (-1/720   ,0   )
+    , C (0        ,(-1)/ 5040)
+    , C (1/40320  , 0   )
+    , C (0        ,1/ 362880)]
+\end{code}
+takeP 10 sinP ==
+P [0 % 1
+  , 1 % 1
+  , 0 % 1
+  , (-1) % 6
+  , 0 % 1
+  , 1 % 120
+  , 0 % 1
+  , (-1) % 5040
+  , 0 % 1
+  , 1 % 362880]
+
+
+
 \begin{code}
 expa :: Field a => a -> PS a
-expa = error "TODO expa"
+expa a = integP one (scaleP a (expa a))
 
 expi :: Field a => PS (Complex a)
 expi = expa i
 
 cosPisinP :: Field a => PS (Complex a)
-cosPisinP = error "TODO implement cos + i sin"
+cosPisinP = cosP + scaleP i sinP
+
+test2 = (takeP 100 cosPisinP :: PS (Complex Rational)) ==
+        (takeP 100 expi)
 \end{code}
-
-
+(***) :: Complex a -> PS (Complex a) -> PS (Complex a)
+scaleP :
 ----------------
 Connecting to Laplace of sin, cos
   (on blackboard)

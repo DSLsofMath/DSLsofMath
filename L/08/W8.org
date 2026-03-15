@@ -37,24 +37,20 @@ Efter godkänd kurs ska studenten kunna:
 + diskutera och jämföra olika programvaruimplementationer av matematiska begrepp
 
 * Learning outcomes
-
 On successful completion of the course the student will be able to:
-
 ** Knowledge and understanding
 + design and implement a DSL (Domain Specific Language) for a new domain
 + organize areas of mathematics in DSL terms
 + explain main concepts of elementary real and complex analysis, algebra, and linear algebra
 
 ** Competence and skills
-
 + develop adequate notation for mathematical concepts
 + perform calculational proofs
 + use power series for solving differential equations
 + use Laplace transforms for solving differential equations
 
 ** Judgement and approach
-
 + discuss and compare different software implementations of mathematical concepts
 * Final words
 + I want you to pass!
-+ Make sure to ask questions. (On slack, email, canvas, etc.)
++ Make sure to ask questions. (In person, by email, canvas, etc.)
