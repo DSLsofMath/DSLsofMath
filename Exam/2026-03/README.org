@@ -1,0 +1,14 @@
+* [[file:Exam_2026-03.pdf][Exam 2026-03]] of the [[../../README.md][DSLsofMath course]]
+** Suggested solutions:
++ [[file:Solution_202603_Algebra.lhs][Part 1: Algebra]]
++ [[file:Solution_202603_Laplace.lhs][Part 2: Laplace]]
++ [[file:Solution_202603_Typing.txt][Part 3: Typing]]
++ [[file:Solution_202603_Proof.lhs][Part 4: Proof]]
+
++ Exam check (granskning): 2026-04-02, 12.10-12.40 in EDIT 6128
+
+** Grading levels:
+
+To pass you need
++ a minimum of 5p on each question (1 to 4) and also
++ reach these grade limits:  3: >=48p, 4: >=65p, 5: >=83p, max: 100p

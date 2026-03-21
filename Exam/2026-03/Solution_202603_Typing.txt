@@ -1,0 +1,31 @@
+Problem 3 [25p]: Typing Mathematics: The Action Functional
+
+a) [7p] Types of the objects:
+[1p]  t : T
+[1p]  q : T -> Q
+[1p]  \dot{q} : T -> V
+[2p]  L : T \times Q \times V -> REAL   (or curried: T -> Q -> V -> REAL)
+[2p]  S : (T -> Q) -> REAL
+
+b) [5p] The notation S[q(t)] is problematic for two reasons.
+First (Typing): It implies that S takes q(t) as an argument. But q(t) is a scalar of type Q (a position at a specific time), whereas the action functional S must take the entire trajectory *function* q (of type T -> Q) to integrate over it.
+Second (Binding): The variable t appears free on the left side of the equation, but on the right side, t is a bound dummy variable inside the integral (bound by dt).
+
+c) [3p] Restating with D and explicit binding:
+We drop the (t) from S[q(t)] to show it takes a function, introduce a lambda abstraction \t -> ... to explicitly bind t, and replace the dot with the derivative operator D applied to the function q.
+S(q) = \int_{t_0}^{t_1} ( \lambda t . L(t, q(t), D(q)(t)) )
+
+d) [5p] MinAction predicate:
+To say q minimizes the action means that for all other paths p, IF p shares the same positions at t_0 and t_1, THEN the action of q is less than or equal to the action of p.
+MinAction(q) = \forall p : (T -> Q) . (p t_0 == q t_0 \land p t_1 == q t_1) \implies S(q) <= S(p)
+
+e) [5p] Haskell implementation of the action functional:
+(Using the curried version of L):
+
+action :: (T -> Q -> V -> REAL) -> T -> T -> (T -> Q) -> REAL
+action l t0 t1 q = integrate t0 t1 (\t -> l t (q t) (deriv q t))
+
+Note: If you typed L as taking a tuple in part a, the definition should correctly match that:
+
+action2 :: ((T, Q, V) -> REAL) -> T -> T -> (T -> Q) -> REAL
+action2 l t0 t1 q = integrate t0 t1 (\t -> l (t, q t, deriv q t))
