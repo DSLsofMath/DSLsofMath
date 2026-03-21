@@ -12,6 +12,7 @@ Course codes: [DAT326](https://www.student.chalmers.se/sp/course?course_id=40461
 
 ## News
 
+* 2026-03-21: **Course discontinuation and future exams:** The 2026 instance was the final ordinary run of the course. If you still need to pass the exam, please read the [important information regarding the transition period and upcoming re-exam opportunities](Exam/README.org).
 * 2026-01-20: First lecture of the [2026 course instance](https://chalmers.instructure.com/courses/38137).
 * 2022: Course book available from [Amazon](https://www.amazon.co.uk/dp/184890388X) and from [other sources](https://www.adlibris.com/se/bok/domain-specific-languages-of-mathematics-9781848903883). [Bibtex entry](admin/JanssonIonescuBernardyDSLsofMathBook2022.bib).
 * [Lecture note snapshots](L/snapshots/) with drafts of the full course book

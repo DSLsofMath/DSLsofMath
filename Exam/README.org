@@ -1,0 +1,39 @@
+* Directory Contents: Past Exams and Solutions
+This directory contains an archive of past exams and their corresponding solutions, which are excellent resources for exam preparation. The files are organized chronologically in subdirectories named by year and month (for example, [[file:2025-03/][2025-03/]], [[file:2024-08/][2024-08/]]).
+
+Inside each subdirectory, you will typically find:
+- *The exam paper:* A PDF file containing the exam questions (e.g., [[file:2025-03/Exam_2025-03.pdf][2025-03/Exam_2025-03.pdf]]).
+- *Solutions:* The suggested solutions to the problems. These are often provided as Literate Haskell (=.lhs=) or standard Haskell (=.hs=) files, meaning you can load them in GHCi to test the code (but you may need some library code from the repository as well, for example [[file:../L/DSLsofMath/Algebra.hs][../L/DSLsofMath/Algebra.hs]]). Some proofs and answers are also provided in plain text (=.txt=) or Agda (=.agda=). The solutions are usually split per problem (e.g., [[file:2024-08/P1_Algebra.lhs][2024-08/P1_Algebra.lhs]], [[file:2025-03/Solution_202503_Laplace.lhs][2025-03/Solution_202503_Laplace.lhs]]).
+
+* Information regarding the discontinuation of DAT326 and future exam opportunities
+The course Domain Specific Languages of Mathematics (DAT326) has been
+discontinued. The final ordinary run of the course took place Jan-Mar
+during the academic year 2025/26.
+
+If you still need to pass the exam, there is no need to worry. According
+to Chalmers' regulations, there is a two-year transition period
+following the last ordinary academic year of a discontinued course.
+Because this course is a compulsory elective for certain programs, we
+will offer a total of *six additional re-exam opportunities* after the
+final ordinary exam in March 2026.
+
+Here is the concrete plan for the upcoming exams:
+
+- *Current academic year (2025/2026):* Two re-exams (2026-06-09, and 2026-08-25).
+- *Next academic year (2026/2027):* Two additional re-exam opportunities.
+- *Final academic year (2027/2028):* Two additional re-exam opportunities.
+
+Thus, the absolute final opportunity to take the exam for this course will be
+in the *August 2028* exam period.
+
+Exact dates for the re-exams during the upcoming two academic years
+(starting from autumn 2026) will be published in the Student
+Portal/Ladok in due time, so please keep an eye out there as the exam
+periods approach.
+
+*Preparing for the re-exams:* I (Patrik) strongly recommend that you
+reach out to fellow students to coordinate and prepare for the
+re-exams together.  Feel free to collect your questions and send them
+to me, or suggest a suitable time for a joint study session
+("pluggstuga"). With some advance notice, I would be happy to help
+clear up any questions and support your preparation.

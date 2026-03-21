@@ -91,7 +91,7 @@ and |f 0  = 0|,  |f' 0 = -1|.
   L (D f') s      = -- |f' 0 = -1|
   1 + s*L f' s    = -- comp. above
   1 + s*(s*F s)   = -- simplify
-  1 + s^2*F s     
+  1 + s^2*F s
 \end{spec}
 
 \item Then we apply L to LHS:
@@ -118,7 +118,7 @@ and |f 0  = 0|,  |f' 0 = -1|.
 
 By combining LHS=RHS and moving |1| to the right we get:
 \begin{spec}
-  (s+9)*(s+11)*F s = -99/s - 1 
+  (s+9)*(s+11)*F s = -99/s - 1
 <=> -- divide both sides by (s+9)*(s+11)
   F s = -99/(s*(s+9)*(s+11)) - 1/((s+9)*(s+11))
 \end{spec}
@@ -145,7 +145,7 @@ By combining LHS=RHS and moving |1| to the right we get:
 \begin{spec}
 s=0:   A  *( 0+9)  *  (0+11)  = -99 - 0      <=>  99A  = -99 <=>  A = -1
 s=-9:  B  *   -9   * (-9+11)  = -99 - (-9)   <=> -18B  = -90 <=>  B =  5
-s=-11: C  *  -11   * (-11+9)  = -99 - (-11)  <=>  22C  = -88 <=>  C = -4 
+s=-11: C  *  -11   * (-11+9)  = -99 - (-11)  <=>  22C  = -88 <=>  C = -4
 \end{spec}
 
 \item Thus
@@ -169,7 +169,7 @@ Fist, compute the derivatives symbolically
   f'' t  =        +81*e9  +   121*e11
 \end{spec}
 Then, check initial conditions, and the main equation.
-  
+
 \begin{spec}
 f   0 = -1+5-4 = 0 -- OK!
 f'  0 = -45+44= -1 -- OK!
