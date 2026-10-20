@@ -90,7 +90,7 @@ c1 = (V "x" - C 15)*(V "y" + C 12)*V "z"
     variable name, and returns the value of that variable. For now,
     the function just needs to be defined for the variables in the
     expression above, i.e. |varVal "x"| should return 5, |varVal "y"|
-    should return 8, and |varVal "x"| should return 13.
+    should return 8, and |varVal "z"| should return 13.
 
 \begin{code}
 varVal :: String -> Integer
