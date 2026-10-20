@@ -23,7 +23,7 @@ data Exp  =  Con Integer
     %
   \item Create a function |eval :: Exp -> Integer| that takes a
     value of the |Exp| data type and returns the corresponding
-    number (for instance, |eval a2 == 4|).
+    number (for instance, |eval a1 == 4|).
     %
     Try it on the expressions from the first part, and verify that
     it works as expected.
